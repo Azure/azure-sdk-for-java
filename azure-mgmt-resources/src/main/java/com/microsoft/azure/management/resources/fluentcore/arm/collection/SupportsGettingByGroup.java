@@ -6,9 +6,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 
-import com.microsoft.azure.CloudException;
-
-import java.io.IOException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 
 /**
  * Provides access to getting a specific Azure resource based on its name and resource group.
@@ -17,6 +16,7 @@ import java.io.IOException;
  *
  * @param <T> the type of the resource to get.
  */
+@LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsGettingByGroup<T> {
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
@@ -24,8 +24,6 @@ public interface SupportsGettingByGroup<T> {
      * @param resourceGroupName the name of the resource group the resource is in
      * @param name the name of the resource. (Note, this is not the ID)
      * @return an immutable representation of the resource
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    T getByGroup(String resourceGroupName, String name) throws CloudException, IOException;
+    T getByGroup(String resourceGroupName, String name);
 }

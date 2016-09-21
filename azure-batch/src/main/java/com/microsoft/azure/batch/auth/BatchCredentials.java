@@ -9,11 +9,12 @@ package com.microsoft.azure.batch.auth;
 public abstract class BatchCredentials {
     private String baseUrl;
 
-    public String getBaseUrl() {
+    public String baseUrl() {
         return baseUrl;
     }
 
-    protected void setBaseUrl(String baseUrl) {
+    protected BatchCredentials withBaseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
     }
 }

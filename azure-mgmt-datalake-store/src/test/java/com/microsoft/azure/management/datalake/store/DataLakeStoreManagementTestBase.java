@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.datalake.store;
 
-import com.microsoft.azure.credentials.AzureEnvironment;
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
@@ -19,7 +19,6 @@ public abstract class DataLakeStoreManagementTestBase {
                 System.getenv("arm.domain"),
                 System.getenv("arm.username"),
                 System.getenv("arm.password"),
-                null,
                 AzureEnvironment.AZURE);
 
         RestClient restClient = new RestClient.Builder()

@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupExportResultInner;
 
 /**
  * An immutable client-side representation of an Azure deployment template export result.
  */
+@LangDefinition(ContainerName = "~/")
 public interface ResourceGroupExportResult extends
         Wrapper<ResourceGroupExportResultInner> {
 

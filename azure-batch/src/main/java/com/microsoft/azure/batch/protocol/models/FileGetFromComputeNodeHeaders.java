@@ -156,7 +156,11 @@ public class FileGetFromComputeNodeHeaders {
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
     public FileGetFromComputeNodeHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 
@@ -179,7 +183,11 @@ public class FileGetFromComputeNodeHeaders {
      * @return the FileGetFromComputeNodeHeaders object itself.
      */
     public FileGetFromComputeNodeHeaders withOcpCreationTime(DateTime ocpCreationTime) {
-        this.ocpCreationTime = new DateTimeRfc1123(ocpCreationTime);
+        if (ocpCreationTime == null) {
+            this.ocpCreationTime = null;
+        } else {
+            this.ocpCreationTime = new DateTimeRfc1123(ocpCreationTime);
+        }
         return this;
     }
 

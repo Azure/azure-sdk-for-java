@@ -5,18 +5,23 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NicIpConfiguration;
+import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
+import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
 
 /**
  *  Implementation for {@link PublicIpAddress} and its create and update interfaces.
  */
+@LangDefinition
 class PublicIpAddressImpl
     extends GroupableResourceImpl<
         PublicIpAddress,
@@ -41,21 +46,14 @@ class PublicIpAddressImpl
     // Verbs
 
     @Override
-    public PublicIpAddressImpl apply() throws Exception {
-        return this.create();
+    public Observable<PublicIpAddress> applyUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<PublicIpAddress> callback) {
-        return this.createAsync(callback);
-    }
-
-    @Override
-    public PublicIpAddress refresh() throws Exception {
-        ServiceResponse<PublicIPAddressInner> response =
-            this.client.get(this.resourceGroupName(), this.name());
-        PublicIPAddressInner inner = response.getBody();
-        this.setInner(inner);
+    public PublicIpAddress refresh() {
+        PublicIPAddressInner response = this.client.get(this.resourceGroupName(), this.name());
+        this.setInner(response);
         return this;
     }
 
@@ -110,18 +108,31 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public IpAllocationMethod ipAllocationMethod() {
-        return IpAllocationMethod.fromString(this.inner().publicIPAllocationMethod());
+    public IPAllocationMethod ipAllocationMethod() {
+        return this.inner().publicIPAllocationMethod();
+    }
+
+    @Override
+    public IPVersion version() {
+        return this.inner().publicIPAddressVersion();
     }
 
     @Override
     public String fqdn() {
-        return this.inner().dnsSettings().fqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().fqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
     public String reverseFqdn() {
-        return this.inner().dnsSettings().reverseFqdn();
+        if (this.inner().dnsSettings() != null) {
+            return this.inner().dnsSettings().reverseFqdn();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -138,8 +149,9 @@ class PublicIpAddressImpl
         }
     }
 
+    // CreatorTaskGroup.ResourceCreator implementation
     @Override
-    protected void createResource() throws Exception {
+    public Observable<PublicIpAddress> createResourceAsync() {
         // Clean up empty DNS settings
         final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
         if (dnsSettings != null) {
@@ -150,24 +162,54 @@ class PublicIpAddressImpl
             }
         }
 
-        ServiceResponse<PublicIPAddressInner> response =
-                this.client.createOrUpdate(this.resourceGroupName(), this.name(), this.inner());
-        this.setInner(response.getBody());
+        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(innerToFluentMap(this));
+    }
+
+    private boolean equalsResourceType(String resourceType) {
+        IPConfigurationInner ipConfig = this.inner().ipConfiguration();
+        if (ipConfig == null || resourceType == null) {
+            return false;
+        } else {
+            final String refId = this.inner().ipConfiguration().id();
+            final String resourceType2 = ResourceUtils.resourceTypeFromResourceId(refId);
+            return resourceType.equalsIgnoreCase(resourceType2);
+        }
     }
 
     @Override
-    protected ServiceCall createResourceAsync(ServiceCallback<Void> callback) {
-        // Clean up empty DNS settings
-        final PublicIPAddressDnsSettings dnsSettings = this.inner().dnsSettings();
-        if (dnsSettings != null) {
-            if ((dnsSettings.domainNameLabel() == null || dnsSettings.domainNameLabel().isEmpty())
-                    && (dnsSettings.fqdn() == null || dnsSettings.fqdn().isEmpty())
-                    && (dnsSettings.reverseFqdn() == null || dnsSettings.reverseFqdn().isEmpty())) {
-                this.inner().withDnsSettings(null);
-            }
-        }
+    public boolean hasAssignedLoadBalancer() {
+        return equalsResourceType("frontendIPConfigurations");
+    }
 
-        return this.client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner(),
-                Utils.fromVoidCallback(this, callback));
+    @Override
+    public PublicFrontend getAssignedLoadBalancerFrontend() {
+        if (this.hasAssignedLoadBalancer()) {
+            final String refId = this.inner().ipConfiguration().id();
+            final String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
+            final String frontendName = ResourceUtils.nameFromResourceId(refId);
+            return (PublicFrontend) lb.frontends().get(frontendName);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean hasAssignedNetworkInterface() {
+        return equalsResourceType("ipConfigurations");
+    }
+
+    @Override
+    public NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration() {
+        if (this.hasAssignedNetworkInterface()) {
+            final String refId = this.inner().ipConfiguration().id();
+            final String parentId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final NetworkInterface nic = this.myManager.networkInterfaces().getById(parentId);
+            final String childName = ResourceUtils.nameFromResourceId(refId);
+            return nic.ipConfigurations().get(childName);
+        } else {
+            return null;
+        }
     }
 }

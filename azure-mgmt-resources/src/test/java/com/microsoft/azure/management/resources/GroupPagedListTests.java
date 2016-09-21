@@ -1,17 +1,14 @@
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
-import com.microsoft.rest.RestException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -57,24 +54,24 @@ public class GroupPagedListTests {
         pages.get(3).setNextPageLink(null);
 
         List<String> expected = Arrays.asList(
+                "1",
                 "RG1Vm1", "RG1Vm2",
                 "RG2Vm1", "RG2Vm2",
                 "RG3Vm1", "RG3Vm2",
                 "RG4Vm1", "RG4Vm2",
                 "RG5Vm1", "RG5Vm2",
-                "1",
+                "2",
                 "RG6Vm1", "RG6Vm2",
                 "RG7AVm1", "RG7Vm2",
                 "RG8AVm1", "RG8Vm2",
                 "RG9AVm1", "RG9Vm2",
                 "RG10AVm1", "RG10Vm2",
-                "2",
+                "3",
                 "RG11Vm1", "RG11Vm2",
                 "RG12Vm1", "RG12Vm2",
                 "RG13Vm1", "RG13Vm2",
                 "RG14Vm1", "RG14Vm2",
                 "RG15Vm1", "RG15Vm2",
-                "3",
                 "RG16Vm1", "RG16Vm2",
                 "RG17Vm1", "RG17Vm2",
                 "RG18Vm1", "RG18Vm2",
@@ -85,7 +82,7 @@ public class GroupPagedListTests {
 
         PagedList<ResourceGroup> pagedResourceList = new PagedList<ResourceGroup>(pages.get(0)) {
             @Override
-            public Page<ResourceGroup> nextPage(String nextLink) throws RestException, IOException {
+            public Page<ResourceGroup> nextPage(String nextLink) {
                 Assert.assertSame(itr.next(), nextLink);
                 int index = Integer.parseInt(nextLink);
                 return pages.get(index);
@@ -94,7 +91,7 @@ public class GroupPagedListTests {
 
         GroupPagedList<String> groupedResourceList = new GroupPagedList<String>(pagedResourceList) {
             @Override
-            public List<String> listNextGroup(String s) throws RestException, IOException {
+            public List<String> listNextGroup(String s) {
                 List<String> groupItems = new ArrayList<>();
                 groupItems.add(s + "Vm1");
                 groupItems.add(s + "Vm2");
@@ -109,7 +106,7 @@ public class GroupPagedListTests {
     private static ResourceGroup resourceGroup(final String name) {
         return new ResourceGroup() {
             @Override
-            public Update update() throws Exception {
+            public Update update() {
                 return null;
             }
 
@@ -149,12 +146,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
-                return null;
-            }
-
-            @Override
-            public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> builder) {
+            public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
                 return null;
             }
 
@@ -164,13 +156,17 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public ResourceGroup refresh() throws Exception {
+            public ResourceGroup refresh() {
                 return null;
             }
 
             @Override
             public ResourceGroupInner inner() {
                 return null;
+            }
+
+            @Override
+            public void setInner(ResourceGroupInner inner) {
             }
         };
     }

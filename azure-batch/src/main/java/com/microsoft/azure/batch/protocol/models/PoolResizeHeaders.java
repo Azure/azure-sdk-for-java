@@ -126,7 +126,11 @@ public class PoolResizeHeaders {
      * @return the PoolResizeHeaders object itself.
      */
     public PoolResizeHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

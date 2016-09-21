@@ -6,19 +6,16 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.ResourceGroups;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import com.microsoft.azure.management.resources.ResourceGroup;
-
-import java.io.IOException;
+import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
  */
 final class ResourceGroupsImpl
-        extends CreatableWrappersImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
+        extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
         implements ResourceGroups {
     private final ResourceGroupsInner client;
     private final ResourceManagementClientImpl serviceClient;
@@ -34,17 +31,17 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public PagedList<ResourceGroup> list() throws CloudException, IOException {
-        return wrapList(client.list().getBody());
+    public PagedList<ResourceGroup> list() {
+        return wrapList(client.list());
     }
 
     @Override
-    public ResourceGroupImpl getByName(String name) throws CloudException, IOException {
-        return wrapModel(client.get(name).getBody());
+    public ResourceGroupImpl getByName(String name) {
+        return wrapModel(client.get(name));
     }
 
     @Override
-    public void delete(String name) throws Exception {
+    public void delete(String name) {
         client.delete(name);
     }
 
@@ -54,8 +51,8 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public boolean checkExistence(String name) throws CloudException, IOException {
-        return client.checkExistence(name).getBody();
+    public boolean checkExistence(String name) {
+        return client.checkExistence(name);
     }
 
     @Override

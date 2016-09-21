@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
@@ -16,16 +17,17 @@ import java.util.UUID;
 /**
  * The implementation for {@link DataDisk} and its create and update interfaces.
  */
+@LangDefinition
 class DataDiskImpl
-    extends ChildResourceImpl<DataDisk, VirtualMachineImpl>
+    extends ChildResourceImpl<DataDisk, VirtualMachineImpl, VirtualMachine>
     implements
         VirtualMachineDataDisk,
         VirtualMachineDataDisk.Definition<VirtualMachine.DefinitionStages.WithCreate>,
         VirtualMachineDataDisk.UpdateDefinition<VirtualMachine.Update>,
         VirtualMachineDataDisk.Update {
 
-    protected DataDiskImpl(String name, DataDisk inner, VirtualMachineImpl parent) {
-        super(name, inner, parent);
+    protected DataDiskImpl(DataDisk inner, VirtualMachineImpl parent) {
+        super(inner, parent);
     }
 
     protected static DataDiskImpl prepareDataDisk(String name, DiskCreateOptionTypes createOption, VirtualMachineImpl parent) {
@@ -34,7 +36,7 @@ class DataDiskImpl
         dataDiskInner.withName(name);
         dataDiskInner.withCreateOption(createOption);
         dataDiskInner.withVhd(null);
-        return new DataDiskImpl(name, dataDiskInner, parent);
+        return new DataDiskImpl(dataDiskInner, parent);
     }
 
     protected static DataDiskImpl createNewDataDisk(int sizeInGB, VirtualMachineImpl parent) {

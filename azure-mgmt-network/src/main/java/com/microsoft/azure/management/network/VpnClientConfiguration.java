@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.network;
 
 import java.util.List;
+import com.microsoft.azure.management.network.implementation.VpnClientRootCertificateInner;
+import com.microsoft.azure.management.network.implementation.VpnClientRevokedCertificateInner;
 
 /**
  * VpnClientConfiguration for P2S client.
@@ -23,12 +25,12 @@ public class VpnClientConfiguration {
     /**
      * VpnClientRootCertificate for Virtual network gateway.
      */
-    private List<VpnClientRootCertificate> vpnClientRootCertificates;
+    private List<VpnClientRootCertificateInner> vpnClientRootCertificates;
 
     /**
      * VpnClientRevokedCertificate for Virtual network gateway.
      */
-    private List<VpnClientRevokedCertificate> vpnClientRevokedCertificates;
+    private List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates;
 
     /**
      * Get the vpnClientAddressPool value.
@@ -55,7 +57,7 @@ public class VpnClientConfiguration {
      *
      * @return the vpnClientRootCertificates value
      */
-    public List<VpnClientRootCertificate> vpnClientRootCertificates() {
+    public List<VpnClientRootCertificateInner> vpnClientRootCertificates() {
         return this.vpnClientRootCertificates;
     }
 
@@ -65,7 +67,7 @@ public class VpnClientConfiguration {
      * @param vpnClientRootCertificates the vpnClientRootCertificates value to set
      * @return the VpnClientConfiguration object itself.
      */
-    public VpnClientConfiguration withVpnClientRootCertificates(List<VpnClientRootCertificate> vpnClientRootCertificates) {
+    public VpnClientConfiguration withVpnClientRootCertificates(List<VpnClientRootCertificateInner> vpnClientRootCertificates) {
         this.vpnClientRootCertificates = vpnClientRootCertificates;
         return this;
     }
@@ -75,7 +77,7 @@ public class VpnClientConfiguration {
      *
      * @return the vpnClientRevokedCertificates value
      */
-    public List<VpnClientRevokedCertificate> vpnClientRevokedCertificates() {
+    public List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates() {
         return this.vpnClientRevokedCertificates;
     }
 
@@ -85,7 +87,7 @@ public class VpnClientConfiguration {
      * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates value to set
      * @return the VpnClientConfiguration object itself.
      */
-    public VpnClientConfiguration withVpnClientRevokedCertificates(List<VpnClientRevokedCertificate> vpnClientRevokedCertificates) {
+    public VpnClientConfiguration withVpnClientRevokedCertificates(List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates) {
         this.vpnClientRevokedCertificates = vpnClientRevokedCertificates;
         return this;
     }

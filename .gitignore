@@ -1,8 +1,14 @@
 *.class
 
-# Auth filed
+#External libs
+extlib/
+
+# Auth files
 *.auth
 *.azureauth
+
+# Local checkstyle
+*.checkstyle
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

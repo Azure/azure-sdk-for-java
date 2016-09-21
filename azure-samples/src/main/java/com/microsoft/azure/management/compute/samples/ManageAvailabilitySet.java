@@ -15,6 +15,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -87,7 +88,7 @@ public final class ManageAvailabilitySet {
                 //=============================================================
                 // Define a virtual network for the VMs in this availability set
 
-                Network.DefinitionStages.WithCreate network = azure.networks()
+                Creatable<Network> networkDefinition = azure.networks()
                         .define(vnetName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
@@ -102,7 +103,7 @@ public final class ManageAvailabilitySet {
                 VirtualMachine vm1 = azure.virtualMachines().define(vm1Name)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withNewPrimaryNetwork(network)
+                        .withNewPrimaryNetwork(networkDefinition)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
@@ -125,7 +126,7 @@ public final class ManageAvailabilitySet {
                 VirtualMachine vm2 = azure.virtualMachines().define(vm2Name)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withNewPrimaryNetwork(network)
+                        .withNewPrimaryNetwork(networkDefinition)
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)

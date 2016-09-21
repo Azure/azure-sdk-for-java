@@ -15,11 +15,9 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -27,6 +25,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -56,7 +56,7 @@ public final class GlobalResourceGroupsInner {
     interface GlobalResourceGroupsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/moveResources")
-        Call<ResponseBody> moveResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> moveResources(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Body CsmMoveResourceEnvelopeInner moveResourceEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -64,12 +64,44 @@ public final class GlobalResourceGroupsInner {
      *
      * @param resourceGroupName the String value
      * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
+        moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).toBlocking().single().getBody();
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope), serviceCallback);
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> moveResources(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
+        return moveResourcesWithServiceResponseAsync(resourceGroupName, moveResourceEnvelope).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     *
+     * @param resourceGroupName the String value
+     * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> moveResourcesWithServiceResponseAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -83,52 +115,18 @@ public final class GlobalResourceGroupsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(moveResourceEnvelope);
-        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return moveResourcesDelegate(call.execute());
-    }
-
-    /**
-     *
-     * @param resourceGroupName the String value
-     * @param moveResourceEnvelope the CsmMoveResourceEnvelopeInner value
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall moveResourcesAsync(String resourceGroupName, CsmMoveResourceEnvelopeInner moveResourceEnvelope, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (moveResourceEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter moveResourceEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(moveResourceEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(moveResourcesDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.moveResources(resourceGroupName, this.client.subscriptionId(), moveResourceEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = moveResourcesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Void> moveResourcesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

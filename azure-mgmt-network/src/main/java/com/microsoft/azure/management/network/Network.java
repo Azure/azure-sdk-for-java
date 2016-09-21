@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * Entry point for Virtual Network management API in Azure.
  */
+@LangDefinition()
 public interface Network extends
         GroupableResource,
         Refreshable<Network>,
@@ -50,6 +52,7 @@ public interface Network extends
     /**
      * The entirety of the virtual network definition.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -61,6 +64,7 @@ public interface Network extends
     /**
      * Grouping of virtual network definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual network definition.
@@ -161,6 +165,7 @@ public interface Network extends
     /**
      * Grouping of virtual network update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the virtual network update allowing to add or remove subnets.
@@ -241,11 +246,12 @@ public interface Network extends
     }
 
     /**
-     * The template for a public IP address update operation, containing all the settings that
+     * The template for a virtual network update operation, containing all the settings that
      * can be modified.
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<Network>,
         Resource.UpdateWithTags<Update>,

@@ -6,13 +6,10 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-
-import java.io.IOException;
 
 /**
  * The implementation of {@link Subscriptions}.
@@ -26,20 +23,20 @@ final class SubscriptionsImpl
     }
 
     @Override
-    public PagedList<Subscription> list() throws CloudException, IOException {
+    public PagedList<Subscription> list() {
         PagedListConverter<SubscriptionInner, Subscription> converter = new PagedListConverter<SubscriptionInner, Subscription>() {
             @Override
             public Subscription typeConvert(SubscriptionInner subscriptionInner) {
                 return new SubscriptionImpl(subscriptionInner, client);
             }
         };
-        return converter.convert(client.list().getBody());
+        return converter.convert(client.list());
     }
 
     @Override
     // Gets a specific resource group
-    public SubscriptionImpl getByName(String name) throws CloudException, IOException {
-        SubscriptionInner subscription = client.get(name).getBody();
+    public SubscriptionImpl getByName(String name) {
+        SubscriptionInner subscription = client.get(name);
         return new SubscriptionImpl(subscription, client);
     }
 }

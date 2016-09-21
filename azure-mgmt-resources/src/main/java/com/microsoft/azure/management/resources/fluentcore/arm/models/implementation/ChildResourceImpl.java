@@ -13,17 +13,16 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
  * (Internal use only)
  * @param <InnerT> Azure inner child class type
  * @param <ParentImplT> parent implementation
+ * @param <ParentT> parent interface
  */
-public abstract class ChildResourceImpl<InnerT, ParentImplT>
+public abstract class ChildResourceImpl<InnerT, ParentImplT extends ParentT, ParentT>
     extends IndexableWrapperImpl<InnerT>
-    implements ChildResource {
+    implements ChildResource<ParentT> {
 
     private final ParentImplT parent;
 
-    protected ChildResourceImpl(String name,
-            InnerT innerObject,
-            ParentImplT parent) {
-        super(name, innerObject);
+    protected ChildResourceImpl(InnerT innerObject, ParentImplT parent) {
+        super(innerObject);
         this.parent = parent;
     }
 

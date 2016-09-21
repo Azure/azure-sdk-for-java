@@ -16,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobScheduleUpdateParameter {
     /**
-     * The schedule according to which jobs will be created. If you do not
-     * specify this element, it is equivalent to passing the default
-     * schedule: that is, a single job scheduled to run immediately.
+     * The schedule according to which jobs will be created.
+     * If you do not specify this element, it is equivalent to passing the
+     * default schedule: that is, a single job scheduled to run immediately.
      */
     @JsonProperty(required = true)
     private Schedule schedule;
@@ -30,9 +30,9 @@ public class JobScheduleUpdateParameter {
     private JobSpecification jobSpecification;
 
     /**
-     * A list of name-value pairs associated with the job schedule as
-     * metadata. If you do not specify this element, it takes the default
-     * value of an empty list; in effect, any existing metadata is deleted.
+     * A list of name-value pairs associated with the job schedule as metadata.
+     * If you do not specify this element, it takes the default value of an
+     * empty list; in effect, any existing metadata is deleted.
      */
     private List<MetadataItem> metadata;
 

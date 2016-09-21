@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 
 /**
- * Response for CheckConnectionSharedKey Api servive call.
+ * Response for CheckConnectionSharedKey Api service call.
  */
 public class ConnectionSharedKeyResultInner {
     /**

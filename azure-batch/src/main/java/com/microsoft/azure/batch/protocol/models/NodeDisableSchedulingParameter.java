@@ -15,8 +15,9 @@ package com.microsoft.azure.batch.protocol.models;
 public class NodeDisableSchedulingParameter {
     /**
      * What to do with currently running tasks when disable task scheduling on
-     * the compute node. The default value is requeue. Possible values
-     * include: 'requeue', 'terminate', 'taskcompletion'.
+     * the compute node.
+     * The default value is requeue. Possible values include: 'requeue',
+     * 'terminate', 'taskcompletion'.
      */
     private DisableComputeNodeSchedulingOption nodeDisableSchedulingOption;
 

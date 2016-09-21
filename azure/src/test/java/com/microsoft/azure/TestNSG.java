@@ -5,13 +5,21 @@
  */
 package com.microsoft.azure;
 
-import org.junit.Assert;
-
+import com.google.common.util.concurrent.SettableFuture;
+import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
-import com.microsoft.azure.management.network.NetworkSecurityRule.Protocol;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import okhttp3.logging.HttpLoggingInterceptor;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import rx.Subscriber;
 
 /**
  * Test for network security group CRUD.
@@ -22,9 +30,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
     public NetworkSecurityGroup createResource(NetworkSecurityGroups nsgs) throws Exception {
         final String newName = "nsg" + this.testId;
         Region region = Region.US_WEST;
-
+        final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
         // Create
-        NetworkSecurityGroup nsg = nsgs.define(newName)
+        nsgs.define(newName)
                 .withRegion(region)
                 .withNewResourceGroup()
                 .defineRule("rule1")
@@ -33,7 +41,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromPort(80)
                     .toAnyAddress()
                     .toPort(80)
-                    .withProtocol(Protocol.TCP)
+                    .withProtocol(SecurityRuleProtocol.TCP)
                     .attach()
                 .defineRule("rule2")
                     .allowInbound()
@@ -45,7 +53,24 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .withPriority(200)
                     .withDescription("foo!!")
                     .attach()
-                .create();
+                .createAsync()
+                .subscribe(new Subscriber<NetworkSecurityGroup>() {
+                       @Override
+                       public void onCompleted() {
+                            System.out.print("completed");
+                       }
+
+                       @Override
+                       public void onError(Throwable throwable) {
+                            nsgFuture.setException(throwable);
+                       }
+
+                       @Override
+                       public void onNext(NetworkSecurityGroup networkSecurityGroup) {
+                            nsgFuture.set(networkSecurityGroup);
+                       }
+                   });
+        NetworkSecurityGroup nsg = nsgFuture.get();
 
         // Verify
         Assert.assertTrue(nsg.region().equals(region));
@@ -66,7 +91,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .fromAnyPort()
                     .toAnyAddress()
                     .toAnyPort()
-                    .withProtocol(Protocol.UDP)
+                    .withProtocol(SecurityRuleProtocol.UDP)
                     .attach()
                 .withoutRule("rule1")
                 .updateRule("rule2")
@@ -81,8 +106,21 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         return resource;
     }
 
-    @Override
-    public void print(NetworkSecurityGroup resource) {
+    private static StringBuilder printRule(NetworkSecurityRule rule, StringBuilder info) {
+        info.append("\n\t\tRule: ").append(rule.name())
+            .append("\n\t\t\tAccess: ").append(rule.access())
+            .append("\n\t\t\tDirection: ").append(rule.direction())
+            .append("\n\t\t\tFrom address: ").append(rule.sourceAddressPrefix())
+            .append("\n\t\t\tFrom port range: ").append(rule.sourcePortRange())
+            .append("\n\t\t\tTo address: ").append(rule.destinationAddressPrefix())
+            .append("\n\t\t\tTo port: ").append(rule.destinationPortRange())
+            .append("\n\t\t\tProtocol: ").append(rule.protocol())
+            .append("\n\t\t\tPriority: ").append(rule.priority())
+            .append("\n\t\t\tDescription: ").append(rule.description());
+        return info;
+    }
+
+    public static void printNSG(NetworkSecurityGroup resource) {
         StringBuilder info = new StringBuilder();
         info.append("NSG: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -91,21 +129,52 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                 .append("\n\tTags: ").append(resource.tags());
 
         // Output security rules
-        for (NetworkSecurityRule rule : resource.securityRules()) {
-            info.append("\n\tRule: ").append(rule.name())
-                .append("\n\t\tAccess: ").append(rule.access())
-                .append("\n\t\tDirection: ").append(rule.direction())
-                .append("\n\t\tFrom address: ").append(rule.sourceAddressPrefix())
-                .append("\n\t\tFrom port range: ").append(rule.sourcePortRange())
-                .append("\n\t\tTo address: ").append(rule.destinationAddressPrefix())
-                .append("\n\t\tTo port: ").append(rule.destinationPortRange())
-                .append("\n\t\tProtocol: ").append(rule.protocol())
-                .append("\n\t\tPriority: ").append(rule.priority())
-                .append("\n\t\tDescription: ").append(rule.description());
+        info.append("\n\tCustom security rules:");
+        for (NetworkSecurityRule rule : resource.securityRules().values()) {
+            info = printRule(rule, info);
         }
 
+        // Output default security rules
+        info.append("\n\tDefault security rules:");
+        for (NetworkSecurityRule rule : resource.defaultSecurityRules().values()) {
+            info = printRule(rule, info);
+        }
+
+        // Output associated NIC IDs
         info.append("\n\tNICs: ").append(resource.networkInterfaceIds());
 
+        // Output associated subnets
+        info.append("\n\tAssociated subnets: ");
+        List<Subnet> subnets = resource.listAssociatedSubnets();
+        if (subnets == null || subnets.size() == 0) {
+            info.append("(None)");
+        } else {
+            for (Subnet subnet : subnets) {
+                info.append("\n\t\tNetwork ID: ").append(subnet.parent().id())
+                    .append("\n\t\tSubnet name: ").append(subnet.name());
+            }
+        }
+
         System.out.println(info.toString());
+    }
+
+    @Override
+    public void print(NetworkSecurityGroup resource) {
+        printNSG(resource);
+    }
+
+    @Test
+    public void run() throws Exception {
+        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
+                System.getenv("client-id"),
+                System.getenv("domain"),
+                System.getenv("secret"),
+                null);
+
+        Azure azure = Azure.configure()
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .authenticate(credentials)
+                .withDefaultSubscription();
+        runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 }

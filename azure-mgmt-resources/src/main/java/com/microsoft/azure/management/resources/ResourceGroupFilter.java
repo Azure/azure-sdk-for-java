@@ -14,12 +14,12 @@ package com.microsoft.azure.management.resources;
  */
 public class ResourceGroupFilter {
     /**
-     * Gets or sets the tag name.
+     * The tag name.
      */
     private String tagName;
 
     /**
-     * Gets or sets the tag value.
+     * The tag value.
      */
     private String tagValue;
 

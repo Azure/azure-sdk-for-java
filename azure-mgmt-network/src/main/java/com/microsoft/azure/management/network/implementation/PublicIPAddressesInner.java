@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
@@ -18,13 +19,10 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -33,8 +31,9 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -64,39 +63,39 @@ public final class PublicIPAddressesInner {
     interface PublicIPAddressesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}")
-        Call<ResponseBody> get(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}")
-        Call<ResponseBody> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Body PublicIPAddressInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Body PublicIPAddressInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses/{publicIpAddressName}")
-        Call<ResponseBody> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Body PublicIPAddressInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Body PublicIPAddressInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Network/publicIPAddresses")
-        Call<ResponseBody> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAll(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses")
-        Call<ResponseBody> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listAllNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listAllNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -105,27 +104,9 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServiceResponse object if successful.
      */
-    public ServiceResponse<Void> delete(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (publicIpAddressName == null) {
-            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Response<ResponseBody> result = service.delete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPostOrDeleteResult(result, new TypeToken<Void>() { }.getType());
+    public void delete(String resourceGroupName, String publicIpAddressName) {
+        deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().last().getBody();
     }
 
     /**
@@ -134,38 +115,10 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall deleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Call<ResponseBody> call = service.delete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPostOrDeleteResultAsync(response, new TypeToken<Void>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
     }
 
     /**
@@ -173,12 +126,25 @@ public final class PublicIPAddressesInner {
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
-    public ServiceResponse<Void> beginDelete(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String resourceGroupName, String publicIpAddressName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The delete publicIpAddress operation deletes the specified publicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -191,8 +157,18 @@ public final class PublicIPAddressesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginDeleteDelegate(call.execute());
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * The delete publicIpAddress operation deletes the specified publicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     */
+    public void beginDelete(String resourceGroupName, String publicIpAddressName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
     }
 
     /**
@@ -201,42 +177,60 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall beginDeleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.beginDelete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
+    }
+
+    /**
+     * The delete publicIpAddress operation deletes the specified publicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(beginDeleteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
+    }
+
+    /**
+     * The delete publicIpAddress operation deletes the specified publicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (publicIpAddressName == null) {
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -248,16 +242,52 @@ public final class PublicIPAddressesInner {
     }
 
     /**
-     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PublicIPAddressInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PublicIPAddressInner object if successful.
      */
-    public ServiceResponse<PublicIPAddressInner> get(String resourceGroupName, String publicIpAddressName) throws CloudException, IOException, IllegalArgumentException {
+    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName) {
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).toBlocking().single().getBody();
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName), serviceCallback);
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName) {
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
+            @Override
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> getWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -271,67 +301,71 @@ public final class PublicIPAddressesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String resourceGroupName, String publicIpAddressName, final ServiceCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final String expand = null;
-        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<PublicIPAddressInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicIPAddressInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicIPAddressInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
-     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the subnet.
      * @param expand expand references resources.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PublicIPAddressInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PublicIPAddressInner object if successful.
      */
-    public ServiceResponse<PublicIPAddressInner> get(String resourceGroupName, String publicIpAddressName, String expand) throws CloudException, IOException, IllegalArgumentException {
+    public PublicIPAddressInner get(String resourceGroupName, String publicIpAddressName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).toBlocking().single().getBody();
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param expand expand references resources.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand), serviceCallback);
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param expand expand references resources.
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<PublicIPAddressInner> getAsync(String resourceGroupName, String publicIpAddressName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, publicIpAddressName, expand).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
+            @Override
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Get publicIpAddress operation retrieves information about the specified pubicIpAddress.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the subnet.
+     * @param expand expand references resources.
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> getWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName, String expand) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -344,53 +378,18 @@ public final class PublicIPAddressesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * The Get publicIpAddress operation retreives information about the specified pubicIpAddress.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the subnet.
-     * @param expand expand references resources.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String resourceGroupName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<PublicIPAddressInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicIPAddressInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicIPAddressInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PublicIPAddressInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -406,31 +405,10 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the PublicIPAddressInner object wrapped in ServiceResponse if successful.
+     * @return the PublicIPAddressInner object if successful.
      */
-    public ServiceResponse<PublicIPAddressInner> createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (publicIpAddressName == null) {
-            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        Response<ResponseBody> result = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<PublicIPAddressInner>() { }.getType());
+    public PublicIPAddressInner createOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -440,42 +418,10 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<PublicIPAddressInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    public ServiceCall<PublicIPAddressInner> createOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
     }
 
     /**
@@ -484,12 +430,26 @@ public final class PublicIPAddressesInner {
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the PublicIPAddressInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable for the request
      */
-    public ServiceResponse<PublicIPAddressInner> beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<PublicIPAddressInner> createOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
+            @Override
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * The Put PublicIPAddress operation creates/updates a stable/dynamic PublicIP address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the publicIpAddress.
+     * @param parameters Parameters supplied to the create/update PublicIPAddress operation
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -506,8 +466,20 @@ public final class PublicIPAddressesInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateDelegate(call.execute());
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<PublicIPAddressInner>() { }.getType());
+    }
+
+    /**
+     * The Put PublicIPAddress operation creates/updates a stable/dynamic PublicIP address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the publicIpAddress.
+     * @param parameters Parameters supplied to the create/update PublicIPAddress operation
+     * @return the PublicIPAddressInner object if successful.
+     */
+    public PublicIPAddressInner beginCreateOrUpdate(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -517,47 +489,66 @@ public final class PublicIPAddressesInner {
      * @param publicIpAddressName The name of the publicIpAddress.
      * @param parameters Parameters supplied to the create/update PublicIPAddress operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall beginCreateOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (publicIpAddressName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (parameters == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(parameters, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<PublicIPAddressInner>(serviceCallback) {
+    public ServiceCall<PublicIPAddressInner> beginCreateOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters), serviceCallback);
+    }
+
+    /**
+     * The Put PublicIPAddress operation creates/updates a stable/dynamic PublicIP address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the publicIpAddress.
+     * @param parameters Parameters supplied to the create/update PublicIPAddress operation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<PublicIPAddressInner> beginCreateOrUpdateAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, publicIpAddressName, parameters).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(beginCreateOrUpdateDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
+    }
+
+    /**
+     * The Put PublicIPAddress operation creates/updates a stable/dynamic PublicIP address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the publicIpAddress.
+     * @param parameters Parameters supplied to the create/update PublicIPAddress operation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String publicIpAddressName, PublicIPAddressInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (publicIpAddressName == null) {
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreateOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicIPAddressInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicIPAddressInner> clientResponse = beginCreateOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<PublicIPAddressInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -569,70 +560,96 @@ public final class PublicIPAddressesInner {
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<PublicIPAddressInner>> listAll() throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> listAll() {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listAllSinglePageAsync().toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<PublicIPAddressInner>> listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listAllSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listAllNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listAllAsync() {
+        return listAllWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listAllWithServiceResponseAsync() {
+        return listAllSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listAllSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<PublicIPAddressInner>> response = listAllDelegate(call.execute());
-        PagedList<PublicIPAddressInner> result = new PagedList<PublicIPAddressInner>(response.getBody()) {
-            @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listAllNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAllAsync(final ListOperationCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PublicIPAddressInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listAllDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -643,15 +660,83 @@ public final class PublicIPAddressesInner {
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<PublicIPAddressInner>> list(final String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<PublicIPAddressInner> list(final String resourceGroupName) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<PublicIPAddressInner>> listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listAsync(final String resourceGroupName) {
+        return listWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listWithServiceResponseAsync(final String resourceGroupName) {
+        return listSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param resourceGroupName The name of the resource group.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -661,61 +746,18 @@ public final class PublicIPAddressesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<PublicIPAddressInner>> response = listDelegate(call.execute());
-        PagedList<PublicIPAddressInner> result = new PagedList<PublicIPAddressInner>(response.getBody()) {
-            @Override
-            public Page<PublicIPAddressInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final String resourceGroupName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PublicIPAddressInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<PublicIPAddressInner>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -726,59 +768,99 @@ public final class PublicIPAddressesInner {
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public ServiceResponse<PageImpl<PublicIPAddressInner>> listAllNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listAllNextDelegate(call.execute());
+    public PagedList<PublicIPAddressInner> listAllNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listAllNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listAllNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a subscription.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall listAllNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PublicIPAddressInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listAllNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listAllNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listAllNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listAllNextAsync(final String nextPageLink) {
+        return listAllNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listAllNextWithServiceResponseAsync(final String nextPageLink) {
+        return listAllNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listAllNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a subscription.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listAllNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listAllNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listAllNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listAllNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -789,59 +871,99 @@ public final class PublicIPAddressesInner {
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
      */
-    public ServiceResponse<PageImpl<PublicIPAddressInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listNextDelegate(call.execute());
+    public PagedList<PublicIPAddressInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.getBody()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
-     * The List publicIpAddress opertion retrieves all the publicIpAddresses in a resource group.
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<PublicIPAddressInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<PublicIPAddressInner>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<PublicIPAddressInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<PublicIPAddressInner>> serviceCall, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * The List publicIpAddress operation retrieves all the publicIpAddresses in a resource group.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

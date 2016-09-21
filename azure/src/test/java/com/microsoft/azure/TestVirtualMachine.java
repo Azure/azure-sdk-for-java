@@ -6,28 +6,23 @@
 
 package com.microsoft.azure;
 
+import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
-
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import static org.junit.Assert.fail;
+import rx.functions.Action1;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
     @Override
     public VirtualMachine createResource(VirtualMachines virtualMachines) throws Exception {
         final String vmName = "vm" + this.testId;
-        final CountDownLatch latch = new CountDownLatch(1);
         final VirtualMachine[] vms = new VirtualMachine[1];
+        final SettableFuture<VirtualMachine> future = SettableFuture.create();
         virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
@@ -38,25 +33,24 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withAdminUserName("testuser")
                 .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                .createAsync(new ServiceCallback<VirtualMachine>() {
+                .createAsync()
+                .subscribe(new Action1<VirtualMachine>() {
                     @Override
-                    public void failure(Throwable t) {
-                        fail();
-                    }
-
-                    @Override
-                    public void success(ServiceResponse<VirtualMachine> result) {
-                        vms[0] = result.getBody();
-                        latch.countDown();
+                    public void call(VirtualMachine virtualMachine) {
+                        future.set(virtualMachine);
                     }
                 });
-        latch.await(12, TimeUnit.MINUTES);
+        vms[0] = future.get();
         return vms[0];
     }
 
     @Override
     public VirtualMachine updateResource(VirtualMachine resource) throws Exception {
-        return null;
+        resource = resource.update()
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                .withNewDataDisk(100)
+                .apply();
+        return resource;
     }
 
     @Override
@@ -73,7 +67,7 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 null);
 
         Azure azure = Azure.configure()
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withLogLevel(HttpLoggingInterceptor.Level.NONE)
                 .authenticate(credentials)
                 .withDefaultSubscription();
         runTest(azure.virtualMachines(), azure.resourceGroups());

@@ -29,13 +29,14 @@ public class TaskOperations implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     @Override
-    public Collection<BatchClientBehavior> getCustomBehaviors() {
+    public Collection<BatchClientBehavior> customBehaviors() {
         return _customBehaviors;
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         _customBehaviors = behaviors;
+        return this;
     }
 
     public void createTask(String jobId, TaskAddParameter taskToAdd) throws BatchErrorException, IOException {
@@ -44,10 +45,10 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public void createTask(String jobId, TaskAddParameter taskToAdd, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskAddOptions options = new TaskAddOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().tasks().add(jobId, taskToAdd, options);
+        this._parentBatchClient.protocolLayer().tasks().add(jobId, taskToAdd, options);
     }
 
     public void createTasks(String jobId, List<TaskAddParameter> taskList) throws BatchErrorException, IOException, InterruptedException {
@@ -104,7 +105,7 @@ public class TaskOperations implements IInheritedBehaviors {
                 this.bhMgr.applyRequestBehaviors(options);
 
                 try {
-                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this.client.getProtocolLayer().tasks().addCollection(this.jobId, taskList, options);
+                    ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders> response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
 
                     if (response.getBody() != null && response.getBody().value() != null) {
                         for (TaskAddResult result : response.getBody().value()) {
@@ -140,7 +141,7 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, InterruptedException {
 
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
 
         // Default thread number is 1
         int threadNumber = 1;
@@ -148,7 +149,7 @@ public class TaskOperations implements IInheritedBehaviors {
         // Get user defined thread number
         for (BatchClientBehavior op : bhMgr.getMasterListOfBehaviors()) {
             if (op instanceof BatchClientParallelOptions) {
-                threadNumber = ((BatchClientParallelOptions) op).getMaxDegreeOfParallelism();
+                threadNumber = ((BatchClientParallelOptions)op).maxDegreeOfParallelism();
                 break;
             }
         }
@@ -243,11 +244,11 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public List<CloudTask> listTasks(String jobId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskListOptions options = new TaskListOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> response = this._parentBatchClient.getProtocolLayer().tasks().list(jobId, options);
+        ServiceResponseWithHeaders<PagedList<CloudTask>, TaskListHeaders> response = this._parentBatchClient.protocolLayer().tasks().list(jobId, options);
 
         return response.getBody();
     }
@@ -262,11 +263,11 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public List<SubtaskInformation> listSubtasks(String jobId, String taskId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskListSubtasksOptions options = new TaskListSubtasksOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> response = this._parentBatchClient.getProtocolLayer().tasks().listSubtasks(jobId, taskId, options);
+        ServiceResponseWithHeaders<CloudTaskListSubtasksResult, TaskListSubtasksHeaders> response = this._parentBatchClient.protocolLayer().tasks().listSubtasks(jobId, taskId, options);
 
         if (response.getBody() != null) {
             return response.getBody().value();
@@ -282,10 +283,10 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public void deleteTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskDeleteOptions options = new TaskDeleteOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().tasks().delete(jobId, taskId, options);
+        this._parentBatchClient.protocolLayer().tasks().delete(jobId, taskId, options);
     }
 
     public CloudTask getTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -298,11 +299,11 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public CloudTask getTask(String jobId, String taskId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskGetOptions options = new TaskGetOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> response = this._parentBatchClient.getProtocolLayer().tasks().get(jobId, taskId, options);
+        ServiceResponseWithHeaders<CloudTask, TaskGetHeaders> response = this._parentBatchClient.protocolLayer().tasks().get(jobId, taskId, options);
 
         return response.getBody();
     }
@@ -313,10 +314,10 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public void updateTask(String jobId, String taskId, TaskConstraints constraints, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskUpdateOptions options = new TaskUpdateOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().tasks().update(jobId, taskId, constraints, options);
+        this._parentBatchClient.protocolLayer().tasks().update(jobId, taskId, constraints, options);
     }
 
     public void terminateTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -325,9 +326,22 @@ public class TaskOperations implements IInheritedBehaviors {
 
     public void terminateTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         TaskTerminateOptions options = new TaskTerminateOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().tasks().terminate(jobId, taskId, options);
+        this._parentBatchClient.protocolLayer().tasks().terminate(jobId, taskId, options);
     }
+
+    public void  reactivateTask(String jobId, String taskId) throws BatchErrorException, IOException {
+        reactivateTask(jobId, taskId, null);
+    }
+
+    public void reactivateTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        TaskReactivateOptions options = new TaskReactivateOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        this._parentBatchClient.protocolLayer().tasks().reactivate(jobId, taskId, options);
+    }
+
 }

@@ -33,10 +33,9 @@ VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 	.withSsh(sshKey)
 	.withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
 	.create();
-```
-
+	
 System.out.println("Created a Linux VM: " + linuxVM.id());
-
+```
 
 **Update a Virtual Machine**
 

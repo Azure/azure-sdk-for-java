@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.network.implementation.SecurityRuleInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -14,116 +16,20 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * A network security rule in a network security group.
  */
+@LangDefinition()
 public interface NetworkSecurityRule extends
     Wrapper<SecurityRuleInner>,
-    ChildResource {
+    ChildResource<NetworkSecurityGroup> {
 
     /**
-     * The possible directions of the network traffic supported by a network security rule.
+     * @return the direction of the network traffic that the network security rule applies to.
      */
-    enum Direction {
-        INBOUND(SecurityRuleDirection.INBOUND),
-        OUTBOUND(SecurityRuleDirection.OUTBOUND);
-
-        private final String name;
-        Direction(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Direction fromString(String s) {
-            for (Direction e : Direction.values()) {
-                if (e.name.equalsIgnoreCase(s)) {
-                    return e;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * The possible access types supported by a network security rule.
-     */
-    enum Access {
-        ALLOW(SecurityRuleAccess.ALLOW),
-        DENY(SecurityRuleAccess.DENY);
-
-        private final String name;
-        Access(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Access fromString(String s) {
-            for (Access e : Access.values()) {
-                if (e.name.equalsIgnoreCase(s)) {
-                    return e;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * The possible Azure network protocols supported by a network security rule.
-     */
-    enum Protocol {
-        TCP(SecurityRuleProtocol.TCP),
-        UDP(SecurityRuleProtocol.UDP),
-        ANY(SecurityRuleProtocol.ASTERISK);
-
-        public final String name;
-        Protocol(String name) {
-            this.name = name;
-        }
-
-        @Override
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts the string used by Azure into the corresponding constant, if any.
-         * @param s the string used by Azure to convert to a constant
-         * @return the identified constant, or null if not supported
-         */
-        public static Protocol fromString(String s) {
-            for (Protocol protocol : Protocol.values()) {
-                if (protocol.name.equalsIgnoreCase(s)) {
-                    return protocol;
-                }
-            }
-            return null;
-        }
-    }
-
-    /**
-     * @return the network traffic direction the rule applies to
-     */
-    Direction direction();
+    SecurityRuleDirection direction();
 
     /**
      * @return the network protocol the rule applies to
      */
-    Protocol protocol();
+    SecurityRuleProtocol protocol();
 
     /**
      * @return the user-defined description of the security rule
@@ -133,7 +39,7 @@ public interface NetworkSecurityRule extends
     /**
      * @return the type of access the rule enforces
      */
-    Access access();
+    SecurityRuleAccess access();
 
     /**
      * @return the source address prefix the rule applies to, expressed using the CIDR notation in the format: "###.###.###.###/##",
@@ -167,6 +73,7 @@ public interface NetworkSecurityRule extends
      * The entirety of a network security rule definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -181,6 +88,7 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule definition stages applicable as part of a network security group creation.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The first stage of a security rule definition.
@@ -199,7 +107,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            WithAttach<ParentT> withProtocol(Protocol protocol);
+            WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
@@ -374,6 +282,7 @@ public interface NetworkSecurityRule extends
     /** The entirety of a network security rule definition as part of a network security group update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
         UpdateDefinitionStages.WithDirectionAccess<ParentT>,
@@ -388,6 +297,7 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule definition stages applicable as part of a network security group update.
      */
+    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true, MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a security rule description as part of an update of a networking security group.
@@ -528,7 +438,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            WithAttach<ParentT> withProtocol(Protocol protocol);
+            WithAttach<ParentT> withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.
@@ -566,6 +476,7 @@ public interface NetworkSecurityRule extends
     /**
      * The entirety of a security rule update as part of a network security group update.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", MethodConversionType = MethodConversion.OnlyMethod)
     interface Update extends
         UpdateStages.WithDirectionAccess,
         UpdateStages.WithSourceAddress,
@@ -594,6 +505,7 @@ public interface NetworkSecurityRule extends
     /**
      * Grouping of security rule update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network rule description allowing the direction and the access type to be specified.
@@ -721,7 +633,7 @@ public interface NetworkSecurityRule extends
              * @param protocol one of the supported protocols
              * @return the next stage of the security rule definition
              */
-            Update withProtocol(Protocol protocol);
+            Update withProtocol(SecurityRuleProtocol protocol);
 
             /**
              * Makes this rule apply to any supported protocol.

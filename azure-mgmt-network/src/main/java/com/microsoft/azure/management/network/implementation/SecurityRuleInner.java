@@ -8,6 +8,9 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
+import com.microsoft.azure.management.network.SecurityRuleAccess;
+import com.microsoft.azure.management.network.SecurityRuleDirection;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -28,7 +31,7 @@ public class SecurityRuleInner extends SubResource {
      * All(*). Possible values include: 'Tcp', 'Udp', '*'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
-    private String protocol;
+    private SecurityRuleProtocol protocol;
 
     /**
      * Gets or sets Source Port or Range. Integer or range between 0 and
@@ -68,7 +71,7 @@ public class SecurityRuleInner extends SubResource {
      * 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
      */
     @JsonProperty(value = "properties.access", required = true)
-    private String access;
+    private SecurityRuleAccess access;
 
     /**
      * Gets or sets the priority of the rule. The value can be between 100 and
@@ -85,10 +88,10 @@ public class SecurityRuleInner extends SubResource {
      * traffic. Possible values include: 'Inbound', 'Outbound'.
      */
     @JsonProperty(value = "properties.direction", required = true)
-    private String direction;
+    private SecurityRuleDirection direction;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -130,7 +133,7 @@ public class SecurityRuleInner extends SubResource {
      *
      * @return the protocol value
      */
-    public String protocol() {
+    public SecurityRuleProtocol protocol() {
         return this.protocol;
     }
 
@@ -140,7 +143,7 @@ public class SecurityRuleInner extends SubResource {
      * @param protocol the protocol value to set
      * @return the SecurityRuleInner object itself.
      */
-    public SecurityRuleInner withProtocol(String protocol) {
+    public SecurityRuleInner withProtocol(SecurityRuleProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -230,7 +233,7 @@ public class SecurityRuleInner extends SubResource {
      *
      * @return the access value
      */
-    public String access() {
+    public SecurityRuleAccess access() {
         return this.access;
     }
 
@@ -240,7 +243,7 @@ public class SecurityRuleInner extends SubResource {
      * @param access the access value to set
      * @return the SecurityRuleInner object itself.
      */
-    public SecurityRuleInner withAccess(String access) {
+    public SecurityRuleInner withAccess(SecurityRuleAccess access) {
         this.access = access;
         return this;
     }
@@ -270,7 +273,7 @@ public class SecurityRuleInner extends SubResource {
      *
      * @return the direction value
      */
-    public String direction() {
+    public SecurityRuleDirection direction() {
         return this.direction;
     }
 
@@ -280,7 +283,7 @@ public class SecurityRuleInner extends SubResource {
      * @param direction the direction value to set
      * @return the SecurityRuleInner object itself.
      */
-    public SecurityRuleInner withDirection(String direction) {
+    public SecurityRuleInner withDirection(SecurityRuleDirection direction) {
         this.direction = direction;
         return this;
     }

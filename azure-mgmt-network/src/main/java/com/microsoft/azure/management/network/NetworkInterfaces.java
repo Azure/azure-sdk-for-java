@@ -1,9 +1,11 @@
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -11,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to network interface management.
  */
+@LangDefinition()
 public interface NetworkInterfaces  extends
         SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
         SupportsListing<NetworkInterface>,
@@ -18,5 +21,6 @@ public interface NetworkInterfaces  extends
         SupportsGettingByGroup<NetworkInterface>,
         SupportsGettingById<NetworkInterface>,
         SupportsDeleting,
-        SupportsDeletingByGroup {
+        SupportsDeletingByGroup,
+        SupportsBatchCreation<NetworkInterface> {
 }

@@ -8,13 +8,13 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.SubResource;
-import java.util.List;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
-import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * A NetworkInterface in a resource group.
@@ -34,19 +34,19 @@ public class NetworkInterfaceInner extends Resource {
     private SubResource networkSecurityGroup;
 
     /**
-     * Gets or sets list of IPConfigurations of the NetworkInterface.
+     * Gets or sets list of IPConfigurations of the network interface.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<NetworkInterfaceIPConfiguration> ipConfigurations;
+    private List<NetworkInterfaceIPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets or sets DNS Settings in  NetworkInterface.
+     * Gets or sets DNS settings in network interface.
      */
     @JsonProperty(value = "properties.dnsSettings")
     private NetworkInterfaceDnsSettings dnsSettings;
 
     /**
-     * Gets the MAC Address of the network interface.
+     * Gets the MAC address of the network interface.
      */
     @JsonProperty(value = "properties.macAddress")
     private String macAddress;
@@ -70,7 +70,7 @@ public class NetworkInterfaceInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -127,7 +127,7 @@ public class NetworkInterfaceInner extends Resource {
      *
      * @return the ipConfigurations value
      */
-    public List<NetworkInterfaceIPConfiguration> ipConfigurations() {
+    public List<NetworkInterfaceIPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -137,7 +137,7 @@ public class NetworkInterfaceInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the NetworkInterfaceInner object itself.
      */
-    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIPConfiguration> ipConfigurations) {
+    public NetworkInterfaceInner withIpConfigurations(List<NetworkInterfaceIPConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }

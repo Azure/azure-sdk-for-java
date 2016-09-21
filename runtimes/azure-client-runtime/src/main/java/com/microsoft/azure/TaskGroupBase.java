@@ -7,17 +7,24 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
+import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The base implementation of TaskGroup interface.
  *
  * @param <T> the result type of the tasks in the group
+ * @param <U> the task item
  */
-public abstract class TaskGroupBase<T>
-    implements TaskGroup<T, TaskItem<T>> {
-    private DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag;
+public abstract class TaskGroupBase<T, U extends TaskItem<T>>
+    implements TaskGroup<T, U> {
+    /**
+     * Stores the tasks in this group and their dependency information.
+     */
+    private DAGraph<U, DAGNode<U>> dag;
 
     /**
      * Creates TaskGroupBase.
@@ -25,12 +32,12 @@ public abstract class TaskGroupBase<T>
      * @param rootTaskItemId the id of the root task in this task group
      * @param rootTaskItem the root task
      */
-    public TaskGroupBase(String rootTaskItemId, TaskItem<T> rootTaskItem) {
+    public TaskGroupBase(String rootTaskItemId, U rootTaskItem) {
         this.dag = new DAGraph<>(new DAGNode<>(rootTaskItemId, rootTaskItem));
     }
 
     @Override
-    public DAGraph<TaskItem<T>, DAGNode<TaskItem<T>>> dag() {
+    public DAGraph<U, DAGNode<U>> dag() {
         return dag;
     }
 
@@ -40,7 +47,7 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public void merge(TaskGroup<T, TaskItem<T>> parentTaskGroup) {
+    public void merge(TaskGroup<T, U> parentTaskGroup) {
         dag.merge(parentTaskGroup.dag());
     }
 
@@ -52,60 +59,43 @@ public abstract class TaskGroupBase<T>
     }
 
     @Override
-    public void execute() throws Exception {
-        DAGNode<TaskItem<T>> nextNode = dag.getNext();
-        if (nextNode == null) {
-            return;
+    public Observable<T> executeAsync() {
+        DAGNode<U> nextNode = dag.getNext();
+        final List<Observable<T>> observables = new ArrayList<>();
+        while (nextNode != null) {
+            final DAGNode<U> thisNode = nextNode;
+            T cachedResult = nextNode.data().result();
+            if (cachedResult != null && !this.dag().isRootNode(nextNode)) {
+                observables.add(Observable.just(cachedResult)
+                        .flatMap(new Func1<T, Observable<T>>() {
+                            @Override
+                            public Observable<T> call(T t) {
+                                dag().reportedCompleted(thisNode);
+                                return executeAsync();
+                            }
+                        })
+                );
+            } else {
+                observables.add(nextNode.data().executeAsync()
+                        .flatMap(new Func1<T, Observable<T>>() {
+                            @Override
+                            public Observable<T> call(T t) {
+                                dag().reportedCompleted(thisNode);
+                                if (dag().isRootNode(thisNode)) {
+                                    return Observable.just(t);
+                                } else {
+                                    return executeAsync();
+                                }
+                            }
+                        }));
+            }
+            nextNode = dag.getNext();
         }
-
-        if (dag.isRootNode(nextNode)) {
-            executeRootTask(nextNode.data());
-        } else {
-            nextNode.data().execute(this, nextNode);
-        }
-    }
-
-    @Override
-    public ServiceCall executeAsync(final ServiceCallback<Void> callback) {
-        final DAGNode<TaskItem<T>> nextNode = dag.getNext();
-        if (nextNode == null) {
-            return null;
-        }
-
-        if (dag.isRootNode(nextNode)) {
-            return executeRootTaskAsync(nextNode.data(), callback);
-        } else {
-            return nextNode.data().executeAsync(this, nextNode, callback);
-        }
+        return Observable.merge(observables);
     }
 
     @Override
     public T taskResult(String taskId) {
         return dag.getNodeData(taskId).result();
     }
-
-    /**
-     * Executes the root task in this group.
-     * <p>
-     * This method will be invoked when all the task dependencies of the root task are finished
-     * executing, at this point root task can be executed by consuming the result of tasks it
-     * depends on.
-     *
-     * @param task the root task in this group
-     * @throws Exception the exception
-     */
-    public abstract void executeRootTask(TaskItem<T> task) throws Exception;
-
-    /**
-     * Executes the root task in this group asynchronously.
-     * <p>
-     * This method will be invoked when all the task dependencies of the root task are finished
-     * executing, at this point root task can be executed by consuming the result of tasks it
-     * depends on.
-     *
-     * @param task the root task in this group
-     * @param callback the callback when the task fails or succeeds
-     * @return the handle to the REST call
-     */
-    public abstract ServiceCall executeRootTaskAsync(TaskItem<T> task, ServiceCallback<Void> callback);
 }

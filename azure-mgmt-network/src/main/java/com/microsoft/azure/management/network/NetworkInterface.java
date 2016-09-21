@@ -6,22 +6,23 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
+import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Network interface.
  */
+@LangDefinition()
 public interface NetworkInterface extends
         GroupableResource,
         Refreshable<NetworkInterface>,
@@ -32,11 +33,6 @@ public interface NetworkInterface extends
      * @return <tt>true</tt> if IP forwarding is enabled in this network interface
      */
     boolean isIpForwardingEnabled();
-
-    /**
-     * @return <tt>true</tt> if this is primary network interface in a virtual machine
-     */
-    boolean isPrimary();
 
     /**
      * @return the MAC Address of the network interface
@@ -59,9 +55,19 @@ public interface NetworkInterface extends
     String internalFqdn();
 
     /**
+     * @return the internal domain name suffix
+     */
+    String internalDomainNameSuffix();
+
+    /**
      * @return IP addresses of this network interface's DNS servers
      */
     List<String> dnsServers();
+
+    /**
+     * @return applied DNS servers
+     */
+    List<String> appliedDnsServers();
 
     /**
      * Gets the public IP address associated with this network interface.
@@ -69,10 +75,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the public IP.
      *
      * @return the public IP associated with this network interface
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException;
+    PublicIpAddress primaryPublicIpAddress();
 
     /**
      * @return the resource id of the virtual network subnet associated with this network interface.
@@ -85,10 +89,8 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the virtual network.
      *
      * @return the virtual network associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    Network primaryNetwork() throws CloudException, IOException;
+    Network primaryNetwork();
 
     /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.
@@ -103,12 +105,17 @@ public interface NetworkInterface extends
      * @return the private IP allocation method (Dynamic, Static) of this network interface's
      * primary IP configuration.
      */
-    String primaryPrivateIpAllocationMethod();
+    IPAllocationMethod primaryPrivateIpAllocationMethod();
 
     /**
-     * @return the IP configurations of this network interface
+     * @return the IP configurations of this network interface, indexed by their names
      */
-    List<NicIpConfiguration> ipConfigurations();
+    Map<String, NicIpConfiguration> ipConfigurations();
+
+    /**
+     * @return the primary IP configuration of this network interface
+     */
+    NicIpConfiguration primaryIpConfiguration();
 
     /**
      * @return the network security group resource id or null if there is no network security group
@@ -122,16 +129,20 @@ public interface NetworkInterface extends
      * This method makes a rest API call to fetch the Network Security Group resource.
      *
      * @return the network security group associated with this network interface.
-     * @throws CloudException exceptions thrown from the cloud.
-     * @throws IOException exceptions thrown from serialization/deserialization.
      */
-    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IOException;
+    NetworkSecurityGroup getNetworkSecurityGroup();
+
+    /**
+     * @return the resource ID of the associated virtual machine, or null if none.
+     */
+    String virtualMachineId();
 
     // Setters (fluent)
 
     /**
      * The entirety of the network interface definition.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -144,6 +155,7 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the network interface.
@@ -364,6 +376,7 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network interface update allowing to specify subnet.
@@ -567,9 +580,10 @@ public interface NetworkInterface extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<NetworkInterface>,
-           Resource.UpdateWithTags<Update>,
+            Resource.UpdateWithTags<Update>,
             UpdateStages.WithPrimaryNetworkSubnet,
             UpdateStages.WithPrimaryPrivateIp,
             UpdateStages.WithPrimaryPublicIpAddress,

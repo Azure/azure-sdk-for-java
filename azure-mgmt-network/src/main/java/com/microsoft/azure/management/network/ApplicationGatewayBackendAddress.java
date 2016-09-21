@@ -14,12 +14,12 @@ package com.microsoft.azure.management.network;
  */
 public class ApplicationGatewayBackendAddress {
     /**
-     * Gets or sets the dns name.
+     * Dns name.
      */
     private String fqdn;
 
     /**
-     * Gets or sets the ip address.
+     * Ip address.
      */
     private String ipAddress;
 

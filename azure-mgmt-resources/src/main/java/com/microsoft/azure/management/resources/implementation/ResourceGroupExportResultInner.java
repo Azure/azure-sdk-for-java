@@ -15,12 +15,12 @@ import com.microsoft.azure.management.resources.ResourceManagementErrorWithDetai
  */
 public class ResourceGroupExportResultInner {
     /**
-     * Gets or sets the template content.
+     * The template content.
      */
     private Object template;
 
     /**
-     * Gets or sets the error.
+     * The error.
      */
     private ResourceManagementErrorWithDetails error;
 

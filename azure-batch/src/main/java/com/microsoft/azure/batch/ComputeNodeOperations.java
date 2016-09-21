@@ -32,13 +32,14 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     @Override
-    public Collection<BatchClientBehavior> getCustomBehaviors() {
+    public Collection<BatchClientBehavior> customBehaviors() {
         return _customBehaviors;
     }
 
     @Override
-    public void setCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
+    public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
         this._customBehaviors = behaviors;
+        return this;
     }
 
     public void addComputeNodeUser(String poolId, String nodeId, ComputeNodeUser user) throws BatchErrorException, IOException {
@@ -47,10 +48,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void addComputeNodeUser(String poolId, String nodeId, ComputeNodeUser user, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeAddUserOptions options = new ComputeNodeAddUserOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().addUser(poolId, nodeId, user, options);
+        this._parentBatchClient.protocolLayer().computeNodes().addUser(poolId, nodeId, user, options);
     }
 
     public void deleteComputeNodeUser(String poolId, String nodeId, String userName) throws BatchErrorException, IOException {
@@ -59,10 +60,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void deleteComputeNodeUser(String poolId, String nodeId, String userName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeDeleteUserOptions options = new ComputeNodeDeleteUserOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().deleteUser(poolId, nodeId, userName, options);
+        this._parentBatchClient.protocolLayer().computeNodes().deleteUser(poolId, nodeId, userName, options);
     }
 
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String password, DateTime expiryTime) throws BatchErrorException, IOException {
@@ -90,10 +91,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     private void updateComputeNodeUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeUpdateUserOptions options = new ComputeNodeUpdateUserOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, options);
+        this._parentBatchClient.protocolLayer().computeNodes().updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, options);
     }
 
     public ComputeNode getComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -107,11 +108,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public ComputeNode getComputeNode(String poolId, String nodeId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetOptions options = new ComputeNodeGetOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response = this._parentBatchClient.getProtocolLayer().computeNodes().get(poolId, nodeId, options);
+        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().get(poolId, nodeId, options);
 
         return response.getBody();
     }
@@ -126,10 +127,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void rebootComputeNode(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeRebootOptions options = new ComputeNodeRebootOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().reboot(poolId, nodeId, nodeRebootOption, options);
+        this._parentBatchClient.protocolLayer().computeNodes().reboot(poolId, nodeId, nodeRebootOption, options);
     }
 
     public void reimageComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -142,10 +143,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void reimageComputeNode(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeReimageOptions options = new ComputeNodeReimageOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().reimage(poolId, nodeId, nodeReimageOption, options);
+        this._parentBatchClient.protocolLayer().computeNodes().reimage(poolId, nodeId, nodeReimageOption, options);
     }
 
     public void disableComputeNodeScheduling(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -158,10 +159,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void disableComputeNodeScheduling(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeDisableSchedulingOptions options = new ComputeNodeDisableSchedulingOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().disableScheduling(poolId, nodeId, nodeDisableSchedulingOption, options);
+        this._parentBatchClient.protocolLayer().computeNodes().disableScheduling(poolId, nodeId, nodeDisableSchedulingOption, options);
     }
 
     public void enableComputeNodeScheduling(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -170,10 +171,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public void enableComputeNodeScheduling(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeEnableSchedulingOptions options = new ComputeNodeEnableSchedulingOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        this._parentBatchClient.getProtocolLayer().computeNodes().enableScheduling(poolId, nodeId, options);
+        this._parentBatchClient.protocolLayer().computeNodes().enableScheduling(poolId, nodeId, options);
     }
 
     public String getComputeNodeRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -182,10 +183,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public String getComputeNodeRemoteDesktop(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteDesktopOptions options = new ComputeNodeGetRemoteDesktopOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.getProtocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
+        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteDesktop(poolId, nodeId, options);
 
         if (response.getBody() != null) {
             return CharStreams.toString(new InputStreamReader(response.getBody(), "UTF-8"));
@@ -201,10 +202,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteLoginSettingsOptions options = new ComputeNodeGetRemoteLoginSettingsOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.getProtocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
+        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().getRemoteLoginSettings(poolId, nodeId, options);
 
         return response.getBody();
     }
@@ -219,11 +220,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     public List<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeListOptions options = new ComputeNodeListOptions();
-        BehaviorManager bhMgr = new BehaviorManager(this.getCustomBehaviors(), additionalBehaviors);
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
         bhMgr.applyRequestBehaviors(options);
 
-        ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> response = this._parentBatchClient.getProtocolLayer().computeNodes().list(poolId, options);
+        ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> response = this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
 
         return response.getBody();
     }

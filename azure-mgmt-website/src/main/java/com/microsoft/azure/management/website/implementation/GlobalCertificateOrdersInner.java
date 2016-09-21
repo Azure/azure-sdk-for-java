@@ -10,16 +10,19 @@ package com.microsoft.azure.management.website.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -28,6 +31,8 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -57,70 +62,114 @@ public final class GlobalCertificateOrdersInner {
     interface GlobalCertificateOrdersService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders")
-        Call<ResponseBody> getAllCertificateOrders(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getAllCertificateOrders(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/validateCertificateRegistrationInformation")
-        Call<ResponseBody> validateCertificatePurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body CertificateOrderInner certificateOrder, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> validateCertificatePurchaseInformation(@Path("subscriptionId") String subscriptionId, @Body CertificateOrderInner certificateOrder, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getAllCertificateOrdersNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Lists all domains in a subscription.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the CertificateOrderCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
      */
-    public ServiceResponse<CertificateOrderCollectionInner> getAllCertificateOrders() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getAllCertificateOrders(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getAllCertificateOrdersDelegate(call.execute());
+    public PagedList<CertificateOrderInner> getAllCertificateOrders() {
+        ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersSinglePageAsync().toBlocking().single();
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
+            @Override
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
+                return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
      * Lists all domains in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getAllCertificateOrdersAsync(final ServiceCallback<CertificateOrderCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getAllCertificateOrders(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<CertificateOrderCollectionInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getAllCertificateOrdersDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<CertificateOrderInner>> getAllCertificateOrdersAsync(final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllCertificateOrdersSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(String nextPageLink) {
+                    return getAllCertificateOrdersNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
     }
 
-    private ServiceResponse<CertificateOrderCollectionInner> getAllCertificateOrdersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<CertificateOrderCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<CertificateOrderCollectionInner>() { }.getType())
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<Page<CertificateOrderInner>> getAllCertificateOrdersAsync() {
+        return getAllCertificateOrdersWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
+                @Override
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersWithServiceResponseAsync() {
+        return getAllCertificateOrdersSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersSinglePageAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getAllCertificateOrders(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateOrderInner>> result = getAllCertificateOrdersDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateOrderInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CertificateOrderInner>> getAllCertificateOrdersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -129,12 +178,45 @@ public final class GlobalCertificateOrdersInner {
      * Validate certificate purchase information.
      *
      * @param certificateOrder Certificate order
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) throws CloudException, IOException, IllegalArgumentException {
+    public Object validateCertificatePurchaseInformation(CertificateOrderInner certificateOrder) {
+        return validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder).toBlocking().single().getBody();
+    }
+
+    /**
+     * Validate certificate purchase information.
+     *
+     * @param certificateOrder Certificate order
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder), serviceCallback);
+    }
+
+    /**
+     * Validate certificate purchase information.
+     *
+     * @param certificateOrder Certificate order
+     * @return the observable to the Object object
+     */
+    public Observable<Object> validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder) {
+        return validateCertificatePurchaseInformationWithServiceResponseAsync(certificateOrder).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Validate certificate purchase information.
+     *
+     * @param certificateOrder Certificate order
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> validateCertificatePurchaseInformationWithServiceResponseAsync(CertificateOrderInner certificateOrder) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -145,53 +227,126 @@ public final class GlobalCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(certificateOrder);
-        Call<ResponseBody> call = service.validateCertificatePurchaseInformation(this.client.subscriptionId(), certificateOrder, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return validateCertificatePurchaseInformationDelegate(call.execute());
-    }
-
-    /**
-     * Validate certificate purchase information.
-     *
-     * @param certificateOrder Certificate order
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall validateCertificatePurchaseInformationAsync(CertificateOrderInner certificateOrder, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (certificateOrder == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter certificateOrder is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(certificateOrder, serviceCallback);
-        Call<ResponseBody> call = service.validateCertificatePurchaseInformation(this.client.subscriptionId(), certificateOrder, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(validateCertificatePurchaseInformationDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.validateCertificatePurchaseInformation(this.client.subscriptionId(), certificateOrder, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = validateCertificatePurchaseInformationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> validateCertificatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Object>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object if successful.
+     */
+    public PagedList<CertificateOrderInner> getAllCertificateOrdersNext(final String nextPageLink) {
+        ServiceResponse<Page<CertificateOrderInner>> response = getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<CertificateOrderInner>(response.getBody()) {
+            @Override
+            public Page<CertificateOrderInner> nextPage(String nextPageLink) {
+                return getAllCertificateOrdersNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<CertificateOrderInner>> getAllCertificateOrdersNextAsync(final String nextPageLink, final ServiceCall<List<CertificateOrderInner>> serviceCall, final ListOperationCallback<CertificateOrderInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getAllCertificateOrdersNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(String nextPageLink) {
+                    return getAllCertificateOrdersNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<Page<CertificateOrderInner>> getAllCertificateOrdersNextAsync(final String nextPageLink) {
+        return getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Page<CertificateOrderInner>>() {
+                @Override
+                public Page<CertificateOrderInner> call(ServiceResponse<Page<CertificateOrderInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;CertificateOrderInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextWithServiceResponseAsync(final String nextPageLink) {
+        return getAllCertificateOrdersNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<CertificateOrderInner>>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(ServiceResponse<Page<CertificateOrderInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getAllCertificateOrdersNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Lists all domains in a subscription.
+     *
+    ServiceResponse<PageImpl<CertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;CertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<CertificateOrderInner>>> getAllCertificateOrdersNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getAllCertificateOrdersNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<CertificateOrderInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<CertificateOrderInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<CertificateOrderInner>> result = getAllCertificateOrdersNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<CertificateOrderInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<CertificateOrderInner>> getAllCertificateOrdersNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<CertificateOrderInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<CertificateOrderInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

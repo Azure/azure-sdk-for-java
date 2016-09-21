@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.List;
-import com.microsoft.azure.management.network.IPConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
+import com.microsoft.rest.serializer.JsonFlatten;
+
+import java.util.List;
 
 /**
  * Subnet in a VirtualNework resource.
@@ -41,19 +41,24 @@ public class SubnetInner extends SubResource {
      * Gets array of references to the network interface IP configurations
      * using subnet.
      */
-    @JsonProperty(value = "properties.ipConfigurations")
-    private List<IPConfiguration> ipConfigurations;
+    @JsonProperty(value = "properties.ipConfigurations", access = JsonProperty.Access.WRITE_ONLY)
+    private List<IPConfigurationInner> ipConfigurations;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets array of references to the external resources using subnet.
+     */
+    @JsonProperty(value = "properties.resourceNavigationLinks")
+    private List<ResourceNavigationLinkInner> resourceNavigationLinks;
+
+    /**
+     * Gets provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * Gets or sets the name of the resource that is unique within a resource
+     * group. This name can be used to access the resource.
      */
     private String name;
 
@@ -127,18 +132,27 @@ public class SubnetInner extends SubResource {
      *
      * @return the ipConfigurations value
      */
-    public List<IPConfiguration> ipConfigurations() {
+    public List<IPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
     /**
-     * Set the ipConfigurations value.
+     * Get the resourceNavigationLinks value.
      *
-     * @param ipConfigurations the ipConfigurations value to set
+     * @return the resourceNavigationLinks value
+     */
+    public List<ResourceNavigationLinkInner> resourceNavigationLinks() {
+        return this.resourceNavigationLinks;
+    }
+
+    /**
+     * Set the resourceNavigationLinks value.
+     *
+     * @param resourceNavigationLinks the resourceNavigationLinks value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withIpConfigurations(List<IPConfiguration> ipConfigurations) {
-        this.ipConfigurations = ipConfigurations;
+    public SubnetInner withResourceNavigationLinks(List<ResourceNavigationLinkInner> resourceNavigationLinks) {
+        this.resourceNavigationLinks = resourceNavigationLinks;
         return this;
     }
 

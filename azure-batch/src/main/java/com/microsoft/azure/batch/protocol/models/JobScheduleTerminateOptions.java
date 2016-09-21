@@ -152,7 +152,11 @@ public class JobScheduleTerminateOptions {
      * @return the JobScheduleTerminateOptions object itself.
      */
     public JobScheduleTerminateOptions withOcpDate(DateTime ocpDate) {
-        this.ocpDate = new DateTimeRfc1123(ocpDate);
+        if (ocpDate == null) {
+            this.ocpDate = null;
+        } else {
+            this.ocpDate = new DateTimeRfc1123(ocpDate);
+        }
         return this;
     }
 
@@ -215,7 +219,11 @@ public class JobScheduleTerminateOptions {
      * @return the JobScheduleTerminateOptions object itself.
      */
     public JobScheduleTerminateOptions withIfModifiedSince(DateTime ifModifiedSince) {
-        this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
+        if (ifModifiedSince == null) {
+            this.ifModifiedSince = null;
+        } else {
+            this.ifModifiedSince = new DateTimeRfc1123(ifModifiedSince);
+        }
         return this;
     }
 
@@ -238,7 +246,11 @@ public class JobScheduleTerminateOptions {
      * @return the JobScheduleTerminateOptions object itself.
      */
     public JobScheduleTerminateOptions withIfUnmodifiedSince(DateTime ifUnmodifiedSince) {
-        this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
+        if (ifUnmodifiedSince == null) {
+            this.ifUnmodifiedSince = null;
+        } else {
+            this.ifUnmodifiedSince = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
         return this;
     }
 

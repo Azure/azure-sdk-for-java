@@ -6,9 +6,9 @@
 package com.microsoft.azure;
 
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
-import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,7 +27,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class AzureTests {
-    private static final ServiceClientCredentials CREDENTIALS = new ApplicationTokenCredentials(
+    private static final ApplicationTokenCredentials CREDENTIALS = new ApplicationTokenCredentials(
             System.getenv("client-id"),
             System.getenv("domain"),
             System.getenv("secret"),
@@ -41,23 +40,35 @@ public class AzureTests {
         final File credFile = new File("my.azureauth");
         Azure azure = Azure.authenticate(credFile).withDefaultSubscription();
 
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         Azure.configure().withLogLevel(Level.BASIC).authenticate(credFile);
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
 
         final File authFileNoSubscription = new File("nosub.azureauth");
         azure = Azure.authenticate(authFileNoSubscription).withDefaultSubscription();
         System.out.println("Selected subscription: " + azure.subscriptionId());
-        System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        try {
+            System.out.println(String.valueOf(azure.resourceGroups().list().size()));
+        } catch (com.microsoft.rest.RestException e) {
+            e.printStackTrace();
+        }
     }
 
     @Before
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.BODY)
+                .withLogLevel(Level.NONE)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -104,10 +115,15 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
-        azure.genericResources().listByGroup("sdkpriv");
-        GenericResource resourceByGroup = azure.genericResources().getByGroup("sdkpriv", "sdkpriv");
-        GenericResource resourceById = azure.genericResources().getById(resourceByGroup.id());
-        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByGroup.id()));
+        PagedList<GenericResource> resources = azure.genericResources().listByGroup("sdkpriv");
+        GenericResource firstResource = resources.get(0);
+        GenericResource resourceById = azure.genericResources().getById(firstResource.id());
+        GenericResource resourceByDetails = azure.genericResources().get(
+                firstResource.resourceGroupName(),
+                firstResource.resourceProviderNamespace(),
+                firstResource.resourceType(),
+                firstResource.name());
+        Assert.assertTrue(resourceById.id().equalsIgnoreCase(resourceByDetails.id()));
     }
 
     /**
@@ -120,11 +136,19 @@ public class AzureTests {
         Assert.assertTrue(publishers.size() > 0);
         for (VirtualMachinePublisher p : publishers) {
             System.out.println(String.format("Publisher name: %s, region: %s", p.name(), p.region()));
-            for (VirtualMachineOffer o : p.offers().list()) {
-                System.out.println(String.format("\tOffer name: %s", o.name()));
-                for (VirtualMachineSku s : o.skus().list()) {
-                    System.out.println(String.format("\t\tSku name: %s", s.name()));
+            try {
+                for (VirtualMachineOffer o : p.offers().list()) {
+                    System.out.println(String.format("\tOffer name: %s", o.name()));
+                    try {
+                        for (VirtualMachineSku s : o.skus().list()) {
+                            System.out.println(String.format("\t\tSku name: %s", s.name()));
+                        }
+                    } catch (com.microsoft.rest.RestException e) {
+                        e.printStackTrace();
+                    }
                 }
+            } catch (com.microsoft.rest.RestException e) {
+                e.printStackTrace();
             }
         }
         List<VirtualMachineImage> images = azure.virtualMachineImages().listByRegion(Region.US_WEST);
@@ -135,8 +159,44 @@ public class AzureTests {
      * Tests the network security group implementation
      * @throws Exception
      */
-    @Test public void testNetworkSecurityGroups() throws Exception {
+    @Test
+    public void testNetworkSecurityGroups() throws Exception {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersNatRules() throws Exception {
+        new TestLoadBalancer.InternetWithNatRule(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersNatPools() throws Exception {
+        new TestLoadBalancer.InternetWithNatPool(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersInternetMinimum() throws Exception {
+        new TestLoadBalancer.InternetMinimal(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.loadBalancers(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testLoadBalancersInternalMinimum() throws Exception {
+        new TestLoadBalancer.InternalMinimal(
+                azure.virtualMachines(),
+                azure.networks())
+        .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -197,7 +257,7 @@ public class AzureTests {
     }
 
     @Test public void testVirtualMachineSSh() throws Exception {
-        new TestVirtualMachineSsh()
+        new TestVirtualMachineSsh(azure.publicIpAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
@@ -225,12 +285,23 @@ public class AzureTests {
 
     @Test
     public void createStorageAccount() throws Exception {
-        StorageAccount storageAccount = azure.storageAccounts().define("my-stg1")
+        String storageAccountName = "testsa" + String.valueOf(System.currentTimeMillis() % 100000L);
+        StorageAccount storageAccount = azure.storageAccounts().define(storageAccountName)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup()
                 .withSku(SkuName.PREMIUM_LRS)
                 .create();
 
-        Assert.assertSame(storageAccount.name(), "my-stg1");
+        Assert.assertEquals(storageAccount.name(), storageAccountName);
+    }
+
+    @Test
+    public void testBatchAccount() throws Exception {
+        new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testBatchAccountUpdateWithNewStorageAccount() throws Exception {
+        new TestBatchUpdateWithNewStorageAccount().runTest(azure.batchAccounts(), azure.resourceGroups());
     }
 }

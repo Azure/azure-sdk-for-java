@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineImageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure virtual machine image.
  */
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachineImage extends
         Wrapper<VirtualMachineImageInner> {
     /**

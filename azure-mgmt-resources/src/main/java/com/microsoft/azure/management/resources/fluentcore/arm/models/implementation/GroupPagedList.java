@@ -10,12 +10,10 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
-import com.microsoft.rest.RestException;
 
-import java.io.IOException;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Queue;
 
 /**
  * Defines a list of resources paginated across resource groups.
@@ -23,9 +21,7 @@ import java.util.Queue;
  * @param <E> the item type
  */
 public abstract class GroupPagedList<E> extends PagedList<E> {
-    private PagedList<ResourceGroup> resourceGroupList;
-    private Page<ResourceGroup> currentPage;
-    private Queue<ResourceGroup> queue;
+    private Iterator<ResourceGroup> resourceGroupItr;
 
     /**
      * Creates an instance from a list of resource groups.
@@ -33,27 +29,24 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
      * @param resourceGroupList the list of resource groups
      */
     public GroupPagedList(PagedList<ResourceGroup> resourceGroupList) {
-        this.resourceGroupList = resourceGroupList;
-        this.currentPage = resourceGroupList.currentPage();
-        this.queue = new LinkedList<>(currentPage.getItems());
+        this.resourceGroupItr = resourceGroupList.iterator();
+        setCurrentPage(nextPage("dummy"));
     }
 
     @Override
-    public boolean hasNextPage() {
-        return !queue.isEmpty() || this.currentPage.getNextPageLink() != null;
-    }
-
-    @Override
-    public Page<E> nextPage(String s) throws RestException, IOException {
-        if (queue.isEmpty()) {
-            this.currentPage = resourceGroupList.nextPage(this.currentPage.getNextPageLink());
-            queue.addAll(this.currentPage.getItems());
+    public Page<E> nextPage(String s) {
+        if (resourceGroupItr.hasNext()) {
+            ResourceGroup resourceGroup = resourceGroupItr.next();
+            PageImpl<E> page = new PageImpl<>();
+            page.setItems(listNextGroup(resourceGroup.name()));
+            page.setNextPageLink(s);
+            return page;
+        } else {
+            // return an empty page without next link so that iteration will terminate
+            PageImpl<E> page = new PageImpl<>();
+            page.setItems(new ArrayList<E>());
+            return page;
         }
-
-        ResourceGroup resourceGroup = queue.poll();
-        PageImpl<E> page = new PageImpl<>();
-        page.setItems(listNextGroup(resourceGroup.name()));
-        return page;
     }
 
     /**
@@ -61,8 +54,6 @@ public abstract class GroupPagedList<E> extends PagedList<E> {
      *
      * @param resourceGroupName the name of the resource group
      * @return the list of resources in this group.
-     * @throws RestException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    public abstract List<E> listNextGroup(String resourceGroupName) throws RestException, IOException;
+    public abstract List<E> listNextGroup(String resourceGroupName);
 }

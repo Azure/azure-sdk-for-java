@@ -21,26 +21,26 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineScaleSetInner extends Resource {
     /**
-     * Gets or sets the virtual machine scale set sku.
+     * the virtual machine scale set sku.
      */
     private Sku sku;
 
     /**
-     * Gets or sets the upgrade policy.
+     * the upgrade policy.
      */
     @JsonProperty(value = "properties.upgradePolicy")
     private UpgradePolicy upgradePolicy;
 
     /**
-     * Gets or sets the virtual machine profile.
+     * the virtual machine profile.
      */
     @JsonProperty(value = "properties.virtualMachineProfile")
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     /**
-     * Gets or sets the provisioning state, which only appears in the response.
+     * the provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
@@ -117,17 +117,6 @@ public class VirtualMachineScaleSetInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VirtualMachineScaleSetInner object itself.
-     */
-    public VirtualMachineScaleSetInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

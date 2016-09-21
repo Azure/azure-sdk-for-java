@@ -5,11 +5,13 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Represents a virtual machine image publisher.
  */
+@LangDefinition(ContainerName = "~/")
 public interface VirtualMachinePublisher {
     /**
      * @return the region where virtual machine images from this publisher is available
@@ -25,4 +27,9 @@ public interface VirtualMachinePublisher {
      * @return the offers from this publisher
      */
     VirtualMachineOffers offers();
+
+    /**
+     * @return the virtual machine image extensions from this publisher.
+     */
+    VirtualMachineExtensionImageTypes extensionTypes();
 }

@@ -6,18 +6,13 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceConnector;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroupExportResult;
 import com.microsoft.azure.management.resources.ResourceGroupExportTemplateOptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -30,17 +25,14 @@ class ResourceGroupImpl extends
         CreatableUpdatableImpl<ResourceGroup, ResourceGroupInner, ResourceGroupImpl>
         implements
         ResourceGroup,
-        ResourceGroup.DefinitionBlank,
-        ResourceGroup.DefinitionCreatable,
+        ResourceGroup.Definition,
         ResourceGroup.Update  {
 
     private final ResourceGroupsInner client;
-    private final ResourceManagementClientImpl serviceClient;
 
     protected ResourceGroupImpl(final ResourceGroupInner innerModel, final ResourceManagementClientImpl serviceClient) {
         super(innerModel.name(), innerModel);
         this.client = serviceClient.resourceGroups();
-        this.serviceClient = serviceClient;
     }
 
     @Override
@@ -79,12 +71,12 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException {
+    public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
         ResourceGroupExportResultInner resultInner =
-                client.exportTemplate(name(), inner).getBody();
+                client.exportTemplate(name(), inner);
         return new ResourceGroupExportResultImpl(resultInner);
     }
 
@@ -121,39 +113,22 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public ResourceGroupImpl apply() throws Exception {
-        return this.create();
+    public Observable<ResourceGroup> applyAsync() {
+        return createAsync();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<ResourceGroup> callback) {
-        return createAsync(callback);
-    }
-
-    @Override
-    public ResourceGroupImpl refresh() throws Exception {
-        this.setInner(client.get(this.key).getBody());
+    public ResourceGroupImpl refresh() {
+        this.setInner(client.get(this.key));
         return this;
     }
 
     @Override
-    public <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder) {
-        return adapterBuilder.create(this.serviceClient.restClient(), this.serviceClient.subscriptionId(), this);
-    }
-
-    @Override
-    protected void createResource() throws Exception {
+    public Observable<ResourceGroup> createResourceAsync() {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
-        client.createOrUpdate(this.name(), params);
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
-        ResourceGroupInner params = new ResourceGroupInner();
-        params.withLocation(this.inner().location());
-        params.withTags(this.inner().tags());
-        return client.createOrUpdateAsync(this.name(), params, Utils.fromVoidCallback(this, callback));
+        return client.createOrUpdateAsync(this.name(), params)
+                .map(innerToFluentMap(this));
     }
 }

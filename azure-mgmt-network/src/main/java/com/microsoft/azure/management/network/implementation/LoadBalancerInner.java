@@ -9,13 +9,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.network.FrontendIPConfiguration;
-import com.microsoft.azure.management.network.BackendAddressPool;
-import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.Probe;
-import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.InboundNatPool;
-import com.microsoft.azure.management.network.OutboundNatRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -29,43 +22,43 @@ public class LoadBalancerInner extends Resource {
      * Gets or sets frontend IP addresses of the load balancer.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<FrontendIPConfiguration> frontendIPConfigurations;
+    private List<FrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Gets or sets Pools of backend IP addresseses.
+     * Gets or sets Pools of backend IP addresses.
      */
     @JsonProperty(value = "properties.backendAddressPools")
-    private List<BackendAddressPool> backendAddressPools;
+    private List<BackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Gets or sets loadbalancing rules.
+     * Gets or sets load balancing rules.
      */
     @JsonProperty(value = "properties.loadBalancingRules")
-    private List<LoadBalancingRule> loadBalancingRules;
+    private List<LoadBalancingRuleInner> loadBalancingRules;
 
     /**
      * Gets or sets list of Load balancer probes.
      */
     @JsonProperty(value = "properties.probes")
-    private List<Probe> probes;
+    private List<ProbeInner> probes;
 
     /**
      * Gets or sets list of inbound rules.
      */
     @JsonProperty(value = "properties.inboundNatRules")
-    private List<InboundNatRule> inboundNatRules;
+    private List<InboundNatRuleInner> inboundNatRules;
 
     /**
      * Gets or sets inbound NAT pools.
      */
     @JsonProperty(value = "properties.inboundNatPools")
-    private List<InboundNatPool> inboundNatPools;
+    private List<InboundNatPoolInner> inboundNatPools;
 
     /**
      * Gets or sets outbound NAT rules.
      */
     @JsonProperty(value = "properties.outboundNatRules")
-    private List<OutboundNatRule> outboundNatRules;
+    private List<OutboundNatRuleInner> outboundNatRules;
 
     /**
      * Gets or sets resource guid property of the Load balancer resource.
@@ -74,7 +67,7 @@ public class LoadBalancerInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -91,7 +84,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the frontendIPConfigurations value
      */
-    public List<FrontendIPConfiguration> frontendIPConfigurations() {
+    public List<FrontendIPConfigurationInner> frontendIPConfigurations() {
         return this.frontendIPConfigurations;
     }
 
@@ -101,7 +94,7 @@ public class LoadBalancerInner extends Resource {
      * @param frontendIPConfigurations the frontendIPConfigurations value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withFrontendIPConfigurations(List<FrontendIPConfiguration> frontendIPConfigurations) {
+    public LoadBalancerInner withFrontendIPConfigurations(List<FrontendIPConfigurationInner> frontendIPConfigurations) {
         this.frontendIPConfigurations = frontendIPConfigurations;
         return this;
     }
@@ -111,7 +104,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the backendAddressPools value
      */
-    public List<BackendAddressPool> backendAddressPools() {
+    public List<BackendAddressPoolInner> backendAddressPools() {
         return this.backendAddressPools;
     }
 
@@ -121,7 +114,7 @@ public class LoadBalancerInner extends Resource {
      * @param backendAddressPools the backendAddressPools value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withBackendAddressPools(List<BackendAddressPool> backendAddressPools) {
+    public LoadBalancerInner withBackendAddressPools(List<BackendAddressPoolInner> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
@@ -131,7 +124,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the loadBalancingRules value
      */
-    public List<LoadBalancingRule> loadBalancingRules() {
+    public List<LoadBalancingRuleInner> loadBalancingRules() {
         return this.loadBalancingRules;
     }
 
@@ -141,7 +134,7 @@ public class LoadBalancerInner extends Resource {
      * @param loadBalancingRules the loadBalancingRules value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withLoadBalancingRules(List<LoadBalancingRule> loadBalancingRules) {
+    public LoadBalancerInner withLoadBalancingRules(List<LoadBalancingRuleInner> loadBalancingRules) {
         this.loadBalancingRules = loadBalancingRules;
         return this;
     }
@@ -151,7 +144,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the probes value
      */
-    public List<Probe> probes() {
+    public List<ProbeInner> probes() {
         return this.probes;
     }
 
@@ -161,7 +154,7 @@ public class LoadBalancerInner extends Resource {
      * @param probes the probes value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withProbes(List<Probe> probes) {
+    public LoadBalancerInner withProbes(List<ProbeInner> probes) {
         this.probes = probes;
         return this;
     }
@@ -171,7 +164,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the inboundNatRules value
      */
-    public List<InboundNatRule> inboundNatRules() {
+    public List<InboundNatRuleInner> inboundNatRules() {
         return this.inboundNatRules;
     }
 
@@ -181,7 +174,7 @@ public class LoadBalancerInner extends Resource {
      * @param inboundNatRules the inboundNatRules value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withInboundNatRules(List<InboundNatRule> inboundNatRules) {
+    public LoadBalancerInner withInboundNatRules(List<InboundNatRuleInner> inboundNatRules) {
         this.inboundNatRules = inboundNatRules;
         return this;
     }
@@ -191,7 +184,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the inboundNatPools value
      */
-    public List<InboundNatPool> inboundNatPools() {
+    public List<InboundNatPoolInner> inboundNatPools() {
         return this.inboundNatPools;
     }
 
@@ -201,7 +194,7 @@ public class LoadBalancerInner extends Resource {
      * @param inboundNatPools the inboundNatPools value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withInboundNatPools(List<InboundNatPool> inboundNatPools) {
+    public LoadBalancerInner withInboundNatPools(List<InboundNatPoolInner> inboundNatPools) {
         this.inboundNatPools = inboundNatPools;
         return this;
     }
@@ -211,7 +204,7 @@ public class LoadBalancerInner extends Resource {
      *
      * @return the outboundNatRules value
      */
-    public List<OutboundNatRule> outboundNatRules() {
+    public List<OutboundNatRuleInner> outboundNatRules() {
         return this.outboundNatRules;
     }
 
@@ -221,7 +214,7 @@ public class LoadBalancerInner extends Resource {
      * @param outboundNatRules the outboundNatRules value to set
      * @return the LoadBalancerInner object itself.
      */
-    public LoadBalancerInner withOutboundNatRules(List<OutboundNatRule> outboundNatRules) {
+    public LoadBalancerInner withOutboundNatRules(List<OutboundNatRuleInner> outboundNatRules) {
         this.outboundNatRules = outboundNatRules;
         return this;
     }

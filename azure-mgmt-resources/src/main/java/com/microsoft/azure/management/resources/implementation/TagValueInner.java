@@ -16,18 +16,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TagValueInner {
     /**
-     * Gets or sets the tag ID.
+     * The tag ID.
      */
     private String id;
 
     /**
-     * Gets or sets the tag value.
+     * The tag value.
      */
     @JsonProperty(value = "tagValue")
     private String tagValueProperty;
 
     /**
-     * Gets or sets the tag value count.
+     * The tag value count.
      */
     private TagCount count;
 

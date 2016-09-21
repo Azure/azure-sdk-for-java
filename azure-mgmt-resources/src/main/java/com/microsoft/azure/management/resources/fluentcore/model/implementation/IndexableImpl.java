@@ -8,23 +8,16 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
+import java.util.UUID;
+
 /**
  * The base implementation for {@link Indexable}.
  */
-public abstract class IndexableImpl implements Indexable {
+abstract class IndexableImpl implements Indexable {
     protected String key;
 
-    protected IndexableImpl(String key) {
-        this.key = key;
-    }
-
-    /**
-     * Set the indexing key.
-     *
-     * @param key the indexing key
-     */
-    public void setKey(String key) {
-        this.key = key;
+    protected IndexableImpl() {
+        this.key = UUID.randomUUID().toString();
     }
 
     @Override

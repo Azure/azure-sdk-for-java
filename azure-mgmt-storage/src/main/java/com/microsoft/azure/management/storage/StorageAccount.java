@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -18,12 +20,12 @@ import com.microsoft.azure.management.storage.implementation.AccountStatuses;
 import com.microsoft.azure.management.storage.implementation.StorageAccountInner;
 import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure storage account.
  */
+@LangDefinition
 public interface StorageAccount extends
         GroupableResource,
         Refreshable<StorageAccount>,
@@ -98,31 +100,26 @@ public interface StorageAccount extends
 
     /**
      * @return the access keys for this storage account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    List<StorageAccountKey> keys() throws CloudException, IOException;
+    @LangMethodDefinition(AsType = LangMethodType.Method)
+    List<StorageAccountKey> keys();
 
     /**
      * Fetch the up-to-date access keys from Azure for this storage account.
      *
      * @return the access keys for this storage account
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    List<StorageAccountKey> refreshKeys() throws CloudException, IOException;
+    @LangMethodDefinition(AsType = LangMethodType.Method)
+    List<StorageAccountKey> refreshKeys();
 
     /**
      * Regenerates the access keys for this storage account.
      *
      * @param keyName if the key name
      * @return the generated access keys for this storage account
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    List<StorageAccountKey> regenerateKey(String keyName) throws CloudException, IOException;
+    @LangMethodDefinition(AsType = LangMethodType.Method)
+    List<StorageAccountKey> regenerateKey(String keyName);
 
     /**************************************************************
      * Fluent interfaces to provision a StorageAccount
@@ -131,6 +128,7 @@ public interface StorageAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
+    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -141,6 +139,7 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account definition stages.
      */
+    @LangDefinition(ContainerName = "~/StorageAccount.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the storage account definition.
@@ -249,7 +248,8 @@ public interface StorageAccount extends
             DefinitionStages.WithBlobStorageAccountKind,
             DefinitionStages.WithGeneralPurposeAccountKind,
             DefinitionStages.WithEncryption,
-            DefinitionStages.WithCustomDomain {
+            DefinitionStages.WithCustomDomain,
+            Resource.DefinitionWithTags<WithCreate> {
         }
 
         /**
@@ -273,6 +273,7 @@ public interface StorageAccount extends
     /**
      * Grouping of all the storage account update stages.
      */
+    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A storage account update stage allowing to change the parameters.
@@ -360,6 +361,7 @@ public interface StorageAccount extends
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
+    @LangDefinition(ContainerName = "~/StorageAccount.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<StorageAccount>,
             UpdateStages.WithSku,

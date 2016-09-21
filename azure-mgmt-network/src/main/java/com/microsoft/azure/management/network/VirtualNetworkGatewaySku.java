@@ -14,16 +14,18 @@ package com.microsoft.azure.management.network;
  */
 public class VirtualNetworkGatewaySku {
     /**
-     * Gateway sku name -Basic/HighPerformance/Standard. Possible values
-     * include: 'Basic', 'HighPerformance', 'Standard'.
+     * Gateway sku name -Basic/HighPerformance/Standard/UltraPerformance.
+     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
+     * 'UltraPerformance'.
      */
-    private String name;
+    private VirtualNetworkGatewaySkuName name;
 
     /**
-     * Gateway sku tier -Basic/HighPerformance/Standard. Possible values
-     * include: 'Basic', 'HighPerformance', 'Standard'.
+     * Gateway sku tier -Basic/HighPerformance/Standard/UltraPerformance.
+     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
+     * 'UltraPerformance'.
      */
-    private String tier;
+    private VirtualNetworkGatewaySkuTier tier;
 
     /**
      * The capacity.
@@ -35,7 +37,7 @@ public class VirtualNetworkGatewaySku {
      *
      * @return the name value
      */
-    public String name() {
+    public VirtualNetworkGatewaySkuName name() {
         return this.name;
     }
 
@@ -45,7 +47,7 @@ public class VirtualNetworkGatewaySku {
      * @param name the name value to set
      * @return the VirtualNetworkGatewaySku object itself.
      */
-    public VirtualNetworkGatewaySku withName(String name) {
+    public VirtualNetworkGatewaySku withName(VirtualNetworkGatewaySkuName name) {
         this.name = name;
         return this;
     }
@@ -55,7 +57,7 @@ public class VirtualNetworkGatewaySku {
      *
      * @return the tier value
      */
-    public String tier() {
+    public VirtualNetworkGatewaySkuTier tier() {
         return this.tier;
     }
 
@@ -65,7 +67,7 @@ public class VirtualNetworkGatewaySku {
      * @param tier the tier value to set
      * @return the VirtualNetworkGatewaySku object itself.
      */
-    public VirtualNetworkGatewaySku withTier(String tier) {
+    public VirtualNetworkGatewaySku withTier(VirtualNetworkGatewaySkuTier tier) {
         this.tier = tier;
         return this;
     }

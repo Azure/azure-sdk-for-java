@@ -15,47 +15,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class DataDisk {
     /**
-     * Gets or sets the logical unit number.
+     * the logical unit number.
      */
     @JsonProperty(required = true)
     private int lun;
 
     /**
-     * Gets or sets the disk name.
+     * the disk name.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the Virtual Hard Disk.
+     * the Virtual Hard Disk.
      */
     @JsonProperty(required = true)
     private VirtualHardDisk vhd;
 
     /**
-     * Gets or sets the Source User Image VirtualHardDisk. This
-     * VirtualHardDisk will be copied before using it to attach to the
-     * Virtual Machine.If SourceImage is provided, the destination
-     * VirtualHardDisk should not exist.
+     * the Source User Image VirtualHardDisk. This VirtualHardDisk will be
+     * copied before using it to attach to the Virtual Machine.If SourceImage
+     * is provided, the destination VirtualHardDisk should not exist.
      */
     private VirtualHardDisk image;
 
     /**
-     * Gets or sets the caching type. Possible values include: 'None',
-     * 'ReadOnly', 'ReadWrite'.
+     * the caching type. Possible values include: 'None', 'ReadOnly',
+     * 'ReadWrite'.
      */
     private CachingTypes caching;
 
     /**
-     * Gets or sets the create option. Possible values include: 'fromImage',
-     * 'empty', 'attach'.
+     * the create option. Possible values include: 'fromImage', 'empty',
+     * 'attach'.
      */
     @JsonProperty(required = true)
     private DiskCreateOptionTypes createOption;
 
     /**
-     * Gets or sets the initial disk size in GB for blank data disks, and the
-     * new desired size for existing OS and Data disks.
+     * the initial disk size in GB for blank data disks, and the new desired
+     * size for existing OS and Data disks.
      */
     private Integer diskSizeGB;
 

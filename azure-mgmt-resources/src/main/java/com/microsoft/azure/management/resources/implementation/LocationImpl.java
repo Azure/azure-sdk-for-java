@@ -17,7 +17,7 @@ final class LocationImpl extends
         implements
         Location {
     LocationImpl(LocationInner innerModel) {
-        super(innerModel.id(), innerModel);
+        super(innerModel);
     }
 
     @Override

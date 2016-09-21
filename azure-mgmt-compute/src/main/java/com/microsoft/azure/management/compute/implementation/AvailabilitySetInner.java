@@ -21,26 +21,26 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class AvailabilitySetInner extends Resource {
     /**
-     * Gets or sets Update Domain count.
+     * Update Domain count.
      */
     @JsonProperty(value = "properties.platformUpdateDomainCount")
     private Integer platformUpdateDomainCount;
 
     /**
-     * Gets or sets Fault Domain count.
+     * Fault Domain count.
      */
     @JsonProperty(value = "properties.platformFaultDomainCount")
     private Integer platformFaultDomainCount;
 
     /**
-     * Gets or sets a list containing reference to all Virtual Machines
-     * created under this Availability Set.
+     * a list containing reference to all Virtual Machines created under this
+     * Availability Set.
      */
     @JsonProperty(value = "properties.virtualMachines")
     private List<SubResource> virtualMachines;
 
     /**
-     * Gets or sets the resource status information.
+     * the resource status information.
      */
     @JsonProperty(value = "properties.statuses")
     private List<InstanceViewStatus> statuses;

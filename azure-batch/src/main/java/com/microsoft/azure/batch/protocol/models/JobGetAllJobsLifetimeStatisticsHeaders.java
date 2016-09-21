@@ -120,7 +120,11 @@ public class JobGetAllJobsLifetimeStatisticsHeaders {
      * @return the JobGetAllJobsLifetimeStatisticsHeaders object itself.
      */
     public JobGetAllJobsLifetimeStatisticsHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

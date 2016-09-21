@@ -16,23 +16,27 @@ import java.util.Map;
  */
 public class ProviderResourceType {
     /**
-     * Gets or sets the resource type.
+     * The resource type.
      */
     private String resourceType;
 
     /**
-     * Gets or sets the collection of locations where this resource type can
-     * be created in.
+     * The collection of locations where this resource type can be created in.
      */
     private List<String> locations;
 
     /**
-     * Gets or sets the api version.
+     * The aliases that are supported by this resource type.
+     */
+    private List<AliasType> aliases;
+
+    /**
+     * The api version.
      */
     private List<String> apiVersions;
 
     /**
-     * Gets or sets the properties.
+     * The properties.
      */
     private Map<String, String> properties;
 
@@ -73,6 +77,26 @@ public class ProviderResourceType {
      */
     public ProviderResourceType withLocations(List<String> locations) {
         this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the aliases value.
+     *
+     * @return the aliases value
+     */
+    public List<AliasType> aliases() {
+        return this.aliases;
+    }
+
+    /**
+     * Set the aliases value.
+     *
+     * @param aliases the aliases value to set
+     * @return the ProviderResourceType object itself.
+     */
+    public ProviderResourceType withAliases(List<AliasType> aliases) {
+        this.aliases = aliases;
         return this;
     }
 

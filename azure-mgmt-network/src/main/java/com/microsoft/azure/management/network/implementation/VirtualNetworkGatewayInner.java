@@ -9,7 +9,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.util.List;
-import com.microsoft.azure.management.network.VirtualNetworkGatewayIPConfiguration;
+import com.microsoft.azure.management.network.VirtualNetworkGatewayType;
+import com.microsoft.azure.management.network.VpnType;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
 import com.microsoft.azure.management.network.VpnClientConfiguration;
@@ -27,27 +28,33 @@ public class VirtualNetworkGatewayInner extends Resource {
      * IpConfigurations for Virtual network gateway.
      */
     @JsonProperty(value = "properties.ipConfigurations")
-    private List<VirtualNetworkGatewayIPConfiguration> ipConfigurations;
+    private List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations;
 
     /**
      * The type of this virtual network gateway. Possible values include:
      * 'Vpn', 'ExpressRoute'.
      */
     @JsonProperty(value = "properties.gatewayType")
-    private String gatewayType;
+    private VirtualNetworkGatewayType gatewayType;
 
     /**
      * The type of this virtual network gateway. Possible values include:
      * 'PolicyBased', 'RouteBased'.
      */
     @JsonProperty(value = "properties.vpnType")
-    private String vpnType;
+    private VpnType vpnType;
 
     /**
      * EnableBgp Flag.
      */
     @JsonProperty(value = "properties.enableBgp")
     private Boolean enableBgp;
+
+    /**
+     * ActiveActive flag.
+     */
+    @JsonProperty(value = "properties.activeActive")
+    private Boolean activeActive;
 
     /**
      * Gets or sets the reference of the LocalNetworkGateway resource which
@@ -85,7 +92,7 @@ public class VirtualNetworkGatewayInner extends Resource {
     private String resourceGuid;
 
     /**
-     * Gets or sets Provisioning state of the VirtualNetworkGateway resource
+     * Gets provisioning state of the VirtualNetworkGateway resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -102,7 +109,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the ipConfigurations value
      */
-    public List<VirtualNetworkGatewayIPConfiguration> ipConfigurations() {
+    public List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations() {
         return this.ipConfigurations;
     }
 
@@ -112,7 +119,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param ipConfigurations the ipConfigurations value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withIpConfigurations(List<VirtualNetworkGatewayIPConfiguration> ipConfigurations) {
+    public VirtualNetworkGatewayInner withIpConfigurations(List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
@@ -122,7 +129,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the gatewayType value
      */
-    public String gatewayType() {
+    public VirtualNetworkGatewayType gatewayType() {
         return this.gatewayType;
     }
 
@@ -132,7 +139,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param gatewayType the gatewayType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withGatewayType(String gatewayType) {
+    public VirtualNetworkGatewayInner withGatewayType(VirtualNetworkGatewayType gatewayType) {
         this.gatewayType = gatewayType;
         return this;
     }
@@ -142,7 +149,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      *
      * @return the vpnType value
      */
-    public String vpnType() {
+    public VpnType vpnType() {
         return this.vpnType;
     }
 
@@ -152,7 +159,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * @param vpnType the vpnType value to set
      * @return the VirtualNetworkGatewayInner object itself.
      */
-    public VirtualNetworkGatewayInner withVpnType(String vpnType) {
+    public VirtualNetworkGatewayInner withVpnType(VpnType vpnType) {
         this.vpnType = vpnType;
         return this;
     }
@@ -174,6 +181,26 @@ public class VirtualNetworkGatewayInner extends Resource {
      */
     public VirtualNetworkGatewayInner withEnableBgp(Boolean enableBgp) {
         this.enableBgp = enableBgp;
+        return this;
+    }
+
+    /**
+     * Get the activeActive value.
+     *
+     * @return the activeActive value
+     */
+    public Boolean activeActive() {
+        return this.activeActive;
+    }
+
+    /**
+     * Set the activeActive value.
+     *
+     * @param activeActive the activeActive value to set
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withActiveActive(Boolean activeActive) {
+        this.activeActive = activeActive;
         return this;
     }
 

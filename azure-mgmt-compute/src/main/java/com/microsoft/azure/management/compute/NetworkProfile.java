@@ -9,22 +9,23 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+import com.microsoft.azure.management.compute.implementation.NetworkInterfaceReferenceInner;
 
 /**
  * Describes a network profile.
  */
 public class NetworkProfile {
     /**
-     * Gets or sets the network interfaces.
+     * the network interfaces.
      */
-    private List<NetworkInterfaceReference> networkInterfaces;
+    private List<NetworkInterfaceReferenceInner> networkInterfaces;
 
     /**
      * Get the networkInterfaces value.
      *
      * @return the networkInterfaces value
      */
-    public List<NetworkInterfaceReference> networkInterfaces() {
+    public List<NetworkInterfaceReferenceInner> networkInterfaces() {
         return this.networkInterfaces;
     }
 
@@ -34,7 +35,7 @@ public class NetworkProfile {
      * @param networkInterfaces the networkInterfaces value to set
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReference> networkInterfaces) {
+    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReferenceInner> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }

@@ -5,21 +5,20 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.io.IOException;
-
 /**
  * An immutable client-side representation of a subnet of a virtual network.
  */
+@LangDefinition()
 public interface Subnet extends
     Wrapper<SubnetInner>,
-    ChildResource {
+    ChildResource<Network> {
 
     /**
      * @return the address space prefix, in CIDR notation, assigned to this subnet
@@ -30,15 +29,13 @@ public interface Subnet extends
      * @return the network security group associated with this subnet
      * <p>
      * Note that this method will result in a call to Azure each time it is invoked.
-     * @throws CloudException exceptions thrown from the cloud
-     * @throws IOException exceptions thrown from serialization/deserialization
-     * @throws IllegalArgumentException exceptions thrown when something is wrong with the input parameters
      */
-    NetworkSecurityGroup networkSecurityGroup() throws CloudException, IllegalArgumentException, IOException;
+    NetworkSecurityGroup networkSecurityGroup();
 
     /**
      * Grouping of subnet definition stages.
      */
+    @LangDefinition(ContainerName = "~/Subnet.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the subnet definition.
@@ -95,6 +92,7 @@ public interface Subnet extends
     /** The entirety of a Subnet definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "~/Subnet.Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAddressPrefix<ParentT>,
@@ -104,6 +102,7 @@ public interface Subnet extends
     /**
      * Grouping of subnet update stages.
      */
+    @LangDefinition(ContainerName = "~/Subnet.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the subnet update allowing to change the address space for the subnet.
@@ -140,6 +139,7 @@ public interface Subnet extends
     /**
      * The entirety of a subnet update as part of a network update.
      */
+    @LangDefinition(ContainerName = "~/Subnet.Update", ContainerFileName = "IUpdate")
     interface Update extends
         UpdateStages.WithAddressPrefix,
         UpdateStages.WithNetworkSecurityGroup,
@@ -149,6 +149,7 @@ public interface Subnet extends
     /**
      * Grouping of subnet definition stages applicable as part of a virtual network update.
      */
+    @LangDefinition(ContainerName = "~/Subnet.UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of the subnet definition.
@@ -205,6 +206,7 @@ public interface Subnet extends
     /** The entirety of a subnet definition as part of a virtual network update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
+    @LangDefinition(ContainerName = "~/Subnet.UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
        UpdateDefinitionStages.WithAddressPrefix<ParentT>,

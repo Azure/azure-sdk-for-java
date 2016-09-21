@@ -120,7 +120,11 @@ public class JobGetHeaders {
      * @return the JobGetHeaders object itself.
      */
     public JobGetHeaders withLastModified(DateTime lastModified) {
-        this.lastModified = new DateTimeRfc1123(lastModified);
+        if (lastModified == null) {
+            this.lastModified = null;
+        } else {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
         return this;
     }
 

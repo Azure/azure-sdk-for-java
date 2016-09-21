@@ -1,8 +1,8 @@
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImagesInSku;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
@@ -15,6 +15,7 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImagesInSku}.
  */
+@LangDefinition
 class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
 
     private final VirtualMachineImagesInner innerCollection;
@@ -25,14 +26,14 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
         this.innerCollection = innerCollection;
     }
 
-    public PagedList<VirtualMachineImage> list() throws CloudException, IOException {
+    public PagedList<VirtualMachineImage> list() {
         final List<VirtualMachineImage> images = new ArrayList<>();
         for (VirtualMachineImageResourceInner inner
                 : innerCollection.list(
                 this.sku.region().toString(),
                 this.sku.publisher().name(),
                 this.sku.offer().name(),
-                this.sku.name()).getBody()) {
+                this.sku.name())) {
             String version = inner.name();
             images.add(new VirtualMachineImageImpl(
                     this.sku.region(),
@@ -44,7 +45,7 @@ class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
                             this.sku.publisher().name(),
                             this.sku.offer().name(),
                             this.sku.name(),
-                            version).getBody()));
+                            version)));
         }
         Page<VirtualMachineImage> page = new Page<VirtualMachineImage>() {
              @Override

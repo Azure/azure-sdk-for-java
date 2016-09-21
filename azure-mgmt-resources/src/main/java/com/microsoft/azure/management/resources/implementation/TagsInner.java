@@ -10,6 +10,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
@@ -18,11 +19,9 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -30,8 +29,9 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -61,27 +61,27 @@ public final class TagsInner {
     interface TagsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/tagNames/{tagName}/tagValues/{tagValue}")
-        Call<ResponseBody> createOrUpdateValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateValue(@Path("tagName") String tagName, @Path("tagValue") String tagValue, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/tagNames/{tagName}")
-        Call<ResponseBody> createOrUpdate(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/tagNames/{tagName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> delete(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("tagName") String tagName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/tagNames")
-        Call<ResponseBody> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -90,12 +90,47 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void deleteValue(String tagName, String tagValue) {
+        deleteValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
+    }
+
+    /**
+     * Delete a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+    }
+
+    /**
+     * Delete a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> deleteValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteValueAsync(String tagName, String tagValue) {
+        return deleteValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteValueWithServiceResponseAsync(String tagName, String tagValue) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -108,52 +143,18 @@ public final class TagsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteValueDelegate(call.execute());
-    }
-
-    /**
-     * Delete a subscription resource tag value.
-     *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteValueAsync(String tagName, String tagValue, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (tagName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
-            return null;
-        }
-        if (tagValue == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteValueDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.deleteValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteValueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Void> deleteValueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -168,12 +169,48 @@ public final class TagsInner {
      *
      * @param tagName The name of the tag.
      * @param tagValue The value of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TagValueInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the TagValueInner object if successful.
      */
-    public ServiceResponse<TagValueInner> createOrUpdateValue(String tagName, String tagValue) throws CloudException, IOException, IllegalArgumentException {
+    public TagValueInner createOrUpdateValue(String tagName, String tagValue) {
+        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateValueWithServiceResponseAsync(tagName, tagValue), serviceCallback);
+    }
+
+    /**
+     * Create a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @return the observable to the TagValueInner object
+     */
+    public Observable<TagValueInner> createOrUpdateValueAsync(String tagName, String tagValue) {
+        return createOrUpdateValueWithServiceResponseAsync(tagName, tagValue).map(new Func1<ServiceResponse<TagValueInner>, TagValueInner>() {
+            @Override
+            public TagValueInner call(ServiceResponse<TagValueInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a subscription resource tag value.
+     *
+     * @param tagName The name of the tag.
+     * @param tagValue The value of the tag.
+     * @return the observable to the TagValueInner object
+     */
+    public Observable<ServiceResponse<TagValueInner>> createOrUpdateValueWithServiceResponseAsync(String tagName, String tagValue) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -186,52 +223,18 @@ public final class TagsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return createOrUpdateValueDelegate(call.execute());
-    }
-
-    /**
-     * Create a subscription resource tag value.
-     *
-     * @param tagName The name of the tag.
-     * @param tagValue The value of the tag.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createOrUpdateValueAsync(String tagName, String tagValue, final ServiceCallback<TagValueInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (tagName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
-            return null;
-        }
-        if (tagValue == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagValue is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.createOrUpdateValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<TagValueInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateValueDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.createOrUpdateValue(tagName, tagValue, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagValueInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TagValueInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TagValueInner> clientResponse = createOrUpdateValueDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<TagValueInner> createOrUpdateValueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -246,12 +249,45 @@ public final class TagsInner {
      * Create a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the TagDetailsInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the TagDetailsInner object if successful.
      */
-    public ServiceResponse<TagDetailsInner> createOrUpdate(String tagName) throws CloudException, IOException, IllegalArgumentException {
+    public TagDetailsInner createOrUpdate(String tagName) {
+        return createOrUpdateWithServiceResponseAsync(tagName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<TagDetailsInner> createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(tagName), serviceCallback);
+    }
+
+    /**
+     * Create a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @return the observable to the TagDetailsInner object
+     */
+    public Observable<TagDetailsInner> createOrUpdateAsync(String tagName) {
+        return createOrUpdateWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<TagDetailsInner>, TagDetailsInner>() {
+            @Override
+            public TagDetailsInner call(ServiceResponse<TagDetailsInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @return the observable to the TagDetailsInner object
+     */
+    public Observable<ServiceResponse<TagDetailsInner>> createOrUpdateWithServiceResponseAsync(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -261,47 +297,18 @@ public final class TagsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return createOrUpdateDelegate(call.execute());
-    }
-
-    /**
-     * Create a subscription resource tag.
-     *
-     * @param tagName The name of the tag.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createOrUpdateAsync(String tagName, final ServiceCallback<TagDetailsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (tagName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.createOrUpdate(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<TagDetailsInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.createOrUpdate(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagDetailsInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TagDetailsInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TagDetailsInner> clientResponse = createOrUpdateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<TagDetailsInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -316,12 +323,44 @@ public final class TagsInner {
      * Delete a subscription resource tag.
      *
      * @param tagName The name of the tag.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void delete(String tagName) {
+        deleteWithServiceResponseAsync(tagName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Delete a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteWithServiceResponseAsync(tagName), serviceCallback);
+    }
+
+    /**
+     * Delete a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public ServiceResponse<Void> delete(String tagName) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteAsync(String tagName) {
+        return deleteWithServiceResponseAsync(tagName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Delete a subscription resource tag.
+     *
+     * @param tagName The name of the tag.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String tagName) {
         if (tagName == null) {
             throw new IllegalArgumentException("Parameter tagName is required and cannot be null.");
         }
@@ -331,47 +370,18 @@ public final class TagsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.delete(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteDelegate(call.execute());
-    }
-
-    /**
-     * Delete a subscription resource tag.
-     *
-     * @param tagName The name of the tag.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteAsync(String tagName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (tagName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter tagName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.delete(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.delete(tagName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -384,68 +394,94 @@ public final class TagsInner {
     /**
      * Get a list of subscription resource tags.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<TagDetailsInner>> list() throws CloudException, IOException, IllegalArgumentException {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<TagDetailsInner>> response = listDelegate(call.execute());
-        PagedList<TagDetailsInner> result = new PagedList<TagDetailsInner>(response.getBody()) {
+    public PagedList<TagDetailsInner> list() {
+        ServiceResponse<Page<TagDetailsInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<TagDetailsInner>(response.getBody()) {
             @Override
-            public Page<TagDetailsInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return listNext(nextPageLink).getBody();
+            public Page<TagDetailsInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponse<>(result, response.getResponse());
     }
 
     /**
      * Get a list of subscription resource tags.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
+    public ServiceCall<List<TagDetailsInner>> listAsync(final ListOperationCallback<TagDetailsInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listSinglePageAsync(),
+            new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<Page<TagDetailsInner>> listAsync() {
+        return listWithServiceResponseAsync()
+            .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
+                @Override
+                public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
+            .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<TagDetailsInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<TagDetailsInner>> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TagDetailsInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<TagDetailsInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -459,17 +495,16 @@ public final class TagsInner {
      * Get a list of subscription resource tags.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;TagDetailsInner&gt; object if successful.
      */
-    public ServiceResponse<PageImpl<TagDetailsInner>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return listNextDelegate(call.execute());
+    public PagedList<TagDetailsInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<TagDetailsInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<TagDetailsInner>(response.getBody()) {
+            @Override
+            public Page<TagDetailsInner> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
@@ -478,37 +513,78 @@ public final class TagsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<TagDetailsInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<TagDetailsInner>> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<TagDetailsInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TagDetailsInner>> serviceCall, final ListOperationCallback<TagDetailsInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<Page<TagDetailsInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<TagDetailsInner>>, Page<TagDetailsInner>>() {
+                @Override
+                public Page<TagDetailsInner> call(ServiceResponse<Page<TagDetailsInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;TagDetailsInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<TagDetailsInner>>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(ServiceResponse<Page<TagDetailsInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get a list of subscription resource tags.
+     *
+    ServiceResponse<PageImpl<TagDetailsInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;TagDetailsInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<TagDetailsInner>>> listNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TagDetailsInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<TagDetailsInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TagDetailsInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<TagDetailsInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<PageImpl<TagDetailsInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

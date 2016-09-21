@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>1.0.0-beta2</version>
+    <version>1.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -78,6 +78,14 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.reactivex</groupId>
+      <artifactId>rxjava</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.squareup.retrofit2</groupId>
+      <artifactId>adapter-rxjava</artifactId>
     </dependency>
     <dependency>
       <groupId>junit</groupId>

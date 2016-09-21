@@ -25,8 +25,8 @@ public class JobScheduleExecutionInformation {
     private RecentJob recentJob;
 
     /**
-     * The time at which the schedule ended. This property is set only if the
-     * job schedule is in the completed state.
+     * The time at which the schedule ended.
+     * This property is set only if the job schedule is in the completed state.
      */
     private DateTime endTime;
 

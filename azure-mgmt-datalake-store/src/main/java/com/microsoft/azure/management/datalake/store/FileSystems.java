@@ -21,6 +21,7 @@ import com.microsoft.rest.ServiceResponse;
 import java.io.InputStream;
 import java.io.IOException;
 import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -47,10 +48,9 @@ public interface FileSystems {
      * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback);
     /**
      * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
      *
@@ -73,10 +73,20 @@ public interface FileSystems {
      * @param streamContents The file contents to include when appending to the file.
      * @param appendMode Indicates the concurrent append call should create the file if it doesn't exist or just open the existing file for append. Possible values include: 'autocreate'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Appends to the specified file. This method supports multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file to which to append using concurrent append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param appendMode Indicates the concurrent append call should create the file if it doesn't exist or just open the existing file for append. Possible values include: 'autocreate'
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> concurrentAppendAsync(String accountName, String filePath, byte[] streamContents, AppendModeType appendMode);
 
     /**
      * Checks if the specified access is available at the given path.
@@ -96,10 +106,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> checkAccessAsync(String accountName, String path, final ServiceCallback<Void> serviceCallback);
     /**
      * Checks if the specified access is available at the given path.
      *
@@ -120,10 +129,19 @@ public interface FileSystems {
      * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
      * @param fsaction File system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> checkAccessAsync(String accountName, String path, String fsaction, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Checks if the specified access is available at the given path.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the file or directory for which to check access.
+     * @param fsaction File system operation read/write/execute in string form, matching regex pattern '[rwx-]{3}'
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> checkAccessAsync(String accountName, String path, String fsaction);
 
     /**
      * Creates a directory.
@@ -143,10 +161,18 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param path The Data Lake Store path (starting with '/') of the directory to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> mkdirsAsync(String accountName, String path, final ServiceCallback<FileOperationResult> serviceCallback);
+
+    /**
+     * Creates a directory.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param path The Data Lake Store path (starting with '/') of the directory to create.
+     * @return the observable to the FileOperationResult object
+     */
+    Observable<ServiceResponse<FileOperationResult>> mkdirsAsync(String accountName, String path);
 
     /**
      * Concatenates the list of source files into the destination file, removing all source files upon success.
@@ -168,10 +194,19 @@ public interface FileSystems {
      * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param sources A list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate, in the order in which they should be concatenated.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> concatAsync(String accountName, String destinationPath, List<String> sources, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Concatenates the list of source files into the destination file, removing all source files upon success.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param destinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
+     * @param sources A list of comma seperated Data Lake Store paths (starting with '/') of the files to concatenate, in the order in which they should be concatenated.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> concatAsync(String accountName, String destinationPath, List<String> sources);
 
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
@@ -193,10 +228,9 @@ public interface FileSystems {
      * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, final ServiceCallback<Void> serviceCallback);
     /**
      * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
      *
@@ -219,10 +253,20 @@ public interface FileSystems {
      * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
      * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Concatenates the list of source files into the destination file, deleting all source files upon success. This method accepts more source file paths than the Concat method. This method and the parameters it accepts are subject to change for usability in an upcoming version.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param msConcatDestinationPath The Data Lake Store path (starting with '/') of the destination file resulting from the concatenation.
+     * @param streamContents A list of Data Lake Store paths (starting with '/') of the source files. Must be in the format: sources=&lt;comma separated list&gt;
+     * @param deleteSourceDirectory Indicates that as an optimization instead of deleting each individual source stream, delete the source stream folder if all streams are in the same folder instead. This results in a substantial performance improvement when the only streams in the folder are part of the concatenation operation. WARNING: This includes the deletion of any other files that are not source files. Only set this to true when source files are the only files in the source directory.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> msConcatAsync(String accountName, String msConcatDestinationPath, byte[] streamContents, Boolean deleteSourceDirectory);
 
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
@@ -242,10 +286,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, final ServiceCallback<FileStatusesResult> serviceCallback);
     /**
      * Get the list of file status objects specified by the file path, with optional pagination parameters.
      *
@@ -270,10 +313,21 @@ public interface FileSystems {
      * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
      * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusesResult> listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore, final ServiceCallback<FileStatusesResult> serviceCallback);
+
+    /**
+     * Get the list of file status objects specified by the file path, with optional pagination parameters.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param listFilePath The Data Lake Store path (starting with '/') of the directory to list.
+     * @param listSize Gets or sets the number of items to return. Optional.
+     * @param listAfter Gets or sets the item or lexographical index after which to begin returning results. For example, a file list of 'a','b','d' and listAfter='b' will return 'd', and a listAfter='c' will also return 'd'. Optional.
+     * @param listBefore Gets or sets the item or lexographical index before which to begin returning results. For example, a file list of 'a','b','d' and listBefore='d' will return 'a','b', and a listBefore='c' will also return 'a','b'. Optional.
+     * @return the observable to the FileStatusesResult object
+     */
+    Observable<ServiceResponse<FileStatusesResult>> listFileStatusAsync(String accountName, String listFilePath, Integer listSize, String listAfter, String listBefore);
 
     /**
      * Gets the file content summary object specified by the file path.
@@ -293,10 +347,18 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<ContentSummaryResult> getContentSummaryAsync(String accountName, String getContentSummaryFilePath, final ServiceCallback<ContentSummaryResult> serviceCallback);
+
+    /**
+     * Gets the file content summary object specified by the file path.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getContentSummaryFilePath The Data Lake Store path (starting with '/') of the file for which to retrieve the summary.
+     * @return the observable to the ContentSummaryResult object
+     */
+    Observable<ServiceResponse<ContentSummaryResult>> getContentSummaryAsync(String accountName, String getContentSummaryFilePath);
 
     /**
      * Get the file status object specified by the file path.
@@ -316,10 +378,18 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileStatusResult> getFileStatusAsync(String accountName, String getFilePath, final ServiceCallback<FileStatusResult> serviceCallback);
+
+    /**
+     * Get the file status object specified by the file path.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param getFilePath The Data Lake Store path (starting with '/') of the file or directory for which to retrieve the status.
+     * @return the observable to the FileStatusResult object
+     */
+    Observable<ServiceResponse<FileStatusResult>> getFileStatusAsync(String accountName, String getFilePath);
 
     /**
      * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
@@ -341,10 +411,45 @@ public interface FileSystems {
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
      * @param streamContents The file contents to include when appending to the file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, final ServiceCallback<Void> serviceCallback);
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @throws AdlsErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    ServiceResponse<Void> append(String accountName, String directFilePath, byte[] streamContents, Long offset) throws AdlsErrorException, IOException, IllegalArgumentException;
+
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    ServiceCall<Void> appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Appends to the specified file. This method does not support multiple concurrent appends to the file. NOTE: Concurrent append and normal (serial) append CANNOT be used interchangeably. Once a file has been appended to using either append option, it can only be appended to using that append option. Use the ConcurrentAppend option if you would like support for concurrent appends.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to which to append.
+     * @param streamContents The file contents to include when appending to the file.
+     * @param offset The optional offset in the stream to begin the append operation. Default is to append at the end of the stream.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> appendAsync(String accountName, String directFilePath, byte[] streamContents, Long offset);
 
     /**
      * Creates a file with optionally specified content.
@@ -364,10 +469,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> createAsync(String accountName, String directFilePath, final ServiceCallback<Void> serviceCallback);
     /**
      * Creates a file with optionally specified content.
      *
@@ -390,10 +494,20 @@ public interface FileSystems {
      * @param streamContents The file contents to include when creating the file. This parameter is optional, resulting in an empty file if not specified.
      * @param overwrite The indication of if the file should be overwritten.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Creates a file with optionally specified content.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to create.
+     * @param streamContents The file contents to include when creating the file. This parameter is optional, resulting in an empty file if not specified.
+     * @param overwrite The indication of if the file should be overwritten.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> createAsync(String accountName, String directFilePath, byte[] streamContents, Boolean overwrite);
 
     /**
      * Opens and reads from the specified file.
@@ -413,10 +527,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> openAsync(String accountName, String directFilePath, final ServiceCallback<InputStream> serviceCallback);
     /**
      * Opens and reads from the specified file.
      *
@@ -439,10 +552,20 @@ public interface FileSystems {
      * @param length the Long value
      * @param offset the Long value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<InputStream> openAsync(String accountName, String directFilePath, Long length, Long offset, final ServiceCallback<InputStream> serviceCallback);
+
+    /**
+     * Opens and reads from the specified file.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param directFilePath The Data Lake Store path (starting with '/') of the file to open.
+     * @param length the Long value
+     * @param offset the Long value
+     * @return the observable to the InputStream object
+     */
+    Observable<ServiceResponse<InputStream>> openAsync(String accountName, String directFilePath, Long length, Long offset);
 
     /**
      * Sets the Access Control List (ACL) for a file or folder.
@@ -464,10 +587,19 @@ public interface FileSystems {
      * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
      * @param aclspec The ACL spec included in ACL creation operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setAclAsync(String accountName, String setAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Sets the Access Control List (ACL) for a file or folder.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setAclFilePath The Data Lake Store path (starting with '/') of the file or directory on which to set the ACL.
+     * @param aclspec The ACL spec included in ACL creation operations in the format '[default:]user|group|other::r|-w|-x|-'
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> setAclAsync(String accountName, String setAclFilePath, String aclspec);
 
     /**
      * Modifies existing Access Control List (ACL) entries on a file or folder.
@@ -489,10 +621,19 @@ public interface FileSystems {
      * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
      * @param aclspec The ACL specification included in ACL modification operations in the format '[default:]user|group|other::r|-w|-x|-'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Modifies existing Access Control List (ACL) entries on a file or folder.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param modifyAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being modified.
+     * @param aclspec The ACL specification included in ACL modification operations in the format '[default:]user|group|other::r|-w|-x|-'
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> modifyAclEntriesAsync(String accountName, String modifyAclFilePath, String aclspec);
 
     /**
      * Removes existing Access Control List (ACL) entries for a file or folder.
@@ -514,10 +655,19 @@ public interface FileSystems {
      * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
      * @param aclspec The ACL spec included in ACL removal operations in the format '[default:]user|group|other'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Removes existing Access Control List (ACL) entries for a file or folder.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param removeAclFilePath The Data Lake Store path (starting with '/') of the file or directory with the ACL being removed.
+     * @param aclspec The ACL spec included in ACL removal operations in the format '[default:]user|group|other'
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> removeAclEntriesAsync(String accountName, String removeAclFilePath, String aclspec);
 
     /**
      * Gets Access Control List (ACL) entries for the specified file or directory.
@@ -537,10 +687,18 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<AclStatusResult> getAclStatusAsync(String accountName, String aclFilePath, final ServiceCallback<AclStatusResult> serviceCallback);
+
+    /**
+     * Gets Access Control List (ACL) entries for the specified file or directory.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param aclFilePath The Data Lake Store path (starting with '/') of the file or directory for which to get the ACL.
+     * @return the observable to the AclStatusResult object
+     */
+    Observable<ServiceResponse<AclStatusResult>> getAclStatusAsync(String accountName, String aclFilePath);
 
     /**
      * Deletes the requested file or directory, optionally recursively.
@@ -560,10 +718,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, final ServiceCallback<FileOperationResult> serviceCallback);
     /**
      * Deletes the requested file or directory, optionally recursively.
      *
@@ -584,10 +741,19 @@ public interface FileSystems {
      * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
      * @param recursive The optional switch indicating if the delete should be recursive
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> deleteAsync(String accountName, String filePath, Boolean recursive, final ServiceCallback<FileOperationResult> serviceCallback);
+
+    /**
+     * Deletes the requested file or directory, optionally recursively.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param filePath The Data Lake Store path (starting with '/') of the file or directory to delete.
+     * @param recursive The optional switch indicating if the delete should be recursive
+     * @return the observable to the FileOperationResult object
+     */
+    Observable<ServiceResponse<FileOperationResult>> deleteAsync(String accountName, String filePath, Boolean recursive);
 
     /**
      * Rename a file or directory.
@@ -609,10 +775,19 @@ public interface FileSystems {
      * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
      * @param destination The path to move/rename the file or folder to
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<FileOperationResult> renameAsync(String accountName, String renameFilePath, String destination, final ServiceCallback<FileOperationResult> serviceCallback);
+
+    /**
+     * Rename a file or directory.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param renameFilePath The Data Lake Store path (starting with '/') of the file or directory to move/rename.
+     * @param destination The path to move/rename the file or folder to
+     * @return the observable to the FileOperationResult object
+     */
+    Observable<ServiceResponse<FileOperationResult>> renameAsync(String accountName, String renameFilePath, String destination);
 
     /**
      * Sets the owner of a file or directory.
@@ -632,10 +807,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, final ServiceCallback<Void> serviceCallback);
     /**
      * Sets the owner of a file or directory.
      *
@@ -658,10 +832,20 @@ public interface FileSystems {
      * @param owner The AAD Object ID of the user owner of the file or directory. If empty, the property will remain unchanged.
      * @param group The AAD Object ID of the group owner of the file or directory. If empty, the property will remain unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Sets the owner of a file or directory.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setOwnerFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the owner.
+     * @param owner The AAD Object ID of the user owner of the file or directory. If empty, the property will remain unchanged.
+     * @param group The AAD Object ID of the group owner of the file or directory. If empty, the property will remain unchanged.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> setOwnerAsync(String accountName, String setOwnerFilePath, String owner, String group);
 
     /**
      * Sets the permission of the file or folder.
@@ -681,10 +865,9 @@ public interface FileSystems {
      * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
      * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, final ServiceCallback<Void> serviceCallback);
     /**
      * Sets the permission of the file or folder.
      *
@@ -705,9 +888,18 @@ public interface FileSystems {
      * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
      * @param permission A string representation of the permission (i.e 'rwx'). If empty, this property remains unchanged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> setPermissionAsync(String accountName, String setPermissionFilePath, String permission, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Sets the permission of the file or folder.
+     *
+     * @param accountName The Azure Data Lake Store account to execute filesystem operations on.
+     * @param setPermissionFilePath The Data Lake Store path (starting with '/') of the file or directory for which to set the permission.
+     * @param permission A string representation of the permission (i.e 'rwx'). If empty, this property remains unchanged.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> setPermissionAsync(String accountName, String setPermissionFilePath, String permission);
 
 }

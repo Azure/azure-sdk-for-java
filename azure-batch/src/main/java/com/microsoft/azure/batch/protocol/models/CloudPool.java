@@ -17,9 +17,10 @@ import java.util.List;
  */
 public class CloudPool {
     /**
-     * A string that uniquely identifies the pool within the account. The id
-     * can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the pool within the account.
+     * The id can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
+     * It is common to use a GUID for the id.
      */
     private String id;
 
@@ -49,8 +50,8 @@ public class CloudPool {
     private DateTime creationTime;
 
     /**
-     * The current state of the pool. Possible values include: 'active',
-     * 'deleting', 'upgrading'.
+     * The current state of the pool.
+     * Possible values include: 'active', 'deleting', 'upgrading'.
      */
     private PoolState state;
 
@@ -60,8 +61,8 @@ public class CloudPool {
     private DateTime stateTransitionTime;
 
     /**
-     * Whether the pool is resizing. Possible values include: 'steady',
-     * 'resizing', 'stopping'.
+     * Whether the pool is resizing.
+     * Possible values include: 'steady', 'resizing', 'stopping'.
      */
     private AllocationState allocationState;
 
@@ -77,30 +78,31 @@ public class CloudPool {
     private String vmSize;
 
     /**
-     * The cloud service configuration for the pool. This property and
-     * VirtualMachineConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The cloud service configuration for the pool.
+     * This property and virtualMachineConfiguration are mutually exclusive
+     * and one of the properties must be specified.
      */
     private CloudServiceConfiguration cloudServiceConfiguration;
 
     /**
-     * The virtual machine configuration for the pool. This property and
-     * CloudServiceConfiguration are mutually exclusive and one of the
-     * properties must be specified.
+     * The virtual machine configuration for the pool.
+     * This property and cloudServiceConfiguration are mutually exclusive and
+     * one of the properties must be specified.
      */
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /**
-     * The timeout for allocation of compute nodes to the pool. In a Get Pool
-     * operation, this is the timeout for the most recent resize operation.
-     * The default value is 10 minutes.
+     * The timeout for allocation of compute nodes to the pool.
+     * This is the timeout for the most recent resize operation. The default
+     * value is 10 minutes.
      */
     private Period resizeTimeout;
 
     /**
      * Details of any error encountered while performing the last resize on
-     * the pool. This property is set only if an error occurred during the
-     * last pool resize, and only when the pool AllocationState is Steady.
+     * the pool.
+     * This property is set only if an error occurred during the last pool
+     * resize, and only when the pool allocationState is Steady.
      */
     private ResizeError resizeError;
 
@@ -110,16 +112,16 @@ public class CloudPool {
     private Integer currentDedicated;
 
     /**
-     * The desired number of compute nodes in the pool. This property must
-     * have the default value if EnableAutoScale is true. It is required if
-     * EnableAutoScale is false.
+     * The desired number of compute nodes in the pool.
+     * This property must have the default value if enableAutoScale is true.
+     * It is required if enableAutoScale is false.
      */
     private Integer targetDedicated;
 
     /**
-     * Whether the pool size should automatically adjust over time. If true,
-     * the AutoScaleFormula property must be set. If false, the
-     * TargetDedicated property must be set.
+     * Whether the pool size should automatically adjust over time.
+     * If true, the autoScaleFormula property must be set. If false, the
+     * targetDedicated property must be set.
      */
     private Boolean enableAutoScale;
 
@@ -142,6 +144,11 @@ public class CloudPool {
      * Whether the pool permits direct communication between nodes.
      */
     private Boolean enableInterNodeCommunication;
+
+    /**
+     * The network configuration for the pool.
+     */
+    private NetworkConfiguration networkConfiguration;
 
     /**
      * A task specified to run on each compute node as it joins the pool.
@@ -620,6 +627,26 @@ public class CloudPool {
      */
     public CloudPool withEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
+        return this;
+    }
+
+    /**
+     * Get the networkConfiguration value.
+     *
+     * @return the networkConfiguration value
+     */
+    public NetworkConfiguration networkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration value.
+     *
+     * @param networkConfiguration the networkConfiguration value to set
+     * @return the CloudPool object itself.
+     */
+    public CloudPool withNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
         return this;
     }
 

@@ -6,7 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <version>1.0.0-beta2</version>
+  <version>1.0.0-SNAPSHOT</version>
   <artifactId>azure-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -52,6 +52,16 @@
         <updatePolicy>always</updatePolicy>
       </snapshots>
     </repository>
+    <repository>
+      <id>azure-public-snapshots</id>
+      <name>Azure Public Snapshots</name>
+      <url>http://adxmaven.westus.cloudapp.azure.com/repository/maven-snapshots</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
   </repositories>
 
   <distributionManagement>
@@ -86,6 +96,11 @@
         <artifactId>commons-codec</artifactId>
         <version>1.10</version>
       </dependency>
+      <dependency>
+        <groupId>io.reactivex</groupId>
+        <artifactId>rxjava</artifactId>
+        <version>1.1.8</version>
+      </dependency>
       <!-- Test dependencies -->
       <dependency>
         <groupId>junit</groupId>
@@ -93,6 +108,7 @@
         <version>4.12</version>
         <scope>test</scope>
       </dependency>
+
     </dependencies>
   </dependencyManagement>
 
@@ -106,7 +122,7 @@
           <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>autorest-build-tools</artifactId>
-            <version>1.0.0-beta2</version>
+            <version>1.0.0-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
@@ -154,6 +170,27 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
       </plugin>
+
+     <plugin> 
+       <groupId>com.googlecode.addjars-maven-plugin</groupId>
+       <artifactId>addjars-maven-plugin</artifactId>
+       <version>1.0.5</version>
+          <executions>
+             <execution>
+                <goals>
+                  <goal>add-jars</goal>
+                </goals>
+                <configuration>
+                  <resources>
+                    <resource>
+                      <directory>../extlib</directory>
+                    </resource>
+                 </resources>
+              </configuration>
+           </execution>
+        </executions>
+      </plugin>
+
     </plugins>
     <pluginManagement>
       <plugins>
@@ -184,6 +221,35 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-release-plugin</artifactId>
           <version>2.5.2</version>
+        </plugin>
+        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+        <plugin>
+        	<groupId>org.eclipse.m2e</groupId>
+        	<artifactId>lifecycle-mapping</artifactId>
+        	<version>1.0.0</version>
+        	<configuration>
+        		<lifecycleMappingMetadata>
+        			<pluginExecutions>
+        				<pluginExecution>
+        					<pluginExecutionFilter>
+        						<groupId>
+        							com.googlecode.addjars-maven-plugin
+        						</groupId>
+        						<artifactId>
+        							addjars-maven-plugin
+        						</artifactId>
+        						<versionRange>[1.0.5,)</versionRange>
+        						<goals>
+        							<goal>add-jars</goal>
+        						</goals>
+        					</pluginExecutionFilter>
+        					<action>
+        						<ignore></ignore>
+        					</action>
+        				</pluginExecution>
+        			</pluginExecutions>
+        		</lifecycleMappingMetadata>
+        	</configuration>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -235,7 +301,14 @@
     <module>./runtimes</module>
     <module>./azure</module>
     <module>./azure-batch</module>
+    <module>./azure-keyvault</module>
+    <module>./azure-keyvault-core</module>
+    <module>./azure-keyvault-cryptography</module>
+    <module>./azure-keyvault-extensions</module>
+    <module>./azure-keyvault-webkey</module>
     <module>./azure-mgmt-compute</module>
+    <module>./azure-mgmt-graph-rbac</module>
+    <module>./azure-mgmt-keyvault</module>
     <module>./azure-mgmt-resources</module>
     <module>./azure-mgmt-storage</module>
     <module>./azure-mgmt-network</module>
@@ -244,5 +317,8 @@
     <module>./azure-mgmt-datalake-store</module>
     <module>./azure-mgmt-datalake-store-uploader</module>
     <module>./azure-samples</module>
+    <module>azure-mgmt-redis</module>
+    <module>./azure-mgmt-search</module>
+    <module>./azure-mgmt-batch</module>
   </modules>
 </project>

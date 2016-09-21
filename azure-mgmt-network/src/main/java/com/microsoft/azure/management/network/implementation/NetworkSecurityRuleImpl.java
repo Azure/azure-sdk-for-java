@@ -5,23 +5,28 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
+import com.microsoft.azure.management.network.SecurityRuleAccess;
+import com.microsoft.azure.management.network.SecurityRuleDirection;
+import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
  *  Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
  */
+@LangDefinition
 class NetworkSecurityRuleImpl
-    extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl>
+    extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
     implements
         NetworkSecurityRule,
         NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
         NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
         NetworkSecurityRule.Update {
 
-    protected NetworkSecurityRuleImpl(String name, SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
-        super(name, inner, parent);
+    protected NetworkSecurityRuleImpl(SecurityRuleInner inner, NetworkSecurityGroupImpl parent) {
+        super(inner, parent);
     }
 
     // Getters
@@ -32,18 +37,18 @@ class NetworkSecurityRuleImpl
     }
 
     @Override
-    public Direction direction() {
-        return Direction.fromString(this.inner().direction());
+    public SecurityRuleDirection direction() {
+        return this.inner().direction();
     }
 
     @Override
-    public Protocol protocol() {
-        return Protocol.fromString(this.inner().protocol());
+    public SecurityRuleProtocol protocol() {
+        return this.inner().protocol();
     }
 
     @Override
-    public Access access() {
-        return Access.fromString(this.inner().access());
+    public SecurityRuleAccess access() {
+        return this.inner().access();
     }
 
     @Override
@@ -76,40 +81,40 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl allowInbound() {
         return this
-                .withDirection(Direction.INBOUND)
-                .withAccess(Access.ALLOW);
+                .withDirection(SecurityRuleDirection.INBOUND)
+                .withAccess(SecurityRuleAccess.ALLOW);
     }
 
     @Override
     public NetworkSecurityRuleImpl allowOutbound() {
         return this
-                .withDirection(Direction.OUTBOUND)
-                .withAccess(Access.ALLOW);
+                .withDirection(SecurityRuleDirection.OUTBOUND)
+                .withAccess(SecurityRuleAccess.ALLOW);
     }
 
     @Override
     public NetworkSecurityRuleImpl denyInbound() {
         return this
-                .withDirection(Direction.INBOUND)
-                .withAccess(Access.DENY);
+                .withDirection(SecurityRuleDirection.INBOUND)
+                .withAccess(SecurityRuleAccess.DENY);
     }
 
     @Override
     public NetworkSecurityRuleImpl denyOutbound() {
         return this
-                .withDirection(Direction.OUTBOUND)
-                .withAccess(Access.DENY);
+                .withDirection(SecurityRuleDirection.OUTBOUND)
+                .withAccess(SecurityRuleAccess.DENY);
     }
 
     @Override
-    public NetworkSecurityRuleImpl withProtocol(Protocol protocol) {
-        this.inner().withProtocol(protocol.toString());
+    public NetworkSecurityRuleImpl withProtocol(SecurityRuleProtocol protocol) {
+        this.inner().withProtocol(protocol);
         return this;
     }
 
     @Override
     public NetworkSecurityRuleImpl withAnyProtocol() {
-        return this.withProtocol(Protocol.ANY);
+        return this.withProtocol(SecurityRuleProtocol.ASTERISK);
     }
 
     @Override
@@ -190,13 +195,13 @@ class NetworkSecurityRuleImpl
 
     // Helpers
 
-    private NetworkSecurityRuleImpl withDirection(Direction direction) {
-        this.inner().withDirection(direction.toString());
+    private NetworkSecurityRuleImpl withDirection(SecurityRuleDirection direction) {
+        this.inner().withDirection(direction);
         return this;
     }
 
-    private NetworkSecurityRuleImpl withAccess(Access permission) {
-        this.inner().withAccess(permission.toString());
+    private NetworkSecurityRuleImpl withAccess(SecurityRuleAccess permission) {
+        this.inner().withAccess(permission);
         return this;
     }
 
@@ -205,8 +210,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public NetworkSecurityGroupImpl attach() {
-        this.parent().inner().securityRules().add(this.inner());
-        return this.parent();
+        return this.parent().withRule(this);
     }
 
     @Override

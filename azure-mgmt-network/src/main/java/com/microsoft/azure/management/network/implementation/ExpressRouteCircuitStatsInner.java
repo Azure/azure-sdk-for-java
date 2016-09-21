@@ -16,50 +16,100 @@ public class ExpressRouteCircuitStatsInner {
     /**
      * Gets BytesIn of the peering.
      */
-    private Integer bytesIn;
+    private Long primarybytesIn;
 
     /**
      * Gets BytesOut of the peering.
      */
-    private Integer bytesOut;
+    private Long primarybytesOut;
 
     /**
-     * Get the bytesIn value.
-     *
-     * @return the bytesIn value
+     * Gets BytesIn of the peering.
      */
-    public Integer bytesIn() {
-        return this.bytesIn;
+    private Long secondarybytesIn;
+
+    /**
+     * Gets BytesOut of the peering.
+     */
+    private Long secondarybytesOut;
+
+    /**
+     * Get the primarybytesIn value.
+     *
+     * @return the primarybytesIn value
+     */
+    public Long primarybytesIn() {
+        return this.primarybytesIn;
     }
 
     /**
-     * Set the bytesIn value.
+     * Set the primarybytesIn value.
      *
-     * @param bytesIn the bytesIn value to set
+     * @param primarybytesIn the primarybytesIn value to set
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
-    public ExpressRouteCircuitStatsInner withBytesIn(Integer bytesIn) {
-        this.bytesIn = bytesIn;
+    public ExpressRouteCircuitStatsInner withPrimarybytesIn(Long primarybytesIn) {
+        this.primarybytesIn = primarybytesIn;
         return this;
     }
 
     /**
-     * Get the bytesOut value.
+     * Get the primarybytesOut value.
      *
-     * @return the bytesOut value
+     * @return the primarybytesOut value
      */
-    public Integer bytesOut() {
-        return this.bytesOut;
+    public Long primarybytesOut() {
+        return this.primarybytesOut;
     }
 
     /**
-     * Set the bytesOut value.
+     * Set the primarybytesOut value.
      *
-     * @param bytesOut the bytesOut value to set
+     * @param primarybytesOut the primarybytesOut value to set
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
-    public ExpressRouteCircuitStatsInner withBytesOut(Integer bytesOut) {
-        this.bytesOut = bytesOut;
+    public ExpressRouteCircuitStatsInner withPrimarybytesOut(Long primarybytesOut) {
+        this.primarybytesOut = primarybytesOut;
+        return this;
+    }
+
+    /**
+     * Get the secondarybytesIn value.
+     *
+     * @return the secondarybytesIn value
+     */
+    public Long secondarybytesIn() {
+        return this.secondarybytesIn;
+    }
+
+    /**
+     * Set the secondarybytesIn value.
+     *
+     * @param secondarybytesIn the secondarybytesIn value to set
+     * @return the ExpressRouteCircuitStatsInner object itself.
+     */
+    public ExpressRouteCircuitStatsInner withSecondarybytesIn(Long secondarybytesIn) {
+        this.secondarybytesIn = secondarybytesIn;
+        return this;
+    }
+
+    /**
+     * Get the secondarybytesOut value.
+     *
+     * @return the secondarybytesOut value
+     */
+    public Long secondarybytesOut() {
+        return this.secondarybytesOut;
+    }
+
+    /**
+     * Set the secondarybytesOut value.
+     *
+     * @param secondarybytesOut the secondarybytesOut value to set
+     * @return the ExpressRouteCircuitStatsInner object itself.
+     */
+    public ExpressRouteCircuitStatsInner withSecondarybytesOut(Long secondarybytesOut) {
+        this.secondarybytesOut = secondarybytesOut;
         return this;
     }
 

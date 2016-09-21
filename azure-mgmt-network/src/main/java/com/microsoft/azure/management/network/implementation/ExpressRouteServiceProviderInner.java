@@ -32,7 +32,7 @@ public class ExpressRouteServiceProviderInner extends Resource {
     private List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered;
 
     /**
-     * Gets or sets Provisioning state of the resource.
+     * Gets provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

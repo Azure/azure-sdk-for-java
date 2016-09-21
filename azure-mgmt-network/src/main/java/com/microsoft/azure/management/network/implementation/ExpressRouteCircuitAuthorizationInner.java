@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.AuthorizationUseStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -28,10 +29,10 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      * 'Available', 'InUse'.
      */
     @JsonProperty(value = "properties.authorizationUseStatus")
-    private String authorizationUseStatus;
+    private AuthorizationUseStatus authorizationUseStatus;
 
     /**
-     * Gets or sets Provisioning state of the PublicIP resource
+     * Gets provisioning state of the PublicIP resource
      * Updating/Deleting/Failed.
      */
     @JsonProperty(value = "properties.provisioningState")
@@ -73,7 +74,7 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      *
      * @return the authorizationUseStatus value
      */
-    public String authorizationUseStatus() {
+    public AuthorizationUseStatus authorizationUseStatus() {
         return this.authorizationUseStatus;
     }
 
@@ -83,7 +84,7 @@ public class ExpressRouteCircuitAuthorizationInner extends SubResource {
      * @param authorizationUseStatus the authorizationUseStatus value to set
      * @return the ExpressRouteCircuitAuthorizationInner object itself.
      */
-    public ExpressRouteCircuitAuthorizationInner withAuthorizationUseStatus(String authorizationUseStatus) {
+    public ExpressRouteCircuitAuthorizationInner withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus) {
         this.authorizationUseStatus = authorizationUseStatus;
         return this;
     }

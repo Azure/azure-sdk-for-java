@@ -17,19 +17,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineScaleSetSkuInner {
     /**
-     * Gets the type of resource the sku applies to.
+     * the type of resource the sku applies to.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /**
-     * Gets the Sku.
+     * the Sku.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
 
     /**
-     * Gets available scaling information.
+     * available scaling information.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetSkuCapacity capacity;

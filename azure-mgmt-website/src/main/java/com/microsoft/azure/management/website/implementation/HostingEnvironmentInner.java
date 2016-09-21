@@ -14,7 +14,6 @@ import com.microsoft.azure.management.website.VirtualNetworkProfile;
 import com.microsoft.azure.management.website.InternalLoadBalancingMode;
 import java.util.List;
 import com.microsoft.azure.management.website.VirtualIPMapping;
-import com.microsoft.azure.management.website.StampCapacity;
 import com.microsoft.azure.management.website.NetworkAccessControlEntry;
 import com.microsoft.azure.management.website.NameValuePair;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -195,7 +194,7 @@ public class HostingEnvironmentInner extends Resource {
      * Current total, used, and available worker capacities.
      */
     @JsonProperty(value = "properties.environmentCapacities")
-    private List<StampCapacity> environmentCapacities;
+    private List<StampCapacityInner> environmentCapacities;
 
     /**
      * Access control list for controlling traffic to the hostingEnvironment
@@ -730,7 +729,7 @@ public class HostingEnvironmentInner extends Resource {
      *
      * @return the environmentCapacities value
      */
-    public List<StampCapacity> environmentCapacities() {
+    public List<StampCapacityInner> environmentCapacities() {
         return this.environmentCapacities;
     }
 
@@ -740,7 +739,7 @@ public class HostingEnvironmentInner extends Resource {
      * @param environmentCapacities the environmentCapacities value to set
      * @return the HostingEnvironmentInner object itself.
      */
-    public HostingEnvironmentInner withEnvironmentCapacities(List<StampCapacity> environmentCapacities) {
+    public HostingEnvironmentInner withEnvironmentCapacities(List<StampCapacityInner> environmentCapacities) {
         this.environmentCapacities = environmentCapacities;
         return this;
     }

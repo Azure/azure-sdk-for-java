@@ -7,8 +7,20 @@ var fs = require('fs');
 var mappings = {
     'compute': {
         'dir': 'azure-mgmt-compute',
-        'source': 'arm-compute/2015-06-15/swagger/compute.json',
+        'source': 'arm-compute/2016-03-30/swagger/compute.json',
         'package': 'com.microsoft.azure.management.compute',
+        'args': '-FT 1'
+    },
+    'graphrbac': {
+        'dir': 'azure-mgmt-graph-rbac',
+        'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
+        'package': 'com.microsoft.azure.management.graphrbac',
+        'args': '-FT 1'
+    },
+    'arm-keyvault': {
+        'dir': 'azure-mgmt-keyvault',
+        'source': 'arm-keyvault/2015-06-01/swagger/keyvault.json',
+        'package': 'com.microsoft.azure.management.keyvault',
         'args': '-FT 1'
     },
     'storage': {
@@ -34,7 +46,7 @@ var mappings = {
     },
     'network': {
         'dir': 'azure-mgmt-network',
-        'source': 'arm-network/2015-06-15/swagger/network.json',
+        'source': 'arm-network/2016-06-01/swagger/network.json',
         'package': 'com.microsoft.azure.management.network',
         'args': '-FT 1'
     },
@@ -42,6 +54,24 @@ var mappings = {
         'dir': 'azure-mgmt-website',
         'source': 'arm-web/2015-08-01/swagger/service.json',
         'package': 'com.microsoft.azure.management.website',
+        'args': '-FT 1'
+    },
+    'graph.rbac': {
+        'dir': 'azure-mgmt-graph-rbac',
+        'source': 'arm-graphrbac/compositeGraphRbacManagementClient.json',
+        'package': 'com.microsoft.azure.management.graph.rbac',
+        'args': '-FT 1'
+    },
+    'redis': {
+        'dir': 'azure-mgmt-redis',
+        'source': 'arm-redis/2016-04-01/swagger/redis.json',
+        'package': 'com.microsoft.azure.management.redis',
+        'args': '-FT 1'
+    },
+    'search': {
+        'dir': 'azure-mgmt-search',
+        'source': 'arm-search/2015-02-28/swagger/search.json',
+        'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },
     'datalake.store.filesystem': {
@@ -76,15 +106,28 @@ var mappings = {
     },
     'batchService': {
         'dir': 'azure-batch',
-        'source': 'batch/2016-02-01.3.0/swagger/BatchService.json',
+        'source': 'batch/2016-07-01.3.1/swagger/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
+        'args': '-FT 1'
+    },
+    'keyvault': {
+        'dir': 'azure-keyvault',
+        'source': 'keyvault/2015-06-01/swagger/keyvault.json',
+        'package': 'com.microsoft.azure.keyvault',
+        'fluent': false,
+        'args': '-FT 1'
+    },
+    'batch': {
+        'dir': 'azure-mgmt-batch',
+        'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
+        'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
     }
 };
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--modeler <modeler name>] [--autorest-args <AutoRest arguments>]\n");
     console.log("--spec-root");
     console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master\"");
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
@@ -92,27 +135,38 @@ gulp.task('default', function() {
         console.log('\t' + i.magenta);
     });
     console.log("--autorest\n\tThe version of AutoRest. E.g. 0.15.0, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
+    console.log("--modeler\n\tSpecifies which modeler to use. Default is 'Swagger'");
+    console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
+
+var isWindows = (process.platform.lastIndexOf('win') === 0);
+var isLinux= (process.platform.lastIndexOf('linux') === 0);
+var isMac = (process.platform.lastIndexOf('darwin') === 0);
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.16.0-Nightly20160413'; // default
+var autoRestVersion = '0.17.0-Nightly20160830'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
+var modeler = 'Swagger'; // default
+if (args['modeler'] !== undefined) {
+	modeler = args['modeler'];
+}
+var autoRestArgs = args['autorest-args'];
 var autoRestExe;
 
 gulp.task('codegen', function(cb) {
     var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
         autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        exec('tools\\nuget.exe install autorest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
+        exec('tools\\nuget.exe install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             handleInput(projects, cb);
         });
     } else {
-        autoRestExe = autoRestVersion + "/binaries/net45/AutoRest.exe";
+        autoRestExe = autoRestVersion + "/" + GetAutoRestFolder() + "AutoRest.exe";
         if (process.platform !== 'win32') {
             autoRestExe = "mono " + autoRestExe;
         }
@@ -146,8 +200,13 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
-    cmd = autoRestExe + ' -Modeler Swagger -CodeGenerator ' + generator + ' -Namespace ' + mappings[project].package + ' -Input ' + specRoot + '/' + mappings[project].source + 
-            ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + ' -Header MICROSOFT_MIT_NO_CODEGEN';
+    cmd = autoRestExe + ' -Modeler ' + modeler + 
+                        ' -CodeGenerator ' + generator + 
+                        ' -Namespace ' + mappings[project].package + 
+                        ' -Input ' + specRoot + '/' + mappings[project].source + 
+                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
+                        ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+                        ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
     }
@@ -174,3 +233,16 @@ var deleteFolderRecursive = function(path) {
         });
     }
 };
+
+function GetAutoRestFolder() {
+  if (isWindows) {
+    return "src/core/AutoRest/bin/Debug/net451/win7-x64/";
+  }
+  if( isMac ) {
+	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
+  } 
+  if( isLinux ) { 
+	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"
+  }
+   throw new Error("Unknown platform?");
+}

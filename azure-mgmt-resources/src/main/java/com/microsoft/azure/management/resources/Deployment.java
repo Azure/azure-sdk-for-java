@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -23,6 +25,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure deployment.
  */
+@LangDefinition(ContainerName = "~/")
 public interface Deployment extends
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
@@ -97,28 +100,25 @@ public interface Deployment extends
     /**
      * @return the operations related to this deployment
      */
+    @LangMethodDefinition(AsType = LangMethodType.Property)
     DeploymentOperations deploymentOperations();
 
     /**
      * Cancel a currently running template deployment.
-     *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      */
-    void cancel() throws CloudException, IOException;
+    void cancel();
 
     /**
      * Exports a deployment template.
      *
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      * @return the export result
      */
-    DeploymentExportResult exportTemplate() throws CloudException, IOException;
+    DeploymentExportResult exportTemplate();
 
     /**
      * Container interface for all the deployment definitions.
      */
+    @LangDefinition(ContainerName = "~/Deployment.Definition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -131,6 +131,7 @@ public interface Deployment extends
     /**
      * Grouping of all the deployment definition stages.
      */
+    @LangDefinition(ContainerName = "~/Deployment.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of deployment definition.
@@ -237,13 +238,14 @@ public interface Deployment extends
          * deployment in the cloud, but exposing additional optional inputs to specify.
          */
         interface WithCreate extends Creatable<Deployment> {
-            Deployment beginCreate() throws Exception;
+            Deployment beginCreate();
         }
     }
 
     /**
      * Grouping of all the deployment updates stages.
      */
+    @LangDefinition(ContainerName = "~/Deployment.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A deployment update allowing to change the deployment mode.
@@ -327,6 +329,7 @@ public interface Deployment extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the deployment in Azure.
      */
+    @LangDefinition(ContainerName = "~/Deployment.Update")
     interface Update extends
             Appliable<Deployment>,
             UpdateStages.WithTemplate,

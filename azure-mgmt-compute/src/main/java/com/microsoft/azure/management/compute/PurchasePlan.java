@@ -16,19 +16,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PurchasePlan {
     /**
-     * Gets or sets the publisher ID.
+     * the publisher ID.
      */
     @JsonProperty(required = true)
     private String publisher;
 
     /**
-     * Gets or sets the plan ID.
+     * the plan ID.
      */
     @JsonProperty(required = true)
     private String name;
 
     /**
-     * Gets or sets the product ID.
+     * the product ID.
      */
     @JsonProperty(required = true)
     private String product;

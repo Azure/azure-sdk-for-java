@@ -45,7 +45,7 @@ If you save such service principal-based credentials as a file, or store them in
 
 >:warning: Note: exercise caution when saving credentials in a file. Anyone that gains access to that file will have the same access privileges to Azure as your application. In general, file-based authentication is not recommended in production scenarios and should only be used as a quick shortcut to getting started in dev/test scenarios.
 
-You can create a service principal and grant it access privileges for a given subscription by following these steps:
+You can create a service principal and grant it access privileges for a given subscription by following these steps (or through [Azure PowerShell/Xplat CLI](https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal/)):
 
 1. Log into [your Azure account](http://portal.azure.com).
 1. Select **Browse > Active Directory**.
@@ -77,15 +77,15 @@ You can create a service principal and grant it access privileges for a given su
   <br/>![Save client secret](/media/auth/key-generated.png)
 1. Copy the shown key into your text file and prefix it with "`key=`", for example:
   <br>`key=01234567890123456789abcdef01234567890abcdef0123456789abcdef02345`
-1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it.
+1. In the current URL shown in your browser, select the text between the word: "Directory/" and the next slash (/) and copy it. This the ID of the active directory (tenant) where your application is being registered.
   <br/>![Tenant ID](/media/auth/tenant-id.png)
 1. Paste the copied value into your text file and prefix it with "`tenant=`", for example:
-  <br>`tenant=abcdef01-1234-dcba-9876-abcdef012345`
+  <br>`tenant=72f988bf-86f1-41af-91ab-2d7cd011db47`
   <br>This represents the Active Directory instance you selected earlier.
 1. Assuming you are using the Azure worldwide public cloud, also add the following to your text file: \(Note that this file follows the Java properties file format, so certain characters, such as colons, need to be escaped with a backslash\)<br/>
-    `managementURI=https\\://management.core.windows.net/`<br/>
-    `baseURL=https\\://management.azure.com/`</br>
-    `authURL=https\\://login.windows.net/`<br/>
+    `managementURI=https\://management.core.windows.net/`<br/>
+    `baseURL=https\://management.azure.com/`</br>
+    `authURL=https\://login.windows.net/`<br/>
   Make sure to escape the colons (:) with backslashes (\\).
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.

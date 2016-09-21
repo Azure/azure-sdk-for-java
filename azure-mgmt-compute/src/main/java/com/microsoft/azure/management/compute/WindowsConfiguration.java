@@ -15,30 +15,28 @@ import java.util.List;
  */
 public class WindowsConfiguration {
     /**
-     * Gets or sets whether VM Agent should be provisioned on the Virtual
-     * Machine.
+     * whether VM Agent should be provisioned on the Virtual Machine.
      */
     private Boolean provisionVMAgent;
 
     /**
-     * Gets or sets whether Windows updates are automatically installed on the
-     * VM.
+     * whether Windows updates are automatically installed on the VM.
      */
     private Boolean enableAutomaticUpdates;
 
     /**
-     * Gets or sets the Time Zone of the VM.
+     * the Time Zone of the VM.
      */
     private String timeZone;
 
     /**
-     * Gets or sets the additional base-64 encoded XML formatted information
-     * that can be included in the Unattend.xml file.
+     * the additional base-64 encoded XML formatted information that can be
+     * included in the Unattend.xml file.
      */
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /**
-     * Gets or sets the Windows Remote Management configuration of the VM.
+     * the Windows Remote Management configuration of the VM.
      */
     private WinRMConfiguration winRM;
 

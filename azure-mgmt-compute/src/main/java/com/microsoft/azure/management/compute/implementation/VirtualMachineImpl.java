@@ -1,41 +1,42 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
+import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DataDisk;
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
-import com.microsoft.azure.management.compute.PowerState;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
-import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.DiagnosticsProfile;
+import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.DiskEncryptionSettings;
+import com.microsoft.azure.management.compute.HardwareProfile;
+import com.microsoft.azure.management.compute.ImageReference;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
-import com.microsoft.azure.management.compute.Plan;
-import com.microsoft.azure.management.compute.HardwareProfile;
-import com.microsoft.azure.management.compute.StorageProfile;
-import com.microsoft.azure.management.compute.OSProfile;
-import com.microsoft.azure.management.compute.DiagnosticsProfile;
-import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
-import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.ImageReference;
-import com.microsoft.azure.management.compute.WinRMListener;
-import com.microsoft.azure.management.compute.CachingTypes;
-import com.microsoft.azure.management.compute.DiskEncryptionSettings;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.VirtualHardDisk;
-import com.microsoft.azure.management.compute.OSDisk;
-import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
+import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
+import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.LinuxConfiguration;
-import com.microsoft.azure.management.compute.WindowsConfiguration;
-import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.OSDisk;
+import com.microsoft.azure.management.compute.OSProfile;
+import com.microsoft.azure.management.compute.OperatingSystemTypes;
+import com.microsoft.azure.management.compute.Plan;
+import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
-import com.microsoft.azure.management.compute.NetworkInterfaceReference;
+import com.microsoft.azure.management.compute.StorageProfile;
+import com.microsoft.azure.management.compute.VirtualHardDisk;
+import com.microsoft.azure.management.compute.VirtualMachine;
+import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
+import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
+import com.microsoft.azure.management.compute.VirtualMachineSize;
+import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.compute.WinRMConfiguration;
+import com.microsoft.azure.management.compute.WinRMListener;
+import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -45,23 +46,22 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.RestException;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.exceptions.Exceptions;
+import rx.functions.Func1;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
  * The implementation for {@link VirtualMachine} and its create and update interfaces.
  */
+@LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
             VirtualMachine,
@@ -113,10 +113,13 @@ class VirtualMachineImpl
     private NetworkInterface.DefinitionStages.WithCreate nicDefinitionWithCreate;
     // Virtual machine size converter
     private final PagedListConverter<VirtualMachineSizeInner, VirtualMachineSize> virtualMachineSizeConverter;
+    // The entry point to manage extensions associated with the virtual machine
+    private VirtualMachineExtensionsImpl virtualMachineExtensions;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
                        VirtualMachinesInner client,
+                       VirtualMachineExtensionsInner extensionsClient,
                        final ComputeManager computeManager,
                        final StorageManager storageManager,
                        final NetworkManager networkManager) {
@@ -135,90 +138,91 @@ class VirtualMachineImpl
                 return new VirtualMachineSizeImpl(inner);
             }
         };
+        this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(extensionsClient, this);
         initializeDataDisks();
     }
 
     // Verbs
 
     @Override
-    public VirtualMachine refresh() throws Exception {
-        ServiceResponse<VirtualMachineInner> response =
+    public VirtualMachine refresh() {
+        VirtualMachineInner response =
                 this.client.get(this.resourceGroupName(), this.name());
-        this.setInner(response.getBody());
+        this.setInner(response);
         clearCachedRelatedResources();
         initializeDataDisks();
+        this.virtualMachineExtensions.refresh();
         return this;
     }
 
     @Override
-    public VirtualMachineImpl apply() throws Exception {
-        return this.create();
+    public Observable<VirtualMachine> applyUpdateAsync() {
+        return this.createResourceAsync();
     }
 
     @Override
-    public ServiceCall applyAsync(ServiceCallback<VirtualMachine> callback) {
-        return this.createAsync(callback);
-    }
-
-    @Override
-    public void deallocate() throws CloudException, IOException, InterruptedException {
+    public void deallocate() {
         this.client.deallocate(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void generalize() throws CloudException, IOException {
+    public void generalize() {
         this.client.generalize(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void powerOff() throws CloudException, IOException, InterruptedException {
+    public void powerOff() {
         this.client.powerOff(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void restart() throws CloudException, IOException, InterruptedException {
+    public void restart() {
         this.client.restart(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void start() throws CloudException, IOException, InterruptedException {
+    public void start() {
         this.client.start(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public void redeploy() throws CloudException, IOException, InterruptedException {
+    public void redeploy() {
         this.client.redeploy(this.resourceGroupName(), this.name());
     }
 
     @Override
-    public PagedList<VirtualMachineSize> availableSizes() throws CloudException, IOException {
+    public PagedList<VirtualMachineSize> availableSizes() {
         PageImpl<VirtualMachineSizeInner> page = new PageImpl<>();
-        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()).getBody());
+        page.setItems(this.client.listAvailableSizes(this.resourceGroupName(), this.name()));
         page.setNextPageLink(null);
         return this.virtualMachineSizeConverter.convert(new PagedList<VirtualMachineSizeInner>(page) {
             @Override
-            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) throws RestException, IOException {
+            public Page<VirtualMachineSizeInner> nextPage(String nextPageLink) {
                 return null;
             }
         });
     }
 
     @Override
-    public String capture(String containerName, boolean overwriteVhd) throws CloudException, IOException, InterruptedException {
+    public String capture(String containerName, boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
-        ServiceResponse<VirtualMachineCaptureResultInner> captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
-        return mapper.writeValueAsString(captureResult.getBody().output());
+        try {
+            return mapper.writeValueAsString(captureResult.output());
+        } catch (JsonProcessingException e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
     @Override
-    public VirtualMachineInstanceView refreshInstanceView() throws CloudException, IOException {
+    public VirtualMachineInstanceView refreshInstanceView() {
         this.virtualMachineInstanceView = this.client.get(this.resourceGroupName(),
                 this.name(),
-                InstanceViewTypes.INSTANCE_VIEW).getBody().instanceView();
+                InstanceViewTypes.INSTANCE_VIEW).instanceView();
         return this.virtualMachineInstanceView;
     }
 
@@ -493,13 +497,13 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withSize(String sizeName) {
-        this.inner().hardwareProfile().withVmSize(sizeName);
+        this.inner().hardwareProfile().withVmSize(new VirtualMachineSizeTypes(sizeName));
         return this;
     }
 
     @Override
     public VirtualMachineImpl withSize(VirtualMachineSizeTypes size) {
-        this.inner().hardwareProfile().withVmSize(size.toString());
+        this.inner().hardwareProfile().withVmSize(size);
         return this;
     }
 
@@ -578,8 +582,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         Creatable<StorageAccount> definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -632,6 +636,13 @@ class VirtualMachineImpl
         return this;
     }
 
+    // Virtual machine optional extension settings
+
+    @Override
+    public VirtualMachineExtensionImpl defineNewExtension(String name) {
+        return this.virtualMachineExtensions.define(name);
+    }
+
     // Virtual machine update only settings
 
     @Override
@@ -677,7 +688,7 @@ class VirtualMachineImpl
         if (this.inner().networkProfile() != null
                 && this.inner().networkProfile().networkInterfaces() != null) {
             int idx = -1;
-            for (NetworkInterfaceReference nicReference : this.inner().networkProfile().networkInterfaces()) {
+            for (NetworkInterfaceReferenceInner nicReference : this.inner().networkProfile().networkInterfaces()) {
                 idx++;
                 if (!nicReference.primary()
                         && name.equalsIgnoreCase(ResourceUtils.nameFromResourceId(nicReference.id()))) {
@@ -686,6 +697,17 @@ class VirtualMachineImpl
                 }
             }
         }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineExtensionImpl updateExtension(String name) {
+        return this.virtualMachineExtensions.update(name);
+    }
+
+    @Override
+    public VirtualMachineImpl withoutExtension(String name) {
+        this.virtualMachineExtensions.remove(name);
         return this;
     }
 
@@ -700,7 +722,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public String size() {
+    public VirtualMachineSizeTypes size() {
         return inner().hardwareProfile().vmSize();
     }
 
@@ -735,17 +757,16 @@ class VirtualMachineImpl
     }
 
     @Override
-    public NetworkInterface primaryNetworkInterface() throws CloudException, IOException {
+    public NetworkInterface primaryNetworkInterface() {
         if (this.primaryNetworkInterface == null) {
             String primaryNicId = primaryNetworkInterfaceId();
-            this.primaryNetworkInterface = this.networkManager.networkInterfaces()
-                    .getByGroup(ResourceUtils.groupFromResourceId(primaryNicId), ResourceUtils.nameFromResourceId(primaryNicId));
+            this.primaryNetworkInterface = this.networkManager.networkInterfaces().getById(primaryNicId);
         }
         return this.primaryNetworkInterface;
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress primaryPublicIpAddress() {
         if (this.primaryPublicIpAddress == null) {
             this.primaryPublicIpAddress = this.primaryNetworkInterface().primaryPublicIpAddress();
         }
@@ -755,7 +776,7 @@ class VirtualMachineImpl
     @Override
     public List<String> networkInterfaceIds() {
         List<String> nicIds = new ArrayList<>();
-        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
+        for (NetworkInterfaceReferenceInner nicRef : inner().networkProfile().networkInterfaces()) {
             nicIds.add(nicRef.id());
         }
         return nicIds;
@@ -763,12 +784,31 @@ class VirtualMachineImpl
 
     @Override
     public String primaryNetworkInterfaceId() {
-        for (NetworkInterfaceReference nicRef : inner().networkProfile().networkInterfaces()) {
-            if (nicRef.primary() != null && nicRef.primary()) {
-                return nicRef.id();
+        final List<NetworkInterfaceReferenceInner> nicRefs = this.inner().networkProfile().networkInterfaces();
+        String primaryNicRefId = null;
+
+        if (nicRefs.size() == 1) {
+            // One NIC so assume it to be primary
+            primaryNicRefId = nicRefs.get(0).id();
+        } else if (nicRefs.size() == 0) {
+            // No NICs so null
+            primaryNicRefId = null;
+        } else {
+            // Find primary interface as flagged by Azure
+            for (NetworkInterfaceReferenceInner nicRef : inner().networkProfile().networkInterfaces()) {
+                if (nicRef.primary() != null && nicRef.primary()) {
+                    primaryNicRefId = nicRef.id();
+                    break;
+                }
+            }
+
+            // If Azure didn't flag any NIC as primary then assume the first one
+            if (primaryNicRefId == null) {
+                primaryNicRefId = nicRefs.get(0).id();
             }
         }
-        return null;
+
+        return primaryNicRefId;
     }
 
     @Override
@@ -790,8 +830,8 @@ class VirtualMachineImpl
     }
 
     @Override
-    public List<VirtualMachineExtensionInner> resources() {
-        return inner().resources();
+    public Map<String, VirtualMachineExtension> extensions() {
+        return this.virtualMachineExtensions.asMap();
     }
 
     @Override
@@ -815,7 +855,12 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineInstanceView instanceView() throws CloudException, IOException {
+    public String vmId() {
+        return inner().vmId();
+    }
+
+    @Override
+    public VirtualMachineInstanceView instanceView() {
         if (this.virtualMachineInstanceView == null) {
             this.refreshInstanceView();
         }
@@ -831,68 +876,51 @@ class VirtualMachineImpl
         return null;
     }
 
-    /**************************************************
-     * .
-     * CreatableImpl::createResource
-     **************************************************/
-
+    // CreatorTaskGroup.ResourceCreator implementation
     @Override
-    protected void createResource() throws Exception {
-        if (isInCreateMode()) {
-            setOSDiskAndOSProfileDefaults();
-            setHardwareProfileDefaults();
-        }
-        DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
-
-        handleStorageSettings();
-        handleNetworkSettings();
-        handleAvailabilitySettings();
-
-        ServiceResponse<VirtualMachineInner> serviceResponse = this.client.createOrUpdate(this.resourceGroupName(), this.vmName, this.inner());
-        this.setInner(serviceResponse.getBody());
-        clearCachedRelatedResources();
-        initializeDataDisks();
-    }
-
-    @Override
-    protected ServiceCall createResourceAsync(final ServiceCallback<Void> callback) {
+    public Observable<VirtualMachine> createResourceAsync() {
         if (isInCreateMode()) {
             setOSDiskAndOSProfileDefaults();
             setHardwareProfileDefaults();
         }
         DataDiskImpl.setDataDisksDefaults(this.dataDisks, this.vmName);
         final VirtualMachineImpl self = this;
-        final ServiceCall call = new ServiceCall(null);
-        handleStorageSettingsAsync(new ServiceCallback<Void>() {
-            @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<Void> result) {
-                handleNetworkSettings();
-                handleAvailabilitySettings();
-                call.newCall(client.createOrUpdateAsync(resourceGroupName(), vmName, inner(),
-                        Utils.fromVoidCallback(self, new ServiceCallback<Void>() {
-                            @Override
-                            public void failure(Throwable t) {
-                                callback.failure(t);
-                            }
-
-                            @Override
-                            public void success(ServiceResponse<Void> result) {
-                                clearCachedRelatedResources();
-                                initializeDataDisks();
-                                callback.success(result);
-                            }
-                        })).getCall());
-            }
-        });
-        return call;
+        return handleStorageSettingsAsync()
+                .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
+                        handleNetworkSettings();
+                        handleAvailabilitySettings();
+                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
+                                        self.setInner(virtualMachineInner);
+                                        clearCachedRelatedResources();
+                                        initializeDataDisks();
+                                        return self;
+                                    }
+                                });
+                    }
+                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                    @Override
+                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                        return self.virtualMachineExtensions.commitAndGetAllAsync()
+                                .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
+                                    @Override
+                                    public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
+                                        return self;
+                                    }
+                                });
+                    }
+                });
     }
 
     // Helpers
+    VirtualMachineImpl withExtension(VirtualMachineExtensionImpl extension) {
+        this.virtualMachineExtensions.addExtension(extension);
+        return this;
+    }
 
     VirtualMachineImpl withDataDisk(DataDiskImpl dataDisk) {
         this.inner()
@@ -956,92 +984,46 @@ class VirtualMachineImpl
         }
     }
 
-    private void handleStorageSettings() throws Exception {
-        StorageAccount storageAccount = null;
-        if (this.creatableStorageAccountKey != null) {
-            storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
-        } else if (this.existingStorageAccountToAssociate != null) {
-            storageAccount = this.existingStorageAccountToAssociate;
-        } else if (osDiskRequiresImplicitStorageAccountCreation()
-                || dataDisksRequiresImplicitStorageAccountCreation()) {
-            storageAccount = this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24))
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName())
-                    .create();
-        }
-
-        if (isInCreateMode()) {
-            if (isOSDiskFromImage(this.inner().storageProfile().osDisk())) {
-                String uri = this.inner()
-                        .storageProfile()
-                        .osDisk().vhd().uri()
-                        .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                this.inner().storageProfile().osDisk().vhd().withUri(uri);
-            }
-            DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
-        } else {
-            if (storageAccount != null) {
-                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, storageAccount, this.vmName);
-            } else {
-                DataDiskImpl.ensureDisksVhdUri(this.dataDisks, this.vmName);
-            }
-        }
-    }
-
-    private void handleStorageSettingsAsync(final ServiceCallback<Void> callback) {
-        final ServiceCallback<StorageAccount> storageAccountServiceCallback = new ServiceCallback<StorageAccount>() {
+    private Observable<StorageAccount> handleStorageSettingsAsync() {
+        final Func1<StorageAccount, StorageAccount> storageAccountFunc = new Func1<StorageAccount, StorageAccount>() {
             @Override
-            public void failure(Throwable t) {
-                callback.failure(t);
-            }
-
-            @Override
-            public void success(ServiceResponse<StorageAccount> result) {
+            public StorageAccount call(StorageAccount storageAccount) {
                 if (isInCreateMode()) {
                     if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
                         String uri = inner()
                                 .storageProfile()
                                 .osDisk().vhd().uri()
-                                .replaceFirst("\\{storage-base-url}", result.getBody().endPoints().primary().blob());
+                                .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
                         inner().storageProfile().osDisk().vhd().withUri(uri);
                     }
-                    DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                 } else {
-                    if (result.getBody() != null) {
-                        DataDiskImpl.ensureDisksVhdUri(dataDisks, result.getBody(), vmName);
+                    if (storageAccount != null) {
+                        DataDiskImpl.ensureDisksVhdUri(dataDisks, storageAccount, vmName);
                     } else {
                         DataDiskImpl.ensureDisksVhdUri(dataDisks, vmName);
                     }
                 }
-                callback.success(new ServiceResponse<Void>(result.getHeadResponse()));
+                return storageAccount;
             }
         };
+
         if (this.creatableStorageAccountKey != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    (StorageAccount) this.createdResource(this.creatableStorageAccountKey), null));
+            return Observable.just((StorageAccount) this.createdResource(this.creatableStorageAccountKey))
+                    .map(storageAccountFunc);
         } else if (this.existingStorageAccountToAssociate != null) {
-            storageAccountServiceCallback.success(new ServiceResponse<>(
-                    this.existingStorageAccountToAssociate, null));
+            return Observable.just(this.existingStorageAccountToAssociate)
+                    .map(storageAccountFunc);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
-            this.storageManager.storageAccounts()
+            return this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync(new ServiceCallback<StorageAccount>() {
-                        @Override
-                        public void failure(Throwable t) {
-                            callback.failure(t);
-                        }
-
-                        @Override
-                        public void success(ServiceResponse<StorageAccount> result) {
-                            storageAccountServiceCallback.success(result);
-                        }
-                    });
+                    .createAsync()
+                    .map(storageAccountFunc);
         }
-
+        return Observable.just(null);
     }
 
     private void handleNetworkSettings() {
@@ -1054,7 +1036,7 @@ class VirtualMachineImpl
             }
 
             if (primaryNetworkInterface != null) {
-                NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+                NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
                 nicReference.withPrimary(true);
                 nicReference.withId(primaryNetworkInterface.id());
                 this.inner().networkProfile().networkInterfaces().add(nicReference);
@@ -1065,14 +1047,14 @@ class VirtualMachineImpl
         //
         for (String creatableSecondaryNetworkInterfaceKey : this.creatableSecondaryNetworkInterfaceKeys) {
             NetworkInterface secondaryNetworkInterface = (NetworkInterface) this.createdResource(creatableSecondaryNetworkInterfaceKey);
-            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
         }
 
         for (NetworkInterface secondaryNetworkInterface : this.existingSecondaryNetworkInterfacesToAssociate) {
-            NetworkInterfaceReference nicReference = new NetworkInterfaceReference();
+            NetworkInterfaceReferenceInner nicReference = new NetworkInterfaceReferenceInner();
             nicReference.withPrimary(false);
             nicReference.withId(secondaryNetworkInterface.id());
             this.inner().networkProfile().networkInterfaces().add(nicReference);
@@ -1163,8 +1145,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionWithNetwork;
-        if (this.newGroup != null) {
-            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionWithNetwork = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionWithNetwork = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
@@ -1181,7 +1163,7 @@ class VirtualMachineImpl
         }
         this.dataDisks = new ArrayList<>();
         for (DataDisk dataDiskInner : this.storageProfile().dataDisks()) {
-            this.dataDisks().add(new DataDiskImpl(dataDiskInner.name(), dataDiskInner, this));
+            this.dataDisks().add(new DataDiskImpl(dataDiskInner, this));
         }
     }
 
@@ -1190,8 +1172,8 @@ class VirtualMachineImpl
                 .define(name)
                 .withRegion(this.regionName());
         NetworkInterface.DefinitionStages.WithPrimaryNetwork definitionAfterGroup;
-        if (this.newGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup);
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
         } else {
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }

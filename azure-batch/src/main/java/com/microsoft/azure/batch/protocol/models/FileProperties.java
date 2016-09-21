@@ -38,8 +38,8 @@ public class FileProperties {
     private String contentType;
 
     /**
-     * The file mode attribute in octal format. This property will be returned
-     * only from a Linux compute node.
+     * The file mode attribute in octal format.
+     * This property will be returned only from a Linux compute node.
      */
     private String fileMode;
 

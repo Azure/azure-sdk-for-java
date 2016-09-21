@@ -106,7 +106,8 @@ public interface Pools {
     ServiceCall listPoolUsageMetricsAsync(final PoolListPoolUsageMetricsOptions poolListPoolUsageMetricsOptions, final ListOperationCallback<PoolUsageMetrics> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -116,7 +117,8 @@ public interface Pools {
     ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics() throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -124,7 +126,8 @@ public interface Pools {
      */
     ServiceCall getAllPoolsLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback) throws IllegalArgumentException;
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -135,7 +138,8 @@ public interface Pools {
     ServiceResponseWithHeaders<PoolStatistics, PoolGetAllPoolsLifetimeStatisticsHeaders> getAllPoolsLifetimeStatistics(PoolGetAllPoolsLifetimeStatisticsOptions poolGetAllPoolsLifetimeStatisticsOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Gets lifetime summary statistics for all of the pools in the specified account. Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Gets lifetime summary statistics for all of the pools in the specified account.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @param poolGetAllPoolsLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -496,7 +500,7 @@ public interface Pools {
      * Gets the result of evaluating an automatic scaling formula on the pool.
      *
      * @param poolId The id of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool.
+     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool. 
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -508,7 +512,7 @@ public interface Pools {
      * Gets the result of evaluating an automatic scaling formula on the pool.
      *
      * @param poolId The id of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool.
+     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool. 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -518,7 +522,7 @@ public interface Pools {
      * Gets the result of evaluating an automatic scaling formula on the pool.
      *
      * @param poolId The id of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool.
+     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool. 
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -531,7 +535,7 @@ public interface Pools {
      * Gets the result of evaluating an automatic scaling formula on the pool.
      *
      * @param poolId The id of the pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool.
+     * @param autoScaleFormula A formula for the desired number of compute nodes in the pool. 
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -587,7 +591,8 @@ public interface Pools {
     ServiceCall resizeAsync(String poolId, PoolResizeParameter poolResizeParameter, PoolResizeOptions poolResizeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @throws BatchErrorException exception thrown from REST call
@@ -598,7 +603,8 @@ public interface Pools {
     ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -607,7 +613,8 @@ public interface Pools {
      */
     ServiceCall stopResizeAsync(String poolId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
@@ -619,7 +626,8 @@ public interface Pools {
     ServiceResponseWithHeaders<Void, PoolStopResizeHeaders> stopResize(String poolId, PoolStopResizeOptions poolStopResizeOptions) throws BatchErrorException, IOException, IllegalArgumentException;
 
     /**
-     * Stops an ongoing resize operation on the pool. This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
+     * Stops an ongoing resize operation on the pool.
+     * This does not restore the pool to its previous state before the resize operation: it only stops any further changes being made, and the pool maintains its current state.
      *
      * @param poolId The id of the pool whose resizing you want to stop.
      * @param poolStopResizeOptions Additional parameters for the operation
@@ -680,7 +688,7 @@ public interface Pools {
      * Upgrades the operating system of the specified pool.
      *
      * @param poolId The id of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -692,7 +700,7 @@ public interface Pools {
      * Upgrades the operating system of the specified pool.
      *
      * @param poolId The id of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -702,7 +710,7 @@ public interface Pools {
      * Upgrades the operating system of the specified pool.
      *
      * @param poolId The id of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
      * @param poolUpgradeOSOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -715,7 +723,7 @@ public interface Pools {
      * Upgrades the operating system of the specified pool.
      *
      * @param poolId The id of the pool to upgrade.
-     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
+     * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool. 
      * @param poolUpgradeOSOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

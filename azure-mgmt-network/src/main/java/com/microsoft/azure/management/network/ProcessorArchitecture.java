@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ProcessorArchitecture.
  */
 public final class ProcessorArchitecture {
     /** Static value Amd64 for ProcessorArchitecture. */
-    public static final String AMD64 = "Amd64";
+    public static final ProcessorArchitecture AMD64 = new ProcessorArchitecture("Amd64");
 
     /** Static value X86 for ProcessorArchitecture. */
-    public static final String X86 = "X86";
+    public static final ProcessorArchitecture X86 = new ProcessorArchitecture("X86");
 
-    private ProcessorArchitecture() {
+    private String value;
+
+    /**
+     * Creates a custom value for ProcessorArchitecture.
+     * @param value the custom value
+     */
+    public ProcessorArchitecture(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ProcessorArchitecture)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ProcessorArchitecture rhs = (ProcessorArchitecture) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

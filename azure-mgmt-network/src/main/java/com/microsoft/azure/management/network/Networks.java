@@ -5,10 +5,12 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -17,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to virtual network management API in Azure.
  */
+@LangDefinition()
 public interface Networks extends
     SupportsCreating<Network.DefinitionStages.Blank>,
     SupportsListing<Network>,
@@ -24,5 +27,6 @@ public interface Networks extends
     SupportsGettingByGroup<Network>,
     SupportsGettingById<Network>,
     SupportsDeleting,
-    SupportsDeletingByGroup {
+    SupportsDeletingByGroup,
+    SupportsBatchCreation<Network> {
 }

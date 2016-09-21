@@ -16,17 +16,18 @@ public class BatchClientParallelOptions extends BatchClientBehavior {
     /// Gets or sets the maximum number of concurrent tasks enabled by this <see cref="BatchClientParallelOptions"/> instance.
     /// The default value is 1.
     /// </summary>
-    public int getMaxDegreeOfParallelism() {
+    public int maxDegreeOfParallelism() {
         return this.maxDegreeOfParallelism;
     }
 
-    public void setMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
+    public BatchClientParallelOptions withMaxDegreeOfParallelism(int maxDegreeOfParallelism) {
         if (maxDegreeOfParallelism > 0) {
             this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         }
         else {
             throw new IllegalArgumentException("maxDegreeOfParallelism");
         }
+        return this;
     }
 
     public BatchClientParallelOptions() {

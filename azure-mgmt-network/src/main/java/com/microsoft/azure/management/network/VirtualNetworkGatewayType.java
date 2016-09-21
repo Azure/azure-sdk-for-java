@@ -8,16 +8,52 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for VirtualNetworkGatewayType.
  */
 public final class VirtualNetworkGatewayType {
     /** Static value Vpn for VirtualNetworkGatewayType. */
-    public static final String VPN = "Vpn";
+    public static final VirtualNetworkGatewayType VPN = new VirtualNetworkGatewayType("Vpn");
 
     /** Static value ExpressRoute for VirtualNetworkGatewayType. */
-    public static final String EXPRESS_ROUTE = "ExpressRoute";
+    public static final VirtualNetworkGatewayType EXPRESS_ROUTE = new VirtualNetworkGatewayType("ExpressRoute");
 
-    private VirtualNetworkGatewayType() {
+    private String value;
+
+    /**
+     * Creates a custom value for VirtualNetworkGatewayType.
+     * @param value the custom value
+     */
+    public VirtualNetworkGatewayType(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    @Override
+    public String toString() {
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof VirtualNetworkGatewayType)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        VirtualNetworkGatewayType rhs = (VirtualNetworkGatewayType) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

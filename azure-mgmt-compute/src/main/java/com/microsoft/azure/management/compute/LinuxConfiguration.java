@@ -14,13 +14,12 @@ package com.microsoft.azure.management.compute;
  */
 public class LinuxConfiguration {
     /**
-     * Gets or sets whether Authentication using user name and password is
-     * allowed or not.
+     * whether Authentication using user name and password is allowed or not.
      */
     private Boolean disablePasswordAuthentication;
 
     /**
-     * Gets or sets the SSH configuration for linux VMs.
+     * the SSH configuration for linux VMs.
      */
     private SshConfiguration ssh;
 

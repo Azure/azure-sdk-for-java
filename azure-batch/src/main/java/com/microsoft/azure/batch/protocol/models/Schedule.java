@@ -17,8 +17,9 @@ import org.joda.time.Period;
 public class Schedule {
     /**
      * The earliest time at which any job may be created under this job
-     * schedule. If you do not specify a doNotRunUntil time, the schedule
-     * becomes ready to create jobs immediately.
+     * schedule.
+     * If you do not specify a doNotRunUntil time, the schedule becomes ready
+     * to create jobs immediately.
      */
     private DateTime doNotRunUntil;
 

@@ -10,6 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 import java.util.List;
 import org.joda.time.Period;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A Job Release task to run on job completion on any compute node where the
@@ -18,15 +19,20 @@ import org.joda.time.Period;
 public class JobReleaseTask {
     /**
      * A string that uniquely identifies the Job Release task within the job.
-     * The id can contain any combination of alphanumeric characters
-     * including hyphens and underscores and cannot contain more than 64
-     * characters.
+     * The id can contain any combination of alphanumeric characters including
+     * hyphens and underscores and cannot contain more than 64 characters.
      */
     private String id;
 
     /**
      * The command line of the Job Release task.
+     * The command line does not run under a shell, and therefore cannot take
+     * advantage of shell features such as environment variable expansion. If
+     * you want to take advantage of such features, you should invoke the
+     * shell in the command line, for example using "cmd /c MyCommand" in
+     * Windows or "/bin/sh -c MyCommand" in Linux.
      */
+    @JsonProperty(required = true)
     private String commandLine;
 
     /**
@@ -51,14 +57,14 @@ public class JobReleaseTask {
     /**
      * The minimum time to retain the working directory for the Job Release
      * task on the compute node. After this time, the Batch service may
-     * delete the working directory and all its contents. The default is
-     * infinite.
+     * delete the working directory and all its contents.
+     * The default is infinite.
      */
     private Period retentionTime;
 
     /**
-     * Whether to run the Job Release task in elevated mode. The default value
-     * is false.
+     * Whether to run the Job Release task in elevated mode.
+     * The default value is false.
      */
     private Boolean runElevated;
 

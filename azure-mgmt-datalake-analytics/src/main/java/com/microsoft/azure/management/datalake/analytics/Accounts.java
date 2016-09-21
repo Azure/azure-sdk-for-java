@@ -15,14 +15,16 @@ import com.microsoft.azure.management.datalake.analytics.models.AddStorageAccoun
 import com.microsoft.azure.management.datalake.analytics.models.BlobContainer;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
-import com.microsoft.azure.management.datalake.analytics.models.PageImpl;
 import com.microsoft.azure.management.datalake.analytics.models.SasTokenInfo;
 import com.microsoft.azure.management.datalake.analytics.models.StorageAccountInfo;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
+import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -49,10 +51,19 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
      * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<StorageAccountInfo> getStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback);
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @return the observable to the StorageAccountInfo object
+     */
+    Observable<ServiceResponse<StorageAccountInfo>> getStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName);
 
     /**
      * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
@@ -74,10 +85,19 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
      * @param storageAccountName The name of the Azure Storage account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to remove
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName);
 
     /**
      * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key and/or suffix.
@@ -101,10 +121,20 @@ public interface Accounts {
      * @param storageAccountName The Azure Storage account to modify
      * @param parameters The parameters containing the access key and suffix to update the storage account with.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> updateStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key and/or suffix.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to modify storage accounts in
+     * @param storageAccountName The Azure Storage account to modify
+     * @param parameters The parameters containing the access key and suffix to update the storage account with.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> updateStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters);
 
     /**
      * Updates the specified Data Lake Analytics account to add an Azure Storage account.
@@ -128,10 +158,20 @@ public interface Accounts {
      * @param storageAccountName The name of the Azure Storage account to add
      * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to add
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> addStorageAccountAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters);
 
     /**
      * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage accounts.
@@ -155,10 +195,20 @@ public interface Accounts {
      * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
      * @param containerName The name of the Azure storage container to retrieve
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<BlobContainer> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<BlobContainer> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName, final ServiceCallback<BlobContainer> serviceCallback);
+
+    /**
+     * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage accounts.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account for which to retrieve blob container.
+     * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
+     * @param containerName The name of the Azure storage container to retrieve
+     * @return the observable to the BlobContainer object
+     */
+    Observable<ServiceResponse<BlobContainer>> getStorageContainerAsync(String resourceGroupName, String accountName, String storageAccountName, String containerName);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -180,10 +230,19 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
      * @param storageAccountName The name of the Azure storage account from which to list blob containers.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<BlobContainer> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<BlobContainer>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final ListOperationCallback<BlobContainer> serviceCallback);
+
+    /**
+     * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage blob containers.
+     * @param storageAccountName The name of the Azure storage account from which to list blob containers.
+     * @return the observable to the List&lt;BlobContainer&gt; object
+     */
+    Observable<ServiceResponse<Page<BlobContainer>>> listStorageContainersAsync(final String resourceGroupName, final String accountName, final String storageAccountName);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -207,10 +266,20 @@ public interface Accounts {
      * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
      * @param containerName The name of the Azure storage container for which the SAS token is being requested.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<SasTokenInfo>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName, final ListOperationCallback<SasTokenInfo> serviceCallback);
+
+    /**
+     * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which an Azure Storage account's SAS token is being requested.
+     * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
+     * @param containerName The name of the Azure storage container for which the SAS token is being requested.
+     * @return the observable to the List&lt;SasTokenInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<SasTokenInfo>>> listSasTokensAsync(final String resourceGroupName, final String accountName, final String storageAccountName, final String containerName);
 
     /**
      * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
@@ -232,10 +301,19 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeStoreAccountInfo> getDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @return the observable to the DataLakeStoreAccountInfo object
+     */
+    Observable<ServiceResponse<DataLakeStoreAccountInfo>> getDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
 
     /**
      * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
@@ -257,10 +335,19 @@ public interface Accounts {
      * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
 
     /**
      * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
@@ -284,10 +371,20 @@ public interface Accounts {
      * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
      * @param parameters The details of the Data Lake Store account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall addDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> addDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to which to add the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to add.
+     * @param parameters The details of the Data Lake Store account.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> addDataLakeStoreAccountAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -307,10 +404,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listStorageAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<StorageAccountInfo> serviceCallback);
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
@@ -347,10 +443,27 @@ public interface Accounts {
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listStorageAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<StorageAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+
+    /**
+     * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account for which to list Azure Storage accounts.
+     * @param filter The OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @return the observable to the List&lt;StorageAccountInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<StorageAccountInfo>>> listStorageAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -370,10 +483,9 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account for which to list Data Lake Store accounts.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
      *
@@ -410,10 +522,27 @@ public interface Accounts {
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account for which to list Data Lake Store accounts.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @return the observable to the List&lt;DataLakeStoreAccountInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>> listDataLakeStoreAccountsAsync(final String resourceGroupName, final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -431,10 +560,9 @@ public interface Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
      *
@@ -469,10 +597,26 @@ public interface Accounts {
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @return the observable to the List&lt;DataLakeAnalyticsAccount&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -488,10 +632,9 @@ public interface Accounts {
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
      *
@@ -524,10 +667,25 @@ public interface Accounts {
      * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
      * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
+     *
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
+     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
+     * @return the observable to the List&lt;DataLakeAnalyticsAccount&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
 
     /**
      * Gets details of the specified Data Lake Analytics account.
@@ -547,10 +705,18 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeAnalyticsAccount> getAsync(String resourceGroupName, String accountName, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Gets details of the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to retrieve.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> getAsync(String resourceGroupName, String accountName);
 
     /**
      * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
@@ -571,10 +737,18 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> deleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to delete
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteAsync(String resourceGroupName, String accountName);
 
     /**
      * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
@@ -594,10 +768,18 @@ public interface Accounts {
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
      * @param accountName The name of the Data Lake Analytics account to delete
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String accountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Begins the delete delete process for the Data Lake Analytics account object specified by the account name.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account to delete
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> beginDeleteAsync(String resourceGroupName, String accountName);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
@@ -620,10 +802,19 @@ public interface Accounts {
      * @param name The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall createAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeAnalyticsAccount> createAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
+     * @param name The name of the Data Lake Analytics account to create.
+     * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> createAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
 
     /**
      * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
@@ -645,10 +836,19 @@ public interface Accounts {
      * @param name The name of the Data Lake Analytics account to create.
      * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall beginCreateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeAnalyticsAccount> beginCreateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Creates the specified Data Lake Analytics account. This supplies the user with computation services for Data Lake Analytics workloads.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.the account will be associated with.
+     * @param name The name of the Data Lake Analytics account to create.
+     * @param parameters Parameters supplied to the create Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginCreateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -671,10 +871,19 @@ public interface Accounts {
      * @param name The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall updateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeAnalyticsAccount> updateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param name The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> updateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
 
     /**
      * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
@@ -696,10 +905,19 @@ public interface Accounts {
      * @param name The name of the Data Lake Analytics account to update.
      * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall beginUpdateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<DataLakeAnalyticsAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters, final ServiceCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account object specified by the accountName with the contents of the account object.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param name The name of the Data Lake Analytics account to update.
+     * @param parameters Parameters supplied to the update Data Lake Analytics account operation.
+     * @return the observable to the DataLakeAnalyticsAccount object
+     */
+    Observable<ServiceResponse<DataLakeAnalyticsAccount>> beginUpdateAsync(String resourceGroupName, String name, DataLakeAnalyticsAccount parameters);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -710,7 +928,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;BlobContainer&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<BlobContainer>> listStorageContainersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<BlobContainer>> listStorageContainersNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
@@ -718,10 +936,17 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listStorageContainersNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<BlobContainer> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<BlobContainer>> listStorageContainersNextAsync(final String nextPageLink, final ServiceCall<List<BlobContainer>> serviceCall, final ListOperationCallback<BlobContainer> serviceCallback);
+
+    /**
+     * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage account combination. The response includes a link to the next page of results, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;BlobContainer&gt; object
+     */
+    Observable<ServiceResponse<Page<BlobContainer>>> listStorageContainersNextAsync(final String nextPageLink);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -732,7 +957,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;SasTokenInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<SasTokenInfo>> listSasTokensNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<SasTokenInfo>> listSasTokensNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
@@ -740,10 +965,17 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listSasTokensNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<SasTokenInfo>> listSasTokensNextAsync(final String nextPageLink, final ServiceCall<List<SasTokenInfo>> serviceCall, final ListOperationCallback<SasTokenInfo> serviceCallback);
+
+    /**
+     * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container combination.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;SasTokenInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<SasTokenInfo>>> listSasTokensNextAsync(final String nextPageLink);
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -754,7 +986,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;StorageAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<StorageAccountInfo>> listStorageAccountsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<StorageAccountInfo>> listStorageAccountsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -762,10 +994,17 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listStorageAccountsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<StorageAccountInfo>> listStorageAccountsNextAsync(final String nextPageLink, final ServiceCall<List<StorageAccountInfo>> serviceCall, final ListOperationCallback<StorageAccountInfo> serviceCallback);
+
+    /**
+     * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;StorageAccountInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<StorageAccountInfo>>> listStorageAccountsNextAsync(final String nextPageLink);
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -776,7 +1015,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeStoreAccountInfo&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
@@ -784,10 +1023,17 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listDataLakeStoreAccountsNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeStoreAccountInfo>> listDataLakeStoreAccountsNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeStoreAccountInfo>> serviceCall, final ListOperationCallback<DataLakeStoreAccountInfo> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;DataLakeStoreAccountInfo&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeStoreAccountInfo>>> listDataLakeStoreAccountsNextAsync(final String nextPageLink);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -798,7 +1044,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<DataLakeAnalyticsAccount>> listByResourceGroupNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
@@ -806,10 +1052,17 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Analytics accounts, if any, within a specific resource group. This includes a link to the next page, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;DataLakeAnalyticsAccount&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listByResourceGroupNextAsync(final String nextPageLink);
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -820,7 +1073,7 @@ public interface Accounts {
      * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the List&lt;DataLakeAnalyticsAccount&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    ServiceResponse<PageImpl<DataLakeAnalyticsAccount>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    ServiceResponse<PagedList<DataLakeAnalyticsAccount>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
 
     /**
      * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
@@ -828,9 +1081,16 @@ public interface Accounts {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback) throws IllegalArgumentException;
+    ServiceCall<List<DataLakeAnalyticsAccount>> listNextAsync(final String nextPageLink, final ServiceCall<List<DataLakeAnalyticsAccount>> serviceCall, final ListOperationCallback<DataLakeAnalyticsAccount> serviceCallback);
+
+    /**
+     * Gets the first page of Data Lake Analytics accounts, if any, within the current subscription. This includes a link to the next page, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the List&lt;DataLakeAnalyticsAccount&gt; object
+     */
+    Observable<ServiceResponse<Page<DataLakeAnalyticsAccount>>> listNextAsync(final String nextPageLink);
 
 }

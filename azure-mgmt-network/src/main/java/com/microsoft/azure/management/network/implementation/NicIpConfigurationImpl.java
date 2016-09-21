@@ -1,64 +1,77 @@
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.IPVersion;
+import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.network.NetworkInterfaceIPConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
  */
+@LangDefinition()
 class NicIpConfigurationImpl
         extends
-        ChildResourceImpl<NetworkInterfaceIPConfiguration, NetworkInterfaceImpl>
+            ChildResourceImpl<NetworkInterfaceIPConfigurationInner, NetworkInterfaceImpl, NetworkInterface>
         implements
-        NicIpConfiguration,
-        NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
-        NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
-        NicIpConfiguration.Update {
+            NicIpConfiguration,
+            NicIpConfiguration.Definition<NetworkInterface.DefinitionStages.WithCreate>,
+            NicIpConfiguration.UpdateDefinition<NetworkInterface.Update>,
+            NicIpConfiguration.Update {
     // Clients
     private final NetworkManager networkManager;
-    // flag indicating whether IP configuration is in create or update mode
+
+    // Flag indicating whether IP configuration is in create or update mode
     private final boolean isInCreateMode;
-    // unique key of a creatable virtual network to be associated with the ip configuration
+
+    // Unique key of a creatable virtual network to be associated with the ip configuration
     private String creatableVirtualNetworkKey;
-    // unique key of a creatable public IP to be associated with the ip configuration
+
+    // Unique key of a creatable public IP to be associated with the ip configuration
     private String creatablePublicIpKey;
-    // reference to an existing virtual network to be associated with the ip configuration
+
+    // Reference to an existing virtual network to be associated with the ip configuration
     private Network existingVirtualNetworkToAssociate;
-    // reference to an existing public IP to be associated with the ip configuration
+
+    // Reference to an existing public IP to be associated with the ip configuration
     private PublicIpAddress existingPublicIpAddressToAssociate;
-    // name of an existing subnet to be associated with a new or existing ip configuration
+
+    // Name of an existing subnet to be associated with a new or existing ip configuration
     private String subnetToAssociate;
-    // flag indicating to remove public IP association from the ip configuration during update
+
+    // Flag indicating to remove public IP association from the ip configuration during update
     private boolean removePrimaryPublicIPAssociation;
 
-    protected NicIpConfigurationImpl(String name,
-                                     NetworkInterfaceIPConfiguration inner,
+    // Reference to an existing load balancer whose back end pool is to be associated with this IP config
+    private LoadBalancer loadBalancerToAssociate;
+
+    protected NicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
                                      NetworkManager networkManager,
                                      final boolean isInCreateModel) {
-        super(name, inner, parent);
+        super(inner, parent);
         this.isInCreateMode = isInCreateModel;
         this.networkManager = networkManager;
     }
 
-    protected static NicIpConfigurationImpl prepareNicIpConfiguration(String name,
-                                                                      NetworkInterfaceImpl parent,
-                                                                      final NetworkManager networkManager) {
-        NetworkInterfaceIPConfiguration ipConfigurationInner = new NetworkInterfaceIPConfiguration();
+    protected static NicIpConfigurationImpl prepareNicIpConfiguration(
+            String name,
+            NetworkInterfaceImpl parent,
+            final NetworkManager networkManager) {
+        NetworkInterfaceIPConfigurationInner ipConfigurationInner = new NetworkInterfaceIPConfigurationInner();
         ipConfigurationInner.withName(name);
-        return new NicIpConfigurationImpl(name,
-                ipConfigurationInner,
+        return new NicIpConfigurationImpl(ipConfigurationInner,
                 parent,
                 networkManager,
                 true);
@@ -70,6 +83,11 @@ class NicIpConfigurationImpl
     }
 
     @Override
+    public IPVersion privateIpAddressVersion() {
+        return this.inner().privateIPAddressVersion();
+    }
+
+    @Override
     public String publicIpAddressId() {
         if (this.inner().publicIPAddress() == null) {
             return null;
@@ -78,14 +96,13 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public PublicIpAddress publicIpAddress() throws CloudException, IOException {
+    public PublicIpAddress getPublicIpAddress() {
         String id = publicIpAddressId();
         if (id == null) {
             return null;
         }
 
-        return this.networkManager.publicIpAddresses().getByGroup(
-                ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+        return this.networkManager.publicIpAddresses().getById(id);
     }
 
     @Override
@@ -94,19 +111,19 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public Network network() throws CloudException, IOException {
+    public Network getNetwork() {
         String id = subnetId();
         return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
     }
 
     @Override
-    public String privateIp() {
+    public String privateIpAddress() {
         return this.inner().privateIPAddress();
     }
 
     @Override
-    public String privateIpAllocationMethod() {
+    public IPAllocationMethod privateIpAllocationMethod() {
         return this.inner().privateIPAllocationMethod();
     }
 
@@ -150,14 +167,14 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressDynamic() {
-        this.inner().withPrivateIPAllocationMethod("Dynamic");
+        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         this.inner().withPrivateIPAddress(null);
         return this;
     }
 
     @Override
     public NicIpConfigurationImpl withPrivateIpAddressStatic(String staticPrivateIpAddress) {
-        this.inner().withPrivateIPAllocationMethod("Static");
+        this.inner().withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
         this.inner().withPrivateIPAddress(staticPrivateIpAddress);
         return this;
     }
@@ -200,7 +217,34 @@ class NicIpConfigurationImpl
         return this;
     }
 
-    protected static void ensureConfigurations(List<NicIpConfiguration> nicIpConfigurations) {
+    @Override
+    public NicIpConfigurationImpl withExistingLoadBalancer(LoadBalancer loadBalancer) {
+        this.loadBalancerToAssociate = loadBalancer;
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withBackendAddressPool(String name) {
+        for (BackendAddressPoolInner pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
+            if (pool.name().equalsIgnoreCase(name)) {
+                ensureBackendAddressPools().add(pool);
+                return this;
+            }
+        }
+
+        return null;
+    }
+
+    private List<BackendAddressPoolInner> ensureBackendAddressPools() {
+        List<BackendAddressPoolInner> poolRefs = this.inner().loadBalancerBackendAddressPools();
+        if (poolRefs == null) {
+            poolRefs = new ArrayList<>();
+            this.inner().withLoadBalancerBackendAddressPools(poolRefs);
+        }
+        return poolRefs;
+    }
+
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIpConfigurations) {
         for (NicIpConfiguration nicIpConfiguration : nicIpConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIpConfiguration;
             config.inner().withSubnet(config.subnetToAssociate());
@@ -297,5 +341,11 @@ class NicIpConfigurationImpl
             return this.inner().publicIPAddress();
         }
         return null;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withPrivateIpVersion(IPVersion ipVersion) {
+        this.inner().withPrivateIPAddressVersion(ipVersion);
+        return this;
     }
 }

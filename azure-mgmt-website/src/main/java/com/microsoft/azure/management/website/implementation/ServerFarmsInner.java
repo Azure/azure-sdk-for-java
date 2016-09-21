@@ -10,6 +10,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
@@ -18,13 +19,10 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -35,8 +33,9 @@ import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
-import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -66,87 +65,99 @@ public final class ServerFarmsInner {
     interface ServerFarmsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms")
-        Call<ResponseBody> getServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarms(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Call<ResponseBody> getServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Call<ResponseBody> createOrUpdateServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ServerFarmWithRichSkuInner serverFarmEnvelope, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ServerFarmWithRichSkuInner serverFarmEnvelope, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Call<ResponseBody> beginCreateOrUpdateServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ServerFarmWithRichSkuInner serverFarmEnvelope, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdateServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body ServerFarmWithRichSkuInner serverFarmEnvelope, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metrics")
-        Call<ResponseBody> getServerFarmMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarmMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metricdefinitions")
-        Call<ResponseBody> getServerFarmMetricDefintions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarmMetricDefintions(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections")
-        Call<ResponseBody> getVnetsForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getVnetsForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}")
-        Call<ResponseBody> getVnetFromServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getVnetFromServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes")
-        Call<ResponseBody> getRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        Call<ResponseBody> getRouteForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRouteForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        Call<ResponseBody> createOrUpdateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
-        Call<ResponseBody> updateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateVnetRoute(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("routeName") String routeName, @Path("subscriptionId") String subscriptionId, @Body VnetRouteInner route, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> getServerFarmVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarmVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/gateways/{gatewayName}")
-        Call<ResponseBody> updateServerFarmVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateServerFarmVnetGateway(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("gatewayName") String gatewayName, @Path("subscriptionId") String subscriptionId, @Body VnetGatewayInner connectionEnvelope, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites")
-        Call<ResponseBody> getServerFarmSites(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarmSites(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/workers/{workerName}/reboot")
-        Call<ResponseBody> rebootWorkerForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerName") String workerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> rebootWorkerForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("workerName") String workerName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites")
-        Call<ResponseBody> restartSitesForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> restartSitesForServerFarm(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("softRestart") Boolean softRestart, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/operationresults/{operationId}")
-        Call<ResponseBody> getServerFarmOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerFarmOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET
-        Call<ResponseBody> getServerFarmSitesNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getServerFarmsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getServerFarmMetricsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getServerFarmMetricDefintionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> getServerFarmSitesNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -154,12 +165,80 @@ public final class ServerFarmsInner {
      * Gets collection of App Service Plans in a resource group for a given subscription.
      *
      * @param resourceGroupName Name of resource group
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<ServerFarmCollectionInner> getServerFarms(String resourceGroupName) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getServerFarms(final String resourceGroupName) {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getServerFarmsSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
+                return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getServerFarmsAsync(final String resourceGroupName, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmsSinglePageAsync(resourceGroupName),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<Page<ServerFarmWithRichSkuInner>> getServerFarmsAsync(final String resourceGroupName) {
+        return getServerFarmsWithServiceResponseAsync(resourceGroupName)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param resourceGroupName Name of resource group
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsWithServiceResponseAsync(final String resourceGroupName) {
+        return getServerFarmsSinglePageAsync(resourceGroupName)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param resourceGroupName Name of resource group
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -169,52 +248,23 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarms(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmsDelegate(call.execute());
-    }
-
-    /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmsAsync(String resourceGroupName, final ServiceCallback<ServerFarmCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarms(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmCollectionInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getServerFarms(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getServerFarmsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
-    private ServiceResponse<ServerFarmCollectionInner> getServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerFarmCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServerFarmCollectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getServerFarmsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -224,12 +274,48 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmWithRichSkuInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> getServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner getServerFarm(String resourceGroupName, String name) {
+        return getServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets specified App Service Plan in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServerFarmWithRichSkuInner> getServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(getServerFarmWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets specified App Service Plan in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServerFarmWithRichSkuInner> getServerFarmAsync(String resourceGroupName, String name) {
+        return getServerFarmWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets specified App Service Plan in a resource group.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> getServerFarmWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -242,52 +328,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Gets specified App Service Plan in a resource group.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSkuInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFarmWithRichSkuInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServerFarmWithRichSkuInner> clientResponse = getServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> getServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -303,32 +355,10 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServerFarmWithRichSkuInner object wrapped in ServiceResponse if successful.
+     * @return the ServerFarmWithRichSkuInner object  if successful.
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (serverFarmEnvelope == null) {
-            throw new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(serverFarmEnvelope);
-        final Boolean allowPendingState = null;
-        Response<ResponseBody> result = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType());
+    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
+        return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).toBlocking().last().getBody();
     }
 
     /**
@@ -338,58 +368,38 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (serverFarmEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(serverFarmEnvelope, serviceCallback);
-        final Boolean allowPendingState = null;
-        Call<ResponseBody> call = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    public ServiceCall<ServerFarmWithRichSkuInner> createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope), serviceCallback);
     }
+
     /**
      * Creates or updates an App Service Plan.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @throws InterruptedException exception thrown when long running operation is interrupted
-     * @return the ServerFarmWithRichSkuInner object wrapped in ServiceResponse if successful.
+     * @return the observable for the request
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) throws CloudException, IOException, IllegalArgumentException, InterruptedException {
+    public Observable<ServerFarmWithRichSkuInner> createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
+        return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> createOrUpdateServerFarmWithServiceResponseAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -406,8 +416,21 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(serverFarmEnvelope);
-        Response<ResponseBody> result = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).execute();
-        return client.getAzureClient().getPutOrPatchResult(result, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType());
+        final Boolean allowPendingState = null;
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType());
+    }
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @return the ServerFarmWithRichSkuInner object if successful.
+     */
+    public ServerFarmWithRichSkuInner createOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
+        return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).toBlocking().last().getBody();
     }
 
     /**
@@ -418,42 +441,10 @@ public final class ServerFarmsInner {
      * @param serverFarmEnvelope Details of App Service Plan
      * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-        }
-        if (serverFarmEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-        }
-        Validator.validate(serverFarmEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                serviceCallback.failure(t);
-            }
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                client.getAzureClient().getPutOrPatchResultAsync(response, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType(), serviceCall, serviceCallback);
-            }
-        });
-        return serviceCall;
+    public ServiceCall<ServerFarmWithRichSkuInner> createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState), serviceCallback);
     }
 
     /**
@@ -462,12 +453,99 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmWithRichSkuInner object wrapped in {@link ServiceResponse} if successful.
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @return the observable for the request
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<ServerFarmWithRichSkuInner> createOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
+        return createOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> createOrUpdateServerFarmWithServiceResponseAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (serverFarmEnvelope == null) {
+            throw new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        Validator.validate(serverFarmEnvelope);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ServerFarmWithRichSkuInner>() { }.getType());
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @return the ServerFarmWithRichSkuInner object if successful.
+     */
+    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
+        return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
+        return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> beginCreateOrUpdateServerFarmWithServiceResponseAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -485,59 +563,18 @@ public final class ServerFarmsInner {
         }
         Validator.validate(serverFarmEnvelope);
         final Boolean allowPendingState = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serverFarmEnvelope Details of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (serverFarmEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(serverFarmEnvelope, serviceCallback);
-        final Boolean allowPendingState = null;
-        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSkuInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(beginCreateOrUpdateServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFarmWithRichSkuInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServerFarmWithRichSkuInner> clientResponse = beginCreateOrUpdateServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -547,12 +584,54 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param serverFarmEnvelope Details of App Service Plan
      * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmWithRichSkuInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner beginCreateOrUpdateServerFarm(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
+        return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
+        return beginCreateOrUpdateServerFarmWithServiceResponseAsync(resourceGroupName, name, serverFarmEnvelope, allowPendingState).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serverFarmEnvelope Details of App Service Plan
+     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> beginCreateOrUpdateServerFarmWithServiceResponseAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -569,59 +648,18 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(serverFarmEnvelope);
-        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return beginCreateOrUpdateServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serverFarmEnvelope Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall beginCreateOrUpdateServerFarmAsync(String resourceGroupName, String name, ServerFarmWithRichSkuInner serverFarmEnvelope, Boolean allowPendingState, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (serverFarmEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter serverFarmEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(serverFarmEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSkuInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(beginCreateOrUpdateServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.beginCreateOrUpdateServerFarm(resourceGroupName, name, this.client.subscriptionId(), serverFarmEnvelope, allowPendingState, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFarmWithRichSkuInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServerFarmWithRichSkuInner> clientResponse = beginCreateOrUpdateServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> beginCreateOrUpdateServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -637,12 +675,48 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteServerFarm(String resourceGroupName, String name) {
+        return deleteServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes a App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> deleteServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(deleteServerFarmWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Deletes a App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the Object object
+     */
+    public Observable<Object> deleteServerFarmAsync(String resourceGroupName, String name) {
+        return deleteServerFarmWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteServerFarmWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -655,52 +729,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.deleteServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = deleteServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> deleteServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -715,12 +755,84 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getServerFarmMetrics(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
+                return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmMetricsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getServerFarmMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<Page<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name) {
+        return getServerFarmMetricsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getServerFarmMetricsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -735,54 +847,18 @@ public final class ServerFarmsInner {
         }
         final Boolean details = null;
         final String filter = null;
-        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmMetricsDelegate(call.execute());
-    }
-
-    /**
-     * Queries for App Serice Plan metrics.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmMetricsAsync(String resourceGroupName, String name, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final Boolean details = null;
-        final String filter = null;
-        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmMetricsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getServerFarmMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -792,26 +868,16 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param details If true, metrics are broken down per App Service Plan instance
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ResourceMetricCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
-    public ServiceResponse<ResourceMetricCollectionInner> getServerFarmMetrics(String resourceGroupName, String name, Boolean details, String filter) throws CloudException, IOException, IllegalArgumentException {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmMetricsDelegate(call.execute());
+    public PagedList<ResourceMetricInner> getServerFarmMetrics(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsSinglePageAsync(resourceGroupName, name, details, filter).toBlocking().single();
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
+                return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
@@ -822,62 +888,72 @@ public final class ServerFarmsInner {
      * @param details If true, metrics are broken down per App Service Plan instance
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getServerFarmMetricsAsync(String resourceGroupName, String name, Boolean details, String filter, final ServiceCallback<ResourceMetricCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ResourceMetricCollectionInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmMetricsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmMetricsSinglePageAsync(resourceGroupName, name, details, filter),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getServerFarmMetricsNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<ResourceMetricCollectionInner> getServerFarmMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ResourceMetricCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ResourceMetricCollectionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
+            },
+            serviceCallback);
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
+     * Queries for App Serice Plan metrics.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the MetricDefinitionCollectionInner object wrapped in {@link ServiceResponse} if successful.
+     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
-    public ServiceResponse<MetricDefinitionCollectionInner> getServerFarmMetricDefintions(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Page<ResourceMetricInner>> getServerFarmMetricsAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        return getServerFarmMetricsWithServiceResponseAsync(resourceGroupName, name, details, filter)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsWithServiceResponseAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
+        return getServerFarmMetricsSinglePageAsync(resourceGroupName, name, details, filter)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of App Service Plan
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metrics are broken down per App Service Plan instance
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsSinglePageAsync(final String resourceGroupName, final String name, final Boolean details, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -890,8 +966,42 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarmMetricDefintions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmMetricDefintionsDelegate(call.execute());
+        return service.getServerFarmMetrics(resourceGroupName, name, this.client.subscriptionId(), details, filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getServerFarmMetricsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getServerFarmMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     */
+    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintions(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getServerFarmMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
+                return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
@@ -900,62 +1010,66 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getServerFarmMetricDefintionsAsync(String resourceGroupName, String name, final ServiceCallback<MetricDefinitionCollectionInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmMetricDefintions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<MetricDefinitionCollectionInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmMetricDefintionsDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<MetricDefinitionInner>> getServerFarmMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmMetricDefintionsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
-    }
-
-    private ServiceResponse<MetricDefinitionCollectionInner> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<MetricDefinitionCollectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<MetricDefinitionCollectionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
+            },
+            serviceCallback);
     }
 
     /**
-     * Gets list of vnets associated with App Service Plan.
+     * List of metrics that can be queried for an App Service Plan.
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetInfoInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
      */
-    public ServiceResponse<List<VnetInfoInner>> getVnetsForServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Observable<Page<MetricDefinitionInner>> getServerFarmMetricDefintionsAsync(final String resourceGroupName, final String name) {
+        return getServerFarmMetricDefintionsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getServerFarmMetricDefintionsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmMetricDefintionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of App Service Plan
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -968,8 +1082,36 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getVnetsForServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getVnetsForServerFarmDelegate(call.execute());
+        return service.getServerFarmMetricDefintions(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getServerFarmMetricDefintionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getServerFarmMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets list of vnets associated with App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the List&lt;VnetInfoInner&gt; object if successful.
+     */
+    public List<VnetInfoInner> getVnetsForServerFarm(String resourceGroupName, String name) {
+        return getVnetsForServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
@@ -978,42 +1120,60 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getVnetsForServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getVnetsForServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetInfoInner>>(serviceCallback) {
+    public ServiceCall<List<VnetInfoInner>> getVnetsForServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<List<VnetInfoInner>> serviceCallback) {
+        return ServiceCall.create(getVnetsForServerFarmWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Gets list of vnets associated with App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the List&lt;VnetInfoInner&gt; object
+     */
+    public Observable<List<VnetInfoInner>> getVnetsForServerFarmAsync(String resourceGroupName, String name) {
+        return getVnetsForServerFarmWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<List<VnetInfoInner>>, List<VnetInfoInner>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getVnetsForServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public List<VnetInfoInner> call(ServiceResponse<List<VnetInfoInner>> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
+    }
+
+    /**
+     * Gets list of vnets associated with App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the List&lt;VnetInfoInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VnetInfoInner>>> getVnetsForServerFarmWithServiceResponseAsync(String resourceGroupName, String name) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (name == null) {
+            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.getVnetsForServerFarm(resourceGroupName, name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VnetInfoInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VnetInfoInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VnetInfoInner>> clientResponse = getVnetsForServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<List<VnetInfoInner>> getVnetsForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1029,12 +1189,51 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetInfoInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetInfoInner object if successful.
      */
-    public ServiceResponse<VnetInfoInner> getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
+        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a vnet associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) {
+        return ServiceCall.create(getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    }
+
+    /**
+     * Gets a vnet associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
+        return getVnetFromServerFarmWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<VnetInfoInner>, VnetInfoInner>() {
+            @Override
+            public VnetInfoInner call(ServiceResponse<VnetInfoInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a vnet associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @return the observable to the VnetInfoInner object
+     */
+    public Observable<ServiceResponse<VnetInfoInner>> getVnetFromServerFarmWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1050,57 +1249,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getVnetFromServerFarm(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getVnetFromServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Gets a vnet associated with an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<VnetInfoInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getVnetFromServerFarm(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetInfoInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getVnetFromServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getVnetFromServerFarm(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VnetInfoInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VnetInfoInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VnetInfoInner> clientResponse = getVnetFromServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VnetInfoInner> getVnetFromServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1117,12 +1277,51 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetRouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
-    public ServiceResponse<List<VnetRouteInner>> getRoutesForVnet(String resourceGroupName, String name, String vnetName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetRouteInner> getRoutesForVnet(String resourceGroupName, String name, String vnetName) {
+        return getRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a list of all routes associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<VnetRouteInner>> getRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceCall.create(getRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    }
+
+    /**
+     * Gets a list of all routes associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @return the observable to the List&lt;VnetRouteInner&gt; object
+     */
+    public Observable<List<VnetRouteInner>> getRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
+        return getRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
+            @Override
+            public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a list of all routes associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @return the observable to the List&lt;VnetRouteInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VnetRouteInner>>> getRoutesForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1138,57 +1337,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRoutesForVnet(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getRoutesForVnetDelegate(call.execute());
-    }
-
-    /**
-     * Gets a list of all routes associated with a vnet, in an app service plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getRoutesForVnet(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetRouteInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRoutesForVnetDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getRoutesForVnet(resourceGroupName, name, vnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VnetRouteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VnetRouteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VnetRouteInner>> clientResponse = getRoutesForVnetDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1205,12 +1365,54 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;VnetRouteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
-    public ServiceResponse<List<VnetRouteInner>> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) throws CloudException, IOException, IllegalArgumentException {
+    public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) {
+        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a specific route associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceCall.create(getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    }
+
+    /**
+     * Gets a specific route associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @return the observable to the List&lt;VnetRouteInner&gt; object
+     */
+    public Observable<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName) {
+        return getRouteForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
+            @Override
+            public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a specific route associated with a vnet, in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @return the observable to the List&lt;VnetRouteInner&gt; object
+     */
+    public Observable<ServiceResponse<List<VnetRouteInner>>> getRouteForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1229,62 +1431,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getRouteForVnet(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getRouteForVnetDelegate(call.execute());
-    }
-
-    /**
-     * Gets a specific route associated with a vnet, in an app service plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getRouteForVnet(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<VnetRouteInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRouteForVnetDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getRouteForVnet(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VnetRouteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<VnetRouteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<List<VnetRouteInner>> clientResponse = getRouteForVnetDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<List<VnetRouteInner>> getRouteForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1303,12 +1461,57 @@ public final class ServerFarmsInner {
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
      * @param route The route object
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetRouteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetRouteInner object if successful.
      */
-    public ServiceResponse<VnetRouteInner> createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) throws CloudException, IOException, IllegalArgumentException {
+    public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
+        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @return the observable to the VnetRouteInner object
+     */
+    public Observable<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
+        return createOrUpdateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
+            @Override
+            public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @return the observable to the VnetRouteInner object
+     */
+    public Observable<ServiceResponse<VnetRouteInner>> createOrUpdateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1331,68 +1534,18 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(route);
-        Call<ResponseBody> call = service.createOrUpdateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return createOrUpdateVnetRouteDelegate(call.execute());
-    }
-
-    /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (route == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter route is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(route, serviceCallback);
-        Call<ResponseBody> call = service.createOrUpdateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetRouteInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(createOrUpdateVnetRouteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.createOrUpdateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VnetRouteInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VnetRouteInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VnetRouteInner> clientResponse = createOrUpdateVnetRouteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VnetRouteInner> createOrUpdateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1411,12 +1564,54 @@ public final class ServerFarmsInner {
      * @param name Name of App Service Plan
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) throws CloudException, IOException, IllegalArgumentException {
+    public Object deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
+        return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
+    }
+
+    /**
+     * Deletes an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @return the observable to the Object object
+     */
+    public Observable<Object> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
+        return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> deleteVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1435,62 +1630,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return deleteVnetRouteDelegate(call.execute());
-    }
-
-    /**
-     * Deletes an existing route for a vnet in an app service plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteVnetRouteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = deleteVnetRouteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1509,12 +1660,57 @@ public final class ServerFarmsInner {
      * @param vnetName Name of virtual network
      * @param routeName Name of the virtual network route
      * @param route The route object
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetRouteInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetRouteInner object if successful.
      */
-    public ServiceResponse<VnetRouteInner> updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) throws CloudException, IOException, IllegalArgumentException {
+    public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
+        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) {
+        return ServiceCall.create(updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route), serviceCallback);
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @return the observable to the VnetRouteInner object
+     */
+    public Observable<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
+        return updateVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName, route).map(new Func1<ServiceResponse<VnetRouteInner>, VnetRouteInner>() {
+            @Override
+            public VnetRouteInner call(ServiceResponse<VnetRouteInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param vnetName Name of virtual network
+     * @param routeName Name of the virtual network route
+     * @param route The route object
+     * @return the observable to the VnetRouteInner object
+     */
+    public Observable<ServiceResponse<VnetRouteInner>> updateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1537,68 +1733,18 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(route);
-        Call<ResponseBody> call = service.updateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return updateVnetRouteDelegate(call.execute());
-    }
-
-    /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route, final ServiceCallback<VnetRouteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (routeName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter routeName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (route == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter route is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(route, serviceCallback);
-        Call<ResponseBody> call = service.updateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetRouteInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateVnetRouteDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), route, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VnetRouteInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VnetRouteInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VnetRouteInner> clientResponse = updateVnetRouteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VnetRouteInner> updateVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1617,12 +1763,54 @@ public final class ServerFarmsInner {
      * @param name Name of the App Service Plan
      * @param vnetName Name of the virtual network
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> getServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner getServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName) {
+        return getServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the vnet gateway.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of the App Service Plan
+     * @param vnetName Name of the virtual network
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<VnetGatewayInner> getServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceCall.create(getServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName), serviceCallback);
+    }
+
+    /**
+     * Gets the vnet gateway.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of the App Service Plan
+     * @param vnetName Name of the virtual network
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<VnetGatewayInner> getServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
+        return getServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the vnet gateway.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of the App Service Plan
+     * @param vnetName Name of the virtual network
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> getServerFarmVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1641,62 +1829,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmVnetGatewayDelegate(call.execute());
-    }
-
-    /**
-     * Gets the vnet gateway.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of the App Service Plan
-     * @param vnetName Name of the virtual network
-     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmVnetGatewayDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VnetGatewayInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VnetGatewayInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VnetGatewayInner> clientResponse = getServerFarmVnetGatewayDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VnetGatewayInner> getServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1714,12 +1858,57 @@ public final class ServerFarmsInner {
      * @param vnetName The name of the virtual network
      * @param gatewayName The name of the gateway. Only 'primary' is supported.
      * @param connectionEnvelope The gateway entity.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the VnetGatewayInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the VnetGatewayInner object if successful.
      */
-    public ServiceResponse<VnetGatewayInner> updateServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) throws CloudException, IOException, IllegalArgumentException {
+    public VnetGatewayInner updateServerFarmVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+        return updateServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates the vnet gateway.
+     *
+     * @param resourceGroupName The resource group
+     * @param name The name of the App Service Plan
+     * @param vnetName The name of the virtual network
+     * @param gatewayName The name of the gateway. Only 'primary' is supported.
+     * @param connectionEnvelope The gateway entity.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<VnetGatewayInner> updateServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) {
+        return ServiceCall.create(updateServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope), serviceCallback);
+    }
+
+    /**
+     * Updates the vnet gateway.
+     *
+     * @param resourceGroupName The resource group
+     * @param name The name of the App Service Plan
+     * @param vnetName The name of the virtual network
+     * @param gatewayName The name of the gateway. Only 'primary' is supported.
+     * @param connectionEnvelope The gateway entity.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<VnetGatewayInner> updateServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
+        return updateServerFarmVnetGatewayWithServiceResponseAsync(resourceGroupName, name, vnetName, gatewayName, connectionEnvelope).map(new Func1<ServiceResponse<VnetGatewayInner>, VnetGatewayInner>() {
+            @Override
+            public VnetGatewayInner call(ServiceResponse<VnetGatewayInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the vnet gateway.
+     *
+     * @param resourceGroupName The resource group
+     * @param name The name of the App Service Plan
+     * @param vnetName The name of the virtual network
+     * @param gatewayName The name of the gateway. Only 'primary' is supported.
+     * @param connectionEnvelope The gateway entity.
+     * @return the observable to the VnetGatewayInner object
+     */
+    public Observable<ServiceResponse<VnetGatewayInner>> updateServerFarmVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1742,68 +1931,18 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(connectionEnvelope);
-        Call<ResponseBody> call = service.updateServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return updateServerFarmVnetGatewayDelegate(call.execute());
-    }
-
-    /**
-     * Updates the vnet gateway.
-     *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param vnetName The name of the virtual network
-     * @param gatewayName The name of the gateway. Only 'primary' is supported.
-     * @param connectionEnvelope The gateway entity.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateServerFarmVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope, final ServiceCallback<VnetGatewayInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (vnetName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter vnetName is required and cannot be null."));
-            return null;
-        }
-        if (gatewayName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (connectionEnvelope == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter connectionEnvelope is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(connectionEnvelope, serviceCallback);
-        Call<ResponseBody> call = service.updateServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<VnetGatewayInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateServerFarmVnetGatewayDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateServerFarmVnetGateway(resourceGroupName, name, vnetName, gatewayName, this.client.subscriptionId(), connectionEnvelope, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VnetGatewayInner>>>() {
+                @Override
+                public Observable<ServiceResponse<VnetGatewayInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<VnetGatewayInner> clientResponse = updateServerFarmVnetGatewayDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<VnetGatewayInner> updateServerFarmVnetGatewayDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -1818,12 +1957,84 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getServerFarmSites(final String resourceGroupName, final String name) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<SiteInner>> response = getServerFarmSitesSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) {
+                return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmSitesSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getServerFarmSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<Page<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name) {
+        return getServerFarmSitesWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return getServerFarmSitesSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1839,69 +2050,18 @@ public final class ServerFarmsInner {
         final String skipToken = null;
         final String filter = null;
         final String top = null;
-        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<SiteInner>> response = getServerFarmSitesDelegate(call.execute());
-        PagedList<SiteInner> result = new PagedList<SiteInner>(response.getBody()) {
-            @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return getServerFarmSitesNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets list of Apps associated with an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmSitesAsync(final String resourceGroupName, final String name, final ListOperationCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final String skipToken = null;
-        final String filter = null;
-        final String top = null;
-        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SiteInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -1912,12 +2072,96 @@ public final class ServerFarmsInner {
      * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
-    public ServiceResponse<PagedList<SiteInner>> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<SiteInner> getServerFarmSites(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
+        ServiceResponse<Page<SiteInner>> response = getServerFarmSitesSinglePageAsync(resourceGroupName, name, skipToken, filter, top).toBlocking().single();
+        return new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) {
+                return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
+     * @param top List page size. If specified, results are paged.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmSitesSinglePageAsync(resourceGroupName, name, skipToken, filter, top),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getServerFarmSitesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
+     * @param top List page size. If specified, results are paged.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<Page<SiteInner>> getServerFarmSitesAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
+        return getServerFarmSitesWithServiceResponseAsync(resourceGroupName, name, skipToken, filter, top)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
+     * @param top List page size. If specified, results are paged.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesWithServiceResponseAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
+        return getServerFarmSitesSinglePageAsync(resourceGroupName, name, skipToken, filter, top)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of App Service Plan
+    ServiceResponse<PageImpl<SiteInner>> * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+    ServiceResponse<PageImpl<SiteInner>> * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
+    ServiceResponse<PageImpl<SiteInner>> * @param top List page size. If specified, results are paged.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesSinglePageAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1930,69 +2174,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        ServiceResponse<PageImpl<SiteInner>> response = getServerFarmSitesDelegate(call.execute());
-        PagedList<SiteInner> result = new PagedList<SiteInner>(response.getBody()) {
-            @Override
-            public Page<SiteInner> nextPage(String nextPageLink) throws CloudException, IOException {
-                return getServerFarmSitesNext(nextPageLink).getBody();
-            }
-        };
-        return new ServiceResponse<>(result, response.getResponse());
-    }
-
-    /**
-     * Gets list of Apps associated with an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
-     * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
-     * @param top List page size. If specified, results are paged.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmSitesAsync(final String resourceGroupName, final String name, final String skipToken, final String filter, final String top, final ListOperationCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SiteInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
+        return service.getServerFarmSites(resourceGroupName, name, this.client.subscriptionId(), skipToken, filter, top, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<PageImpl<SiteInner>> getServerFarmSitesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -2008,12 +2201,51 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
      * @param workerName Name of worker machine, typically starts with RD
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> rebootWorkerForServerFarm(String resourceGroupName, String name, String workerName) throws CloudException, IOException, IllegalArgumentException {
+    public Object rebootWorkerForServerFarm(String resourceGroupName, String name, String workerName) {
+        return rebootWorkerForServerFarmWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Submit a reboot request for a worker machine in the specified server farm.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param workerName Name of worker machine, typically starts with RD
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> rebootWorkerForServerFarmAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(rebootWorkerForServerFarmWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
+    }
+
+    /**
+     * Submit a reboot request for a worker machine in the specified server farm.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param workerName Name of worker machine, typically starts with RD
+     * @return the observable to the Object object
+     */
+    public Observable<Object> rebootWorkerForServerFarmAsync(String resourceGroupName, String name, String workerName) {
+        return rebootWorkerForServerFarmWithServiceResponseAsync(resourceGroupName, name, workerName).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Submit a reboot request for a worker machine in the specified server farm.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param workerName Name of worker machine, typically starts with RD
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> rebootWorkerForServerFarmWithServiceResponseAsync(String resourceGroupName, String name, String workerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2029,57 +2261,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.rebootWorkerForServerFarm(resourceGroupName, name, workerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return rebootWorkerForServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Submit a reboot request for a worker machine in the specified server farm.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param workerName Name of worker machine, typically starts with RD
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall rebootWorkerForServerFarmAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (workerName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter workerName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.rebootWorkerForServerFarm(resourceGroupName, name, workerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(rebootWorkerForServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.rebootWorkerForServerFarm(resourceGroupName, name, workerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = rebootWorkerForServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> rebootWorkerForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -2094,12 +2287,48 @@ public final class ServerFarmsInner {
      *
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSitesForServerFarm(String resourceGroupName, String name) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSitesForServerFarm(String resourceGroupName, String name) {
+        return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> restartSitesForServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the Object object
+     */
+    public Observable<Object> restartSitesForServerFarmAsync(String resourceGroupName, String name) {
+        return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSitesForServerFarmWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2113,53 +2342,18 @@ public final class ServerFarmsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final Boolean softRestart = null;
-        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return restartSitesForServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Restarts web apps in a specified App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall restartSitesForServerFarmAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final Boolean softRestart = null;
-        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(restartSitesForServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = restartSitesForServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2168,12 +2362,51 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of App Service Plan
      * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the Object object wrapped in {@link ServiceResponse} if successful.
+     * @return the Object object if successful.
      */
-    public ServiceResponse<Object> restartSitesForServerFarm(String resourceGroupName, String name, Boolean softRestart) throws CloudException, IOException, IllegalArgumentException {
+    public Object restartSitesForServerFarm(String resourceGroupName, String name, Boolean softRestart) {
+        return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Object> restartSitesForServerFarmAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Object> serviceCallback) {
+        return ServiceCall.create(restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
+     * @return the observable to the Object object
+     */
+    public Observable<Object> restartSitesForServerFarmAsync(String resourceGroupName, String name, Boolean softRestart) {
+        return restartSitesForServerFarmWithServiceResponseAsync(resourceGroupName, name, softRestart).map(new Func1<ServiceResponse<Object>, Object>() {
+            @Override
+            public Object call(ServiceResponse<Object> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts web apps in a specified App Service Plan.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of App Service Plan
+     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
+     * @return the observable to the Object object
+     */
+    public Observable<ServiceResponse<Object>> restartSitesForServerFarmWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2186,53 +2419,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return restartSitesForServerFarmDelegate(call.execute());
-    }
-
-    /**
-     * Restarts web apps in a specified App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall restartSitesForServerFarmAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Object> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Object>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(restartSitesForServerFarmDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.restartSitesForServerFarm(resourceGroupName, name, this.client.subscriptionId(), softRestart, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+                @Override
+                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Object> clientResponse = restartSitesForServerFarmDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<Object> restartSitesForServerFarmDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -2248,12 +2446,51 @@ public final class ServerFarmsInner {
      * @param resourceGroupName Name of resource group
      * @param name Name of server farm
      * @param operationId Id of Server farm operation"&amp;gt;
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ServerFarmWithRichSkuInner object wrapped in {@link ServiceResponse} if successful.
+     * @return the ServerFarmWithRichSkuInner object if successful.
      */
-    public ServiceResponse<ServerFarmWithRichSkuInner> getServerFarmOperation(String resourceGroupName, String name, String operationId) throws CloudException, IOException, IllegalArgumentException {
+    public ServerFarmWithRichSkuInner getServerFarmOperation(String resourceGroupName, String name, String operationId) {
+        return getServerFarmOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a server farm operation.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param operationId Id of Server farm operation"&amp;gt;
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServerFarmWithRichSkuInner> getServerFarmOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return ServiceCall.create(getServerFarmOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
+    }
+
+    /**
+     * Gets a server farm operation.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param operationId Id of Server farm operation"&amp;gt;
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServerFarmWithRichSkuInner> getServerFarmOperationAsync(String resourceGroupName, String name, String operationId) {
+        return getServerFarmOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<ServerFarmWithRichSkuInner>, ServerFarmWithRichSkuInner>() {
+            @Override
+            public ServerFarmWithRichSkuInner call(ServiceResponse<ServerFarmWithRichSkuInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a server farm operation.
+     *
+     * @param resourceGroupName Name of resource group
+     * @param name Name of server farm
+     * @param operationId Id of Server farm operation"&amp;gt;
+     * @return the observable to the ServerFarmWithRichSkuInner object
+     */
+    public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> getServerFarmOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2269,57 +2506,18 @@ public final class ServerFarmsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarmOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmOperationDelegate(call.execute());
-    }
-
-    /**
-     * Gets a server farm operation.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param operationId Id of Server farm operation"&amp;gt;
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getServerFarmOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<ServerFarmWithRichSkuInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (resourceGroupName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-            return null;
-        }
-        if (name == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter name is required and cannot be null."));
-            return null;
-        }
-        if (operationId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.subscriptionId() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ServerFarmWithRichSkuInner>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getServerFarmOperationDelegate(response));
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getServerFarmOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFarmWithRichSkuInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServerFarmWithRichSkuInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServerFarmWithRichSkuInner> clientResponse = getServerFarmOperationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponse<ServerFarmWithRichSkuInner> getServerFarmOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
@@ -2330,20 +2528,328 @@ public final class ServerFarmsInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
+     * Gets collection of App Service Plans in a resource group for a given subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object if successful.
      */
-    public ServiceResponse<PageImpl<SiteInner>> getServerFarmSitesNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException {
+    public PagedList<ServerFarmWithRichSkuInner> getServerFarmsNext(final String nextPageLink) {
+        ServiceResponse<Page<ServerFarmWithRichSkuInner>> response = getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ServerFarmWithRichSkuInner>(response.getBody()) {
+            @Override
+            public Page<ServerFarmWithRichSkuInner> nextPage(String nextPageLink) {
+                return getServerFarmsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerFarmWithRichSkuInner>> getServerFarmsNextAsync(final String nextPageLink, final ServiceCall<List<ServerFarmWithRichSkuInner>> serviceCall, final ListOperationCallback<ServerFarmWithRichSkuInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(String nextPageLink) {
+                    return getServerFarmsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<Page<ServerFarmWithRichSkuInner>> getServerFarmsNextAsync(final String nextPageLink) {
+        return getServerFarmsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Page<ServerFarmWithRichSkuInner>>() {
+                @Override
+                public Page<ServerFarmWithRichSkuInner> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ServerFarmWithRichSkuInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsNextWithServiceResponseAsync(final String nextPageLink) {
+        return getServerFarmsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ServerFarmWithRichSkuInner>>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(ServiceResponse<Page<ServerFarmWithRichSkuInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets collection of App Service Plans in a resource group for a given subscription.
+     *
+    ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ServerFarmWithRichSkuInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> getServerFarmsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        Call<ResponseBody> call = service.getServerFarmSitesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        return getServerFarmSitesNextDelegate(call.execute());
+        return service.getServerFarmsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ServerFarmWithRichSkuInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> result = getServerFarmsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ServerFarmWithRichSkuInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ServerFarmWithRichSkuInner>> getServerFarmsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServerFarmWithRichSkuInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServerFarmWithRichSkuInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
+     */
+    public PagedList<ResourceMetricInner> getServerFarmMetricsNext(final String nextPageLink) {
+        ServiceResponse<Page<ResourceMetricInner>> response = getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ResourceMetricInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricInner> nextPage(String nextPageLink) {
+                return getServerFarmMetricsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricInner>> getServerFarmMetricsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricInner>> serviceCall, final ListOperationCallback<ResourceMetricInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmMetricsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(String nextPageLink) {
+                    return getServerFarmMetricsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<Page<ResourceMetricInner>> getServerFarmMetricsNextAsync(final String nextPageLink) {
+        return getServerFarmMetricsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Page<ResourceMetricInner>>() {
+                @Override
+                public Page<ResourceMetricInner> call(ServiceResponse<Page<ResourceMetricInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsNextWithServiceResponseAsync(final String nextPageLink) {
+        return getServerFarmMetricsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricInner>>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(ServiceResponse<Page<ResourceMetricInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmMetricsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Queries for App Serice Plan metrics.
+     *
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<ResourceMetricInner>>> getServerFarmMetricsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getServerFarmMetricsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<ResourceMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ResourceMetricInner>> result = getServerFarmMetricsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ResourceMetricInner>> getServerFarmMetricsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     */
+    public PagedList<MetricDefinitionInner> getServerFarmMetricDefintionsNext(final String nextPageLink) {
+        ServiceResponse<Page<MetricDefinitionInner>> response = getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<MetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
+                return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<MetricDefinitionInner>> getServerFarmMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                    return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<Page<MetricDefinitionInner>> getServerFarmMetricDefintionsNextAsync(final String nextPageLink) {
+        return getServerFarmMetricDefintionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+                @Override
+                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return getServerFarmMetricDefintionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmMetricDefintionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * List of metrics that can be queried for an App Service Plan.
+     *
+    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> getServerFarmMetricDefintionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getServerFarmMetricDefintionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = getServerFarmMetricDefintionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<MetricDefinitionInner>> getServerFarmMetricDefintionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;SiteInner&gt; object if successful.
+     */
+    public PagedList<SiteInner> getServerFarmSitesNext(final String nextPageLink) {
+        ServiceResponse<Page<SiteInner>> response = getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SiteInner>(response.getBody()) {
+            @Override
+            public Page<SiteInner> nextPage(String nextPageLink) {
+                return getServerFarmSitesNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
@@ -2352,37 +2858,78 @@ public final class ServerFarmsInner {
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @return the {@link ServiceCall} object
      */
-    public ServiceCall getServerFarmSitesNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<SiteInner> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Call<ResponseBody> call = service.getServerFarmSitesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<SiteInner>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        getServerFarmSitesNextAsync(result.getBody().getNextPageLink(), serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponse<>(serviceCallback.get(), result.getResponse()));
-                    }
-                } catch (CloudException | IOException exception) {
-                    serviceCallback.failure(exception);
+    public ServiceCall<List<SiteInner>> getServerFarmSitesNextAsync(final String nextPageLink, final ServiceCall<List<SiteInner>> serviceCall, final ListOperationCallback<SiteInner> serviceCallback) {
+        return AzureServiceCall.create(
+            getServerFarmSitesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(String nextPageLink) {
+                    return getServerFarmSitesNextSinglePageAsync(nextPageLink);
                 }
-            }
-        });
-        return serviceCall;
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<Page<SiteInner>> getServerFarmSitesNextAsync(final String nextPageLink) {
+        return getServerFarmSitesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<SiteInner>>, Page<SiteInner>>() {
+                @Override
+                public Page<SiteInner> call(ServiceResponse<Page<SiteInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;SiteInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesNextWithServiceResponseAsync(final String nextPageLink) {
+        return getServerFarmSitesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<SiteInner>>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(ServiceResponse<Page<SiteInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(getServerFarmSitesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets list of Apps associated with an App Service Plan.
+     *
+    ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<SiteInner>>> getServerFarmSitesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.getServerFarmSitesNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SiteInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<SiteInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<SiteInner>> result = getServerFarmSitesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SiteInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     private ServiceResponse<PageImpl<SiteInner>> getServerFarmSitesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {

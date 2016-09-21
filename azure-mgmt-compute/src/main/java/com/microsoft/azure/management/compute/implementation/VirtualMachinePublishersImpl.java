@@ -5,40 +5,44 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachinePublishers;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
-import java.io.IOException;
-
 /**
  * The implementation for {@link VirtualMachinePublishers}.
  */
+@LangDefinition
 class VirtualMachinePublishersImpl
         extends ReadableWrappersImpl<VirtualMachinePublisher, VirtualMachinePublisherImpl, VirtualMachineImageResourceInner>
         implements VirtualMachinePublishers {
 
-    private final VirtualMachineImagesInner innerCollection;
+    private final VirtualMachineImagesInner imagesInnerCollection;
+    private final VirtualMachineExtensionImagesInner extensionsInnerCollection;
 
-    VirtualMachinePublishersImpl(VirtualMachineImagesInner innerCollection) {
-        this.innerCollection = innerCollection;
+    VirtualMachinePublishersImpl(VirtualMachineImagesInner imagesInnerCollection, VirtualMachineExtensionImagesInner extensionsInnerCollection) {
+        this.imagesInnerCollection = imagesInnerCollection;
+        this.extensionsInnerCollection = extensionsInnerCollection;
     }
 
     @Override
-    public PagedList<VirtualMachinePublisher> listByRegion(Region region) throws CloudException, IOException {
+    public PagedList<VirtualMachinePublisher> listByRegion(Region region) {
         return listByRegion(region.toString());
     }
 
     @Override
     protected VirtualMachinePublisherImpl wrapModel(VirtualMachineImageResourceInner inner) {
-        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()), inner.name(), this.innerCollection);
+        return new VirtualMachinePublisherImpl(Region.fromName(inner.location()),
+                inner.name(),
+                this.imagesInnerCollection,
+                this.extensionsInnerCollection);
     }
 
     @Override
-    public PagedList<VirtualMachinePublisher> listByRegion(String regionName) throws CloudException, IOException {
-        return wrapList(innerCollection.listPublishers(regionName).getBody());
+    public PagedList<VirtualMachinePublisher> listByRegion(String regionName) {
+        return wrapList(imagesInnerCollection.listPublishers(regionName));
     }
 }

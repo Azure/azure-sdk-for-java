@@ -6,11 +6,14 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * The final stage of the child object definition, at which it can be attached to the parent, using {@link Attachable#attach()}.
  *
  * @param <ParentT> the parent definition {@link Attachable#attach()} returns to
  */
+@LangDefinition(ContainerName = "ChildResourceActions")
 public interface Attachable<ParentT> {
     /**
      * Attaches this child object's definition to its parent's definition.
@@ -22,7 +25,12 @@ public interface Attachable<ParentT> {
      * The final stage of the child object definition, as which it can be attached to the parent.
      * @param <ParentT> the parent definition
      */
+    @LangDefinition(ContainerName = "~/Core.ChildResource.Definition", ContainerFileName = "IDefinition")
     interface InDefinition<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource definiton.
+         * @return the next stage of the parent definition
+         */
         ParentT attach();
     }
 
@@ -30,7 +38,36 @@ public interface Attachable<ParentT> {
      * The final stage of the child object definition, as which it can be attached to the parent.
      * @param <ParentT> the parent definition
      */
+    interface InDefinitionAlt<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource definition.
+         * @return the next stage of the parent definition
+         */
+        ParentT attach();
+    }
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent.
+     * @param <ParentT> the parent definition
+     */
+    @LangDefinition(ContainerName = "~/Core.ChildResource.Update", ContainerFileName = "IUpdate")
     interface InUpdate<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource update.
+         * @return the next stage of the parent definition
+         */
+        ParentT attach();
+    }
+
+    /**
+     * The final stage of the child object definition, as which it can be attached to the parent.
+     * @param <ParentT> the parent definition
+     */
+    interface InUpdateAlt<ParentT> {
+        /**
+         * Attaches the child definition to the parent resource update.
+         * @return the next stage of the parent definition
+         */
         ParentT attach();
     }
 }

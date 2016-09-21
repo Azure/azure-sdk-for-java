@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -17,12 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 
-import java.io.IOException;
-import java.util.Map;
-
 /**
  * An immutable client-side representation of an Azure resource group.
  */
+@LangDefinition(ContainerName = "~/")
 public interface ResourceGroup extends
         Indexable,
         Resource,
@@ -40,50 +38,63 @@ public interface ResourceGroup extends
     String provisioningState();
 
     /**
-     * @return the tags attached to the resource group
-     */
-    Map<String, String> tags();
-
-    /**
      * Captures the specified resource group as a template.
      *
      * @param options the export options
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
      * @return the exported template result
      */
-    ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) throws CloudException, IOException;
+    ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options);
+
+    /**************************************************************
+     * Fluent interfaces to provision a ResourceGroup
+     **************************************************************/
 
     /**
-     * A resource group definition allowing location to be set.
+     * Container interface for all the definitions that need to be implemented.
      */
-    interface DefinitionBlank extends GroupableResource.DefinitionWithRegion<DefinitionCreatable> {
+    @LangDefinition(ContainerName = "~/ResourceGroup.Definition", ContainerFileName = "IDefinition")
+    interface Definition extends
+            DefinitionStages.Blank,
+            DefinitionStages.WithCreate {
     }
 
     /**
-     * A resource group definition with sufficient inputs to create a new
-     * resource group in the cloud, but exposing additional optional inputs to
-     * specify.
+     * Grouping of all the resource group definition stages.
      */
-    interface DefinitionCreatable extends
-            Creatable<ResourceGroup>,
-            Resource.DefinitionWithTags<DefinitionCreatable> {
+     @LangDefinition(ContainerName = "~/ResourceGroup.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
+    interface DefinitionStages {
+        /**
+         * A resource group definition allowing location to be set.
+         */
+        interface Blank extends GroupableResource.DefinitionWithRegion<WithCreate> {
+        }
+
+        /**
+         * A resource group definition with sufficient inputs to create a new
+         * resource group in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+                Creatable<ResourceGroup>,
+                Resource.DefinitionWithTags<WithCreate> {
+        }
+    }
+
+    /**
+     * Grouping of all the resource group update stages.
+     */
+    @LangDefinition(ContainerName = "~/ResourceGroup.Update", ContainerFileName = "IUpdate")
+    interface UpdateStages {
     }
 
     /**
      * The template for a resource group update operation, containing all the settings that can be modified.
+     * <p>
+     * Call {@link Update#apply()} to apply the changes to the resource group in Azure.
      */
+    @LangDefinition(ContainerName = "~/ResourceGroup.Update", ContainerFileName = "IUpdate")
     interface Update extends
-        Appliable<ResourceGroup>,
-        Resource.UpdateWithTags<Update> {
+            Appliable<ResourceGroup>,
+            Resource.UpdateWithTags<Update> {
     }
-
-    /**
-     * Connects to other resources inside the resource group.
-     *
-     * @param adapterBuilder the builder for building a connector.
-     * @param <T> the type of the resource connector.
-     * @return the connector with access to other resource types.
-     */
-    <T extends ResourceConnector> T connectToResource(ResourceConnector.Builder<T> adapterBuilder);
 }

@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobDisableParameter {
     /**
-     * What to do with active tasks associated with the job. Possible values
-     * include: 'requeue', 'terminate', 'wait'.
+     * What to do with active tasks associated with the job.
+     * Possible values include: 'requeue', 'terminate', 'wait'.
      */
     @JsonProperty(required = true)
     private DisableJobOption disableTasks;

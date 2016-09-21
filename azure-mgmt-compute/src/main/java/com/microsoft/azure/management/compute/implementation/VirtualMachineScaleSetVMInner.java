@@ -28,13 +28,13 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualMachineScaleSetVMInner extends Resource {
     /**
-     * Gets the virtual machine instance id.
+     * the virtual machine instance id.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String instanceId;
 
     /**
-     * Gets the virtual machine sku.
+     * the virtual machine sku.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Sku sku;
@@ -47,69 +47,68 @@ public class VirtualMachineScaleSetVMInner extends Resource {
     private Boolean latestModelApplied;
 
     /**
-     * Gets the virtual machine instance view.
+     * the virtual machine instance view.
      */
     @JsonProperty(value = "properties.instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineInstanceView instanceView;
 
     /**
-     * Gets or sets the hardware profile.
+     * the hardware profile.
      */
     @JsonProperty(value = "properties.hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /**
-     * Gets or sets the storage profile.
+     * the storage profile.
      */
     @JsonProperty(value = "properties.storageProfile")
     private StorageProfile storageProfile;
 
     /**
-     * Gets or sets the OS profile.
+     * the OS profile.
      */
     @JsonProperty(value = "properties.osProfile")
     private OSProfile osProfile;
 
     /**
-     * Gets or sets the network profile.
+     * the network profile.
      */
     @JsonProperty(value = "properties.networkProfile")
     private NetworkProfile networkProfile;
 
     /**
-     * Gets or sets the diagnostics profile.
+     * the diagnostics profile.
      */
     @JsonProperty(value = "properties.diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Gets or sets the reference Id of the availability set to which this
-     * virtual machine belongs.
+     * the reference Id of the availability set to which this virtual machine
+     * belongs.
      */
     @JsonProperty(value = "properties.availabilitySet")
     private SubResource availabilitySet;
 
     /**
-     * Gets or sets the provisioning state, which only appears in the response.
+     * the provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Gets or sets the license type, which is for bring your own license
-     * scenario.
+     * the license type, which is for bring your own license scenario.
      */
     @JsonProperty(value = "properties.licenseType")
     private String licenseType;
 
     /**
-     * Gets or sets the purchase plan when deploying virtual machine from VM
-     * Marketplace images.
+     * the purchase plan when deploying virtual machine from VM Marketplace
+     * images.
      */
     private Plan plan;
 
     /**
-     * Gets the virtual machine child extension resources.
+     * the virtual machine child extension resources.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineExtensionInner> resources;
@@ -277,17 +276,6 @@ public class VirtualMachineScaleSetVMInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VirtualMachineScaleSetVMInner object itself.
-     */
-    public VirtualMachineScaleSetVMInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

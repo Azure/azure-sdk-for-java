@@ -35,8 +35,8 @@ public class TaskInformation {
     private Integer subtaskId;
 
     /**
-     * The current state of the task. Possible values include: 'active',
-     * 'preparing', 'running', 'completed'.
+     * The current state of the task.
+     * Possible values include: 'active', 'preparing', 'running', 'completed'.
      */
     @JsonProperty(required = true)
     private TaskState taskState;

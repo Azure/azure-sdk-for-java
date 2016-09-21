@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -17,48 +18,19 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * Public IP address.
  */
+@LangDefinition()
 public interface PublicIpAddress extends
         GroupableResource,
         Refreshable<PublicIpAddress>,
         Wrapper<PublicIPAddressInner>,
         Updatable<PublicIpAddress.Update> {
 
+    // Getters
+
     /**
-     * IP allocation methods.
+     * @return the IP version of the public IP address
      */
-    enum IpAllocationMethod {
-        STATIC(IPAllocationMethod.STATIC),
-        DYNAMIC(IPAllocationMethod.DYNAMIC);
-
-        private final String name;
-        IpAllocationMethod(String name) {
-            this.name = name;
-        }
-
-        public String toString() {
-            return this.name;
-        }
-
-        /**
-         * Converts a string value returned by Azure into a constant.
-         * @param value the value to convert
-         * @return the matching enum constant, or null if no match
-         */
-        public static IpAllocationMethod fromString(String value) {
-            for (IpAllocationMethod i : IpAllocationMethod.values()) {
-                if (i.name.equalsIgnoreCase(value)) {
-                    return i;
-                }
-            }
-
-            return null;
-        }
-    }
-
-
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    IPVersion version();
 
     /**
      * @return the assigned IP address
@@ -83,20 +55,37 @@ public interface PublicIpAddress extends
     /**
      * @return the IP address allocation method (Static/Dynamic)
      */
-    IpAllocationMethod ipAllocationMethod();
+    IPAllocationMethod ipAllocationMethod();
 
     /**
      * @return the idle connection timeout setting (in minutes)
      */
     int idleTimeoutInMinutes();
 
-    /**************************************************************
-     * Fluent interfaces for builder pattern
-     **************************************************************/
+    /**
+     * @return the load balancer public frontend that this public IP address is assigned to
+     */
+    PublicFrontend getAssignedLoadBalancerFrontend();
+
+    /**
+     * @return true if this public IP address is assigned to a load balancer
+     */
+    boolean hasAssignedLoadBalancer();
+
+    /**
+     * @return the network interface IP configuration that this public IP address is assigned to
+     */
+    NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration();
+
+    /**
+     * @return true if this public IP address is assigned to a network interface
+     */
+    boolean hasAssignedNetworkInterface();
 
     /**
      * Container interface for all the definitions.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -106,6 +95,7 @@ public interface PublicIpAddress extends
     /**
      * Grouping of public IP address definition stages.
      */
+    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a public IP address definition.
@@ -219,6 +209,7 @@ public interface PublicIpAddress extends
      * <p>
      * Use {@link Update#apply()} to apply the changes to the resource in Azure.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<PublicIpAddress>,
         UpdateStages.WithIpAddress,
@@ -231,6 +222,7 @@ public interface PublicIpAddress extends
     /**
      * Grouping of public IP address update stages.
      */
+    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A public IP address update allowing to change the IP allocation method (static or dynamic).

@@ -36,7 +36,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                     .attach()
                 .create();
 
-        Assert.assertTrue(virtualMachine.size().equalsIgnoreCase("STANDARD_A8"));
+        Assert.assertTrue(virtualMachine.size().equals(VirtualMachineSizeTypes.STANDARD_A8));
         Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
         VirtualMachineDataDisk disk2 = null;
         for (VirtualMachineDataDisk dataDisk : virtualMachine.dataDisks()) {
@@ -57,6 +57,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withoutDataDisk("disk2")
                 .defineNewDataDisk("disk3")
                     .withSizeInGB(10)
+                    .withLun(2)
                     .attach()
                 .apply();
         Assert.assertTrue(virtualMachine.dataDisks().size() == 2);
@@ -70,7 +71,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
         Assert.assertNotNull(disk3);
         Assert.assertTrue(disk3.cachingType() == CachingTypes.READ_WRITE);
         Assert.assertTrue(disk3.size() == 10);
-        return null;
+        return virtualMachine;
     }
 
     @Override
