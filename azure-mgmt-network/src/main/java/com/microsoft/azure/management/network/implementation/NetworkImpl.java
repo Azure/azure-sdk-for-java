@@ -65,11 +65,6 @@ class NetworkImpl
         return this;
     }
 
-    @Override
-    public Observable<Network> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
     // Helpers
 
     NetworkImpl withSubnet(SubnetImpl subnet) {

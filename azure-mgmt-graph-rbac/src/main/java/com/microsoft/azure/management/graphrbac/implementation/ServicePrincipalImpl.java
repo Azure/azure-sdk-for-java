@@ -79,7 +79,7 @@ class ServicePrincipalImpl
     }
 
     @Override
-    public Observable<ServicePrincipal> applyAsync() {
-        throw new UnsupportedOperationException("not implemented yet");
+    public boolean isInCreateMode() {
+        return false;
     }
 }

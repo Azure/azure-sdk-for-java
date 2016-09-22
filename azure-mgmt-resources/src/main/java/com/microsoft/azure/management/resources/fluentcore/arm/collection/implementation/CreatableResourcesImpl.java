@@ -5,7 +5,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -51,28 +51,28 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     @Override
     @SafeVarargs
     public final Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
-        CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
+        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
 
         return rootResource.createAsync()
-                .map(new Func1<CreatableResourcesRoot<T>, CreatedResources<T>>() {
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
                     @Override
-                    public CreatedResources<T> call(CreatableResourcesRoot<T> tCreatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableResourcesRoot);
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
                     }
                 });
     }
 
     @Override
     public final Observable<CreatedResources<T>> createAsync(List<Creatable<T>> creatables) {
-        CreatableResourcesRootImpl<T> rootResource = new CreatableResourcesRootImpl<>();
+        CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
 
         return rootResource.createAsync()
-                .map(new Func1<CreatableResourcesRoot<T>, CreatedResources<T>>() {
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
                     @Override
-                    public CreatedResources<T> call(CreatableResourcesRoot<T> tCreatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableResourcesRoot);
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
                     }
                 });
     }
@@ -105,17 +105,17 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      * @param <ResourceT> the type of the resources in the batch.
      */
     private class CreatedResourcesImpl<ResourceT extends Resource> implements CreatedResources<ResourceT> {
-        private CreatableResourcesRoot<ResourceT> creatableResourcesRoot;
+        private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
         private final List<ResourceT> list;
 
-        CreatedResourcesImpl(CreatableResourcesRoot<ResourceT> creatableResourcesRoot) {
-            this.creatableResourcesRoot = creatableResourcesRoot;
-            this.list = this.creatableResourcesRoot.createdTopLevelResources();
+        CreatedResourcesImpl(CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot) {
+            this.creatableUpdatableResourcesRoot = creatableUpdatableResourcesRoot;
+            this.list = this.creatableUpdatableResourcesRoot.createdTopLevelResources();
         }
 
         @Override
         public Resource createdRelatedResource(String key) {
-            return this.creatableResourcesRoot.createdRelatedResource(key);
+            return this.creatableUpdatableResourcesRoot.createdRelatedResource(key);
         }
 
         @Override
@@ -240,26 +240,26 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    interface CreatableResourcesRoot<ResourceT extends Resource> extends Resource {
+    interface CreatableUpdatableResourcesRoot<ResourceT extends Resource> extends Resource {
         List<ResourceT> createdTopLevelResources();
         Resource createdRelatedResource(String key);
     }
 
     /**
-     * Implementation of {@link CreatableResourcesRoot}.
+     * Implementation of {@link CreatableUpdatableResourcesRoot}.
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatableResourcesRootImpl<ResourceT extends Resource>
-            extends CreatableImpl<CreatableResourcesRoot<ResourceT>, Object, CreatableResourcesRootImpl<ResourceT>>
-            implements CreatableResourcesRoot<ResourceT> {
+    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Resource>
+            extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
+            implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
          * Collection of keys of top level resources in this batch.
          */
         private List<String> keys;
 
-        CreatableResourcesRootImpl() {
-            super("CreatableResourcesRoot", null);
+        CreatableUpdatableResourcesRootImpl() {
+            super("CreatableUpdatableResourcesRoot", null);
             this.keys = new ArrayList<>();
         }
 
@@ -267,14 +267,14 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         public List<ResourceT> createdTopLevelResources() {
             List<ResourceT> resources = new ArrayList<>();
             for (String resourceKey : keys) {
-                resources.add((ResourceT) creatorTaskGroup().createdResource(resourceKey));
+                resources.add((ResourceT) creatorUpdatorTaskGroup().createdResource(resourceKey));
             }
             return Collections.unmodifiableList(resources);
         }
 
         @Override
         public Resource createdRelatedResource(String key) {
-            return creatorTaskGroup().createdResource(key);
+            return creatorUpdatorTaskGroup().createdResource(key);
         }
 
         void addCreatableDependencies(Creatable<T> ... creatables) {
@@ -292,13 +292,18 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public Observable<CreatableResourcesRoot<ResourceT>> createResourceAsync() {
-            return Observable.just((CreatableResourcesRoot<ResourceT>) this);
+        public Observable<CreatableUpdatableResourcesRoot<ResourceT>> createResourceAsync() {
+            return Observable.just((CreatableUpdatableResourcesRoot<ResourceT>) this);
         }
 
         @Override
-        public CreatableResourcesRoot<ResourceT> createResource() {
-            return this;
+        public Observable<CreatableUpdatableResourcesRoot<ResourceT>> updateResourceAsync() {
+            return createResourceAsync();
+        }
+
+        @Override
+        public boolean isInCreateMode() {
+            return true;
         }
 
         // Below overrides returns null as this is not a real resource in Azure
@@ -306,7 +311,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         // resources.
 
         @Override
-        public CreatableResourcesRoot<ResourceT> refresh() {
+        public CreatableUpdatableResourcesRoot<ResourceT> refresh() {
             return null;
         }
 

@@ -84,11 +84,6 @@ class NetworkInterfaceImpl
         return this;
     }
 
-    @Override
-    public Observable<NetworkInterface> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
     // Setters (fluent)
 
     @Override

@@ -84,11 +84,6 @@ class LoadBalancerImpl
         return this;
     }
 
-    @Override
-    public Observable<LoadBalancer> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
     // Helpers
 
     @Override

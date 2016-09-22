@@ -112,7 +112,7 @@ class UserImpl
     }
 
     @Override
-    public Observable<User> applyAsync() {
-        throw new UnsupportedOperationException("not implemented yet");
+    public boolean isInCreateMode() {
+        return false;
     }
 }

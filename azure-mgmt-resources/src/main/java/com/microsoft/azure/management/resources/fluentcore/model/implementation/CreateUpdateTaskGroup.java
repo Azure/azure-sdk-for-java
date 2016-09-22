@@ -8,13 +8,13 @@ import rx.Observable;
  *
  * @param <ResourceT> the type of the resource this group creates
  */
-public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, CreatorTaskItem<ResourceT>> {
+public class CreateUpdateTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, CreateUpdateTask<ResourceT>> {
     /**
-     * Represents a type that know how to create resource.
+     * Represents a type that know how to create or update resource.
      *
-     * @param <T> the type of the resource that this creator creates
+     * @param <T> the type of the resource that this creatorUpdator can create or update
      */
-    interface ResourceCreator<T> {
+    interface ResourceCreatorUpdator<T> {
         /**
          * Creates the resource asynchronously.
          *
@@ -23,47 +23,43 @@ public class CreatorTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, Creato
         Observable<T> createResourceAsync();
 
         /**
-         * Creates the resource synchronously.
-         *
-         * @return the created resource
-         */
-        T createResource();
-
-        /**
-         * @return Gets the task group.
-         */
-        CreatorTaskGroup<T> creatorTaskGroup();
-
-        /**
-         * Creates or updates the resource asynchronously.
+         * Update the resource asynchronously.
          *
          * @return the observable reference
          */
-        Observable<T> executeCreateOrUpdateAsync();
+        Observable<T> updateResourceAsync();
+        /**
+         * @return true if this creatorUpdator is in create mode.
+         */
+        boolean isInCreateMode();
+        /**
+         * @return Gets the task group.
+         */
+        CreateUpdateTaskGroup<T> creatorUpdatorTaskGroup();
     }
 
     /**
-     * Creates CreatorTaskGroup.
+     * Creates CreateUpdateTaskGroup.
      *
      * @param key the key of the root task
-     * @param resourceCreator represents the resource creator that this group want to create ultimately
+     * @param resourceCreatorUpdator represents the resource creator that this group want to create or update ultimately
      */
-    public CreatorTaskGroup(String key, ResourceCreator<ResourceT> resourceCreator) {
-        this(key, new CreatorTaskItem<>(resourceCreator));
+    public CreateUpdateTaskGroup(String key, ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
+        this(key, new CreateUpdateTask<>(resourceCreatorUpdator));
     }
 
     /**
-     * Creates CreatorTaskGroup.
+     * Creates CreateUpdateTaskGroup.
      *
      * @param key the key of the root task
      * @param rootTask represents the root task that this group want to executes ultimately
      */
-    public CreatorTaskGroup(String key, CreatorTaskItem<ResourceT> rootTask) {
+    public CreateUpdateTaskGroup(String key, CreateUpdateTask<ResourceT> rootTask) {
         super(key, rootTask);
     }
 
     /**
-     * Gets a resource created by a creator task in this group.
+     * Gets a resource created or updated by a create-update task in this group.
      * <p>
      * This method can return null if the resource has not yet created that happens if the responsible task
      * is not yet selected for execution or it's it progress or provided key is invalid.

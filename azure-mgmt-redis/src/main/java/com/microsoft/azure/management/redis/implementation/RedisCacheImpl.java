@@ -458,7 +458,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public Observable<RedisCache> applyUpdateAsync() {
+    public Observable<RedisCache> updateResourceAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this))
                 .doOnNext(new Action1<RedisCache>() {
