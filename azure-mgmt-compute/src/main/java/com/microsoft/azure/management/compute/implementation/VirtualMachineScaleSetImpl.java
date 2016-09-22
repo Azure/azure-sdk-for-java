@@ -838,16 +838,6 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Observable<VirtualMachineScaleSet> applyAsync() {
-        return this.createAsync();
-    }
-
-    @Override
-    public Observable<VirtualMachineScaleSet> applyUpdateAsync() {
-        return this.createResourceAsync();
-    }
-
-    @Override
     public VirtualMachineScaleSetImpl refresh() {
         VirtualMachineScaleSetInner inner = this.client.get(this.resourceGroupName(), this.name());
         this.setInner(inner);

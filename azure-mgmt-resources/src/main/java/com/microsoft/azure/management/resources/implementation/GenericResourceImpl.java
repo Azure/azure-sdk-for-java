@@ -116,23 +116,7 @@ final class GenericResourceImpl
         return this;
     }
 
-    @Override
-    public GenericResourceImpl create() {
-        createResource();
-        return this;
-    }
-
-    @Override
-    public Observable<GenericResource> createAsync() {
-        return createResourceAsync();
-    }
-
-    @Override
-    public Observable<GenericResource> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
-    // CreatorTaskGroup.ResourceCreator implementation
+    // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
     public Observable<GenericResource> createResourceAsync() {
         return client.createOrUpdateAsync(

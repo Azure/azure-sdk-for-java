@@ -92,12 +92,7 @@ class AvailabilitySetImpl
         return this;
     }
 
-    @Override
-    public Observable<AvailabilitySet> applyUpdateAsync() {
-        return this.createResourceAsync();
-    }
-
-    // CreatorTaskGroup.ResourceCreator implementation
+    // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
 
     @Override
     public Observable<AvailabilitySet> createResourceAsync() {

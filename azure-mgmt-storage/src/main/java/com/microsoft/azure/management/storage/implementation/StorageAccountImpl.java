@@ -188,7 +188,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public Observable<StorageAccount> applyUpdateAsync() {
+    public Observable<StorageAccount> updateResourceAsync() {
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this));
     }
@@ -231,7 +231,7 @@ class StorageAccountImpl
         return this;
     }
 
-    // CreatorTaskGroup.ResourceCreator implementation
+    // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
     public Observable<StorageAccount> createResourceAsync() {
         createParameters.withLocation(this.regionName());
