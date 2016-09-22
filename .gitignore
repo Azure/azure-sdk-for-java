@@ -1,5 +1,8 @@
 *.class
 
+#External libs
+extlib/
+
 # Auth files
 *.auth
 *.azureauth

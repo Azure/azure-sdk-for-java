@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.reflect.TypeToken;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -80,21 +81,27 @@ public class FlatteningDeserializer extends StdDeserializer<Object> implements R
     public Object deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException {
         JsonNode root = mapper.readTree(jp);
         final Class<?> tClass = this.defaultDeserializer.handledType();
-        for (Field field : tClass.getDeclaredFields()) {
-            JsonNode node = root;
-            JsonProperty property = field.getAnnotation(JsonProperty.class);
-            if (property != null) {
-                String value = property.value();
-                if (value.matches(".+[^\\\\]\\..+")) {
-                    String[] values = value.split("((?<!\\\\))\\.");
-                    for (String val : values) {
-                        val = val.replace("\\.", ".");
-                        node = node.get(val);
-                        if (node == null) {
-                            break;
+        for (Class<?> c : TypeToken.of(tClass).getTypes().classes().rawTypes()) {
+            // Ignore checks for Object type.
+            if (c.isAssignableFrom(Object.class)) {
+                continue;
+            }
+            for (Field field : c.getDeclaredFields()) {
+                JsonNode node = root;
+                JsonProperty property = field.getAnnotation(JsonProperty.class);
+                if (property != null) {
+                    String value = property.value();
+                    if (value.matches(".+[^\\\\]\\..+")) {
+                        String[] values = value.split("((?<!\\\\))\\.");
+                        for (String val : values) {
+                            val = val.replace("\\.", ".");
+                            node = node.get(val);
+                            if (node == null) {
+                                break;
+                            }
                         }
+                        ((ObjectNode) root).put(value, node);
                     }
-                    ((ObjectNode) root).put(value, node);
                 }
             }
         }

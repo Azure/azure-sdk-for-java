@@ -1,8 +1,11 @@
 package com.microsoft.azure.management.batch;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
- * Created by ans on 9/13/2016.
+ * This class represents the access keys for the batch account.
  */
+@LangDefinition
 public class BatchAccountKeys {
     /**
      * The primary key associated with the account.

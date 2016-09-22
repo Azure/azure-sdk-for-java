@@ -12,9 +12,10 @@ import com.microsoft.azure.management.batch.PackageState;
 import org.joda.time.DateTime;
 
 /**
- * Response to an ApplicationOperations.GetApplicationPackage request.
+ * An application package which represents a particular version of an
+ * application.
  */
-public class GetApplicationPackageResultInner {
+public class ApplicationPackageInner {
     /**
      * The id of the application.
      */
@@ -65,9 +66,9 @@ public class GetApplicationPackageResultInner {
      * Set the id value.
      *
      * @param id the id value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withId(String id) {
+    public ApplicationPackageInner withId(String id) {
         this.id = id;
         return this;
     }
@@ -85,9 +86,9 @@ public class GetApplicationPackageResultInner {
      * Set the version value.
      *
      * @param version the version value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withVersion(String version) {
+    public ApplicationPackageInner withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -105,9 +106,9 @@ public class GetApplicationPackageResultInner {
      * Set the state value.
      *
      * @param state the state value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withState(PackageState state) {
+    public ApplicationPackageInner withState(PackageState state) {
         this.state = state;
         return this;
     }
@@ -125,9 +126,9 @@ public class GetApplicationPackageResultInner {
      * Set the format value.
      *
      * @param format the format value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withFormat(String format) {
+    public ApplicationPackageInner withFormat(String format) {
         this.format = format;
         return this;
     }
@@ -145,9 +146,9 @@ public class GetApplicationPackageResultInner {
      * Set the storageUrl value.
      *
      * @param storageUrl the storageUrl value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withStorageUrl(String storageUrl) {
+    public ApplicationPackageInner withStorageUrl(String storageUrl) {
         this.storageUrl = storageUrl;
         return this;
     }
@@ -165,9 +166,9 @@ public class GetApplicationPackageResultInner {
      * Set the storageUrlExpiry value.
      *
      * @param storageUrlExpiry the storageUrlExpiry value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withStorageUrlExpiry(DateTime storageUrlExpiry) {
+    public ApplicationPackageInner withStorageUrlExpiry(DateTime storageUrlExpiry) {
         this.storageUrlExpiry = storageUrlExpiry;
         return this;
     }
@@ -185,9 +186,9 @@ public class GetApplicationPackageResultInner {
      * Set the lastActivationTime value.
      *
      * @param lastActivationTime the lastActivationTime value to set
-     * @return the GetApplicationPackageResultInner object itself.
+     * @return the ApplicationPackageInner object itself.
      */
-    public GetApplicationPackageResultInner withLastActivationTime(DateTime lastActivationTime) {
+    public ApplicationPackageInner withLastActivationTime(DateTime lastActivationTime) {
         this.lastActivationTime = lastActivationTime;
         return this;
     }

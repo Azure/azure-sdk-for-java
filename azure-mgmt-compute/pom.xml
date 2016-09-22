@@ -82,6 +82,12 @@
       <artifactId>api-annotations</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.jcraft</groupId>
+      <artifactId>jsch</artifactId>
+      <version>0.1.53</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>

@@ -9,7 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * The implementation for {@link VirtualMachineExtensionImage}.
  */
-public class VirtualMachineExtensionImageImpl
+class VirtualMachineExtensionImageImpl
         extends WrapperImpl<VirtualMachineExtensionImageInner>
         implements VirtualMachineExtensionImage {
     private final VirtualMachineExtensionImageVersion version;
