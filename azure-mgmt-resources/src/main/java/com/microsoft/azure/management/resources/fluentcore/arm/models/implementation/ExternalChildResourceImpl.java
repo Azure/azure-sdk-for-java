@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 
 /**
@@ -30,7 +29,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     /**
      * State representing any pending action that needs to be performed on this child resource.
      */
-    private State state = State.None;
+    private PendingOperation pendingOperation = PendingOperation.None;
     /**
      * The child resource name.
      */
@@ -57,20 +56,19 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     }
 
     /**
-     * @return the in-memory state of this child resource and state represents any pending action on the
-     * child resource.
+     * @return the operation pending on this child resource.
      */
-    public State state() {
-        return this.state;
+    public PendingOperation pendingOperation() {
+        return this.pendingOperation;
     }
 
     /**
-     * Update the in-memory state.
+     * Update the operation state.
      *
-     * @param newState the new state of this child resource
+     * @param pendingOperation the new state of this child resource
      */
-    public void setState(State newState) {
-        this.state = newState;
+    public void setPendingOperation(PendingOperation pendingOperation) {
+        this.pendingOperation = pendingOperation;
     }
 
     /**
@@ -95,9 +93,9 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     public abstract Observable<Void> deleteAsync();
 
     /**
-     * The possible states of a child resource in-memory.
+     * The possible operation pending on a child resource in-memory.
      */
-    public enum State {
+    public enum PendingOperation {
         /**
          * No action needs to be taken on resource.
          */

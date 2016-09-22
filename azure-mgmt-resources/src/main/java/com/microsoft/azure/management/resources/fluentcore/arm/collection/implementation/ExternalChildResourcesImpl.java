@@ -87,7 +87,7 @@ public abstract class ExternalChildResourcesImpl<
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
                     public Boolean call(FluentModelTImpl childResource) {
-                        return childResource.state() == ExternalChildResourceImpl.State.ToBeRemoved;
+                        return childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved;
                     }
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
@@ -101,7 +101,7 @@ public abstract class ExternalChildResourcesImpl<
                                 }).doOnNext(new Action1<FluentModelTImpl>() {
                                     @Override
                                     public void call(FluentModelTImpl childResource) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None);
                                         self.collection.remove(childResource.name());
                                     }
                                 })
@@ -119,7 +119,7 @@ public abstract class ExternalChildResourcesImpl<
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
                     public Boolean call(FluentModelTImpl childResource) {
-                        return childResource.state() == ExternalChildResourceImpl.State.ToBeCreated;
+                        return childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated;
                     }
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
@@ -134,7 +134,7 @@ public abstract class ExternalChildResourcesImpl<
                                 .doOnNext(new Action1<FluentModelTImpl>() {
                                     @Override
                                     public void call(FluentModelTImpl fluentModelT) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None);
                                     }
                                 })
                                 .onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
@@ -152,7 +152,7 @@ public abstract class ExternalChildResourcesImpl<
                 .filter(new Func1<FluentModelTImpl, Boolean>() {
                     @Override
                     public Boolean call(FluentModelTImpl childResource) {
-                        return childResource.state() == ExternalChildResourceImpl.State.ToBeUpdated;
+                        return childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeUpdated;
                     }
                 }).flatMap(new Func1<FluentModelTImpl, Observable<FluentModelTImpl>>() {
                     @Override
@@ -167,7 +167,7 @@ public abstract class ExternalChildResourcesImpl<
                                 .doOnNext(new Action1<FluentModelTImpl>() {
                                     @Override
                                     public void call(FluentModelTImpl childResource) {
-                                        childResource.setState(ExternalChildResourceImpl.State.None);
+                                        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None);
                                     }
                                 })
                                 .onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
@@ -246,7 +246,7 @@ public abstract class ExternalChildResourcesImpl<
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' already exists");
         }
         FluentModelTImpl childResource = newChildResource(name);
-        childResource.setState(ExternalChildResourceImpl.State.ToBeCreated);
+        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
         return childResource;
     }
 
@@ -259,13 +259,13 @@ public abstract class ExternalChildResourcesImpl<
     protected FluentModelTImpl prepareUpdate(String name) {
         FluentModelTImpl childResource = find(name);
         if (childResource == null
-                || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
+                || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
         }
-        if (childResource.state() == ExternalChildResourceImpl.State.ToBeRemoved) {
+        if (childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' is marked for deletion");
         }
-        childResource.setState(ExternalChildResourceImpl.State.ToBeUpdated);
+        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
         return childResource;
     }
 
@@ -277,10 +277,10 @@ public abstract class ExternalChildResourcesImpl<
     protected void prepareRemove(String name) {
         FluentModelTImpl childResource = find(name);
         if (childResource == null
-                || childResource.state() == ExternalChildResourceImpl.State.ToBeCreated) {
+                || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
         }
-        childResource.setState(ExternalChildResourceImpl.State.ToBeRemoved);
+        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
     }
 
     /**
