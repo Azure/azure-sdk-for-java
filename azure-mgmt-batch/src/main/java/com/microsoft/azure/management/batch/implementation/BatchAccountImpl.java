@@ -7,13 +7,13 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.batch.AccountKeyType;
+import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
+import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.batch.ProvisioningState;
-import com.microsoft.azure.management.batch.AutoStorageProperties;
-import com.microsoft.azure.management.batch.AccountKeyType;
-import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -43,7 +43,7 @@ public class BatchAccountImpl
     private final StorageManager storageManager;
     private String creatableStorageAccountKey;
     private StorageAccount existingStorageAccountToAssociate;
-    private ApplicationsImpl applicationsCollection;
+    private ApplicationsImpl applicationsImpl;
 
     private BatchAccountKeys cachedKeys;
 
@@ -52,11 +52,12 @@ public class BatchAccountImpl
                                BatchAccountsInner innerCollection,
                                BatchManager manager,
                                ApplicationsInner applicationsClient,
+                               ApplicationPackagesInner applicationPackagesClient,
                                final StorageManager storageManager) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.storageManager = storageManager;
-        this.applicationsCollection = new ApplicationsImpl(applicationsClient, this);
+        this.applicationsImpl = new ApplicationsImpl(applicationsClient, applicationPackagesClient, this);
     }
 
     @Override
@@ -64,7 +65,11 @@ public class BatchAccountImpl
         BatchAccountInner response =
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
-        this.applicationsCollection.refresh();
+        this.applicationsImpl.refresh();
+//        Map<String, Application> applicationPackages = this.applicationsImpl.asMap();
+//        for (Map.Entry<String, Application> application: applicationPackages.entrySet()) {
+//            application.getValue().refresh();
+//        }
         return this;
     }
 
@@ -97,7 +102,7 @@ public class BatchAccountImpl
                 }).flatMap(new Func1<BatchAccount, Observable<? extends BatchAccount>>() {
                     @Override
                     public Observable<? extends BatchAccount> call(BatchAccount batchAccount) {
-                        return self.applicationsCollection.commitAndGetAllAsync()
+                        return self.applicationsImpl.commitAndGetAllAsync()
                                 .map(new Func1<List<ApplicationImpl>, BatchAccount>() {
                                     @Override
                                     public BatchAccount call(List<ApplicationImpl> applications) {
@@ -198,7 +203,7 @@ public class BatchAccountImpl
 
     @Override
     public Map<String, Application> applications() {
-        return this.applicationsCollection.asMap();
+        return this.applicationsImpl.asMap();
     }
 
     @Override
@@ -244,17 +249,17 @@ public class BatchAccountImpl
 
     @Override
     public ApplicationImpl defineNewApplication(String applicationId) {
-        return this.applicationsCollection.define(applicationId);
+        return this.applicationsImpl.define(applicationId);
     }
 
     @Override
-    public Application.Update updateApplication(String applicationId) {
-        return this.applicationsCollection.update(applicationId);
+    public ApplicationImpl updateApplication(String applicationId) {
+        return this.applicationsImpl.update(applicationId);
     }
 
     @Override
     public Update withoutApplication(String applicationId) {
-        this.applicationsCollection.remove(applicationId);
+        this.applicationsImpl.remove(applicationId);
         return this;
     }
 
@@ -266,7 +271,6 @@ public class BatchAccountImpl
         } else if (this.existingStorageAccountToAssociate != null) {
             storageAccount = this.existingStorageAccountToAssociate;
         } else {
-            this.inner().withAutoStorage(null);
             return;
         }
 
@@ -278,7 +282,7 @@ public class BatchAccountImpl
     }
 
     BatchAccountImpl withApplication(ApplicationImpl application) {
-        this.applicationsCollection.addApplication(application);
+        this.applicationsImpl.addApplication(application);
         return this;
     }
 }

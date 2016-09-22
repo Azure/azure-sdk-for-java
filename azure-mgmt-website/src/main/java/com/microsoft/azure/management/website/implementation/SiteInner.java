@@ -49,7 +49,7 @@ public class SiteInner extends Resource {
     private String repositorySiteName;
 
     /**
-     * State indicating whether web app has exceeded its quota usage. Possible
+     * PendingOperation indicating whether web app has exceeded its quota usage. Possible
      * values include: 'Normal', 'Exceeded'.
      */
     @JsonProperty(value = "properties.usageState", access = JsonProperty.Access.WRITE_ONLY)

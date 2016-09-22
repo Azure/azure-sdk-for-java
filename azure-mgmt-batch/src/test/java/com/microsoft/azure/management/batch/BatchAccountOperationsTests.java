@@ -19,11 +19,9 @@ import org.junit.Test;
 import java.util.List;
 
 public class BatchAccountOperationsTests extends BatchManagementTestBase {
-    private static final String RG_NAME = "javacbatch389";
-    private static final String BATCH_NAME = "javacsmsa389";
-    private static final String SA_NAME = "javacsmsa389";
-
-    private static ResourceGroup resourceGroup;
+    private static final String RG_NAME = "javacbatch381";
+    private static final String BATCH_NAME = "javacsmsa381";
+    private static final String SA_NAME = "javacsmsa381";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -40,7 +38,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         // Create
         BatchAccount batchAccount = batchManager.batchAccounts()
                 .define(BATCH_NAME)
-                .withRegion(Region.EUROPE_NORTH)
+                .withRegion(Region.BRAZIL_SOUTH)
                 .withNewResourceGroup(RG_NAME)
                 .createAsync()
                 .toBlocking().last();
@@ -84,16 +82,18 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
 
         Assert.assertNotEquals(lastSync, batchAccount.autoStorage().lastKeySync());
 
-
         // Test applications.
         String applicationId = "myApplication";
         String applicationDisplayName = "displayName";
-        boolean allowUpdates = true;
+        String applicationPackageName = "applicationPackage";
+
+        boolean updatesAllowed = true;
 
         batchAccount.update()
                 .defineNewApplication(applicationId)
+                    .defineNewApplicationPackage(applicationPackageName)
                 .withDisplayName(applicationDisplayName)
-                .withAllowUpdates(allowUpdates)
+                .withAllowUpdates(updatesAllowed)
                 .attach()
                 .apply();
         Assert.assertTrue(batchAccount.applications().containsKey(applicationId));
@@ -104,8 +104,13 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
 
         Application application = batchAccount.applications().get(applicationId);
         Assert.assertEquals(application.displayName(), applicationDisplayName);
-        Assert.assertEquals(application.allowUpdates(), allowUpdates);
+        Assert.assertEquals(application.updatesAllowed(), updatesAllowed);
+        Assert.assertEquals(1, application.applicationPackages().size());
+        ApplicationPackage applicationPackage = application.applicationPackages().get(applicationPackageName);
+        Assert.assertEquals(applicationPackage.name(), applicationPackageName);
 
+        // Delete application package directly.
+        applicationPackage.delete();
         batchAccount
                 .update()
                 .withoutApplication(applicationId)
@@ -114,27 +119,59 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         batchAccount.refresh();
         Assert.assertFalse(batchAccount.applications().containsKey(applicationId));
 
+        String applicationPackage1Name = "applicationPackage1";
+        String applicationPackage2Name = "applicationPackage2";
         batchAccount.update()
                 .defineNewApplication(applicationId)
+                    .defineNewApplicationPackage(applicationPackage1Name)
+                    .defineNewApplicationPackage(applicationPackage2Name)
                 .withDisplayName(applicationDisplayName)
-                .withAllowUpdates(allowUpdates)
+                .withAllowUpdates(updatesAllowed)
                 .attach()
                 .apply();
         Assert.assertTrue(batchAccount.applications().containsKey(applicationId));
+        application.refresh();
+        Assert.assertEquals(2, application.applicationPackages().size());
 
         String newApplicationDisplayName = "newApplicationDisplayName";
         batchAccount
                 .update()
                 .updateApplication(applicationId)
+                    .withoutApplicationPackage(applicationPackage2Name)
                 .withDisplayName(newApplicationDisplayName)
                 .parent()
                 .apply();
         application = batchAccount.applications().get(applicationId);
         Assert.assertEquals(application.displayName(), newApplicationDisplayName);
+
         batchAccount.refresh();
         application = batchAccount.applications().get(applicationId);
-        Assert.assertEquals(application.displayName(), newApplicationDisplayName);
 
+        Assert.assertEquals(application.displayName(), newApplicationDisplayName);
+        Assert.assertEquals(1, application.applicationPackages().size());
+
+        applicationPackage = application.applicationPackages().get(applicationPackageName);
+
+        Assert.assertNotNull(applicationPackage);
+        Assert.assertNotNull(applicationPackage.id());
+        Assert.assertEquals(applicationPackage.name(), applicationPackageName);
+        Assert.assertNull(applicationPackage.format());
+
+        applicationPackage.refresh();
+
+        applicationPackage.activate("zip");
+        applicationPackage.refresh();
+        batchAccount.refresh();
+        applicationPackage = batchAccount.applications().get(applicationId).applicationPackages().get(applicationPackageName);
+        Assert.assertEquals(applicationPackage.format(), "zip");
+        Assert.assertNotNull(applicationPackage.state());
+
+        batchAccount
+                .update()
+                .updateApplication(applicationId)
+                    .withoutApplicationPackage(applicationPackage1Name)
+                .parent()
+                .apply();
         batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
         try {
             batchManager.batchAccounts().getById(batchAccount.id());
@@ -185,7 +222,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
 
         Assert.assertNotNull(application);
         Assert.assertEquals(application.displayName(), applicationDisplayName);
-        Assert.assertEquals(application.allowUpdates(), allowUpdates);
+        Assert.assertEquals(application.updatesAllowed(), allowUpdates);
 
         batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
         try {

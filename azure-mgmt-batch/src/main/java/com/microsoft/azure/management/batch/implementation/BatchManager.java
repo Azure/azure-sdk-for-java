@@ -92,6 +92,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
                     super.innerManagementClient.batchAccounts(),
                     this,
                     super.innerManagementClient.applications(),
+                    super.innerManagementClient.applicationPackages(),
                     this.storageManager);
         }
 

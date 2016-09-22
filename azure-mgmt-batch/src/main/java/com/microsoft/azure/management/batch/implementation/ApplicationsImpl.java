@@ -1,7 +1,14 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.batch.Application;
+import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
 
 import java.util.ArrayList;
@@ -11,73 +18,45 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a extension collection associated with a virtual machine.
+ * Represents a application collection associated with a virtual machine.
  */
 class ApplicationsImpl extends
         ExternalChildResourcesImpl<ApplicationImpl,
                 Application,
                 ApplicationInner,
-                BatchAccountImpl> {
+                BatchAccountImpl,
+                BatchAccount> {
     private final ApplicationsInner client;
+    private ApplicationPackagesInner applicationPackagesClient;
 
-    /**
-     * Creates new ApplicationsImpl.
-     *
-     * @param client the client to perform REST calls on applications
-     * @param parent the parent virtual machine of the applications
-     */
-    ApplicationsImpl(ApplicationsInner client, BatchAccountImpl parent) {
+    ApplicationsImpl(ApplicationsInner client, ApplicationPackagesInner applicationPackagesClient, BatchAccountImpl parent) {
         super(parent, "Application");
         this.client = client;
+        this.applicationPackagesClient = applicationPackagesClient;
         this.initializeCollection();
     }
 
-    /**
-     * @return the extension as a map indexed by name.
-     */
     public Map<String, Application> asMap() {
         Map<String, Application> result = new HashMap<>();
         for (Map.Entry<String, ApplicationImpl> entry : this.collection().entrySet()) {
-            ApplicationImpl extension = entry.getValue();
-            result.put(entry.getKey(), extension);
+            ApplicationImpl application = entry.getValue();
+            result.put(entry.getKey(), application);
         }
         return Collections.unmodifiableMap(result);
     }
 
-    /**
-     * Starts an extension definition chain.
-     *
-     * @param name the reference name of the extension to be added
-     * @return the extension
-     */
     public ApplicationImpl define(String name) {
         return this.prepareDefine(name);
     }
 
-    /**
-     * Starts an extension update chain.
-     *
-     * @param name the reference name of the extension to be updated
-     * @return the extension
-     */
     public ApplicationImpl update(String name) {
         return this.prepareUpdate(name);
     }
 
-    /**
-     * Mark the extension with given name as to be removed.
-     *
-     * @param name the reference name of the extension to be removed
-     */
     public void remove(String name) {
         this.prepareRemove(name);
     }
 
-    /**
-     * Adds the extension to the collection.
-     *
-     * @param application the application
-     */
     public void addApplication(ApplicationImpl application) {
         this.addChildResource(application);
     }
@@ -92,7 +71,7 @@ class ApplicationsImpl extends
         PagedList<ApplicationInner> applicationList = this.client.list(this.parent().resourceGroupName(), this.parent().name());
 
         for (ApplicationInner application: applicationList) {
-            childResources.add(new ApplicationImpl(application.id(), this.parent(), application, this.client));
+            childResources.add(new ApplicationImpl(application.id(), this.parent(), application, this.client, this.applicationPackagesClient));
         }
 
         return childResources;
@@ -100,8 +79,8 @@ class ApplicationsImpl extends
 
     @Override
     protected ApplicationImpl newChildResource(String name) {
-        ApplicationImpl extension = ApplicationImpl
-                .newApplication(name, this.parent(), this.client);
-        return extension;
+        ApplicationImpl application = ApplicationImpl
+                .newApplication(name, this.parent(), this.client, this.applicationPackagesClient);
+        return application;
     }
 }

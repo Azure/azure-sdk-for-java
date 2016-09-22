@@ -17,11 +17,13 @@ public class BatchAccountsImpl
         implements BatchAccounts {
     private final StorageManager storageManager;
     private ApplicationsInner applicationsClient;
+    private ApplicationPackagesInner applicationPackagesClient;
 
-    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, ApplicationsInner applicationsClient, StorageManager storageManager) {
+    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, ApplicationsInner applicationsClient, ApplicationPackagesInner applicationPackagesClient,  StorageManager storageManager) {
         super(innerCollection, manager);
         this.storageManager = storageManager;
         this.applicationsClient = applicationsClient;
+        this.applicationPackagesClient = applicationPackagesClient;
     }
 
     @Override
@@ -44,6 +46,7 @@ public class BatchAccountsImpl
                 this.innerCollection,
                 super.myManager,
                 this.applicationsClient,
+                this.applicationPackagesClient,
                 this.storageManager);
     }
 
@@ -65,6 +68,7 @@ public class BatchAccountsImpl
                 this.innerCollection,
                 this.myManager,
                 this.applicationsClient,
+                this.applicationPackagesClient,
                 this.storageManager);
     }
 
