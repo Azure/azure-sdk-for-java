@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 
 /**
@@ -16,26 +15,25 @@ import rx.Observable;
  *
  * @param <FluentModelT> the fluent model type of the child resource
  * @param <InnerModelT> Azure inner resource class type representing the child resource
- * @param <ParentImplT> the parent Azure resource class type of the child resource
+ * @param <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
+ * @param <ParentT> parent interface
  */
-public abstract class ExternalChildResourceImpl<
-        FluentModelT extends ExternalChildResource,
+public abstract class ExternalChildResourceImpl<FluentModelT,
         InnerModelT,
-        ParentImplT>
+        ParentImplT extends ParentT,
+        ParentT>
         extends
-        IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> {
+            ChildResourceImpl<InnerModelT, ParentImplT, ParentT>
+        implements
+            ExternalChildResource<FluentModelT, ParentT>  {
     /**
      * State representing any pending action that needs to be performed on this child resource.
      */
-    private State state = State.None;
+    private PendingOperation pendingOperation = PendingOperation.None;
     /**
      * The child resource name.
      */
     private final String name;
-    /**
-     * Reference to the parent of the child resource.
-     */
-    protected final ParentImplT parent;
 
     /**
      * Creates an instance of external child resource in-memory.
@@ -45,33 +43,32 @@ public abstract class ExternalChildResourceImpl<
      * @param innerObject reference to the inner object representing this external child resource
      */
     protected ExternalChildResourceImpl(String name, ParentImplT parent, InnerModelT innerObject) {
-        super(innerObject);
+        super(innerObject, parent);
         this.name = name;
-        this.parent = parent;
     }
 
-    /**
-     * @return the resource name
-     */
+    @Override
+    public abstract String id();
+
+    @Override
     public String name() {
         return this.name;
     }
 
     /**
-     * @return the in-memory state of this child resource and state represents any pending action on the
-     * child resource.
+     * @return the operation pending on this child resource.
      */
-    public State state() {
-        return this.state;
+    public PendingOperation pendingOperation() {
+        return this.pendingOperation;
     }
 
     /**
-     * Update the in-memory state.
+     * Update the operation state.
      *
-     * @param newState the new state of this child resource
+     * @param pendingOperation the new state of this child resource
      */
-    public void setState(State newState) {
-        this.state = newState;
+    public void setPendingOperation(PendingOperation pendingOperation) {
+        this.pendingOperation = pendingOperation;
     }
 
     /**
@@ -96,9 +93,9 @@ public abstract class ExternalChildResourceImpl<
     public abstract Observable<Void> deleteAsync();
 
     /**
-     * The possible states of a child resource in-memory.
+     * The possible operation pending on a child resource in-memory.
      */
-    public enum State {
+    public enum PendingOperation {
         /**
          * No action needs to be taken on resource.
          */
