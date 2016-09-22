@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -26,6 +27,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  *  Implementation for {@link PublicFrontend}.
  */
+@LangDefinition
 class FrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
     implements
