@@ -4,7 +4,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
-class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl>
+class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, Object>
         implements Pullet {
     Integer age;
     private FailFlag failFlag = FailFlag.None;
@@ -23,12 +23,8 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl>
         return this;
     }
 
-    public ChickenImpl parent() {
-        return this.parent;
-    }
-
     public ChickenImpl attach() {
-        return this.parent.withPullet(this);
+        return this.parent().withPullet(this);
     }
 
     @Override
