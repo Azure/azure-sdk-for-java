@@ -1,11 +1,11 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * A type representing sku available for virtual machines in a scale set.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface VirtualMachineScaleSetSku {
     /**
      * @return the type of resource the sku applies to.

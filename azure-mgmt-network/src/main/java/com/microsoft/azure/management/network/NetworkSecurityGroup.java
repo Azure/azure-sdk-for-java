@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * Network security group.
  */
-@LangDefinition()
+@Fluent()
 public interface NetworkSecurityGroup extends
         GroupableResource,
         Refreshable<NetworkSecurityGroup>,
@@ -58,7 +58,6 @@ public interface NetworkSecurityGroup extends
     /**
      * The entirety of the network security group definition.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -68,7 +67,6 @@ public interface NetworkSecurityGroup extends
     /**
      * Grouping of network security group definition stages.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the definition.
@@ -114,7 +112,6 @@ public interface NetworkSecurityGroup extends
     /**
      * Grouping of network security group update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the resource definition allowing to add or remove security rules.
@@ -149,7 +146,6 @@ public interface NetworkSecurityGroup extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Appliable<NetworkSecurityGroup>,
         Resource.UpdateWithTags<Update>,

@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionImageInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -8,6 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * <p>
  * Note: Azure virtual machine extension image is also referred as virtual machine extension handler.
  */
+@Fluent
 public interface VirtualMachineExtensionImage extends
         Wrapper<VirtualMachineExtensionImageInner> {
     /**

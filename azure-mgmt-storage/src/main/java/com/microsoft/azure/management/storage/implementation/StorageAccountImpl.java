@@ -40,7 +40,6 @@ class StorageAccountImpl
 
     private PublicEndpoints publicEndpoints;
     private AccountStatuses accountStatuses;
-    private List<StorageAccountKey> cachedAccountKeys;
     private StorageAccountCreateParametersInner createParameters;
     private StorageAccountUpdateParametersInner updateParameters;
 
@@ -112,27 +111,17 @@ class StorageAccountImpl
     }
 
     @Override
-    public List<StorageAccountKey> keys() {
-        if (cachedAccountKeys == null) {
-            cachedAccountKeys = refreshKeys();
-        }
-        return cachedAccountKeys;
-    }
-
-    @Override
-    public List<StorageAccountKey> refreshKeys() {
+    public List<StorageAccountKey> getKeys() {
         StorageAccountListKeysResultInner response =
                 this.client.listKeys(this.resourceGroupName(), this.name());
-        cachedAccountKeys = response.keys();
-        return cachedAccountKeys;
+        return response.keys();
     }
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
         StorageAccountListKeysResultInner response =
                 this.client.regenerateKey(this.resourceGroupName(), this.name(), keyName);
-        cachedAccountKeys = response.keys();
-        return cachedAccountKeys;
+        return response.keys();
     }
 
     @Override

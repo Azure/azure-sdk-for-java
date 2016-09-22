@@ -222,7 +222,8 @@ public final class Utils {
                 .append("\n\tMAC Address:").append(resource.macAddress())
                 .append("\n\tPrivate IP:").append(resource.primaryPrivateIp())
                 .append("\n\tPrivate allocation method:").append(resource.primaryPrivateIpAllocationMethod())
-                .append("\n\tSubnet Id:").append(resource.primarySubnetId());
+                .append("\n\tPrimary virtual network ID: ").append(resource.primaryIpConfiguration().networkId())
+                .append("\n\tPrimary subnet name:").append(resource.primaryIpConfiguration().subnetName());
 
         System.out.println(info.toString());
     }

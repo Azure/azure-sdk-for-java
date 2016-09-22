@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.AvailabilitySetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure availability set.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent()
 public interface AvailabilitySet extends
         GroupableResource,
         Refreshable<AvailabilitySet>,
@@ -69,7 +69,6 @@ public interface AvailabilitySet extends
     /**
      * Container interface for all the definitions.
      */
-    @LangDefinition(ContainerName = "~/AvailabilitySet.Definition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -79,7 +78,6 @@ public interface AvailabilitySet extends
     /**
      * Grouping of availability set definition stages.
      */
-    @LangDefinition(ContainerName = "~/AvailabilitySet.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of an availability set definition.
@@ -136,7 +134,6 @@ public interface AvailabilitySet extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName = "~/AvailabilitySet.Update")
     interface Update extends
         Appliable<AvailabilitySet>,
         Resource.UpdateWithTags<Update> {

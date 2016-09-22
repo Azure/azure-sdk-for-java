@@ -7,7 +7,7 @@
 package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.SubscriptionInner;
@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.implementation.SubscriptionInner
 /**
  * An immutable client-side representation of an Azure subscription.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface Subscription extends
         Indexable,
         Wrapper<SubscriptionInner> {

@@ -5,12 +5,14 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
  * An immutable client-side representation of a TCP load balancing probe.
  */
+@Fluent()
 public interface TcpProbe extends Probe {
 
     /**

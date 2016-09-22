@@ -1,9 +1,13 @@
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
+import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -12,33 +16,19 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An IP configuration in a network interface.
  */
-@LangDefinition()
+@Fluent()
 public interface NicIpConfiguration extends
         Wrapper<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
-        HasPrivateIpAddress {
+        HasPrivateIpAddress,
+        HasPublicIpAddress,
+        HasSubnet {
     // Getters
 
     /**
-     * Gets the resource id of the public IP address associated with this IP configuration.
-     *
-     * @return public IP resource ID or null if there is no public IP associated
+     * @return the virtual network associated with this IP configuration
      */
-    String publicIpAddressId();
-
-    /**
-     * @return the public IP associated with this IP configuration or null if there is no public IP associated
-     */
-    PublicIpAddress getPublicIpAddress();
-
-    /**
-     * @return the resource id of the virtual network subnet associated with this IP configuration.
-     */
-    String subnetId();
-
-    /**
-     * @return the virtual network associated with this this IP configuration.
-     */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     Network getNetwork();
 
     /**
@@ -52,7 +42,6 @@ public interface NicIpConfiguration extends
      * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
@@ -65,7 +54,6 @@ public interface NicIpConfiguration extends
      * Grouping of network interface IP configuration definition stages applicable as part of a
      * network interface update.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -160,44 +148,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPublicIpAddress<ParentT> {
-            /**
-             * Create a new public IP address to associate with the network interface IP configuration,
-             * based on the provided definition.
-             *
-             * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource and associate it
-             * with with the network interface IP configuration.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the network interface name.
-             *
-             * @return the next stage of the network interface IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress();
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-             * and associate it with the network interface IP configuration.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
-             *
-             * @param leafDnsLabel the leaf domain label
-             * @return tthe next stage of the IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress(String leafDnsLabel);
-
-            /**
-             * Associates an existing public IP address with the network interface IP configuration.
-             *
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the IP configuration definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -218,7 +169,6 @@ public interface NicIpConfiguration extends
     /** The entirety of a network interface IP configuration definition as part of a network interface update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
@@ -231,7 +181,6 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration definition stages.
      */
-    @LangDefinition(ContainerName = "UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of network interface IP configuration definition.
@@ -326,44 +275,7 @@ public interface NicIpConfiguration extends
          *
          * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
-        interface WithPublicIpAddress<ParentT> {
-            /**
-             * Create a new public IP address to associate with the network interface IP configuration,
-             * based on the provided definition.
-             *
-             * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource and associate it
-             * with with the network interface IP configuration.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the network interface name.
-             *
-             * @return the next stage of the network interface IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress();
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS label
-             * and associate it with the network interface IP configuration.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label.
-             *
-             * @param leafDnsLabel the leaf domain label
-             * @return tthe next stage of the IP configuration definition
-             */
-            WithAttach<ParentT> withNewPublicIpAddress(String leafDnsLabel);
-
-            /**
-             * Associates an existing public IP address with the network interface IP configuration.
-             *
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the IP configuration definition
-             */
-            WithAttach<ParentT> withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
+        interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.UpdateDefinitionStages.WithPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /**
@@ -384,7 +296,6 @@ public interface NicIpConfiguration extends
     /**
      * The entirety of a network interface IP configuration update as part of a network interface update.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
         Settable<NetworkInterface.Update>,
         UpdateStages.WithSubnet,
@@ -397,7 +308,6 @@ public interface NicIpConfiguration extends
     /**
      * Grouping of network interface IP configuration update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network interface IP configuration update allowing to specify subnet.
@@ -427,48 +337,7 @@ public interface NicIpConfiguration extends
         /**
          * The stage of the network interface IP configuration update allowing to specify public IP address.
          */
-        interface WithPublicIpAddress {
-            /**
-             * Create a new public IP address to associate the network interface IP configuration with,
-             * based on the provided definition.
-             * <p>
-             * If there is public IP associated with the IP configuration then that will be removed in
-             * favour of this.
-             *
-             * @param creatable a creatable definition for a new public IP
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withNewPublicIpAddress(Creatable<PublicIpAddress> creatable);
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource and associate it
-             * with the IP configuration.
-             * <p>
-             * The internal name and DNS label for the public IP address will be derived from the network interface
-             * name, if there is an existing public IP association then that will be removed in favour of this.
-             *
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withNewPublicIpAddress();
-
-            /**
-             * Creates a new public IP address in the same region and group as the resource, with the specified DNS
-             * label and associate it with the IP configuration.
-             * <p>
-             * The internal name for the public IP address will be derived from the DNS label, if there is an existing
-             * public IP association then that will be removed in favour of this
-             *
-             * @param leafDnsLabel the leaf domain label
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withNewPublicIpAddress(String leafDnsLabel);
-
-            /**
-             * Specifies that remove any public IP associated with the IP configuration.
-             *
-             * @return the next stage of the network interface IP configuration update
-             */
-            Update withoutPublicIpAddress();
+        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithPublicIpAddress<Update> {
         }
 
         /**

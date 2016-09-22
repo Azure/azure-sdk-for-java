@@ -6,14 +6,14 @@
 
 package com.microsoft.azure.management.storage;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.implementation.UsageInner;
 
 /**
  * An immutable client-side representation of an Azure storage resource usage info object.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface StorageUsage extends Wrapper<UsageInner> {
     /**
      * @return the unit of measurement. Possible values include: 'Count',

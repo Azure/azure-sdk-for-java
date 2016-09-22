@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.network.Probe;
 import com.microsoft.azure.management.network.ProbeProtocol;
+import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
 import com.microsoft.azure.management.network.TcpProbe;
@@ -663,12 +664,10 @@ class LoadBalancerImpl
     @Override
     public List<String> publicIpAddressIds() {
         List<String> publicIpAddressIds = new ArrayList<>();
-        if (this.inner().frontendIPConfigurations() != null) {
-            for (FrontendIPConfigurationInner frontEndIpConfig : this.inner().frontendIPConfigurations()) {
-                SubResource pipReference = frontEndIpConfig.publicIPAddress();
-                if (pipReference != null) {
-                    publicIpAddressIds.add(frontEndIpConfig.publicIPAddress().id());
-                }
+        for (Frontend frontend : this.frontends().values()) {
+            if (frontend.isPublic()) {
+                String pipId = ((PublicFrontend) frontend).publicIpAddressId();
+                publicIpAddressIds.add(pipId);
             }
         }
         return Collections.unmodifiableList(publicIpAddressIds);

@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Frontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -26,6 +27,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  *  Implementation for {@link PublicFrontend}.
  */
+@LangDefinition
 class FrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
     implements
@@ -142,10 +144,16 @@ class FrontendImpl
 
     @Override
     public FrontendImpl withExistingSubnet(Network network, String subnetName) {
+        return this.withExistingSubnet(network.id(), subnetName);
+    }
+
+    @Override
+    public FrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubResource subnetRef = new SubResource()
-                .withId(network.id() + "/subnets/" + subnetName);
-        this.inner().withSubnet(subnetRef);
-        this.inner().withPublicIPAddress(null); // Ensure no conflicting public and private settings
+                .withId(parentNetworkResourceId + "/subnets/" + subnetName);
+        this.inner()
+            .withSubnet(subnetRef)
+            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
         return this;
     }
 
@@ -164,6 +172,12 @@ class FrontendImpl
             .withSubnet(null)
             .withPrivateIPAddress(null)
             .withPrivateIPAllocationMethod(null);
+        return this;
+    }
+
+    @Override
+    public FrontendImpl withoutPublicIpAddress() {
+        this.inner().withPublicIPAddress(null);
         return this;
     }
 
@@ -194,5 +208,15 @@ class FrontendImpl
     @Override
     public LoadBalancerImpl attach() {
         return this.parent().withFrontend(this);
+    }
+
+    @Override
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        if (pipId == null) {
+            return null;
+        } else {
+            return this.parent().manager().publicIpAddresses().getById(pipId);
+        }
     }
 }

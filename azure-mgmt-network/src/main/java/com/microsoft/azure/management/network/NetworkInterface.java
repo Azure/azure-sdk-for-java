@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +24,7 @@ import java.util.Map;
 /**
  * Network interface.
  */
-@LangDefinition()
+@Fluent()
 public interface NetworkInterface extends
         GroupableResource,
         Refreshable<NetworkInterface>,
@@ -70,29 +72,6 @@ public interface NetworkInterface extends
     List<String> appliedDnsServers();
 
     /**
-     * Gets the public IP address associated with this network interface.
-     * <p>
-     * This method makes a rest API call to fetch the public IP.
-     *
-     * @return the public IP associated with this network interface
-     */
-    PublicIpAddress primaryPublicIpAddress();
-
-    /**
-     * @return the resource id of the virtual network subnet associated with this network interface.
-     */
-    String primarySubnetId();
-
-    /**
-     * Gets the virtual network associated this network interface's primary IP configuration.
-     * <p>
-     * This method makes a rest API call to fetch the virtual network.
-     *
-     * @return the virtual network associated with this network interface.
-     */
-    Network primaryNetwork();
-
-    /**
      * Gets the private IP address allocated to this network interface's primary IP configuration.
      * <p>
      * The private IP will be within the virtual network subnet of this network interface.
@@ -130,6 +109,7 @@ public interface NetworkInterface extends
      *
      * @return the network security group associated with this network interface.
      */
+    @LangMethodDefinition(AsType = LangMethodType.Method)
     NetworkSecurityGroup getNetworkSecurityGroup();
 
     /**
@@ -142,7 +122,6 @@ public interface NetworkInterface extends
     /**
      * The entirety of the network interface definition.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -155,7 +134,6 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface definition stages.
      */
-    @LangDefinition(ContainerName = "Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the network interface.
@@ -376,7 +354,6 @@ public interface NetworkInterface extends
     /**
      * Grouping of network interface update stages.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the network interface update allowing to specify subnet.
@@ -580,7 +557,6 @@ public interface NetworkInterface extends
      * <p>
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    @LangDefinition(ContainerName = "Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<NetworkInterface>,
             Resource.UpdateWithTags<Update>,

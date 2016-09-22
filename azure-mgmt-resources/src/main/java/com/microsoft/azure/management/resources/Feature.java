@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.FeatureResultInner;
@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.implementation.FeatureResultInne
 /**
  * An immutable client-side representation of an Azure feature.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface Feature extends
         Indexable,
         Wrapper<FeatureResultInner> {

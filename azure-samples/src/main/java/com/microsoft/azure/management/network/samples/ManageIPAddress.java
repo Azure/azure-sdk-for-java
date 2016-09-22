@@ -110,7 +110,7 @@ public final class ManageIPAddress {
 
                 System.out.println("Public IP address associated with the VM's primary NIC [After create]");
                 // Print the public IP address details
-                Utils.print(vm.primaryPublicIpAddress());
+                Utils.print(vm.getPrimaryPublicIpAddress());
 
 
                 //============================================================
@@ -142,7 +142,7 @@ public final class ManageIPAddress {
                 // Get the associated public IP address for a virtual machine
                 System.out.println("Public IP address associated with the VM's primary NIC [After Update]");
                 vm.refresh();
-                Utils.print(vm.primaryPublicIpAddress());
+                Utils.print(vm.getPrimaryPublicIpAddress());
 
 
                 //============================================================
@@ -151,7 +151,7 @@ public final class ManageIPAddress {
                 System.out.println("Removing public IP address associated with the VM");
                 vm.refresh();
                 primaryNetworkInterface = vm.primaryNetworkInterface();
-                publicIpAddress = primaryNetworkInterface.primaryPublicIpAddress();
+                publicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
                 primaryNetworkInterface.update()
                         .withoutPrimaryPublicIpAddress()
                         .apply();

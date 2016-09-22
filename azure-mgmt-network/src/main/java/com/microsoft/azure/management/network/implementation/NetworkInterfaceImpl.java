@@ -60,8 +60,6 @@ class NetworkInterfaceImpl
     // reference to an network security group to be associated with the network interface
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
     // Cached related resources.
-    private PublicIpAddress primaryPublicIp;
-    private Network primaryNetwork;
     private NetworkSecurityGroup networkSecurityGroup;
 
     NetworkInterfaceImpl(String name,
@@ -280,27 +278,6 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public PublicIpAddress primaryPublicIpAddress() {
-        if (this.primaryPublicIp == null) {
-            this.primaryPublicIp = this.primaryIpConfiguration().getPublicIpAddress();
-        }
-        return primaryPublicIp;
-    }
-
-    @Override
-    public String primarySubnetId() {
-        return this.primaryIpConfiguration().subnetId();
-    }
-
-    @Override
-    public Network primaryNetwork() {
-        if (this.primaryNetwork == null) {
-            this.primaryNetwork = this.primaryIpConfiguration().getNetwork();
-        }
-        return this.primaryNetwork;
-    }
-
-    @Override
     public String primaryPrivateIp() {
         return this.primaryIpConfiguration().privateIpAddress();
     }
@@ -396,8 +373,6 @@ class NetworkInterfaceImpl
     }
 
     private void clearCachedRelatedResources() {
-        this.primaryPublicIp = null;
-        this.primaryNetwork = null;
         this.networkSecurityGroup = null;
         this.nicPrimaryIpConfiguration = null;
     }
