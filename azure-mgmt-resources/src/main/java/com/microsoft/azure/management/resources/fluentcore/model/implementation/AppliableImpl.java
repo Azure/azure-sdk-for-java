@@ -34,4 +34,12 @@ public abstract class AppliableImpl<
     public final Observable<FluentModelT> createAsync() {
         throw new IllegalStateException("Internal Error: createAsync cannot be called from UpdatableImpl");
     }
+
+    @Override
+    public final Observable<FluentModelT> createResourceAsync() {
+        throw new IllegalStateException("Internal Error: createResourceAsync cannot be called from UpdatableImpl");
+    }
+
+    @Override
+    public abstract Observable<FluentModelT> updateResourceAsync();
 }

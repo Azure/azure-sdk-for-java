@@ -38,4 +38,12 @@ public abstract class CreatableImpl<
     public final Observable<FluentModelT> applyAsync() {
         throw new IllegalStateException("Internal Error: updateAsync cannot be called from CreatableImpl");
     }
+
+    @Override
+    public final Observable<FluentModelT> updateResourceAsync() {
+        throw new IllegalStateException("Internal Error: updateResourceAsync cannot be called from CreatableImpl");
+    }
+
+    @Override
+    public abstract Observable<FluentModelT> createResourceAsync();
 }
