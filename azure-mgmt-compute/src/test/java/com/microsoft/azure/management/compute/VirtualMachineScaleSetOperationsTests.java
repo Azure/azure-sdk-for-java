@@ -154,11 +154,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
 
         Assert.assertNull(virtualMachineScaleSet.primaryInternalLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackEnds().size() == 0);
+        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackends().size() == 0);
         Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerInboundNatPools().size() == 0);
 
         Assert.assertNotNull(virtualMachineScaleSet.primaryInternetFacingLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackEnds().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerInboundNatPools().size() == 2);
 
         Assert.assertNotNull(virtualMachineScaleSet.primaryNetwork());
@@ -193,11 +193,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .getByGroup(RG_NAME, vmss_name);
 
         Assert.assertNotNull(virtualMachineScaleSet.primaryInternetFacingLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackEnds().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerInboundNatPools().size() == 1);
 
         Assert.assertNotNull(virtualMachineScaleSet.primaryInternalLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackEnds().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerInboundNatPools().size() == 2);
     }
 

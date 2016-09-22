@@ -229,7 +229,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternetFacingLoadBalancerBackEnds() throws IOException {
+    public Map<String, Backend> primaryInternetFacingLoadBalancerBackends() throws IOException {
         if (this.primaryInternetFacingLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -255,7 +255,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternalLoadBalancerBackEnds() throws IOException {
+    public Map<String, Backend> primaryInternalLoadBalancerBackends() throws IOException {
         if (this.primaryInternalLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
