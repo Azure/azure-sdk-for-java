@@ -23,18 +23,18 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Azure Redis sample for managing Redis Cache -
- *  - Create a Redis Cache and print out hostname
- *  - Get access keys
- *  - Regenerate access keys
- *  - Create another 2 Redis Caches with Premium Sku
- *  - List all Redis Caches in a resource group – for each cache with Premium Sku
- *     - set Redis patch schedule to Monday at 5 am
- *     - update shard count
- *     - enable non-SSL port,
- *     - modify max memory policy & reserved settings
- *     - restart it
- *  - Clean up all resources
+ * Azure Redis sample for managing Redis Cache:
+ *  - Create a Redis Cache and print out hostname.
+ *  - Get access keys.
+ *  - Regenerate access keys.
+ *  - Create another 2 Redis Caches with Premium Sku.
+ *  - List all Redis Caches in a resource group – for each cache with Premium Sku:
+ *     - set Redis patch schedule to Monday at 5 am.
+ *     - update shard count.
+ *     - enable non-SSL port.
+ *     - modify max memory policy and reserved settings.
+ *     - restart it.
+ *  - Clean up all resources.
  */
 
 public final class ManageRedisCache {
@@ -48,7 +48,7 @@ public final class ManageRedisCache {
         final String redisCacheName1 = Utils.createRandomName("rc1");
         final String redisCacheName2 = Utils.createRandomName("rc2");
         final String redisCacheName3 = Utils.createRandomName("rc3");
-        final String rgName = Utils.createRandomName("rgRCMS");
+        final String rgName = Utils.createRandomName("rgRCMC");
 
         try {
 
@@ -64,7 +64,6 @@ public final class ManageRedisCache {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             try {
-
                 // ============================================================
                 // Create a redis cache
 
@@ -79,7 +78,6 @@ public final class ManageRedisCache {
                 System.out.println("Created a Redis Cache:");
                 Utils.print(redisCache1);
 
-
                 // ============================================================
                 // Get | regenerate Redis Cache access keys
 
@@ -90,7 +88,6 @@ public final class ManageRedisCache {
                 System.out.println("Regenerating secondary Redis Cache access key");
                 redisAccessKeys = redisCache1.regenerateKey(RedisKeyType.SECONDARY);
                 Utils.print(redisAccessKeys);
-
 
                 // ============================================================
                 // Create another two Redis Caches
@@ -114,37 +111,42 @@ public final class ManageRedisCache {
 
                 System.out.println("Created a Redis Cache:");
                 Utils.print(redisCache3);
+
                 // ============================================================
-                // List Redis Caches
+                // List Redis Caches inside the resource group
 
                 System.out.println("Listing Redis Caches");
 
                 RedisCaches redisCaches = azure.redisCaches();
 
                 List<RedisCache> caches = redisCaches.listByGroup(rgName);
+
+                // Walk through all the caches
                 for (RedisCache redis : caches) {
+                    // If the instance of the Redis Cache is Premium Sku
                     if (redis.isPremium()) {
                         RedisCachePremium premium = redis.asPremium();
 
+                        // Update each Premium Sku Redis Cache instance
                         System.out.println("Updating Premium Redis Cache");
                         premium.update()
                                 .withPatchSchedule(DayOfWeek.MONDAY, 5)
                                 .withShardCount(4)
                                 .withNonSslPort()
-                                .withRedisConfiguration("maxmemory-policy","allkeys-random")
-                                .withRedisConfiguration("maxmemory-reserved","20")
+                                .withRedisConfiguration("maxmemory-policy", "allkeys-random")
+                                .withRedisConfiguration("maxmemory-reserved", "20")
                                 .apply();
 
                         System.out.println("Updated Redis Cache:");
                         Utils.print(premium);
 
+                        // Restart Redis Cache
                         System.out.println("Restarting updated Redis Cache");
                         premium.forceReboot(RebootType.ALL_NODES);
 
                         System.out.println("Redis Cache restart scheduled");
                     }
                 }
-
 
                 // ============================================================
                 // Delete a Redis Cache
@@ -173,8 +175,5 @@ public final class ManageRedisCache {
     }
 
     private ManageRedisCache() {
-
     }
-
-
 }
