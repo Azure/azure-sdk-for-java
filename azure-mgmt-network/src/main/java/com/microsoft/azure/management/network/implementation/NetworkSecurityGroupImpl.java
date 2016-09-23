@@ -111,7 +111,7 @@ class NetworkSecurityGroupImpl
             }
         }
 
-        return subnets;
+        return Collections.unmodifiableList(subnets);
     }
 
     // Setters (fluent)
