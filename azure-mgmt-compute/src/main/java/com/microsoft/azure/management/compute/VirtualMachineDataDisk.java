@@ -50,18 +50,9 @@ public interface VirtualMachineDataDisk extends
     String sourceImageUri();
 
     /**
-     * Gets the create option used while creating this disk.
-     * <p>
-     * Possible values include: 'fromImage', 'empty', 'attach'
-     * 'fromImage' - if data disk was created from a user image
-     * 'attach' - if an existing vhd was usd to back the data disk
-     * 'empty' - if the disk was created as an empty disk
-     *  when disk is created using 'fromImage' option, a copy of user image vhd will be created first
-     *  and it will be used as the vhd to back the data disk.
-     *
-     * @return disk create option
+     * @return the creation method used while creating this disk
      */
-    DiskCreateOptionTypes createOption();
+    DiskCreateOptionTypes creationMethod();
 
     // fluent (setters)
 
@@ -268,7 +259,7 @@ public interface VirtualMachineDataDisk extends
     /** The entirety of a data disk definition as part of a virtual machine update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-       interface UpdateDefinition<ParentT>  extends
+    interface UpdateDefinition<ParentT>  extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT>,
             UpdateDefinitionStages.WithStoreAt<ParentT> {

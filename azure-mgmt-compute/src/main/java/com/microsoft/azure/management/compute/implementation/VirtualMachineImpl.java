@@ -1097,7 +1097,7 @@ class VirtualMachineImpl
 
         boolean hasEmptyVhd = false;
         for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
-            if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY) {
                 if (dataDisk.inner().vhd() == null) {
                     hasEmptyVhd = true;
                     break;
@@ -1113,7 +1113,7 @@ class VirtualMachineImpl
             // In update mode, if any of the data disk has vhd uri set then use same container
             // to store this disk, no need to create a storage account implicitly.
             for (VirtualMachineDataDisk dataDisk : this.dataDisks) {
-                if (dataDisk.createOption() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
+                if (dataDisk.creationMethod() == DiskCreateOptionTypes.ATTACH && dataDisk.inner().vhd() != null) {
                     return false;
                 }
             }
