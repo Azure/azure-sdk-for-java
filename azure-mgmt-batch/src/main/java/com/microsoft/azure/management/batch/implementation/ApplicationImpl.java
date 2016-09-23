@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -106,13 +105,12 @@ public class ApplicationImpl
     public Observable<Application> updateAsync() {
         final ApplicationImpl self = this;
 
-        String applicationId = ResourceUtils.nameFromResourceId(this.inner().id());
         UpdateApplicationParametersInner updateParameter = new UpdateApplicationParametersInner();
         updateParameter.withDisplayName(this.inner().displayName());
         updateParameter.withAllowUpdates(this.inner().allowUpdates());
 
         return this.client.updateAsync(this.parent().resourceGroupName(),
-                this.parent().name(), applicationId, updateParameter)
+                this.parent().name(), this.name(), updateParameter)
                 .map(new Func1<Void, Application>() {
                     @Override
                     public Application call(Void result) {
