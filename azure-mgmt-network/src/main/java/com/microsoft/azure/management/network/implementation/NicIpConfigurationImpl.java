@@ -53,9 +53,6 @@ class NicIpConfigurationImpl
     // Flag indicating to remove public IP association from the ip configuration during update
     private boolean removePrimaryPublicIPAssociation;
 
-    // Reference to an existing load balancer whose back end pool is to be associated with this IP config
-    private LoadBalancer loadBalancerToAssociate;
-
     protected NicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
                                      NetworkManager networkManager,
