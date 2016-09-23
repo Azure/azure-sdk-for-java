@@ -571,7 +571,7 @@ public class JsonWebKey {
      * @return the JSON web key, converted from AES key.
      */
     public static JsonWebKey fromAes(SecretKey secretKey) {
-        if(secretKey == null) {
+        if (secretKey == null) {
             return null;
         }
         
@@ -585,7 +585,7 @@ public class JsonWebKey {
      * @return AES key
      */
     public SecretKey toAes() {
-        if(k == null) {
+        if (k == null) {
             return null;
         }
         
@@ -614,7 +614,7 @@ public class JsonWebKey {
             return false;
         }
         
-        if(!Objects.equal(kid, jwk.kid)) {
+        if (!Objects.equal(kid, jwk.kid)) {
             return false;
         }
             
@@ -672,11 +672,11 @@ public class JsonWebKey {
      */
     public boolean hasPrivateKey() {
         
-        if(JsonWebKeyType.OCT.equals(kty)) {
+        if (JsonWebKeyType.OCT.equals(kty)) {
             return k != null;
         }
         
-        else if(JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
+        else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
         }
         
@@ -689,27 +689,28 @@ public class JsonWebKey {
      */
     @JsonIgnore
     public boolean isValid() {
-        if(kty == null) {
+        if (kty == null) {
             return false;
         }
         
-        if(keyOps != null) {
+        if (keyOps != null) {
             final Set<JsonWebKeyOperation> set = new HashSet<JsonWebKeyOperation>(JsonWebKeyOperation.ALL_OPERATIONS);
-            for(int i = 0; i < keyOps.size(); i++) {
-                if(!set.contains(keyOps.get(i)))
+            for (int i = 0; i < keyOps.size(); i++) {
+                if (!set.contains(keyOps.get(i))) {
                     return false;
+                }
             }
         }
         
-        if(JsonWebKeyType.OCT.equals(kty)) {
+        if (JsonWebKeyType.OCT.equals(kty)) {
             return isValidOctet();
         }
         
-        else if(JsonWebKeyType.RSA.equals(kty)) {
+        else if (JsonWebKeyType.RSA.equals(kty)) {
             return isValidRsa();
         }
         
-        else if(JsonWebKeyType.RSA_HSM.equals(kty)) {
+        else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
             return isValidRsaHsm();
         }
         return false;
@@ -738,7 +739,7 @@ public class JsonWebKey {
         }
 
         // no private key
-        if(hasPrivateKey()) {
+        if (hasPrivateKey()) {
             return false;
         }
         
@@ -757,21 +758,20 @@ public class JsonWebKey {
      * Clear key materials.
      */
     public void clearMemory() {
-        zeroArray(k);
-        zeroArray(n);
-        zeroArray(e);
-        zeroArray(d);
-        zeroArray(dp);
-        zeroArray(dq);
-        zeroArray(qi);
-        zeroArray(p);
-        zeroArray(q);
-        zeroArray(t);
-        k = n = e = d = dp = dq = qi = p = q = t = null;
+        zeroArray(k);  k = null;
+        zeroArray(n);  n = null;
+        zeroArray(e);  e = null;
+        zeroArray(d);  d = null;
+        zeroArray(dp); dp = null;
+        zeroArray(dq); dq = null;
+        zeroArray(qi); qi = null;
+        zeroArray(p);  p = null;
+        zeroArray(q);  q = null;
+        zeroArray(t);  t = null;
     }
 
     private static void zeroArray(byte[] bytes) {
-        if(bytes != null) {
+        if (bytes != null) {
             Arrays.fill(bytes, (byte) 0);
         }
     }
@@ -779,19 +779,19 @@ public class JsonWebKey {
     @Override
     public int hashCode() {
         int hashCode = 48313; // setting it to a random prime number
-        if(kid != null) {
+        if (kid != null) {
             hashCode += kid.hashCode();
         }
         
-        if(JsonWebKeyType.OCT.equals(kty)) {
+        if (JsonWebKeyType.OCT.equals(kty)) {
             hashCode += hashCode(k);
         }
         
-        else if(JsonWebKeyType.RSA.equals(kty)) {
+        else if (JsonWebKeyType.RSA.equals(kty)) {
             hashCode += hashCode(n);
         }
         
-        else if(JsonWebKeyType.RSA_HSM.equals(kty)) {
+        else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }
         
@@ -801,12 +801,12 @@ public class JsonWebKey {
     private static int hashCode(byte[] obj) {
         int hashCode = 0;
         
-        if(obj == null || obj.length == 0) {
+        if (obj == null || obj.length == 0) {
             return 0;
         }
         
-        for(int i = 0; i < obj.length; i += 1) {
-            hashCode = (hashCode << 3) | (hashCode >> 29) ^ obj [i];
+        for (int i = 0; i < obj.length; i++) {
+            hashCode = (hashCode << 3) | (hashCode >> 29) ^ obj[i];
         }
         return hashCode;
     }
