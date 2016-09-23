@@ -237,15 +237,9 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withExistingLoadBalancer(LoadBalancer loadBalancer) {
-        this.loadBalancerToAssociate = loadBalancer;
-        return this;
-    }
-
-    @Override
-    public NicIpConfigurationImpl withBackendAddressPool(String name) {
-        for (BackendAddressPoolInner pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
-            if (pool.name().equalsIgnoreCase(name)) {
+    public NicIpConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
+        for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
+            if (pool.name().equalsIgnoreCase(backendName)) {
                 ensureBackendAddressPools().add(pool);
                 return this;
             }

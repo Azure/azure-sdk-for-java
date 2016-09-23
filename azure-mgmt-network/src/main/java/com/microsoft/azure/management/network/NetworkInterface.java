@@ -136,6 +136,19 @@ public interface NetworkInterface extends
      */
     interface DefinitionStages {
         /**
+         * The stage of the network interface definition allowing to associate it with a load balancer.
+         */
+        interface WithLoadBalancer {
+            /**
+             * Associates the network interface's primary IP configuration with a backend of an existing load balancer.
+             * @param loadBalancer an existing load balancer
+             * @param backendName the name of an existing backend on that load balancer
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+        }
+
+        /**
          * The first stage of the network interface.
          */
         interface Blank
@@ -322,7 +335,8 @@ public interface NetworkInterface extends
                 Resource.DefinitionWithTags<WithCreate>,
                 WithPrimaryPublicIpAddress,
                 WithNetworkSecurityGroup,
-                WithSecondaryIpConfiguration {
+                WithSecondaryIpConfiguration,
+                WithLoadBalancer {
             /**
              * Enable IP forwarding in the network interface.
              *
@@ -549,6 +563,20 @@ public interface NetworkInterface extends
              */
             NicIpConfiguration.Update updateIpConfiguration(String name);
         }
+
+        /**
+         * The stage of the network interface update allowing to associate it with a load balancer.
+         */
+        interface WithLoadBalancer {
+            /**
+             * Associates the network interface's primary IP configuration with a backend of an existing load balancer.
+             * @param loadBalancer an existing load balancer
+             * @param backendName the name of an existing backend on that load balancer
+             * @return the next stage of the update
+             */
+            Update withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+        }
+
     }
 
     /**
@@ -566,6 +594,7 @@ public interface NetworkInterface extends
             UpdateStages.WithNetworkSecurityGroup,
             UpdateStages.WithIpForwarding,
             UpdateStages.WithDnsServer,
-            UpdateStages.WithIpConfiguration {
+            UpdateStages.WithIpConfiguration,
+            UpdateStages.WithLoadBalancer {
     }
 }

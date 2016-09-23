@@ -27,6 +27,7 @@ import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PrivateFrontend;
 import com.microsoft.azure.management.network.Probe;
@@ -208,6 +209,8 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -254,6 +257,15 @@ public class TestLoadBalancer {
                         .withFrontendPort(88)
                         .attach()
                     .create();
+
+            // Connect NICs explicitly
+            nic1.update()
+                .withExistingLoadBalancerBackend(lb, "backend1")
+                .apply();
+
+            nic2.update()
+                .withExistingLoadBalancerBackend(lb, "backend1")
+                .apply();
 
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
