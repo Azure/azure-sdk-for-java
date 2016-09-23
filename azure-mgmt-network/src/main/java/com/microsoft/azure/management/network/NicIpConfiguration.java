@@ -42,6 +42,11 @@ public interface NicIpConfiguration extends
      */
     List<Backend> listAssociatedLoadBalancerBackends();
 
+    /**
+     * @return the load balancer inbound NAT rules associated with this network interface IP configuration
+     */
+    List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules();
+
     // Setters (fluent)
 
     /**

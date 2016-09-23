@@ -266,6 +266,8 @@ public class TestLoadBalancer {
             TestNetworkInterface.printNic(nic1);
             Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
                     .equalsIgnoreCase("backend1"));
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerInboundNatRules().get(0).name()
+                    .equalsIgnoreCase("natrule1"));
 
             nic2.update()
                 .withExistingLoadBalancerBackend(lb, "backend1")

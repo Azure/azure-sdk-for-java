@@ -5,6 +5,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -386,6 +387,29 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
         this.inner().withLoadBalancerInboundNatRules(null);
         return this;
+    }
+
+    @Override
+    public List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
+        final List<InboundNatRuleInner> refs = this.inner().loadBalancerInboundNatRules();
+        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
+        final List<InboundNatRule> rules = new ArrayList<>();
+
+        if (refs != null) {
+            for (InboundNatRuleInner ref : refs) {
+                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(ref.id());
+                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
+                if (loadBalancer == null) {
+                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
+                    loadBalancers.put(loadBalancerId, loadBalancer);
+                }
+
+                String ruleName = ResourceUtils.nameFromResourceId(ref.id());
+                rules.add(loadBalancer.inboundNatRules().get(ruleName));
+            }
+        }
+
+        return Collections.unmodifiableList(rules);
     }
 
     @Override
