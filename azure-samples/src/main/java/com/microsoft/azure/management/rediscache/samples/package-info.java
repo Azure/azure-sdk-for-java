@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for resource samples.
+ * This package contains the classes for Redis cache samples.
  */
-package com.microsoft.azure.management.resources.samples;
+package com.microsoft.azure.management.rediscache.samples;
