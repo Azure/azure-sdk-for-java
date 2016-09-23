@@ -143,10 +143,11 @@ public class ServiceResponseBuilder<T, E extends RestException> {
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
         } else {
             try {
-                Object errorBody = buildBody(statusCode, responseBody);
-                E exception = (E) exceptionType.getConstructor(String.class).newInstance(mapperAdapter.serialize(errorBody));
+                String responseContent = responseBody.string();
+                responseBody = ResponseBody.create(responseBody.contentType(), responseContent);
+                E exception = (E) exceptionType.getConstructor(String.class).newInstance(responseContent);
                 exceptionType.getMethod("setResponse", response.getClass()).invoke(exception, response);
-                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, errorBody);
+                exceptionType.getMethod("setBody", (Class<?>) responseTypes.get(0)).invoke(exception, buildBody(statusCode, responseBody));
                 throw exception;
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IOException("Invalid status code " + statusCode + ", but an instance of " + exceptionType.getCanonicalName()
