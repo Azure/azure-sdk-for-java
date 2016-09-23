@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
@@ -25,6 +26,7 @@ import java.util.UUID;
 /**
  * Implementation for AccessPolicy and its parent interfaces.
  */
+@LangDefinition
 class AccessPolicyImpl
         extends ChildResourceImpl<
                 AccessPolicyEntry,
