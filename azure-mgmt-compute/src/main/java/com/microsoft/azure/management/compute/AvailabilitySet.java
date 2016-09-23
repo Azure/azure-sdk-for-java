@@ -27,46 +27,31 @@ public interface AvailabilitySet extends
         Wrapper<AvailabilitySetInner>,
         Updatable<AvailabilitySet.Update> {
 
+
     /**
-     * Returns the update domain count of an availability set.
-     * <p>
-     * An update domain represents the group of virtual
-     * machines and underlying physical hardware that can be rebooted at the same time.
-     *
-     * @return the update domain count
+     * @return the update domain count of this availability set
      */
     int updateDomainCount();
 
     /**
-     * Returns the fault domain count of availability set.
-     * <p>
-     * A fault domain represents the group of virtual
-     * machines that shares common power source and network switch.
-     *
-     * @return the fault domain count
+     * @return the fault domain count of this availability set
      */
     int faultDomainCount();
 
     /**
-     * Lists the resource IDs of the virtual machines in the availability set.
-     *
-     * @return list of resource ID strings
+     * @return the resource IDs of the virtual machines in the availability set
      */
     List<String> virtualMachineIds();
 
     /**
-     * Lists the statuses of the existing virtual machines in the availability set.
-     *
-     * @return list of virtual machine statuses
+     * @return the statuses of the existing virtual machines in the availability set
      */
     List<InstanceViewStatus> statuses();
 
-    /**************************************************************
-     * Fluent interfaces to create an AvailabilitySet
-     **************************************************************/
+    // Fluent interfaces
 
     /**
-     * Container interface for all the definitions.
+     * Container interface for all the definitions related to an availability set.
      */
     interface Definition extends
         DefinitionStages.Blank,
@@ -97,7 +82,7 @@ public interface AvailabilitySet extends
             /**
              * Specifies the update domain count for the availability set.
              * @param updateDomainCount update domain count
-             * @return the next stage of the resource definition
+             * @return the next stage of the definition
              */
             WithCreate withUpdateDomainCount(int updateDomainCount);
         }
@@ -108,8 +93,8 @@ public interface AvailabilitySet extends
         interface WithFaultDomainCount {
             /**
              * Specifies the fault domain count for the availability set.
-             * @param faultDomainCount fault domain count
-             * @return the next stage of the resource definition
+             * @param faultDomainCount the fault domain count
+             * @return the next stage of the definition
              */
             WithCreate withFaultDomainCount(int faultDomainCount);
         }

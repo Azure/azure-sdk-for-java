@@ -72,7 +72,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                     .withPublisher("Microsoft.OSTCExtensions")
                     .withType("CustomScriptForLinux")
                     .withVersion("1.4")
-                    .withAutoUpgradeMinorVersionEnabled()
+                    .withMinorVersionAutoUpgrade()
                     .withPublicSetting("fileUris",fileUris)
                     .withPublicSetting("commandToExecute", installCommand)
                 .attach()

@@ -29,7 +29,7 @@ public interface VirtualMachineOffer {
     String name();
 
     /**
-     * @return Virtual machine image SKUs available in this offer.
+     * @return virtual machine image SKUs available in this offer
      */
     VirtualMachineSkus skus();
 }

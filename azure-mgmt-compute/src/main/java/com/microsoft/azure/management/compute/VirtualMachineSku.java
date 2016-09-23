@@ -34,7 +34,7 @@ public interface VirtualMachineSku {
     String name();
 
     /**
-     * @return virtual machine images in the sku
+     * @return virtual machine images in the SKU
      */
     VirtualMachineImagesInSku images();
 }

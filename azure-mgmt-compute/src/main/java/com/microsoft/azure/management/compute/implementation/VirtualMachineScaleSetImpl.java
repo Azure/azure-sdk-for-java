@@ -136,7 +136,7 @@ public class VirtualMachineScaleSetImpl
     }
 
    @Override
-   public PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException {
+   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
         return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
    }
 
@@ -732,12 +732,12 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOverProvisionEnabled() {
+    public VirtualMachineScaleSetImpl withOverProvisioning() {
         return this.withOverProvision(true);
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOverProvisionDisabled() {
+    public VirtualMachineScaleSetImpl withoutOverProvisioning() {
         return this.withOverProvision(false);
     }
 

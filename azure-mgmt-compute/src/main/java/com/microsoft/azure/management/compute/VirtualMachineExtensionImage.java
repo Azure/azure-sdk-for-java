@@ -49,21 +49,16 @@ public interface VirtualMachineExtensionImage extends
 
     /**
      * @return the schema defined by publisher, where extension consumers should provide settings in a matching schema
-     * <p>
-     * Note this field will be null since server provide null for them
      */
     String handlerSchema();
 
     /**
-     * @return true if the extension can be used on xRP Virtual Machine ScaleSets.
-     * <p>
-     * Note by default existing extensions are usable on scale sets, but there might be cases where a publisher wants to
-     * explicitly indicate the extension is only enabled for Compute Resource Provider VMs but not Virtual Machine ScaleSets.
+     * @return true if the extension can be used with virtual machine scale sets, false otherwise
      */
-    boolean vmScaleSetEnabled();
+    boolean supportsVirtualMachineScaleSets();
 
     /**
-     * @return true if the handler can support multiple extensions.
+     * @return true if the handler can support multiple extensions
      */
     boolean supportsMultipleExtensions();
 
