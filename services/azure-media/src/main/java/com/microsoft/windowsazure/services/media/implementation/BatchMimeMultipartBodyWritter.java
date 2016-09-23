@@ -32,6 +32,6 @@ public class BatchMimeMultipartBodyWritter implements MessageBodyWriter<BatchMim
             t.writeTo(entityStream);
         } catch (MessagingException ex) {
             throw new WebApplicationException(ex);
-        }	
+        }
     }
 }
