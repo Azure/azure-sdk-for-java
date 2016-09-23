@@ -14,14 +14,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.KeyVaultError;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.SecretAttributes;
 import com.microsoft.azure.keyvault.models.SecretBundle;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.SecretItem;
 import com.microsoft.azure.keyvault.requests.SetSecretRequest;
 import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
+import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 
 public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
@@ -63,6 +66,15 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
     }
 
+    @Test
+    public void deserializeWithExtraFieldTest() throws Exception {
+        AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+        ObjectMapper mapper = mapperAdapter.getObjectMapper();
+        KeyVaultError error = mapper.readValue("{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}", KeyVaultError.class);
+        Assert.assertEquals(error.error().message(), "Secret not found: javaSecret");
+        Assert.assertEquals(error.error().code(), "SecretNotFound");
+    }
+    
     @Test
     public void crudOperations() throws Exception {
 

@@ -7,7 +7,7 @@ import java.util.Map;
 import com.microsoft.azure.keyvault.models.Attributes;
 import com.microsoft.azure.keyvault.models.CertificateAttributes;
 import com.microsoft.azure.keyvault.models.CertificatePolicy;
-import com.microsoft.azure.keyvault.models.IssuerReference;
+import com.microsoft.azure.keyvault.models.IssuerParameters;
 import com.microsoft.azure.keyvault.models.KeyProperties;
 import com.microsoft.azure.keyvault.models.LifetimeAction;
 import com.microsoft.azure.keyvault.models.SecretProperties;
@@ -141,9 +141,9 @@ public final class ImportCertificateRequest {
                         .withExpires(builder.policy.attributes().expires())
                         .withNotBefore(builder.policy.attributes().notBefore()));
             }
-            if (builder.policy.issuerReference() != null) {
+            if (builder.policy.issuerParameters() != null) {
                 certificatePolicy
-                        .withIssuerReference(new IssuerReference().withName(builder.policy.issuerReference().name()));
+                        .withIssuerParameters(new IssuerParameters().withName(builder.policy.issuerParameters().name()));
             }
             if (builder.policy.x509CertificateProperties() != null) {
                 certificatePolicy.withX509CertificateProperties(new X509CertificateProperties()
