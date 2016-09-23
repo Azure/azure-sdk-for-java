@@ -153,6 +153,8 @@ public interface NicIpConfiguration extends
         /**
          * The stage of the network interface IP configuration definition allowing to specify the load balancer
          * to associate this IP configuration with.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithLoadBalancer<ParentT> {
             /**
@@ -303,6 +305,8 @@ public interface NicIpConfiguration extends
         /**
          * The stage of the network interface IP configuration definition allowing to specify the load balancer
          * to associate this IP configuration with.
+         *
+         * @param <ParentT> the return type of the final {@link Attachable#attach()}
          */
         interface WithLoadBalancer<ParentT> {
             /**
