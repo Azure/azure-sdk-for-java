@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.batch.implementation.ApplicationPackageInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -55,11 +56,13 @@ public interface ApplicationPackage extends
      *
      * @param format format of the uploaded package supported values zip, tar
      */
+    @Method
     void activate(String format);
 
     /**
      * Deletes the application package.
      */
+    @Method
     void delete();
 }
 

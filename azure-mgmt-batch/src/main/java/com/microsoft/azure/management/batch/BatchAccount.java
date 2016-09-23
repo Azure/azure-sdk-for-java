@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -69,6 +70,7 @@ public interface BatchAccount extends
     /**
      * @return the access keys for this batch account
      */
+    @Method
     BatchAccountKeys refreshKeys();
 
     /**
@@ -77,11 +79,13 @@ public interface BatchAccount extends
      * @param keyType either primary or secondary key to be regenerated
      * @return the access keys for this batch account
      */
+    @Method
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
      * Synchronize the storage account keys for batch account.
      */
+    @Method
     void synchronizeAutoStorageKeys();
 
     /**

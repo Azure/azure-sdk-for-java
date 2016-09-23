@@ -20,7 +20,7 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
         final BatchAccount[] batchAccounts = new BatchAccount[1];
         final SettableFuture<BatchAccount> future = SettableFuture.create();
         resources.define(batchAccountName)
-                .withRegion(Region.US_EAST)
+                .withRegion(Region.INDIA_CENTRAL)
                 .withNewResourceGroup()
                 .withTag("mytag", "testtag")
                 .createAsync()
@@ -46,7 +46,7 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
                 .withNewStorageAccount(storageAccountName)
                 .apply();
 
-        Assert.assertNull(resource.autoStorage());
+        Assert.assertNotNull(resource.autoStorage());
 
         return resource;
     }

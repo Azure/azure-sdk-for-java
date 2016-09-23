@@ -19,9 +19,9 @@ import org.junit.Test;
 import java.util.List;
 
 public class BatchAccountOperationsTests extends BatchManagementTestBase {
-    private static final String RG_NAME = "javacbatch381";
-    private static final String BATCH_NAME = "javacsmsa381";
-    private static final String SA_NAME = "javacsmsa381";
+    private static final String RG_NAME = "javacbatch382";
+    private static final String BATCH_NAME = "javacsmsa382";
+    private static final String SA_NAME = "javacsmsa382";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -38,7 +38,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         // Create
         BatchAccount batchAccount = batchManager.batchAccounts()
                 .define(BATCH_NAME)
-                .withRegion(Region.BRAZIL_SOUTH)
+                .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .createAsync()
                 .toBlocking().last();
@@ -144,27 +144,20 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         application = batchAccount.applications().get(applicationId);
         Assert.assertEquals(application.displayName(), newApplicationDisplayName);
 
+
         batchAccount.refresh();
         application = batchAccount.applications().get(applicationId);
 
         Assert.assertEquals(application.displayName(), newApplicationDisplayName);
         Assert.assertEquals(1, application.applicationPackages().size());
 
-        applicationPackage = application.applicationPackages().get(applicationPackageName);
+        applicationPackage = application.applicationPackages().get(applicationPackage1Name);
 
         Assert.assertNotNull(applicationPackage);
+        String id = applicationPackage.id();
         Assert.assertNotNull(applicationPackage.id());
-        Assert.assertEquals(applicationPackage.name(), applicationPackageName);
+        Assert.assertEquals(applicationPackage.name(), applicationPackage1Name);
         Assert.assertNull(applicationPackage.format());
-
-        applicationPackage.refresh();
-
-        applicationPackage.activate("zip");
-        applicationPackage.refresh();
-        batchAccount.refresh();
-        applicationPackage = batchAccount.applications().get(applicationId).applicationPackages().get(applicationPackageName);
-        Assert.assertEquals(applicationPackage.format(), "zip");
-        Assert.assertNotNull(applicationPackage.state());
 
         batchAccount
                 .update()
@@ -191,7 +184,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         // Create
         BatchAccount batchAccount = batchManager.batchAccounts()
                 .define(BATCH_NAME)
-                .withRegion(Region.EUROPE_NORTH)
+                .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .defineNewApplication(applicationId)
                     .withDisplayName(applicationDisplayName)

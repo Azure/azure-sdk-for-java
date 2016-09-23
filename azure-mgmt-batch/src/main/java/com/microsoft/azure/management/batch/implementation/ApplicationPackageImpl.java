@@ -46,7 +46,7 @@ public class ApplicationPackageImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        return this.parent().parent().id() + "/applications/" + this.parent().name() + "/versions/" + this.name();
     }
 
     @Override
