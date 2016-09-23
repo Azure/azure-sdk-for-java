@@ -1,5 +1,7 @@
 package com.microsoft.azure.management.network;
 
+import java.util.List;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
@@ -34,6 +36,11 @@ public interface NicIpConfiguration extends
      * @return private IP address version
      */
     IPVersion privateIpAddressVersion();
+
+    /**
+     * @return the load balancer backends associated with this network interface IP configuration
+     */
+    List<Backend> listAssociatedLoadBalancerBackends();
 
     // Setters (fluent)
 

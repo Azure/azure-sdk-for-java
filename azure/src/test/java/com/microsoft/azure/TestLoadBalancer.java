@@ -263,10 +263,16 @@ public class TestLoadBalancer {
                 .withExistingLoadBalancerBackend(lb, "backend1")
                 .withExistingLoadBalancerInboundNatRule(lb,  "natrule1")
                 .apply();
+            TestNetworkInterface.printNic(nic1);
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
+                    .equalsIgnoreCase("backend1"));
 
             nic2.update()
                 .withExistingLoadBalancerBackend(lb, "backend1")
                 .apply();
+            TestNetworkInterface.printNic(nic2);
+            Assert.assertTrue(nic2.primaryIpConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
+                    .equalsIgnoreCase("backend1"));
 
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
@@ -317,11 +323,13 @@ public class TestLoadBalancer {
                 .withoutLoadBalancerBackends()
                 .withoutLoadBalancerInboundNatRules()
                 .apply();
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
             nic2.update()
                 .withoutLoadBalancerBackends()
                 .withoutLoadBalancerInboundNatRules()
                 .apply();
+            Assert.assertTrue(nic2.primaryIpConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
 
             // Update the load balancer
             List<PublicIpAddress> existingPips = ensurePIPs(pips);

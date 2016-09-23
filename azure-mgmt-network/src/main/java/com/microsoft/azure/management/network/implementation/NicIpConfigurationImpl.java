@@ -2,6 +2,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -15,7 +16,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
@@ -382,5 +386,28 @@ class NicIpConfigurationImpl
     public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
         this.inner().withLoadBalancerInboundNatRules(null);
         return this;
+    }
+
+    @Override
+    public List<Backend> listAssociatedLoadBalancerBackends() {
+        final List<BackendAddressPoolInner> backendRefs = this.inner().loadBalancerBackendAddressPools();
+        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
+        final List<Backend> backends = new ArrayList<>();
+
+        if (backendRefs != null) {
+            for (BackendAddressPoolInner backendRef : backendRefs) {
+                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(backendRef.id());
+                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
+                if (loadBalancer == null) {
+                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
+                    loadBalancers.put(loadBalancerId, loadBalancer);
+                }
+
+                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+                backends.add(loadBalancer.backends().get(backendName));
+            }
+        }
+
+        return Collections.unmodifiableList(backends);
     }
 }
