@@ -18,8 +18,7 @@ import rx.Observable;
  */
 public interface ServicePrincipals extends
         SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
-        SupportsListing<ServicePrincipal>,
-        SupportsDeleting {
+        SupportsListing<ServicePrincipal> {
     /**
      * Gets the information about a service principal.
      *

@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import rx.Observable;
 
 /**
  *  Implementation for {@link LoadBalancers}.
@@ -47,13 +48,8 @@ class LoadBalancersImpl
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override

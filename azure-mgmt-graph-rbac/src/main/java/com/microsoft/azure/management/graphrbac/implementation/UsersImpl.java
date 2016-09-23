@@ -41,11 +41,6 @@ class UsersImpl
     }
 
     @Override
-    public void delete(String id) {
-        innerCollection.delete(id);
-    }
-
-    @Override
     public UserImpl define(String name) {
         return wrapModel(name);
     }

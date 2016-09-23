@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -49,13 +50,8 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override

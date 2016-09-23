@@ -22,6 +22,7 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import rx.Observable;
 import rx.exceptions.Exceptions;
 
 import java.util.ArrayList;
@@ -74,13 +75,8 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override

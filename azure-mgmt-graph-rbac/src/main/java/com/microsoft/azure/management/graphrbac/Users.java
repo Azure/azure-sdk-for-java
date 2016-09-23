@@ -18,8 +18,7 @@ import rx.Observable;
  */
 public interface Users extends
         SupportsCreating<User.DefinitionStages.Blank>,
-        SupportsListing<User>,
-        SupportsDeleting {
+        SupportsListing<User>{
     /**
      * Gets the information about a user.
      *
