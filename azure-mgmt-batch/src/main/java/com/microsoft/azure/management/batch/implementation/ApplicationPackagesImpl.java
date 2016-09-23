@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.batch.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
@@ -17,8 +18,9 @@ import java.util.HashMap;
 import java.util.Collections;
 
 /**
- * Represents a applicationPackage collection associated with a virtual machine.
+ * Represents a applicationPackage collection associated with an application.
  */
+@LangDefinition
 class ApplicationPackagesImpl extends
         ExternalChildResourcesImpl<ApplicationPackageImpl,
                 ApplicationPackage,

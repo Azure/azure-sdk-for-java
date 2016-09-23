@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
@@ -18,8 +19,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a application collection associated with a virtual machine.
+ * Represents a application collection associated with a batch account.
  */
+@LangDefinition
 class ApplicationsImpl extends
         ExternalChildResourcesImpl<ApplicationImpl,
                 Application,

@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.implementation.ApplicationInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure batch account application.
  */
-@Fluent
+@LangDefinition()
 public interface Application extends
         ExternalChildResource<Application, BatchAccount>,
         Wrapper<ApplicationInner> {
@@ -52,6 +52,7 @@ public interface Application extends
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
+    @LangDefinition(ContainerName = "~/Application.Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
@@ -60,6 +61,7 @@ public interface Application extends
     /**
      * Grouping of all the storage account definition stages.
      */
+    @LangDefinition(ContainerName = "~/Application.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a batch account application definition.
@@ -116,6 +118,7 @@ public interface Application extends
      * The entirety of a application definition as a part of parent update.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
+    @LangDefinition(ContainerName = "~/Application.UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
@@ -124,6 +127,7 @@ public interface Application extends
     /**
      * Grouping of application definition stages as part of parent batch account update.
      */
+    @LangDefinition(ContainerName = "~/Application.UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a application definition.
@@ -180,6 +184,7 @@ public interface Application extends
     /**
      * Grouping of application update stages.
      */
+    @LangDefinition(ContainerName = "~/Application.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
 
         /**
@@ -228,6 +233,7 @@ public interface Application extends
     /**
      * The entirety of application update as a part of parent batch account update.
      */
+    @LangDefinition(ContainerName = "~/Application.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Settable<BatchAccount.Update>,
             UpdateStages.WithOptionalProperties,
