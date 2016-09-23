@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -60,7 +59,6 @@ public interface VirtualMachineScaleSetExtension extends
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithImageOrPublisher<ParentT>,
@@ -73,7 +71,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine scale set extension definition stages as a part of parent virtual machine scale set definition.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual machine scale set extension definition.
@@ -228,7 +225,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine scale set extension definition stages as part of parent virtual machine scale set update.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a virtual machine scale set extension definition.
@@ -384,7 +380,6 @@ public interface VirtualMachineScaleSetExtension extends
      * The entirety of a virtual machine scale set extension definition as a part of parent update.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
@@ -397,7 +392,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine extension update stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the virtual machine scale set extension update allowing to enable or disable auto upgrade of the
@@ -462,7 +456,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * The entirety of virtual machine scale set extension update as a part of parent virtual machine scale set update.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Settable<VirtualMachineScaleSet.Update>,
             UpdateStages.WithAutoUpgradeMinorVersion,
