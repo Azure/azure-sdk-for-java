@@ -1,18 +1,28 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.batch.AccountKeyType;
+import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.AutoStorageBaseProperties;
 import com.microsoft.azure.management.batch.AutoStorageProperties;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.batch.ProvisioningState;
-import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for BatchAccount and its parent interfaces.
@@ -33,13 +43,21 @@ public class BatchAccountImpl
     private final StorageManager storageManager;
     private String creatableStorageAccountKey;
     private StorageAccount existingStorageAccountToAssociate;
+    private ApplicationsImpl applicationsImpl;
 
     private BatchAccountKeys cachedKeys;
 
-    protected BatchAccountImpl(String name, BatchAccountInner innerObject, BatchAccountsInner innerCollection, BatchManager manager, final StorageManager storageManager) {
+    protected BatchAccountImpl(String name,
+                               BatchAccountInner innerObject,
+                               BatchAccountsInner innerCollection,
+                               BatchManager manager,
+                               ApplicationsInner applicationsClient,
+                               ApplicationPackagesInner applicationPackagesClient,
+                               final StorageManager storageManager) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.storageManager = storageManager;
+        this.applicationsImpl = new ApplicationsImpl(applicationsClient, applicationPackagesClient, this);
     }
 
     @Override
@@ -47,6 +65,11 @@ public class BatchAccountImpl
         BatchAccountInner response =
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
+        this.applicationsImpl.refresh();
+//        Map<String, Application> applicationPackages = this.applicationsImpl.asMap();
+//        for (Map.Entry<String, Application> application: applicationPackages.entrySet()) {
+//            application.getValue().refresh();
+//        }
         return this;
     }
 
@@ -72,13 +95,22 @@ public class BatchAccountImpl
                     @Override
                     public BatchAccount call(BatchAccountInner batchAccountInner) {
                         self.creatableStorageAccountKey = null;
-                        self.existingStorageAccountToAssociate = null;
                         setInner(batchAccountInner);
 
                         return self;
                     }
+                }).flatMap(new Func1<BatchAccount, Observable<? extends BatchAccount>>() {
+                    @Override
+                    public Observable<? extends BatchAccount> call(BatchAccount batchAccount) {
+                        return self.applicationsImpl.commitAndGetAllAsync()
+                                .map(new Func1<List<ApplicationImpl>, BatchAccount>() {
+                                    @Override
+                                    public BatchAccount call(List<ApplicationImpl> applications) {
+                                        return self;
+                                    }
+                                });
+                    }
                 });
-
     }
 
     @Override
@@ -170,7 +202,12 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccountImpl withStorageAccount(StorageAccount storageAccount) {
+    public Map<String, Application> applications() {
+        return this.applicationsImpl.asMap();
+    }
+
+    @Override
+    public BatchAccountImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.existingStorageAccountToAssociate = storageAccount;
         this.creatableStorageAccountKey = null;
         return this;
@@ -210,15 +247,30 @@ public class BatchAccountImpl
         return this;
     }
 
+    @Override
+    public ApplicationImpl defineNewApplication(String applicationId) {
+        return this.applicationsImpl.define(applicationId);
+    }
+
+    @Override
+    public ApplicationImpl updateApplication(String applicationId) {
+        return this.applicationsImpl.update(applicationId);
+    }
+
+    @Override
+    public Update withoutApplication(String applicationId) {
+        this.applicationsImpl.remove(applicationId);
+        return this;
+    }
 
     private void handleStorageSettings() {
         StorageAccount storageAccount;
         if (this.creatableStorageAccountKey != null) {
             storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
+            existingStorageAccountToAssociate = storageAccount;
         } else if (this.existingStorageAccountToAssociate != null) {
             storageAccount = this.existingStorageAccountToAssociate;
         } else {
-            this.inner().withAutoStorage(null);
             return;
         }
 
@@ -227,5 +279,10 @@ public class BatchAccountImpl
         }
 
         inner().autoStorage().withStorageAccountId(storageAccount.id());
+    }
+
+    BatchAccountImpl withApplication(ApplicationImpl application) {
+        this.applicationsImpl.addApplication(application);
+        return this;
     }
 }

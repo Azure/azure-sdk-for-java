@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for compute samples.
+ * This package contains the classes for network samples.
  */
 package com.microsoft.azure.management.network.samples;
