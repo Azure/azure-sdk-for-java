@@ -308,6 +308,22 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
+            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
+
+            // Remove the NIC associations
+            nic1.update()
+                .withoutLoadBalancerBackends()
+                .withoutLoadBalancerInboundNatRules()
+                .apply();
+
+            nic2.update()
+                .withoutLoadBalancerBackends()
+                .withoutLoadBalancerInboundNatRules()
+                .apply();
+
+            // Update the load balancer
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
             resource =  resource.update()
                     .updateInternetFrontend("frontend1")

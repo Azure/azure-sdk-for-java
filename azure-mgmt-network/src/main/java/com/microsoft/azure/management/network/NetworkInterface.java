@@ -587,9 +587,21 @@ public interface NetworkInterface extends
              * Associates the network interface's primary IP configuration with an inbound NAT rule of an existing load balancer.
              * @param loadBalancer an existing load balancer
              * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             Update withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
+
+            /**
+             * Removes all the existing associations with any load balancer backends.
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancerBackends();
+
+            /**
+             * Removes all the existing associations with any load balancer inbound NAT rules.
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancerInboundNatRules();
         }
     }
 

@@ -371,4 +371,16 @@ class NicIpConfigurationImpl
         this.inner().withPrivateIPAddressVersion(ipVersion);
         return this;
     }
+
+    @Override
+    public NicIpConfigurationImpl withoutLoadBalancerBackends() {
+        this.inner().withLoadBalancerBackendAddressPools(null);
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
+        this.inner().withLoadBalancerInboundNatRules(null);
+        return this;
+    }
 }

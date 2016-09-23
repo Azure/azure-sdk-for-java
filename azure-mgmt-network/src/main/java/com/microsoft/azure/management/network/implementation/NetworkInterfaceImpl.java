@@ -142,6 +142,24 @@ class NetworkInterfaceImpl
     }
 
     @Override
+    public Update withoutLoadBalancerBackends() {
+        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+            this.updateIpConfiguration(ipConfig.name())
+                .withoutLoadBalancerBackends();
+        }
+        return this;
+    }
+
+    @Override
+    public Update withoutLoadBalancerInboundNatRules() {
+        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+            this.updateIpConfiguration(ipConfig.name())
+                .withoutLoadBalancerInboundNatRules();
+        }
+        return this;
+    }
+
+    @Override
     public NetworkInterfaceImpl withoutPrimaryPublicIpAddress() {
         this.primaryIpConfiguration().withoutPublicIpAddress();
         return this;

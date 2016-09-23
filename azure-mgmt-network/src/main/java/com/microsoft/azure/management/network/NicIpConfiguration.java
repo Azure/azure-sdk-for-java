@@ -403,6 +403,18 @@ public interface NicIpConfiguration extends
              * @return the next stage of the update
              */
             Update withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
+
+            /**
+             * Removes all the existing associations with load balancer backends.
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancerBackends();
+
+            /**
+             * Removes all the existing associations with load balancer inbound NAT rules.
+             * @return the next stage of the update
+             */
+            Update withoutLoadBalancerInboundNatRules();
         }
     }
 }
