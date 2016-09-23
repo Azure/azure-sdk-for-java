@@ -245,6 +245,18 @@ class NicIpConfigurationImpl
         return null;
     }
 
+    @Override
+    public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+        for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
+            if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
+                ensureInboundNatRules().add(rule);
+                return this;
+            }
+        }
+
+        return null;
+    }
+
     private List<BackendAddressPoolInner> ensureBackendAddressPools() {
         List<BackendAddressPoolInner> poolRefs = this.inner().loadBalancerBackendAddressPools();
         if (poolRefs == null) {
@@ -252,6 +264,15 @@ class NicIpConfigurationImpl
             this.inner().withLoadBalancerBackendAddressPools(poolRefs);
         }
         return poolRefs;
+    }
+
+    private List<InboundNatRuleInner> ensureInboundNatRules() {
+        List<InboundNatRuleInner> natRefs = this.inner().loadBalancerInboundNatRules();
+        if (natRefs == null) {
+            natRefs = new ArrayList<>();
+            this.inner().withLoadBalancerInboundNatRules(natRefs);
+        }
+        return natRefs;
     }
 
     protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIpConfigurations) {

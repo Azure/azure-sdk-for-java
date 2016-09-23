@@ -261,6 +261,7 @@ public class TestLoadBalancer {
             // Connect NICs explicitly
             nic1.update()
                 .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerInboundNatRule(lb,  "natrule1")
                 .apply();
 
             nic2.update()

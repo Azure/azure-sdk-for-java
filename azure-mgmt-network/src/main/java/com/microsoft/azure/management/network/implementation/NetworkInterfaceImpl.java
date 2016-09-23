@@ -136,6 +136,12 @@ class NetworkInterfaceImpl
     }
 
     @Override
+    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+        this.primaryIpConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
+        return this;
+    }
+
+    @Override
     public NetworkInterfaceImpl withoutPrimaryPublicIpAddress() {
         this.primaryIpConfiguration().withoutPublicIpAddress();
         return this;

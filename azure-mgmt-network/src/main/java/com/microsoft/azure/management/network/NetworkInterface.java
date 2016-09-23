@@ -145,6 +145,14 @@ public interface NetworkInterface extends
              * @return the next stage of the definition
              */
             WithCreate withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+
+            /**
+             * Associates the network interface's primary IP configuration with an inbound NAT rule of an existing load balancer.
+             * @param loadBalancer an existing load balancer
+             * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
         }
 
         /**
@@ -574,8 +582,15 @@ public interface NetworkInterface extends
              * @return the next stage of the update
              */
             Update withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
-        }
 
+            /**
+             * Associates the network interface's primary IP configuration with an inbound NAT rule of an existing load balancer.
+             * @param loadBalancer an existing load balancer
+             * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
+             * @return the next stage of the definition
+             */
+            Update withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
+        }
     }
 
     /**

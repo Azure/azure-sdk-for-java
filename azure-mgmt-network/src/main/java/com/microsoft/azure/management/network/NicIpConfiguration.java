@@ -156,12 +156,20 @@ public interface NicIpConfiguration extends
          */
         interface WithLoadBalancer<ParentT> {
             /**
-             * Specifies the load balancer to associate this IP configuration with.
+             * Specifies the load balancer backend to associate this IP configuration with.
              * @param loadBalancer an existing load balancer
              * @param backendName the name of an existing backend on that load balancer
              * @return the next stage of the update
              */
             WithAttach<ParentT> withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+
+            /**
+             * Specifies the load balancer inbound NAT rule to associate this IP configuration with.
+             * @param loadBalancer an existing load balancer
+             * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
+             * @return the next stage of the update
+             */
+            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
         }
 
         /**
@@ -304,6 +312,14 @@ public interface NicIpConfiguration extends
              * @return the next stage of the update
              */
             WithAttach<ParentT> withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+
+            /**
+             * Specifies the load balancer inbound NAT rule to associate this IP configuration with.
+             * @param loadBalancer an existing load balancer
+             * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
+             * @return the next stage of the update
+             */
+            WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
         }
 
         /**
@@ -379,6 +395,14 @@ public interface NicIpConfiguration extends
              * @return the next stage of the update
              */
             Update withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
+
+            /**
+             * Specifies the load balancer inbound NAT rule to associate this IP configuration with.
+             * @param loadBalancer an existing load balancer
+             * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
+             * @return the next stage of the update
+             */
+            Update withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
         }
     }
 }
