@@ -10,12 +10,11 @@ package com.microsoft.azure;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
-
-import java.util.List;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.

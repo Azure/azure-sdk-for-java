@@ -24,6 +24,8 @@ import java.util.concurrent.Executors;
  * Token based credentials for use with a REST Service Client.
  */
 public class ApplicationTokenCredentials extends TokenCredentials {
+    /** The endpoint of the target resource. */
+    private String resourceEndpoint;
     /** The active directory application client id. */
     private String clientId;
     /** The tenant or domain the containing the application. */
@@ -51,6 +53,30 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         this.clientId = clientId;
         this.domain = domain;
         this.secret = secret;
+        if (environment == null) {
+            this.environment = AzureEnvironment.AZURE;
+        } else {
+            this.environment = environment;
+        }
+        this.resourceEndpoint = this.environment.getTokenAudience();
+    }
+
+    /**
+     * Initializes a new instance of the UserTokenCredentials.
+     *
+     * @param clientId the active directory application client id.
+     * @param domain the domain or tenant id containing this application.
+     * @param secret the authentication secret for the application.
+     * @param resourceEndpoint the endpoint of the target resource.
+     * @param environment the Azure environment to authenticate with.
+     *                    If null is provided, AzureEnvironment.AZURE will be used.
+     */
+    public ApplicationTokenCredentials(String clientId, String domain, String secret, String resourceEndpoint, AzureEnvironment environment) {
+        super(null, null); // defer token acquisition
+        this.clientId = clientId;
+        this.domain = domain;
+        this.secret = secret;
+        this.resourceEndpoint = resourceEndpoint;
         if (environment == null) {
             this.environment = AzureEnvironment.AZURE;
         } else {
@@ -212,7 +238,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
         try {
             authenticationResult = context.acquireToken(
-                    this.getEnvironment().getTokenAudience(),
+                    this.resourceEndpoint,
                     new ClientCredential(this.getClientId(), this.getSecret()),
                     null).get();
         } catch (Exception e) {
