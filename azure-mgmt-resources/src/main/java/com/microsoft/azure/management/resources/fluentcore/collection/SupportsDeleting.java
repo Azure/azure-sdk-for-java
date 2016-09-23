@@ -30,6 +30,7 @@ public interface SupportsDeleting {
      *
      * @param id the resource ID of the resource to delete
      * @param callback the callback on success or failure
+     * @return a handle to cancel the request
      */
     ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback);
 
@@ -37,6 +38,7 @@ public interface SupportsDeleting {
      * Asynchronously delete a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
+     * @return an observable of the request
      */
     Observable<Void> deleteAsync(String id);
 }

@@ -33,6 +33,7 @@ public interface SupportsDeletingByGroup {
      * @param groupName The group the resource is part of
      * @param name The name of the resource
      * @param callback the callback to call on success or failure
+     * @return a handle to cancel the request
      */
     ServiceCall<Void> deleteAsync(String groupName, String name, ServiceCallback<Void> callback);
 
@@ -41,6 +42,7 @@ public interface SupportsDeletingByGroup {
      *
      * @param groupName The group the resource is part of
      * @param name The name of the resource
+     * @return an observable to the request
      */
     Observable<Void> deleteAsync(String groupName, String name);
 }

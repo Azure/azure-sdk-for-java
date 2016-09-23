@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -18,7 +17,7 @@ import rx.Observable;
  */
 public interface Users extends
         SupportsCreating<User.DefinitionStages.Blank>,
-        SupportsListing<User>{
+        SupportsListing<User> {
     /**
      * Gets the information about a user.
      *

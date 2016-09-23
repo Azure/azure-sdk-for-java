@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.storage.SkuName;
