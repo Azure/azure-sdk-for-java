@@ -153,15 +153,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .create();
 
-        Assert.assertNull(virtualMachineScaleSet.primaryInternalLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackends().size() == 0);
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerInboundNatPools().size() == 0);
+        Assert.assertNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 0);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 0);
 
-        Assert.assertNotNull(virtualMachineScaleSet.primaryInternetFacingLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackends().size() == 2);
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerInboundNatPools().size() == 2);
+        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternetFacingLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerBackends().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().size() == 2);
 
-        Assert.assertNotNull(virtualMachineScaleSet.primaryNetwork());
+        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryNetwork());
 
         Assert.assertEquals(virtualMachineScaleSet.vhdContainers().size(), 2);
         Assert.assertEquals(virtualMachineScaleSet.sku(), VirtualMachineScaleSetSkuTypes.STANDARD_A0);
@@ -169,11 +169,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertTrue(virtualMachineScaleSet.upgradeModel() == UpgradeMode.AUTOMATIC);
         Assert.assertEquals(virtualMachineScaleSet.capacity(), 2);
         // Fetch the primary Virtual network
-        Network primaryNetwork = virtualMachineScaleSet.primaryNetwork();
+        Network primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
 
         String inboundNatPoolToRemove = null;
         for (String inboundNatPoolName :
-                virtualMachineScaleSet.primaryInternetFacingLoadBalancerInboundNatPools().keySet()) {
+                virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().keySet()) {
             inboundNatPoolToRemove = inboundNatPoolName;
             break;
         }
@@ -192,13 +192,13 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .virtualMachineScaleSets()
                 .getByGroup(RG_NAME, vmss_name);
 
-        Assert.assertNotNull(virtualMachineScaleSet.primaryInternetFacingLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerBackends().size() == 2);
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternetFacingLoadBalancerInboundNatPools().size() == 1);
+        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternetFacingLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerBackends().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().size() == 1);
 
-        Assert.assertNotNull(virtualMachineScaleSet.primaryInternalLoadBalancer());
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerBackends().size() == 2);
-        Assert.assertTrue(virtualMachineScaleSet.primaryInternalLoadBalancerInboundNatPools().size() == 2);
+        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 2);
+        Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 2);
     }
 
     private LoadBalancer createHttpLoadBalancers(ResourceGroup resourceGroup,

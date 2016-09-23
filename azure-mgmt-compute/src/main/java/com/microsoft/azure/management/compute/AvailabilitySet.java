@@ -61,7 +61,6 @@ public interface AvailabilitySet extends
      */
     List<InstanceViewStatus> statuses();
 
-
     /**************************************************************
      * Fluent interfaces to create an AvailabilitySet
      **************************************************************/

@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -142,7 +141,7 @@ public interface VirtualMachineScaleSet extends
      * </p>
      * @throws IOException the IO exception
      */
-    Network primaryNetwork() throws IOException;
+    Network getPrimaryNetwork() throws IOException;
 
     /**
      * @return the internet-facing load balancer associated with the primary network interface of
@@ -150,7 +149,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    LoadBalancer primaryInternetFacingLoadBalancer() throws IOException;
+    LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException;
 
     /**
      * @return the internet-facing load balancer's backends associated with the primary network interface
@@ -158,7 +157,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, Backend> primaryInternetFacingLoadBalancerBackends() throws IOException;
+    Map<String, Backend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
      * @return the internet-facing load balancer's inbound NAT pool associated with the primary network interface
@@ -166,7 +165,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
+    Map<String, InboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the internal load balancer associated with the primary network interface of
@@ -174,7 +173,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    LoadBalancer primaryInternalLoadBalancer() throws IOException;
+    LoadBalancer getPrimaryInternalLoadBalancer() throws IOException;
 
     /**
      * @return the internal load balancer's backends associated with the primary network interface
@@ -182,7 +181,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, Backend> primaryInternalLoadBalancerBackends() throws IOException;
+    Map<String, Backend> listPrimaryInternalLoadBalancerBackends() throws IOException;
 
     /**
      * @return the internal load balancer's inbound NAT pool associated with the primary network interface
@@ -190,7 +189,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() throws IOException;
+    Map<String, InboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the list of IDs of public Ip addresses associated with the primary internet-facing load balancer
@@ -222,7 +221,6 @@ public interface VirtualMachineScaleSet extends
     /**
      * The entirety of the load balancer definition.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSet.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -245,7 +243,6 @@ public interface VirtualMachineScaleSet extends
     /**
      * Grouping of virtual machine scale set definition stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSet.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual machine scale set definition.
@@ -764,7 +761,6 @@ public interface VirtualMachineScaleSet extends
     /**
      * Grouping of virtual machine scale set update stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSet.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the virtual machine scale set update allowing to specify load balancers for the primary
@@ -1034,7 +1030,6 @@ public interface VirtualMachineScaleSet extends
     /**
      * The entirety of the load balancer update.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSet.Update", ContainerFileName = "IUpdate")
     interface Update extends
             UpdateStages.WithPrimaryLoadBalancer,
             UpdateStages.WithPrimaryInternetFacingLoadBalancerBackendOrNatPool,
