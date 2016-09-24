@@ -299,9 +299,4 @@ public class AzureTests {
     public void testBatchAccount() throws Exception {
         new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
     }
-
-    @Test
-    public void testBatchAccountUpdateWithNewStorageAccount() throws Exception {
-        new TestBatchUpdateWithNewStorageAccount().runTest(azure.batchAccounts(), azure.resourceGroups());
-    }
 }

@@ -67,12 +67,6 @@ public class RedisUpdateParametersInner {
     private Sku sku;
 
     /**
-     * Resource location.
-     */
-    @JsonProperty(value = "properties.location")
-    private String location;
-
-    /**
      * Resource tags.
      */
     @JsonProperty(value = "properties.tags")
@@ -215,26 +209,6 @@ public class RedisUpdateParametersInner {
      */
     public RedisUpdateParametersInner withSku(Sku sku) {
         this.sku = sku;
-        return this;
-    }
-
-    /**
-     * Get the location value.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location value.
-     *
-     * @param location the location value to set
-     * @return the RedisUpdateParametersInner object itself.
-     */
-    public RedisUpdateParametersInner withLocation(String location) {
-        this.location = location;
         return this;
     }
 
