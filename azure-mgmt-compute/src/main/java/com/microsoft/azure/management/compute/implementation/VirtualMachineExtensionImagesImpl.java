@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConver
 /**
  * The implementation for {@link VirtualMachineExtensionImages}.
  */
+@LangDefinition
 class VirtualMachineExtensionImagesImpl
         implements VirtualMachineExtensionImages {
     private final VirtualMachinePublishers publishers;
