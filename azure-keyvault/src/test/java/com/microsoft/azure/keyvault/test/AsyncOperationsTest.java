@@ -24,7 +24,7 @@ import com.microsoft.azure.keyvault.models.CertificateOperation;
 import com.microsoft.azure.keyvault.models.CertificatePolicy;
 import com.microsoft.azure.keyvault.models.Contacts;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
-import com.microsoft.azure.keyvault.models.IssuerReference;
+import com.microsoft.azure.keyvault.models.IssuerParameters;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyItem;
 import com.microsoft.azure.keyvault.models.KeyOperationResult;
@@ -174,7 +174,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
                 .Builder(vault, certificateName)
                 .withPolicy(new CertificatePolicy()
                 .withSecretProperties(new SecretProperties().withContentType("application/x-pkcs12"))
-                .withIssuerReference(new IssuerReference().withName("Self"))
+                .withIssuerParameters(new IssuerParameters().withName("Self"))
                 .withX509CertificateProperties(new X509CertificateProperties()
                 .withSubject("CN=SelfSignedJavaPkcs12")
                 .withValidityInMonths(12)))
