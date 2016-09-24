@@ -116,6 +116,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         
         validateRsaKeyBundle(importResultBundle, getVaultUri(), KEY_NAME, importToHardware ? JsonWebKeyType.RSA_HSM : JsonWebKeyType.RSA, importedJwk.keyOps(), attribute);
         checkEncryptDecryptSequence(importedJwk, importResultBundle);
+        Assert.assertTrue(importResultBundle.key().isValid());
     }
 
     private void checkEncryptDecryptSequence(JsonWebKey importedKey, KeyBundle importedKeyBundle) throws Exception {
@@ -557,6 +558,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         compareAttributes(attributes, bundle.attributes());
         
         Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
+        Assert.assertTrue(bundle.key().isValid());
     }
 
 

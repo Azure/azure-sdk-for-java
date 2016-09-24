@@ -818,6 +818,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
         if (key == null) {
             throw new IllegalArgumentException("Parameter key is required and cannot be null.");
         }
+        Validator.validate(key);
         Validator.validate(keyAttributes);
         Validator.validate(tags);
         KeyImportParameters parameters = new KeyImportParameters();
