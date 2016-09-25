@@ -49,10 +49,10 @@ public class CertificatePolicy {
     private List<LifetimeAction> lifetimeActions;
 
     /**
-     * Reference to the issuer of the X509 component of a certificate.
+     * Parameters for the issuer of the X509 component of a certificate.
      */
     @JsonProperty(value = "issuer")
-    private IssuerReference issuerReference;
+    private IssuerParameters issuerParameters;
 
     /**
      * The certificate attributes.
@@ -149,22 +149,22 @@ public class CertificatePolicy {
     }
 
     /**
-     * Get the issuerReference value.
+     * Get the issuerParameters value.
      *
-     * @return the issuerReference value
+     * @return the issuerParameters value
      */
-    public IssuerReference issuerReference() {
-        return this.issuerReference;
+    public IssuerParameters issuerParameters() {
+        return this.issuerParameters;
     }
 
     /**
-     * Set the issuerReference value.
+     * Set the issuerParameters value.
      *
-     * @param issuerReference the issuerReference value to set
+     * @param issuerParameters the issuerParameters value to set
      * @return the CertificatePolicy object itself.
      */
-    public CertificatePolicy withIssuerReference(IssuerReference issuerReference) {
-        this.issuerReference = issuerReference;
+    public CertificatePolicy withIssuerParameters(IssuerParameters issuerParameters) {
+        this.issuerParameters = issuerParameters;
         return this;
     }
 

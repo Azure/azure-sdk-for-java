@@ -122,7 +122,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *            the authentication challenge name.
      * @return a challenge map.
      */
-    private Map<String, String> extractChallenge(String authenticateHeader, String authChallengePrefix) {
+    private static Map<String, String> extractChallenge(String authenticateHeader, String authChallengePrefix) {
         if (!isValidChallenge(authenticateHeader, authChallengePrefix)) {
             return null;
         }
@@ -147,7 +147,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *            the authentication challenge name.
      * @return
      */
-    private boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
+    private static boolean isValidChallenge(String authenticateHeader, String authChallengePrefix) {
         if (authenticateHeader != null && !authenticateHeader.isEmpty()
                 && authenticateHeader.toLowerCase().startsWith(authChallengePrefix.toLowerCase())) {
             return true;
