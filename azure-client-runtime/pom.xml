@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-beta4-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.microsoft.rest</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>${parent.version}</version>
+      <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
