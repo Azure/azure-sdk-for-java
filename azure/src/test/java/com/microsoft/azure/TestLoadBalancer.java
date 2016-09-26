@@ -27,6 +27,7 @@ import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PrivateFrontend;
 import com.microsoft.azure.management.network.Probe;
@@ -208,6 +209,8 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -255,6 +258,24 @@ public class TestLoadBalancer {
                         .attach()
                     .create();
 
+            // Connect NICs explicitly
+            nic1.update()
+                .withExistingLoadBalancerBackend(lb, "backend1")
+                .withExistingLoadBalancerInboundNatRule(lb,  "natrule1")
+                .apply();
+            TestNetworkInterface.printNic(nic1);
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
+                    .equalsIgnoreCase("backend1"));
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerInboundNatRules().get(0).name()
+                    .equalsIgnoreCase("natrule1"));
+
+            nic2.update()
+                .withExistingLoadBalancerBackend(lb, "backend1")
+                .apply();
+            TestNetworkInterface.printNic(nic2);
+            Assert.assertTrue(nic2.primaryIpConfiguration().listAssociatedLoadBalancerBackends().get(0).name()
+                    .equalsIgnoreCase("backend1"));
+
             // Verify frontends
             Assert.assertTrue(lb.frontends().containsKey("frontend1"));
             Assert.assertTrue(lb.frontends().size() == 1);
@@ -295,6 +316,24 @@ public class TestLoadBalancer {
 
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
+            VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
+            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
+
+            // Remove the NIC associations
+            nic1.update()
+                .withoutLoadBalancerBackends()
+                .withoutLoadBalancerInboundNatRules()
+                .apply();
+            Assert.assertTrue(nic1.primaryIpConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
+
+            nic2.update()
+                .withoutLoadBalancerBackends()
+                .withoutLoadBalancerInboundNatRules()
+                .apply();
+            Assert.assertTrue(nic2.primaryIpConfiguration().listAssociatedLoadBalancerBackends().size() == 0);
+
+            // Update the load balancer
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
             resource =  resource.update()
                     .updateInternetFrontend("frontend1")

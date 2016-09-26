@@ -5,8 +5,12 @@
  */
 package com.microsoft.azure;
 
+import java.util.List;
+
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NicIpConfiguration;
@@ -42,8 +46,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         return resource;
     }
 
-    @Override
-    public void print(NetworkInterface resource) {
+    public static void printNic(NetworkInterface resource) {
         StringBuilder info = new StringBuilder();
         info.append("NetworkInterface: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -79,8 +82,29 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .append("\n\t\tPIP id: ").append(ipConfig.publicIpAddressId())
                 .append("\n\t\tAssociated network ID: ").append(ipConfig.networkId())
                 .append("\n\t\tAssociated subnet name: ").append(ipConfig.subnetName());
+
+            // Show associated load balancer backends
+            final List<Backend> backends = ipConfig.listAssociatedLoadBalancerBackends();
+            info.append("\n\t\tAssociated load balancer backends: ").append(backends.size());
+            for (Backend backend : backends) {
+                info.append("\n\t\t\tLoad balancer ID: ").append(backend.parent().id())
+                    .append("\n\t\t\t\tBackend name: ").append(backend.name());
+            }
+
+            // Show associated load balancer inbound NAT rules
+            final List<InboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+            info.append("\n\t\tAssociated load balancer inbound NAT rules: ").append(natRules.size());
+            for (InboundNatRule natRule : natRules) {
+                info.append("\n\t\t\tLoad balancer ID: ").append(natRule.parent().id())
+                    .append("\n\t\t\tInbound NAT rule name: ").append(natRule.name());
+            }
         }
 
-        System.out.println(info.toString());
+        System.out.println(info.toString());        
+    }
+
+    @Override
+    public void print(NetworkInterface resource) {
+        printNic(resource);
     }
 }
