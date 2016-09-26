@@ -7,8 +7,6 @@
 package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -103,7 +101,6 @@ public interface StorageAccount extends
      *
      * @return the access keys for this storage account
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> getKeys();
 
     /**
@@ -112,7 +109,6 @@ public interface StorageAccount extends
      * @param keyName if the key name
      * @return the generated access keys for this storage account
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
     List<StorageAccountKey> regenerateKey(String keyName);
 
     /**

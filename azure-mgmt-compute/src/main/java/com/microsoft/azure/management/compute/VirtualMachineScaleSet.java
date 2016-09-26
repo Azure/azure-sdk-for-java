@@ -3,7 +3,6 @@ package com.microsoft.azure.management.compute;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -39,7 +38,6 @@ public interface VirtualMachineScaleSet extends
      * @throws CloudException thrown for an invalid response from the service
      * @throws IOException exception thrown from serialization/deserialization
      */
-    @Method
     PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException;
 
     /**

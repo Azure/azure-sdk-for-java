@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.keyvault;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.ActiveDirectoryGroup;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.User;
@@ -21,7 +21,7 @@ import java.util.UUID;
 /**
  * An immutable client-side representation of a key vault access policy.
  */
-@LangDefinition()
+@Fluent()
 public interface AccessPolicy extends
         ChildResource<Vault>,
         Wrapper<AccessPolicyEntry> {
@@ -55,7 +55,6 @@ public interface AccessPolicy extends
      * The entirety of an access policy definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
@@ -64,7 +63,6 @@ public interface AccessPolicy extends
     /**
      * Grouping of access policy definition stages applicable as part of a key vault creation.
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of an access policy definition.
@@ -197,7 +195,6 @@ public interface AccessPolicy extends
      * The entirety of an access policy definition as part of a key vault update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.UpdateDefinition", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
@@ -206,7 +203,6 @@ public interface AccessPolicy extends
     /**
      * Grouping of access policy definition stages applicable as part of a key vault update.
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.UpdateDefinition", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of an access policy definition.
@@ -338,7 +334,6 @@ public interface AccessPolicy extends
     /**
      * Grouping of all the key vault update stages.
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The access policy update stage allowing permissions to be added or removed.
@@ -441,7 +436,6 @@ public interface AccessPolicy extends
     /**
      * The entirety of an access policy update as part of a key vault update.
      */
-    @LangDefinition(ContainerName = "~/AccessPolicy.Update", ContainerFileName = "IUpdate")
     interface Update extends
             UpdateStages.WithPermissions,
             Settable<Vault.Update> {

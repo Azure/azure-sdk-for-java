@@ -139,7 +139,6 @@ public interface VirtualMachine extends
      *
      * @return the public IP of the primary network interface
      */
-    @Method
     PublicIpAddress getPrimaryPublicIpAddress();
 
     /**
