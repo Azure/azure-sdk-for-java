@@ -3,6 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection.imple
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -32,7 +33,10 @@ import java.util.Map;
  */
 public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T, InnerT>
         extends CreatableWrappersImpl<T, ImplT, InnerT>
-        implements SupportsBatchCreation<T> {
+        implements
+            SupportsBatchCreation<T>,
+            // Assume anything creatable is deletable
+            SupportsDeleting {
 
     protected CreatableResourcesImpl() {
     }
@@ -96,6 +100,21 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
                 // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
                 return new ServiceResponse<>(ts, null);
+            }
+        }), callback);
+    }
+
+    @Override
+    public void delete(String id) {
+        deleteAsync(id).toBlocking().subscribe();
+    }
+
+    @Override
+    public ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
+            @Override
+            public ServiceResponse<Void> call(Void aVoid) {
+                return new ServiceResponse<>(aVoid, null);
             }
         }), callback);
     }

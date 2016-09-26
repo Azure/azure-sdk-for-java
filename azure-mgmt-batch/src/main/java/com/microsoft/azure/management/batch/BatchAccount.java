@@ -7,8 +7,6 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -19,10 +17,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.storage.StorageAccount;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of an Azure batch account.
  */
-@LangDefinition(ContainerName = "~/")
+@LangDefinition()
 public interface BatchAccount extends
         GroupableResource,
         Refreshable<BatchAccount>,
@@ -64,13 +64,11 @@ public interface BatchAccount extends
     /**
      * @return the access keys for this batch account
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys keys();
 
     /**
      * @return the access keys for this batch account
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys refreshKeys();
 
     /**
@@ -79,13 +77,17 @@ public interface BatchAccount extends
      * @param keyType either primary or secondary key to be regenerated
      * @return the access keys for this batch account
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
      * Synchronize the storage account keys for batch account.
      */
     void synchronizeAutoStorageKeys();
+
+    /**
+     * @return the application in this batch account.
+     */
+    Map<String, Application> applications();
 
     /**************************************************************
      * Fluent interfaces to provision a BatchAccount
@@ -94,11 +96,15 @@ public interface BatchAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Definition")
+    @LangDefinition(ContainerName = "~/BatchAccount.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate {
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithApplicationAndStorage,
+        DefinitionStages.WithCreateAndApplication,
+        DefinitionStages.WithApplication,
+        DefinitionStages.WithStorage {
     }
 
     /**
@@ -115,25 +121,39 @@ public interface BatchAccount extends
         /**
          * A batch account definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreate> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCreateAndApplication> {
         }
 
         /**
-         * A batch account definition with sufficient inputs to create a new
-         * batch account in the cloud, but exposing additional optional inputs to
-         * specify.
+         * A batch account definition allowing defining application and storage account.
          */
-        interface WithCreate extends
-            Creatable<BatchAccount>,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithApplicationAndStorage extends WithStorage, WithApplication {
+        }
 
+        /**
+         * A batch account definition to allow creation of application.
+         */
+        interface WithApplication {
+            /**
+             * First stage to create new application in Batch account.
+             *
+             * @param applicationId id of the application to create
+             * @return next stage to create the Batch account.
+             */
+            Application.DefinitionStages.Blank<WithApplicationAndStorage> defineNewApplication(String applicationId);
+        }
+
+        /**
+         * A batch account definition to allow attaching storage accounts.
+         */
+        interface WithStorage {
             /**
              * Specifies that an existing storage account to be attached with the batch account.
              *
              * @param storageAccount existing storage account to be used
              * @return the stage representing creatable batch account definition
              */
-            DefinitionStages.WithCreate withStorageAccount(StorageAccount storageAccount);
+            DefinitionStages.WithCreate withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * Specifies that a storage account to be attached with the batch account.
@@ -150,17 +170,35 @@ public interface BatchAccount extends
              * @return the stage representing creatable batch account definition
              */
             DefinitionStages.WithCreate withNewStorageAccount(String storageAccountName);
+        }
 
+        /**
+         * A batch account definition allowing creation of application and batch account.
+         */
+        interface WithCreateAndApplication extends
+                WithCreate,
+                DefinitionStages.WithApplicationAndStorage {
+        }
+
+        /**
+         * A batch account definition with sufficient inputs to create a new
+         * batch account in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends
+            Creatable<BatchAccount>,
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Update")
+    @LangDefinition(ContainerName = "~/BatchAccount.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<BatchAccount>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithStorageAccount {
+            UpdateStages.WithStorageAccount,
+            UpdateStages.WithApplication {
     }
 
     /**
@@ -178,7 +216,7 @@ public interface BatchAccount extends
              * @param storageAccount existing storage account to be used
              * @return the stage representing updatable batch account definition
              */
-            Update withStorageAccount(StorageAccount storageAccount);
+            Update withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
              * Specifies that a storage account to be attached with the batch account.
@@ -202,6 +240,35 @@ public interface BatchAccount extends
              * @return the stage representing updatable batch account definition
              */
             Update withoutStorageAccount();
+        }
+
+        /**
+         * A batch account definition to allow creation of application.
+         */
+        interface WithApplication {
+            /**
+             * Specifies definition of an application to be created in a batch account.
+             *
+             * @param applicationId the reference name for application
+             * @return the stage representing configuration for the extension
+             */
+            Application.UpdateDefinitionStages.Blank<Update> defineNewApplication(String applicationId);
+
+            /**
+             * Begins the description of an update of an existing application of this batch account.
+             *
+             * @param applicationId the reference name for the application to be updated
+             * @return the stage representing updatable application.
+             */
+            Application.Update updateApplication(String applicationId);
+
+            /**
+             * Deletes specified application from the batch account.
+             *
+             * @param applicationId the reference name for the application to be removed
+             * @return the stage representing updatable batch account definition.
+             */
+            Update withoutApplication(String applicationId);
         }
     }
 }

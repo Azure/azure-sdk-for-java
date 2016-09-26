@@ -8,6 +8,7 @@ package com.microsoft.azure.management.graphrbac.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
@@ -23,6 +24,7 @@ import java.util.List;
 /**
  * The implementation of ServicePrincipals and its parent interfaces.
  */
+@LangDefinition
 class ServicePrincipalsImpl
         extends CreatableWrappersImpl<
             ServicePrincipal,
@@ -42,11 +44,6 @@ class ServicePrincipalsImpl
     @Override
     public PagedList<ServicePrincipal> list() {
         return wrapList(this.innerCollection.list());
-    }
-
-    @Override
-    public void delete(String id) {
-        innerCollection.delete(id);
     }
 
     @Override

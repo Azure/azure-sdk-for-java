@@ -55,7 +55,7 @@ import com.microsoft.azure.keyvault.models.Contact;
 import com.microsoft.azure.keyvault.models.Contacts;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.IssuerCredentials;
-import com.microsoft.azure.keyvault.models.IssuerReference;
+import com.microsoft.azure.keyvault.models.IssuerParameters;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyVaultErrorException;
 import com.microsoft.azure.keyvault.models.OrganizationDetails;
@@ -126,12 +126,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withValidityInMonths(12);
 
         // Set issuer to "Self"
-        IssuerReference issuerReference = new IssuerReference()
+        IssuerParameters issuerParameters = new IssuerParameters()
                     .withName(ISSUER_SELF);
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         Attributes attribute = new CertificateAttributes()
@@ -210,12 +210,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withValidityInMonths(12);
 
         // Set issuer to "Self"
-        IssuerReference issuerReference = new IssuerReference()
+        IssuerParameters issuerParameters = new IssuerParameters()
                     .withName(ISSUER_SELF);
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
@@ -291,12 +291,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withValidityInMonths(12);
 
         // Set issuer reference to the created issuer
-        IssuerReference issuerReference = new IssuerReference();
-        issuerReference.withName(createdCertificateIssuer.issuerIdentifier().name());
+        IssuerParameters issuerParameters = new IssuerParameters();
+        issuerParameters.withName(createdCertificateIssuer.issuerIdentifier().name());
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
@@ -387,12 +387,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         x509Properties.withValidityInMonths(12);
 
         // Set issuer reference to the created issuer
-        IssuerReference issuerReference = new IssuerReference();
-        issuerReference.withName(createdCertificateIssuer.issuerIdentifier().name());
+        IssuerParameters issuerParameters = new IssuerParameters();
+        issuerParameters.withName(createdCertificateIssuer.issuerIdentifier().name());
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
@@ -444,12 +444,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         x509Properties.withValidityInMonths(12);
 
         // Set issuer to "Unknown"
-        IssuerReference issuerReference = new IssuerReference();
-        issuerReference.withName(ISSUER_UNKNOWN);
+        IssuerParameters issuerParameters = new IssuerParameters();
+        issuerParameters.withName(ISSUER_UNKNOWN);
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
@@ -497,12 +497,12 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                                     .withValidityInMonths(12);
 
         // Set issuer to "Self"
-        IssuerReference issuerReference = new IssuerReference()
+        IssuerParameters issuerParameters = new IssuerParameters()
                                     .withName(ISSUER_SELF);
 
         CertificatePolicy certificatePolicy = new CertificatePolicy()
                     .withSecretProperties(secretProperties)
-                    .withIssuerReference(issuerReference)
+                    .withIssuerParameters(issuerParameters)
                     .withX509CertificateProperties(x509Properties);
 
         String vaultUri = getVaultUri();
@@ -616,16 +616,16 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         Assert.assertEquals(attribute.enabled(), updatedCertBundle.attributes().enabled());
         Assert.assertEquals(sTags.toString(), updatedCertBundle.tags().toString());
         
-        CertificatePolicy certificatePolicyUpdate = certificatePolicy.withIssuerReference(new IssuerReference().withName(ISSUER_SELF));
+        CertificatePolicy certificatePolicyUpdate = certificatePolicy.withIssuerParameters(new IssuerParameters().withName(ISSUER_SELF));
         CertificatePolicy updatedCertificatePolicy = keyVaultClient.updateCertificatePolicy(
                 new UpdateCertificatePolicyRequest
                     .Builder(vaultUri, certificateName)
                     .withPolicy(certificatePolicyUpdate)
                     .build());
-        Assert.assertEquals(certificatePolicyUpdate.issuerReference().name(), updatedCertificatePolicy.issuerReference().name());
+        Assert.assertEquals(certificatePolicyUpdate.issuerParameters().name(), updatedCertificatePolicy.issuerParameters().name());
 
         CertificatePolicy policy = keyVaultClient.getCertificatePolicy(vaultUri, certificateName);
-        Assert.assertEquals(certificatePolicyUpdate.issuerReference().name(), policy.issuerReference().name());
+        Assert.assertEquals(certificatePolicyUpdate.issuerParameters().name(), policy.issuerParameters().name());
         
         keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
     }
@@ -1022,10 +1022,10 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         
         if (certificatePolicy != null) {
             Assert.assertNotNull(certificateBundle.policy());
-            Assert.assertNotNull(certificateBundle.policy().issuerReference());
-            Assert.assertNotNull(certificateBundle.policy().issuerReference().name());
-            if(certificatePolicy.issuerReference() != null) {
-                Assert.assertTrue(certificateBundle.policy().issuerReference().name().equalsIgnoreCase(certificatePolicy.issuerReference().name()));
+            Assert.assertNotNull(certificateBundle.policy().issuerParameters());
+            Assert.assertNotNull(certificateBundle.policy().issuerParameters().name());
+            if(certificatePolicy.issuerParameters() != null) {
+                Assert.assertTrue(certificateBundle.policy().issuerParameters().name().equalsIgnoreCase(certificatePolicy.issuerParameters().name()));
             }
         }
     }

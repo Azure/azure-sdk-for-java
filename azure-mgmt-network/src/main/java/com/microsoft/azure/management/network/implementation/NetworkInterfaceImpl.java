@@ -9,6 +9,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -125,6 +126,36 @@ class NetworkInterfaceImpl
     @Override
     public NetworkInterfaceImpl withNewPrimaryPublicIpAddress(String leafDnsLabel) {
         this.primaryIpConfiguration().withNewPublicIpAddress(leafDnsLabel);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
+        this.primaryIpConfiguration().withExistingLoadBalancerBackend(loadBalancer, backendName);
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+        this.primaryIpConfiguration().withExistingLoadBalancerInboundNatRule(loadBalancer, inboundNatRuleName);
+        return this;
+    }
+
+    @Override
+    public Update withoutLoadBalancerBackends() {
+        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+            this.updateIpConfiguration(ipConfig.name())
+                .withoutLoadBalancerBackends();
+        }
+        return this;
+    }
+
+    @Override
+    public Update withoutLoadBalancerInboundNatRules() {
+        for (NicIpConfiguration ipConfig : this.ipConfigurations().values()) {
+            this.updateIpConfiguration(ipConfig.name())
+                .withoutLoadBalancerInboundNatRules();
+        }
         return this;
     }
 
@@ -402,6 +433,10 @@ class NetworkInterfaceImpl
     @Override
     protected void afterCreating() {
         clearCachedRelatedResources();
+    }
+
+    NetworkManager manager() {
+        return this.myManager;
     }
 
     @Override

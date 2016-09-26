@@ -15,29 +15,22 @@ public abstract class BatchManagementTestBase {
     protected static BatchManager batchManager;
 
     public static void createClients() {
-        // TODO - ans - Enabled code below after finding out why it does not work and remove authfile usage.
-        /*
         ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
                 System.getenv("client-id"),
                 System.getenv("domain"),
                 System.getenv("secret"),
-                null);
-        */
-        try {
-            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(new File("D:/my.azureauth.txt"));
-            RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
-                    .withCredentials(credentials)
-                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                    .build();
+                AzureEnvironment.AZURE);
 
-            resourceManager = ResourceManager
-                    .authenticate(restClient)
-                    .withSubscription(System.getenv("subscription-id"));
+        RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .build();
 
-            batchManager = BatchManager
-                    .authenticate(restClient, System.getenv("subscription-id"));
-        } catch (IOException ex) {
+        resourceManager = ResourceManager
+                .authenticate(restClient)
+                .withSubscription(System.getenv("subscription-id"));
 
-        }
+        batchManager = BatchManager
+                .authenticate(restClient, System.getenv("subscription-id"));
     }
 }

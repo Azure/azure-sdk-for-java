@@ -177,8 +177,7 @@ class LoadBalancerImpl
                 NicIpConfiguration nicIp = nic.primaryIpConfiguration();
                 nic.update()
                     .updateIpConfiguration(nicIp.name())
-                        .withExistingLoadBalancer(this)
-                        .withBackendAddressPool(backendName)
+                        .withExistingLoadBalancerBackend(this, backendName)
                         .parent()
                     .apply();
                 this.nicsInBackends.clear();
