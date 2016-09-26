@@ -12,10 +12,14 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.credentials.TokenCredentials;
+import okhttp3.OkHttpClient;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,19 +27,17 @@ import java.util.concurrent.Executors;
 /**
  * Token based credentials for use with a REST Service Client.
  */
-public class ApplicationTokenCredentials extends TokenCredentials {
-    /** The endpoint of the target resource. */
-    private String resourceEndpoint;
+public class ApplicationTokenCredentials extends TokenCredentials implements AzureTokenCredentials {
+    /** A mapping from resource endpoint to its cached access token. */
+    private Map<String, AuthenticationResult> tokens;
+    /** The Azure environment to authenticate with. */
+    private AzureEnvironment environment;
     /** The active directory application client id. */
     private String clientId;
     /** The tenant or domain the containing the application. */
     private String domain;
     /** The authentication secret for the application. */
     private String secret;
-    /** The Azure environment to authenticate with. */
-    private AzureEnvironment environment;
-    /** The current authentication result. */
-    private AuthenticationResult authenticationResult;
     /** The default subscription to use, if any. */
     private String defaultSubscription;
 
@@ -50,38 +52,11 @@ public class ApplicationTokenCredentials extends TokenCredentials {
      */
     public ApplicationTokenCredentials(String clientId, String domain, String secret, AzureEnvironment environment) {
         super(null, null); // defer token acquisition
+        this.environment = environment;
         this.clientId = clientId;
         this.domain = domain;
         this.secret = secret;
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        } else {
-            this.environment = environment;
-        }
-        this.resourceEndpoint = this.environment.getTokenAudience();
-    }
-
-    /**
-     * Initializes a new instance of the UserTokenCredentials.
-     *
-     * @param clientId the active directory application client id.
-     * @param domain the domain or tenant id containing this application.
-     * @param secret the authentication secret for the application.
-     * @param resourceEndpoint the endpoint of the target resource.
-     * @param environment the Azure environment to authenticate with.
-     *                    If null is provided, AzureEnvironment.AZURE will be used.
-     */
-    public ApplicationTokenCredentials(String clientId, String domain, String secret, String resourceEndpoint, AzureEnvironment environment) {
-        super(null, null); // defer token acquisition
-        this.clientId = clientId;
-        this.domain = domain;
-        this.secret = secret;
-        this.resourceEndpoint = resourceEndpoint;
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        } else {
-            this.environment = environment;
-        }
+        this.tokens = new HashMap<>();
     }
 
     /**
@@ -155,7 +130,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         Properties authSettings = new Properties();
         authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.getAuthenticationEndpoint());
         authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.getBaseUrl());
-        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getTokenAudience());
+        authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getManagementEndpoint());
 
         // Load the credentials from the file
         FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
@@ -177,8 +152,8 @@ public class ApplicationTokenCredentials extends TokenCredentials {
                 new AzureEnvironment(
                     authUrl,
                     mgmtUri,
-                    true,
-                    baseUrl)
+                    baseUrl,
+                    "https://graph.windows.net/") // TODO: cred file should contain GRAPH endpoint
                 ).withDefaultSubscriptionId(defaultSubscriptionId);
     }
 
@@ -196,6 +171,7 @@ public class ApplicationTokenCredentials extends TokenCredentials {
      *
      * @return the tenant or domain the containing the application.
      */
+    @Override
     public String getDomain() {
         return domain;
     }
@@ -209,42 +185,40 @@ public class ApplicationTokenCredentials extends TokenCredentials {
         return secret;
     }
 
-    /**
-     * Gets the Azure environment to authenticate with.
-     *
-     * @return the Azure environment to authenticate with.
-     */
-    public AzureEnvironment getEnvironment() {
-        return environment;
-    }
-
     @Override
-    public String getToken() throws IOException {
-        if (authenticationResult == null
-            || authenticationResult.getAccessToken() == null) {
-            acquireAccessToken();
+    public String getToken(String resource) throws IOException {
+        AuthenticationResult authenticationResult = tokens.get(resource);
+        if (authenticationResult == null || authenticationResult.getExpiresOnDate().before(new Date())) {
+            authenticationResult = acquireAccessToken(resource);
         }
         return authenticationResult.getAccessToken();
     }
 
     @Override
-    public void refreshToken() throws IOException {
-        acquireAccessToken();
+    public AzureEnvironment getEnvironment() {
+        return this.environment;
     }
 
-    private void acquireAccessToken() throws IOException {
+    private AuthenticationResult acquireAccessToken(String resource) throws IOException {
         String authorityUrl = this.getEnvironment().getAuthenticationEndpoint() + this.getDomain();
         ExecutorService executor = Executors.newSingleThreadExecutor();
         AuthenticationContext context = new AuthenticationContext(authorityUrl, this.getEnvironment().isValidateAuthority(), executor);
         try {
-            authenticationResult = context.acquireToken(
-                    this.resourceEndpoint,
+            AuthenticationResult result = context.acquireToken(
+                    resource,
                     new ClientCredential(this.getClientId(), this.getSecret()),
                     null).get();
+            tokens.put(resource, result);
+            return result;
         } catch (Exception e) {
             throw new IOException(e.getMessage(), e);
         } finally {
             executor.shutdown();
         }
+    }
+
+    @Override
+    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
+        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }
