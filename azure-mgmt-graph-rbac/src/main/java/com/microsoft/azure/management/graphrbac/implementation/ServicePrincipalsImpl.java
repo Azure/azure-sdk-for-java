@@ -47,11 +47,6 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public void delete(String id) {
-        innerCollection.delete(id);
-    }
-
-    @Override
     public ServicePrincipalImpl define(String appId) {
         return wrapModel(appId);
     }
