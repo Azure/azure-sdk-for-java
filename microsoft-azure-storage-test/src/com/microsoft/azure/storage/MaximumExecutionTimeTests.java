@@ -14,20 +14,6 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.UUID;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.blob.BlobOutputStream;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.BlobTestHelper;
@@ -46,6 +32,20 @@ import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.DynamicTableEntity;
 import com.microsoft.azure.storage.table.TableOperation;
 import com.microsoft.azure.storage.table.TableRequestOptions;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class MaximumExecutionTimeTests {
@@ -79,7 +79,7 @@ public class MaximumExecutionTimeTests {
             assertEquals(SR.MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION, e.getMessage());
         }
     }
-    
+
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class, SecondaryTests.class })
     public void testFileMaximumExecutionTime() throws URISyntaxException, StorageException {
@@ -114,7 +114,7 @@ public class MaximumExecutionTimeTests {
             assertEquals(SR.MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION, e.getMessage());
         }
     }
-    
+
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class, SecondaryTests.class })
     public void testQueueMaximumExecutionTime() throws URISyntaxException, StorageException {
@@ -144,7 +144,7 @@ public class MaximumExecutionTimeTests {
             assertEquals(SR.MAXIMUM_EXECUTION_TIMEOUT_EXCEPTION, e.getMessage());
         }
     }
-    
+
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class, SecondaryTests.class })
     public void testTableMaximumExecutionTime() throws URISyntaxException, StorageException {

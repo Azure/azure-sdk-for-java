@@ -14,7 +14,35 @@
  */
 package com.microsoft.azure.storage.file;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.Base64;
+import com.microsoft.azure.storage.core.Utility;
+import com.microsoft.azure.storage.NameValidator;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.RetryNoRetry;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.blob.BlobProperties;
+import com.microsoft.azure.storage.blob.BlobTestHelper;
+import com.microsoft.azure.storage.blob.CloudBlob;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.CloudPageBlob;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
+import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -37,34 +65,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.blob.BlobProperties;
-import com.microsoft.azure.storage.blob.BlobTestHelper;
-import com.microsoft.azure.storage.blob.CloudBlob;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.CloudPageBlob;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPermissions;
-import com.microsoft.azure.storage.blob.SharedAccessBlobPolicy;
-import com.microsoft.azure.storage.core.Base64;
-import com.microsoft.azure.storage.core.Utility;
+import static org.junit.Assert.*;
 
 /**
  * File Tests
@@ -74,7 +75,7 @@ public class CloudFileTests {
     protected CloudFileShare share;
 
     @Before
-    public void fileTestMethodSetup() throws URISyntaxException, StorageException {
+    public void fileTestMethodSetUp() throws URISyntaxException, StorageException {
         this.share = FileTestHelper.getRandomShareReference();
         this.share.create();
     }
@@ -133,7 +134,7 @@ public class CloudFileTests {
         assertTrue(file.exists());
         file.delete();
     }
-    
+
     @Test
     public void testCloudFileCreate() throws StorageException, URISyntaxException {
         CloudFile file = this.share.getRootDirectoryReference().getFileReference("file1");
@@ -387,7 +388,7 @@ public class CloudFileTests {
         file.downloadAttributes();
         assertEquals(0, file.getMetadata().size());
     }
-    
+
     @Test
     @Category(SlowTests.class)
     public void testCopyBlockBlobSas() throws Exception {
@@ -445,7 +446,6 @@ public class CloudFileTests {
 
     // There is no testCopyFileToSas() because there is no way for the SAS destination to access a shared key source.
     // This means it would require the source to have public access, which files do not support.
-
     @Test
     @Category(SlowTests.class)
     public void testCopyFileSas() throws InvalidKeyException, URISyntaxException, StorageException,
@@ -461,7 +461,7 @@ public class CloudFileTests {
         // The request is then signed with the key so the service knows we are authorized to access both.
         this.doCloudFileCopy(false, false);
     }
-    
+
     @Test
     public void testCopyWithChineseChars() throws StorageException, IOException, URISyntaxException
     {

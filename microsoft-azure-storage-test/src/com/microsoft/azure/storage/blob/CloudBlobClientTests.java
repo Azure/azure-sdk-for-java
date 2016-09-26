@@ -14,8 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -25,6 +23,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
 import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResultContinuation;
@@ -35,7 +34,9 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.TestRunners;
+
+import static org.junit.Assert.*;
 
 /**
  * Blob Client Tests

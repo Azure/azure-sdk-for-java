@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,8 +14,7 @@
  */
 package com.microsoft.azure.storage.table;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.net.URISyntaxException;
 import java.util.Date;
@@ -48,7 +47,7 @@ public class TableDateTests {
     public void tableTestMethodTearDown() throws StorageException {
         this.table.deleteIfExists();
     }
-    
+
     @Test
     public void testTableQueryRoundTripDate() throws URISyntaxException, StorageException {
         // 2014-12-07T09:15:12.123Z  from Java
@@ -76,8 +75,8 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, false, false, TablePayloadFormat.Json);
-        
-        
+
+
         // JSON NO METADATA
         // 2014-12-07T09:15:12.123Z  from Java
         testTableQueryRoundTripDate(
@@ -115,7 +114,7 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, false, TablePayloadFormat.Json);
-        
+
         // JSON NO METADATA
         // 2014-12-07T09:15:12.123Z  from Java
         testTableQueryRoundTripDate(
@@ -191,7 +190,7 @@ public class TableDateTests {
         // 2015-02-14T03:11:13.0000229Z  from .Net
         testTableQueryRoundTripDate(
                 "2015-02-14T03:11:13.0000229Z", 1423883473000L, 229, true, true, TablePayloadFormat.Json);
-        
+
         // JSON NO METADATA
         // 2014-12-07T09:15:12.123Z  from Java
         testTableQueryRoundTripDate(
@@ -238,7 +237,7 @@ public class TableDateTests {
         options.setDateBackwardCompatibility(true);
         entity = this.table.execute(get, options, null).getResultAsType();
         assertEquals(date.getTime(), entity.getDate().getTime());
-        
+
         // DateBackwardCompatibility off
         final String dateKey = "date";
         final EntityProperty property = new EntityProperty(date);
@@ -275,7 +274,7 @@ public class TableDateTests {
         final String partitionKey = "partitionTest";
         final String dateKey = "date";
         long expectedMilliseconds = milliseconds;
-        
+
         if (dateBackwardCompatibility && (milliseconds % 1000 == 0) && (ticks < 1000)) {
             // when no milliseconds are present dateBackwardCompatibility causes up to 3 digits of ticks
             // to be read as milliseconds
@@ -284,7 +283,7 @@ public class TableDateTests {
             // without DateBackwardCompatibility, milliseconds stored by Java prior to 2.0.0 are lost
             expectedMilliseconds -= expectedMilliseconds % 1000;
         }
-        
+
         // Create a property for how the service would store the dateString
         EntityProperty property = new EntityProperty(dateString, EdmType.DATE_TIME);
         String rowKey = TableTestHelper.generateRandomKeyName();
@@ -294,35 +293,35 @@ public class TableDateTests {
         // Add the entity to the table
         TableOperation put = TableOperation.insertOrReplace(dynamicEntity);
         this.table.execute(put);
-        
+
         // Specify the options
         TableRequestOptions options = new TableRequestOptions();
         options.setDateBackwardCompatibility(dateBackwardCompatibility);
         options.setTablePayloadFormat(format);
-        
+
         // Fetch the entity from the table
         TableOperation get = TableOperation.retrieve(partitionKey, rowKey, DynamicTableEntity.class);
         dynamicEntity = this.table.execute(get, options, null).getResultAsType();
-        
+
         // Ensure the date matches our expectations
         assertEquals(expectedMilliseconds, dynamicEntity.getProperties().get(dateKey).getValueAsDate().getTime());
     }
-    
+
     private static class DateTestEntity extends TableServiceEntity {
         private Date value;
-        
+
         @SuppressWarnings("unused")
         public DateTestEntity() {
         }
-        
+
         public DateTestEntity(String partition, String key) {
             super(partition, key);
         }
-        
+
         public Date getDate() {
             return this.value;
         }
-        
+
         public void setDate(Date value) {
             this.value = value;
         }

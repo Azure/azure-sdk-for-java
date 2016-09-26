@@ -14,7 +14,23 @@
  */
 package com.microsoft.azure.storage.file;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.NameValidator;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -26,23 +42,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.SR;
+import static org.junit.Assert.*;
 
 /**
  * File Share Tests
@@ -394,7 +394,7 @@ public class CloudFileShareTests {
      * @throws StorageException 
      * @throws URISyntaxException 
      */
-    @ Test
+    @Test
     public void testCloudFileShareQuota() throws StorageException, URISyntaxException {
         // Share quota defaults to 5120
         this.share.createIfNotExists();
@@ -440,7 +440,7 @@ public class CloudFileShareTests {
      * @throws StorageException 
      * @throws URISyntaxException 
      */
-    @ Test
+    @Test
     public void testCloudFileShareQuotaListing() throws StorageException, URISyntaxException {
         int shareQuota = 16;
         this.share.getProperties().setShareQuota(shareQuota);

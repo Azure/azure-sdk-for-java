@@ -15,7 +15,28 @@
 
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.IPRange;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResponseReceivedEvent;
+import com.microsoft.azure.storage.SecondaryTests;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessProtocols;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners;
+
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,30 +54,13 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.IPRange;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResponseReceivedEvent;
-import com.microsoft.azure.storage.SecondaryTests;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.SharedAccessProtocols;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageCredentialsAnonymous;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.PathUtility;
-import com.microsoft.azure.storage.core.SR;
+
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class SasTests {
@@ -216,7 +220,7 @@ public class SasTests {
         httpsBlob = httpsContainer.getBlockBlobReference(this.blob.getName());
         httpsBlob.download(new ByteArrayOutputStream());
     }
-    
+
     @Test
     @Category({ SecondaryTests.class, SlowTests.class })
     public void testContainerSaS() throws IllegalArgumentException, StorageException, URISyntaxException,

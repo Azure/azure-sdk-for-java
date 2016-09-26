@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,22 @@
  */
 package com.microsoft.azure.storage.analytics;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageLocation;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.ListBlobItem;
+import com.microsoft.azure.storage.table.CloudTable;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,21 +43,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageLocation;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
-import com.microsoft.azure.storage.blob.ListBlobItem;
-import com.microsoft.azure.storage.table.CloudTable;
+import static org.junit.Assert.*;
 
 /**
  * Analytics Client Tests
@@ -66,7 +67,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * Test table getters.
-     * 
+     *
      * @throws StorageException
      * @throws URISyntaxException
      */
@@ -115,7 +116,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * List all logs
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -142,7 +143,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * List Logs with open ended time range
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -172,7 +173,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * List Logs with well defined time range
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -204,7 +205,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * Validate Log Parser
-     * 
+     *
      * @throws ParseException
      * @throws URISyntaxException
      * @throws StorageException
@@ -302,7 +303,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * Validate Log Parser with prod data
-     * 
+     *
      * @throws ParseException
      * @throws URISyntaxException
      * @throws StorageException
@@ -329,7 +330,7 @@ public class CloudAnalyticsClientTests {
 
     /**
      * Log parser error cases.
-     * 
+     *
      * @throws ParseException
      * @throws URISyntaxException
      * @throws StorageException
