@@ -92,11 +92,6 @@ class NetworkSecurityGroupImpl
     }
 
     @Override
-    public Observable<NetworkSecurityGroup> applyUpdateAsync() {
-        return createResourceAsync();
-    }
-
-    @Override
     public List<Subnet> listAssociatedSubnets() {
         final List<SubnetInner> subnetRefs = this.inner().subnets();
         final Map<String, Network> networks = new HashMap<>();
@@ -116,7 +111,7 @@ class NetworkSecurityGroupImpl
             }
         }
 
-        return subnets;
+        return Collections.unmodifiableList(subnets);
     }
 
     // Setters (fluent)

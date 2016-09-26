@@ -2,8 +2,10 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
+import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -15,7 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *  Implementation for {@link NicIpConfiguration} and its create and update interfaces.
@@ -45,16 +50,13 @@ class NicIpConfigurationImpl
     private Network existingVirtualNetworkToAssociate;
 
     // Reference to an existing public IP to be associated with the ip configuration
-    private PublicIpAddress existingPublicIpAddressToAssociate;
+    private String existingPublicIpAddressIdToAssociate;
 
     // Name of an existing subnet to be associated with a new or existing ip configuration
     private String subnetToAssociate;
 
     // Flag indicating to remove public IP association from the ip configuration during update
     private boolean removePrimaryPublicIPAssociation;
-
-    // Reference to an existing load balancer whose back end pool is to be associated with this IP config
-    private LoadBalancer loadBalancerToAssociate;
 
     protected NicIpConfigurationImpl(NetworkInterfaceIPConfigurationInner inner,
                                      NetworkInterfaceImpl parent,
@@ -106,15 +108,29 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public String subnetId() {
-        return this.inner().subnet().id();
+    public String subnetName() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String networkId() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Network getNetwork() {
-        String id = subnetId();
-        return this.networkManager.networks().getByGroup(ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.extractFromResourceId(id, "virtualNetworks"));
+        String id = this.networkId();
+        return this.networkManager.networks().getById(id);
     }
 
     @Override
@@ -201,7 +217,12 @@ class NicIpConfigurationImpl
 
     @Override
     public NicIpConfigurationImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
-        this.existingPublicIpAddressToAssociate = publicIpAddress;
+        return this.withExistingPublicIpAddress(publicIpAddress.id());
+    }
+
+    @Override
+    public NicIpConfigurationImpl withExistingPublicIpAddress(String resourceId) {
+        this.existingPublicIpAddressIdToAssociate = resourceId;
         return this;
     }
 
@@ -218,16 +239,22 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public NicIpConfigurationImpl withExistingLoadBalancer(LoadBalancer loadBalancer) {
-        this.loadBalancerToAssociate = loadBalancer;
-        return this;
+    public NicIpConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
+        for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
+            if (pool.name().equalsIgnoreCase(backendName)) {
+                ensureBackendAddressPools().add(pool);
+                return this;
+            }
+        }
+
+        return null;
     }
 
     @Override
-    public NicIpConfigurationImpl withBackendAddressPool(String name) {
-        for (BackendAddressPoolInner pool : this.loadBalancerToAssociate.inner().backendAddressPools()) {
-            if (pool.name().equalsIgnoreCase(name)) {
-                ensureBackendAddressPools().add(pool);
+    public NicIpConfigurationImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
+        for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
+            if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
+                ensureInboundNatRules().add(rule);
                 return this;
             }
         }
@@ -242,6 +269,15 @@ class NicIpConfigurationImpl
             this.inner().withLoadBalancerBackendAddressPools(poolRefs);
         }
         return poolRefs;
+    }
+
+    private List<InboundNatRuleInner> ensureInboundNatRules() {
+        List<InboundNatRuleInner> natRefs = this.inner().loadBalancerInboundNatRules();
+        if (natRefs == null) {
+            natRefs = new ArrayList<>();
+            this.inner().withLoadBalancerInboundNatRules(natRefs);
+        }
+        return natRefs;
     }
 
     protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIpConfigurations) {
@@ -316,36 +352,86 @@ class NicIpConfigurationImpl
      * @return public ip SubResource
      */
     private SubResource publicIpToAssociate() {
+        String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
+        } else if (this.creatablePublicIpKey != null) {
+            pipId = ((PublicIpAddress) this.parent()
+                    .createdDependencyResource(this.creatablePublicIpKey)).id();
+        } else if (this.existingPublicIpAddressIdToAssociate != null) {
+            pipId = this.existingPublicIpAddressIdToAssociate;
         }
 
-        PublicIPAddressInner publicIPAddressInner = null;
-        if (this.creatablePublicIpKey != null) {
-            PublicIpAddress publicIpAddress = (PublicIpAddress) this.parent()
-                    .createdDependencyResource(this.creatablePublicIpKey);
-            publicIPAddressInner = publicIpAddress.inner();
-        }
-
-        if (this.existingPublicIpAddressToAssociate != null) {
-            publicIPAddressInner = this.existingPublicIpAddressToAssociate.inner();
-        }
-
-        if (publicIPAddressInner != null) {
-            SubResource subResource = new SubResource();
-            subResource.withId(publicIPAddressInner.id());
-            return subResource;
-        }
-
-        if (!this.isInCreateMode) {
+        if (pipId != null) {
+            return new SubResource().withId(pipId);
+        } else if (!this.isInCreateMode) {
             return this.inner().publicIPAddress();
+        } else {
+            return null;
         }
-        return null;
     }
 
     @Override
     public NicIpConfigurationImpl withPrivateIpVersion(IPVersion ipVersion) {
         this.inner().withPrivateIPAddressVersion(ipVersion);
         return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withoutLoadBalancerBackends() {
+        this.inner().withLoadBalancerBackendAddressPools(null);
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withoutLoadBalancerInboundNatRules() {
+        this.inner().withLoadBalancerInboundNatRules(null);
+        return this;
+    }
+
+    @Override
+    public List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
+        final List<InboundNatRuleInner> refs = this.inner().loadBalancerInboundNatRules();
+        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
+        final List<InboundNatRule> rules = new ArrayList<>();
+
+        if (refs != null) {
+            for (InboundNatRuleInner ref : refs) {
+                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(ref.id());
+                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
+                if (loadBalancer == null) {
+                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
+                    loadBalancers.put(loadBalancerId, loadBalancer);
+                }
+
+                String ruleName = ResourceUtils.nameFromResourceId(ref.id());
+                rules.add(loadBalancer.inboundNatRules().get(ruleName));
+            }
+        }
+
+        return Collections.unmodifiableList(rules);
+    }
+
+    @Override
+    public List<Backend> listAssociatedLoadBalancerBackends() {
+        final List<BackendAddressPoolInner> backendRefs = this.inner().loadBalancerBackendAddressPools();
+        final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
+        final List<Backend> backends = new ArrayList<>();
+
+        if (backendRefs != null) {
+            for (BackendAddressPoolInner backendRef : backendRefs) {
+                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(backendRef.id());
+                LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
+                if (loadBalancer == null) {
+                    loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
+                    loadBalancers.put(loadBalancerId, loadBalancer);
+                }
+
+                String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+                backends.add(loadBalancer.backends().get(backendName));
+            }
+        }
+
+        return Collections.unmodifiableList(backends);
     }
 }

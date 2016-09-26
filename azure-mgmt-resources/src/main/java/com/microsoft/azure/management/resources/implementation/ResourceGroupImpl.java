@@ -113,22 +113,27 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    public Observable<ResourceGroup> applyAsync() {
-        return createAsync();
-    }
-
-    @Override
-    public ResourceGroupImpl refresh() {
-        this.setInner(client.get(this.key));
-        return this;
-    }
-
-    @Override
     public Observable<ResourceGroup> createResourceAsync() {
         ResourceGroupInner params = new ResourceGroupInner();
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
         return client.createOrUpdateAsync(this.name(), params)
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public Observable<ResourceGroup> updateResourceAsync() {
+        return createResourceAsync();
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
+
+    @Override
+    public ResourceGroupImpl refresh() {
+        this.setInner(client.get(this.key));
+        return this;
     }
 }

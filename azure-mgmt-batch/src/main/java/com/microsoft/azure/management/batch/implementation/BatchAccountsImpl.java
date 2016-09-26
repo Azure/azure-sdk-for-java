@@ -4,9 +4,9 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import rx.Observable;
 
 /**
  * Implementation for BatchAccounts and its parent interfaces.
@@ -16,20 +16,19 @@ public class BatchAccountsImpl
         extends GroupableResourcesImpl<BatchAccount, BatchAccountImpl, BatchAccountInner, BatchAccountsInner, BatchManager>
         implements BatchAccounts {
     private final StorageManager storageManager;
+    private ApplicationsInner applicationsClient;
+    private ApplicationPackagesInner applicationPackagesClient;
 
-    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, StorageManager storageManager) {
+    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, ApplicationsInner applicationsClient, ApplicationPackagesInner applicationPackagesClient,  StorageManager storageManager) {
         super(innerCollection, manager);
         this.storageManager = storageManager;
+        this.applicationsClient = applicationsClient;
+        this.applicationPackagesClient = applicationPackagesClient;
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override
@@ -40,7 +39,10 @@ public class BatchAccountsImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager, this.storageManager);
+                super.myManager,
+                this.applicationsClient,
+                this.applicationPackagesClient,
+                this.storageManager);
     }
 
     @Override
@@ -60,6 +62,8 @@ public class BatchAccountsImpl
                 inner,
                 this.innerCollection,
                 this.myManager,
+                this.applicationsClient,
+                this.applicationPackagesClient,
                 this.storageManager);
     }
 

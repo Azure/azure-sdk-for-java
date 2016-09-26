@@ -8,6 +8,8 @@ package com.microsoft.azure.management.network;
 import java.util.Map;
 import java.util.Set;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -18,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an load balancer's backend address pool.
  */
+@Fluent()
 public interface Backend extends
     Wrapper<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
@@ -32,6 +35,7 @@ public interface Backend extends
     /**
      * @return a list of the resource IDs of the virtual machines associated with this backend
      */
+    @Method
     Set<String> getVirtualMachineIds();
 
     /**

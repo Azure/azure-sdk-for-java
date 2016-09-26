@@ -280,15 +280,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public DeploymentImpl create() {
-        if (this.creatableResourceGroup != null) {
-            this.creatableResourceGroup.create();
-        }
-        createResource();
-        return this;
-    }
-
-    @Override
     public Observable<Deployment> createAsync() {
         Observable<Deployment> observable;
         if (this.creatableResourceGroup != null) {
@@ -307,11 +298,6 @@ final class DeploymentImpl extends
     }
 
     @Override
-    public Deployment refresh() {
-        return null;
-    }
-
-    @Override
     public Observable<Deployment> createResourceAsync() {
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
@@ -326,6 +312,11 @@ final class DeploymentImpl extends
 
     @Override
     public Observable<Deployment> applyAsync() {
+        return updateResourceAsync();
+    }
+
+    @Override
+    public Observable<Deployment> updateResourceAsync() {
         try {
             if (this.templateLink() != null && this.template() != null) {
                 this.withTemplate(null);
@@ -336,6 +327,16 @@ final class DeploymentImpl extends
         } catch (IOException e) {
             return Observable.error(e);
         }
-        return this.createAsync();
+        return createResourceAsync();
+    }
+
+    @Override
+    public Deployment refresh() {
+        return null;
+    }
+
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
     }
 }

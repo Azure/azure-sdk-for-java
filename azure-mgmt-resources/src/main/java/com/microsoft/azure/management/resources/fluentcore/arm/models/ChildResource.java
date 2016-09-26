@@ -5,14 +5,14 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
  * Base interface used by child resources.
  * @param <ParentT> parent interface
  */
-@LangDefinition()
+@Fluent
 public interface ChildResource<ParentT> extends Indexable {
     /**
      * @return the name of this child object

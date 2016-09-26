@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 /**
  *  Implementation for {@link Backend}.
  */
+@LangDefinition
 class BackendImpl
     extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
     implements

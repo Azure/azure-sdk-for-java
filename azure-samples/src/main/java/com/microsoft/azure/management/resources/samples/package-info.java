@@ -3,6 +3,6 @@
 // license information.
 
 /**
- * This package contains the classes for compute samples.
+ * This package contains the classes for resource samples.
  */
 package com.microsoft.azure.management.resources.samples;

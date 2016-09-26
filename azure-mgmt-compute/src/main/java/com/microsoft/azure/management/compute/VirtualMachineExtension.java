@@ -1,5 +1,5 @@
 package com.microsoft.azure.management.compute;
-
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -13,8 +13,9 @@ import java.util.Map;
  * An immutable client-side representation of an Azure virtual machine extension.
  * An extension associated with a virtual machine will be created from a {@link VirtualMachineExtensionImage }.
  */
+@Fluent
 public interface VirtualMachineExtension extends
-        ExternalChildResource<VirtualMachineExtension>,
+        ExternalChildResource<VirtualMachineExtension, VirtualMachine>,
         Wrapper<VirtualMachineExtensionInner> {
     /**
      * @return the publisher name of the virtual machine extension image this extension is created from

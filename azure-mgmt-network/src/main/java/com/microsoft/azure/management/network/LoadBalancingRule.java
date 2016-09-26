@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIp;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an HTTP load balancing rule.
  */
+@Fluent()
 public interface LoadBalancingRule extends
     Wrapper<LoadBalancingRuleInner>,
     ChildResource<LoadBalancer>,
@@ -26,8 +28,6 @@ public interface LoadBalancingRule extends
     HasFloatingIp,
     HasProtocol<TransportProtocol> {
 
-    //TODO:
-     /* withProbe and return them */
     /**
      * @return the method of load distribution
      */

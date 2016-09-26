@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import rx.Observable;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -41,8 +42,8 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public void delete(String name) {
-        client.delete(name);
+    public Observable<Void> deleteAsync(String name) {
+        return client.deleteAsync(name);
     }
 
     @Override

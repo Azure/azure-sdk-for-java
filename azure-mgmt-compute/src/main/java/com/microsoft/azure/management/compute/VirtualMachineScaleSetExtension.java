@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -14,7 +15,7 @@ import java.util.Map;
  * An immutable client-side representation of an extension associated with virtual machines in a scale set.
  * An extension associated with a virtual machine scale set will be created from a {@link VirtualMachineExtensionImage }.
  */
-@LangDefinition()
+@Fluent
 public interface VirtualMachineScaleSetExtension extends
         Wrapper<VirtualMachineScaleSetExtensionInner>,
         ChildResource<VirtualMachineScaleSet> {

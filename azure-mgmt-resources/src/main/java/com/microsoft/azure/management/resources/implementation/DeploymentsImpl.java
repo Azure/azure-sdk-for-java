@@ -13,6 +13,11 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -73,13 +78,23 @@ final class DeploymentsImpl
     }
 
     @Override
-    public void delete(String id) {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    public void delete(String groupName, String name) {
+        deleteAsync(groupName, name).toBlocking().subscribe();
     }
 
     @Override
-    public void delete(String groupName, String name) {
-        client.delete(groupName, name);
+    public ServiceCall<Void> deleteAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
+            @Override
+            public ServiceResponse<Void> call(Void aVoid) {
+                return new ServiceResponse<>(aVoid, null);
+            }
+        }), callback);
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return client.deleteAsync(groupName, name);
     }
 
     @Override
@@ -109,5 +124,25 @@ final class DeploymentsImpl
         return this.getByGroup(
                 ResourceUtils.groupFromResourceId(id),
                 ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public void delete(String id) {
+        deleteAsync(id).toBlocking().subscribe();
+    }
+
+    @Override
+    public ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
+            @Override
+            public ServiceResponse<Void> call(Void aVoid) {
+                return new ServiceResponse<>(aVoid, null);
+            }
+        }), callback);
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String id) {
+        return deleteAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 }

@@ -85,7 +85,7 @@ public class ExternalChildResourceTests {
         monitor.await();
         Assert.assertTrue(changedPuppets.size() == 3);
         for (PulletImpl pullet : changedPuppets) {
-            Assert.assertTrue(pullet.state() == ExternalChildResourceImpl.State.None);
+            Assert.assertTrue(pullet.pendingOperation() == ExternalChildResourceImpl.PendingOperation.None);
         }
     }
 

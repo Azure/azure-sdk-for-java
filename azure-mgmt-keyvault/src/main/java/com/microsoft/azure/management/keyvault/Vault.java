@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.keyvault;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.keyvault.implementation.VaultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -19,6 +20,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure Key Vault.
  */
+@LangDefinition
 public interface Vault extends
         GroupableResource,
         Refreshable<Vault>,
@@ -72,6 +74,7 @@ public interface Vault extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
+    @LangDefinition(ContainerName = "~/Vault.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -82,6 +85,7 @@ public interface Vault extends
     /**
      * Grouping of all the key vault definition stages.
      */
+    @LangDefinition(ContainerName = "~/Vault.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the key vault definition.
@@ -199,6 +203,7 @@ public interface Vault extends
     /**
      * Grouping of all the key vault update stages.
      */
+    @LangDefinition(ContainerName = "~/Vault.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A key vault update allowing access policies to be modified, attached, or removed.
@@ -287,6 +292,7 @@ public interface Vault extends
     /**
      * The template for a key vault update operation, containing all the settings that can be modified.
      */
+    @LangDefinition(ContainerName = "~/Vault.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<Vault>,
             UpdateStages.WithAccessPolicy,
