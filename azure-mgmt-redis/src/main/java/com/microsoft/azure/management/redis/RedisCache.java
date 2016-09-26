@@ -7,7 +7,8 @@
 package com.microsoft.azure.management.redis;
 
 import org.joda.time.Period;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +23,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure Redis Cache.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface RedisCache extends
         GroupableResource,
         Refreshable<RedisCache>,
@@ -121,7 +122,6 @@ public interface RedisCache extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/RedisCache.Definition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
@@ -133,7 +133,6 @@ public interface RedisCache extends
     /**
      * Grouping of all the Redis Cache definition stages.
      */
-    @LangDefinition(ContainerName = "~/RedisCache.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the Redis Cache definition.
@@ -308,7 +307,6 @@ public interface RedisCache extends
     /**
      * Grouping of all the Redis Cache update stages.
      */
-    @LangDefinition(ContainerName = "~/RedisCache.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * A Redis Cache update stage allowing to change the parameters.
@@ -422,7 +420,6 @@ public interface RedisCache extends
     /**
      * The template for a Redis Cache update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/RedisCache.Update")
     interface Update extends
             Appliable<RedisCache>,
             Resource.UpdateWithTags<Update>,

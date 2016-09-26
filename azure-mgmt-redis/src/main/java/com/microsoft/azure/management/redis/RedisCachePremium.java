@@ -5,14 +5,14 @@
  */
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-
 import java.util.List;
+
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An immutable client-side representation of an Azure Redis cache with Premium SKU.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface RedisCachePremium extends RedisCache {
     /**
      * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
