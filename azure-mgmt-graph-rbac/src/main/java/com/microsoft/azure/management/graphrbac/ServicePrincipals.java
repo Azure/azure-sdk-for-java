@@ -8,7 +8,6 @@ package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -20,8 +19,7 @@ import rx.Observable;
 @LangDefinition(ContainerName = "~/")
 public interface ServicePrincipals extends
         SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
-        SupportsListing<ServicePrincipal>,
-        SupportsDeleting {
+        SupportsListing<ServicePrincipal> {
     /**
      * Gets the information about a service principal.
      *

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import rx.Observable;
 
 import java.util.List;
 
@@ -167,6 +168,12 @@ final class GenericResourcesImpl
     @Override
     public GenericResource getByGroup(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
-        return null;
+        throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
+        throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
     }
 }

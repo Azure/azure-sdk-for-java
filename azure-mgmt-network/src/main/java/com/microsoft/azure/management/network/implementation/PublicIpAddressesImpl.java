@@ -6,12 +6,12 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import rx.Observable;
 
 /**
  *  Implementation for {@link PublicIpAddresses}.
@@ -48,13 +48,8 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override

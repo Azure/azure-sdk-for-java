@@ -9,9 +9,9 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.AvailabilitySets;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
+import rx.Observable;
 
 import java.util.List;
 
@@ -61,13 +61,8 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public void delete(String id) {
-        delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     /**************************************************************

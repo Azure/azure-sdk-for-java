@@ -5,8 +5,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import rx.Observable;
 
 import java.util.ArrayList;
 
@@ -45,13 +45,8 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public void delete(String id) {
-        this.delete(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
-    }
-
-    @Override
-    public void delete(String groupName, String name) {
-        this.innerCollection.delete(groupName, name);
+    public Observable<Void> deleteAsync(String groupName, String name) {
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 
     @Override
