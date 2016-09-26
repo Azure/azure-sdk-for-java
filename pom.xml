@@ -8,7 +8,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>autorest-clientruntime-for-java</artifactId>
-  <version>1.0.0-beta3</version>
+  <version>1.0.0-beta4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>AutoRest Client Runtimes for Java</name>
@@ -122,7 +122,7 @@
           <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>autorest-build-tools</artifactId>
-            <version>1.0.0-beta3</version>
+            <version>1.0.0-beta4-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
