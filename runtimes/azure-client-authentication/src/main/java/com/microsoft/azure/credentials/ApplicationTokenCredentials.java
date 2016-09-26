@@ -76,7 +76,9 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
         /** The base URL to the current Azure environment. */
         BASE_URL("baseURL"),
         /** The URL to Active Directory authentication. */
-        AUTH_URL("authURL");
+        AUTH_URL("authURL"),
+        /** The URL to Active Directory Graph. */
+        GRAPH_URL("graphURL");
 
         /** The name of the key in the properties file. */
         private final String name;
@@ -143,6 +145,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
         final String mgmtUri = authSettings.getProperty(CredentialSettings.MANAGEMENT_URI.toString());
         final String authUrl = authSettings.getProperty(CredentialSettings.AUTH_URL.toString());
         final String baseUrl = authSettings.getProperty(CredentialSettings.BASE_URL.toString());
+        final String graphUrl = authSettings.getProperty(CredentialSettings.GRAPH_URL.toString());
         final String defaultSubscriptionId = authSettings.getProperty(CredentialSettings.SUBSCRIPTION_ID.toString());
 
         return new ApplicationTokenCredentials(
@@ -153,7 +156,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
                     authUrl,
                     mgmtUri,
                     baseUrl,
-                    "https://graph.windows.net/") // TODO: cred file should contain GRAPH endpoint
+                    graphUrl)
                 ).withDefaultSubscriptionId(defaultSubscriptionId);
     }
 
