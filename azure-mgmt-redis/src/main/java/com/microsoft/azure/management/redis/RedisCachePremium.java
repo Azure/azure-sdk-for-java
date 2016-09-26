@@ -8,6 +8,7 @@ package com.microsoft.azure.management.redis;
 import java.util.List;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 
 /**
  * An immutable client-side representation of an Azure Redis cache with Premium SKU.
@@ -67,6 +68,7 @@ public interface RedisCachePremium extends RedisCache {
      * Gets the patching schedule for Redis Cache.
      * @return List of patch schedules for current Redis Cache.
      */
+    @Method
     List<ScheduleEntry> getPatchSchedules();
 
     /**

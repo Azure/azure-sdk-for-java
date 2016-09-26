@@ -9,6 +9,7 @@ package com.microsoft.azure.management.redis;
 import org.joda.time.Period;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.implementation.RedisResourceInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -105,6 +106,7 @@ public interface RedisCache extends
      *
      * @return the access keys for this Redis Cache
      */
+    @Method
     RedisAccessKeys refreshKeys();
 
     /**
