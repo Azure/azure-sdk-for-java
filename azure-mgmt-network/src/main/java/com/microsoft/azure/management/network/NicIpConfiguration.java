@@ -29,7 +29,6 @@ public interface NicIpConfiguration extends
     /**
      * @return the virtual network associated with this IP configuration
      */
-    @Method
     Network getNetwork();
 
     /**

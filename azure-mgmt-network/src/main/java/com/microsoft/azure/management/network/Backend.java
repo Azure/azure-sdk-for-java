@@ -35,7 +35,6 @@ public interface Backend extends
     /**
      * @return a list of the resource IDs of the virtual machines associated with this backend
      */
-    @Method
     Set<String> getVirtualMachineIds();
 
     /**

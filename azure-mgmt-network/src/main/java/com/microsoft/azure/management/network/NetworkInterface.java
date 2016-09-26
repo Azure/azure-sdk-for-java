@@ -108,7 +108,6 @@ public interface NetworkInterface extends
      *
      * @return the network security group associated with this network interface.
      */
-    @Method
     NetworkSecurityGroup getNetworkSecurityGroup();
 
     /**

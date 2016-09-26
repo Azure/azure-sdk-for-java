@@ -56,13 +56,11 @@ public interface ApplicationPackage extends
      *
      * @param format format of the uploaded package supported values zip, tar
      */
-    @Method
     void activate(String format);
 
     /**
      * Deletes the application package.
      */
-    @Method
     void delete();
 }
 

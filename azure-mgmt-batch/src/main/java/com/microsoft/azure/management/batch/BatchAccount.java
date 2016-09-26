@@ -79,13 +79,11 @@ public interface BatchAccount extends
      * @param keyType either primary or secondary key to be regenerated
      * @return the access keys for this batch account
      */
-    @Method
     BatchAccountKeys regenerateKeys(AccountKeyType keyType);
 
     /**
      * Synchronize the storage account keys for batch account.
      */
-    @Method
     void synchronizeAutoStorageKeys();
 
     /**
