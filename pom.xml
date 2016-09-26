@@ -8,7 +8,7 @@
 
   <groupId>com.microsoft.azure</groupId>
   <artifactId>autorest-clientruntime-for-java</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0-beta3</version>
   <packaging>pom</packaging>
 
   <name>AutoRest Client Runtimes for Java</name>
@@ -40,34 +40,6 @@
       <name>Microsoft</name>
     </developer>
   </developers>
-
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <name>Maven Central Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-      <uniqueVersion>true</uniqueVersion>
-      <layout>default</layout>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <name>Maven Central</name>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
@@ -150,7 +122,7 @@
           <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>autorest-build-tools</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
