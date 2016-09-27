@@ -27,9 +27,7 @@ public interface VirtualMachineScaleSets extends
         SupportsDeletingByGroup,
         SupportsBatchCreation<VirtualMachineScaleSet> {
     /**
-     * Shuts down the Virtual Machine in the scale set and releases the compute resources.
-     * <p>
-     * You are not billed for the compute resources that the Virtual Machines uses
+     * Shuts down the virtual machine in the scale set and releases the compute resources.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
@@ -40,9 +38,7 @@ public interface VirtualMachineScaleSets extends
     void deallocate(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
     /**
-     * Power off (stop) the virtual machines in the scale set.
-     * <p>
-     * You will be billed for the compute resources that the Virtual Machines uses.
+     * Powers off (stops) the virtual machines in the scale set.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
@@ -53,7 +49,7 @@ public interface VirtualMachineScaleSets extends
     void powerOff(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
     /**
-     * Restart the virtual machines in the scale set.
+     * Restarts the virtual machines in the scale set.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
@@ -64,7 +60,7 @@ public interface VirtualMachineScaleSets extends
     void restart(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
     /**
-     * Start the virtual machines  in the scale set.
+     * Starts the virtual machines in the scale set.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set
@@ -75,7 +71,7 @@ public interface VirtualMachineScaleSets extends
     void start(String groupName, String name) throws CloudException, IOException, InterruptedException;
 
     /**
-     * Re-image (update the version of the installed operating system) the virtual machines in the scale set.
+     * Re-images (updates the version of the installed operating system) the virtual machines in the scale set.
      *
      * @param groupName the name of the resource group the virtual machine scale set is in
      * @param name the name of the virtual machine scale set

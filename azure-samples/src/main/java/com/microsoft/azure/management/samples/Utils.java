@@ -344,7 +344,7 @@ public final class Utils {
         }
         if (redisCache.isPremium()) {
             RedisCachePremium premium = redisCache.asPremium();
-            List<ScheduleEntry> scheduleEntries = premium.getPatchSchedules();
+            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
             if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
                 redisInfo.append("\n\tRedis Patch Schedule:");
                 for (ScheduleEntry schedule : scheduleEntries) {

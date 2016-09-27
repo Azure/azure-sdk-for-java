@@ -92,7 +92,7 @@ class DataDiskImpl
     }
 
     @Override
-    public DiskCreateOptionTypes createOption() {
+    public DiskCreateOptionTypes creationMethod() {
         return this.inner().createOption();
     }
 
@@ -172,7 +172,7 @@ class DataDiskImpl
 
     protected static void ensureDisksVhdUri(List<VirtualMachineDataDisk> dataDisks, StorageAccount storageAccount, String namePrefix) {
         for (VirtualMachineDataDisk dataDisk : dataDisks) {
-            if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY) {
                 //New data disk requires Vhd Uri to be set
                 if (dataDisk.inner().vhd() == null) {
                     dataDisk.inner().withVhd(new VirtualHardDisk());
@@ -187,7 +187,7 @@ class DataDiskImpl
     protected static void ensureDisksVhdUri(List<VirtualMachineDataDisk> dataDisks, String namePrefix) {
         String containerUrl = null;
         for (VirtualMachineDataDisk dataDisk : dataDisks) {
-            if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY && dataDisk.inner().vhd() != null) {
+            if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY && dataDisk.inner().vhd() != null) {
                 int idx = dataDisk.inner().vhd().uri().lastIndexOf('/');
                 containerUrl = dataDisk.inner().vhd().uri().substring(0, idx);
                 break;
@@ -195,7 +195,7 @@ class DataDiskImpl
         }
         if (containerUrl != null) {
             for (VirtualMachineDataDisk dataDisk : dataDisks) {
-                if (dataDisk.createOption() == DiskCreateOptionTypes.EMPTY) {
+                if (dataDisk.creationMethod() == DiskCreateOptionTypes.EMPTY) {
                     //New data disk requires Vhd Uri to be set
                     if (dataDisk.inner().vhd() == null) {
                         dataDisk.inner().withVhd(new VirtualHardDisk());

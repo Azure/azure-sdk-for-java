@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for Redis Caches management API.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface RedisCaches extends
         SupportsCreating<RedisCache.DefinitionStages.Blank>,
         SupportsListing<RedisCache>,

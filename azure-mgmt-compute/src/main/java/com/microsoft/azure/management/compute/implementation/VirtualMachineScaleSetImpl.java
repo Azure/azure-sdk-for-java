@@ -101,8 +101,6 @@ public class VirtualMachineScaleSetImpl
     private List<String> primaryInternetFacingLBInboundNatPoolsToAddOnUpdate = new ArrayList<>();
     private List<String> primaryInternalLBBackendsToAddOnUpdate = new ArrayList<>();
     private List<String> primaryInternalLBInboundNatPoolsToAddOnUpdate = new ArrayList<>();
-    // cached primary virtual network
-    private Network primaryVirtualNetwork;
     // The paged converter for virtual machine scale set sku
     private PagedListConverter<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku> skuConverter;
 
@@ -138,7 +136,7 @@ public class VirtualMachineScaleSetImpl
     }
 
    @Override
-   public PagedList<VirtualMachineScaleSetSku> availableSkus() throws CloudException, IOException {
+   public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
         return this.skuConverter.convert(this.client.listSkus(this.resourceGroupName(), this.name()));
    }
 
@@ -209,19 +207,16 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Network primaryNetwork() throws IOException {
-        if (this.primaryVirtualNetwork == null) {
-            String subnetId = primaryNicDefaultIPConfiguration().subnet().id();
-            String virtualNetworkId = ResourceUtils.parentResourcePathFromResourceId(subnetId);
-            this.primaryVirtualNetwork = this.networkManager
+    public Network getPrimaryNetwork() throws IOException {
+        String subnetId = primaryNicDefaultIPConfiguration().subnet().id();
+        String virtualNetworkId = ResourceUtils.parentResourcePathFromResourceId(subnetId);
+        return this.networkManager
                     .networks()
                     .getById(virtualNetworkId);
-        }
-        return this.primaryVirtualNetwork;
     }
 
     @Override
-    public LoadBalancer primaryInternetFacingLoadBalancer() throws IOException {
+    public LoadBalancer getPrimaryInternetFacingLoadBalancer() throws IOException {
         if (this.primaryInternetFacingLoadBalancer == null) {
             loadCurrentPrimaryLoadBalancersIfAvailable();
         }
@@ -229,8 +224,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternetFacingLoadBalancerBackends() throws IOException {
-        if (this.primaryInternetFacingLoadBalancer() != null) {
+    public Map<String, Backend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException {
+        if (this.getPrimaryInternetFacingLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
         }
@@ -238,8 +233,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> primaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
-        if (this.primaryInternetFacingLoadBalancer() != null) {
+    public Map<String, InboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
+        if (this.getPrimaryInternetFacingLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
         }
@@ -247,7 +242,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public LoadBalancer primaryInternalLoadBalancer() throws IOException {
+    public LoadBalancer getPrimaryInternalLoadBalancer() throws IOException {
         if (this.primaryInternalLoadBalancer == null) {
             loadCurrentPrimaryLoadBalancersIfAvailable();
         }
@@ -255,8 +250,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> primaryInternalLoadBalancerBackends() throws IOException {
-        if (this.primaryInternalLoadBalancer() != null) {
+    public Map<String, Backend> listPrimaryInternalLoadBalancerBackends() throws IOException {
+        if (this.getPrimaryInternalLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
         }
@@ -264,8 +259,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> primaryInternalLoadBalancerInboundNatPools() throws IOException {
-        if (this.primaryInternalLoadBalancer() != null) {
+    public Map<String, InboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
+        if (this.getPrimaryInternalLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
         }
@@ -274,7 +269,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public List<String> primaryPublicIpAddressIds() throws IOException {
-        LoadBalancer loadBalancer = this.primaryInternetFacingLoadBalancer();
+        LoadBalancer loadBalancer = this.getPrimaryInternetFacingLoadBalancer();
         if (loadBalancer != null) {
             return loadBalancer.publicIpAddressIds();
         }
@@ -419,9 +414,9 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerBackends(String... backendNames) {
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = primaryNicDefaultIPConfiguration();
-            this.removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
+            removeAllBackendAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
                     defaultPrimaryIpConfig);
-            this.associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
+            associateBackEndsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
                     defaultPrimaryIpConfig,
                     backendNames);
         } else {
@@ -434,9 +429,9 @@ public class VirtualMachineScaleSetImpl
     public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancerInboundNatPools(String... natPoolNames) {
         if (this.isInCreateMode()) {
             VirtualMachineScaleSetIPConfigurationInner defaultPrimaryIpConfig = this.primaryNicDefaultIPConfiguration();
-            this.removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
+            removeAllInboundNatPoolAssociationFromIpConfiguration(this.primaryInternalLoadBalancer,
                     defaultPrimaryIpConfig);
-            this.associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
+            associateInboundNATPoolsToIpConfiguration(this.primaryInternalLoadBalancer.id(),
                     defaultPrimaryIpConfig,
                     natPoolNames);
         } else {
@@ -737,12 +732,12 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOverProvisionEnabled() {
+    public VirtualMachineScaleSetImpl withOverProvisioning() {
         return this.withOverProvision(true);
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withOverProvisionDisabled() {
+    public VirtualMachineScaleSetImpl withoutOverProvisioning() {
         return this.withOverProvision(false);
     }
 
@@ -1103,7 +1098,6 @@ public class VirtualMachineScaleSetImpl
     private void clearCachedProperties() {
         this.primaryInternetFacingLoadBalancer = null;
         this.primaryInternalLoadBalancer = null;
-        this.primaryVirtualNetwork = null;
     }
 
     private void loadCurrentPrimaryLoadBalancersIfAvailable() throws IOException {

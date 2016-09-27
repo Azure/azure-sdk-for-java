@@ -176,7 +176,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
         premiumCache.forceReboot(RebootType.ALL_NODES);
 
         // Patch Schedule
-        List<ScheduleEntry> patchSchedule = premiumCache.getPatchSchedules();
+        List<ScheduleEntry> patchSchedule = premiumCache.listPatchSchedules();
         Assert.assertEquals(2, patchSchedule.size());
 
         premiumCache.deletePatchSchedule();
@@ -184,7 +184,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
         patchSchedule = redisManager.redisCaches()
                                     .getById(premiumCache.id())
                                     .asPremium()
-                                    .getPatchSchedules();
+                                    .listPatchSchedules();
         Assert.assertNull(patchSchedule);
 
         // currently throws because SAS url of the container should be provided as
