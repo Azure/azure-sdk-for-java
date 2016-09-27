@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * Entry point for load balancer management API in Azure.
  */
-@Fluent()
+@Fluent
 public interface LoadBalancer extends
         GroupableResource,
         Refreshable<LoadBalancer>,

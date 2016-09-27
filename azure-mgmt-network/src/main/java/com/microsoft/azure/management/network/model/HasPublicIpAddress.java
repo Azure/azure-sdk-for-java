@@ -5,15 +5,14 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
  * An interface representing a model's ability to reference a public IP address.
  */
-@LangDefinition()
+@Fluent
 public interface HasPublicIpAddress  {
     /**
      * @return the resource ID of the associated public IP address
@@ -28,11 +27,6 @@ public interface HasPublicIpAddress  {
     /**
      * Grouping of definition stages involving specifying the public IP address.
      */
-    @LangDefinition(
-                ContainerName = "Definition",
-                ContainerFileName = "IDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of the definition allowing to associate the resource with an existing public IP address.
@@ -106,11 +100,6 @@ public interface HasPublicIpAddress  {
     /**
      * Grouping of update stages involving modifying an existing reference to a public IP address.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage definition allowing to associate the resource with an existing public IP address.
@@ -191,11 +180,6 @@ public interface HasPublicIpAddress  {
     /**
      * Grouping of definition stages applicable as part of a parent resource update, involving specifying a public IP address.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of the definition allowing to associate the resource with an existing public IP address.

@@ -5,14 +5,13 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.Frontend;
 
 /**
  * An interface representing a model's ability to references a load balancer frontend.
  */
-@LangDefinition()
+@Fluent
 public interface HasFrontend  {
     /**
      * @return the associated frontend
@@ -22,11 +21,6 @@ public interface HasFrontend  {
     /**
      * Grouping of definition stages involving specifying the frontend.
      */
-    @LangDefinition(
-                ContainerName = "Definition",
-                ContainerFileName = "IDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify a load balancer frontend.
@@ -45,11 +39,6 @@ public interface HasFrontend  {
     /**
      * Grouping of update stages involving specifying the frontend.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an update allowing to specify a frontend.
@@ -68,11 +57,6 @@ public interface HasFrontend  {
     /**
      * Grouping of definition stages applicable as part of a load balancer update.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify a frontend from this load balancer to associate.
