@@ -28,6 +28,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -65,10 +67,13 @@ import com.microsoft.windowsazure.services.servicebus.models.RuleInfo;
 import com.microsoft.windowsazure.services.servicebus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 import com.sun.jersey.api.client.Client;
+import com.sun.jersey.api.client.ClientHandlerException;
+import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
+import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class ServiceBusRestProxy implements ServiceBusContract {
 
@@ -253,8 +258,10 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ClientResponse clientResult;
         if (options.isReceiveAndDelete()) {
             clientResult = resource.delete(ClientResponse.class);
-        } else if (options.isPeekLock()) {
-            clientResult = resource.post(ClientResponse.class, "");
+        } else if (options.isPeekLock()) {        	
+        	// Passing 0 as request content just to force jersey client to add Content-Length header.
+        	// ServiceBus service doesn't read http request body for message receive requests.
+            clientResult = resource.post(ClientResponse.class, "0");
         } else {
             throw new RuntimeException("Unknown ReceiveMode");
         }
