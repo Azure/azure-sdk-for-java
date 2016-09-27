@@ -127,11 +127,12 @@ public final class ManageStorageAccount {
                 System.out.println(f.getMessage());
                 f.printStackTrace();
             } finally {
-                if (azure.resourceGroups().getByName(rgName) != null) {
+                try {
                     System.out.println("Deleting Resource Group: " + rgName);
                     azure.resourceGroups().delete(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
-                } else {
+                }
+                catch (Exception e) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");
                 }
             }
