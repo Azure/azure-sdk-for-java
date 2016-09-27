@@ -1,21 +1,21 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
+* Copyright (c) Microsoft Corporation. All rights reserved.
+* Licensed under the MIT License. See License.txt in the project root for
+* license information.
+*/
 
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 import java.util.Map;
 
 /**
- * Base interfaces for fluent resources.
- */
-@Fluent
+* Base interfaces for fluent resources.
+*/
+@LangDefinition()
 public interface Resource extends Indexable {
     /**
      * @return the resource ID string
@@ -52,6 +52,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource definition
      */
+    @LangDefinition(ContainerName="Resource.Definition", ContainerFileName="IDefinition")
     interface DefinitionWithRegion<T> {
         /**
          * Specifies the region for the resource by name.
@@ -73,6 +74,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource definition
      */
+    @LangDefinition(ContainerName="Resource.Definition", ContainerFileName="IDefinition")
     interface DefinitionWithTags<T> {
         /**
          * Specifies tags for the resource as a {@link Map}.
@@ -95,6 +97,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource update
      */
+    @LangDefinition(ContainerName="Resource.Update", ContainerFileName="IUpdate")
     interface UpdateWithTags<T> {
         /**
          * Specifies tags for the resource as a {@link Map}.
