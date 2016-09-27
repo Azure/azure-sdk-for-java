@@ -58,7 +58,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         Assert.assertNotNull(batchAccount);
 
         // Get Keys
-        BatchAccountKeys keys = batchAccount.keys();
+        BatchAccountKeys keys = batchAccount.getKeys();
         Assert.assertNotNull(keys.primary());
         Assert.assertNotNull(keys.secondary());
 

@@ -45,8 +45,6 @@ public class BatchAccountImpl
     private StorageAccount existingStorageAccountToAssociate;
     private ApplicationsImpl applicationsImpl;
 
-    private BatchAccountKeys cachedKeys;
-
     protected BatchAccountImpl(String name,
                                BatchAccountInner innerObject,
                                BatchAccountsInner innerCollection,
@@ -66,10 +64,7 @@ public class BatchAccountImpl
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(response);
         this.applicationsImpl.refresh();
-//        Map<String, Application> applicationPackages = this.applicationsImpl.asMap();
-//        for (Map.Entry<String, Application> application: applicationPackages.entrySet()) {
-//            application.getValue().refresh();
-//        }
+
         return this;
     }
 
@@ -172,28 +167,16 @@ public class BatchAccountImpl
     }
 
     @Override
-    public BatchAccountKeys keys() {
-        if (cachedKeys == null) {
-            cachedKeys = refreshKeys();
-        }
-
-        return cachedKeys;
-    }
-
-    @Override
-    public BatchAccountKeys refreshKeys() {
+    public BatchAccountKeys getKeys() {
         BatchAccountKeysInner keys = this.innerCollection.getKeys(this.resourceGroupName(), this.name());
-        cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
 
-        return cachedKeys;
+        return new BatchAccountKeys(keys.primary(), keys.secondary());
     }
 
     @Override
     public BatchAccountKeys regenerateKeys(AccountKeyType keyType) {
         BatchAccountKeysInner keys = this.innerCollection.regenerateKey(this.resourceGroupName(), this.name(), keyType);
-        cachedKeys = new BatchAccountKeys(keys.primary(), keys.secondary());
-
-        return cachedKeys;
+        return new BatchAccountKeys(keys.primary(), keys.secondary());
     }
 
     @Override

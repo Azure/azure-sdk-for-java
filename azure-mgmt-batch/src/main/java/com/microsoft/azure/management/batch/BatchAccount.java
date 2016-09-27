@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -65,13 +64,7 @@ public interface BatchAccount extends
     /**
      * @return the access keys for this batch account
      */
-    BatchAccountKeys keys();
-
-    /**
-     * @return the access keys for this batch account
-     */
-    @Method
-    BatchAccountKeys refreshKeys();
+    BatchAccountKeys getKeys();
 
     /**
      * Regenerates the access keys for batch account.
