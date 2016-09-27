@@ -4,6 +4,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
@@ -18,12 +19,20 @@ public class BatchAccountsImpl
     private final StorageManager storageManager;
     private ApplicationsInner applicationsClient;
     private ApplicationPackagesInner applicationPackagesClient;
+    private LocationsInner locationClient;
 
-    protected BatchAccountsImpl(BatchAccountsInner innerCollection, BatchManager manager, ApplicationsInner applicationsClient, ApplicationPackagesInner applicationPackagesClient,  StorageManager storageManager) {
+    protected BatchAccountsImpl(
+            BatchAccountsInner innerCollection,
+            BatchManager manager,
+            ApplicationsInner applicationsClient,
+            ApplicationPackagesInner applicationPackagesClient,
+            LocationsInner locationClient,
+            StorageManager storageManager) {
         super(innerCollection, manager);
         this.storageManager = storageManager;
         this.applicationsClient = applicationsClient;
         this.applicationPackagesClient = applicationPackagesClient;
+        this.locationClient = locationClient;
     }
 
     @Override
@@ -75,5 +84,10 @@ public class BatchAccountsImpl
     @Override
     public BatchAccount getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
+    }
+
+    @Override
+    public int getBatchAccountQuotaByLocation(Region region) {
+        return this.locationClient.getQuotas(region.toString()).accountQuota();
     }
 }
