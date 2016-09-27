@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionImageInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
@@ -9,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * <p>
  * Note: Azure virtual machine extension image is also referred as virtual machine extension handler.
  */
-@Fluent
+@LangDefinition() // No @Fluent, since methods -> Property conversion is what we needed
 public interface VirtualMachineExtensionImage extends
         Wrapper<VirtualMachineExtensionImageInner> {
     /**
@@ -65,5 +66,6 @@ public interface VirtualMachineExtensionImage extends
     /**
      * @return the virtual machine extension image version this image belongs to
      */
+    @LangMethodDefinition(AsType =  LangMethodDefinition.LangMethodType.Property) // By default emitted as method adding this to emit as Property
     VirtualMachineExtensionImageVersion version();
 }
