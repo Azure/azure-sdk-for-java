@@ -64,12 +64,7 @@ public interface BatchAccount extends
     /**
      * @return the access keys for this batch account
      */
-    BatchAccountKeys keys();
-
-    /**
-     * @return the access keys for this batch account
-     */
-    BatchAccountKeys refreshKeys();
+    BatchAccountKeys getKeys();
 
     /**
      * Regenerates the access keys for batch account.

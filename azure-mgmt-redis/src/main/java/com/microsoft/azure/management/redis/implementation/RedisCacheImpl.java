@@ -429,7 +429,7 @@ class RedisCacheImpl
     }
 
     @Override
-    public List<ScheduleEntry> getPatchSchedules() {
+    public List<ScheduleEntry> listPatchSchedules() {
         return patchSchedulesInner.get(resourceGroupName(), name())
                                    .scheduleEntries();
     }

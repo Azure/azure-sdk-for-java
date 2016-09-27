@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -36,7 +35,7 @@ public interface VirtualMachineScaleSetExtension extends
 
     /**
      * @return true if this extension is configured to upgrade automatically when a new minor version of
-     * virtual machine scale set extension image that this extension based on is published
+     * the extension image that this extension based on is published
      */
     boolean autoUpgradeMinorVersionEnabled();
 
@@ -46,7 +45,7 @@ public interface VirtualMachineScaleSetExtension extends
     Map<String, Object> publicSettings();
 
     /**
-     * @return the public settings of the virtual machine extension as a json string
+     * @return the public settings of the virtual machine extension as a JSON string
      */
     String publicSettingsAsJsonString();
 
@@ -56,11 +55,10 @@ public interface VirtualMachineScaleSetExtension extends
     String provisioningState();
 
     /**
-     * The entirety of a virtual machine scale set extension definition as a part of parent definition.
+     * The entirety of a virtual machine scale set extension definition as a part of a parent definition.
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Definition", ContainerFileName = "IDefinition")
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithImageOrPublisher<ParentT>,
@@ -73,7 +71,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine scale set extension definition stages as a part of parent virtual machine scale set definition.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of a virtual machine scale set extension definition.
@@ -85,8 +82,8 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machinescale set extension definition allowing to specify extension image or specify name of
-         * the virtual machine scale set extension publisher.
+         * The stage of a virtual machines scale set extension definition allowing to specify an extension image or
+         * specify name of the virtual machine scale set extension publisher.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -95,30 +92,30 @@ public interface VirtualMachineScaleSetExtension extends
             /**
              * Specifies the virtual machine scale set extension image to use.
              *
-             * @param image the image
+             * @param image an extension image
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withImage(VirtualMachineExtensionImage image);
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the publisher of the
-         * virtual machine scale set extension image this extension is based on.
+         * The stage of a virtual machine scale set extension definition allowing to specify the publisher of the
+         * extension image this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithPublisher<ParentT> {
             /**
-             * Specifies the name of the virtual machine scale set extension image publisher.
+             * Specifies the name of the publisher of the virtual machine scale set extension image.
              *
-             * @param extensionImagePublisherName the publisher name
+             * @param extensionImagePublisherName a publisher name
              * @return the next stage of the definition
              */
             WithType<ParentT> withPublisher(String extensionImagePublisherName);
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the type of the virtual machine
+         * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension image this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
@@ -134,7 +131,7 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the type of the virtual machine
+         * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
          * scale set extension version this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
@@ -149,7 +146,7 @@ public interface VirtualMachineScaleSetExtension extends
             WithAttach<ParentT> withVersion(String extensionImageVersionName);
         }
 
-        /** The final stage of the virtual machine scale set extension definition.
+        /** The final stage of a virtual machine scale set extension definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the virtual machine scale set extension definition
          * can be attached to the parent virtual machine scale set definition using {@link VirtualMachineExtension.DefinitionStages.WithAttach#attach()}.
@@ -162,29 +159,29 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
+         * The stage of a virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
          * extension when when a new minor version of virtual machine scale set extension image gets published.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAutoUpgradeMinorVersion<ParentT> {
             /**
-             * enables auto upgrade of the extension.
+             * Enables auto upgrading of the extension with minor versions.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
-             * disables auto upgrade of the extension.
+             * Disables auto upgrading the extension with minor versions.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the public and private settings.
+         * The stage of a virtual machine scale set extension definition allowing to specify the public and private settings.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -228,7 +225,6 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine scale set extension definition stages as part of parent virtual machine scale set update.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdateDefinition", IsContainerOnly = true)
     interface UpdateDefinitionStages {
         /**
          * The first stage of a virtual machine scale set extension definition.
@@ -240,7 +236,7 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machine scale set extension allowing to specify extension image or specify name of the
+         * The stage of a virtual machine scale set extension allowing to specify an extension image or the name of the
          * virtual machine extension publisher.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
@@ -250,14 +246,14 @@ public interface VirtualMachineScaleSetExtension extends
             /**
              * Specifies the virtual machine scale set extension image to use.
              *
-             * @param image the image
+             * @param image an extension image
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withImage(VirtualMachineExtensionImage image);
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the publisher of the
+         * The stage of a virtual machine scale set extension definition allowing to specify the publisher of the
          * virtual machine scale set extension image this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
@@ -273,8 +269,8 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the type of the virtual machine
-         *  scale set extension image this extension is based on.
+         * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
+         * scale set extension image this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -282,15 +278,15 @@ public interface VirtualMachineScaleSetExtension extends
             /**
              * Specifies the type of the virtual machine scale set extension image.
              *
-             * @param extensionImageTypeName the image type name
+             * @param extensionImageTypeName an image type name
              * @return the next stage of the definition
              */
             WithVersion<ParentT> withType(String extensionImageTypeName);
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the type of the virtual machine
-         *  scale set extension version this extension is based on.
+         * The stage of a virtual machine scale set extension definition allowing to specify the type of the virtual machine
+         * scale set extension version this extension is based on.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -298,7 +294,7 @@ public interface VirtualMachineScaleSetExtension extends
             /**
              * Specifies the version of the virtual machine scale set image extension.
              *
-             * @param extensionImageVersionName the version name
+             * @param extensionImageVersionName a version name
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withVersion(String extensionImageVersionName);
@@ -317,29 +313,29 @@ public interface VirtualMachineScaleSetExtension extends
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
+         * The stage of a virtual machine scale set extension definition allowing to enable or disable auto upgrade of the
          * extension when when a new minor version of virtual machine scale set extension image gets published.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAutoUpgradeMinorVersion<ParentT> {
             /**
-             * Enables auto upgrade of the extension.
+             * Enables auto upgrading of the extension with minor versions.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
-             * Disables auto upgrade of the extension.
+             * Disables auto upgrade of the extension with minor versions.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
-         * The stage of the virtual machine scale set extension definition allowing to specify the public and private settings.
+         * The stage of a virtual machine scale set extension definition allowing to specify the public and private settings.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
@@ -384,7 +380,6 @@ public interface VirtualMachineScaleSetExtension extends
      * The entirety of a virtual machine scale set extension definition as a part of parent update.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdateDefinition")
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithImageOrPublisher<ParentT>,
@@ -397,30 +392,29 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * Grouping of virtual machine extension update stages.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
-         * The stage of the virtual machine scale set extension update allowing to enable or disable auto upgrade of the
+         * The stage of a virtual machine scale set extension update allowing to enable or disable auto upgrade of the
          * extension when when a new minor version of virtual machine scale set extension image gets published.
          */
         interface WithAutoUpgradeMinorVersion {
             /**
-             * enables auto upgrade of the extension.
+             * Enables auto-upgrading of the extension with minor versions.
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionEnabled();
+            Update withMinorVersionAutoUpgrade();
 
             /**
-             * enables auto upgrade of the extension.
+             * Disables auto upgrading of the extension with minor versions.
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionDisabled();
+            Update withoutMinorVersionAutoUpgrade();
         }
 
         /**
-         * The stage of the virtual machine scale set extension update allowing to add or update public and private settings.
+         * The stage of a virtual machine scale set extension update allowing to add or update public and private settings.
          */
         interface WithSettings {
             /**
@@ -462,11 +456,9 @@ public interface VirtualMachineScaleSetExtension extends
     /**
      * The entirety of virtual machine scale set extension update as a part of parent virtual machine scale set update.
      */
-    @LangDefinition(ContainerName = "~/VirtualMachineScaleSetExtension.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Settable<VirtualMachineScaleSet.Update>,
             UpdateStages.WithAutoUpgradeMinorVersion,
             UpdateStages.WithSettings {
-
     }
 }

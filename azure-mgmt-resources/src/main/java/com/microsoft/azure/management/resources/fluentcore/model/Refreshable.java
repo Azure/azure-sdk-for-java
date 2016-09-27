@@ -7,8 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.model;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
-import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
+import com.microsoft.azure.management.apigeneration.Method;
 
 /**
  * Base class for resources that can be refreshed to get the latest state.
@@ -22,6 +21,6 @@ public interface Refreshable<T> {
      *
      * @return the refreshed resource
      */
-    @LangMethodDefinition(AsType = LangMethodType.Method)
+    @Method
     T refresh();
 }

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.keyvault.Vaults;
@@ -22,8 +23,6 @@ import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.redis.RedisCaches;
-import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
@@ -54,7 +53,6 @@ public final class Azure {
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
     private final BatchManager batchManager;
-    private final RedisManager redisManager;
     private final String subscriptionId;
 
     /**
@@ -285,7 +283,6 @@ public final class Azure {
         this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
-        this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -381,6 +378,13 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing virtual machine scale sets.
+     */
+    public VirtualMachineScaleSets virtualMachineScaleSets() {
+        return computeManager.virtualMachineScaleSets();
+    }
+
+    /**
      * @return entry point to managing virtual machine images
      */
     public VirtualMachineImages virtualMachineImages() {
@@ -413,13 +417,6 @@ public final class Azure {
      */
     public BatchAccounts batchAccounts() {
         return batchManager.batchAccounts();
-    }
-
-    /**
-     * @return entry point to managing Redis Caches.
-     */
-    public RedisCaches redisCaches() {
-        return redisManager.redisCaches();
     }
 
 }

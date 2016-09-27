@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -23,4 +24,11 @@ public interface BatchAccounts extends
         SupportsDeleting,
         SupportsDeletingByGroup,
         SupportsBatchCreation<BatchAccount> {
+    /**
+     * Queries the number of the batch account can be created in specified region`.
+     *
+     * @param region the region in for which to check quota
+     * @return whether the number of batch accounts can be created in specified region.
+     */
+    int getBatchAccountQuotaByLocation(Region region);
 }

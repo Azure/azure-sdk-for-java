@@ -25,34 +25,30 @@ public interface VirtualMachines extends
         SupportsBatchCreation<VirtualMachine> {
 
     /**
-     * @return entry point to virtual machine sizes
+     * @return available virtual machine sizes
      */
     VirtualMachineSizes sizes();
 
     /**
-     * Shuts down the Virtual Machine and releases the compute resources.
-     * <p>
-     * You are not billed for the compute resources that this Virtual Machine uses
+     * Shuts down the virtual machine and releases the compute resources.
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void deallocate(String groupName, String name);
 
     /**
-     * Generalize the Virtual Machine.
+     * Generalize the virtual machine.
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void generalize(String groupName, String name);
 
     /**
      * Power off (stop) a virtual machine.
-     * <p>
-     * You will be billed for the compute resources that this Virtual Machine uses
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void powerOff(String groupName, String name);
@@ -60,7 +56,7 @@ public interface VirtualMachines extends
     /**
      * Restart a virtual machine.
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void restart(String groupName, String name);
@@ -68,7 +64,7 @@ public interface VirtualMachines extends
     /**
      * Start a virtual machine.
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void start(String groupName, String name);
@@ -76,7 +72,7 @@ public interface VirtualMachines extends
     /**
      * Redeploy a virtual machine.
      *
-     * @param groupName the resource group name
+     * @param groupName the name of the resource group the virtual machine is in
      * @param name the virtual machine name
      */
     void redeploy(String groupName, String name);
@@ -87,9 +83,9 @@ public interface VirtualMachines extends
      *
      * @param groupName the resource group name
      * @param name the virtual machine name
-     * @param containerName destination container name to store the captured Vhd
-     * @param overwriteVhd whether to overwrites destination vhd if it exists
-     * @return the template as json string
+     * @param containerName destination container name to store the captured VHD
+     * @param overwriteVhd whether to overwrites destination VHD if it exists
+     * @return the template as JSON string
      */
     String capture(String groupName, String name, String containerName, boolean overwriteVhd);
 }

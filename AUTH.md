@@ -22,6 +22,7 @@ tenant=########-####-####-####-############
 managementURI=https\://management.core.windows.net/
 baseURL=https\://management.azure.com/
 authURL=https\://login.windows.net/
+graphURL=https\://graph.windows.net/
 ```
 
 This approach enables unattended authentication for your application (i.e. no interactive user login, no token management needed). The `client`, `key` and `tenant` are from [your service principal registration](#creating-a-service-principal-in-azure). The `subscription` represents the subscription ID you want to use as the default subscription. The remaining URIs and URLs represent the end points for the needed Azure services, and the example above assumes you are using the Azure worldwide cloud.
@@ -86,6 +87,7 @@ You can create a service principal and grant it access privileges for a given su
     `managementURI=https\://management.core.windows.net/`<br/>
     `baseURL=https\://management.azure.com/`</br>
     `authURL=https\://login.windows.net/`<br/>
+    `graphURL=https\://graph.windows.net/`<br/>
   Make sure to escape the colons (:) with backslashes (\\).
 1. You need to grant the created service principal a permission to access the desired Azure subscription. Go to the [Azure portal](http://portal.azure.com) again.
 1. Click **Subscriptions** and select the subscription in the list that you want to enable your application to access.

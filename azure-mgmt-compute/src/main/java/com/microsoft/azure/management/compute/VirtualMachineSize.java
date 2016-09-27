@@ -13,27 +13,27 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 @Fluent
 public interface VirtualMachineSize {
     /**
-     * @return the VM size name
+     * @return the virtual machine size name
      */
     String name();
 
     /**
-     * @return the Number of cores supported by a VM size
+     * @return the number of cores supported by the VM size
      */
     int numberOfCores();
 
     /**
-     * @return the OS disk size allowed by a VM size
+     * @return the OS disk size allowed by the VM size
      */
     int osDiskSizeInMB();
 
     /**
-     * @return resource disk size allowed by a VM size
+     * @return the resource disk size allowed by the VM size
      */
     int resourceDiskSizeInMB();
 
     /**
-     * @return the memory size supported by a VM size
+     * @return the memory size supported by the VM size
      */
     int memoryInMB();
 

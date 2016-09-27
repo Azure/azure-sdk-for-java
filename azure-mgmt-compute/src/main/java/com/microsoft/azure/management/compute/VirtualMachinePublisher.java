@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 @Fluent
 public interface VirtualMachinePublisher {
     /**
-     * @return the region where virtual machine images from this publisher is available
+     * @return the region where virtual machine images from this publisher are available
      */
     Region region();
 
@@ -29,7 +29,7 @@ public interface VirtualMachinePublisher {
     VirtualMachineOffers offers();
 
     /**
-     * @return the virtual machine image extensions from this publisher.
+     * @return the virtual machine image extensions from this publisher
      */
     VirtualMachineExtensionImageTypes extensionTypes();
 }

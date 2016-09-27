@@ -78,13 +78,13 @@ public class VirtualMachineScaleSetExtensionImpl
     //
 
     @Override
-    public VirtualMachineScaleSetExtensionImpl withAutoUpgradeMinorVersionEnabled() {
+    public VirtualMachineScaleSetExtensionImpl withMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(true);
         return this;
     }
 
     @Override
-    public VirtualMachineScaleSetExtensionImpl withAutoUpgradeMinorVersionDisabled() {
+    public VirtualMachineScaleSetExtensionImpl withoutMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(false);
         return this;
     }

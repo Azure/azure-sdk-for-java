@@ -6,12 +6,12 @@
 
 package com.microsoft.azure.management.redis;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * The {@link RedisCache#keys} action result.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface RedisAccessKeys {
     /**
      * @return a primary key value.

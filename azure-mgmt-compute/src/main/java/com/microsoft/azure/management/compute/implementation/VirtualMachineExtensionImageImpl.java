@@ -60,7 +60,7 @@ class VirtualMachineExtensionImageImpl
     }
 
     @Override
-    public boolean vmScaleSetEnabled() {
+    public boolean supportsVirtualMachineScaleSets() {
         return this.inner().vmScaleSetEnabled();
     }
 
