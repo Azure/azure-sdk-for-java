@@ -5,14 +5,13 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 
 /**
  * An interface representing a model's ability to reference a private IP address.
  */
-@LangDefinition()
+@Fluent()
 public interface HasPrivateIpAddress  {
     /**
      * @return the private IP address associated with this resource
@@ -27,11 +26,6 @@ public interface HasPrivateIpAddress  {
     /**
      * Grouping of definition stages involving specifying the private IP address.
      */
-    @LangDefinition(
-                ContainerName = "Definition",
-                ContainerFileName = "IDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify the private IP address.
@@ -56,11 +50,6 @@ public interface HasPrivateIpAddress  {
     /**
      * Grouping of update stages involving modifying the private IP address.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an update allowing to modify the private IP address.
@@ -85,11 +74,6 @@ public interface HasPrivateIpAddress  {
     /**
      * Grouping of definition stages applicable as part of a parent resource update, involving specifying the private IP address.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify the private IP address.
