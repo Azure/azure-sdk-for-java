@@ -52,7 +52,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource definition
      */
-    @LangDefinition(ContainerName="Resource.Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "Resource.Definition", ContainerFileName = "IDefinition")
     interface DefinitionWithRegion<T> {
         /**
          * Specifies the region for the resource by name.
@@ -74,7 +74,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource definition
      */
-    @LangDefinition(ContainerName="Resource.Definition", ContainerFileName="IDefinition")
+    @LangDefinition(ContainerName = "Resource.Definition", ContainerFileName = "IDefinition")
     interface DefinitionWithTags<T> {
         /**
          * Specifies tags for the resource as a {@link Map}.
@@ -97,7 +97,7 @@ public interface Resource extends Indexable {
      *
      * @param <T> the type of the next stage resource update
      */
-    @LangDefinition(ContainerName="Resource.Update", ContainerFileName="IUpdate")
+    @LangDefinition(ContainerName = "Resource.Update", ContainerFileName = "IUpdate")
     interface UpdateWithTags<T> {
         /**
          * Specifies tags for the resource as a {@link Map}.
