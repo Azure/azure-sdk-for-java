@@ -53,14 +53,10 @@
       </snapshots>
     </repository>
     <repository>
-      <id>azure-public-snapshots</id>
-      <name>Azure Public Snapshots</name>
-      <url>http://adxmaven.westus.cloudapp.azure.com/repository/maven-snapshots</url>
+      <id>api-annotations-staging</id>
+      <name>Api annotations staging repo</name>
+      <url>https://oss.sonatype.org/service/local/repositories/commicrosoftazure-1420/content</url>
       <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
     </repository>
   </repositories>
 
