@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.network.model;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+
 /**
  * An interface representing a model's ability to have floating IP support.
  */
+@Fluent
 public interface HasFloatingIp {
     /**
      * @return the state of the floating IP enablement
