@@ -41,7 +41,7 @@ class FrontendImpl
         PublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         PublicFrontend.Update {
 
-    protected FrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
+    FrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
