@@ -535,49 +535,12 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withoutFrontend(String name) {
-        Frontend frontend = this.frontends.get(name);
-        this.frontends.remove(name);
-
-        final String frontendId;
-        if (frontend != null) {
-            frontendId = frontend.inner().id();
-        } else {
-            frontendId = null;
-        }
-
-        // Remove references from inbound NAT rules
-        List<InboundNatRuleInner> natRulesInner = this.inner().inboundNatRules();
-        if (natRulesInner != null && frontendId != null) {
-            for (InboundNatRuleInner natRuleInner : natRulesInner) {
-                final SubResource frontendRef = natRuleInner.frontendIPConfiguration();
-                if (frontendRef != null && frontendRef.id().equalsIgnoreCase(frontendId)) {
-                    natRuleInner.withFrontendIPConfiguration(null);
-                }
-            }
-        }
-
-        return this;
-    }
-
-    @Override
     public LoadBalancerImpl withoutProbe(String name) {
         if (this.httpProbes.containsKey(name)) {
             this.httpProbes.remove(name);
         } else if (this.tcpProbes.containsKey(name)) {
             this.tcpProbes.remove(name);
         }
-
-        List<ProbeInner> probes = this.inner().probes();
-        if (probes != null) {
-            for (int i = 0; i < probes.size(); i++) {
-                if (probes.get(i).name().equalsIgnoreCase(name)) {
-                    probes.remove(i);
-                    break;
-                }
-            }
-        }
-
         return this;
     }
 
@@ -642,6 +605,12 @@ class LoadBalancerImpl
     @Override
     public Update withoutInboundNatPool(String name) {
         this.inboundNatPools.remove(name);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutFrontend(String name) {
+        this.frontends.remove(name);
         return this;
     }
 
