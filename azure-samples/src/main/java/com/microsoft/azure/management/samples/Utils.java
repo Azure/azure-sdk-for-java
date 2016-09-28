@@ -336,7 +336,7 @@ public final class Utils {
 
 
     /**
-     * Print load balancer
+     * Print load balancer.
      * @param resource a load balancer
      */
     public static void print(LoadBalancer resource) {
