@@ -29,6 +29,7 @@ import java.util.List;
  * Azure Compute sample for managing virtual machine scale sets -
  *  - Create a virtual machine scale set behind an Internet facing load balancer
  *  - Install Apache Web servers in virtual machines in the virtual machine scale set
+ *  - Stop a virtual machine scale set
  *  - Start a virtual machine scale set
  *  - Update a virtual machine scale set
  *    - Double the no. of virtual machines
@@ -252,7 +253,15 @@ public final class ManageVirtualMachineScaleSet {
 
 
                 //=============================================================
-                // Start virtual machine scale set
+                // Stop the virtual machine scale set
+
+                System.out.println("Stopping virtual machine scale set ...");
+                virtualMachineScaleSet.powerOff();
+                System.out.println("Stopped virtual machine scale set");
+
+
+                //=============================================================
+                // Start the virtual machine scale set
 
                 System.out.println("Starting virtual machine scale set ...");
                 virtualMachineScaleSet.start();
@@ -260,7 +269,7 @@ public final class ManageVirtualMachineScaleSet {
 
 
                 //=============================================================
-                // Update virtual machine scale set
+                // Update the virtual machine scale set
                 // - double the no. of virtual machines
 
                 System.out.println("Updating virtual machine scale set "
