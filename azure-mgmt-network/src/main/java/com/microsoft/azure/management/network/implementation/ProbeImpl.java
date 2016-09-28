@@ -35,7 +35,7 @@ class ProbeImpl
         HttpProbe.UpdateDefinition<LoadBalancer.Update>,
         HttpProbe.Update {
 
-    protected ProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
+    ProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 

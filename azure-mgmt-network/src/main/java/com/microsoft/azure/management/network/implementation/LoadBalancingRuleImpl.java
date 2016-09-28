@@ -29,7 +29,7 @@ class LoadBalancingRuleImpl
         LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancingRule.Update {
 
-    protected LoadBalancingRuleImpl(LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
+    LoadBalancingRuleImpl(LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
