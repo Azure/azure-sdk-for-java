@@ -275,12 +275,18 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withFrontend(FrontendImpl frontend) {
-        this.frontends.put(frontend.name(), frontend);
-        return this;
+        if (frontend == null) {
+            return null;
+        } else {
+            this.frontends.put(frontend.name(), frontend);
+            return this;
+        }
     }
 
     LoadBalancerImpl withProbe(ProbeImpl probe) {
-        if (probe.protocol() == ProbeProtocol.HTTP) {
+        if (probe == null) {
+            return null;
+        } else if (probe.protocol() == ProbeProtocol.HTTP) {
             httpProbes.put(probe.name(), probe);
         } else if (probe.protocol() == ProbeProtocol.TCP) {
             tcpProbes.put(probe.name(), probe);
@@ -289,23 +295,39 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withLoadBalancingRule(LoadBalancingRuleImpl loadBalancingRule) {
-        this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
-        return this;
+        if (loadBalancingRule == null) {
+            return null;
+        } else {
+            this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
+            return this;
+        }
     }
 
     LoadBalancerImpl withInboundNatRule(InboundNatRuleImpl inboundNatRule) {
-        this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
-        return this;
+        if (inboundNatRule == null) {
+            return null;
+        } else {
+            this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
+            return this;
+        }
     }
 
     LoadBalancerImpl withInboundNatPool(InboundNatPoolImpl inboundNatPool) {
-        this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
-        return this;
+        if (inboundNatPool == null) {
+            return null;
+        } else {
+            this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
+            return this;
+        }
     }
 
     LoadBalancerImpl withBackend(BackendImpl backend) {
-        this.backends.put(backend.name(), backend);
-        return this;
+        if (backend == null) {
+            return null;
+        } else {
+            this.backends.put(backend.name(), backend);
+            return this;
+        }
     }
 
     // Withers (fluent)
