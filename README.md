@@ -93,7 +93,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   </tr>
   <tr>
     <td>Virtual Machines</td>
-    <td>- [Manage virtual machine](https://github.com/Azure-Samples/compute-java-manage-vm)<br>- [Manage availability set](https://github.com/Azure-Samples/compute-java-manage-availability-sets)<br>- [List virtual machine images](https://github.com/Azure-Samples/compute-java-list-vm-images)<br>- [Manage virtual machines using VM extensions](https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions)<br>- [List virtual machine extension images](https://github.com/Azure-Samples/compute-java-list-vm-extension-images)<br>- [Create multiple virtual machines in parallel](azure-samples/compute-java-manage-virtual-machines-in-parallel)</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vm">Manage virtual machine</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-availability-sets"> Manage availability set</li>
+<li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
+<li><a href="https://github.com/Azure-Samples/compute-java-list-vm-extension-images">List virtual machine extension images</li>
+<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
+</ul>
+</td>
   </tr>
   <tr>
     <td>Virtual Machines (parallel execution)</td>
