@@ -17,14 +17,14 @@ The `Azure` class is the simplest entry point for creating and interacting with 
 
 **Create a Virtual Machine**
 
-You can create a virtual machine instance by using the `define() … create()` method chain.
+You can create a virtual machine instance by using a `define() … create()` method chain.
 
 ```java
 System.out.println("Creating a Linux VM");
 
 VirtualMachine linuxVM = azure.virtualMachines().define("myLinuxVM")
 	.withRegion(Region.US_EAST)
-	.withNewResourceGroup("myResourceGroup")
+	.withNewResourceGroup(rgName)
 	.withNewPrimaryNetwork("10.0.0.0/28")
 	.withPrimaryPrivateIpAddressDynamic()
 	.withNewPrimaryPublicIpAddress("mylinuxvmdns")
@@ -39,7 +39,7 @@ System.out.println("Created a Linux VM: " + linuxVM.id());
 
 **Update a Virtual Machine**
 
-You can update a virtual machine instance by using the `update() … apply()` method chain.
+You can update a virtual machine instance by using an `update() … apply()` method chain.
 
 ```java
 linuxVM.update()
@@ -49,10 +49,33 @@ linuxVM.update()
     .attach()
     .apply();
 ```
+**Create a Virtual Machine Scale Set**
+
+You can create a virtual machine scale set instance by using another `define() … create()` method chain.
+
+```java
+ VirtualMachineScaleSet virtualMachineScaleSet = azure.virtualMachineScaleSets()
+     .define(vmssName)
+     .withRegion(Region.US_EAST)
+     .withExistingResourceGroup(rgName)
+     .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
+     .withExistingPrimaryNetworkSubnet(network, "Front-end")
+     .withPrimaryInternetFacingLoadBalancer(loadBalancer1)
+     .withPrimaryInternetFacingLoadBalancerBackends(backendPoolName1, backendPoolName2)
+     .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
+     .withoutPrimaryInternalLoadBalancer()
+     .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+     .withRootUserName(userName)
+     .withSsh(sshKey)
+     .withNewStorageAccount(storageAccountName1)
+     .withNewStorageAccount(storageAccountName2)
+     .withCapacity(3)
+     .create();
+```
 
 **Create a Network Security Group**
 
-You can create a network security group instance by using the `define() … create()` method chain.
+You can create a network security group instance by using another `define() … create()` method chain.
 
 ```java
 NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEndNSGName)
