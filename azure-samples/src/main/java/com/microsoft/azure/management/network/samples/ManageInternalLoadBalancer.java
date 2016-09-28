@@ -12,10 +12,7 @@ import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.network.Network;
-import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
@@ -63,6 +60,7 @@ import java.util.List;
  *
  * Update an existing load balancer, configure TCP idle timeout
  * Create another load balancer
+ * List load balancers
  * Remove an existing load balancer.
  */
 public final class ManageInternalLoadBalancer {
@@ -78,10 +76,11 @@ public final class ManageInternalLoadBalancer {
 
         final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
 
-        final String loadBalancerName2 = ResourceNamer.randomResourceName("intlb" + "-", 18);
-        final String privateFrontEndName = loadBalancerName2 + "-BE";
+        final String loadBalancerName3 = ResourceNamer.randomResourceName("intlb3" + "-", 18);
+        final String loadBalancerName4 = ResourceNamer.randomResourceName("intlb4" + "-", 18);
+        final String privateFrontEndName = loadBalancerName3 + "-BE";
 
-        final String backendPoolName3 = loadBalancerName2 + "-BAP3";
+        final String backendPoolName3 = loadBalancerName3 + "-BAP3";
 
         final int orcaleSQLNodePort = 1521;
         final String httpProbe = "httpProbe";
@@ -140,7 +139,7 @@ public final class ManageInternalLoadBalancer {
                 Utils.print(network);
 
                 //=============================================================
-                // Create an Internet facing load balancer
+                // Create an internal load balancer
                 // Create a frontend IP address
                 // Two backend address pools which contain network interfaces for the virtual
                 //  machines to receive HTTP and HTTPS network traffic from the load balancer
@@ -164,8 +163,8 @@ public final class ManageInternalLoadBalancer {
                         + "  balancer to a port for a specific virtual machine in the backend address pool\n"
                         + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
 
-                LoadBalancer loadBalancer2 = azure.loadBalancers()
-                        .define(loadBalancerName2)
+                LoadBalancer loadBalancer3 = azure.loadBalancers()
+                        .define(loadBalancerName3)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
                         .definePrivateFrontend(privateFrontEndName)
@@ -217,7 +216,7 @@ public final class ManageInternalLoadBalancer {
 
                 // Print load balancer details
                 System.out.println("Created an internal load balancer");
-                Utils.print(loadBalancer2);
+                Utils.print(loadBalancer3);
 
                 //=============================================================
                 // Create two network interfaces in the backend subnet
@@ -239,9 +238,9 @@ public final class ManageInternalLoadBalancer {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withExistingLoadBalancerBackend(loadBalancer2, backendPoolName3)
-                        .withExistingLoadBalancerInboundNatRule(loadBalancer2, natRule6000to22forVM3)
-                        .withExistingLoadBalancerInboundNatRule(loadBalancer2, natRule6001to23forVM3);
+                        .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
+                        .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6000to22forVM3)
+                        .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6001to23forVM3);
 
                 networkInterfaceCreatables2.add(networkInterface3Creatable);
 
@@ -252,9 +251,9 @@ public final class ManageInternalLoadBalancer {
                         .withExistingPrimaryNetwork(network)
                         .withSubnet("Back-end")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withExistingLoadBalancerBackend(loadBalancer2, backendPoolName3)
-                        .withExistingLoadBalancerInboundNatRule(loadBalancer2, natRule6002to22forVM4)
-                        .withExistingLoadBalancerInboundNatRule(loadBalancer2, natRule6003to23forVM4);
+                        .withExistingLoadBalancerBackend(loadBalancer3, backendPoolName3)
+                        .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6002to22forVM4)
+                        .withExistingLoadBalancerInboundNatRule(loadBalancer3, natRule6003to23forVM4);
 
                 networkInterfaceCreatables2.add(networkInterface4Creatable);
 
@@ -334,6 +333,122 @@ public final class ManageInternalLoadBalancer {
                 System.out.println();
                 System.out.println("Virtual Machine FOUR - ");
                 Utils.print(virtualMachines.get(1));
+
+
+                //=============================================================
+                // Update a load balancer
+                //  configure TCP idle timeout to 15 minutes
+
+                System.out.println("Updating the load balancer ...");
+
+                loadBalancer3.update()
+                        .updateLoadBalancingRule(tcpLoadBalancingRule)
+                            .withIdleTimeoutInMinutes(15)
+                            .parent()
+                            .apply();
+
+                System.out.println("Update the load balancer with a TCP idle timeout to 15 minutes");
+
+
+                //=============================================================
+                // Create another internal load balancer
+                // Create a frontend IP address
+                // Two backend address pools which contain network interfaces for the virtual
+                //  machines to receive HTTP and HTTPS network traffic from the load balancer
+                // Two load balancing rules for HTTP and HTTPS to map public ports on the load
+                //  balancer to ports in the backend address pool
+                // Two probes which contain HTTP and HTTPS health probes used to check availability
+                //  of virtual machines in the backend address pool
+                // Two inbound NAT rules which contain rules that map a public port on the load
+                //  balancer to a port for a specific virtual machine in the backend address pool
+                //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
+
+                System.out.println("Creating another internal facing load balancer with ...");
+                System.out.println("- A private IP address");
+                System.out.println("- One backend address pool which contain network interfaces for the virtual\n"
+                        + "  machines to receive 1521 network traffic from the load balancer");
+                System.out.println("- One load balancing rules for 1521 to map public ports on the load\n"
+                        + "  balancer to ports in the backend address pool");
+                System.out.println("- One probe which contains HTTP health probe used to check availability\n"
+                        + "  of virtual machines in the backend address pool");
+                System.out.println("- Two inbound NAT rules which contain rules that map a port on the load\n"
+                        + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                        + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+
+                LoadBalancer loadBalancer4 = azure.loadBalancers()
+                        .define(loadBalancerName4)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .definePrivateFrontend(privateFrontEndName)
+                        .withExistingSubnet(network, "Back-end")
+                            .withPrivateIpAddressStatic("172.16.3.15")
+                            .attach()
+                        // Add one backend - one per rule
+                        .defineBackend(backendPoolName3)
+                            .attach()
+                        // Add one probes - one per rule
+                        .defineHttpProbe("httpProbe")
+                            .withRequestPath("/")
+                            .attach()
+                        // Add one rule that uses above backend and probe
+                        .defineLoadBalancingRule(tcpLoadBalancingRule)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(privateFrontEndName)
+                            .withFrontendPort(orcaleSQLNodePort)
+                            .withProbe(httpProbe)
+                            .withBackend(backendPoolName3)
+                            .attach()
+                        // Add two nat pools to enable direct VM connectivity for
+                        //  SSH to port 22 and TELNET to port 23
+                        .defineInboundNatRule(natRule6000to22forVM3)
+                        .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(privateFrontEndName)
+                            .withFrontendPort(6000)
+                            .withBackendPort(22)
+                            .attach()
+                        .defineInboundNatRule(natRule6001to23forVM3)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(privateFrontEndName)
+                            .withFrontendPort(6001)
+                            .withBackendPort(23)
+                            .attach()
+                        .defineInboundNatRule(natRule6002to22forVM4)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(privateFrontEndName)
+                            .withFrontendPort(6002)
+                            .withBackendPort(22)
+                            .attach()
+                        .defineInboundNatRule(natRule6003to23forVM4)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(privateFrontEndName)
+                            .withFrontendPort(6003)
+                            .withBackendPort(23)
+                            .attach()
+                        .create();
+
+                // Print load balancer details
+                System.out.println("Created an internal load balancer");
+                Utils.print(loadBalancer4);
+
+                //=============================================================
+                // List load balancers
+
+                List<LoadBalancer> loadBalancers = azure.loadBalancers().list();
+
+                System.out.println("Walking through the list of load balancers");
+
+                for (LoadBalancer loadBalancer : loadBalancers) {
+                    Utils.print(loadBalancer);
+                }
+
+
+                //=============================================================
+                // Remove a load balancer
+
+                System.out.println("Deleting load balancer " + loadBalancerName4
+                        + "(" + loadBalancer4.id() + ")");
+                azure.loadBalancers().delete(loadBalancer4.id());
+                System.out.println("Deleted load balancer" + loadBalancerName4);
 
 
             } catch (Exception f) {

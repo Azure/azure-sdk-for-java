@@ -78,8 +78,10 @@ public final class ManageInternetFacingLoadBalancer {
 
         final String vnetName = ResourceNamer.randomResourceName("vnet", 24);
 
-        final String loadBalancerName1 = ResourceNamer.randomResourceName("intlb" + "-", 18);
-        final String publicIpName = "pip-" + loadBalancerName1;
+        final String loadBalancerName1 = ResourceNamer.randomResourceName("intlb1" + "-", 18);
+        final String loadBalancerName2 = ResourceNamer.randomResourceName("intlb2" + "-", 18);
+        final String publicIpName1 = "pip1-" + loadBalancerName1;
+        final String publicIpName2 = "pip2-" + loadBalancerName1;
         final String frontendName = loadBalancerName1 + "-FE1";
         final String backendPoolName1 = loadBalancerName1 + "-BAP1";
         final String backendPoolName2 = loadBalancerName1 + "-BAP2";
@@ -145,10 +147,10 @@ public final class ManageInternetFacingLoadBalancer {
                 // Create a public IP address
                 System.out.println("Creating a public IP address...");
 
-                PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName)
+                PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(publicIpName1)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(rgName)
-                        .withLeafDomainLabel(publicIpName)
+                        .withLeafDomainLabel(publicIpName1)
                         .create();
 
                 System.out.println("Created a public IP address");
@@ -364,6 +366,154 @@ public final class ManageInternetFacingLoadBalancer {
                 System.out.println();
                 System.out.println("Virtual Machine TWO - ");
                 Utils.print(virtualMachines.get(1));
+
+
+                //=============================================================
+                // Update a load balancer
+                //  configure TCP idle timeout to 15 minutes
+
+                System.out.println("Updating the load balancer ...");
+
+                loadBalancer1.update()
+                        .updateLoadBalancingRule(httpLoadBalancingRule)
+                            .withIdleTimeoutInMinutes(15)
+                            .parent()
+                        .updateLoadBalancingRule(httpsLoadBalancingRule)
+                            .withIdleTimeoutInMinutes(15)
+                            .parent()
+                        .apply();
+
+                System.out.println("Update the load balancer with a TCP idle timeout to 15 minutes");
+
+
+                //=============================================================
+                // Create another public IP address
+                System.out.println("Creating another public IP address...");
+
+                PublicIpAddress publicIpAddress2 = azure.publicIpAddresses().define(publicIpName2)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .withLeafDomainLabel(publicIpName2)
+                        .create();
+
+                System.out.println("Created another public IP address");
+                // Print the virtual network details
+                Utils.print(publicIpAddress2);
+
+
+                //=============================================================
+                // Create another Internet facing load balancer
+                // Create a frontend IP address
+                // Two backend address pools which contain network interfaces for the virtual
+                //  machines to receive HTTP and HTTPS network traffic from the load balancer
+                // Two load balancing rules for HTTP and HTTPS to map public ports on the load
+                //  balancer to ports in the backend address pool
+                // Two probes which contain HTTP and HTTPS health probes used to check availability
+                //  of virtual machines in the backend address pool
+                // Two inbound NAT rules which contain rules that map a public port on the load
+                //  balancer to a port for a specific virtual machine in the backend address pool
+                //  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23
+
+                System.out.println("Creating another Internet facing load balancer with ...");
+                System.out.println("- A frontend IP address");
+                System.out.println("- Two backend address pools which contain network interfaces for the virtual\n"
+                        + "  machines to receive HTTP and HTTPS network traffic from the load balancer");
+                System.out.println("- Two load balancing rules for HTTP and HTTPS to map public ports on the load\n"
+                        + "  balancer to ports in the backend address pool");
+                System.out.println("- Two probes which contain HTTP and HTTPS health probes used to check availability\n"
+                        + "  of virtual machines in the backend address pool");
+                System.out.println("- Two inbound NAT rules which contain rules that map a public port on the load\n"
+                        + "  balancer to a port for a specific virtual machine in the backend address pool\n"
+                        + "  - this provides direct VM connectivity for SSH to port 22 and TELNET to port 23");
+
+                LoadBalancer loadBalancer2 = azure.loadBalancers().define(loadBalancerName2)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName)
+                        .definePublicFrontend(frontendName)
+                        .withExistingPublicIpAddress(publicIpAddress2)
+                            .attach()
+                        // Add two backend one per rule
+                        .defineBackend(backendPoolName1)
+                            .attach()
+                        .defineBackend(backendPoolName2)
+                            .attach()
+                        // Add two probes one per rule
+                        .defineHttpProbe(httpProbe)
+                            .withRequestPath("/")
+                            .withPort(80)
+                            .attach()
+                            .defineHttpProbe(httpsProbe)
+                            .withRequestPath("/")
+                            .withPort(443)
+                            .attach()
+                        // Add two rules that uses above backend and probe
+                        .defineLoadBalancingRule(httpLoadBalancingRule)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(80)
+                            .withProbe(httpProbe)
+                            .withBackend(backendPoolName1)
+                            .attach()
+                        .defineLoadBalancingRule(httpsLoadBalancingRule)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(443)
+                            .withProbe(httpsProbe)
+                            .withBackend(backendPoolName2)
+                            .attach()
+                        // Add two nat pools to enable direct VM connectivity for
+                        //  SSH to port 22 and TELNET to port 23
+                        .defineInboundNatRule(natRule5000to22forVM1)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(5000)
+                            .withBackendPort(22)
+                            .attach()
+                        .defineInboundNatRule(natRule5001to23forVM1)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(5001)
+                            .withBackendPort(23)
+                            .attach()
+                        .defineInboundNatRule(natRule5002to22forVM2)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(5002)
+                            .withBackendPort(22)
+                            .attach()
+                        .defineInboundNatRule(natRule5003to23forVM2)
+                            .withProtocol(TransportProtocol.TCP)
+                            .withFrontend(frontendName)
+                            .withFrontendPort(5003)
+                            .withBackendPort(23)
+                            .attach()
+                        .create();
+
+                // Print load balancer details
+                System.out.println("Created another load balancer");
+                Utils.print(loadBalancer2);
+
+
+                //=============================================================
+                // List load balancers
+
+                List<LoadBalancer> loadBalancers = azure.loadBalancers().list();
+
+                System.out.println("Walking through the list of load balancers");
+
+                for (LoadBalancer loadBalancer : loadBalancers) {
+                    Utils.print(loadBalancer);
+                }
+
+
+                //=============================================================
+                // Remove a load balancer
+
+                System.out.println("Deleting load balancer " + loadBalancerName2
+                        + "(" + loadBalancer2.id() + ")");
+                azure.loadBalancers().delete(loadBalancer2.id());
+                System.out.println("Deleted load balancer" + loadBalancerName2);
+
 
             } catch (Exception f) {
 
