@@ -7,7 +7,7 @@ This README is based on the latest released preview version (1.0.0-beta3). If yo
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
 
-> **1.0.0-beta3** is a developer preview that supports major parts of Azure Batch, Key Vault, Storage, Networking, Resource Manager, Virtual Machines and Virtual Machine Scale Set. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
+> **1.0.0-beta3** is a developer preview that supports major parts of Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, Key Vault and Batch. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
 
 **Azure Authentication**
 
@@ -107,7 +107,7 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
 
 #Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Batch, Key Vault, Storage, Networking, Resource Manager, Virtual Machines and Virtual Machine Scale Set … 
+You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, Key Vault and Batch … 
 
 <table>
   <tr>
@@ -135,7 +135,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   <tr>
     <td>Virtual Machine Scale Sets</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets (behind an Internet facing load balancer)</a></li>
 </ul></td>
   </tr>
   <tr>
