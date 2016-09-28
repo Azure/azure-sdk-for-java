@@ -28,8 +28,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
@@ -67,13 +65,10 @@ import com.microsoft.windowsazure.services.servicebus.models.RuleInfo;
 import com.microsoft.windowsazure.services.servicebus.models.SubscriptionInfo;
 import com.microsoft.windowsazure.services.servicebus.models.TopicInfo;
 import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.ClientHandlerException;
-import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.WebResource.Builder;
 import com.sun.jersey.api.client.filter.ClientFilter;
-import com.sun.jersey.api.client.filter.LoggingFilter;
 
 public class ServiceBusRestProxy implements ServiceBusContract {
 
