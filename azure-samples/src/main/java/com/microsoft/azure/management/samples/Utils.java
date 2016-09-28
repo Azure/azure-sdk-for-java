@@ -344,8 +344,6 @@ public final class Utils {
 
                 for (Map.Entry<String, ApplicationPackage> applicationPackageEntry: application.applicationPackages().entrySet()) {
                     ApplicationPackage applicationPackage = applicationPackageEntry.getValue();
-                    applicationPackage.name();
-                    applicationPackage.state();
                     StringBuilder singleApplicationPackage = new StringBuilder().append("\n\t\t\t\tapplicationPackage : " + applicationPackage.name());
                     singleApplicationPackage.append("\n\t\t\t\tapplicationPackageState : " + applicationPackage.state());
 
