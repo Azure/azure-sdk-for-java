@@ -5,13 +5,12 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An interface representing a model's ability to reference a load balancer backend port.
  */
-@LangDefinition()
+@Fluent
 public interface HasBackendPort  {
     /**
      * @return the backend port number the network traffic is sent to
@@ -21,11 +20,6 @@ public interface HasBackendPort  {
     /**
      * Grouping of definition stages involving specifying a backend port.
      */
-    @LangDefinition(
-                ContainerName = "Definition",
-                ContainerFileName = "IDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface DefinitionStages {
         /**
          * The stage of a definition allowing to specify the backend port.
@@ -46,11 +40,6 @@ public interface HasBackendPort  {
     /**
      * Grouping of update stages involving modifying a backend port.
      */
-    @LangDefinition(
-                ContainerName = "Update",
-                ContainerFileName = "IUpdate",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateStages {
         /**
          * The stage of an update allowing to modify the backend port.
@@ -69,11 +58,6 @@ public interface HasBackendPort  {
     /**
      * Grouping of definition stages applicable as part of a load balancer update, involving modifying the backend port.
      */
-    @LangDefinition(
-                ContainerName = "UpdateDefinition",
-                ContainerFileName = "IUpdateDefinition",
-                IsContainerOnly = true,
-                MethodConversionType = MethodConversion.OnlyMethod)
     interface UpdateDefinitionStages {
         /**
          * The stage of a definition allowing to specify the backend port.

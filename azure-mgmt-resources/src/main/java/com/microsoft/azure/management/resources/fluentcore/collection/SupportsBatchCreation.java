@@ -1,6 +1,8 @@
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
@@ -16,6 +18,7 @@ import java.util.List;
  * (Note: this interface is not intended to be implemented by user code)
  * @param <ResourceT> the top level Azure resource type
  */
+@LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsBatchCreation<ResourceT extends Resource> {
     /**
      * Executes the create requests on a collection (batch) of resources.

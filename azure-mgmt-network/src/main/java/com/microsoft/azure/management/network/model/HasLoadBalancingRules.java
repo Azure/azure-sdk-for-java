@@ -7,13 +7,13 @@ package com.microsoft.azure.management.network.model;
 
 import java.util.Map;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 
 /**
  * An interface representing a model's ability to reference load balancing rules.
  */
-@LangDefinition()
+@Fluent()
 public interface HasLoadBalancingRules  {
     /**
      * @return the associated load balancing rules from this load balancer, indexed by their names

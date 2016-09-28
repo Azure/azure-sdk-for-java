@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.NetworkInterface;
 
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Interface exposing a list of network interfaces.
  */
-@LangDefinition()
+@Fluent()
 public interface HasNetworkInterfaces {
     /**
      * Gets the primary network interface.
