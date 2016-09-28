@@ -21,7 +21,9 @@ import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  *
@@ -60,12 +62,17 @@ public final class ManageVirtualMachineScaleSet {
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/l_apache.sh";
+        final String installCommand = "bash install_apache.sh Abc.123x(";
+        List<String> fileUris = new ArrayList<>();
+        fileUris.add(apacheInstallScript);
 
         try {
 
             //=============================================================
             // Authenticate
 
+            System.out.println(System.getenv("AZURE_AUTH_LOCATION"));
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
@@ -80,7 +87,7 @@ public final class ManageVirtualMachineScaleSet {
             try {
 
                 //=============================================================
-                // Create a virtual network with a frontend and a backend subnets
+                // Create a virtual network with a frontend subnet
                 System.out.println("Creating virtual network with a frontend subnet ...");
 
                 Network network = azure.networks().define(vnetName)
@@ -111,8 +118,8 @@ public final class ManageVirtualMachineScaleSet {
                 Utils.print(publicIpAddress);
 
                 //=============================================================
-                // Create an Internet facing load balancer
-                // Create a frontend IP address
+                // Create an Internet facing load balancer with
+                // One frontend IP address
                 // Two backend address pools which contain network interfaces for the virtual
                 //  machines to receive HTTP and HTTPS network traffic from the load balancer
                 // Two load balancing rules for HTTP and HTTPS to map public ports on the load
@@ -193,6 +200,7 @@ public final class ManageVirtualMachineScaleSet {
 
                 //=============================================================
                 // Create a virtual machine scale set with three virtual machines
+                // And, install Apache Web servers on them
 
                 System.out.println("Creating virtual machine scale set with three virtual machines"
                         + " in the frontend subnet ...");
@@ -216,21 +224,55 @@ public final class ManageVirtualMachineScaleSet {
                         .withNewStorageAccount(storageAccountName2)
                         .withNewStorageAccount(storageAccountName3)
                         .withCapacity(3)
+                        // Use a VM extension to install Apache Web servers
+                        .defineNewExtension("CustomScriptForLinux")
+                            .withPublisher("Microsoft.OSTCExtensions")
+                            .withType("CustomScriptForLinux")
+                            .withVersion("1.4")
+                            .withMinorVersionAutoUpgrade()
+                            .withPublicSetting("fileUris", fileUris)
+                            .withPublicSetting("commandToExecute", installCommand)
+                            .attach()
                         .create();
 
                 Date t2 = new Date();
-                System.out.println("Created a virtual machine scale set with 3 Linux VMs: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
+                System.out.println("Created a virtual machine scale set with "
+                        + "3 Linux VMs & Apache Web servers on them: (took "
+                        + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) ");
                 System.out.println();
 
                 // Print virtual machine scale set details
                 // Utils.print(virtualMachineScaleSet);
 
+
+                //=============================================================
+                // Start virtual machine scale set
+
+                System.out.println("Starting virtual machine scale set ...");
                 virtualMachineScaleSet.start();
+                System.out.println("Started virtual machine scale set");
+
+
+                //=============================================================
+                // Update virtual machine scale set
+                // - double the no. of virtual machines
+
+                System.out.println("Updating virtual machine scale set "
+                        + "- double the no. of virtual machines ...");
 
                 virtualMachineScaleSet.update()
                         .withCapacity(6)
                         .apply();
 
+                System.out.println("Started virtual machine scale set");
+
+
+                //=============================================================
+                // re-start virtual machine scale set
+
+                System.out.println("re-starting virtual machine scale set ...");
+                virtualMachineScaleSet.restart();
+                System.out.println("re-started virtual machine scale set");
 
 
             } catch (Exception f) {
