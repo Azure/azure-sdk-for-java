@@ -26,7 +26,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
- *
+ * Azure Compute sample for managing virtual machine scale sets -
+ *  - Create a virtual machine scale set behind an Internet facing load balancer
+ *  - Install Apache Web servers in virtual machines in the virtual machine scale set
+ *  - Start a virtual machine scale set
+ *  - Update a virtual machine scale set
+ *    - Double the no. of virtual machines
+ *  - Restart a virtual machine scale set
  */
 public final class ManageVirtualMachineScaleSet {
 
@@ -62,7 +68,7 @@ public final class ManageVirtualMachineScaleSet {
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
 
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/l_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -264,7 +270,8 @@ public final class ManageVirtualMachineScaleSet {
                         .withCapacity(6)
                         .apply();
 
-                System.out.println("Started virtual machine scale set");
+                System.out.println("Doubled the no. of virtual machines in "
+                        + "the virtual machine scale set");
 
 
                 //=============================================================
