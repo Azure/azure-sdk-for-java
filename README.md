@@ -99,37 +99,61 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-images">List virtual machine images</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions">Manage virtual machines using VM extensions</li>
 <li><a href="https://github.com/Azure-Samples/compute-java-list-vm-extension-images">List virtual machine extension images</li>
-<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
 </ul>
 </td>
   </tr>
   <tr>
-    <td>Virtual Machines (parallel execution)</td>
-    <td>- [Create multiple virtual machines in parallel](http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel)<br>- [Create multiple virtual machines with network in parallel ](http://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel)</td>
+    <td>Virtual Machines - parallel execution</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel">Create multiple virtual machines in parallel</li>
+<li><a href="http://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel">Create multiple virtual machines with network in parallel</li>
+</ul></td>
   </tr>
   <tr>
     <td>Virtual Machine Scale Sets</td>
-    <td>- [Manage virtual machine scale sets](https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets)</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets">Manage virtual machine scale sets</a></li>
+</ul></td>
   </tr>
   <tr>
     <td>Storage</td>
-    <td>- [Manage storage accounts](https://github.com/Azure-Samples/storage-java-manage-storage-accounts)</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts">Manage storage accounts</a></li>
+</ul></td>
   </tr>
   <tr>
     <td>Network</td>
-    <td>- [Manage virtual network](https://github.com/Azure-Samples/network-java-manage-virtual-network)<br>- [Manage network interface](https://github.com/Azure-Samples/network-java-manage-network-interface)<br>- [Manage network security group](https://github.com/Azure-Samples/network-java-manage-network-security-group)<br>- [Manage IP address](https://github.com/Azure-Samples/network-java-manage-ip-address)<br>- [Manage Internet facing load balancers](https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers)<br>- [Manage internal load balancers](https://github.com/Azure-Samples/network-java-manage-internal-load-balancers)</td>
+    <td><ul style="list-style-type:circle">
+
+<li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts">Manage storage accounts</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network">Manage virtual network</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-network-interface">Manage network interface</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-network-security-group">Manage network security group</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers">Manage Internet facing load balancers</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-internal-load-balancers">Manage internal load balancers</a></li>
+</ul>
+</td>
   </tr>
   <tr>
     <td>Resource Groups</td>
-    <td><br>- [Manage resource groups](https://github.com/Azure-Samples/resources-java-manage-resource-group)- [Manage resources](https://github.com/Azure-Samples/resources-java-manage-resource)<br>- [Deploy resources with ARM templates](https://github.com/Azure-Samples/resources-java-deploy-using-arm-template) - Deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/resources-java-manage-resource-group">Manage resource groups</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-manage-resource">Manage resources</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a> - deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready</li>
+</ul></td>
   </tr>
   <tr>
     <td>Key Vault</td>
-    <td>- [Manage key vaults](https://github.com/Azure-Samples/key-vault-java-manage-key-vaults)</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/key-vault-java-manage-key-vaults">Manage key vaults</a></li>
+</ul></td>
   </tr>
   <tr>
     <td>Batch</td>
-    <td>-[Manage batch accounts](https://github.com/Azure-Samples/batch-java-manage-batch-accounts)</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/batch-java-manage-batch-accounts">Manage batch accounts</a></li>
+</ul></td>
   </tr>
 </table>
 
