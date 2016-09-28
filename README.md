@@ -2,12 +2,12 @@
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released preview version (1.0.0-beta3). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
 
-> **1.0.0-beta2** is a developer preview that supports major parts of Azure Compute, Storage, Networking and Resource Manager. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
+> **1.0.0-beta3** is a developer preview that supports major parts of Azure Batch, Key Vault, Storage, Networking, Resource Manager, Virtual Machines and Virtual Machine Scale Set. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
 
 **Azure Authentication**
 
@@ -84,41 +84,39 @@ NetworkSecurityGroup frontEndNSG = azure.networkSecurityGroups().define(frontEnd
 
 #Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Compute, Storage, Network and Resource Manager … 
+You can find plenty of sample code that illustrates management scenarios in Azure Batch, Key Vault, Storage, Networking, Resource Manager, Virtual Machines and Virtual Machine Scale Set … 
 
 
 
-- [Manage virtual machine](https://github.com/Azure-Samples/compute-java-manage-vm)
-- [Manage availability set](https://github.com/Azure-Samples/compute-java-manage-availability-sets)
-- [List virtual machine images](https://github.com/Azure-Samples/compute-java-list-vm-images)
-- [Manage storage accounts](https://github.com/Azure-Samples/storage-java-manage-storage-accounts)
-- [Manage virtual network](https://github.com/Azure-Samples/network-java-manage-virtual-network)
-- [Manage network interface](https://github.com/Azure-Samples/network-java-manage-network-interface)
-- [Manage network security group](https://github.com/Azure-Samples/network-java-manage-network-security-group)
-- [Manage IP address](https://github.com/Azure-Samples/network-java-manage-ip-address)
-- [Manage resource groups](https://github.com/Azure-Samples/resources-java-manage-resource-group)
-- [Manage resources](https://github.com/Azure-Samples/resources-java-manage-resource)
-- [Deploy resources with ARM templates](https://github.com/Azure-Samples/resources-java-deploy-using-arm-template)
-- Deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready
+| Service                               | Management Scenario                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|---------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Virtual Machines                      |  [Manage virtual machine](https://github.com/Azure-Samples/compute-java-manage-vm) <p>[Manage availability set](https://github.com/Azure-Samples/compute-java-manage-availability-sets)  <p>[List virtual machine images](https://github.com/Azure-Samples/compute-java-list-vm-images)  <p>[Manage virtual machines using VM extensions](https://github.com/Azure-Samples/compute-java-manage-virtual-machine-using-vm-extensions)  <p>[List virtual machine extension images](https://github.com/Azure-Samples/compute-java-list-vm-extension-images) <p>[Create multiple virtual machines in parallel](azure-samples/compute-java-manage-virtual-machines-in-parallel) |
+| Virtual Machines (parallel execution) |[Create multiple virtual machines in parallel](http://github.com/azure-samples/compute-java-manage-virtual-machines-in-parallel) <p>[Create multiple virtual machines with network in parallel ](http://github.com/azure-samples/compute-java-manage-virtual-machines-with-network-in-parallel)                                                                                                                                                                                                                                                                                                                                                                      |
+| Virtual Machine Scale Sets            |[Manage virtual machine scale sets](https://github.com/Azure-Samples/compute-java-manage-virtual-machine-scale-sets)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| Storage                               |[Manage storage accounts](https://github.com/Azure-Samples/storage-java-manage-storage-accounts)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| Network                               |[Manage virtual network](https://github.com/Azure-Samples/network-java-manage-virtual-network) <p>[Manage network interface](https://github.com/Azure-Samples/network-java-manage-network-interface) <p>[Manage network security group](https://github.com/Azure-Samples/network-java-manage-network-security-group) <p>[Manage IP address](https://github.com/Azure-Samples/network-java-manage-ip-address)  <p>[Manage Internet facing load balancers](https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers) <p>[Manage internal load balancers](https://github.com/Azure-Samples/network-java-manage-internal-load-balancers)          |
+| Resource Groups                       |[Manage resource groups](https://github.com/Azure-Samples/resources-java-manage-resource-group)<p>[Manage resources](https://github.com/Azure-Samples/resources-java-manage-resource)<p>[Deploy resources with ARM templates](https://github.com/Azure-Samples/resources-java-deploy-using-arm-templates). Deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready                                                                                                                                                                                                                                               |
+| Key Vault                             |[Manage key vaults](https://github.com/Azure-Samples/key-vault-java-manage-key-vaults)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| Batch                                 |[Manage batch accounts](https://github.com/Azure-Samples/batch-java-manage-batch-accounts)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
 # Download
 
 
-**1.0.0-beta2**
+**1.0.0-beta3**
 
-If you are using released builds from 1.0.0-beta2, add the following to your POM file:
+If you are using released builds from 1.0.0-beta3, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta2</version>
+    <version>1.0.0-beta3</version>
 </dependency>
 ```
 
 or Gradle:
 
-    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta2'
+    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta3'
 
 **Snapshots builds for this repo**
 
@@ -187,6 +185,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Maintenance branch for AutoRest generated raw clients |
 | 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
 | 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
