@@ -209,8 +209,8 @@ public class TestLoadBalancer {
         public LoadBalancer createResource(LoadBalancers resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
-            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
-            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
+            NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
             // Create a load balancer
             LoadBalancer lb = resources.define(TestLoadBalancer.LB_NAME)
@@ -317,8 +317,8 @@ public class TestLoadBalancer {
         @Override
         public LoadBalancer updateResource(LoadBalancer resource) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestLoadBalancer.VM_IDS);
-            NetworkInterface nic1 = existingVMs[0].primaryNetworkInterface();
-            NetworkInterface nic2 = existingVMs[1].primaryNetworkInterface();
+            NetworkInterface nic1 = existingVMs[0].getPrimaryNetworkInterface();
+            NetworkInterface nic2 = existingVMs[1].getPrimaryNetworkInterface();
 
             // Remove the NIC associations
             nic1.update()

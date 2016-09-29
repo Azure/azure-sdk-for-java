@@ -129,7 +129,7 @@ public final class ManageIPAddress {
 
                 System.out.println("Updating the VM's primary NIC with new public IP address");
 
-                NetworkInterface primaryNetworkInterface = vm.primaryNetworkInterface();
+                NetworkInterface primaryNetworkInterface = vm.getPrimaryNetworkInterface();
                 primaryNetworkInterface
                         .update()
                         .withExistingPrimaryPublicIpAddress(publicIpAddress2)
@@ -150,7 +150,7 @@ public final class ManageIPAddress {
 
                 System.out.println("Removing public IP address associated with the VM");
                 vm.refresh();
-                primaryNetworkInterface = vm.primaryNetworkInterface();
+                primaryNetworkInterface = vm.getPrimaryNetworkInterface();
                 publicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
                 primaryNetworkInterface.update()
                         .withoutPrimaryPublicIpAddress()

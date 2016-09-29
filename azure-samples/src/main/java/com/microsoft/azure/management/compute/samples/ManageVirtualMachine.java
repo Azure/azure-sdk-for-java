@@ -200,7 +200,7 @@ public final class ManageVirtualMachine {
                 System.out.println("Powered OFF VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
                 // Get the network where Windows VM is hosted
-                Network network = windowsVM.primaryNetworkInterface().primaryIpConfiguration().getNetwork();
+                Network network = windowsVM.getPrimaryNetworkInterface().primaryIpConfiguration().getNetwork();
 
 
                 //=============================================================
