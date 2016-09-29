@@ -145,7 +145,7 @@ class NetworkImpl
         List<String> addressSpaces = new ArrayList<String>();
         if (this.inner().addressSpace() == null) {
             return Collections.unmodifiableList(addressSpaces);
-        } else if(this.inner().addressSpace().addressPrefixes() == null) {
+        } else if (this.inner().addressSpace().addressPrefixes() == null) {
             return Collections.unmodifiableList(addressSpaces);
         } else {
             return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
