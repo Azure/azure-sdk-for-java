@@ -72,6 +72,7 @@ public interface VirtualMachine extends
      * 
      * @return the virtual machine sizes
      */
+    @Method
     PagedList<VirtualMachineSize> availableSizes();
 
     /**
@@ -530,6 +531,7 @@ public interface VirtualMachine extends
              *
              * @return the stage representing creatable Windows VM definition
              */
+            @Method
             WithWindowsCreate disableVmAgent();
 
             /**
@@ -537,6 +539,7 @@ public interface VirtualMachine extends
              *
              * @return the stage representing creatable Windows VM definition
              */
+            @Method
             WithWindowsCreate disableAutoUpdate();
 
             /**
