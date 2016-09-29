@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.AddressSpace;
 import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
@@ -118,6 +119,14 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withAddressSpace(String cidr) {
+        if (this.inner().addressSpace() == null) {
+            this.inner().withAddressSpace(new AddressSpace());
+        }
+
+        if (this.inner().addressSpace().addressPrefixes() == null) {
+            this.inner().addressSpace().withAddressPrefixes(new ArrayList<String>());
+        }
+
         this.inner().addressSpace().addressPrefixes().add(cidr);
         return this;
     }
