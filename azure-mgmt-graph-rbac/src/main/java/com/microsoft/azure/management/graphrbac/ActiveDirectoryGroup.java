@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
