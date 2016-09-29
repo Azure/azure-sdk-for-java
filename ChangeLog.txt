@@ -1,3 +1,12 @@
+2016.9.29 Version 0.9.5
+* Fix a bug in PeekLock requests in Service Bus
+
+2016.8.5 Version 0.9.4
+* Support event hub management
+* Support caching in Key Vault
+* Upgrade to Jersey 1.19
+* Misc. bug fixes
+
 2016.2.18 Version 0.9.3
 * Fix enum bugs in azure-svc-mgmt-websites
 
