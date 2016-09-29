@@ -9,7 +9,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-beta3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -57,12 +57,12 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>azure-keyvault-core</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>azure-keyvault-webkey</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.0-beta3</version>
         </dependency>
     </dependencies>
 </project>

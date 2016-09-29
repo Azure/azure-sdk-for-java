@@ -6,12 +6,13 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-beta3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>azure-mgmt-redis</artifactId>
     <packaging>jar</packaging>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Microsoft Azure SDK for Redis Cache Management</name>
     <description>This package contains Microsoft Azure Redis Cache SDK.</description>
@@ -47,11 +48,12 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -61,6 +63,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
+            <version>1.0.0-beta3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -71,7 +74,7 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-storage</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-beta3</version>
         <scope>test</scope>
       </dependency>
     </dependencies>
