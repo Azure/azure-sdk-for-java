@@ -102,7 +102,7 @@ public class ServiceBusCreationTest {
 
     @Test
     public void theServiceClassCanBeCreatedThroughAProfile() throws Exception {
-        Configuration config = new ConfigurationWithProfile();
+        Configuration config = newConfigurationWithProfile();
         ServiceBusContract service = config.create("other",
                 ServiceBusContract.class);
 
@@ -113,7 +113,7 @@ public class ServiceBusCreationTest {
     @Test
     public void theServiceClassCanBeCreatedThroughConnectionString()
             throws Exception {
-        Configuration config = new ConfigurationWithConnectionString();
+        Configuration config = newConfigurationWithConnectionString();
 
         ServiceBusContract service = config.create(ServiceBusContract.class);
         assertNotNull(service);
