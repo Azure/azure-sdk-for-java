@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ServicePrincipalInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure AD service principal.
  */
-@LangDefinition
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface ServicePrincipal extends
         Wrapper<ServicePrincipalInner> {
     /**
@@ -51,7 +51,6 @@ public interface ServicePrincipal extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/ServicePrincipal.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithCreate {
@@ -60,7 +59,6 @@ public interface ServicePrincipal extends
     /**
      * Grouping of all the service principal definition stages.
      */
-    @LangDefinition(ContainerName = "~/ServicePrincipal.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the service principal definition.
@@ -95,14 +93,12 @@ public interface ServicePrincipal extends
     /**
      * Grouping of all the service principal update stages.
      */
-    @LangDefinition(ContainerName = "~/ServicePrincipal.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
     }
 
     /**
      * The template for a service principal update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/ServicePrincipal.Update", ContainerFileName = "IUpdate")
     interface Update {
     }
 }

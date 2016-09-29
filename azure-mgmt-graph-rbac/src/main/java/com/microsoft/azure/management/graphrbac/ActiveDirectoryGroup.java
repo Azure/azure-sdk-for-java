@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.ADGroupInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an Azure AD group.
  */
-@LangDefinition
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface ActiveDirectoryGroup extends
         Wrapper<ADGroupInner> {
     /**
@@ -49,7 +49,6 @@ public interface ActiveDirectoryGroup extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/ActiveDirectoryGroup.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithDisplayName,
@@ -60,7 +59,6 @@ public interface ActiveDirectoryGroup extends
     /**
      * Grouping of all the group definition stages.
      */
-    @LangDefinition(ContainerName = "~/ActiveDirectoryGroup.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the group definition.
@@ -107,14 +105,12 @@ public interface ActiveDirectoryGroup extends
     /**
      * Grouping of all the group update stages.
      */
-    @LangDefinition(ContainerName = "~/ActiveDirectoryGroup.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
     }
 
     /**
      * The template for a group update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/ActiveDirectoryGroup.Update", ContainerFileName = "IUpdate")
     interface Update {
     }
 }

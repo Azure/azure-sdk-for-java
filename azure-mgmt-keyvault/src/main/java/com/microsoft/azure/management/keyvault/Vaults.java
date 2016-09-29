@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for key vaults management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vaults extends
         SupportsListing<Vault>,
         SupportsCreating<Vault.DefinitionStages.Blank>,

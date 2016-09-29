@@ -29,8 +29,8 @@ final class FeaturesImpl
     }
 
     @Override
-    public InResourceProvider resourceProvider(String resourceProviderName) {
-        return null;
+    public Feature register(String resourceProviderName, String featureName) {
+        return wrapModel(client.register(resourceProviderName, featureName));
     }
 
     @Override
