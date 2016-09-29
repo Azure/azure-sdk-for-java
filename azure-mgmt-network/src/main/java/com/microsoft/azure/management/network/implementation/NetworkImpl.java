@@ -142,7 +142,13 @@ class NetworkImpl
 
     @Override
     public List<String> addressSpaces() {
-        return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
+        if (this.inner().addressSpace() == null) {
+            return null;
+        } else if(this.inner().addressSpace().addressPrefixes() == null) {
+            return null;
+        } else {
+            return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
+        }
     }
 
     @Override
