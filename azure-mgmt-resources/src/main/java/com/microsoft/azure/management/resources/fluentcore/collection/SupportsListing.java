@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-import com.microsoft.azure.management.apigeneration.Method;
 
 /**
  * Provides access to listing Azure resources of a specific type in a subscription.
