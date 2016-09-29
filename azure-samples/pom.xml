@@ -11,12 +11,12 @@
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-parent</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-beta3</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <artifactId>azure-samples</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <name>Microsoft Azure SDK samples</name>
     <description>This package contains Microsoft Azure SDK samples.</description>
@@ -52,27 +52,27 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-storage</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-network</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-compute</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
           <groupId>com.microsoft.azure</groupId>
