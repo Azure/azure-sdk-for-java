@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.UserInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * An immutable client-side representation of an Azure AD user.
  */
-@LangDefinition
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface User extends
         Wrapper<UserInner> {
 
@@ -60,7 +60,6 @@ public interface User extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/User.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithDisplayName,
@@ -72,7 +71,6 @@ public interface User extends
     /**
      * Grouping of all the user definition stages.
      */
-    @LangDefinition(ContainerName = "~/User.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the user definition.
@@ -155,14 +153,12 @@ public interface User extends
     /**
      * Grouping of all the user update stages.
      */
-    @LangDefinition(ContainerName = "~/User.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
     }
 
     /**
      * The template for a user update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/User.Update", ContainerFileName = "IUpdate")
     interface Update {
     }
 }

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.keyvault;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.keyvault.implementation.VaultInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -20,7 +21,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure Key Vault.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.KeyVault")
 public interface Vault extends
         GroupableResource,
         Refreshable<Vault>,
@@ -134,6 +135,7 @@ public interface Vault extends
              *
              * @return the first stage of the access policy definition
              */
+            @Method
             AccessPolicy.DefinitionStages.Blank<WithCreate> defineAccessPolicy();
         }
 
@@ -227,6 +229,7 @@ public interface Vault extends
              *
              * @return the first stage of the access policy definition
              */
+            @Method
             AccessPolicy.UpdateDefinitionStages.Blank<Update> defineAccessPolicy();
 
             /**
