@@ -270,35 +270,52 @@ public interface VirtualMachineDataDisk extends
      */
     interface UpdateStages {
         /**
-         * Specifies the new size in GB for data disk.
-         *
-         * @param sizeInGB the disk size in GB
-         * @return the next stage of data disk update
+         * The stage of the virtual machine data disk update allowing to set the disk size.
          */
-        Update withSizeInGB(Integer sizeInGB);
+        interface WithDiskSize {
+            /**
+             * Specifies the new size in GB for data disk.
+             *
+             * @param sizeInGB the disk size in GB
+             * @return the next stage of data disk update
+             */
+            Update withSizeInGB(Integer sizeInGB);
+        }
 
         /**
-         * Specifies the new logical unit number for the data disk.
-         *
-         * @param lun the logical unit number
-         * @return the next stage of data disk update
+         * The stage of the virtual machine data disk update allowing to set the disk lun.
          */
-        Update withLun(Integer lun);
+        interface WithDiskLun {
+            /**
+             * Specifies the new logical unit number for the data disk.
+             *
+             * @param lun the logical unit number
+             * @return the next stage of data disk update
+             */
+            Update withLun(Integer lun);
+        }
 
         /**
-         * Specifies the new caching type for the data disk.
-         *
-         * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
-         * @return the next stage of data disk update
+         * The stage of the virtual machine data disk update allowing to set the disk caching type.
          */
-        Update withCaching(CachingTypes cachingType);
+        interface WithDiskCaching {
+            /**
+             * Specifies the new caching type for the data disk.
+             *
+             * @param cachingType the disk caching type. Possible values include: 'None', 'ReadOnly', 'ReadWrite'
+             * @return the next stage of data disk update
+             */
+            Update withCaching(CachingTypes cachingType);
+        }
     }
 
     /**
      * The entirety of a data disk update as part of a virtual machine update.
      */
     interface Update extends
-            UpdateStages,
+            UpdateStages.WithDiskSize,
+            UpdateStages.WithDiskLun,
+            UpdateStages.WithDiskCaching,
             Settable<VirtualMachine.Update> {
     }
 }
