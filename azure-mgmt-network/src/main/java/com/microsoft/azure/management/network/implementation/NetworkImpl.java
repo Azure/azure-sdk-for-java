@@ -142,10 +142,11 @@ class NetworkImpl
 
     @Override
     public List<String> addressSpaces() {
+        List<String> addressSpaces = new ArrayList<String>();
         if (this.inner().addressSpace() == null) {
-            return null;
+            return Collections.unmodifiableList(addressSpaces);
         } else if(this.inner().addressSpace().addressPrefixes() == null) {
-            return null;
+            return Collections.unmodifiableList(addressSpaces);
         } else {
             return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
         }
@@ -153,7 +154,14 @@ class NetworkImpl
 
     @Override
     public List<String> dnsServerIps() {
-        return (this.inner().dhcpOptions() != null) ? this.inner().dhcpOptions().dnsServers() : null;
+        List<String> ips = new ArrayList<String>();
+        if (this.inner().dhcpOptions() == null) {
+            return Collections.unmodifiableList(ips);
+        } else if (this.inner().dhcpOptions().dnsServers() == null) {
+            return Collections.unmodifiableList(ips);
+        } else {
+            return this.inner().dhcpOptions().dnsServers();
+        }
     }
 
     @Override
