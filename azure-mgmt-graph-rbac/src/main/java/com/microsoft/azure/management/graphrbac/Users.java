@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -16,7 +17,7 @@ import rx.Observable;
 /**
  * Entry point to AD user management API.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface Users extends
         SupportsCreating<User.DefinitionStages.Blank>,
         SupportsListing<User> {

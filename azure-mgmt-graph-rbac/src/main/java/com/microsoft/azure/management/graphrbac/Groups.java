@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.graphrbac;
 
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Entry point to AD group management API.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface Groups extends
         SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
         SupportsListing<ActiveDirectoryGroup>,
