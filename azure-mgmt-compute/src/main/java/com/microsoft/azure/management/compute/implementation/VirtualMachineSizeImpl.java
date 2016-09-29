@@ -5,13 +5,11 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 
 /**
  * The implementation for {@link VirtualMachineSize}.
  */
-@LangDefinition
 class VirtualMachineSizeImpl implements VirtualMachineSize {
     private VirtualMachineSizeInner innerModel;
 

@@ -36,8 +36,8 @@ public final class ManageVirtualMachinesInParallel {
      */
     public static void main(String[] args) {
 
-        final int vmCount = 2;
-        final String rgName = ResourceNamer.randomResourceName("rgCOMV", 24);
+        final int vmCount = 10;
+        final String rgName = ResourceNamer.randomResourceName("rgCOPP", 24);
         final String networkName = ResourceNamer.randomResourceName("vnetCOMV", 24);
         final String storageAccountName = ResourceNamer.randomResourceName("stgCOMV", 20);
         final String userName = "tirekicker";
