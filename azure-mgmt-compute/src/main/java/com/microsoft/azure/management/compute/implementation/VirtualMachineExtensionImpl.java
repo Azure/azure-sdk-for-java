@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
@@ -18,6 +19,7 @@ import java.util.TreeMap;
 /**
  * Implementation of {@link VirtualMachineExtension}.
  */
+@LangDefinition
 class VirtualMachineExtensionImpl
         extends ExternalChildResourceImpl<VirtualMachineExtension,
                 VirtualMachineExtensionInner,

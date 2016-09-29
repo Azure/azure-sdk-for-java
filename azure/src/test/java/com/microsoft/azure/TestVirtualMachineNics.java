@@ -89,7 +89,7 @@ public class TestVirtualMachineNics extends TestTemplate<VirtualMachine, Virtual
                 .create();
 
         Assert.assertTrue(virtualMachine.networkInterfaceIds().size() == 3);
-        NetworkInterface primaryNetworkInterface = virtualMachine.primaryNetworkInterface();
+        NetworkInterface primaryNetworkInterface = virtualMachine.getPrimaryNetworkInterface();
         Assert.assertEquals(primaryNetworkInterface.primaryPrivateIp(), "10.0.0.4");
 
         PublicIpAddress primaryPublicIpAddress = primaryNetworkInterface.primaryIpConfiguration().getPublicIpAddress();
