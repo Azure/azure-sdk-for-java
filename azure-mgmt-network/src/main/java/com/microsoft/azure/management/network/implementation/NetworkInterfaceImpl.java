@@ -307,7 +307,7 @@ class NetworkInterfaceImpl
 
     @Override
     public String internalFqdn() {
-        return this.inner().dnsSettings().internalFqdn();
+        return (this.inner().dnsSettings() != null) ? this.inner().dnsSettings().internalFqdn() : null;
     }
 
     @Override
