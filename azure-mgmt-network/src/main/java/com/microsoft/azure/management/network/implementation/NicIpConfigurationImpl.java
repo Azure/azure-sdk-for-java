@@ -120,17 +120,13 @@ class NicIpConfigurationImpl
     @Override
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
-        if (subnetRef != null) {
-            return ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
-        } else {
-            return null;
-        }
+        return (subnetRef != null) ? ResourceUtils.parentResourcePathFromResourceId(subnetRef.id()) : null;
     }
 
     @Override
     public Network getNetwork() {
         String id = this.networkId();
-        return this.networkManager.networks().getById(id);
+        return (id != null) ? this.networkManager.networks().getById(id) : null;
     }
 
     @Override
