@@ -5,7 +5,7 @@
  *
  */
 
-package com.microsoft.azure.management.compute.samples;
+package com.microsoft.azure.management.network.samples;
 
 import com.microsoft.azure.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
@@ -28,14 +28,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Azure Compute sample for managing virtual machines -
+ * Azure Network sample for managing virtual machines with virtual network -
  * Create a virtual network with two Subnets – frontend and backend
  * Frontend allows HTTP in and denies Internet out
  * Backend denies Internet in and Internet out
  * Create m Linux virtual machines in the frontend
  * Create m Windows virtual machines in the backend.
  */
-public final class ManageVirtualMachinesInParallel2 {
+public final class ManageVirtualMachinesInParallelWithNetwork {
 
     /**
      * Main entry point.
@@ -43,9 +43,9 @@ public final class ManageVirtualMachinesInParallel2 {
      */
     public static void main(String[] args) {
 
-        final int frontendVmCount = 5;
-        final int backendVmCount = 5;
-        final String rgName = ResourceNamer.randomResourceName("rgCOMV", 24);
+        final int frontendVmCount = 10;
+        final int backendVmCount = 10;
+        final String rgName = ResourceNamer.randomResourceName("rgNEPP", 24);
         final String frontEndNSGName = ResourceNamer.randomResourceName("fensg", 24);
         final String backEndNSGName = ResourceNamer.randomResourceName("bensg", 24);
         final String networkName = ResourceNamer.randomResourceName("vnetCOMV", 24);
@@ -263,6 +263,6 @@ public final class ManageVirtualMachinesInParallel2 {
         }
     }
 
-    private ManageVirtualMachinesInParallel2() {
+    private ManageVirtualMachinesInParallelWithNetwork() {
     }
 }
