@@ -195,48 +195,6 @@ If you are using released builds from 1.0.0-beta3, add the following to your POM
 </dependency>
 ```
 
-or Gradle:
-
-    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta3'
-
-**Snapshots builds for this repo**
-
-If you are using snapshots builds for this repo, add the following repository and dependency to your POM file:
-
-```xml
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-```
-
-```xml
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-</dependency>
-```
-
-or Gradle:
-```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    ....
-}
-```
-
-
-    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-SNAPSHOTS'
-
 #Pre-requisites
 
 - A Java Developer Kit (JDK), v 1.7 or later
@@ -266,7 +224,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Maintenance branch for AutoRest generated raw clients |
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
 | 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
 | 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
