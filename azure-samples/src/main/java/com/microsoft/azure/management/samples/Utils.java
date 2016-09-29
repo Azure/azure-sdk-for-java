@@ -25,6 +25,17 @@ import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancingRule;
+import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.Probe;
+import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.PrivateFrontend;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
@@ -32,6 +43,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -321,6 +334,197 @@ public final class Utils {
         }
     }
 
+
+    /**
+     * Print load balancer.
+     * @param resource a load balancer
+     */
+    public static void print(LoadBalancer resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Load balancer: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags())
+                .append("\n\tBackends: ").append(resource.backends().keySet().toString());
+
+        // Show public IP addresses
+        info.append("\n\tPublic IP address IDs: ")
+                .append(resource.publicIpAddressIds().size());
+        for (String pipId : resource.publicIpAddressIds()) {
+            info.append("\n\t\tPIP id: ").append(pipId);
+        }
+
+        // Show TCP probes
+        info.append("\n\tTCP probes: ")
+                .append(resource.tcpProbes().size());
+        for (TcpProbe probe : resource.tcpProbes().values()) {
+            info.append("\n\t\tProbe name: ").append(probe.name())
+                    .append("\n\t\t\tPort: ").append(probe.port())
+                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes());
+
+            // Show associated load balancing rules
+            info.append("\n\t\t\tReferenced from load balancing rules: ")
+                    .append(probe.loadBalancingRules().size());
+            for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
+        }
+
+        // Show HTTP probes
+        info.append("\n\tHTTP probes: ")
+                .append(resource.httpProbes().size());
+        for (HttpProbe probe : resource.httpProbes().values()) {
+            info.append("\n\t\tProbe name: ").append(probe.name())
+                    .append("\n\t\t\tPort: ").append(probe.port())
+                    .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
+                    .append("\n\t\t\tRetries before unhealthy: ").append(probe.numberOfProbes())
+                    .append("\n\t\t\tHTTP request path: ").append(probe.requestPath());
+
+            // Show associated load balancing rules
+            info.append("\n\t\t\tReferenced from load balancing rules: ")
+                    .append(probe.loadBalancingRules().size());
+            for (LoadBalancingRule rule : probe.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
+        }
+
+        // Show load balancing rules
+        info.append("\n\tLoad balancing rules: ")
+                .append(resource.loadBalancingRules().size());
+        for (LoadBalancingRule rule : resource.loadBalancingRules().values()) {
+            info.append("\n\t\tLB rule name: ").append(rule.name())
+                    .append("\n\t\t\tProtocol: ").append(rule.protocol())
+                    .append("\n\t\t\tFloating IP enabled? ").append(rule.floatingIpEnabled())
+                    .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
+                    .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
+
+            Frontend frontend = rule.frontend();
+            info.append("\n\t\t\tFrontend: ");
+            if (frontend != null) {
+                info.append(frontend.name());
+            } else {
+                info.append("(None)");
+            }
+
+            info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
+
+            Backend backend = rule.backend();
+            info.append("\n\t\t\tBackend: ");
+            if (backend != null) {
+                info.append(backend.name());
+            } else {
+                info.append("(None)");
+            }
+
+            info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
+
+            Probe probe = rule.probe();
+            info.append("\n\t\t\tProbe: ");
+            if (probe == null) {
+                info.append("(None)");
+            } else {
+                info.append(probe.name()).append(" [").append(probe.protocol().toString()).append("]");
+            }
+        }
+
+        // Show frontends
+        info.append("\n\tFrontends: ")
+                .append(resource.frontends().size());
+        for (Frontend frontend : resource.frontends().values()) {
+            info.append("\n\t\tFrontend name: ").append(frontend.name())
+                    .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
+            if (frontend.isPublic()) {
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((PublicFrontend) frontend).publicIpAddressId());
+            } else {
+                info.append("\n\t\t\tVirtual network ID: ").append(((PrivateFrontend) frontend).networkId())
+                        .append("\n\t\t\tSubnet name: ").append(((PrivateFrontend) frontend).subnetName())
+                        .append("\n\t\t\tPrivate IP address: ").append(((PrivateFrontend) frontend).privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((PrivateFrontend) frontend).privateIpAllocationMethod());
+            }
+
+            // Inbound NAT pool references
+            info.append("\n\t\t\tReferenced inbound NAT pools: ")
+                    .append(frontend.inboundNatPools().size());
+            for (InboundNatPool pool : frontend.inboundNatPools().values()) {
+                info.append("\n\t\t\t\tName: ").append(pool.name());
+            }
+
+            // Inbound NAT rule references
+            info.append("\n\t\t\tReferenced inbound NAT rules: ")
+                    .append(frontend.inboundNatRules().size());
+            for (InboundNatRule rule : frontend.inboundNatRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
+
+            // Load balancing rule references
+            info.append("\n\t\t\tReferenced load balancing rules: ")
+                    .append(frontend.loadBalancingRules().size());
+            for (LoadBalancingRule rule : frontend.loadBalancingRules().values()) {
+                info.append("\n\t\t\t\tName: ").append(rule.name());
+            }
+        }
+
+        // Show inbound NAT rules
+        info.append("\n\tInbound NAT rules: ")
+                .append(resource.inboundNatRules().size());
+        for (InboundNatRule natRule : resource.inboundNatRules().values()) {
+            info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
+                    .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
+                    .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
+                    .append("\n\t\t\tFrontend port: ").append(natRule.frontendPort())
+                    .append("\n\t\t\tBackend port: ").append(natRule.backendPort())
+                    .append("\n\t\t\tBackend NIC ID: ").append(natRule.backendNetworkInterfaceId())
+                    .append("\n\t\t\tBackend NIC IP config name: ").append(natRule.backendNicIpConfigurationName())
+                    .append("\n\t\t\tFloating IP? ").append(natRule.floatingIpEnabled())
+                    .append("\n\t\t\tIdle timeout in minutes: ").append(natRule.idleTimeoutInMinutes());
+        }
+
+        // Show inbound NAT pools
+        info.append("\n\tInbound NAT pools: ")
+                .append(resource.inboundNatPools().size());
+        for (InboundNatPool natPool: resource.inboundNatPools().values()) {
+            info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
+                    .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
+                    .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())
+                    .append("\n\t\t\tFrontend port range: ")
+                    .append(natPool.frontendPortRangeStart())
+                    .append("-")
+                    .append(natPool.frontendPortRangeEnd())
+                    .append("\n\t\t\tBackend port: ").append(natPool.backendPort());
+        }
+
+        // Show backends
+        info.append("\n\tBackends: ")
+                .append(resource.backends().size());
+        for (Backend backend : resource.backends().values()) {
+            info.append("\n\t\tBackend name: ").append(backend.name());
+
+            // Show assigned backend NICs
+            info.append("\n\t\t\tReferenced NICs: ")
+                    .append(backend.backendNicIpConfigurationNames().entrySet().size());
+            for (Map.Entry<String, String> entry : backend.backendNicIpConfigurationNames().entrySet()) {
+                info.append("\n\t\t\t\tNIC ID: ").append(entry.getKey())
+                        .append(" - IP Config: ").append(entry.getValue());
+            }
+
+            // Show assigned virtual machines
+            Set<String> vmIds = backend.getVirtualMachineIds();
+            info.append("\n\t\t\tReferenced virtual machine ids: ")
+                    .append(vmIds.size());
+            for (String vmId : vmIds) {
+                info.append("\n\t\t\t\tVM ID: ").append(vmId);
+            }
+
+            // Show assigned load balancing rules
+            info.append("\n\t\t\tReferenced load balancing rules: ")
+                    .append(new ArrayList<String>(backend.loadBalancingRules().keySet()));
+        }
+
+        System.out.println(info.toString());
+    }
+
     /**
      * Prints batch account keys.
      * @param batchAccountKeys a list of batch account keys
@@ -344,8 +548,6 @@ public final class Utils {
 
                 for (Map.Entry<String, ApplicationPackage> applicationPackageEntry: application.applicationPackages().entrySet()) {
                     ApplicationPackage applicationPackage = applicationPackageEntry.getValue();
-                    applicationPackage.name();
-                    applicationPackage.state();
                     StringBuilder singleApplicationPackage = new StringBuilder().append("\n\t\t\t\tapplicationPackage : " + applicationPackage.name());
                     singleApplicationPackage.append("\n\t\t\t\tapplicationPackageState : " + applicationPackage.state());
 

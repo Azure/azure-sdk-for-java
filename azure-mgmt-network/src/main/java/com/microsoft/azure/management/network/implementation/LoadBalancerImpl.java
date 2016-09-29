@@ -275,12 +275,18 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withFrontend(FrontendImpl frontend) {
-        this.frontends.put(frontend.name(), frontend);
-        return this;
+        if (frontend == null) {
+            return null;
+        } else {
+            this.frontends.put(frontend.name(), frontend);
+            return this;
+        }
     }
 
     LoadBalancerImpl withProbe(ProbeImpl probe) {
-        if (probe.protocol() == ProbeProtocol.HTTP) {
+        if (probe == null) {
+            return null;
+        } else if (probe.protocol() == ProbeProtocol.HTTP) {
             httpProbes.put(probe.name(), probe);
         } else if (probe.protocol() == ProbeProtocol.TCP) {
             tcpProbes.put(probe.name(), probe);
@@ -289,23 +295,39 @@ class LoadBalancerImpl
     }
 
     LoadBalancerImpl withLoadBalancingRule(LoadBalancingRuleImpl loadBalancingRule) {
-        this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
-        return this;
+        if (loadBalancingRule == null) {
+            return null;
+        } else {
+            this.loadBalancingRules.put(loadBalancingRule.name(), loadBalancingRule);
+            return this;
+        }
     }
 
     LoadBalancerImpl withInboundNatRule(InboundNatRuleImpl inboundNatRule) {
-        this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
-        return this;
+        if (inboundNatRule == null) {
+            return null;
+        } else {
+            this.inboundNatRules.put(inboundNatRule.name(), inboundNatRule);
+            return this;
+        }
     }
 
     LoadBalancerImpl withInboundNatPool(InboundNatPoolImpl inboundNatPool) {
-        this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
-        return this;
+        if (inboundNatPool == null) {
+            return null;
+        } else {
+            this.inboundNatPools.put(inboundNatPool.name(), inboundNatPool);
+            return this;
+        }
     }
 
     LoadBalancerImpl withBackend(BackendImpl backend) {
-        this.backends.put(backend.name(), backend);
-        return this;
+        if (backend == null) {
+            return null;
+        } else {
+            this.backends.put(backend.name(), backend);
+            return this;
+        }
     }
 
     // Withers (fluent)
@@ -513,49 +535,12 @@ class LoadBalancerImpl
     }
 
     @Override
-    public LoadBalancerImpl withoutFrontend(String name) {
-        Frontend frontend = this.frontends.get(name);
-        this.frontends.remove(name);
-
-        final String frontendId;
-        if (frontend != null) {
-            frontendId = frontend.inner().id();
-        } else {
-            frontendId = null;
-        }
-
-        // Remove references from inbound NAT rules
-        List<InboundNatRuleInner> natRulesInner = this.inner().inboundNatRules();
-        if (natRulesInner != null && frontendId != null) {
-            for (InboundNatRuleInner natRuleInner : natRulesInner) {
-                final SubResource frontendRef = natRuleInner.frontendIPConfiguration();
-                if (frontendRef != null && frontendRef.id().equalsIgnoreCase(frontendId)) {
-                    natRuleInner.withFrontendIPConfiguration(null);
-                }
-            }
-        }
-
-        return this;
-    }
-
-    @Override
     public LoadBalancerImpl withoutProbe(String name) {
         if (this.httpProbes.containsKey(name)) {
             this.httpProbes.remove(name);
         } else if (this.tcpProbes.containsKey(name)) {
             this.tcpProbes.remove(name);
         }
-
-        List<ProbeInner> probes = this.inner().probes();
-        if (probes != null) {
-            for (int i = 0; i < probes.size(); i++) {
-                if (probes.get(i).name().equalsIgnoreCase(name)) {
-                    probes.remove(i);
-                    break;
-                }
-            }
-        }
-
         return this;
     }
 
@@ -620,6 +605,12 @@ class LoadBalancerImpl
     @Override
     public Update withoutInboundNatPool(String name) {
         this.inboundNatPools.remove(name);
+        return this;
+    }
+
+    @Override
+    public LoadBalancerImpl withoutFrontend(String name) {
+        this.frontends.remove(name);
         return this;
     }
 

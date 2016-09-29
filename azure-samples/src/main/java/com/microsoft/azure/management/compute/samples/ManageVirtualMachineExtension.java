@@ -32,7 +32,7 @@ public final class ManageVirtualMachineExtension {
 
         final String linuxVmName = ResourceNamer.randomResourceName("lVM", 10);
         final String windowsVmName = ResourceNamer.randomResourceName("wVM", 10);
-        final String rgName = ResourceNamer.randomResourceName("rgCOMV", 15);
+        final String rgName = ResourceNamer.randomResourceName("rgCOVE", 15);
         final String pipDnsLabelLinuxVM = ResourceNamer.randomResourceName("rgPip1", 25);
         final String pipDnsLabelWindowsVM = ResourceNamer.randomResourceName("rgPip2", 25);
 

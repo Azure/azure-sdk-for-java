@@ -26,7 +26,7 @@ class InboundNatRuleImpl
         InboundNatRule.UpdateDefinition<LoadBalancer.Update>,
         InboundNatRule.Update {
 
-    protected InboundNatRuleImpl(InboundNatRuleInner inner, LoadBalancerImpl parent) {
+    InboundNatRuleImpl(InboundNatRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 

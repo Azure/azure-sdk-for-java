@@ -150,6 +150,18 @@ public final class ManageBatchAccount {
                 batchAccount.synchronizeAutoStorageKeys();
 
                 // ============================================================
+                // Update name of application.
+                batchAccount
+                    .update()
+                        .updateApplication(applicationName)
+                        .withDisplayName("New application display name")
+                        .parent()
+                    .apply();
+
+                batchAccount.refresh();
+                Utils.print(batchAccount);
+
+                // ============================================================
                 // Create another batch account
 
                 System.out.println("Creating another Batch Account");

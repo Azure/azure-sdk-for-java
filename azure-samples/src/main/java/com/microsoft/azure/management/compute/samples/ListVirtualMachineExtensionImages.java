@@ -52,7 +52,7 @@ public final class ListVirtualMachineExtensionImages {
 
             System.out.println("US East data center: printing list of \n"
                     + "a) Publishers and\n"
-                    + "b) virtual machine images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
+                    + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
             System.out.println("=======================================================");
             System.out.println("\n");
 
