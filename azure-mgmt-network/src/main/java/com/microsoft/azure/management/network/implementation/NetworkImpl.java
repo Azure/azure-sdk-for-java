@@ -152,8 +152,8 @@ class NetworkImpl
     }
 
     @Override
-    public List<String> dnsServerIPs() {
-        return Collections.unmodifiableList(this.inner().dhcpOptions().dnsServers());
+    public List<String> dnsServerIps() {
+        return (this.inner().dhcpOptions() != null) ? this.inner().dhcpOptions().dnsServers() : null;
     }
 
     @Override
