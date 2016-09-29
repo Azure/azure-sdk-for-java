@@ -25,6 +25,5 @@ public interface SupportsListing<T> {
      *
      * @return list of resources
      */
-    @Method
     PagedList<T> list();
 }

@@ -18,26 +18,11 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface Features extends
         SupportsListing<Feature> {
     /**
-     * Filter the features by a specific resource provider.
+     * Registers a feature in a resource provider.
      *
      * @param resourceProviderName the name of the resource provider
-     * @return an instance for accessing features in a resource provider
+     * @param featureName the name of the feature
+     * @return the immutable client-side feature object created
      */
-    InResourceProvider resourceProvider(String resourceProviderName);
-
-    /**
-     * Entry point to features management API in a specific resource provider.
-     */
-    @LangDefinition(ContainerName = "~/Feature")
-    interface InResourceProvider extends
-            SupportsListing<Feature>,
-            SupportsGettingByName<Feature> {
-        /**
-         * Registers a feature in a resource provider.
-         *
-         * @param featureName the name of the feature
-         * @return the immutable client-side feature object created
-         */
-        Feature register(String featureName);
-    }
+    Feature register(String resourceProviderName, String featureName);
 }
