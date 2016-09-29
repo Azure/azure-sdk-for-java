@@ -104,7 +104,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
 
             NetworkSecurityGroup nsg;
             try {
-                nsg = subnet.networkSecurityGroup();
+                nsg = subnet.getNetworkSecurityGroup();
             } catch (Exception e) {
                 nsg = null;
             }

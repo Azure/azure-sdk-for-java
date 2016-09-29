@@ -40,7 +40,7 @@ class SubnetImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() {
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
         SubResource nsgResource = this.inner().networkSecurityGroup();
         if (nsgResource == null) {
             return null;
