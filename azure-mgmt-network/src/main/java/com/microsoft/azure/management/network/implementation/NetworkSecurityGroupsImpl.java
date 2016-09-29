@@ -12,8 +12,6 @@ import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
 
-import java.util.ArrayList;
-
 /**
  *  Implementation for {@link NetworkSecurityGroups}.
  */
@@ -63,16 +61,6 @@ class NetworkSecurityGroupsImpl
     @Override
     protected NetworkSecurityGroupImpl wrapModel(String name) {
         NetworkSecurityGroupInner inner = new NetworkSecurityGroupInner();
-
-        // Initialize rules
-        if (inner.securityRules() == null) {
-            inner.withSecurityRules(new ArrayList<SecurityRuleInner>());
-        }
-
-        if (inner.defaultSecurityRules() == null) {
-            inner.withDefaultSecurityRules(new ArrayList<SecurityRuleInner>());
-        }
-
         return new NetworkSecurityGroupImpl(
                 name,
                 inner,
