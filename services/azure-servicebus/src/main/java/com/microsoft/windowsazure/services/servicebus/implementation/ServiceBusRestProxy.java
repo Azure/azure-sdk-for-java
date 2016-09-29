@@ -253,9 +253,9 @@ public class ServiceBusRestProxy implements ServiceBusContract {
         ClientResponse clientResult;
         if (options.isReceiveAndDelete()) {
             clientResult = resource.delete(ClientResponse.class);
-        } else if (options.isPeekLock()) {        	
-        	// Passing 0 as request content just to force jersey client to add Content-Length header.
-        	// ServiceBus service doesn't read http request body for message receive requests.
+        } else if (options.isPeekLock()) {
+            // Passing 0 as request content just to force jersey client to add Content-Length header.
+            // ServiceBus service doesn't read http request body for message receive requests.
             clientResult = resource.post(ClientResponse.class, "0");
         } else {
             throw new RuntimeException("Unknown ReceiveMode");
