@@ -162,7 +162,7 @@ public class TokenRestrictionTemplateSerializerTests {
     @Test
     public void knownGoodGenerateTestTokenJWT() throws Exception {
         // Arrange
-        String expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0NTE2MDY0MDAsInVybjptaWNyb3NvZnQ6YXp1cmU6bWVkaWFzZXJ2aWNlczpjb250ZW50a2V5aWRlbnRpZmllciI6IjA5MTQ0MzVkLTE1MDAtODBjNC02YzJiLWYxZTUyZmRhNDdhZSIsImF1ZCI6InVybjpjb250b3NvIiwiaXNzIjoiaHR0cHM6Ly90c3QuY29udG9zby5jb20iLCJpYXQiOjE0MjAwNzA0MDB9.fmjUhGJzWJpnFWnPqTpbisYTs62TJaKM1tAeAweRsSI";
+        String expectedToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ1cm46Y29udG9zbyIsInVybjptaWNyb3NvZnQ6YXp1cmU6bWVkaWFzZXJ2aWNlczpjb250ZW50a2V5aWRlbnRpZmllciI6IjA5MTQ0MzVkLTE1MDAtODBjNC02YzJiLWYxZTUyZmRhNDdhZSIsImlzcyI6Imh0dHBzOi8vdHN0LmNvbnRvc28uY29tIiwiZXhwIjoxNDUxNjA2NDAwLCJpYXQiOjE0MjAwNzA0MDB9.Lv3YphKPyakYwcX3CAcA--VKOrvBG0CuAARejz3DDLM";
         byte[] knownSymetricKey = "64bytes6RNhi8EsxcYsdYQ9zpFuNR1Ks9milykbxYWGILaK0LKzd5dCtYonsr456".getBytes();
         String strUuid = "0914435d-1500-80c4-6c2b-f1e52fda47ae";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

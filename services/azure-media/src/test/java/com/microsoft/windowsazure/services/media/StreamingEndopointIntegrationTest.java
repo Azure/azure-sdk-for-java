@@ -24,6 +24,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.windowsazure.services.media.implementation.content.AkamaiAccessControlType;
@@ -41,7 +43,7 @@ import com.microsoft.windowsazure.services.media.models.StreamingEndpointState;
 
 public class StreamingEndopointIntegrationTest extends IntegrationTestBase {
 
-    @Test
+	@Test
     public void streamingEndpointCreateListByNameAndDelete() throws Exception {
         // Arrange
         String expectedName = testStreamingEndPointPrefix + "ListByNameTest";
