@@ -332,10 +332,7 @@ class NetworkInterfaceImpl
 
     @Override
     public String networkSecurityGroupId() {
-        if (this.inner().networkSecurityGroup() != null) {
-            return this.inner().networkSecurityGroup().id();
-        }
-        return null;
+        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
     }
 
     @Override
@@ -377,10 +374,14 @@ class NetworkInterfaceImpl
      * @return the list of DNS server IPs from the DNS settings
      */
     private List<String> dnsServerIps() {
-        if (this.inner().dnsSettings().dnsServers() == null) {
-            this.inner().dnsSettings().withDnsServers(new ArrayList<String>());
+        List<String> dnsServers = new ArrayList<String>();
+        if (this.inner().dnsSettings() == null) {
+            return dnsServers;
+        } else if (this.inner().dnsSettings().dnsServers() == null) {
+            return dnsServers;
+        } else {
+            return this.inner().dnsSettings().dnsServers();
         }
-        return this.inner().dnsSettings().dnsServers();
     }
 
     @Override
