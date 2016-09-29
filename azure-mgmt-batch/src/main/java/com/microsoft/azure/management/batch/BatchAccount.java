@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.batch.implementation.BatchAccountInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * An immutable client-side representation of an Azure batch account.
  */
-@LangDefinition()
+@Fluent
 public interface BatchAccount extends
         GroupableResource,
         Refreshable<BatchAccount>,
@@ -91,7 +91,6 @@ public interface BatchAccount extends
     /**
      * Container interface for all the definitions that need to be implemented.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Definition", ContainerFileName = "IDefinition")
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
@@ -105,7 +104,6 @@ public interface BatchAccount extends
     /**
      * Grouping of all the storage account definition stages.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Definition", ContainerFileName = "IDefinition", IsContainerOnly = true)
     interface DefinitionStages {
         /**
          * The first stage of the batch account definition.
@@ -188,7 +186,6 @@ public interface BatchAccount extends
     /**
      * The template for a storage account update operation, containing all the settings that can be modified.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Update", ContainerFileName = "IUpdate")
     interface Update extends
             Appliable<BatchAccount>,
             Resource.UpdateWithTags<Update>,
@@ -199,7 +196,6 @@ public interface BatchAccount extends
     /**
      * Grouping of all the storage account update stages.
      */
-    @LangDefinition(ContainerName = "~/BatchAccount.Update", ContainerFileName = "IUpdate", IsContainerOnly = true)
     interface UpdateStages {
         /**
          * The stage of the batch account update definition allowing to specify storage account.
