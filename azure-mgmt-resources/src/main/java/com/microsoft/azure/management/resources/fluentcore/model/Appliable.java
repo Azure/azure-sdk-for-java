@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.model;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -23,6 +24,7 @@ public interface Appliable<T> extends Indexable {
      *
      * @return the updated resource
      */
+    @Method
     T apply();
 
     /**
@@ -30,6 +32,7 @@ public interface Appliable<T> extends Indexable {
      *
      * @return the handle to the REST call
      */
+    @Method
     Observable<T> applyAsync();
 
     /**
