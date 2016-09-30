@@ -1,11 +1,8 @@
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
-
 /**
  * Scale set virtual machine sku types.
  */
-@LangDefinition
 public class VirtualMachineScaleSetSkuTypes {
     /** Static value Standard_A0 for VirtualMachineScaleSetSkuTypes. */
     public static final VirtualMachineScaleSetSkuTypes STANDARD_A0 = new VirtualMachineScaleSetSkuTypes("Standard_A0", "Standard");

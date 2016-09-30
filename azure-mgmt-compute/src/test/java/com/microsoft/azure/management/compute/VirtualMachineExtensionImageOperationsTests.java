@@ -104,7 +104,7 @@ public class VirtualMachineExtensionImageOperationsTests extends ComputeManageme
 
         // Fetch the Azure docker extension image
         //
-        VirtualMachineExtensionImage dockerExtensionImage = extensionImageFirstVersion.image();
+        VirtualMachineExtensionImage dockerExtensionImage = extensionImageFirstVersion.getImage();
 
         Assert.assertTrue(dockerExtensionImage.regionName().equalsIgnoreCase(Region.US_EAST.toString()));
         Assert.assertTrue(dockerExtensionImage.publisherName().equalsIgnoreCase(dockerExtensionPublisherName));

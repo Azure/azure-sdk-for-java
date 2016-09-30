@@ -72,7 +72,7 @@ public final class ListVirtualMachineExtensionImages {
 
                     for (VirtualMachineExtensionImageType imageType : chosenPublisher.extensionTypes().list()) {
                         for (VirtualMachineExtensionImageVersion version: imageType.versions().list()) {
-                            VirtualMachineExtensionImage image = version.image();
+                            VirtualMachineExtensionImage image = version.getImage();
                                 System.out.println("Image - " + chosenPublisher.name() + "/"
                                         + image.typeName() + "/"
                                         + image.versionName());
