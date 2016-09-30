@@ -41,7 +41,6 @@ public class VersionHeadersFilter extends IdempotentClientFilter {
         headers.add("DataServiceVersion", "3.0");
         headers.add("MaxDataServiceVersion", "3.0");
         headers.add("x-ms-version", "2.13");
-        headers.add("Content-Length", "0");
         return getNext().handle(cr);
     }
 }
