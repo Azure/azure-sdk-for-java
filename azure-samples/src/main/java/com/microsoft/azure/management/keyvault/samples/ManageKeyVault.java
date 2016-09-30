@@ -50,7 +50,7 @@ public final class ManageKeyVault {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
