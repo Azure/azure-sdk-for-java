@@ -94,7 +94,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
@@ -104,7 +104,7 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
 
             NetworkSecurityGroup nsg;
             try {
-                nsg = subnet.networkSecurityGroup();
+                nsg = subnet.getNetworkSecurityGroup();
             } catch (Exception e) {
                 nsg = null;
             }

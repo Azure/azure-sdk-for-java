@@ -30,7 +30,7 @@ public interface Subnet extends
      * <p>
      * Note that this method will result in a call to Azure each time it is invoked.
      */
-    NetworkSecurityGroup networkSecurityGroup();
+    NetworkSecurityGroup getNetworkSecurityGroup();
 
     /**
      * Grouping of subnet definition stages.

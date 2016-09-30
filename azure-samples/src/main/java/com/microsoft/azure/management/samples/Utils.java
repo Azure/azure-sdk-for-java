@@ -198,13 +198,13 @@ public final class Utils {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tAddress spaces: ").append(resource.addressSpaces())
-                .append("\n\tDNS server IPs: ").append(resource.dnsServerIPs());
+                .append("\n\tDNS server IPs: ").append(resource.dnsServerIps());
 
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                     .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
-            NetworkSecurityGroup subnetNsg = subnet.networkSecurityGroup();
+            NetworkSecurityGroup subnetNsg = subnet.getNetworkSecurityGroup();
             if (subnetNsg != null) {
                 info.append("\n\t\tNetwork security group: ").append(subnetNsg.id());
             }

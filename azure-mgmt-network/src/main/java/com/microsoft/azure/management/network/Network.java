@@ -39,7 +39,7 @@ public interface Network extends
     /**
      * @return list of DNS server IP addresses associated with this virtual network
      */
-    List<String> dnsServerIPs();
+    List<String> dnsServerIps();
 
     /**
      * @return subnets of this virtual network as a map indexed by subnet name
