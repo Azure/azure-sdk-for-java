@@ -43,7 +43,7 @@ class VirtualMachineExtensionImageVersionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImage image() {
+    public VirtualMachineExtensionImage getImage() {
         VirtualMachineExtensionImageInner inner = this.client.get(this.regionName(),
                 this.type().publisher().name(),
                 this.type().name(),
