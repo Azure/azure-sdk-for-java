@@ -133,7 +133,7 @@ public final class ManageVirtualMachine {
 
                 //=============================================================
                 // Update - Resize (expand) the data disk
-                // First, deallocate teh virtual machine and then proceed with resize
+                // First, deallocate the virtual machine and then proceed with resize
 
                 System.out.println("De-allocating VM: " + windowsVM.id());
 
