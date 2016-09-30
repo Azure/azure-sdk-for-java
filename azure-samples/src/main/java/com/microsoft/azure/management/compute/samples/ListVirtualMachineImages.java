@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineImage;

@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;

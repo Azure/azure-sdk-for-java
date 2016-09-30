@@ -7,7 +7,7 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.LoadBalancer;
