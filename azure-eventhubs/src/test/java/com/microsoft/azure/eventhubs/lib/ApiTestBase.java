@@ -8,6 +8,6 @@ public class ApiTestBase extends TestBase
 	@BeforeClass
 	public static void skipIfNotConfigured()
 	{
-		Assume.assumeTrue(TestBase.isTestConfigurationSet());
+		Assume.assumeTrue(TestContext.isTestConfigurationSet());
 	}
 }

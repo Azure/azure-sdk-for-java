@@ -7,10 +7,10 @@ package com.microsoft.azure.servicebus;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +44,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final String hostName;
 	private final CompletableFuture<Void> closeTask;
 	private final ConnectionHandler connectionHandler;
-	private final ReactorHandler reactorHandler;
 	private final LinkedList<Link> registeredLinks;
 	private final Object reactorLock;
 	
@@ -70,22 +69,20 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		this.operationTimeout = builder.getOperationTimeout();
 		this.retryPolicy = builder.getRetryPolicy();
 		this.registeredLinks = new LinkedList<Link>();
-		this.closeTask = new CompletableFuture<Void>();
 		this.reactorLock = new Object();
 		this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
 		this.openConnection = new CompletableFuture<Connection>();
 		
-		this.reactorHandler = new ReactorHandler()
+		this.closeTask = new CompletableFuture<Void>();
+		this.closeTask.thenAccept(new Consumer<Void>()
 		{
 			@Override
-			public void onReactorInit(Event e)
+			public void accept(Void arg0)
 			{
-				super.onReactorInit(e);
-
-				final Reactor r = e.getReactor();
-				connection = r.connectionToHost(hostName, ClientConstants.AMQPS_PORT, connectionHandler);
+				Timer.unregister(getClientId());
 			}
-		};
+		});
+		
 	}
 
 	String getHostName()
@@ -112,7 +109,17 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private void createConnection(ConnectionStringBuilder builder) throws IOException
 	{
 		this.open = new CompletableFuture<MessagingFactory>();
-		this.startReactor(this.reactorHandler);
+		this.startReactor(new ReactorHandler()
+		{
+			@Override
+			public void onReactorInit(Event e)
+			{
+				super.onReactorInit(e);
+
+				final Reactor r = e.getReactor();
+				connection = r.connectionToHost(hostName, ClientConstants.AMQPS_PORT, connectionHandler);
+			}
+		});
 	}
 
 	private void startReactor(ReactorHandler reactorHandler) throws IOException
@@ -183,32 +190,27 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		else
 		{
 			final Connection currentConnection = this.connection;
-			Iterator<Link> literator = this.registeredLinks.iterator();
-
-			this.openConnection = new CompletableFuture<Connection>();
-
-			while (literator.hasNext())
+			for (Link link: this.registeredLinks)
 			{
-				Link link = literator.next();
 				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
 				{
 					link.close();
 				}
 			}
+			
+			this.openConnection = new CompletableFuture<Connection>();
 
 			if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
 			{
 				currentConnection.close();
 			}
 			
-			literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
+			for (Link link: this.registeredLinks)
 			{
-				Link link = literator.next();
-				Handler handler = BaseHandler.getHandler(link);
+				final Handler handler = BaseHandler.getHandler(link);
 				if (handler != null && handler instanceof BaseLinkHandler)
 				{
-					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+					final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
 					linkHandler.processOnClose(link, error);
 				}
 			}
@@ -217,12 +219,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
 		{
 			this.closeTask.complete(null);
-			Timer.unregister(this.getClientId());
 		}
 	}
 
 	private void onReactorError(Exception cause)
-	{
+	{	
 		if (!this.open.isDone())
 		{
 			this.onOpenComplete(cause);
@@ -233,7 +234,17 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			
 			try
 			{
-				this.startReactor(this.reactorHandler);
+				if (this.getIsClosingOrClosed())
+				{
+					if (!this.closeTask.isDone())
+						this.closeTask.complete(null);
+					
+					return;
+				}
+				else
+				{
+					this.startReactor(new ReactorHandler());
+				}
 			}
 			catch (IOException e)
 			{
@@ -242,29 +253,22 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				this.onReactorError(cause);
 			}
 
-			Iterator<Link> literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
-			{
-				Link link = literator.next();
-				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
-				{
-					link.close();
-				}
-			}
-
 			if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
 			{
 				currentConnection.close();
 			}
 
-			literator = this.registeredLinks.iterator();
-			while (literator.hasNext())
+			for (Link link: this.registeredLinks)
 			{
-				Link link = literator.next();
-				Handler handler = BaseHandler.getHandler(link);
+				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
+				{
+					link.close();
+				}
+				
+				final Handler handler = BaseHandler.getHandler(link);
 				if (handler != null && handler instanceof BaseLinkHandler)
 				{
-					BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
+					final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
 					linkHandler.processOnClose(link, cause);
 				}
 			}
@@ -295,7 +299,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					}
 				},
 				this.operationTimeout, TimerType.OneTimeRun);
-			} else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
+			}
+			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
 			{
 				this.closeTask.complete(null);
 			}
@@ -319,7 +324,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				TRACE_LOGGER.log(Level.FINE, "starting reactor instance.");
 			}
-
+			
 			try
 			{
 				this.rctr.setTimeout(3141);
@@ -346,6 +351,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 						!StringUtil.isNullOrEmpty(handlerException.getMessage()) ? 
 							handlerException.getMessage() :
 							"Reactor encountered unrecoverable error";
+				
 				ServiceBusException sbException = new ServiceBusException(
 						true,
 						String.format(Locale.US, "%s, %s", message, ExceptionUtil.getTrackingIDAndTimeToLog()),

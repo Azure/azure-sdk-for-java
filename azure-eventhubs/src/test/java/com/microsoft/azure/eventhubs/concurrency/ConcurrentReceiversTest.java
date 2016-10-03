@@ -3,10 +3,15 @@ package com.microsoft.azure.eventhubs.concurrency;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
 import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventData;
@@ -15,119 +20,121 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestEventHubInfo;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class ConcurrentReceiversTest extends ApiTestBase
 {
-	TestEventHubInfo eventHubInfo;
-	ConnectionStringBuilder connStr;
-	int partitionCount = 4;
-	int eventSentPerPartition = 10;
-	EventHubClient sender;
-	Instant sendStartTime;
+	static EventHubClient sender;
+	static PartitionReceiver[] receivers;
+	static EventHubClient ehClient;
+	static String consumerGroupName;
+	static ConnectionStringBuilder connStr;
+	static int partitionCount;
 	
-	@Before
-	public void initializeEventHub()  throws Exception
+	int eventSentPerPartition = 1;
+	
+	@BeforeClass
+	public static void initialize() throws InterruptedException, ExecutionException, ServiceBusException, IOException
 	{
-		sendStartTime = Instant.now();
-		
-		eventHubInfo = TestBase.checkoutTestEventHub();
-		connStr = new ConnectionStringBuilder(
-				eventHubInfo.getNamespaceName(), eventHubInfo.getName(), eventHubInfo.getSasRule().getKey(), eventHubInfo.getSasRule().getValue());
+		partitionCount = TestContext.getPartitionCount();
+		connStr = TestContext.getConnectionString();
 
 		sender = EventHubClient.createFromConnectionString(connStr.toString()).get();
-
-		for (int i=0; i < partitionCount; i++)
-		{
-			TestBase.pushEventsToPartition(sender, Integer.toString(i), eventSentPerPartition);
-		}
+		receivers = new PartitionReceiver[partitionCount];
+		consumerGroupName = TestContext.getConsumerGroupName();
 	}
 
 	@Test()
-	public void testParallelReceivers() throws ServiceBusException, IOException, InterruptedException
+	public void testParallelCreationOfReceivers() throws ServiceBusException, IOException, InterruptedException, ExecutionException, TimeoutException
 	{
-		String consumerGroupName = eventHubInfo.getRandomConsumerGroup();
-		EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
-		PartitionReceiver[] receivers = new PartitionReceiver[partitionCount];
-		EventCounter[] counter = new EventCounter[partitionCount];
+		ehClient = EventHubClient.createFromConnectionStringSync(connStr.toString());
+		ReceiveAtleastOneEventValidator[] counter = new ReceiveAtleastOneEventValidator[partitionCount];
 		
-		try
+		@SuppressWarnings("unchecked") CompletableFuture<Void>[] validationSignals = new CompletableFuture[partitionCount];
+		@SuppressWarnings("unchecked") CompletableFuture<Void>[] receiverFutures = new CompletableFuture[partitionCount];
+		for(int i=0; i < partitionCount; i++)
 		{
-			for(int i=0; i < partitionCount; i++)
-			{
-				receivers[i] = ehClient.createReceiverSync(consumerGroupName, Integer.toString(i), sendStartTime);
-				receivers[i].setReceiveTimeout(Duration.ofMillis(400));
-				
-				counter[i] = new EventCounter();
-				receivers[i].setReceiveHandler(counter[i]);
-			}
-			
-			int worstCaseRetryCount = partitionCount * 10;
-			boolean receivedOnAllPartitions = true;
-			
-			do
-			{
-				worstCaseRetryCount--;
-				Thread.sleep(500);
-				
-				receivedOnAllPartitions = true;
-				for (int i =0; i < partitionCount; i++)
-				{
-					receivedOnAllPartitions = receivedOnAllPartitions && (counter[i].count > 0);
-				}
-			} while(!receivedOnAllPartitions && worstCaseRetryCount > 0);
-			
-			Assert.assertTrue(receivedOnAllPartitions);
+			final int index = i;
+			receiverFutures[i] = ehClient.createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).thenAcceptAsync(
+					new Consumer<PartitionReceiver>(){
+						@Override
+						public void accept(final PartitionReceiver t) {
+							receivers[index] = t;
+							receivers[index].setReceiveTimeout(Duration.ofMillis(400));
+							validationSignals[index] = new CompletableFuture<Void>();
+							counter[index] = new ReceiveAtleastOneEventValidator(validationSignals[index], receivers[index]);
+							receivers[index].setReceiveHandler(counter[index]);
+						}});
 		}
-		finally
+		
+		CompletableFuture.allOf(receiverFutures).get(partitionCount * 10, TimeUnit.SECONDS);
+		
+		@SuppressWarnings("unchecked")
+		CompletableFuture<Void>[] sendFutures = new CompletableFuture[partitionCount];
+		for (int i=0; i < partitionCount; i++)
 		{
-			for (int i=0; i < partitionCount; i++)
+			sendFutures[i] = TestBase.pushEventsToPartition(sender, Integer.toString(i), eventSentPerPartition);
+		}
+		
+		CompletableFuture.allOf(sendFutures).get();		
+		
+		CompletableFuture.allOf(validationSignals).get(partitionCount * 10, TimeUnit.SECONDS);
+	}
+	
+	@After
+	public void cleanupTest()
+	{
+		for (int i=0; i < partitionCount; i++)
+		{
+			if (receivers[i] != null)
 			{
-				if (receivers[i] != null)
-				{
-					receivers[i].close();
-				}
+				receivers[i].close();
 			}
+		}
 
-			if (ehClient != null)
-			{
-				ehClient.close();
-			}
+		if (ehClient != null)
+		{
+			ehClient.close();
 		}
 	}
 
-	@After()
-	public void cleanup()
+	@AfterClass()
+	public static void cleanup()
 	{
-		if (this.sender != null)
+		if (sender != null)
 		{
-			this.sender.close();
+			sender.close();
 		}
 	}
 
-	public static final class EventCounter extends PartitionReceiveHandler
+	public static final class ReceiveAtleastOneEventValidator extends PartitionReceiveHandler
 	{
-		private int count;
-
-		public EventCounter()
+		final CompletableFuture<Void>signalReceived;
+		final PartitionReceiver currentReceiver;
+		
+		public ReceiveAtleastOneEventValidator(final CompletableFuture<Void> signalReceived, final PartitionReceiver currentReceiver)
 		{
 			super(50);
-			count = 0;
+			this.signalReceived = signalReceived;
+			this.currentReceiver = currentReceiver;
 		}
 
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
-			if (events != null)
-				for(@SuppressWarnings("unused") EventData eData: events)
-					count++;
+			if (events != null && events.iterator().hasNext())
+			{
+				this.signalReceived.complete(null);
+				this.currentReceiver.setReceiveHandler(null);
+			}
 		}
 
 		@Override
 		public void onError(Throwable error)
 		{
+			this.signalReceived.completeExceptionally(error);
 		}
 	}
 }

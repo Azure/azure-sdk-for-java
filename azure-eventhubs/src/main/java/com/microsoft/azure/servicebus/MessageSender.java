@@ -447,48 +447,44 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 			this.onOpenComplete(completionException);
 
-			if (completionException != null &&
-					(!(completionException instanceof ServiceBusException) || !((ServiceBusException) completionException).getIsTransient()))
+			final Map.Entry<String, ReplayableWorkItem<Void>> pendingSendEntry = IteratorUtil.getFirst(this.pendingSendsData.entrySet());
+			if (pendingSendEntry != null && pendingSendEntry.getValue() != null)
 			{
-				synchronized (this.pendingSendLock)
+				final TimeoutTracker tracker = pendingSendEntry.getValue().getTimeoutTracker();
+				if (tracker != null)
 				{
-					for (Map.Entry<String, ReplayableWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
+					final Duration nextRetryInterval = this.retryPolicy.getNextRetryInterval(this.getClientId(), completionException, tracker.remaining());
+					if (nextRetryInterval != null)
 					{
-						this.cleanupFailedSend(pendingSend.getValue(), completionException);					
-					}
-		
-					this.pendingSendsData.clear();
-					this.pendingSends.clear();
-				}
-			}
-			else
-			{
-				final Map.Entry<String, ReplayableWorkItem<Void>> pendingSendEntry = IteratorUtil.getFirst(this.pendingSendsData.entrySet());
-				if (pendingSendEntry != null && pendingSendEntry.getValue() != null)
-				{
-					final TimeoutTracker tracker = pendingSendEntry.getValue().getTimeoutTracker();
-					if (tracker != null)
-					{
-						final Duration nextRetryInterval = this.retryPolicy.getNextRetryInterval(this.getClientId(), completionException, tracker.remaining());
-						if (nextRetryInterval != null)
+						try
 						{
-							try
+							this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
 							{
-								this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler()
+								@Override
+								public void onEvent()
 								{
-									@Override
-									public void onEvent()
+									if (sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)
 									{
-										if (sendLink.getLocalState() == EndpointState.CLOSED || sendLink.getRemoteState() == EndpointState.CLOSED)
-										{
-											createSendLink();
-										}
+										recreateSendLink();
 									}
-								});
-							}
-							catch (IOException ignore)
+								}
+							});
+						}
+						catch (IOException ignore)
+						{
+						}
+					}
+					else
+					{
+						synchronized (this.pendingSendLock)
+						{
+							for (Map.Entry<String, ReplayableWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
 							{
+								this.cleanupFailedSend(pendingSend.getValue(), completionException);					
 							}
+				
+							this.pendingSendsData.clear();
+							this.pendingSends.clear();
 						}
 					}
 				}
@@ -709,7 +705,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private void recreateSendLink()
 	{
 		this.createSendLink();
-		this.retryPolicy.incrementRetryCount(MessageSender.this.getClientId());
+		this.retryPolicy.incrementRetryCount(this.getClientId());
 	}
 	
 	// actual send on the SenderLink should happen only in this method & should run on Reactor Thread

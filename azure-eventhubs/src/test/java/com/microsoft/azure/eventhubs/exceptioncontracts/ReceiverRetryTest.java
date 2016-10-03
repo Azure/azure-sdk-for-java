@@ -1,6 +1,7 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.Collection;
 import java.util.logging.Level;
 
@@ -24,6 +25,7 @@ import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.MessageReceiver;
 import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.ServiceBusException;
 
 public class ReceiverRetryTest extends TestBase
 {
@@ -98,6 +100,7 @@ public class ReceiverRetryTest extends TestBase
 		
 		MessageReceiver receiver = MessageReceiver.create(factory, 
 					"receiver1", "eventhub1/consumergroups/$default/partitions/0", "-1", false, null, 100, 0, false).get();
+		receiver.setReceiveTimeout(Duration.ofSeconds(15));
 		Collection<Message> messages = receiver.receive(10).get();
 		if (messages != null)
 		{
@@ -105,14 +108,16 @@ public class ReceiverRetryTest extends TestBase
 		}
 		
 		TestBase.TEST_LOGGER.log(Level.FINE, String.format("actual retries: %s", data.retryCount));
-		Assert.assertTrue(data.retryCount > 3);
+		Assert.assertTrue(data.retryCount > 1);
+		
+		receiver.closeSync();
 	}
 	
 	@After
-	public void cleanup() throws IOException
+	public void cleanup() throws IOException, ServiceBusException
 	{
 		if (factory != null)
-			factory.close();
+			factory.closeSync();
 	
 		if (server != null)
 			server.close();

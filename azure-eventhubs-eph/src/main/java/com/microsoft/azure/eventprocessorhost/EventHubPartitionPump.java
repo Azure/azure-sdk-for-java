@@ -26,9 +26,9 @@ class EventHubPartitionPump extends PartitionPump
 	private PartitionReceiver partitionReceiver = null;
     private InternalReceiveHandler internalReceiveHandler = null;
 
-	EventHubPartitionPump(EventProcessorHost host, Lease lease)
+	EventHubPartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
-		super(host, lease);
+		super(host, pump, lease);
 	}
 
     @Override
@@ -77,7 +77,7 @@ class EventHubPartitionPump extends PartitionPump
             // meaning it is safe to set the handler and start calling IEventProcessor.onEvents.
             // Set the status to running before setting the javaClient handler, so the IEventProcessor.onEvents can never race and see status != running.
             this.pumpStatus = PartitionPumpStatus.PP_RUNNING;
-            this.partitionReceiver.setReceiveHandler(this.internalReceiveHandler);
+            this.partitionReceiver.setReceiveHandler(this.internalReceiveHandler, this.host.getEventProcessorOptions().getInvokeProcessorAfterReceiveTimeout());
         }
         
         if (this.pumpStatus == PartitionPumpStatus.PP_OPENFAILED)
@@ -203,6 +203,7 @@ class EventHubPartitionPump extends PartitionPump
 		@Override
 		public void onError(Throwable error)
 		{
+			EventHubPartitionPump.this.pumpStatus = PartitionPumpStatus.PP_ERRORED;
 			if (error == null)
 			{
 				error = new Throwable("No error info supplied by EventHub client");
@@ -219,9 +220,8 @@ class EventHubPartitionPump extends PartitionPump
 				{
 					EventHubPartitionPump.this.host.logWithHostAndPartition(Level.SEVERE, EventHubPartitionPump.this.partitionContext, "EventHub client error continued", (Exception)error);
 				}
-				EventHubPartitionPump.this.onError(error);
 			}
-			EventHubPartitionPump.this.pumpStatus = PartitionPumpStatus.PP_ERRORED;
+			EventHubPartitionPump.this.onError(error);
 		}
     }
 }

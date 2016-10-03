@@ -56,7 +56,6 @@ public class ConnectionStringBuilder
 	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
 			+ KeyValueSeparator;
 
-	private String connectionString;
 	private URI endpoint;
 	private String sharedAccessKeyName;
 	private String sharedAccessKey;
@@ -148,7 +147,6 @@ public class ConnectionStringBuilder
 	public ConnectionStringBuilder(String connectionString)
 	{
 		this.parseConnectionString(connectionString);
-		this.connectionString = connectionString;
 	}
 
 	/**
@@ -232,49 +230,45 @@ public class ConnectionStringBuilder
 	@Override
 	public String toString()
 	{
-		if (StringUtil.isNullOrWhiteSpace(this.connectionString))
+		final StringBuilder connectionStringBuilder = new StringBuilder();
+		if (this.endpoint != null)
 		{
-			StringBuilder connectionStringBuilder = new StringBuilder();
-			if (this.endpoint != null)
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
-						this.endpoint.toString(), KeyValuePairDelimiter));
-			}
-
-			if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
-						KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
-			}
-
-			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName))
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
-						KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
-			}
-
-			if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
-						KeyValueSeparator, this.sharedAccessKey));
-			}
-
-			if (this.operationTimeout != null)
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
-						KeyValueSeparator, this.operationTimeout.toString()));
-			}
-
-			if (this.retryPolicy != null)
-			{
-				connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, RetryPolicyConfigName,
-						KeyValueSeparator, this.retryPolicy.toString()));
-			}
-
-			this.connectionString = connectionStringBuilder.toString();
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EndpointConfigName, KeyValueSeparator,
+					this.endpoint.toString(), KeyValuePairDelimiter));
 		}
 
-		return this.connectionString;
+		if (!StringUtil.isNullOrWhiteSpace(this.entityPath))
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
+					KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
+		}
+
+		if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName))
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyNameConfigName,
+					KeyValueSeparator, this.sharedAccessKeyName, KeyValuePairDelimiter));
+		}
+
+		if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
+					KeyValueSeparator, this.sharedAccessKey));
+		}
+
+		if (this.operationTimeout != null)
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
+					KeyValueSeparator, this.operationTimeout.toString()));
+		}
+
+		if (this.retryPolicy != null)
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, RetryPolicyConfigName,
+					KeyValueSeparator, this.retryPolicy.toString()));
+		}
+
+		return connectionStringBuilder.toString();
+		
 	}
 
 	private void parseConnectionString(String connectionString)

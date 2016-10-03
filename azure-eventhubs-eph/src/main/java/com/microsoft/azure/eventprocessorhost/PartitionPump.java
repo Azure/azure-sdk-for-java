@@ -13,6 +13,7 @@ import com.microsoft.azure.eventhubs.EventData;
 abstract class PartitionPump
 {
 	protected final EventProcessorHost host;
+	protected final Pump pump;
 	protected Lease lease = null;
 	
 	protected PartitionPumpStatus pumpStatus = PartitionPumpStatus.PP_UNINITIALIZED;
@@ -22,9 +23,10 @@ abstract class PartitionPump
     
     protected final Object processingSynchronizer;
     
-	PartitionPump(EventProcessorHost host, Lease lease)
+	PartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
 		this.host = host;
+		this.pump = pump;
 		this.lease = lease;
 		this.processingSynchronizer = new Object();
 	}
@@ -57,7 +59,7 @@ abstract class PartitionPump
             	// Null it out so we don't try to operate on it further.
             	this.processor = null;
             	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failed " + action, e);
-            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, action);
+            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, action, this.lease.getPartitionId());
             	
             	this.pumpStatus = PartitionPumpStatus.PP_OPENFAILED;
             }
@@ -85,7 +87,17 @@ abstract class PartitionPump
 
     void shutdown(CloseReason reason)
     {
-    	this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
+    	synchronized (this.pumpStatus)
+    	{
+    		// Make this method safe against races, for example it might be double-called in close succession if
+    		// the partition is stolen, which results in a pump failure due to receiver disconnect, at about the
+    		// same time as the PartitionManager is scanning leases.
+    		if (isClosing())
+    		{
+    			return;
+    		}
+    		this.pumpStatus = PartitionPumpStatus.PP_CLOSING;
+    	}
         this.host.logWithHostAndPartition(Level.INFO, this.partitionContext, "pump shutdown for reason " + reason.toString());
 
         specializedShutdown(reason);
@@ -107,9 +119,16 @@ abstract class PartitionPump
             	this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "Failure closing processor", e);
             	// If closing the processor has failed, the state of the processor is suspect.
             	// Report the failure to the general error handler instead.
-            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Closing Event Processor");
+            	this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Closing Event Processor", this.lease.getPartitionId());
             }
         }
+        
+        if (reason != CloseReason.LeaseLost)
+        {
+	        // Since this pump is dead, release the lease. 
+	        this.host.getLeaseManager().releaseLease(this.partitionContext.getLease());
+        }
+        // else we already lost the lease, releasing is unnecessary and would fail if we try
         
         this.pumpStatus = PartitionPumpStatus.PP_CLOSED;
     }
@@ -118,15 +137,7 @@ abstract class PartitionPump
     
     protected void onEvents(Iterable<EventData> events)
 	{
-    	// Underlying Java client will call with null on receive timeout. Whether those are passed on to IEventProcessor
-    	// depends on the user setting. See EventProcessorOptions.
-    	if ((events == null) && (this.host.getEventProcessorOptions().getInvokeProcessorAfterReceiveTimeout() == false))
-    	{
-    		this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Ignoring receive timeout");
-    		return;
-    	}
-    	
-        try
+    	try
         {
         	// Synchronize to serialize calls to the processor.
         	// The handler is not installed until after onOpen returns, so onEvents cannot conflict with onOpen.
@@ -165,10 +176,20 @@ abstract class PartitionPump
     
     protected void onError(Throwable error)
     {
-    	// This handler is called when javaClient calls the error handler we have installed.
-    	// JavaClient can only do that when execution is down in javaClient. Therefore no onEvents
+    	// How this method gets called:
+    	// 1) JavaClient calls an error handler installed by EventHubPartitionPump.
+    	// 2) That error handler calls EventHubPartitionPump.onError.
+    	// 3) EventHubPartitionPump doesn't override onError, so the call winds up here.
+    	//
+    	// JavaClient can only make the call in (1) when execution is down in javaClient. Therefore no onEvents
     	// call can be in progress right now. JavaClient will not get control back until this handler
     	// returns, so there will be no calls to onEvents until after the user's error handler has returned.
+    	
+    	// Notify the user's IEventProcessor
     	this.processor.onError(this.partitionContext, error);
+    	
+    	// Notify upstream that this pump is dead so that cleanup will occur.
+    	// Failing to do so results in reactor threads leaking.
+    	this.pump.onPumpError(this.partitionContext.getPartitionId());
     }
 }

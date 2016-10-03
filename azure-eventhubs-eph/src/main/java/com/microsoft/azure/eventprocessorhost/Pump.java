@@ -7,6 +7,7 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
 
@@ -56,7 +57,7 @@ class Pump
     
     private void createNewPump(String partitionId, Lease lease) throws Exception
     {
-		PartitionPump newPartitionPump = new EventHubPartitionPump(this.host, lease);
+		PartitionPump newPartitionPump = new EventHubPartitionPump(this.host, this, lease);
 		EventProcessorHost.getExecutorService().submit(() -> newPartitionPump.startPump());
         this.pumpStates.put(partitionId, newPartitionPump); // do the put after start, if the start fails then put doesn't happen
 		this.host.logWithHostAndPartition(Level.INFO, partitionId, "created new pump");
@@ -69,11 +70,7 @@ class Pump
     	if (capturedPump != null)
     	{
 			this.host.logWithHostAndPartition(Level.INFO, partitionId, "closing pump for reason " + reason.toString());
-    		if (!capturedPump.isClosing())
-    		{
-    			retval = EventProcessorHost.getExecutorService().submit(() -> capturedPump.shutdown(reason));
-    		}
-    		// else, pump is already closing/closed, don't need to try to shut it down again
+			retval = EventProcessorHost.getExecutorService().submit(() -> capturedPump.shutdown(reason));
     		
     		this.host.logWithHostAndPartition(Level.INFO, partitionId, "removing pump");
     		this.pumpStates.remove(partitionId);
@@ -85,6 +82,22 @@ class Pump
     		this.host.logWithHostAndPartition(Level.FINE, partitionId, "no pump found to remove for partition " + partitionId);
     	}
     	return retval;
+    }
+    
+    void onPumpError(String partitionId)
+    {
+    	Future<?> removal = removePump(partitionId, CloseReason.Shutdown);
+    	if (removal != null)
+    	{
+			try
+			{
+				removal.get();
+			}
+			catch (InterruptedException | ExecutionException e)
+			{
+				this.host.logWithHostAndPartition(Level.WARNING, partitionId, "error while shutting down failed partition pump", e);
+			}
+    	}
     }
     
     public Iterable<Future<?>> removeAllPumps(CloseReason reason)

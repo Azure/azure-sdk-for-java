@@ -22,15 +22,12 @@ public class ServiceBusException extends Exception
 		this.isTransient = isTransient;
 	}
 
-	ServiceBusException(final boolean isTransient, final String message)
+	public ServiceBusException(final boolean isTransient, final String message)
 	{
 		super(message);
 		this.isTransient = isTransient;
 	}
 
-	/**
-	 * Constructor for the base error case
-	 */
 	public ServiceBusException(final boolean isTransient, final Throwable cause)
 	{
 		super(cause);

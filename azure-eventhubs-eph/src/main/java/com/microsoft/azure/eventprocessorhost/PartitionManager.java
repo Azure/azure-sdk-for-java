@@ -177,7 +177,7 @@ class PartitionManager
     	catch (Exception e)
     	{
     		this.host.logWithHost(Level.SEVERE, "Exception from partition manager main loop, shutting down", e);
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, "Partition Manager Main Loop");
+    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
     	}
     	
     	// Cleanup
@@ -308,11 +308,12 @@ class PartitionManager
             Iterable<Future<Lease>> gettingAllLeases = leaseManager.getAllLeases();
             ArrayList<Lease> leasesOwnedByOthers = new ArrayList<Lease>();
             int ourLeasesCount = 0;
-            for (Future<Lease> future : gettingAllLeases)
+            for (Future<Lease> leaseFuture : gettingAllLeases)
             {
+            	Lease possibleLease = null;
             	try
             	{
-                    Lease possibleLease = future.get();
+                    possibleLease = leaseFuture.get();
                     if (possibleLease.isExpired())
                     {
                     	if (leaseManager.acquireLease(possibleLease).get())
@@ -350,7 +351,8 @@ class PartitionManager
             	catch (ExecutionException e)
             	{
             		this.host.logWithHost(Level.WARNING, "Failure getting/acquiring/renewing lease, skipping", e);
-            		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CHECKING_LEASES);
+            		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.CHECKING_LEASES,
+            				((possibleLease != null) ? possibleLease.getPartitionId() : ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION));
             	}
             }
             
@@ -378,7 +380,8 @@ class PartitionManager
 	            		catch (ExecutionException e)
 	            		{
 	            			this.host.logWithHost(Level.SEVERE, "Exception stealing lease for partition " + stealee.getPartitionId(), e);
-	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE);
+	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE,
+	            					stealee.getPartitionId());
 	            		}
 	            	}
 	            }

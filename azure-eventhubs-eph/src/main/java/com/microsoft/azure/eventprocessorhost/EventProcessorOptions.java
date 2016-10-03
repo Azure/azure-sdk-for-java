@@ -170,14 +170,19 @@ public final class EventProcessorOptions
     {
         this.invokeProcessorAfterReceiveTimeout = invokeProcessorAfterReceiveTimeout;
     }
-    
+
     void notifyOfException(String hostname, Exception exception, String action)
+    {
+    	notifyOfException(hostname, exception, action, ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    }
+    
+    void notifyOfException(String hostname, Exception exception, String action, String partitionId)
     {
     	// Capture handler so it doesn't get set to null between test and use
     	Consumer<ExceptionReceivedEventArgs> handler = this.exceptionNotificationHandler;
     	if (handler != null)
     	{
-    		handler.accept(new ExceptionReceivedEventArgs(hostname, exception, action));
+    		handler.accept(new ExceptionReceivedEventArgs(hostname, exception, action, partitionId));
     	}
     }
 }

@@ -64,6 +64,7 @@ public final class EventProcessorHost
 	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
 	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
 	 */
+	@Deprecated
     public EventProcessorHost(
             final String eventHubPath,
             final String consumerGroupName,
@@ -82,11 +83,12 @@ public final class EventProcessorHost
      * generate a unique hostName which also includes other information is to call EventProcessorHost.createHostName("mystring"). 
      * 
      * @param hostName		A name for this event processor host. See method notes.
-     * @param eventHubPath
-     * @param consumerGroupName
-     * @param eventHubConnectionString
-     * @param storageConnectionString
+	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
+	 * @param consumerGroupName			The name of the consumer group to use when receiving from the Event Hub.
+	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
+	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
      */
+    @Deprecated
     public EventProcessorHost(
             final String hostName,
             final String eventHubPath,
@@ -103,11 +105,11 @@ public final class EventProcessorHost
      * 
      * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
      * 
-     * @param hostName
-     * @param eventHubPath
-     * @param consumerGroupName
-     * @param eventHubConnectionString
-     * @param storageConnectionString
+     * @param hostName		A name for this event processor host. See method notes.
+	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
+	 * @param consumerGroupName			The name of the consumer group to use when receiving from the Event Hub.
+	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
+	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
      * @param storageContainerName		Azure Storage container name for use by built-in lease and checkpoint manager.
      */
     public EventProcessorHost(
@@ -224,7 +226,7 @@ public final class EventProcessorHost
      * </pre>
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
-     * @return						Future that does not complete until the processor host shuts down.
+     * @return						Future that completes when initialization is finished. If initialization fails, get() will throw. 
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType) throws Exception
     {
@@ -241,7 +243,7 @@ public final class EventProcessorHost
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
-     * @return						Future that does not complete until the processor host shuts down.
+     * @return						Future that completes when initialization is finished. If initialization fails, get() will throw. 
      */
     public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
     {
@@ -261,7 +263,7 @@ public final class EventProcessorHost
      * This overload uses default options for the processor host and event processor(s).
      * 
      * @param factory	User-supplied event processor factory object.
-     * @return			Future that does not complete until the processor host shuts down.
+     * @return			Future that completes when initialization is finished. If initialization fails, get() will throw.
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
     {
@@ -275,7 +277,7 @@ public final class EventProcessorHost
      * 
      * @param factory			User-supplied event processor factory object.			
      * @param processorOptions	Options for the processor host and event processor(s).
-     * @return					Future that does not complete until the processor host shuts down.
+     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw.
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions) throws Exception
     {
@@ -498,8 +500,8 @@ public final class EventProcessorHost
     {
     	synchronized (EventProcessorHost.uuidSynchronizer)
     	{
-    		final String uuid = UUID.randomUUID().toString();
-        	return uuid;
+    		final UUID newUuid = UUID.randomUUID();
+        	return new String(newUuid.toString());
     	}
     }
 }
