@@ -6,7 +6,8 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
@@ -17,8 +18,6 @@ import com.microsoft.azure.management.resources.Tenants;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
-import com.microsoft.azure.RestClient;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure resource management.
@@ -40,8 +39,8 @@ public final class ResourceManager extends ManagerBase {
      * @param credentials the credentials to use
      * @return the ResourceManager instance
      */
-    public static ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
-        return new AuthenticatedImpl(AzureEnvironment.AZURE.newRestClientBuilder()
+    public static ResourceManager.Authenticated authenticate(AzureTokenCredentials credentials) {
+        return new AuthenticatedImpl(credentials.getEnvironment().newRestClientBuilder()
                 .withCredentials(credentials)
                 .build());
     }
@@ -75,14 +74,14 @@ public final class ResourceManager extends ManagerBase {
          * @param credentials the credentials to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
-        ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials);
+        ResourceManager.Authenticated authenticate(AzureTokenCredentials credentials);
     }
 
     /**
      * The implementation for Configurable interface.
      */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public ResourceManager.Authenticated authenticate(ServiceClientCredentials credentials) {
+        public ResourceManager.Authenticated authenticate(AzureTokenCredentials credentials) {
             return ResourceManager.authenticate(buildRestClient(credentials));
         }
     }

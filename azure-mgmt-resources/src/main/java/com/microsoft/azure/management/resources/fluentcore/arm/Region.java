@@ -10,8 +10,9 @@ package com.microsoft.azure.management.resources.fluentcore.arm;
  * Enumeration of the Azure datacenter regions. See https://azure.microsoft.com/regions/
  */
 public enum Region {
-    // CHECKSTYLE IGNORE Javadoc FOR NEXT 18 LINES
+    // CHECKSTYLE IGNORE Javadoc FOR NEXT 21 LINES
     US_WEST("westus", "West US"),
+    US_WEST2("westus2", "West US 2"),
     US_CENTRAL("centralus", "Central US"),
     US_EAST("eastus", "East US"),
     US_EAST2("eastus2", "East US 2"),
@@ -28,7 +29,9 @@ public enum Region {
     AUSTRALIA_SOUTHEAST("australiasoutheast", "Australia Southeast"),
     INDIA_CENTRAL("centralindia", "Central India"),
     INDIA_SOUTH("southindia", "South India"),
-    INDIA_WEST("westindia", "West India");
+    INDIA_WEST("westindia", "West India"),
+    CHINA_NORTH("chinanorth", "China North"),
+    CHINA_EAST("chinaeast", "China East");
 
     private final String name;
     private final String label;

@@ -6,14 +6,13 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure storage resource management.
@@ -39,8 +38,8 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
-    public static StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new StorageManager(AzureEnvironment.AZURE.newRestClientBuilder()
+    public static StorageManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new StorageManager(credentials.getEnvironment().newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
@@ -67,14 +66,14 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
          * @param subscriptionId the subscription UUID
          * @return the interface exposing storage management API entry points that work across subscriptions
          */
-        StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
+        StorageManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
      * The implementation for Configurable interface.
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        public StorageManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+        public StorageManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
             return StorageManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }
