@@ -81,7 +81,7 @@ public final class ManageVirtualNetwork {
                 NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups()
                         .define(vnet1BackEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .defineRule("DenyInternetInComing")
                             .denyInbound()
                             .fromAddress("INTERNET")
