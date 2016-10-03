@@ -1,5 +1,15 @@
 # Release log of Microsoft Azure Event Hubs Client for Java
 
+### 0.8.2
+
+* This client update primarily targets
+	- fixing a receive stuck issue in Event Hubs client `PartitionReceiveHandler.onReceive` API & `EventProcessorHost` library
+* List of Issues fixed in this release: https://github.com/Azure/azure-event-hubs/milestone/7?closed=1
+
+#### API Changes
+##### Breaking Changes
+* `PartitionReceiver.setReceiveHandler` - returns `CompletableFuture<Void>` (used to return `void`)
+
 ### 0.8.1
 
 * The client update primarily involves
