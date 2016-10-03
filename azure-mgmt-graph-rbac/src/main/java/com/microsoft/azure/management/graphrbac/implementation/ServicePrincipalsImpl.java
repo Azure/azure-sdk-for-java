@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * The implementation of ServicePrincipals and its parent interfaces.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class ServicePrincipalsImpl
         extends CreatableWrappersImpl<
             ServicePrincipal,
