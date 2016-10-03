@@ -35,6 +35,6 @@
 ##### Deprecated API
 * ~~EventData.setProperties()~~ - use `.put()` on EventData.getProperties() instead
 
-#### Breaking Changes
+##### Breaking Changes
 * `MessageAnnotations` on a received `AMQPMessage` are moved to `EventData.getSystemProperties()` as opposed to `EventData.getProperties()`
 * `EventData.SystemProperties` class now derives from `HashSet<String, Object>`. This can break serialized EventData.
