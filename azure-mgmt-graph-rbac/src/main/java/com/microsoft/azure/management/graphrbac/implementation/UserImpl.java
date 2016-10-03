@@ -15,7 +15,7 @@ import rx.Observable;
 /**
  * Implementation for User and its parent interfaces.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class UserImpl
         extends CreatableUpdatableImpl<User, UserInner, UserImpl>
         implements

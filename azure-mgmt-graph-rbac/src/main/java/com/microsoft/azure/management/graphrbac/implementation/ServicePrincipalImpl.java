@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Implementation for ServicePrincipal and its parent interfaces.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class ServicePrincipalImpl
         extends CreatableUpdatableImpl<ServicePrincipal, ServicePrincipalInner, ServicePrincipalImpl>
         implements

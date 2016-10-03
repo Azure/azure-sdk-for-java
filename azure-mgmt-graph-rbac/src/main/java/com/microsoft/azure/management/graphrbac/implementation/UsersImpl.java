@@ -20,7 +20,7 @@ import rx.functions.Func1;
 /**
  * The implementation of Users and its parent interfaces.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class UsersImpl
         extends CreatableWrappersImpl<
             User,
