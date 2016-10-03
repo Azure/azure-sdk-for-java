@@ -21,6 +21,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.services.media.implementation.BatchMimeMultipartBodyWritter;
 import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
@@ -76,6 +77,8 @@ public class Exports implements Builder.Exports {
                                     new ODataEntityCollectionProvider());
                             instance.getSingletons().add(
                                     new MediaContentProvider());
+                            instance.getSingletons().add(
+                                    new BatchMimeMultipartBodyWritter());
                         } catch (JAXBException e) {
                             throw new RuntimeException(e);
                         } catch (ParserConfigurationException e) {

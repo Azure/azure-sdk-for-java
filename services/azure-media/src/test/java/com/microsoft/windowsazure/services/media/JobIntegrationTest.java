@@ -19,8 +19,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.AnyOf.anyOf;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,6 +147,32 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Act
         JobInfo actualJob = service.create(Job.create().setName(name)
+                .setPriority(priority).addInputMediaAsset(assetInfo.getId())
+                .addTaskCreator(getTaskCreator(0)));
+
+        // Assert
+        verifyJobProperties("actualJob", name, priority, duration, state,
+                templateId, created, lastModified, stateTime, endTime, 1,
+                actualJob);
+    }
+
+    @Test
+    public void createJobWithFreshMediaContractSuccess() throws ServiceException {
+        // Arrange
+        String name = testJobPrefix + "createJobSuccess";
+        int priority = 3;
+        double duration = 0.0;
+        JobState state = JobState.Queued;
+        String templateId = null;
+        Date created = new Date();
+        Date lastModified = new Date();
+        Date stateTime = null;
+        Date endTime = null;
+
+        MediaContract freshService = MediaService.create(config);
+
+        // Act
+        JobInfo actualJob = freshService.create(Job.create().setName(name)
                 .setPriority(priority).addInputMediaAsset(assetInfo.getId())
                 .addTaskCreator(getTaskCreator(0)));
 
@@ -326,8 +354,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
 
         // Assert
         JobInfo canceledJob = service.get(Job.get(jobInfo.getId()));
-        assertEquals(JobState.Canceling, canceledJob.getState());
-
+        assertThat(canceledJob.getState(), anyOf(is(JobState.Canceling), is(JobState.Canceled)));
     }
 
     @Test

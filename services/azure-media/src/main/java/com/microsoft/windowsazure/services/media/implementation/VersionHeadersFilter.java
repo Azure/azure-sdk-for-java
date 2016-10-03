@@ -40,7 +40,7 @@ public class VersionHeadersFilter extends IdempotentClientFilter {
         MultivaluedMap<String, Object> headers = cr.getHeaders();
         headers.add("DataServiceVersion", "3.0");
         headers.add("MaxDataServiceVersion", "3.0");
-        headers.add("x-ms-version", "2.12");
+        headers.add("x-ms-version", "2.13");
         return getNext().handle(cr);
     }
 }

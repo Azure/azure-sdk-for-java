@@ -19,12 +19,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.ByteArrayInputStream;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.PrivateKey;
 import java.security.Security;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,16 +165,25 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(testContentKeyType));
 
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         // Act
         ContentKeyInfo contentKeyInfo = service.create(ContentKey
-                .create(testCanCreateContentKeyId, testContentKeyType,
-                        testEncryptedContentKey)
+                .create(testCanCreateContentKeyId, testContentKeyType, encryptedContentKey)
                 .setName(testCanCreateContentKeyName)
                 .setProtectionKeyId(protectionKeyId));
 
         // Assert
         verifyContentKeyProperties("ContentKey", testCanCreateContentKeyId,
-                testContentKeyType, testEncryptedContentKey,
+                testContentKeyType, encryptedContentKey,
                 testCanCreateContentKeyName, protectionKeyId,
                 ProtectionKeyType.fromCode(0), "", contentKeyInfo);
     }
@@ -184,9 +195,20 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         String testGetSingleContentKeyByIdId = createRandomContentKeyId();
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(testContentKeyType));
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         ContentKeyInfo ContentKeyToGet = service.create(ContentKey
-                .create(testGetSingleContentKeyByIdId, testContentKeyType,
-                        testEncryptedContentKey).setName(expectedName)
+                .create(testGetSingleContentKeyByIdId, testContentKeyType, encryptedContentKey)
+                .setName(expectedName)
                 .setProtectionKeyId(protectionKeyId));
 
         // Act
@@ -196,7 +218,7 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         // Assert
         assertEquals(ContentKeyToGet.getId(), retrievedContentKeyInfo.getId());
         verifyContentKeyProperties("ContentKey", testGetSingleContentKeyByIdId,
-                testContentKeyType, testEncryptedContentKey, expectedName,
+                testContentKeyType, encryptedContentKey, expectedName,
                 protectionKeyId, ProtectionKeyType.fromCode(0), "",
                 retrievedContentKeyInfo);
     }
@@ -217,12 +239,21 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(testContentKeyType));
 
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         List<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
         for (int i = 0; i < ContentKeyNames.length; i++) {
             String testCanRetrieveListOfContentKeysId = createRandomContentKeyId();
             ContentKeyInfo contentKey = service.create(ContentKey.create(
-                    testCanRetrieveListOfContentKeysId, testContentKeyType,
-                    testEncryptedContentKey)
+                    testCanRetrieveListOfContentKeysId, testContentKeyType, encryptedContentKey)
                     .setProtectionKeyId(protectionKeyId));
             expectedContentKeys.add(contentKey);
         }
@@ -255,11 +286,20 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(testContentKeyType));
 
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         List<ContentKeyInfo> expectedContentKeys = new ArrayList<ContentKeyInfo>();
         for (int i = 0; i < ContentKeyNames.length; i++) {
             ContentKeyInfo contentKeyInfo = service.create(ContentKey.create(
-                    createRandomContentKeyId(), testContentKeyType,
-                    testEncryptedContentKey)
+                    createRandomContentKeyId(), testContentKeyType, encryptedContentKey)
                     .setProtectionKeyId(protectionKeyId));
             expectedContentKeys.add(contentKeyInfo);
         }
@@ -278,9 +318,20 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
         String protectionKeyId = service.action(ProtectionKey
                 .getProtectionKeyId(testContentKeyType));
         String contentKeyName = testContentKeyPrefix + "ToDelete";
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         ContentKeyInfo contentKeyToDelete = service.create(ContentKey
-                .create(createRandomContentKeyId(), testContentKeyType,
-                        testEncryptedContentKey).setName(contentKeyName)
+                .create(createRandomContentKeyId(), testContentKeyType, encryptedContentKey)
+                .setName(contentKeyName)
                 .setProtectionKeyId(protectionKeyId));
         List<ContentKeyInfo> listContentKeysResult = service.list(ContentKey
                 .list());
@@ -388,10 +439,20 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
                 + "testSetContentKeyAuthorizationPolicy";
         
         String protectionKeyId = service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));        
+                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         ContentKeyInfo contentKeyInfo = service.create(ContentKey
-                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption,
-                        testEncryptedContentKey)
+                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption, encryptedContentKey)
                 .setName(testCanCreateContentKeyName)
                 .setProtectionKeyId(protectionKeyId));
         List<ContentKeyAuthorizationPolicyRestriction> restrictions = new ArrayList<ContentKeyAuthorizationPolicyRestriction>();
@@ -421,10 +482,20 @@ public class ContentKeyIntegrationTest extends IntegrationTestBase {
                 + "testGetDeliveryUrl";
         
         String protectionKeyId = service.action(ProtectionKey
-                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));        
+                .getProtectionKeyId(ContentKeyType.EnvelopeEncryption));
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         ContentKeyInfo contentKeyInfo = service.create(ContentKey
-                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption,
-                        testEncryptedContentKey)
+                .create(testCanCreateContentKeyId, ContentKeyType.EnvelopeEncryption, encryptedContentKey)
                 .setName(testCanCreateContentKeyName)
                 .setProtectionKeyId(protectionKeyId));
         List<ContentKeyAuthorizationPolicyRestriction> restrictions = new ArrayList<ContentKeyAuthorizationPolicyRestriction>();

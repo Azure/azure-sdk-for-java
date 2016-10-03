@@ -244,7 +244,7 @@ public class DefaultEntityActionOperation implements EntityActionOperation {
     @Override
     public Object getRequestContents() {
         if (this.bodyParameters.size() == 0) {
-            return "";
+            return "{}";
         } else {
             String jsonString = "";
             EntityActionBodyParameterMapper mapper = new EntityActionBodyParameterMapper();

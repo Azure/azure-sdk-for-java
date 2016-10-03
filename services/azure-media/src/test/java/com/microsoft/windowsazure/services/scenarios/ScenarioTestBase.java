@@ -49,10 +49,32 @@ public abstract class ScenarioTestBase {
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
         overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
         overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
+        
+        config = Configuration.getInstance();
+        overrideWithEnv(config, MediaConfiguration.URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
+        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
+
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY,
+                "media.queue.account.key");
+        overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME,
+                "media.queue.account.name");
+        overrideWithEnv(config, QueueConfiguration.URI, "media.queue.uri");
     }
 
     private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
+        if (value == null)
+            return;
+
+        config.setProperty(key, value);
+    }
+    
+    protected static void overrideWithEnv(Configuration config, String key,
+            String enviromentKey) {
+        String value = System.getenv(enviromentKey);
         if (value == null)
             return;
 

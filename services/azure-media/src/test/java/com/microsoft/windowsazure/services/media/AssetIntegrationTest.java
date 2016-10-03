@@ -18,8 +18,12 @@ package com.microsoft.windowsazure.services.media;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -29,6 +33,7 @@ import java.util.UUID;
 
 import org.junit.Test;
 
+import com.microsoft.windowsazure.core.utils.Base64;
 import com.microsoft.windowsazure.exception.ServiceException;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
@@ -321,7 +326,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
 
     @Test
     public void linkAssetContentKeySuccess() throws ServiceException,
-            URISyntaxException {
+            URISyntaxException, CertificateException {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "linkAssetContentKeySuccess";
@@ -333,7 +338,17 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
         String contentKeyId = String
                 .format("nb:kid:UUID:%s", UUID.randomUUID());
-        String encryptedContentKey = "dummyEncryptedContentKey";
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         service.create(ContentKey.create(contentKeyId,
                 ContentKeyType.StorageEncryption, encryptedContentKey)
                 .setProtectionKeyId(protectionKeyId));
@@ -416,7 +431,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     
     @Test
     public void unlinkAssetContentKeySuccess() throws ServiceException,
-            URISyntaxException {
+            URISyntaxException, CertificateException {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "linkAssetContentKeySuccess";
@@ -428,7 +443,17 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
         String contentKeyId = String
                 .format("nb:kid:UUID:%s", UUID.randomUUID());
-        String encryptedContentKey = "dummyEncryptedContentKey";
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         service.create(ContentKey.create(contentKeyId,
                 ContentKeyType.StorageEncryption, encryptedContentKey)
                 .setProtectionKeyId(protectionKeyId));
@@ -445,7 +470,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     
     @Test
     public void linkAssetDeliveryPolicySuccess() throws ServiceException,
-            URISyntaxException {
+            URISyntaxException, CertificateException {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "linkAssetContentKeySuccess";
@@ -462,7 +487,17 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
         String contentKeyId = String
                 .format("nb:kid:UUID:%s", UUID.randomUUID());
-        String encryptedContentKey = "dummyEncryptedContentKey";
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         service.create(ContentKey.create(contentKeyId,
                 ContentKeyType.StorageEncryption, encryptedContentKey)
                 .setProtectionKeyId(protectionKeyId));        
@@ -482,7 +517,7 @@ public class AssetIntegrationTest extends IntegrationTestBase {
     
     @Test
     public void unlinkAssetDeliveryPolicySuccess() throws ServiceException,
-            URISyntaxException {        
+            URISyntaxException, CertificateException {
         // Arrange
         String originalTestName = testAssetPrefix
                 + "unlinkAssetContentKeySuccess";
@@ -499,7 +534,17 @@ public class AssetIntegrationTest extends IntegrationTestBase {
                 .getProtectionKeyId(ContentKeyType.StorageEncryption));
         String contentKeyId = String
                 .format("nb:kid:UUID:%s", UUID.randomUUID());
-        String encryptedContentKey = "dummyEncryptedContentKey";
+
+        // Create a new ContentKey (secure random)
+        byte[] contentKeyData = new byte[16];
+        EncryptionUtils.eraseKey(contentKeyData);
+        String protectionKey = service.action(ProtectionKey.getProtectionKey(protectionKeyId));
+        X509Certificate certificate = (X509Certificate) CertificateFactory.getInstance("X.509")
+                .generateCertificate(new ByteArrayInputStream(Base64.decode(protectionKey)));
+
+        byte[] encryptedContentKeyBin = EncryptionUtils.encryptSymmetricKeyData(certificate, contentKeyData);
+        String encryptedContentKey = Base64.encode(encryptedContentKeyBin);
+
         service.create(ContentKey.create(contentKeyId,
                 ContentKeyType.StorageEncryption, encryptedContentKey)
                 .setProtectionKeyId(protectionKeyId));        

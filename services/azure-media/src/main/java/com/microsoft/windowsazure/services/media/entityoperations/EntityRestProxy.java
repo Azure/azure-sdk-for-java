@@ -295,8 +295,6 @@ public abstract class EntityRestProxy implements EntityContract {
             webResource = webResource.entity(
                     entityActionOperation.getRequestContents(),
                     entityActionOperation.getContentType());
-        } else {
-            webResource = webResource.header("Content-Length", "0");
         }
         return webResource.method(entityActionOperation.getVerb(),
                 ClientResponse.class);

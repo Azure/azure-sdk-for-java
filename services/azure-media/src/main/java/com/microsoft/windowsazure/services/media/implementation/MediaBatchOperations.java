@@ -233,7 +233,7 @@ public class MediaBatchOperations {
                 changeSetId);
         MimeBodyPart mimeBodyPart = createMimeBodyPart(changeSets, changeSetId);
 
-        MimeMultipart mimeMultipart = new MimeMultipart(
+        MimeMultipart mimeMultipart = new BatchMimeMultipart(
                 new SetBoundaryMultipartDataSource(batchId));
         mimeMultipart.addBodyPart(mimeBodyPart);
         return mimeMultipart;
