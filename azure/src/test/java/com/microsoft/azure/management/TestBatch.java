@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure;
+package com.microsoft.azure.management;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.management.batch.BatchAccount;

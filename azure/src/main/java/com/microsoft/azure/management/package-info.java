@@ -5,4 +5,4 @@
 /**
  * This package contains the Azure rollup client.
  */
-package com.microsoft.azure;
+package com.microsoft.azure.management;

@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure;
+package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
