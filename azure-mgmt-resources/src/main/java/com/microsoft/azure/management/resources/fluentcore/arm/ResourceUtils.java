@@ -21,7 +21,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String groupFromResourceId(String id) {
-        return extractFromResourceId(id, "resourceGroups");
+        return extractFromResourceId(id, "resource[gG]roups");
     }
 
     /**

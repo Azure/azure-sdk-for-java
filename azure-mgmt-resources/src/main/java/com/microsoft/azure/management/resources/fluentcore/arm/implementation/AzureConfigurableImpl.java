@@ -70,7 +70,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     @SuppressWarnings("unchecked")
     @Override
     public T withMaxIdleConnections(int maxIdleConnections) {
-        this.restClientBuilder = restClientBuilder.withMaxIdleConnections(5);
+        this.restClientBuilder = restClientBuilder.withMaxIdleConnections(maxIdleConnections);
         return (T) this;
     }
 

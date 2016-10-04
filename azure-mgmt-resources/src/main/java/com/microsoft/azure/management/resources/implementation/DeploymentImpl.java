@@ -24,8 +24,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import org.joda.time.DateTime;
 import rx.Observable;
-import rx.functions.Func1;
-import rx.schedulers.Schedulers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -184,6 +182,7 @@ final class DeploymentImpl extends
         this.creatableResourceGroup = this.resourceManager.resourceGroups()
                 .define(resourceGroupName)
                 .withRegion(region);
+        addCreatableDependency(this.creatableResourceGroup);
         this.resourceGroupName = resourceGroupName;
         return this;
     }
@@ -191,6 +190,7 @@ final class DeploymentImpl extends
     @Override
     public DeploymentImpl withNewResourceGroup(Creatable<ResourceGroup> resourceGroupDefinition) {
         this.resourceGroupName = resourceGroupDefinition.name();
+        addCreatableDependency(resourceGroupDefinition);
         this.creatableResourceGroup = resourceGroupDefinition;
         return this;
     }
@@ -268,6 +268,9 @@ final class DeploymentImpl extends
 
     @Override
     public DeploymentImpl beginCreate() {
+        if (creatableResourceGroup != null) {
+            creatableResourceGroup.create();
+        }
         DeploymentInner inner = new DeploymentInner()
                 .withProperties(new DeploymentProperties());
         inner.properties().withMode(mode());
@@ -277,24 +280,6 @@ final class DeploymentImpl extends
         inner.properties().withParametersLink(parametersLink());
         client.beginCreateOrUpdate(resourceGroupName(), name(), inner);
         return this;
-    }
-
-    @Override
-    public Observable<Deployment> createAsync() {
-        Observable<Deployment> observable;
-        if (this.creatableResourceGroup != null) {
-            observable = this.creatableResourceGroup.createAsync()
-                    .subscribeOn(Schedulers.io())
-                    .flatMap(new Func1<ResourceGroup, Observable<Deployment>>() {
-                        @Override
-                        public Observable<Deployment> call(ResourceGroup resourceGroup) {
-                            return createResourceAsync();
-                        }
-                    });
-        } else {
-            observable = createResourceAsync();
-        }
-        return observable;
     }
 
     @Override
@@ -332,7 +317,8 @@ final class DeploymentImpl extends
 
     @Override
     public Deployment refresh() {
-        return null;
+        setInner(client.get(resourceGroupName(), name()));
+        return this;
     }
 
     @Override
