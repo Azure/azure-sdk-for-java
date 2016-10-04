@@ -18,13 +18,13 @@ public class ClientRequestIdInterceptor extends RequestInterceptor {
                 Class<?> c = request.getClass();
 
                 try {
-                    Method clientRequestIdMethod = c.getMethod("setClientRequestId", new Class[]{String.class});
+                    Method clientRequestIdMethod = c.getMethod("withClientRequestId", new Class[]{String.class});
                     if (clientRequestIdMethod != null) {
                         String clientRequestId = UUID.randomUUID().toString();
                         clientRequestIdMethod.invoke(request, clientRequestId);
                     }
 
-                    Method returnClientRequestIdMethod = c.getMethod("setReturnClientRequestId", new Class[]{Boolean.class});
+                    Method returnClientRequestIdMethod = c.getMethod("withReturnClientRequestId", new Class[]{Boolean.class});
                     if (returnClientRequestIdMethod != null) {
                         returnClientRequestIdMethod.invoke(request, true);
                     }
