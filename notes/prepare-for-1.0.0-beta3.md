@@ -13,9 +13,9 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 2 
     <th>Ref</th>
   </tr>
   <tr>
-    <td>import com.microsoft.azure.Azure</td>
-    <td>import com.microsoft.azure.management.Azure</td>
-    <td>#1144</td>
+    <td><code>import com.microsoft.azure.Azure</code></td>
+    <td><code>import com.microsoft.azure.management.Azure</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1144">#1144</a></td>
   </tr>
 </table>
 
@@ -84,28 +84,28 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 2 
     <th>Ref</th>
   </tr>
   <tr>
-    <td>List</td>
-    <td>Map</td>
-    <td>NetworkInterface.ipConfigurations()</td>
-    <td>#1055</td>
+    <td><code>List</code></td>
+    <td><code>Map</code></td>
+    <td><code>NetworkInterface.ipConfigurations()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1055">#1055</a></td>
   </tr>
   <tr>
-    <td>List</td>
-    <td>Map</td>
-    <td>VirtualMachine.resources()</td>
-    <td>#1045</td>
+    <td><code>List</code></td>
+    <td><code>Map</code></td>
+    <td><code>VirtualMachine.resources()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1045">#1045</a></td>
   </tr>
   <tr>
-    <td>List</td>
-    <td>Map</td>
-    <td>NetworkSecurityGroup.securityRules()</td>
-    <td>#970</td>
+    <td><code>List</code></td>
+    <td><code>Map</code></td>
+    <td><code>NetworkSecurityGroup.securityRules()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/970">#970</a></td>
   </tr>
   <tr>
-    <td>List</td>
-    <td>Map</td>
-    <td>NetworkSecurityGroup.defaultSecurityRules()</td>
-    <td>#970</td>
+    <td><code>List</code></td>
+    <td><code>Map</code></td>
+    <td><code>NetworkSecurityGroup.defaultSecurityRules()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/970">#970</a></td>
   </tr>
 </table>
 
@@ -120,29 +120,29 @@ There are alternate ways to achieve the same thing:
     <th>Ref</th>
   </tr>
   <tr>
-    <td>NetworkInterface.primarySubnetId()</td>
-    <td>NetworkInterface.primaryIpConfiguration().subnetId()</td>
-    <td>#1090</td>
+    <td><code>NetworkInterface.primarySubnetId()</code></td>
+    <td><code>NetworkInterface.primaryIpConfiguration().subnetId()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
   </tr>
   <tr>
-    <td>NicIpConfiguration.subnetId()</td>
-    <td>Use NicIpConfiguration.subnetName() for the name of the subnet, and .networkId() for its parent virtual network ID. Or simply call .getNetwork() for the actual associated Network instance and look up the subnet using Network.subnets().get(subnetName)</td>
-    <td>#1090</td>
+    <td><code>NicIpConfiguration.subnetId()</code></td>
+    <td>Use <code>NicIpConfiguration.subnetName()</code> for the name of the subnet, and <code>.networkId()</code> for its parent virtual network ID. Or simply call <code>.getNetwork()</code> for the actual associated Network instance and look up the subnet using <code>Network.subnets().get(subnetName)</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
   </tr>
   <tr>
-    <td>NetworkInterface.primaryPublicIpAddress()</td>
-    <td>NetworkInterface.primaryIpConfiguration().getPublicIpAddress()</td>
-    <td>#1090</td>
+    <td><code>NetworkInterface.primaryPublicIpAddress()</code></td>
+    <td><code>NetworkInterface.primaryIpConfiguration().getPublicIpAddress()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
   </tr>
   <tr>
-    <td>StorageAccount.keys()</td>
-    <td>StorageAccount.getKeys()</td>
-    <td>#1090</td>
+    <td><code>StorageAccount.keys()</code></td>
+    <td><code>StorageAccount.getKeys()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
   </tr>
 </table>
 
 # Add Property #
 
-Add another property graphURL=https\://graph.windows.net/ to the experimental Azure Auth file #1107.
+Add another property <code>graphURL=https\://graph.windows.net/</code> to the experimental Azure Auth file [#1107](https://github.com/Azure/azure-sdk-for-java/pull/1107).
 
 
