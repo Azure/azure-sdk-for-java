@@ -7,12 +7,13 @@
 package com.microsoft.azure.management.resources.fluentcore.model;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
 /**
- * The final stage of the resource definition, at which it can be create, using {@link #create()}.
+ * The final stage of the resource definition, at which it can be created using create().
  *
  * @param <T> the fluent type of the resource to be created
  */
@@ -28,6 +29,7 @@ public interface Creatable<T> extends Indexable {
      *
      * @return the create resource
      */
+    @Method
     T create();
 
     /**
@@ -37,6 +39,7 @@ public interface Creatable<T> extends Indexable {
      * @param callback the callback to handle success and failure
      * @return a handle to cancel the request
      */
+    @Method
     ServiceCall<T> createAsync(final ServiceCallback<T> callback);
 
     /**
@@ -45,5 +48,6 @@ public interface Creatable<T> extends Indexable {
      *
      * @return an observable of the request
      */
+    @Method
     Observable<T> createAsync();
 }

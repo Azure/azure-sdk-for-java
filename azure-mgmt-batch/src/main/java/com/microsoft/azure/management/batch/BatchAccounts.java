@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.batch;
 
-import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  *  Entry point to batch account management API.
  */
-@LangDefinition(ContainerName = "~/")
+@Fluent
 public interface BatchAccounts extends
         SupportsCreating<BatchAccount.DefinitionStages.Blank>,
         SupportsListing<BatchAccount>,

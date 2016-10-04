@@ -6,11 +6,14 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.AddressSpace;
+import com.microsoft.azure.management.network.DhcpOptions;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +83,14 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withDnsServer(String ipAddress) {
+        if (this.inner().dhcpOptions() == null) {
+            this.inner().withDhcpOptions(new DhcpOptions());
+        }
+
+        if (this.inner().dhcpOptions().dnsServers() == null) {
+            this.inner().dhcpOptions().withDnsServers(new ArrayList<String>());
+        }
+
         this.inner().dhcpOptions().dnsServers().add(ipAddress);
         return this;
     }
@@ -108,6 +119,14 @@ class NetworkImpl
 
     @Override
     public NetworkImpl withAddressSpace(String cidr) {
+        if (this.inner().addressSpace() == null) {
+            this.inner().withAddressSpace(new AddressSpace());
+        }
+
+        if (this.inner().addressSpace().addressPrefixes() == null) {
+            this.inner().addressSpace().withAddressPrefixes(new ArrayList<String>());
+        }
+
         this.inner().addressSpace().addressPrefixes().add(cidr);
         return this;
     }
@@ -123,12 +142,26 @@ class NetworkImpl
 
     @Override
     public List<String> addressSpaces() {
-        return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
+        List<String> addressSpaces = new ArrayList<String>();
+        if (this.inner().addressSpace() == null) {
+            return Collections.unmodifiableList(addressSpaces);
+        } else if (this.inner().addressSpace().addressPrefixes() == null) {
+            return Collections.unmodifiableList(addressSpaces);
+        } else {
+            return Collections.unmodifiableList(this.inner().addressSpace().addressPrefixes());
+        }
     }
 
     @Override
-    public List<String> dnsServerIPs() {
-        return Collections.unmodifiableList(this.inner().dhcpOptions().dnsServers());
+    public List<String> dnsServerIps() {
+        List<String> ips = new ArrayList<String>();
+        if (this.inner().dhcpOptions() == null) {
+            return Collections.unmodifiableList(ips);
+        } else if (this.inner().dhcpOptions().dnsServers() == null) {
+            return Collections.unmodifiableList(ips);
+        } else {
+            return this.inner().dhcpOptions().dnsServers();
+        }
     }
 
     @Override

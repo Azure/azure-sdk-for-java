@@ -33,7 +33,7 @@ class BackendImpl
         Backend.UpdateDefinition<LoadBalancer.Update>,
         Backend.Update {
 
-    protected BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
+    BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 

@@ -24,7 +24,7 @@ class SubnetImpl
         Subnet.UpdateDefinition<Network.Update>,
         Subnet.Update {
 
-    protected SubnetImpl(SubnetInner inner, NetworkImpl parent) {
+    SubnetImpl(SubnetInner inner, NetworkImpl parent) {
         super(inner, parent);
     }
 
@@ -40,7 +40,7 @@ class SubnetImpl
     }
 
     @Override
-    public NetworkSecurityGroup networkSecurityGroup() {
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
         SubResource nsgResource = this.inner().networkSecurityGroup();
         if (nsgResource == null) {
             return null;

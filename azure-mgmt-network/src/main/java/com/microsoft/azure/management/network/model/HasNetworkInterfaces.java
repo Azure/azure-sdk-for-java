@@ -22,7 +22,7 @@ public interface HasNetworkInterfaces {
      *
      * @return the primary network interface associated with this resource
      */
-    NetworkInterface primaryNetworkInterface();
+    NetworkInterface getPrimaryNetworkInterface();
 
     /**
      * @return the resource id of the primary network interface associated with this resource

@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -20,7 +20,7 @@ import java.util.List;
  *  - Add three users (user names and passwords for windows, SSH keys for Linux)
  *  - Resets user credentials
  *  - Remove a user
- *  - Install MySQL on Linux | something significant on Windows
+ *  - Install MySQL on Linux | Choco and MySQL on Windows
  *  - Remove extensions
  */
 public final class ManageVirtualMachineExtension {
@@ -32,7 +32,7 @@ public final class ManageVirtualMachineExtension {
 
         final String linuxVmName = ResourceNamer.randomResourceName("lVM", 10);
         final String windowsVmName = ResourceNamer.randomResourceName("wVM", 10);
-        final String rgName = ResourceNamer.randomResourceName("rgCOMV", 15);
+        final String rgName = ResourceNamer.randomResourceName("rgCOVE", 15);
         final String pipDnsLabelLinuxVM = ResourceNamer.randomResourceName("rgPip1", 25);
         final String pipDnsLabelWindowsVM = ResourceNamer.randomResourceName("rgPip2", 25);
 
@@ -56,9 +56,19 @@ public final class ManageVirtualMachineExtension {
         final String linuxCustomScriptExtensionVersionName = "1.4";
 
         final String mySqlLinuxInstallScript = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/4397e808d07df60ff3cdfd1ae40999f0130eb1b3/mysql-standalone-server-ubuntu/scripts/install_mysql_server_5.6.sh";
-        final String mySqlScriptInstallCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
-        final List<String> fileUris = new ArrayList<>();
-        fileUris.add(mySqlLinuxInstallScript);
+        final String installMySQLLinuxCommand = "bash install_mysql_server_5.6.sh Abc.123x(";
+        final List<String> linuxScriptFileUris = new ArrayList<>();
+        linuxScriptFileUris.add(mySqlLinuxInstallScript);
+
+        final String windowsCustomScriptExtensionName = "CustomScriptExtension";
+        final String windowsCustomScriptExtensionPublisherName = "Microsoft.Compute";
+        final String windowsCustomScriptExtensionTypeName = "CustomScriptExtension";
+        final String windowsCustomScriptExtensionVersionName = "1.7";
+
+        final String mySqlWindowsInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-samples/src/main/resources/installMySQL.ps1";
+        final String installMySQLWindowsCommand = "powershell.exe -ExecutionPolicy Unrestricted -File installMySQL.ps1";
+        final List<String> windowsScriptFileUris = new ArrayList<>();
+        windowsScriptFileUris.add(mySqlWindowsInstallScript);
 
         final String linuxVmAccessExtensionName = "VMAccessForLinux";
         final String linuxVmAccessExtensionPublisherName = "Microsoft.OSTCExtensions";
@@ -182,8 +192,8 @@ public final class ManageVirtualMachineExtension {
                             .withType(linuxCustomScriptExtensionTypeName)
                             .withVersion(linuxCustomScriptExtensionVersionName)
                             .withAutoUpgradeMinorVersionEnabled()
-                            .withPublicSetting("fileUris", fileUris)
-                            .withPublicSetting("commandToExecute", mySqlScriptInstallCommand)
+                            .withPublicSetting("fileUris", linuxScriptFileUris)
+                            .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
                         .attach()
                         .apply();
 
@@ -201,7 +211,7 @@ public final class ManageVirtualMachineExtension {
                 Utils.print(linuxVM);
 
                 //=============================================================
-                // Create a Windows VM with admin user
+                // Create a Windows VM with admin user and install choco package manager and MySQL using custom script
 
                 System.out.println("Creating a Windows VM");
 
@@ -215,6 +225,14 @@ public final class ManageVirtualMachineExtension {
                         .withAdminUserName(firstWindowsUserName)
                         .withPassword(firstWindowsUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .defineNewExtension(windowsCustomScriptExtensionName)
+                            .withPublisher(windowsCustomScriptExtensionPublisherName)
+                            .withType(windowsCustomScriptExtensionTypeName)
+                            .withVersion(windowsCustomScriptExtensionVersionName)
+                            .withAutoUpgradeMinorVersionEnabled()
+                            .withPublicSetting("fileUris", windowsScriptFileUris)
+                            .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
+                        .attach()
                         .create();
 
                 System.out.println("Created a Windows VM" + windowsVM.id());
@@ -260,7 +278,7 @@ public final class ManageVirtualMachineExtension {
                 System.out.println("Password of first user of Windows VM has been updated");
 
                 //=============================================================
-                // Removes the extensions from Linux VM
+                // Removes the extensions from Windows VM
 
                 windowsVM.update()
                         .withoutExtension(windowsVmAccessExtensionName)

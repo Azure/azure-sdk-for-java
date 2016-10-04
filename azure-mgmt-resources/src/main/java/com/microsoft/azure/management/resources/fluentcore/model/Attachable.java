@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.model;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 
 /**
  * The final stage of the child object definition, at which it can be attached to the parent, using {@link Attachable#attach()}.
@@ -19,6 +20,7 @@ public interface Attachable<ParentT> {
      * Attaches this child object's definition to its parent's definition.
      * @return the next stage of the parent object's definition
      */
+    @Method
     ParentT attach();
 
     /**
@@ -31,6 +33,7 @@ public interface Attachable<ParentT> {
          * Attaches the child definition to the parent resource definiton.
          * @return the next stage of the parent definition
          */
+        @Method
         ParentT attach();
     }
 
@@ -43,6 +46,7 @@ public interface Attachable<ParentT> {
          * Attaches the child definition to the parent resource definition.
          * @return the next stage of the parent definition
          */
+        @Method
         ParentT attach();
     }
 
@@ -56,6 +60,7 @@ public interface Attachable<ParentT> {
          * Attaches the child definition to the parent resource update.
          * @return the next stage of the parent definition
          */
+        @Method
         ParentT attach();
     }
 
@@ -68,6 +73,7 @@ public interface Attachable<ParentT> {
          * Attaches the child definition to the parent resource update.
          * @return the next stage of the parent definition
          */
+        @Method
         ParentT attach();
     }
 }

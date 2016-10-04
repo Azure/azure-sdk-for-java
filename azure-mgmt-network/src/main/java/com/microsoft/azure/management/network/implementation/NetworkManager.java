@@ -5,17 +5,16 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.RestClient;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure network management.
@@ -46,8 +45,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
      * @param subscriptionId the subscription UUID
      * @return the NetworkManager
      */
-    public static NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new NetworkManager(AzureEnvironment.AZURE.newRestClientBuilder()
+    public static NetworkManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new NetworkManager(credentials.getEnvironment().newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
@@ -74,7 +73,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
          * @param subscriptionId the subscription UUID
          * @return the interface exposing network management API entry points that work across subscriptions
          */
-        NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
+        NetworkManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -84,7 +83,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         extends AzureConfigurableImpl<Configurable>
         implements Configurable {
 
-        public NetworkManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+        public NetworkManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
             return NetworkManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }

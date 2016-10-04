@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -113,6 +114,7 @@ public interface Deployment extends
      *
      * @return the export result
      */
+    @Method
     DeploymentExportResult exportTemplate();
 
     /**
@@ -236,6 +238,7 @@ public interface Deployment extends
          * deployment in the cloud, but exposing additional optional inputs to specify.
          */
         interface WithCreate extends Creatable<Deployment> {
+            @Method
             Deployment beginCreate();
         }
     }

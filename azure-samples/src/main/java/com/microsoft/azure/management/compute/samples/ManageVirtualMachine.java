@@ -7,7 +7,7 @@
 
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -133,7 +133,7 @@ public final class ManageVirtualMachine {
 
                 //=============================================================
                 // Update - Resize (expand) the data disk
-                // First, deallocate teh virtual machine and then proceed with resize
+                // First, deallocate the virtual machine and then proceed with resize
 
                 System.out.println("De-allocating VM: " + windowsVM.id());
 
@@ -200,7 +200,7 @@ public final class ManageVirtualMachine {
                 System.out.println("Powered OFF VM: " + windowsVM.id() + "; state = " + windowsVM.powerState());
 
                 // Get the network where Windows VM is hosted
-                Network network = windowsVM.primaryNetworkInterface().primaryIpConfiguration().getNetwork();
+                Network network = windowsVM.getPrimaryNetworkInterface().primaryIpConfiguration().getNetwork();
 
 
                 //=============================================================

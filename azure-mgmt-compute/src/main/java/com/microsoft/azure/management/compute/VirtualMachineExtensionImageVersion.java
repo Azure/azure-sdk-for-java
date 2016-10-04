@@ -33,5 +33,5 @@ public interface VirtualMachineExtensionImageVersion extends
     /**
      * @return virtual machine extension image this version represents
      */
-    VirtualMachineExtensionImage image();
+    VirtualMachineExtensionImage getImage();
 }

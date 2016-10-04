@@ -7,7 +7,7 @@
 
 package com.microsoft.azure.management.network.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
@@ -81,7 +81,7 @@ public final class ManageVirtualNetwork {
                 NetworkSecurityGroup backEndSubnetNsg = azure.networkSecurityGroups()
                         .define(vnet1BackEndSubnetNsgName)
                         .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
+                        .withNewResourceGroup(rgName)
                         .defineRule("DenyInternetInComing")
                             .denyInbound()
                             .fromAddress("INTERNET")

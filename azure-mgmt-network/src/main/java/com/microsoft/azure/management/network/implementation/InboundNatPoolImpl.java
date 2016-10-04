@@ -26,7 +26,7 @@ class InboundNatPoolImpl
         InboundNatPool.UpdateDefinition<LoadBalancer.Update>,
         InboundNatPool.Update {
 
-    protected InboundNatPoolImpl(InboundNatPoolInner inner, LoadBalancerImpl parent) {
+    InboundNatPoolImpl(InboundNatPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 

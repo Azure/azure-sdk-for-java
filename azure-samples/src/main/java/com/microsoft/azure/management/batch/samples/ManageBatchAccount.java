@@ -7,7 +7,7 @@
 
 package com.microsoft.azure.management.batch.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.batch.AccountKeyType;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
@@ -148,6 +148,18 @@ public final class ManageBatchAccount {
                 // Synchronize storage account keys with batch account
 
                 batchAccount.synchronizeAutoStorageKeys();
+
+                // ============================================================
+                // Update name of application.
+                batchAccount
+                    .update()
+                        .updateApplication(applicationName)
+                        .withDisplayName("New application display name")
+                        .parent()
+                    .apply();
+
+                batchAccount.refresh();
+                Utils.print(batchAccount);
 
                 // ============================================================
                 // Create another batch account

@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.compute.samples;
 
-import com.microsoft.azure.Azure;
+import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;
@@ -52,7 +52,7 @@ public final class ListVirtualMachineExtensionImages {
 
             System.out.println("US East data center: printing list of \n"
                     + "a) Publishers and\n"
-                    + "b) virtual machine images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
+                    + "b) virtual machine extension images published by Microsoft.OSTCExtensions and Microsoft.Azure.Extensions");
             System.out.println("=======================================================");
             System.out.println("\n");
 
@@ -72,7 +72,7 @@ public final class ListVirtualMachineExtensionImages {
 
                     for (VirtualMachineExtensionImageType imageType : chosenPublisher.extensionTypes().list()) {
                         for (VirtualMachineExtensionImageVersion version: imageType.versions().list()) {
-                            VirtualMachineExtensionImage image = version.image();
+                            VirtualMachineExtensionImage image = version.getImage();
                                 System.out.println("Image - " + chosenPublisher.name() + "/"
                                         + image.typeName() + "/"
                                         + image.versionName());

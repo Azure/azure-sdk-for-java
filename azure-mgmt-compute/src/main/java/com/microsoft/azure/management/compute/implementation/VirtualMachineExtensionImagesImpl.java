@@ -50,7 +50,7 @@ class VirtualMachineExtensionImagesImpl
                 new PagedListConverter<VirtualMachineExtensionImageVersion, VirtualMachineExtensionImage>() {
                     @Override
                     public VirtualMachineExtensionImage typeConvert(VirtualMachineExtensionImageVersion virtualMachineExtensionImageVersion) {
-                        return virtualMachineExtensionImageVersion.image();
+                        return virtualMachineExtensionImageVersion.getImage();
                     }
                 };
 

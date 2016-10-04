@@ -98,8 +98,6 @@ class VirtualMachineImpl
     private NetworkInterface existingPrimaryNetworkInterfaceToAssociate;
     // reference to a list of existing network interfaces that needs to be used as virtual machine's secondary network interface
     private List<NetworkInterface> existingSecondaryNetworkInterfacesToAssociate;
-    // Cached related resources
-    private NetworkInterface primaryNetworkInterface;
     private VirtualMachineInstanceView virtualMachineInstanceView;
     private boolean isMarketplaceLinuxImage;
     // The data disks associated with the virtual machine
@@ -751,22 +749,18 @@ class VirtualMachineImpl
     }
 
     @Override
-    public NetworkInterface primaryNetworkInterface() {
-        if (this.primaryNetworkInterface == null) {
-            String primaryNicId = primaryNetworkInterfaceId();
-            this.primaryNetworkInterface = this.networkManager.networkInterfaces().getById(primaryNicId);
-        }
-        return this.primaryNetworkInterface;
+    public NetworkInterface getPrimaryNetworkInterface() {
+        return this.networkManager.networkInterfaces().getById(primaryNetworkInterfaceId());
     }
 
     @Override
     public PublicIpAddress getPrimaryPublicIpAddress() {
-        return this.primaryNetworkInterface().primaryIpConfiguration().getPublicIpAddress();
+        return this.getPrimaryNetworkInterface().primaryIpConfiguration().getPublicIpAddress();
     }
 
     @Override
-    public String primaryPublicIpAddressId() {
-        return this.primaryNetworkInterface().primaryIpConfiguration().publicIpAddressId();
+    public String getPrimaryPublicIpAddressId() {
+        return this.getPrimaryNetworkInterface().primaryIpConfiguration().publicIpAddressId();
     }
 
     @Override
@@ -1190,7 +1184,6 @@ class VirtualMachineImpl
     }
 
     private void clearCachedRelatedResources() {
-        this.primaryNetworkInterface = null;
         this.virtualMachineInstanceView = null;
     }
 }
