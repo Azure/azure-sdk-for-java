@@ -148,7 +148,6 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td>Network</td>
     <td><ul style="list-style-type:circle">
 
-<li><a href="https://github.com/Azure-Samples/storage-java-manage-storage-accounts">Manage storage accounts</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network">Manage virtual network</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-interface">Manage network interface</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-security-group">Manage network security group</a></li>
