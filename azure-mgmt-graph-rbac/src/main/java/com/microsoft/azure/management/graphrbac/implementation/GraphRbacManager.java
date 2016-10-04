@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.graphrbac.implementation;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RequestIdHeaderInterceptor;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
@@ -13,7 +14,6 @@ import com.microsoft.azure.management.graphrbac.ServicePrincipals;
 import com.microsoft.azure.management.graphrbac.Users;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure resource management.
@@ -30,26 +30,11 @@ public final class GraphRbacManager {
      * Creates an instance of GraphRbacManager that exposes resource management API entry points.
      *
      * @param credentials the credentials to use
-     * @param tenantId the tenantId in Active Directory
-     * @return the GraphRbacManager instance
-     */
-    public static GraphRbacManager authenticate(ServiceClientCredentials credentials, String tenantId) {
-        return new GraphRbacManager(new RestClient.Builder()
-                .withBaseUrl("https://graph.windows.net")
-                .withInterceptor(new RequestIdHeaderInterceptor())
-                .withCredentials(credentials)
-                .build(), tenantId);
-    }
-
-    /**
-     * Creates an instance of GraphRbacManager that exposes resource management API entry points.
-     *
-     * @param credentials the credentials to use
      * @return the GraphRbacManager instance
      */
     public static GraphRbacManager authenticate(AzureTokenCredentials credentials) {
         return new GraphRbacManager(new RestClient.Builder()
-                .withBaseUrl("https://graph.windows.net")
+                .withBaseUrl(credentials.getEnvironment().getGraphEndpoint())
                 .withInterceptor(new RequestIdHeaderInterceptor())
                 .withCredentials(credentials)
                 .build(), credentials.getDomain());
@@ -83,15 +68,6 @@ public final class GraphRbacManager {
          * Creates an instance of GraphRbacManager that exposes resource management API entry points.
          *
          * @param credentials the credentials to use
-         * @param tenantId the tenantId in Active Directory
-         * @return the interface exposing resource management API entry points that work across subscriptions
-         */
-        GraphRbacManager authenticate(ServiceClientCredentials credentials, String tenantId);
-
-        /**
-         * Creates an instance of GraphRbacManager that exposes resource management API entry points.
-         *
-         * @param credentials the credentials to use
          * @return the interface exposing resource management API entry points that work across subscriptions
          */
         GraphRbacManager authenticate(AzureTokenCredentials credentials);
@@ -103,16 +79,12 @@ public final class GraphRbacManager {
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         protected ConfigurableImpl() {
             super.restClientBuilder = new RestClient.Builder()
-                    .withBaseUrl("https://graph.windows.net")
+                    .withBaseUrl(AzureEnvironment.AZURE.getGraphEndpoint()) // default to public cloud
                     .withInterceptor(new RequestIdHeaderInterceptor());
         }
 
-        public GraphRbacManager authenticate(ServiceClientCredentials credentials, String tenantId) {
-            return GraphRbacManager.authenticate(buildRestClient(credentials), tenantId);
-        }
-
         public GraphRbacManager authenticate(AzureTokenCredentials credentials) {
-            return GraphRbacManager.authenticate(buildRestClient(credentials), credentials.getDomain());
+            return GraphRbacManager.authenticate(buildRestClientForGraph(credentials), credentials.getDomain());
         }
     }
 
