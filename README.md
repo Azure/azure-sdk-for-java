@@ -162,7 +162,8 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource-group">Manage resource groups</a></li>
 <li><a href="https://github.com/Azure-Samples/resources-java-manage-resource">Manage resources</a></li>
-<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a> - deploy resources with ARM templates (with progress). Link will become available as soon as the sample is ready</li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template">Deploy resources with ARM templates</a></li>
+<li><a href="https://github.com/Azure-Samples/resources-java-deploy-using-arm-template-with-progress">Deploy resources with ARM templates (with progress)</a></li>
 </ul></td>
   </tr>
   <tr>
