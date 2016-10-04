@@ -1,10 +1,14 @@
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.storage.StorageAccount;
+import org.apache.commons.codec.binary.Base64;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +21,56 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
     @AfterClass
     public static void cleanup() throws Exception {
     }
+
+    @Test
+    public void canEnableDiagnosticsExtension() throws Exception {
+        final String RG_NAME = ResourceNamer.randomResourceName("vmexttest", 15);
+        final String STORAGEACCOUNTNAME = ResourceNamer.randomResourceName("stg", 15);
+        final String LOCATION = "eastus";
+        final String VMNAME = "javavm";
+
+        // Creates a storage account
+        StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(STORAGEACCOUNTNAME)
+                .withRegion(LOCATION)
+                .withNewResourceGroup(RG_NAME)
+                .create();
+
+        // Create a Linux VM
+        //
+        VirtualMachine vm = computeManager.virtualMachines()
+                .define(VMNAME)
+                .withRegion(LOCATION)
+                .withExistingResourceGroup(RG_NAME)
+                .withNewPrimaryNetwork("10.0.0.0/28")
+                .withPrimaryPrivateIpAddressDynamic()
+                .withoutPrimaryPublicIpAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
+                .withRootUserName("Foo12")
+                .withPassword("BaR@12abc!")
+                .withSize(VirtualMachineSizeTypes.STANDARD_D3)
+                .withExistingStorageAccount(storageAccount)
+                .create();
+
+        final InputStream embeddedJsonConfig = VirtualMachineExtensionOperationsTests.class.getResourceAsStream("/linux_diagnostics_public_config.json");
+        String jsonConfig = ((new ObjectMapper()).readTree(embeddedJsonConfig)).toString();
+        jsonConfig = jsonConfig.replace("%VirtualMachineResourceId%", vm.id());
+
+        // Update Linux VM to enable Diagnostics
+        vm.update()
+                .defineNewExtension("LinuxDiagnostic")
+                .withPublisher("Microsoft.OSTCExtensions")
+                .withType("LinuxDiagnostic")
+                .withVersion("2.3")
+                .withPublicSetting("ladCfg", new String(Base64.encodeBase64(jsonConfig.getBytes())))
+                .withPublicSetting("storageAccount", storageAccount.name())
+                .withProtectedSetting("storageAccountName", storageAccount.name())
+                .withProtectedSetting("storageAccountKey", storageAccount.getKeys().get(0).value())
+                .withProtectedSetting("storageAccountEndPoint", "https://core.windows.net:443/")
+                .attach()
+                .apply();
+    }
+
 
     @Test
     public void canResetPasswordUsingVMAccessExtension() throws Exception {
