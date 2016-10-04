@@ -2,6 +2,8 @@
 
 Steps to migrate code that uses Azure Management Libraries for Java from beta 2 to beta 3 …
 
+> If this note missed any breaking changes, please open a pull request.
+
 # Replace Import Statement #
 
 <table>
