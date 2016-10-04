@@ -22,7 +22,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                 if (detailLevel != null) {
                     Class<?> c = request.getClass();
                     try {
-                        Method selectMethod = c.getMethod("setSelect", new Class[]{String.class});
+                        Method selectMethod = c.getMethod("withSelect", new Class[]{String.class});
                         if (selectMethod != null) {
                             selectMethod.invoke(request, detailLevel.selectClause());
                         }
@@ -31,7 +31,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                     }
 
                     try {
-                        Method filterMethod = c.getMethod("setFilter", new Class[]{String.class});
+                        Method filterMethod = c.getMethod("withFilter", new Class[]{String.class});
                         if (filterMethod != null) {
                             filterMethod.invoke(request, detailLevel.filterClause());
                         }
@@ -40,7 +40,7 @@ public class DetailLevelInterceptor extends RequestInterceptor {
                     }
 
                     try {
-                        Method expandMethod = c.getMethod("setExpand", new Class[]{String.class});
+                        Method expandMethod = c.getMethod("withExpand", new Class[]{String.class});
                         if (expandMethod != null) {
                             expandMethod.invoke(request, detailLevel.expandClause());
                         }

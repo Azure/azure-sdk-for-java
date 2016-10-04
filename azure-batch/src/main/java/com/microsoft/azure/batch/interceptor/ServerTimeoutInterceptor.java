@@ -20,7 +20,7 @@ public class ServerTimeoutInterceptor extends RequestInterceptor {
             public void modify(Object request) {
                 Class<?> c = request.getClass();
                 try {
-                    Method timeoutMethod = c.getMethod("setTimeout", new Class[]{Integer.class});
+                    Method timeoutMethod = c.getMethod("withTimeout", new Class[]{Integer.class});
                     if (timeoutMethod != null) {
                         timeoutMethod.invoke(request, serverTimeout);
                     }
