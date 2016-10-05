@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -21,7 +22,7 @@ public class SubscriptionsTests {
                                 System.getenv("client-id"),
                                 System.getenv("domain"),
                                 System.getenv("secret"),
-                                null)
+                                AzureEnvironment.AZURE)
                 );
     }
 

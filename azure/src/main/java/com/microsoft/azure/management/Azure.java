@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.RestClient;
@@ -42,7 +41,6 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,20 +58,6 @@ public final class Azure {
     private final String subscriptionId;
 
     /**
-     * Authenticate to Azure using a credentials object.
-     *
-     * @param credentials the credentials object
-     * @param tenantId the tenantId in Active Directory
-     * @return the authenticated Azure client
-     */
-    public static Authenticated authenticate(ServiceClientCredentials credentials, String tenantId) {
-        return new AuthenticatedImpl(
-                AzureEnvironment.AZURE.newRestClientBuilder()
-                        .withCredentials(credentials)
-                        .build(), tenantId);
-    }
-
-    /**
      * Authenticate to Azure using an Azure credentials object.
      *
      * @param credentials the credentials object
@@ -81,7 +65,7 @@ public final class Azure {
      */
     public static Authenticated authenticate(AzureTokenCredentials credentials) {
         return new AuthenticatedImpl(
-                AzureEnvironment.AZURE.newRestClientBuilder()
+                credentials.getEnvironment().newRestClientBuilder()
                         .withCredentials(credentials)
                         .build(), credentials.getDomain());
     }
@@ -104,7 +88,7 @@ public final class Azure {
      */
     public static Authenticated authenticate(File credentialsFile) throws IOException {
         ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credentialsFile);
-        return new AuthenticatedImpl(AzureEnvironment.AZURE.newRestClientBuilder()
+        return new AuthenticatedImpl(credentials.getEnvironment().newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), credentials.getDomain()).withDefaultSubscription(credentials.defaultSubscriptionId());
     }
@@ -138,15 +122,6 @@ public final class Azure {
          * Authenticates API access based on the provided credentials.
          *
          * @param credentials The credentials to authenticate API access with
-         * @param tenantId the tenantId in Active Directory
-         * @return the authenticated Azure client
-         */
-        Authenticated authenticate(ServiceClientCredentials credentials, String tenantId);
-
-        /**
-         * Authenticates API access based on the provided credentials.
-         *
-         * @param credentials The credentials to authenticate API access with
          * @return the authenticated Azure client
          */
         Authenticated authenticate(AzureTokenCredentials credentials);
@@ -166,11 +141,6 @@ public final class Azure {
      * The implementation for {@link Configurable}.
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        @Override
-        public Authenticated authenticate(ServiceClientCredentials credentials, String tenantId) {
-            return Azure.authenticate(buildRestClient(credentials), tenantId);
-        }
-
         @Override
         public Authenticated authenticate(AzureTokenCredentials credentials) {
             return Azure.authenticate(buildRestClient(credentials), credentials.getDomain());

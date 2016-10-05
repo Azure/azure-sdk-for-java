@@ -1,13 +1,12 @@
 package com.microsoft.azure.management.batch.implementation;
 
-import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure Batch Account resource management.
@@ -42,8 +41,8 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
      * @param subscriptionId the subscription
      * @return the BatchManager
      */
-    public static BatchManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
-        return new BatchManager(AzureEnvironment.AZURE.newRestClientBuilder()
+    public static BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+        return new BatchManager(credentials.getEnvironment().newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), subscriptionId);
     }
@@ -70,7 +69,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
          * @param subscriptionId the subscription
          * @return the BatchManager
          */
-        BatchManager authenticate(ServiceClientCredentials credentials, String subscriptionId);
+        BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
     }
 
     /**
@@ -78,7 +77,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
         @Override
-        public BatchManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+        public BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
             return BatchManager.authenticate(buildRestClient(credentials), subscriptionId);
         }
     }

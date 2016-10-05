@@ -180,12 +180,12 @@ class LoadBalancerImpl
                         .withExistingLoadBalancerBackend(this, backendName)
                         .parent()
                     .apply();
-                this.nicsInBackends.clear();
-                this.refresh();
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        this.nicsInBackends.clear();
+        this.refresh();
     }
 
     @Override
