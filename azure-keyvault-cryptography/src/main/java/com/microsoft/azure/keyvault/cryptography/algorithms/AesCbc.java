@@ -97,7 +97,7 @@ public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");
@@ -107,7 +107,7 @@ public abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     }
 
     @Override
-    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
+    public ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("key must be at least " + keySize + " bits in length");

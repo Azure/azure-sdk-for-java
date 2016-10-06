@@ -32,11 +32,11 @@ public abstract class SymmetricEncryptionAlgorithm extends EncryptionAlgorithm {
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for encryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
-     * 			The AES key material to be used.
+     * 			The key material to be used.
      * @param iv
      * 			The initialization vector to be used.
      * @param authenticationData
-     * 			The authentication data to be used with authenticating encryption algorithms (optional)
+     * 			The authentication data to be used with authenticating encryption algorithms (ignored for non-authenticating algorithms)
      * @return A {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
@@ -49,11 +49,11 @@ public abstract class SymmetricEncryptionAlgorithm extends EncryptionAlgorithm {
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for encryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
-     * 			The AES key material to be used.
+     * 			The key material to be used.
      * @param iv
      * 			The initialization vector to be used.
      * @param authenticationData
-     * 			The authentication data to be used with authenticating encryption algorithms (optional)
+     * 			The authentication data to be used with authenticating encryption algorithms (ignored for non-authenticating algorithms)
      * @param provider
      * 			The provider to use.
      * @return A {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation
@@ -68,28 +68,32 @@ public abstract class SymmetricEncryptionAlgorithm extends EncryptionAlgorithm {
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for decryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
-     * 			The AES key material to be used.
+     * 			The key material to be used.
      * @param iv
      * 			The initialization vector to be used.
      * @param authenticationData
-     * 			The authentication data to be used with authenticating encryption algorithms (optional)
+     * 			The authentication data to be used with authenticating encryption algorithms (ignored for non-authenticating algorithms)
+     * @param authenticationTag
+     *          The authentication tag to verify when using authenticating encryption algorithms (ignored for non-authenticating algorithms)
      * @return A {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation
      * @throws InvalidKeyException
      * @throws NoSuchAlgorithmException
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
     /**
      * Creates a {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation for decryption
      * using the supplied initialization vector and the specific provider for the Java Security API.
      * @param key
-     * 			The AES key material to be used.
+     * 			The key material to be used.
      * @param iv
      * 			The initialization vector to be used.
      * @param authenticationData
-     * 			The authentication data to be used with authenticating encryption algorithms (optional)
+     * 			The authentication data to be used with authenticating encryption algorithms (ignored for non-authenticating algorithms)
+     * @param authenticationTag
+     *          The authentication tag to verify when using authenticating encryption algorithms (ignored for non-authenticating algorithms)
      * @param provider
      * 			The provider to use.
      * @return A {@link com.microsoft.azure.keyvault.cryptography.ICryptoTransform} implementation
@@ -98,6 +102,6 @@ public abstract class SymmetricEncryptionAlgorithm extends EncryptionAlgorithm {
      * @throws NoSuchPaddingException
      * @throws InvalidAlgorithmParameterException
      */
-    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
+    public abstract ICryptoTransform CreateDecryptor(byte[] key, byte[] iv, byte[] authenticationData, byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException;
 
 }
