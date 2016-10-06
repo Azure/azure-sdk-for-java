@@ -2,12 +2,12 @@
 
 #Azure Management Libraries for Java
 
-This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released preview version (1.0.0-beta3). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
 
 
-> **1.0.0-beta2** is a developer preview that supports major parts of Azure Compute, Storage, Networking and Resource Manager. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
+> **1.0.0-beta3** is a developer preview that supports major parts of Azure Compute, Storage, Networking,  Resource Manager, Key Vault and Batch. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
 
 **Azure Authentication**
 
@@ -103,60 +103,15 @@ You can find plenty of sample code that illustrates management scenarios in Azur
 
 # Download
 
-
-**1.0.0-beta2**
-
-If you are using released builds from 1.0.0-beta2, add the following to your POM file:
+To use the released builds from 1.0.0-beta3, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.0.0-beta2</version>
+    <version>1.0.0-beta3</version>
 </dependency>
 ```
-
-or Gradle:
-
-    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-beta2'
-
-**Snapshots builds for this repo**
-
-If you are using snapshots builds for this repo, add the following repository and dependency to your POM file:
-
-```xml
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-```
-
-```xml
-<dependency>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-</dependency>
-```
-
-or Gradle:
-```groovy
-repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    ....
-}
-```
-
-
-    compile group: 'com.microsoft.azure', name: 'azure', version: '1.0.0-SNAPSHOTS'
 
 #Pre-requisites
 
@@ -187,6 +142,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
 | 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
 | 1.0.0-beta1+fixes | [v1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
 | 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
