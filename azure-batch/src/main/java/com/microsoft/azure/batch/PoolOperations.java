@@ -305,36 +305,53 @@ public class PoolOperations implements IInheritedBehaviors {
         return response.getBody();
     }
 
-    public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata) throws BatchErrorException, IOException {
-        updatePoolProperties(poolId, startTask, certificateReferences, metadata, null);
+    public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
+                                     Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata) throws BatchErrorException, IOException {
+        updatePoolProperties(poolId, startTask, certificateReferences, applicationPackageReferences, metadata, null);
     }
 
-    public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
+                                     Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata,
+                                     Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolUpdatePropertiesOptions options = new PoolUpdatePropertiesOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
         PoolUpdatePropertiesParameter param = new PoolUpdatePropertiesParameter()
-                .withMetadata(new LinkedList<MetadataItem>(metadata))
-                .withCertificateReferences(new LinkedList<CertificateReference>(certificateReferences))
+                .withMetadata(metadata == null ?
+                        new LinkedList<MetadataItem>() : new LinkedList<MetadataItem>(metadata))
+                .withApplicationPackageReferences(applicationPackageReferences == null ?
+                        new LinkedList<ApplicationPackageReference>() : new LinkedList<ApplicationPackageReference>(applicationPackageReferences))
+                .withCertificateReferences(certificateReferences == null ?
+                        new LinkedList<CertificateReference>() : new LinkedList<CertificateReference>(certificateReferences))
                 .withStartTask(startTask);
 
         this._parentBatchClient.protocolLayer().pools().updateProperties(poolId, param, options);
     }
 
-    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata) throws BatchErrorException, IOException {
-        patchPool(poolId, startTask, certificateReferences, metadata, null);
+    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
+                          Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata) throws BatchErrorException, IOException {
+        patchPool(poolId, startTask, certificateReferences, applicationPackageReferences, metadata, null);
     }
 
-    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences, Collection<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
+                          Collection<ApplicationPackageReference> applicationPackageReferences, Collection<MetadataItem> metadata,
+                          Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolPatchOptions options = new PoolPatchOptions();
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
         bhMgr.applyRequestBehaviors(options);
 
         PoolPatchParameter param = new PoolPatchParameter()
-                .withMetadata(new LinkedList<MetadataItem>(metadata))
-                .withCertificateReferences(new LinkedList<CertificateReference>(certificateReferences))
                 .withStartTask(startTask);
+        if (metadata != null) {
+            param.withMetadata(new LinkedList<MetadataItem>(metadata));
+        }
+        if (applicationPackageReferences != null) {
+            param.withApplicationPackageReferences(new LinkedList<ApplicationPackageReference>(applicationPackageReferences));
+        }
+        if (certificateReferences != null) {
+            param.withCertificateReferences(new LinkedList<CertificateReference>(certificateReferences));
+        }
 
         this._parentBatchClient.protocolLayer().pools().patch(poolId, param, options);
     }
@@ -347,7 +364,8 @@ public class PoolOperations implements IInheritedBehaviors {
         return listPoolUsageMetrics(startTime, endTime, detailLevel, null);
     }
 
-    public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+    public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel,
+                                                       Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         PoolListPoolUsageMetricsOptions options = new PoolListPoolUsageMetricsOptions()
                 .withStartTime(startTime)
                 .withEndTime(endTime);
