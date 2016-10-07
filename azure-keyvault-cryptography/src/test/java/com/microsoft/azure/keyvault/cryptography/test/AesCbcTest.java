@@ -70,7 +70,7 @@ public class AesCbcTest {
 
         ICryptoTransform decryptor = null;
         try {
-            decryptor = algo.CreateDecryptor(CEK, IV, null, _provider);
+            decryptor = algo.CreateDecryptor(CEK, IV, null, null, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -117,7 +117,7 @@ public class AesCbcTest {
 
         ICryptoTransform decryptor = null;
         try {
-            decryptor = algo.CreateDecryptor(CEK, IV, null, _provider);
+            decryptor = algo.CreateDecryptor(CEK, IV, null, null, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -164,7 +164,7 @@ public class AesCbcTest {
 
         ICryptoTransform decryptor = null;
         try {
-            decryptor = algo.CreateDecryptor(CEK, IV, null, _provider);
+            decryptor = algo.CreateDecryptor(CEK, IV, null, null, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -211,7 +211,7 @@ public class AesCbcTest {
 
         ICryptoTransform decryptor = null;
         try {
-            decryptor = algo.CreateDecryptor(CEK, IV, null, _provider);
+            decryptor = algo.CreateDecryptor(CEK, IV, null, null, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
