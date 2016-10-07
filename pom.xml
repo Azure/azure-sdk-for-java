@@ -8,13 +8,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.0.0-beta4-SNAPSHOT</version>
+    <version>1.0.0-beta2</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0-beta2.2</version>
 
   <name>Microsoft Azure SDK for Batch Service</name>
   <description>This package contains Microsoft Azure Batch Service SDK.</description>
