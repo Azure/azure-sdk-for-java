@@ -123,6 +123,12 @@ var mappings = {
         'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
         'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
+    },
+    'sql': {
+        'dir': 'azure-mgmt-sql',
+        'source': 'arm-sql/compositeSql.json',
+        'package': 'com.microsoft.azure.management.sql',
+        'args': '-FT 1'
     }
 };
 
