@@ -7,8 +7,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
-import com.microsoft.azure.DAGNode;
-import com.microsoft.azure.DAGraph;
 import org.junit.Assert;
 import org.junit.Test;
 
