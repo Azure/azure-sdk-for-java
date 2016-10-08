@@ -509,14 +509,12 @@ public class TestLoadBalancer {
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     .create();
 
-            //TODO Assert.assertTrue(lb.backends().containsKey("default"));
             Assert.assertTrue(lb.frontends().containsKey("default"));
             Assert.assertTrue(lb.tcpProbes().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
 
             LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
             Assert.assertTrue(lbrule.frontend().name().equalsIgnoreCase("default"));
-            //TODO Assert.assertTrue(lbrule.backend().name().equalsIgnoreCase("default"));
             Assert.assertTrue(lbrule.probe().name().equalsIgnoreCase("default"));
 
             return lb;
