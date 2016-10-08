@@ -16,7 +16,10 @@ import java.util.Map;
 * Base interfaces for fluent resources.
 */
 @LangDefinition()
-public interface Resource extends Indexable {
+public interface Resource extends
+    Indexable,
+    HasName {
+
     /**
      * @return the resource ID string
      */
@@ -26,11 +29,6 @@ public interface Resource extends Indexable {
      * @return the type of the resource
      */
     String type();
-
-    /**
-     * @return the name of the resource
-     */
-    String name();
 
     /**
      * @return the name of the region the resource is in

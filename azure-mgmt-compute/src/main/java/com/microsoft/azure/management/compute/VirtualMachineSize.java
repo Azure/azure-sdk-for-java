@@ -6,17 +6,13 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 
 /**
  * A type representing virtual machine size available for a subscription in a region.
  */
 @Fluent
-public interface VirtualMachineSize {
-    /**
-     * @return the virtual machine size name
-     */
-    String name();
-
+public interface VirtualMachineSize extends HasName {
     /**
      * @return the number of cores supported by the VM size
      */
