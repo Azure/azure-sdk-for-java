@@ -4,7 +4,7 @@
 
 This README is based on the latest released preview version (1.0.0-beta2). If you are looking for other releases, see [More Information](#more-information)
 
-# Project Description
+## Project Description
 
 Microsoft Azure is Microsoft's public cloud computing platform that includes several cloud services: compute, analytics, storage and networking. Users are able to pick these services and develop new applications (or run existing applications) in the public cloud [[1]](http://searchcloudcomputing.techtarget.com/definition/Windows-Azure
 ).
