@@ -1,6 +1,11 @@
 # Assignment 1
 ## Development Process
-The development process used by Microsoft is an agile process. An agile process is an iterative and incremental model that it is characterized to work into small increments that minimize the amount of up-front planning and design. The idea is to have an available release with the minimum bugs at the end of each iteration.
+The development process used by Microsoft is an agile process. An agile process is an iterative and incremental model that it is characterized to work into small increments that minimize the amount of up-front planning and design. The idea is to have an available release with the minimum bugs at the end of each iteration. Advantages of this iterative approach to software development include [[1]](http://www.allaboutagile.com/agile-principle-5-how-do-you-eat-an-elephant/)
+* Reduced risk: clear visibility of whatís completed to date throughout a project
+* Increased value: delivering some benefits early; being able to release the product whenever itís deemed good enough, rather than having to wait for all intended features to be ready
+* More flexibility/agility: can choose to change direction or adapt the next iterations based on actually seeing and using the software
+* Better cost management: if, like all-too-many software development projects, you run over budget, some value can still be realised; you donít have to scrap the whole thing if you run short of funds
+
 
 An alternative model that could be use in Azure Software Development is the RAD model. Rapid Application Development model is an incremental software process model that focuses on short development cycle time. This model is a ‚Äúhigh-speed‚Äù model which adapts many steps from waterfall model in which rapid development is achieved by using component based construction approach.
 
