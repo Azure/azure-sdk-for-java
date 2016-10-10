@@ -6,6 +6,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.RestException;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -100,7 +101,7 @@ final class ChildListFlattener<ParentT, ChildT> {
                 return nextChildList;
             }
         }
-        return null;
+        return emptyPagedList();
     }
 
     /**
@@ -140,10 +141,24 @@ final class ChildListFlattener<ParentT, ChildT> {
      * @return an empty paged list
      */
     private PagedList<ChildT> emptyPagedList() {
-        return new PagedList<ChildT>() {
+        return new PagedList<ChildT>(emptyPage()) {
             @Override
             public Page<ChildT> nextPage(String nextPageLink) throws RestException, IOException {
                 return null;
+            }
+        };
+    }
+
+    private Page<ChildT> emptyPage() {
+        return new Page<ChildT>() {
+            @Override
+            public String getNextPageLink() {
+                return null;
+            }
+
+            @Override
+            public List<ChildT> getItems() {
+                return new ArrayList<>();
             }
         };
     }
