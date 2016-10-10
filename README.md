@@ -10,9 +10,15 @@ Microsoft Azure is Microsoft's public cloud computing platform that includes sev
 ).
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. It is possible to use these libraries to [[2]](https://azure.microsoft.com/pt-pt/blog/getting-started-with-the-azure-java-management-libraries/):
 - Create, delete, and update settings for resources like web sites, SQL databases, cloud services, scheduler job collections, virtual machines, and storage
-- Start and stop web sites
+- Start and stop web sites, mobile apps and multi-platform apps
+- Developing and launching apps
+- Production Analyses Services: machine learning, Cortana Analytics, Stream Analytics, predictive analysis
+- Execute large scale computation tasks
 - Back up databases to storage accounts
+- Code, store and broadcast audio and video at scale flow
 - Automate the creation of virtual machines
+- Create intelligent products and services based on the concept of Internet of Things
+
 
 To see more about the project and the development processes used click [here](https://github.com/jalves94/azure-sdk-for-java/blob/master/ESOF-docs/assignment1).
 
