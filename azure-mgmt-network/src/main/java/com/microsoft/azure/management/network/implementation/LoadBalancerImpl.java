@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -60,7 +60,7 @@ class LoadBalancerImpl
 
     private Map<String, Backend> backends;
     private Map<String, LoadBalancerTcpProbe> tcpProbes;
-    private Map<String, HttpProbe> httpProbes;
+    private Map<String, LoadBalancerHttpProbe> httpProbes;
     private Map<String, LoadBalancingRule> loadBalancingRules;
     private Map<String, LoadBalancerFrontend> frontends;
     private Map<String, InboundNatRule> inboundNatRules;
@@ -642,7 +642,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public Map<String, HttpProbe> httpProbes() {
+    public Map<String, LoadBalancerHttpProbe> httpProbes() {
         return Collections.unmodifiableMap(this.httpProbes);
     }
 

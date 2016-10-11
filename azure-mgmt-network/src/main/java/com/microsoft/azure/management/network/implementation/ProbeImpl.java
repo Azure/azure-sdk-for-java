@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.ProbeProtocol;
@@ -30,10 +30,10 @@ class ProbeImpl
         LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
         LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerTcpProbe.Update,
-        HttpProbe,
-        HttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
-        HttpProbe.UpdateDefinition<LoadBalancer.Update>,
-        HttpProbe.Update {
+        LoadBalancerHttpProbe,
+        LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerHttpProbe.Update {
 
     ProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
         super(inner, parent);

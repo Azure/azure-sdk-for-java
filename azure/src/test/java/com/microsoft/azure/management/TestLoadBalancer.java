@@ -18,7 +18,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.PublicFrontend;
@@ -684,7 +684,7 @@ public class TestLoadBalancer {
         // Show HTTP probes
         info.append("\n\tHTTP probes: ")
             .append(resource.httpProbes().size());
-        for (HttpProbe probe : resource.httpProbes().values()) {
+        for (LoadBalancerHttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
