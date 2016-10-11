@@ -111,6 +111,10 @@ public final class RestClient {
         return this.credentials;
     }
 
+    /**
+     * Create a new builder for a new Rest Client with the same configurations on this one.
+     * @return a RestClient builder
+     */
     public RestClient.Builder newBuilder() {
         return new Builder(this);
     }
@@ -196,6 +200,7 @@ public final class RestClient {
         /**
          * Sets the base URL with the default from the Azure Environment.
          *
+         * @param environment the Azure environment to use
          * @param endpoint the environment endpoint the application is accessing
          * @return the builder itself for chaining
          */

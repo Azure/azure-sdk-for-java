@@ -147,8 +147,13 @@ public final class AzureEnvironment {
         this.validateAuthority = validateAuthority;
     }
 
+    /**
+     * The enum representing available endpoints in an environment.
+     */
     public enum Endpoint {
+        /** Azure Resource Manager endpoint. */
         RESOURCE_MANAGER("resourceManagerEndpoint"),
+        /** Azure Active Directory Graph APIs endpoint. */
         GRAPH("graphEndpoint");
 
         private String field;
@@ -163,6 +168,12 @@ public final class AzureEnvironment {
         }
     }
 
+    /**
+     * Get the endpoint URL for the current environment.
+     *
+     * @param endpoint the endpoint
+     * @return the URL
+     */
     public String getEndpoint(Endpoint endpoint) {
         try {
             Field f = AzureEnvironment.class.getDeclaredField(endpoint.toString());
@@ -173,10 +184,20 @@ public final class AzureEnvironment {
         }
     }
 
+    /**
+     * Create a builder for rest client from an endpoint.
+     *
+     * @param endpoint the endpoint
+     * @return a RestClient builder
+     */
     public RestClient.Builder newRestClientBuilder(Endpoint endpoint) {
         return new RestClient.Builder().withBaseUrl(this, endpoint);
     }
 
+    /**
+     * Create a builder for rest client to Azure Resource Manager.
+     * @return a RestClient builder
+     */
     public RestClient.Builder newRestClientBuilder() {
         return new RestClient.Builder().withBaseUrl(this, Endpoint.RESOURCE_MANAGER);
     }
