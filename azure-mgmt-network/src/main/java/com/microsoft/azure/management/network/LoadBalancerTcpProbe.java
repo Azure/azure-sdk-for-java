@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a TCP load balancing probe.
  */
 @Fluent()
-public interface TcpProbe extends LoadBalancerProbe {
+public interface LoadBalancerTcpProbe extends LoadBalancerProbe {
 
     /**
      * Grouping of probe definition stages.

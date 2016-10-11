@@ -15,21 +15,21 @@ import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.ProbeProtocol;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link TcpProbe} and its create and update interfaces.
+ *  Implementation for {@link LoadBalancerTcpProbe} and its create and update interfaces.
  */
 @LangDefinition
 class ProbeImpl
     extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
     implements
-        TcpProbe,
-        TcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
-        TcpProbe.UpdateDefinition<LoadBalancer.Update>,
-        TcpProbe.Update,
+        LoadBalancerTcpProbe,
+        LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerTcpProbe.Update,
         HttpProbe,
         HttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
         HttpProbe.UpdateDefinition<LoadBalancer.Update>,

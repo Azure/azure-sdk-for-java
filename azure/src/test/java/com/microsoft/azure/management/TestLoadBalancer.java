@@ -33,7 +33,7 @@ import com.microsoft.azure.management.network.PrivateFrontend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -667,7 +667,7 @@ public class TestLoadBalancer {
         // Show TCP probes
         info.append("\n\tTCP probes: ")
             .append(resource.tcpProbes().size());
-        for (TcpProbe probe : resource.tcpProbes().values()) {
+        for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())

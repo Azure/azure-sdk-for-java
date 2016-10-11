@@ -22,7 +22,7 @@ import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddress.DefinitionStages.WithGroup;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -59,7 +59,7 @@ class LoadBalancerImpl
     private final HashMap<String, String> creatablePIPKeys = new HashMap<>();
 
     private Map<String, Backend> backends;
-    private Map<String, TcpProbe> tcpProbes;
+    private Map<String, LoadBalancerTcpProbe> tcpProbes;
     private Map<String, HttpProbe> httpProbes;
     private Map<String, LoadBalancingRule> loadBalancingRules;
     private Map<String, LoadBalancerFrontend> frontends;
@@ -627,7 +627,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public Map<String, TcpProbe> tcpProbes() {
+    public Map<String, LoadBalancerTcpProbe> tcpProbes() {
         return Collections.unmodifiableMap(this.tcpProbes);
     }
 

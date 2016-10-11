@@ -26,7 +26,7 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
@@ -358,7 +358,7 @@ public final class Utils {
         // Show TCP probes
         info.append("\n\tTCP probes: ")
                 .append(resource.tcpProbes().size());
-        for (TcpProbe probe : resource.tcpProbes().values()) {
+        for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                     .append("\n\t\t\tPort: ").append(probe.port())
                     .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
