@@ -133,6 +133,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
         authSettings.put(CredentialSettings.AUTH_URL.toString(), AzureEnvironment.AZURE.getAuthenticationEndpoint());
         authSettings.put(CredentialSettings.BASE_URL.toString(), AzureEnvironment.AZURE.getResourceManagerEndpoint());
         authSettings.put(CredentialSettings.MANAGEMENT_URI.toString(), AzureEnvironment.AZURE.getManagementEndpoint());
+        authSettings.put(CredentialSettings.GRAPH_URL.toString(), AzureEnvironment.AZURE.getGraphEndpoint());
 
         // Load the credentials from the file
         FileInputStream credentialsFileStream = new FileInputStream(credentialsFile);
