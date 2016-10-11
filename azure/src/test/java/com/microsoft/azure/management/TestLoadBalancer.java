@@ -30,7 +30,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PrivateFrontend;
-import com.microsoft.azure.management.network.Probe;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.TcpProbe;
@@ -729,7 +729,7 @@ public class TestLoadBalancer {
 
             info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
 
-            Probe probe = rule.probe();
+            LoadBalancerProbe probe = rule.probe();
             info.append("\n\t\t\tProbe: ");
             if (probe == null) {
                 info.append("(None)");

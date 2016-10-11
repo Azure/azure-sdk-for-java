@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of an HTTP load balancing probe.
  */
 @Fluent()
-public interface HttpProbe extends Probe {
+public interface HttpProbe extends LoadBalancerProbe {
 
     /**
      * @return the HTTP request path for the HTTP probe to call to check the health status

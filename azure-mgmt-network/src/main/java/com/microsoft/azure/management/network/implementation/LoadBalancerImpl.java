@@ -17,7 +17,7 @@ import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.Probe;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -440,7 +440,7 @@ class LoadBalancerImpl
 
     @Override
     public ProbeImpl defineTcpProbe(String name) {
-        Probe probe = this.tcpProbes.get(name);
+        LoadBalancerProbe probe = this.tcpProbes.get(name);
         if (probe == null) {
             ProbeInner inner = new ProbeInner()
                 .withName(name)
@@ -453,7 +453,7 @@ class LoadBalancerImpl
 
     @Override
     public ProbeImpl defineHttpProbe(String name) {
-        Probe probe = this.httpProbes.get(name);
+        LoadBalancerProbe probe = this.httpProbes.get(name);
         if (probe == null) {
             ProbeInner inner = new ProbeInner()
                 .withName(name)

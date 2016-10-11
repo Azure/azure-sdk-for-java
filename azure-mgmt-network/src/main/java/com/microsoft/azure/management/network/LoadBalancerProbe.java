@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of a load balancing probe.
  */
 @Fluent()
-public interface Probe extends
+public interface LoadBalancerProbe extends
     Wrapper<ProbeInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
