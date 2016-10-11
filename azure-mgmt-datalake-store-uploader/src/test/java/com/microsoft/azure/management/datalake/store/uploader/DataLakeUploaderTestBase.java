@@ -31,7 +31,7 @@ public abstract class DataLakeUploaderTestBase {
                 AzureEnvironment.AZURE);
 
         RestClient restClient = new RestClient.Builder()
-                .withDefaultBaseUrl(AzureEnvironment.AZURE)
+                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
