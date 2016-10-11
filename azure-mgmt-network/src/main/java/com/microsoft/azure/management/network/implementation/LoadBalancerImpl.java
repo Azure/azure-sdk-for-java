@@ -198,7 +198,7 @@ class LoadBalancerImpl
         List<FrontendIPConfigurationInner> frontendsInner = this.inner().frontendIPConfigurations();
         if (frontendsInner != null) {
             for (FrontendIPConfigurationInner frontendInner : frontendsInner) {
-                FrontendImpl frontend = new FrontendImpl(frontendInner, this);
+                LoadBalancerFrontendImpl frontend = new LoadBalancerFrontendImpl(frontendInner, this);
                 this.frontends.put(frontendInner.name(), frontend);
             }
         }
@@ -209,7 +209,7 @@ class LoadBalancerImpl
         List<BackendAddressPoolInner> backendsInner = this.inner().backendAddressPools();
         if (backendsInner != null) {
             for (BackendAddressPoolInner backendInner : backendsInner) {
-                BackendImpl backend = new BackendImpl(backendInner, this);
+                LoadBalancerBackendImpl backend = new LoadBalancerBackendImpl(backendInner, this);
                 this.backends.put(backendInner.name(), backend);
             }
         }
@@ -220,7 +220,7 @@ class LoadBalancerImpl
         this.tcpProbes = new TreeMap<>();
         if (this.inner().probes() != null) {
             for (ProbeInner probeInner : this.inner().probes()) {
-                ProbeImpl probe = new ProbeImpl(probeInner, this);
+                LoadBalancerProbeImpl probe = new LoadBalancerProbeImpl(probeInner, this);
                 if (probeInner.protocol().equals(ProbeProtocol.TCP)) {
                     this.tcpProbes.put(probeInner.name(), probe);
                 } else if (probeInner.protocol().equals(ProbeProtocol.HTTP)) {
@@ -274,7 +274,7 @@ class LoadBalancerImpl
                 .append(this.name()).toString();
     }
 
-    LoadBalancerImpl withFrontend(FrontendImpl frontend) {
+    LoadBalancerImpl withFrontend(LoadBalancerFrontendImpl frontend) {
         if (frontend == null) {
             return null;
         } else {
@@ -283,7 +283,7 @@ class LoadBalancerImpl
         }
     }
 
-    LoadBalancerImpl withProbe(ProbeImpl probe) {
+    LoadBalancerImpl withProbe(LoadBalancerProbeImpl probe) {
         if (probe == null) {
             return null;
         } else if (probe.protocol() == ProbeProtocol.HTTP) {
@@ -321,7 +321,7 @@ class LoadBalancerImpl
         }
     }
 
-    LoadBalancerImpl withBackend(BackendImpl backend) {
+    LoadBalancerImpl withBackend(LoadBalancerBackendImpl backend) {
         if (backend == null) {
             return null;
         } else {
@@ -439,29 +439,29 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ProbeImpl defineTcpProbe(String name) {
+    public LoadBalancerProbeImpl defineTcpProbe(String name) {
         LoadBalancerProbe probe = this.tcpProbes.get(name);
         if (probe == null) {
             ProbeInner inner = new ProbeInner()
                 .withName(name)
                 .withProtocol(ProbeProtocol.TCP);
-            return new ProbeImpl(inner, this);
+            return new LoadBalancerProbeImpl(inner, this);
         } else {
-            return (ProbeImpl) probe;
+            return (LoadBalancerProbeImpl) probe;
         }
     }
 
     @Override
-    public ProbeImpl defineHttpProbe(String name) {
+    public LoadBalancerProbeImpl defineHttpProbe(String name) {
         LoadBalancerProbe probe = this.httpProbes.get(name);
         if (probe == null) {
             ProbeInner inner = new ProbeInner()
                 .withName(name)
                 .withProtocol(ProbeProtocol.HTTP)
                 .withPort(80);
-            return new ProbeImpl(inner, this);
+            return new LoadBalancerProbeImpl(inner, this);
         } else {
-            return (ProbeImpl) probe;
+            return (LoadBalancerProbeImpl) probe;
         }
     }
 
@@ -502,35 +502,35 @@ class LoadBalancerImpl
     }
 
     @Override
-    public FrontendImpl definePrivateFrontend(String name) {
+    public LoadBalancerFrontendImpl definePrivateFrontend(String name) {
         return defineFrontend(name);
     }
 
     @Override
-    public FrontendImpl definePublicFrontend(String name) {
+    public LoadBalancerFrontendImpl definePublicFrontend(String name) {
         return defineFrontend(name);
     }
 
-    private FrontendImpl defineFrontend(String name) {
+    private LoadBalancerFrontendImpl defineFrontend(String name) {
         LoadBalancerFrontend frontend = this.frontends.get(name);
         if (frontend == null) {
             FrontendIPConfigurationInner inner = new FrontendIPConfigurationInner()
                     .withName(name);
-            return new FrontendImpl(inner, this);
+            return new LoadBalancerFrontendImpl(inner, this);
         } else {
-            return (FrontendImpl) frontend;
+            return (LoadBalancerFrontendImpl) frontend;
         }
     }
 
     @Override
-    public BackendImpl defineBackend(String name) {
+    public LoadBalancerBackendImpl defineBackend(String name) {
         LoadBalancerBackend backend = this.backends.get(name);
         if (backend == null) {
             BackendAddressPoolInner inner = new BackendAddressPoolInner()
                     .withName(name);
-            return new BackendImpl(inner, this);
+            return new LoadBalancerBackendImpl(inner, this);
         } else {
-            return (BackendImpl) backend;
+            return (LoadBalancerBackendImpl) backend;
         }
     }
 
@@ -545,23 +545,23 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ProbeImpl updateTcpProbe(String name) {
-        return (ProbeImpl) this.tcpProbes.get(name);
+    public LoadBalancerProbeImpl updateTcpProbe(String name) {
+        return (LoadBalancerProbeImpl) this.tcpProbes.get(name);
     }
 
     @Override
-    public BackendImpl updateBackend(String name) {
-        return (BackendImpl) this.backends.get(name);
+    public LoadBalancerBackendImpl updateBackend(String name) {
+        return (LoadBalancerBackendImpl) this.backends.get(name);
     }
 
     @Override
-    public FrontendImpl updateInternetFrontend(String name) {
-        return (FrontendImpl) this.frontends.get(name);
+    public LoadBalancerFrontendImpl updateInternetFrontend(String name) {
+        return (LoadBalancerFrontendImpl) this.frontends.get(name);
     }
 
     @Override
-    public FrontendImpl updateInternalFrontend(String name) {
-        return (FrontendImpl) this.frontends.get(name);
+    public LoadBalancerFrontendImpl updateInternalFrontend(String name) {
+        return (LoadBalancerFrontendImpl) this.frontends.get(name);
     }
 
     @Override
@@ -575,8 +575,8 @@ class LoadBalancerImpl
     }
 
     @Override
-    public ProbeImpl updateHttpProbe(String name) {
-        return (ProbeImpl) this.httpProbes.get(name);
+    public LoadBalancerProbeImpl updateHttpProbe(String name) {
+        return (LoadBalancerProbeImpl) this.httpProbes.get(name);
     }
 
     @Override

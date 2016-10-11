@@ -28,7 +28,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link PublicFrontend}.
  */
 @LangDefinition
-class FrontendImpl
+class LoadBalancerFrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancerFrontend,
@@ -41,7 +41,7 @@ class FrontendImpl
         PublicFrontend.UpdateDefinition<LoadBalancer.Update>,
         PublicFrontend.Update {
 
-    FrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
+    LoadBalancerFrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -143,12 +143,12 @@ class FrontendImpl
     // Fluent setters
 
     @Override
-    public FrontendImpl withExistingSubnet(Network network, String subnetName) {
+    public LoadBalancerFrontendImpl withExistingSubnet(Network network, String subnetName) {
         return this.withExistingSubnet(network.id(), subnetName);
     }
 
     @Override
-    public FrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
+    public LoadBalancerFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubResource subnetRef = new SubResource()
                 .withId(parentNetworkResourceId + "/subnets/" + subnetName);
         this.inner()
@@ -158,12 +158,12 @@ class FrontendImpl
     }
 
     @Override
-    public FrontendImpl withExistingPublicIpAddress(PublicIpAddress pip) {
+    public LoadBalancerFrontendImpl withExistingPublicIpAddress(PublicIpAddress pip) {
         return this.withExistingPublicIpAddress(pip.id());
     }
 
     @Override
-    public FrontendImpl withExistingPublicIpAddress(String resourceId) {
+    public LoadBalancerFrontendImpl withExistingPublicIpAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
         this.inner()
             .withPublicIPAddress(pipRef)
@@ -176,13 +176,13 @@ class FrontendImpl
     }
 
     @Override
-    public FrontendImpl withoutPublicIpAddress() {
+    public LoadBalancerFrontendImpl withoutPublicIpAddress() {
         this.inner().withPublicIPAddress(null);
         return this;
     }
 
     @Override
-    public FrontendImpl withPrivateIpAddressDynamic() {
+    public LoadBalancerFrontendImpl withPrivateIpAddressDynamic() {
         this.inner()
             .withPrivateIPAddress(null)
             .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
@@ -193,7 +193,7 @@ class FrontendImpl
     }
 
     @Override
-    public FrontendImpl withPrivateIpAddressStatic(String ipAddress) {
+    public LoadBalancerFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
         this.inner()
             .withPrivateIPAddress(ipAddress)
             .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)

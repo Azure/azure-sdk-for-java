@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link LoadBalancerTcpProbe} and its create and update interfaces.
  */
 @LangDefinition
-class ProbeImpl
+class LoadBalancerProbeImpl
     extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancerTcpProbe,
@@ -35,7 +35,7 @@ class ProbeImpl
         LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerHttpProbe.Update {
 
-    ProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
+    LoadBalancerProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -90,25 +90,25 @@ class ProbeImpl
     // Fluent setters
 
     @Override
-    public ProbeImpl withPort(int port) {
+    public LoadBalancerProbeImpl withPort(int port) {
         this.inner().withPort(port);
         return this;
     }
 
     @Override
-    public ProbeImpl withRequestPath(String requestPath) {
+    public LoadBalancerProbeImpl withRequestPath(String requestPath) {
         this.inner().withRequestPath(requestPath);
         return this;
     }
 
     @Override
-    public ProbeImpl withIntervalInSeconds(int seconds) {
+    public LoadBalancerProbeImpl withIntervalInSeconds(int seconds) {
         this.inner().withIntervalInSeconds(seconds);
         return this;
     }
 
     @Override
-    public ProbeImpl withNumberOfProbes(int probes) {
+    public LoadBalancerProbeImpl withNumberOfProbes(int probes) {
         this.inner().withNumberOfProbes(probes);
         return this;
     }

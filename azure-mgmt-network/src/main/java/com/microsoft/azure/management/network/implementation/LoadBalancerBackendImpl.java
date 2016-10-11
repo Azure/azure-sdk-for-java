@@ -25,7 +25,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for {@link LoadBalancerBackend}.
  */
 @LangDefinition
-class BackendImpl
+class LoadBalancerBackendImpl
     extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancerBackend,
@@ -33,7 +33,7 @@ class BackendImpl
         LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>,
         LoadBalancerBackend.Update {
 
-    BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
+    LoadBalancerBackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
