@@ -12,32 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for FileType.
+ * Defines values for EncryptionState.
  */
-public enum FileType {
-    /** Enum value FILE. */
-    FILE("FILE"),
+public enum EncryptionState {
+    /** Enum value Enabled. */
+    ENABLED("Enabled"),
 
-    /** Enum value DIRECTORY. */
-    DIRECTORY("DIRECTORY");
+    /** Enum value Disabled. */
+    DISABLED("Disabled");
 
-    /** The actual serialized value for a FileType instance. */
+    /** The actual serialized value for a EncryptionState instance. */
     private String value;
 
-    FileType(String value) {
+    EncryptionState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a FileType instance.
+     * Parses a serialized value to a EncryptionState instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed FileType object, or null if unable to parse.
+     * @return the parsed EncryptionState object, or null if unable to parse.
      */
     @JsonCreator
-    public static FileType fromString(String value) {
-        FileType[] items = FileType.values();
-        for (FileType item : items) {
+    public static EncryptionState fromString(String value) {
+        EncryptionState[] items = EncryptionState.values();
+        for (EncryptionState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

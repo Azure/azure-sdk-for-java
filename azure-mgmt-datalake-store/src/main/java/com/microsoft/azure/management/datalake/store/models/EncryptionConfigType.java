@@ -12,29 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for AppendModeType.
+ * Defines values for EncryptionConfigType.
  */
-public enum AppendModeType {
-    /** Enum value autocreate. */
-    AUTOCREATE("autocreate");
+public enum EncryptionConfigType {
+    /** Enum value UserManaged. */
+    USER_MANAGED("UserManaged"),
 
-    /** The actual serialized value for a AppendModeType instance. */
+    /** Enum value ServiceManaged. */
+    SERVICE_MANAGED("ServiceManaged");
+
+    /** The actual serialized value for a EncryptionConfigType instance. */
     private String value;
 
-    AppendModeType(String value) {
+    EncryptionConfigType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a AppendModeType instance.
+     * Parses a serialized value to a EncryptionConfigType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed AppendModeType object, or null if unable to parse.
+     * @return the parsed EncryptionConfigType object, or null if unable to parse.
      */
     @JsonCreator
-    public static AppendModeType fromString(String value) {
-        AppendModeType[] items = AppendModeType.values();
-        for (AppendModeType item : items) {
+    public static EncryptionConfigType fromString(String value) {
+        EncryptionConfigType[] items = EncryptionConfigType.values();
+        for (EncryptionConfigType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

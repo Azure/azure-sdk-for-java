@@ -37,6 +37,24 @@ public class DataLakeStoreAccountProperties {
     private DateTime creationTime;
 
     /**
+     * The current state of encryption for this Data Lake store account.
+     * Possible values include: 'Enabled', 'Disabled'.
+     */
+    private EncryptionState encryptionState;
+
+    /**
+     * The current state of encryption provisioning for this Data Lake store
+     * account. Possible values include: 'Creating', 'Succeeded'.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private EncryptionProvisioningState encryptionProvisioningState;
+
+    /**
+     * The Key vault encryption configuration.
+     */
+    private EncryptionConfig encryptionConfig;
+
+    /**
      * the account last modified time.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -78,6 +96,55 @@ public class DataLakeStoreAccountProperties {
      */
     public DateTime creationTime() {
         return this.creationTime;
+    }
+
+    /**
+     * Get the encryptionState value.
+     *
+     * @return the encryptionState value
+     */
+    public EncryptionState encryptionState() {
+        return this.encryptionState;
+    }
+
+    /**
+     * Set the encryptionState value.
+     *
+     * @param encryptionState the encryptionState value to set
+     * @return the DataLakeStoreAccountProperties object itself.
+     */
+    public DataLakeStoreAccountProperties withEncryptionState(EncryptionState encryptionState) {
+        this.encryptionState = encryptionState;
+        return this;
+    }
+
+    /**
+     * Get the encryptionProvisioningState value.
+     *
+     * @return the encryptionProvisioningState value
+     */
+    public EncryptionProvisioningState encryptionProvisioningState() {
+        return this.encryptionProvisioningState;
+    }
+
+    /**
+     * Get the encryptionConfig value.
+     *
+     * @return the encryptionConfig value
+     */
+    public EncryptionConfig encryptionConfig() {
+        return this.encryptionConfig;
+    }
+
+    /**
+     * Set the encryptionConfig value.
+     *
+     * @param encryptionConfig the encryptionConfig value to set
+     * @return the DataLakeStoreAccountProperties object itself.
+     */
+    public DataLakeStoreAccountProperties withEncryptionConfig(EncryptionConfig encryptionConfig) {
+        this.encryptionConfig = encryptionConfig;
+        return this;
     }
 
     /**
