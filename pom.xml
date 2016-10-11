@@ -312,7 +312,6 @@
     <module>./azure-mgmt-website</module>
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
-    <module>./azure-mgmt-datalake-store-uploader</module>
     <module>./azure-samples</module>
     <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-search</module>
