@@ -176,4 +176,8 @@ public final class AzureEnvironment {
     public RestClient.Builder newRestClientBuilder(Endpoint endpoint) {
         return new RestClient.Builder().withBaseUrl(this, endpoint);
     }
+
+    public RestClient.Builder newRestClientBuilder() {
+        return new RestClient.Builder().withBaseUrl(this, Endpoint.RESOURCE_MANAGER);
+    }
 }

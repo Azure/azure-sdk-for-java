@@ -43,11 +43,11 @@ public final class RestClient {
     /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
     private JacksonMapperAdapter mapperAdapter;
 
-    protected RestClient(OkHttpClient httpClient,
-                         Retrofit retrofit,
-                         ServiceClientCredentials credentials,
-                         CustomHeadersInterceptor customHeadersInterceptor,
-                         JacksonMapperAdapter mapperAdapter) {
+    private RestClient(OkHttpClient httpClient,
+                       Retrofit retrofit,
+                       ServiceClientCredentials credentials,
+                       CustomHeadersInterceptor customHeadersInterceptor,
+                       JacksonMapperAdapter mapperAdapter) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
@@ -111,30 +111,51 @@ public final class RestClient {
         return this.credentials;
     }
 
+    public RestClient.Builder newBuilder() {
+        return new Builder(this);
+    }
+
     /**
      * The builder class for building a REST client.
      */
     public static class Builder {
         /** The dynamic base URL with variables wrapped in "{" and "}". */
-        String baseUrl;
+        private String baseUrl;
         /** The builder to build an {@link OkHttpClient}. */
-        OkHttpClient.Builder httpClientBuilder;
+        private OkHttpClient.Builder httpClientBuilder;
         /** The builder to build a {@link Retrofit}. */
-        Retrofit.Builder retrofitBuilder;
+        private Retrofit.Builder retrofitBuilder;
         /** The credentials to authenticate. */
-        ServiceClientCredentials credentials;
+        private ServiceClientCredentials credentials;
         /** The interceptor to handle custom headers. */
-        CustomHeadersInterceptor customHeadersInterceptor;
-        /** The interceptor to handle base URL. */
-        BaseUrlHandler baseUrlHandler;
-        /** The interceptor to set 'User-Agent' header. */
-        UserAgentInterceptor userAgentInterceptor;
+        private CustomHeadersInterceptor customHeadersInterceptor;
+        /** The value for 'User-Agent' header. */
+        private String userAgent;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
          */
         public Builder() {
             this(new OkHttpClient.Builder(), new Retrofit.Builder());
+        }
+
+        private Builder(RestClient restClient) {
+            this();
+            this.withBaseUrl(restClient.retrofit.baseUrl().toString())
+                    .withConnectionTimeout(restClient.httpClient.connectTimeoutMillis(), TimeUnit.MILLISECONDS)
+                    .withReadTimeout(restClient.httpClient.readTimeoutMillis(), TimeUnit.MILLISECONDS);
+            if (restClient.credentials != null) {
+                this.withCredentials(restClient.credentials);
+            }
+            if (restClient.retrofit.callbackExecutor() != null) {
+                this.withCallbackExecutor(restClient.retrofit.callbackExecutor());
+            }
+            for (Interceptor interceptor : restClient.httpClient.interceptors()) {
+                this.withInterceptor(interceptor);
+            }
+            for (Interceptor interceptor : restClient.httpClient.networkInterceptors()) {
+                this.withNetworkInterceptor(interceptor);
+            }
         }
 
         /**
@@ -154,14 +175,10 @@ public final class RestClient {
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
-            baseUrlHandler = new BaseUrlHandler();
-            userAgentInterceptor = new UserAgentInterceptor();
             // Set up OkHttp client
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .addInterceptor(userAgentInterceptor)
-                    .addInterceptor(new RequestIdHeaderInterceptor());
+                    .readTimeout(30, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
         }
 
@@ -194,10 +211,11 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withCredentials(ServiceClientCredentials credentials) {
-            this.credentials = credentials;
-            if (credentials != null) {
-                credentials.applyCredentialsFilter(httpClientBuilder);
+            if (credentials == null) {
+                throw new NullPointerException("credentials == null");
             }
+            this.credentials = credentials;
+            credentials.applyCredentialsFilter(httpClientBuilder);
 
             return this;
         }
@@ -209,7 +227,7 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withUserAgent(String userAgent) {
-            userAgentInterceptor.withUserAgent(userAgent);
+            this.userAgent = userAgent;
             return this;
         }
 
@@ -220,7 +238,10 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
-            httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
+            if (logLevel == null) {
+                throw new NullPointerException("logLevel == null");
+            }
+            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
             return this;
         }
 
@@ -231,7 +252,24 @@ public final class RestClient {
          * @return the builder itself for chaining.
          */
         public Builder withInterceptor(Interceptor interceptor) {
+            if (interceptor == null) {
+                throw new NullPointerException("interceptor == null");
+            }
             httpClientBuilder.addInterceptor(interceptor);
+            return this;
+        }
+
+        /**
+         * Add an interceptor the network layer of Http client pipeline.
+         *
+         * @param networkInterceptor the interceptor to add.
+         * @return the builder itself for chaining.
+         */
+        public Builder withNetworkInterceptor(Interceptor networkInterceptor) {
+            if (networkInterceptor == null) {
+                throw new NullPointerException("networkInterceptor == null");
+            }
+            httpClientBuilder.addNetworkInterceptor(networkInterceptor);
             return this;
         }
 
@@ -299,8 +337,14 @@ public final class RestClient {
          */
         public RestClient build() {
             AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+            UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
+            if (userAgent != null) {
+                userAgentInterceptor.withUserAgent(userAgent);
+            }
             OkHttpClient httpClient = httpClientBuilder
-                    .addInterceptor(baseUrlHandler)
+                    .addInterceptor(userAgentInterceptor)
+                    .addInterceptor(new RequestIdHeaderInterceptor())
+                    .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
                     .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
                     .addInterceptor(new RetryHandler())
