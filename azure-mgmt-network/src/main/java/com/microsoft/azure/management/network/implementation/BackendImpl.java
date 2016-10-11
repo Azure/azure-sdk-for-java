@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -22,16 +22,16 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link Backend}.
+ *  Implementation for {@link LoadBalancerBackend}.
  */
 @LangDefinition
 class BackendImpl
     extends ChildResourceImpl<BackendAddressPoolInner, LoadBalancerImpl, LoadBalancer>
     implements
-        Backend,
-        Backend.Definition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
-        Backend.UpdateDefinition<LoadBalancer.Update>,
-        Backend.Update {
+        LoadBalancerBackend,
+        LoadBalancerBackend.Definition<LoadBalancer.DefinitionStages.WithBackendOrProbe>,
+        LoadBalancerBackend.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerBackend.Update {
 
     BackendImpl(BackendAddressPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);

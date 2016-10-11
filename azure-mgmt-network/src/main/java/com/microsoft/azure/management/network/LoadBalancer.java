@@ -50,7 +50,7 @@ public interface LoadBalancer extends
     /**
      * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
      */
-    Map<String, Backend> backends();
+    Map<String, LoadBalancerBackend> backends();
 
     /**
      * @return inbound NAT rules for this balancer
@@ -159,7 +159,7 @@ public interface LoadBalancer extends
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            Backend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
+            LoadBalancerBackend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
         }
 
         /**
@@ -429,14 +429,14 @@ public interface LoadBalancer extends
              * @param name the name for the new backend
              * @return the first stage of the backend definition
              */
-            Backend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
+            LoadBalancerBackend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
 
             /**
              * Begins the description of an update to an existing backend of this load balancer.
              * @param name the name of the backend to update
              * @return the first stage of the update
              */
-            Backend.Update updateBackend(String name);
+            LoadBalancerBackend.Update updateBackend(String name);
         }
 
         /**

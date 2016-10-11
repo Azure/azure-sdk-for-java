@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -86,7 +86,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Backend backend() {
+    public LoadBalancerBackend backend() {
         SubResource backendRef = this.inner().backendAddressPool();
         if (backendRef == null) {
             return null;

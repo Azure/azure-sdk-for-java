@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an load balancer's backend address pool.
  */
 @Fluent()
-public interface Backend extends
+public interface LoadBalancerBackend extends
     Wrapper<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules {

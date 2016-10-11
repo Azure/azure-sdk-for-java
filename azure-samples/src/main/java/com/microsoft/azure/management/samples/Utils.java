@@ -31,7 +31,7 @@ import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.PublicFrontend;
@@ -410,7 +410,7 @@ public final class Utils {
 
             info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
 
-            Backend backend = rule.backend();
+            LoadBalancerBackend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
@@ -498,7 +498,7 @@ public final class Utils {
         // Show backends
         info.append("\n\tBackends: ")
                 .append(resource.backends().size());
-        for (Backend backend : resource.backends().values()) {
+        for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs

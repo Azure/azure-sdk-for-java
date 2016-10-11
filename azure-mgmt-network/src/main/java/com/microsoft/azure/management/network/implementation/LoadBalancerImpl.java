@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -58,7 +58,7 @@ class LoadBalancerImpl
     private final HashMap<String, String> nicsInBackends = new HashMap<>();
     private final HashMap<String, String> creatablePIPKeys = new HashMap<>();
 
-    private Map<String, Backend> backends;
+    private Map<String, LoadBalancerBackend> backends;
     private Map<String, LoadBalancerTcpProbe> tcpProbes;
     private Map<String, LoadBalancerHttpProbe> httpProbes;
     private Map<String, LoadBalancingRule> loadBalancingRules;
@@ -524,7 +524,7 @@ class LoadBalancerImpl
 
     @Override
     public BackendImpl defineBackend(String name) {
-        Backend backend = this.backends.get(name);
+        LoadBalancerBackend backend = this.backends.get(name);
         if (backend == null) {
             BackendAddressPoolInner inner = new BackendAddressPoolInner()
                     .withName(name);
@@ -617,7 +617,7 @@ class LoadBalancerImpl
     // Getters
 
     @Override
-    public Map<String, Backend> backends() {
+    public Map<String, LoadBalancerBackend> backends() {
         return Collections.unmodifiableMap(this.backends);
     }
 

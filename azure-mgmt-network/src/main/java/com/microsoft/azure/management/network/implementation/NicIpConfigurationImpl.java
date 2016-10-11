@@ -2,7 +2,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.InboundNatRule;
@@ -409,10 +409,10 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public List<Backend> listAssociatedLoadBalancerBackends() {
+    public List<LoadBalancerBackend> listAssociatedLoadBalancerBackends() {
         final List<BackendAddressPoolInner> backendRefs = this.inner().loadBalancerBackendAddressPools();
         final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
-        final List<Backend> backends = new ArrayList<>();
+        final List<LoadBalancerBackend> backends = new ArrayList<>();
 
         if (backendRefs != null) {
             for (BackendAddressPoolInner backendRef : backendRefs) {

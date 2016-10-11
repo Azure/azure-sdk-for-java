@@ -16,7 +16,7 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
@@ -719,7 +719,7 @@ public class TestLoadBalancer {
 
             info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
 
-            Backend backend = rule.backend();
+            LoadBalancerBackend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
@@ -807,7 +807,7 @@ public class TestLoadBalancer {
         // Show backends
         info.append("\n\tBackends: ")
             .append(resource.backends().size());
-        for (Backend backend : resource.backends().values()) {
+        for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs
