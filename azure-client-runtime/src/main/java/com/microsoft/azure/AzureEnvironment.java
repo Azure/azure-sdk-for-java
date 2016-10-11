@@ -7,6 +7,8 @@
 
 package com.microsoft.azure;
 
+import java.lang.reflect.Field;
+
 /**
  * An instance of this class describes an environment in Azure.
  */
@@ -14,7 +16,7 @@ public final class AzureEnvironment {
     /**
      * Base URL for calls to Azure management API.
      */
-    private final String resourceManagerEndpoint;
+    private String resourceManagerEndpoint;
 
     /**
      * ActiveDirectory Endpoint for the authentications.
@@ -98,17 +100,8 @@ public final class AzureEnvironment {
      *
      * @return the Base URL for the management service.
      */
-    public String getBaseUrl() {
+    public String getResourceManagerEndpoint() {
         return this.resourceManagerEndpoint;
-    }
-
-    /**
-     * @return a builder for the rest client.
-     */
-    public RestClient.Builder.Buildable newRestClientBuilder() {
-        return new RestClient.Builder()
-                .withDefaultBaseUrl(this)
-                .withInterceptor(new RequestIdHeaderInterceptor());
     }
 
     /**
@@ -152,5 +145,60 @@ public final class AzureEnvironment {
      */
     public void setValidateAuthority(boolean validateAuthority) {
         this.validateAuthority = validateAuthority;
+    }
+
+    /**
+     * The enum representing available endpoints in an environment.
+     */
+    public enum Endpoint {
+        /** Azure Resource Manager endpoint. */
+        RESOURCE_MANAGER("resourceManagerEndpoint"),
+        /** Azure Active Directory Graph APIs endpoint. */
+        GRAPH("graphEndpoint");
+
+        private String field;
+
+        Endpoint(String value) {
+            this.field = value;
+        }
+
+        @Override
+        public String toString() {
+            return field;
+        }
+    }
+
+    /**
+     * Get the endpoint URL for the current environment.
+     *
+     * @param endpoint the endpoint
+     * @return the URL
+     */
+    public String getEndpoint(Endpoint endpoint) {
+        try {
+            Field f = AzureEnvironment.class.getDeclaredField(endpoint.toString());
+            f.setAccessible(true);
+            return (String) f.get(this);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new RuntimeException("Unable to reflect on field " + endpoint.toString(), e);
+        }
+    }
+
+    /**
+     * Create a builder for rest client from an endpoint.
+     *
+     * @param endpoint the endpoint
+     * @return a RestClient builder
+     */
+    public RestClient.Builder newRestClientBuilder(Endpoint endpoint) {
+        return new RestClient.Builder().withBaseUrl(this, endpoint);
+    }
+
+    /**
+     * Create a builder for rest client to Azure Resource Manager.
+     * @return a RestClient builder
+     */
+    public RestClient.Builder newRestClientBuilder() {
+        return new RestClient.Builder().withBaseUrl(this, Endpoint.RESOURCE_MANAGER);
     }
 }

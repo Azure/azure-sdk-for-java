@@ -8,16 +8,14 @@
 package com.microsoft.azure;
 
 import com.microsoft.rest.retry.RetryHandler;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.Protocol;
 import okhttp3.Request;
 import okhttp3.Response;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.IOException;
 
 public class RequestIdHeaderInterceptorTests {
     private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";

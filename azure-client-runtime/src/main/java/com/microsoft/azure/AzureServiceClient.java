@@ -22,8 +22,7 @@ public abstract class AzureServiceClient {
     private RestClient restClient;
 
     protected AzureServiceClient(String baseUrl) {
-        this(new RestClient.Builder().withBaseUrl(baseUrl)
-                .withInterceptor(new RequestIdHeaderInterceptor()).build());
+        this(new RestClient.Builder().withBaseUrl(baseUrl).build());
     }
 
     /**

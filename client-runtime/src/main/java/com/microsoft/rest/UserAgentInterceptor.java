@@ -57,6 +57,13 @@ public class UserAgentInterceptor implements Interceptor {
         return this;
     }
 
+    /**
+     * @return the current user agent string.
+     */
+    public String userAgent() {
+        return userAgent;
+    }
+
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
@@ -64,7 +71,7 @@ public class UserAgentInterceptor implements Interceptor {
         if (header == null) {
             header = DEFAULT_USER_AGENT_HEADER;
         }
-        if (!userAgent.equals(DEFAULT_USER_AGENT_HEADER)) {
+        if (!DEFAULT_USER_AGENT_HEADER.equals(userAgent)) {
             if (header.equals(DEFAULT_USER_AGENT_HEADER)) {
                 header = userAgent;
             } else {
