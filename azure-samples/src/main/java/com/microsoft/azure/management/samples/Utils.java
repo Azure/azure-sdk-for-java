@@ -30,7 +30,7 @@ import com.microsoft.azure.management.network.TcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.Backend;
 import com.microsoft.azure.management.network.Probe;
 import com.microsoft.azure.management.network.HttpProbe;
@@ -400,7 +400,7 @@ public final class Utils {
                     .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                     .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
-            Frontend frontend = rule.frontend();
+            LoadBalancerFrontend frontend = rule.frontend();
             info.append("\n\t\t\tFrontend: ");
             if (frontend != null) {
                 info.append(frontend.name());
@@ -432,7 +432,7 @@ public final class Utils {
         // Show frontends
         info.append("\n\tFrontends: ")
                 .append(resource.frontends().size());
-        for (Frontend frontend : resource.frontends().values()) {
+        for (LoadBalancerFrontend frontend : resource.frontends().values()) {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {

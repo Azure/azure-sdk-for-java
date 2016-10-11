@@ -60,7 +60,7 @@ public interface LoadBalancer extends
     /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
-    Map<String, Frontend> frontends();
+    Map<String, LoadBalancerFrontend> frontends();
 
     /**
      * @return inbound NAT pools, indexed by name

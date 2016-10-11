@@ -29,7 +29,7 @@ import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
@@ -372,7 +372,7 @@ public class VirtualMachineScaleSetImpl
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
-        for (Frontend frontEnd : loadBalancer.frontends().values()) {
+        for (LoadBalancerFrontend frontEnd : loadBalancer.frontends().values()) {
             if (frontEnd.inner().subnet().id() != null) {
                 lbNetworkId = ResourceUtils.parentResourcePathFromResourceId(frontEnd.inner().subnet().id());
             }

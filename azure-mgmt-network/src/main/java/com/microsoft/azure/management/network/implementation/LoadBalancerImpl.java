@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.HttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
@@ -62,7 +62,7 @@ class LoadBalancerImpl
     private Map<String, TcpProbe> tcpProbes;
     private Map<String, HttpProbe> httpProbes;
     private Map<String, LoadBalancingRule> loadBalancingRules;
-    private Map<String, Frontend> frontends;
+    private Map<String, LoadBalancerFrontend> frontends;
     private Map<String, InboundNatRule> inboundNatRules;
     private Map<String, InboundNatPool> inboundNatPools;
 
@@ -512,7 +512,7 @@ class LoadBalancerImpl
     }
 
     private FrontendImpl defineFrontend(String name) {
-        Frontend frontend = this.frontends.get(name);
+        LoadBalancerFrontend frontend = this.frontends.get(name);
         if (frontend == null) {
             FrontendIPConfigurationInner inner = new FrontendIPConfigurationInner()
                     .withName(name);
@@ -632,7 +632,7 @@ class LoadBalancerImpl
     }
 
     @Override
-    public Map<String, Frontend> frontends() {
+    public Map<String, LoadBalancerFrontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
     }
 
@@ -654,7 +654,7 @@ class LoadBalancerImpl
     @Override
     public List<String> publicIpAddressIds() {
         List<String> publicIpAddressIds = new ArrayList<>();
-        for (Frontend frontend : this.frontends().values()) {
+        for (LoadBalancerFrontend frontend : this.frontends().values()) {
             if (frontend.isPublic()) {
                 String pipId = ((PublicFrontend) frontend).publicIpAddressId();
                 publicIpAddressIds.add(pipId);

@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  */
 @Fluent()
 public interface PrivateFrontend extends
-    Frontend,
+    LoadBalancerFrontend,
     HasPrivateIpAddress,
     HasSubnet {
 

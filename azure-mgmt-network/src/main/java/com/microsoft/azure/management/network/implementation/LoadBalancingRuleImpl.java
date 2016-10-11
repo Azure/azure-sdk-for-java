@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
@@ -75,7 +75,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Frontend frontend() {
+    public LoadBalancerFrontend frontend() {
         SubResource frontendRef = this.inner().frontendIPConfiguration();
         if (frontendRef == null) {
             return null;
