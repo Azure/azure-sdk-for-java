@@ -22,7 +22,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
-import java.lang.reflect.Field;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
 import java.net.Proxy;
@@ -32,7 +31,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * An instance of this class stores the client information for making REST calls.
  */
-public class RestClient {
+public final class RestClient {
     /** The {@link okhttp3.OkHttpClient} object. */
     private OkHttpClient httpClient;
     /** The {@link retrofit2.Retrofit} object. */
@@ -41,26 +40,18 @@ public class RestClient {
     private ServiceClientCredentials credentials;
     /** The interceptor to handle custom headers. */
     private CustomHeadersInterceptor customHeadersInterceptor;
-    /** The interceptor to handle base URL. */
-    private BaseUrlHandler baseUrlHandler;
     /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
     private JacksonMapperAdapter mapperAdapter;
-    /** The interceptor to set 'User-Agent' header. */
-    private UserAgentInterceptor userAgentInterceptor;
 
     protected RestClient(OkHttpClient httpClient,
-                       Retrofit retrofit,
-                       ServiceClientCredentials credentials,
-                       CustomHeadersInterceptor customHeadersInterceptor,
-                       UserAgentInterceptor userAgentInterceptor,
-                       BaseUrlHandler baseUrlHandler,
-                       JacksonMapperAdapter mapperAdapter) {
+                         Retrofit retrofit,
+                         ServiceClientCredentials credentials,
+                         CustomHeadersInterceptor customHeadersInterceptor,
+                         JacksonMapperAdapter mapperAdapter) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
-        this.userAgentInterceptor = userAgentInterceptor;
-        this.baseUrlHandler = baseUrlHandler;
         this.mapperAdapter = mapperAdapter;
     }
 
@@ -125,21 +116,19 @@ public class RestClient {
      */
     public static class Builder {
         /** The dynamic base URL with variables wrapped in "{" and "}". */
-        protected String baseUrl;
+        String baseUrl;
         /** The builder to build an {@link OkHttpClient}. */
-        protected OkHttpClient.Builder httpClientBuilder;
+        OkHttpClient.Builder httpClientBuilder;
         /** The builder to build a {@link Retrofit}. */
-        protected Retrofit.Builder retrofitBuilder;
+        Retrofit.Builder retrofitBuilder;
         /** The credentials to authenticate. */
-        protected ServiceClientCredentials credentials;
+        ServiceClientCredentials credentials;
         /** The interceptor to handle custom headers. */
-        protected CustomHeadersInterceptor customHeadersInterceptor;
+        CustomHeadersInterceptor customHeadersInterceptor;
         /** The interceptor to handle base URL. */
-        protected BaseUrlHandler baseUrlHandler;
+        BaseUrlHandler baseUrlHandler;
         /** The interceptor to set 'User-Agent' header. */
-        protected UserAgentInterceptor userAgentInterceptor;
-        /** The inner Builder instance. */
-        protected Buildable buildable;
+        UserAgentInterceptor userAgentInterceptor;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -161,6 +150,7 @@ public class RestClient {
             if (retrofitBuilder == null) {
                 throw new IllegalArgumentException("retrofitBuilder == null");
             }
+            this.baseUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint();
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
@@ -170,9 +160,9 @@ public class RestClient {
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(30, TimeUnit.SECONDS)
-                    .addInterceptor(userAgentInterceptor);
+                    .addInterceptor(userAgentInterceptor)
+                    .addInterceptor(new RequestIdHeaderInterceptor());
             this.retrofitBuilder = retrofitBuilder;
-            this.buildable = new Buildable();
         }
 
         /**
@@ -181,174 +171,150 @@ public class RestClient {
          * @param baseUrl the base URL to use.
          * @return the builder itself for chaining.
          */
-        public Buildable withBaseUrl(String baseUrl) {
+        public Builder withBaseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
-            return buildable;
-        }
-
-        /**
-         * Sets the base URL with the default from the service client.
-         *
-         * @param serviceClientClass the service client class containing a default base URL.
-         * @return the builder itself for chaining.
-         */
-        public Buildable withDefaultBaseUrl(Class<?> serviceClientClass) {
-            try {
-                Field field = serviceClientClass.getDeclaredField("DEFAULT_BASE_URL");
-                field.setAccessible(true);
-                baseUrl = (String) field.get(null);
-            } catch (NoSuchFieldException | IllegalAccessException e) {
-                throw new UnsupportedOperationException("Cannot read static field DEFAULT_BASE_URL", e);
-            }
-            return buildable;
+            return this;
         }
 
         /**
          * Sets the base URL with the default from the Azure Environment.
          *
-         * @param environment the environment the application is running in
+         * @param endpoint the environment endpoint the application is accessing
          * @return the builder itself for chaining
          */
-        public RestClient.Builder.Buildable withDefaultBaseUrl(AzureEnvironment environment) {
-            withBaseUrl(environment.getBaseUrl());
-            return buildable;
+        public Builder withBaseUrl(AzureEnvironment environment, AzureEnvironment.Endpoint endpoint) {
+            this.baseUrl = environment.getEndpoint(endpoint);
+            return this;
         }
 
         /**
-         * The inner class from which a Rest Client can be built.
+         * Sets the credentials.
+         *
+         * @param credentials the credentials object.
+         * @return the builder itself for chaining.
          */
-        public class Buildable {
-            /**
-             * Sets the user agent header.
-             *
-             * @param userAgent the user agent header.
-             * @return the builder itself for chaining.
-             */
-            public Buildable withUserAgent(String userAgent) {
-                userAgentInterceptor.withUserAgent(userAgent);
-                return this;
+        public Builder withCredentials(ServiceClientCredentials credentials) {
+            this.credentials = credentials;
+            if (credentials != null) {
+                credentials.applyCredentialsFilter(httpClientBuilder);
             }
 
-            /**
-             * Sets the credentials.
-             *
-             * @param credentials the credentials object.
-             * @return the builder itself for chaining.
-             */
-            public Buildable withCredentials(ServiceClientCredentials credentials) {
-                Builder.this.credentials = credentials;
-                if (credentials != null) {
-                    credentials.applyCredentialsFilter(httpClientBuilder);
-                }
-                return this;
-            }
+            return this;
+        }
 
-            /**
-             * Sets the log level.
-             *
-             * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
-             * @return the builder itself for chaining.
-             */
-            public Buildable withLogLevel(HttpLoggingInterceptor.Level logLevel) {
-                httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
-                return this;
-            }
+        /**
+         * Sets the user agent header.
+         *
+         * @param userAgent the user agent header.
+         * @return the builder itself for chaining.
+         */
+        public Builder withUserAgent(String userAgent) {
+            userAgentInterceptor.withUserAgent(userAgent);
+            return this;
+        }
 
-            /**
-             * Add an interceptor the Http client pipeline.
-             *
-             * @param interceptor the interceptor to add.
-             * @return the builder itself for chaining.
-             */
-            public Buildable withInterceptor(Interceptor interceptor) {
-                httpClientBuilder.addInterceptor(interceptor);
-                return this;
-            }
+        /**
+         * Sets the log level.
+         *
+         * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
+         * @return the builder itself for chaining.
+         */
+        public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
+            httpClientBuilder.addInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
+            return this;
+        }
 
-            /**
-             * Set the read timeout on the HTTP client. Default is 10 seconds.
-             *
-             * @param timeout the timeout numeric value
-             * @param unit the time unit for the numeric value
-             * @return the builder itself for chaining
-             */
-            public Buildable withReadTimeout(long timeout, TimeUnit unit) {
-                httpClientBuilder.readTimeout(timeout, unit);
-                return this;
-            }
+        /**
+         * Add an interceptor the Http client pipeline.
+         *
+         * @param interceptor the interceptor to add.
+         * @return the builder itself for chaining.
+         */
+        public Builder withInterceptor(Interceptor interceptor) {
+            httpClientBuilder.addInterceptor(interceptor);
+            return this;
+        }
 
-            /**
-             * Set the connection timeout on the HTTP client. Default is 10 seconds.
-             *
-             * @param timeout the timeout numeric value
-             * @param unit the time unit for the numeric value
-             * @return the builder itself for chaining
-             */
-            public Buildable withConnectionTimeout(long timeout, TimeUnit unit) {
-                httpClientBuilder.connectTimeout(timeout, unit);
-                return this;
-            }
+        /**
+         * Set the read timeout on the HTTP client. Default is 10 seconds.
+         *
+         * @param timeout the timeout numeric value
+         * @param unit the time unit for the numeric value
+         * @return the builder itself for chaining
+         */
+        public Builder withReadTimeout(long timeout, TimeUnit unit) {
+            httpClientBuilder.readTimeout(timeout, unit);
+            return this;
+        }
 
-            /**
-             * Set the maximum idle connections for the HTTP client. Default is 5.
-             *
-             * @param maxIdleConnections the maximum idle connections
-             * @return the builder itself for chaining
-             */
-            public Buildable withMaxIdleConnections(int maxIdleConnections) {
-                httpClientBuilder.connectionPool(new ConnectionPool(maxIdleConnections, 5, TimeUnit.MINUTES));
-                return this;
-            }
+        /**
+         * Set the connection timeout on the HTTP client. Default is 10 seconds.
+         *
+         * @param timeout the timeout numeric value
+         * @param unit the time unit for the numeric value
+         * @return the builder itself for chaining
+         */
+        public Builder withConnectionTimeout(long timeout, TimeUnit unit) {
+            httpClientBuilder.connectTimeout(timeout, unit);
+            return this;
+        }
 
-            /**
-             * Sets the executor for async callbacks to run on.
-             *
-             * @param executor the executor to execute the callbacks.
-             * @return the builder itself for chaining
-             */
-            public Buildable withCallbackExecutor(Executor executor) {
-                retrofitBuilder.callbackExecutor(executor);
-                return this;
-            }
+        /**
+         * Set the maximum idle connections for the HTTP client. Default is 5.
+         *
+         * @param maxIdleConnections the maximum idle connections
+         * @return the builder itself for chaining
+         */
+        public Builder withMaxIdleConnections(int maxIdleConnections) {
+            httpClientBuilder.connectionPool(new ConnectionPool(maxIdleConnections, 5, TimeUnit.MINUTES));
+            return this;
+        }
 
-            /**
-             * Sets the proxy for the HTTP client.
-             *
-             * @param proxy the proxy to use
-             * @return the builder itself for chaining
-             */
-            public Buildable withProxy(Proxy proxy) {
-                httpClientBuilder.proxy(proxy);
-                return this;
-            }
+        /**
+         * Sets the executor for async callbacks to run on.
+         *
+         * @param executor the executor to execute the callbacks.
+         * @return the builder itself for chaining
+         */
+        public Builder withCallbackExecutor(Executor executor) {
+            retrofitBuilder.callbackExecutor(executor);
+            return this;
+        }
 
-            /**
-             * Build a RestClient with all the current configurations.
-             *
-             * @return a {@link RestClient}.
-             */
-            public RestClient build() {
-                AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
-                OkHttpClient httpClient = httpClientBuilder
-                        .addInterceptor(baseUrlHandler)
-                        .addInterceptor(customHeadersInterceptor)
-                        .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
-                        .addInterceptor(new RetryHandler())
-                        .build();
-                return new RestClient(httpClient,
-                        retrofitBuilder
-                                .baseUrl(baseUrl)
-                                .client(httpClient)
-                                .addConverterFactory(mapperAdapter.getConverterFactory())
-                                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                                .build(),
-                        credentials,
-                        customHeadersInterceptor,
-                        userAgentInterceptor,
-                        baseUrlHandler,
-                        mapperAdapter);
-            }
+        /**
+         * Sets the proxy for the HTTP client.
+         *
+         * @param proxy the proxy to use
+         * @return the builder itself for chaining
+         */
+        public Builder withProxy(Proxy proxy) {
+            httpClientBuilder.proxy(proxy);
+            return this;
+        }
 
+        /**
+         * Build a RestClient with all the current configurations.
+         *
+         * @return a {@link RestClient}.
+         */
+        public RestClient build() {
+            AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
+            OkHttpClient httpClient = httpClientBuilder
+                    .addInterceptor(baseUrlHandler)
+                    .addInterceptor(customHeadersInterceptor)
+                    .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
+                    .addInterceptor(new RetryHandler())
+                    .build();
+            return new RestClient(httpClient,
+                    retrofitBuilder
+                            .baseUrl(baseUrl)
+                            .client(httpClient)
+                            .addConverterFactory(mapperAdapter.getConverterFactory())
+                            .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                            .build(),
+                    credentials,
+                    customHeadersInterceptor,
+                    mapperAdapter);
         }
     }
 }
