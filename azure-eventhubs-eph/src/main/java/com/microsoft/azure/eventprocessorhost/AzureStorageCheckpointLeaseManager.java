@@ -31,7 +31,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 {
     private EventProcessorHost host;
     private final String storageConnectionString;
-    private String storageContainerName = null;
+    private String storageContainerName;
+    private String storageBlobPrefix;
     
     private CloudBlobClient storageClient;
     private CloudBlobContainer eventHubContainer;
@@ -46,13 +47,21 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 
     AzureStorageCheckpointLeaseManager(String storageConnectionString)
     {
-        this.storageConnectionString = storageConnectionString;
+        this(storageConnectionString, null);
+    }
+    
+    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName)
+    {
+    	this(storageConnectionString, storageContainerName, null);
     }
 
-    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName)
+    AzureStorageCheckpointLeaseManager(String storageConnectionString, String storageContainerName, String storageBlobPrefix)
     {
         this.storageConnectionString = storageConnectionString;
         this.storageContainerName = storageContainerName;
+        // Get rid of whitespace. An all-whitespace prefix will end up empty. The rest of the code
+        // needs to be able to handle null (no prefix supplied) or empty (bogus all-whitespace prefix supplied).
+        this.storageBlobPrefix = (storageBlobPrefix != null) ? storageBlobPrefix.trim() : null;
     }
 
     // The EventProcessorHost can't pass itself to the AzureStorageCheckpointLeaseManager constructor
@@ -73,7 +82,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
         
         this.eventHubContainer = this.storageClient.getContainerReference(this.storageContainerName);
         
-        this.consumerGroupDirectory = this.eventHubContainer.getDirectoryReference(this.host.getConsumerGroupName());
+        String consumerGroupDirectoryName = "";
+        if ((this.storageBlobPrefix != null) && !this.storageBlobPrefix.isEmpty())
+        {
+        	consumerGroupDirectoryName = this.storageBlobPrefix;
+        }
+        consumerGroupDirectoryName += this.host.getConsumerGroupName();
+        this.consumerGroupDirectory = this.eventHubContainer.getDirectoryReference(consumerGroupDirectoryName);
         
         this.gson = new Gson();
 
@@ -307,7 +322,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		CloudBlockBlob leaseBlob = this.consumerGroupDirectory.getBlockBlobReference(partitionId);
     		returnLease = new AzureBlobLease(partitionId, leaseBlob);
     		this.host.logWithHostAndPartition(Level.INFO, partitionId,
-    				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName());
+    				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
+    				"storageBlobPrefix: " + ((this.storageBlobPrefix != null) ? this.storageBlobPrefix : ""));
     		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), "created");
     	}
     	catch (StorageException se)
@@ -326,7 +342,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     			System.out.println("errorCode " + extendedErrorInfo.getErrorCode());
     			System.out.println("errorString " + extendedErrorInfo.getErrorMessage());
     			this.host.logWithHostAndPartition(Level.SEVERE, partitionId,
-    				"CreateLeaseIfNotExist StorageException - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName(),
+    				"CreateLeaseIfNotExist StorageException - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
+    				"storageBlobPrefix: " + ((this.storageBlobPrefix != null) ? this.storageBlobPrefix : ""),
     				se);
     			throw se;
     		}

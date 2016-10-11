@@ -120,8 +120,33 @@ public final class EventProcessorHost
             final String storageConnectionString,
             final String storageContainerName)
     {
+        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, null);
+    }
+
+    /**
+     * Create a new host to process events from an Event Hub.
+     * 
+     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * 
+     * @param hostName		A name for this event processor host. See method notes.
+	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
+	 * @param consumerGroupName			The name of the consumer group to use when receiving from the Event Hub.
+	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
+	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
+     * @param storageContainerName		Azure Storage container name for use by built-in lease and checkpoint manager.
+     * @param storageBlobPrefix			Prefix used when naming blobs within the storage container.
+     */
+    public EventProcessorHost(
+            final String hostName,
+            final String eventHubPath,
+            final String consumerGroupName,
+            final String eventHubConnectionString,
+            final String storageConnectionString,
+            final String storageContainerName,
+            final String storageBlobPrefix)
+    {
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
-                new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName));
+                new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix));
         this.initializeLeaseManager = true;
     }
     
