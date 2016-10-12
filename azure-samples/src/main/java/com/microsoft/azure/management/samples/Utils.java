@@ -26,14 +26,14 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.Frontend;
-import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Probe;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PrivateFrontend;
 import com.microsoft.azure.management.storage.StorageAccount;
@@ -358,7 +358,7 @@ public final class Utils {
         // Show TCP probes
         info.append("\n\tTCP probes: ")
                 .append(resource.tcpProbes().size());
-        for (TcpProbe probe : resource.tcpProbes().values()) {
+        for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                     .append("\n\t\t\tPort: ").append(probe.port())
                     .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -375,7 +375,7 @@ public final class Utils {
         // Show HTTP probes
         info.append("\n\tHTTP probes: ")
                 .append(resource.httpProbes().size());
-        for (HttpProbe probe : resource.httpProbes().values()) {
+        for (LoadBalancerHttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                     .append("\n\t\t\tPort: ").append(probe.port())
                     .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -400,7 +400,7 @@ public final class Utils {
                     .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                     .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
-            Frontend frontend = rule.frontend();
+            LoadBalancerFrontend frontend = rule.frontend();
             info.append("\n\t\t\tFrontend: ");
             if (frontend != null) {
                 info.append(frontend.name());
@@ -410,7 +410,7 @@ public final class Utils {
 
             info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
 
-            Backend backend = rule.backend();
+            LoadBalancerBackend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
@@ -420,7 +420,7 @@ public final class Utils {
 
             info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
 
-            Probe probe = rule.probe();
+            LoadBalancerProbe probe = rule.probe();
             info.append("\n\t\t\tProbe: ");
             if (probe == null) {
                 info.append("(None)");
@@ -432,7 +432,7 @@ public final class Utils {
         // Show frontends
         info.append("\n\tFrontends: ")
                 .append(resource.frontends().size());
-        for (Frontend frontend : resource.frontends().values()) {
+        for (LoadBalancerFrontend frontend : resource.frontends().values()) {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
@@ -498,7 +498,7 @@ public final class Utils {
         // Show backends
         info.append("\n\tBackends: ")
                 .append(resource.backends().size());
-        for (Backend backend : resource.backends().values()) {
+        for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs

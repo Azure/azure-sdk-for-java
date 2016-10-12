@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.network.model;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 
 /**
  * An interface representing a model's ability to references a load balancer frontend.
@@ -16,7 +16,7 @@ public interface HasFrontend  {
     /**
      * @return the associated frontend
      */
-    Frontend frontend();
+    LoadBalancerFrontend frontend();
 
     /**
      * Grouping of definition stages involving specifying the frontend.

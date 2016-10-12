@@ -46,12 +46,12 @@ public interface LoadBalancingRule extends
     /**
      * @return the backend associated with the load balancing rule
      */
-    Backend backend();
+    LoadBalancerBackend backend();
 
     /**
      * @return the probe associated with the load balancing rule
      */
-    Probe probe();
+    LoadBalancerProbe probe();
 
     /**
      * Grouping of load balancing rule definition stages.

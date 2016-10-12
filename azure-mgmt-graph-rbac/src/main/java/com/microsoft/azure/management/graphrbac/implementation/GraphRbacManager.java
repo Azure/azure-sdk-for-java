@@ -77,14 +77,10 @@ public final class GraphRbacManager {
      * The implementation for Configurable interface.
      */
     private static class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
-        protected ConfigurableImpl() {
-            super.restClientBuilder = new RestClient.Builder()
-                    .withBaseUrl(AzureEnvironment.AZURE.getGraphEndpoint()) // default to public cloud
-                    .withInterceptor(new RequestIdHeaderInterceptor());
-        }
-
         public GraphRbacManager authenticate(AzureTokenCredentials credentials) {
-            return GraphRbacManager.authenticate(buildRestClientForGraph(credentials), credentials.getDomain());
+            return GraphRbacManager.authenticate(
+                    buildRestClient(credentials, AzureEnvironment.Endpoint.GRAPH),
+                    credentials.getDomain());
         }
     }
 

@@ -38,6 +38,11 @@ public class DataLakeStoreAccount {
     private String id;
 
     /**
+     * The Key vault encryption identity, if any.
+     */
+    private EncryptionIdentity identity;
+
+    /**
      * the value of custom properties.
      */
     private Map<String, String> tags;
@@ -103,6 +108,26 @@ public class DataLakeStoreAccount {
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the identity value.
+     *
+     * @return the identity value
+     */
+    public EncryptionIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity value.
+     *
+     * @param identity the identity value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withIdentity(EncryptionIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**

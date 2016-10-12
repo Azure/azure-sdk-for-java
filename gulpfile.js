@@ -80,12 +80,6 @@ var mappings = {
         'package': 'com.microsoft.azure.management.trafficmanager',
         'args': '-FT 1'
     },
-    'datalake.store.filesystem': {
-        'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
-        'package': 'com.microsoft.azure.management.datalake.store',
-        'fluent': false
-    },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
@@ -129,6 +123,12 @@ var mappings = {
         'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
         'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
+    },
+    'sql': {
+        'dir': 'azure-mgmt-sql',
+        'source': 'arm-sql/compositeSql.json',
+        'package': 'com.microsoft.azure.management.sql',
+        'args': '-FT 1'
     }
 };
 
@@ -151,7 +151,7 @@ var isMac = (process.platform.lastIndexOf('darwin') === 0);
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.17.0-Nightly20160830'; // default
+var autoRestVersion = '0.17.0-Nightly20161010'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

@@ -4,7 +4,7 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
-import com.microsoft.azure.management.network.Backend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
@@ -153,7 +153,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, Backend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
+    Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException;
 
     /**
      * @return the internet-facing load balancer's inbound NAT pool associated with the primary network interface
@@ -177,7 +177,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, Backend> listPrimaryInternalLoadBalancerBackends() throws IOException;
+    Map<String, LoadBalancerBackend> listPrimaryInternalLoadBalancerBackends() throws IOException;
 
     /**
      * @return the inbound NAT pools of the internal load balancer associated with the primary network interface

@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
@@ -84,7 +84,7 @@ class InboundNatRuleImpl
     }
 
     @Override
-    public Frontend frontend() {
+    public LoadBalancerFrontend frontend() {
         return this.parent().frontends().get(
                 ResourceUtils.nameFromResourceId(
                         this.inner().frontendIPConfiguration().id()));

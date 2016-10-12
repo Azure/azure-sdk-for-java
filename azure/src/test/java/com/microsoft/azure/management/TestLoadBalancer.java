@@ -16,9 +16,9 @@ import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
-import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
 import com.microsoft.azure.management.network.PublicFrontend;
@@ -30,10 +30,10 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PrivateFrontend;
-import com.microsoft.azure.management.network.Probe;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -449,7 +449,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(lbRule.backendPort() == 8080);
             Assert.assertTrue(lbRule.frontend().name().equalsIgnoreCase("default"));
 
-            Frontend frontend = resource.frontends().get("default");
+            LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(((PublicFrontend) frontend).publicIpAddressId().equalsIgnoreCase(pip.id()));
             Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
@@ -509,14 +509,12 @@ public class TestLoadBalancer {
                     .withLoadBalancingRule(80, TransportProtocol.TCP)
                     .create();
 
-            //TODO Assert.assertTrue(lb.backends().containsKey("default"));
             Assert.assertTrue(lb.frontends().containsKey("default"));
             Assert.assertTrue(lb.tcpProbes().containsKey("default"));
             Assert.assertTrue(lb.loadBalancingRules().containsKey("default"));
 
             LoadBalancingRule lbrule = lb.loadBalancingRules().get("default");
             Assert.assertTrue(lbrule.frontend().name().equalsIgnoreCase("default"));
-            //TODO Assert.assertTrue(lbrule.backend().name().equalsIgnoreCase("default"));
             Assert.assertTrue(lbrule.probe().name().equalsIgnoreCase("default"));
 
             return lb;
@@ -566,7 +564,7 @@ public class TestLoadBalancer {
             Assert.assertTrue(lbRule.backendPort() == 8080);
             Assert.assertTrue(lbRule.frontend().name().equalsIgnoreCase("default"));
 
-            Frontend frontend = resource.frontends().get("default");
+            LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertTrue(!frontend.isPublic());
             Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
 
@@ -669,7 +667,7 @@ public class TestLoadBalancer {
         // Show TCP probes
         info.append("\n\tTCP probes: ")
             .append(resource.tcpProbes().size());
-        for (TcpProbe probe : resource.tcpProbes().values()) {
+        for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -686,7 +684,7 @@ public class TestLoadBalancer {
         // Show HTTP probes
         info.append("\n\tHTTP probes: ")
             .append(resource.httpProbes().size());
-        for (HttpProbe probe : resource.httpProbes().values()) {
+        for (LoadBalancerHttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                 .append("\n\t\t\tPort: ").append(probe.port())
                 .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -711,7 +709,7 @@ public class TestLoadBalancer {
                 .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                 .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
-            Frontend frontend = rule.frontend();
+            LoadBalancerFrontend frontend = rule.frontend();
             info.append("\n\t\t\tFrontend: ");
             if (frontend != null) {
                 info.append(frontend.name());
@@ -721,7 +719,7 @@ public class TestLoadBalancer {
 
             info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
 
-            Backend backend = rule.backend();
+            LoadBalancerBackend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
@@ -731,7 +729,7 @@ public class TestLoadBalancer {
 
             info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
 
-            Probe probe = rule.probe();
+            LoadBalancerProbe probe = rule.probe();
             info.append("\n\t\t\tProbe: ");
             if (probe == null) {
                 info.append("(None)");
@@ -743,7 +741,7 @@ public class TestLoadBalancer {
         // Show frontends
         info.append("\n\tFrontends: ")
             .append(resource.frontends().size());
-        for (Frontend frontend : resource.frontends().values()) {
+        for (LoadBalancerFrontend frontend : resource.frontends().values()) {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                 .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
@@ -809,7 +807,7 @@ public class TestLoadBalancer {
         // Show backends
         info.append("\n\tBackends: ")
             .append(resource.backends().size());
-        for (Backend backend : resource.backends().values()) {
+        for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs
