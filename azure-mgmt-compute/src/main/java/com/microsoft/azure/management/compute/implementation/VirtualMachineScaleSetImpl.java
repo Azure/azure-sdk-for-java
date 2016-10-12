@@ -28,8 +28,8 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfi
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
-import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
@@ -224,7 +224,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException {
+    public Map<String, LoadBalancerBackend> listPrimaryInternetFacingLoadBalancerBackends() throws IOException {
         if (this.getPrimaryInternetFacingLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -250,7 +250,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, Backend> listPrimaryInternalLoadBalancerBackends() throws IOException {
+    public Map<String, LoadBalancerBackend> listPrimaryInternalLoadBalancerBackends() throws IOException {
         if (this.getPrimaryInternalLoadBalancer() != null) {
             return getBackendsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -372,7 +372,7 @@ public class VirtualMachineScaleSetImpl
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
         String lbNetworkId = null;
-        for (Frontend frontEnd : loadBalancer.frontends().values()) {
+        for (LoadBalancerFrontend frontEnd : loadBalancer.frontends().values()) {
             if (frontEnd.inner().subnet().id() != null) {
                 lbNetworkId = ResourceUtils.parentResourcePathFromResourceId(frontEnd.inner().subnet().id());
             }
@@ -1232,12 +1232,12 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private static Map<String, Backend> getBackendsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
+    private static Map<String, LoadBalancerBackend> getBackendsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
                                                                                  VirtualMachineScaleSetIPConfigurationInner ipConfig) {
         String loadBalancerId = loadBalancer.id();
-        Map<String, Backend> attachedBackends = new HashMap<>();
-        Map<String, Backend> lbBackends = loadBalancer.backends();
-        for (Backend lbBackend : lbBackends.values()) {
+        Map<String, LoadBalancerBackend> attachedBackends = new HashMap<>();
+        Map<String, LoadBalancerBackend> lbBackends = loadBalancer.backends();
+        for (LoadBalancerBackend lbBackend : lbBackends.values()) {
             String backendId =  mergePath(loadBalancerId, "backendAddressPools", lbBackend.name());
             for (SubResource subResource : ipConfig.loadBalancerBackendAddressPools()) {
                 if (subResource.id().equalsIgnoreCase(backendId)) {
@@ -1266,10 +1266,10 @@ public class VirtualMachineScaleSetImpl
 
     private static void associateLoadBalancerToIpConfiguration(LoadBalancer loadBalancer,
                                                                VirtualMachineScaleSetIPConfigurationInner ipConfig) {
-        Collection<Backend> backends = loadBalancer.backends().values();
+        Collection<LoadBalancerBackend> backends = loadBalancer.backends().values();
         String[] backendNames = new String[backends.size()];
         int i = 0;
-        for (Backend backend : backends) {
+        for (LoadBalancerBackend backend : backends) {
             backendNames[i] = backend.name();
             i++;
         }

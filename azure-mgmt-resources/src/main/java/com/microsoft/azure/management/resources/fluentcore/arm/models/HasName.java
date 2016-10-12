@@ -6,19 +6,14 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
- * Base interface used by child resources.
- * @param <ParentT> parent interface
+ * An interface representing a model that has a name.
  */
 @Fluent
-public interface ChildResource<ParentT> extends
-    Indexable,
-    HasName {
-
+public interface HasName {
     /**
-     * @return the parent of this child object
+     * @return the name of the resource
      */
-    ParentT parent();
+    String name();
 }

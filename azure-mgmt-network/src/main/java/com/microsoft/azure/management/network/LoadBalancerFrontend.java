@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of a load balancer frontend.
  */
 @Fluent()
-public interface Frontend extends
+public interface LoadBalancerFrontend extends
     Wrapper<FrontendIPConfigurationInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules {

@@ -9,16 +9,16 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
 /**
- * Base interface used by child resources.
+ * Base interface used by child resources that do not immediately have their parent attached to them but are instead available directly off other entry points.
  * @param <ParentT> parent interface
  */
 @Fluent
-public interface ChildResource<ParentT> extends
+public interface ParentlessChildResource<ParentT> extends
     Indexable,
     HasName {
 
     /**
      * @return the parent of this child object
      */
-    ParentT parent();
+    ParentT getParent();
 }

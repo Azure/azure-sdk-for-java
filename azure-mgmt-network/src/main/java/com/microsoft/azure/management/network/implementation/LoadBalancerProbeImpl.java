@@ -11,31 +11,31 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.HttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.ProbeProtocol;
-import com.microsoft.azure.management.network.TcpProbe;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link TcpProbe} and its create and update interfaces.
+ *  Implementation for {@link LoadBalancerTcpProbe} and its create and update interfaces.
  */
 @LangDefinition
-class ProbeImpl
+class LoadBalancerProbeImpl
     extends ChildResourceImpl<ProbeInner, LoadBalancerImpl, LoadBalancer>
     implements
-        TcpProbe,
-        TcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
-        TcpProbe.UpdateDefinition<LoadBalancer.Update>,
-        TcpProbe.Update,
-        HttpProbe,
-        HttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
-        HttpProbe.UpdateDefinition<LoadBalancer.Update>,
-        HttpProbe.Update {
+        LoadBalancerTcpProbe,
+        LoadBalancerTcpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerTcpProbe.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerTcpProbe.Update,
+        LoadBalancerHttpProbe,
+        LoadBalancerHttpProbe.Definition<LoadBalancer.DefinitionStages.WithProbeOrLoadBalancingRule>,
+        LoadBalancerHttpProbe.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerHttpProbe.Update {
 
-    ProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
+    LoadBalancerProbeImpl(ProbeInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -90,25 +90,25 @@ class ProbeImpl
     // Fluent setters
 
     @Override
-    public ProbeImpl withPort(int port) {
+    public LoadBalancerProbeImpl withPort(int port) {
         this.inner().withPort(port);
         return this;
     }
 
     @Override
-    public ProbeImpl withRequestPath(String requestPath) {
+    public LoadBalancerProbeImpl withRequestPath(String requestPath) {
         this.inner().withRequestPath(requestPath);
         return this;
     }
 
     @Override
-    public ProbeImpl withIntervalInSeconds(int seconds) {
+    public LoadBalancerProbeImpl withIntervalInSeconds(int seconds) {
         this.inner().withIntervalInSeconds(seconds);
         return this;
     }
 
     @Override
-    public ProbeImpl withNumberOfProbes(int probes) {
+    public LoadBalancerProbeImpl withNumberOfProbes(int probes) {
         this.inner().withNumberOfProbes(probes);
         return this;
     }

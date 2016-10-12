@@ -10,10 +10,15 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
- * An immutable client-side representation of a TCP load balancing probe.
+ * An immutable client-side representation of an HTTP load balancing probe.
  */
 @Fluent()
-public interface TcpProbe extends Probe {
+public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
+
+    /**
+     * @return the HTTP request path for the HTTP probe to call to check the health status
+     */
+    String requestPath();
 
     /**
      * Grouping of probe definition stages.
@@ -23,24 +28,32 @@ public interface TcpProbe extends Probe {
          * The first stage of the probe definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithPort<ParentT> {
+        interface Blank<ParentT> extends WithRequestPath<ParentT> {
         }
 
-        /**
-         * The stage of the TCP probe definition allowing to specify the port number to monitor.
-         * @param <ParentT> the parent resource type
+        /** The final stage of the probe definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the probe definition
+         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithPort<ParentT> {
-            /**
-             * Specifies the port number to call for health monitoring.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withPort(int port);
+        interface WithAttach<ParentT> extends
+            Attachable.InDefinition<ParentT>,
+            WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>,
+            WithNumberOfProbes<ParentT> {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the probe interval.
+         * The stage of the probe definition allowing to specify the HTTP request path for the probe to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithRequestPath<ParentT> {
+            WithAttach<ParentT> withRequestPath(String requestPath);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the probe interval.
          * @param <ParentT> the parent resource type
          */
         interface WithIntervalInSeconds<ParentT> {
@@ -53,8 +66,21 @@ public interface TcpProbe extends Probe {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT> the parent resource type
+         * The stage of the probe definition allowing to specify the port to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number to call for health monitoring.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPort(int port);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT> the parent type
          */
         interface WithNumberOfProbes<ParentT> {
             /**
@@ -64,18 +90,6 @@ public interface TcpProbe extends Probe {
              */
             WithAttach<ParentT> withNumberOfProbes(int probes);
         }
-
-        /** The final stage of the probe definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the probe definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the parent resource type
-         */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT>,
-            WithIntervalInSeconds<ParentT>,
-            WithNumberOfProbes<ParentT> {
-        }
     }
 
     /** The entirety of a probe definition.
@@ -84,7 +98,7 @@ public interface TcpProbe extends Probe {
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithPort<ParentT> {
+        DefinitionStages.WithRequestPath<ParentT> {
     }
 
     /**
@@ -92,7 +106,7 @@ public interface TcpProbe extends Probe {
      */
     interface UpdateStages {
         /**
-         * The stage of the TCP probe update allowing to modify the port number to monitor.
+         * The stage of the HTTP probe update allowing to modify the port number to monitor.
          */
         interface WithPort {
             /**
@@ -104,7 +118,7 @@ public interface TcpProbe extends Probe {
         }
 
         /**
-         * The stage of the TCP probe update allowing to modify the probe interval.
+         * The stage of the HTTP probe update allowing to modify the probe interval.
          */
         interface WithIntervalInSeconds {
             /**
@@ -116,7 +130,7 @@ public interface TcpProbe extends Probe {
         }
 
         /**
-         * The stage of the TCP probe update allowing to modify the number of unsuccessful probes before failure is determined.
+         * The stage of the HTTP probe update allowing to modify the number of unsuccessful probes before failure is determined.
          */
         interface WithNumberOfProbes {
             /**
@@ -126,6 +140,13 @@ public interface TcpProbe extends Probe {
              */
             Update withNumberOfProbes(int probes);
         }
+
+        /**
+         * The stage of the HTTP probe update allowing to modify the HTTP request path for the probe to monitor.
+         */
+        interface WithRequestPath {
+            Update withRequestPath(String requestPath);
+        }
     }
 
     /**
@@ -133,9 +154,10 @@ public interface TcpProbe extends Probe {
      */
     interface Update extends
         Settable<LoadBalancer.Update>,
-        UpdateStages.WithPort,
         UpdateStages.WithIntervalInSeconds,
-        UpdateStages.WithNumberOfProbes {
+        UpdateStages.WithNumberOfProbes,
+        UpdateStages.WithPort,
+        UpdateStages.WithRequestPath {
     }
 
     /**
@@ -146,24 +168,32 @@ public interface TcpProbe extends Probe {
          * The first stage of the probe definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithPort<ParentT> {
+        interface Blank<ParentT> extends WithRequestPath<ParentT> {
         }
 
-        /**
-         * The stage of the TCP probe definition allowing to specify the port number to monitor.
-         * @param <ParentT> the parent resource type
+        /** The final stage of the probe definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the probe definition
+         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithPort<ParentT> {
-            /**
-             * Specifies the port number to call for health monitoring.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withPort(int port);
+        interface WithAttach<ParentT> extends
+            Attachable.InUpdate<ParentT>,
+            WithPort<ParentT>,
+            WithIntervalInSeconds<ParentT>,
+            WithNumberOfProbes<ParentT> {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the probe interval.
+         * The stage of the probe definition allowing to specify the HTTP request path for the probe to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithRequestPath<ParentT> {
+            WithAttach<ParentT> withRequestPath(String requestPath);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the probe interval.
          * @param <ParentT> the parent resource type
          */
         interface WithIntervalInSeconds<ParentT> {
@@ -176,8 +206,21 @@ public interface TcpProbe extends Probe {
         }
 
         /**
-         * The stage of the TCP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
-         * @param <ParentT> the parent resource type
+         * The stage of the probe definition allowing to specify the port to monitor.
+         * @param <ParentT> the parent type
+         */
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number to call for health monitoring.
+             * @param port a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPort(int port);
+        }
+
+        /**
+         * The stage of the HTTP probe definition allowing to specify the number of unsuccessful probes before failure is determined.
+         * @param <ParentT> the parent type
          */
         interface WithNumberOfProbes<ParentT> {
             /**
@@ -188,25 +231,14 @@ public interface TcpProbe extends Probe {
             WithAttach<ParentT> withNumberOfProbes(int probes);
         }
 
-        /** The final stage of the probe definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the probe definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
-         */
-        interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT>,
-            WithNumberOfProbes<ParentT>,
-            WithIntervalInSeconds<ParentT> {
-        }
     }
 
     /** The entirety of a probe definition as part of a load balancer update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends
-       UpdateDefinitionStages.Blank<ParentT>,
-       UpdateDefinitionStages.WithAttach<ParentT>,
-       UpdateDefinitionStages.WithPort<ParentT> {
+        UpdateDefinitionStages.Blank<ParentT>,
+        UpdateDefinitionStages.WithAttach<ParentT>,
+        UpdateDefinitionStages.WithRequestPath<ParentT> {
     }
 }

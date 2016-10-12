@@ -110,6 +110,8 @@ public class AzureTests {
             .withMode(DeploymentMode.COMPLETE)
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
+
+        azure.resourceGroups().delete("rg" + testId);
     }
 
 
@@ -223,7 +225,8 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork(azure.networkSecurityGroups()).runTest(azure.networks(), azure.resourceGroups());
+        new TestNetwork(azure.networkSecurityGroups())
+            .runTest(azure.networks(), azure.resourceGroups());
     }
 
     /**

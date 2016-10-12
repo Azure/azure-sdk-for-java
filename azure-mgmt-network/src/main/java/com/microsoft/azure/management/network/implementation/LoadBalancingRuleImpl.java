@@ -7,12 +7,12 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Frontend;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.LoadDistribution;
-import com.microsoft.azure.management.network.Probe;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -75,7 +75,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Frontend frontend() {
+    public LoadBalancerFrontend frontend() {
         SubResource frontendRef = this.inner().frontendIPConfiguration();
         if (frontendRef == null) {
             return null;
@@ -86,7 +86,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Backend backend() {
+    public LoadBalancerBackend backend() {
         SubResource backendRef = this.inner().backendAddressPool();
         if (backendRef == null) {
             return null;
@@ -97,7 +97,7 @@ class LoadBalancingRuleImpl
     }
 
     @Override
-    public Probe probe() {
+    public LoadBalancerProbe probe() {
         SubResource probeRef = this.inner().probe();
         if (probeRef == null) {
             return null;

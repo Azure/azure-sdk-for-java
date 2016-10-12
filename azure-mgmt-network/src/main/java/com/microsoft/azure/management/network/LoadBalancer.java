@@ -40,17 +40,17 @@ public interface LoadBalancer extends
     /**
      * @return TCP probes of this load balancer, indexed by the name
      */
-    Map<String, TcpProbe> tcpProbes();
+    Map<String, LoadBalancerTcpProbe> tcpProbes();
 
     /**
      * @return HTTP probes of this load balancer, indexed by the name
      */
-    Map<String, HttpProbe> httpProbes();
+    Map<String, LoadBalancerHttpProbe> httpProbes();
 
     /**
      * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
      */
-    Map<String, Backend> backends();
+    Map<String, LoadBalancerBackend> backends();
 
     /**
      * @return inbound NAT rules for this balancer
@@ -60,7 +60,7 @@ public interface LoadBalancer extends
     /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
-    Map<String, Frontend> frontends();
+    Map<String, LoadBalancerFrontend> frontends();
 
     /**
      * @return inbound NAT pools, indexed by name
@@ -159,7 +159,7 @@ public interface LoadBalancer extends
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            Backend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
+            LoadBalancerBackend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
         }
 
         /**
@@ -193,20 +193,20 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            TcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
+            LoadBalancerTcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
 
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            HttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
+            LoadBalancerHttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
         }
 
         /**
@@ -429,14 +429,14 @@ public interface LoadBalancer extends
              * @param name the name for the new backend
              * @return the first stage of the backend definition
              */
-            Backend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
+            LoadBalancerBackend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
 
             /**
              * Begins the description of an update to an existing backend of this load balancer.
              * @param name the name of the backend to update
              * @return the first stage of the update
              */
-            Backend.Update updateBackend(String name);
+            LoadBalancerBackend.Update updateBackend(String name);
         }
 
         /**
@@ -464,20 +464,20 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the new probe
              * @return the next stage of the definition
              */
-            HttpProbe.UpdateDefinitionStages.Blank<Update> defineHttpProbe(String name);
+            LoadBalancerHttpProbe.UpdateDefinitionStages.Blank<Update> defineHttpProbe(String name);
 
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the new probe
              * @return the next stage of the definition
              */
-            TcpProbe.UpdateDefinitionStages.Blank<Update> defineTcpProbe(String name);
+            LoadBalancerTcpProbe.UpdateDefinitionStages.Blank<Update> defineTcpProbe(String name);
 
             /**
              * Removes the specified probe from the load balancer, if present.
@@ -491,14 +491,14 @@ public interface LoadBalancer extends
              * @param name the name of the probe to update
              * @return the first stage of the probe update
              */
-            TcpProbe.Update updateTcpProbe(String name);
+            LoadBalancerTcpProbe.Update updateTcpProbe(String name);
 
             /**
              * Begins the description of an update to an existing HTTP probe on this load balancer.
              * @param name the name of the probe to update
              * @return the first stage of the probe update
              */
-            HttpProbe.Update updateHttpProbe(String name);
+            LoadBalancerHttpProbe.Update updateHttpProbe(String name);
         }
 
         /**
@@ -529,7 +529,7 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */

@@ -21,11 +21,6 @@ public interface ApplicationPackage extends
         Wrapper<ApplicationPackageInner> {
 
     /**
-     * @return the name of application package.
-     */
-    String name();
-
-    /**
      * @return the sate of the application package
      */
     PackageState state();
