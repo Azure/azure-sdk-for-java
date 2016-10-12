@@ -77,24 +77,27 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public TrafficManagerEndpointImpl withTargetAzureResourceId(String resourceId) {
+        this.inner().withType(EndpointType.AZURE.toString());
         this.inner().withTargetResourceId(resourceId);
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withExternalFqdn(String externalFqdn) {
+        this.inner().withType(EndpointType.EXTERNAL.toString());
         this.inner().withTarget(externalFqdn);
-        return this;
-    }
-
-    public TrafficManagerEndpointImpl withSourceTrafficLocation(Region location) {
-        this.inner().withEndpointLocation(location.toString());
         return this;
     }
 
     @Override
     public TrafficManagerEndpointImpl withNestedProfile(TrafficManagerProfile nestedProfile) {
+        this.inner().withType(EndpointType.NESTEDPROFILE.toString());
         this.inner().withTargetResourceId(nestedProfile.id());
+        return this;
+    }
+
+    public TrafficManagerEndpointImpl withSourceTrafficLocation(Region location) {
+        this.inner().withEndpointLocation(location.toString());
         return this;
     }
 

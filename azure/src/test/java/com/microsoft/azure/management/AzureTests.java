@@ -71,7 +71,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.NONE)
+                .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 

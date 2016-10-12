@@ -8,7 +8,6 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
-import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.ProfileMonitorStatus;
