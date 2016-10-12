@@ -1,3 +1,12 @@
+2016.10.11 Version 0.9.6
+* Media
+  * REST API updated to 2.13
+  * Fix REST API Redirect issue w/Multipart requests
+  * Fix Streaming Endpoint REST API POST operations (411 Content-Length required)
+  * Fix 17 broken tests
+* Websites
+  * Add "Dynamic" Sku option
+
 2016.9.29 Version 0.9.5
 * Fix a bug in PeekLock requests in Service Bus
 
