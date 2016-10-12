@@ -1,4 +1,4 @@
-# Prepare for Azure Management Libraries for Java 1.0.0-beta3#
+﻿# Prepare for Azure Management Libraries for Java 1.0.0-beta3#
 
 Steps to migrate code that uses Azure Management Libraries for Java from beta 2 to beta 3 …
 
@@ -74,7 +74,7 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 2 
   </tr>
 </table>
 
-# Change Receiving Variable Type #
+# Change Method Return Type #
 
 <table>
   <tr>
