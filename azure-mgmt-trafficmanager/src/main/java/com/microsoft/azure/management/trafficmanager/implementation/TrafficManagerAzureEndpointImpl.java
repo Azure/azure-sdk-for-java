@@ -6,18 +6,18 @@
 package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.trafficmanager.AzureEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TargetAzureResourceType;
 
 /**
- * Implementation for {@link AzureEndpoint}
+ * Implementation for {@link TrafficManagerAzureEndpoint}
  */
-class AzureEndpointImpl extends EndpointImpl
- implements AzureEndpoint {
-    AzureEndpointImpl(String name,
-                 ProfileImpl parent,
-                 EndpointInner inner,
-                 EndpointsInner client) {
+class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl
+ implements TrafficManagerAzureEndpoint {
+    TrafficManagerAzureEndpointImpl(String name,
+                                    TrafficManagerProfileImpl parent,
+                                    EndpointInner inner,
+                                    EndpointsInner client) {
         super(name, parent, inner, client);
     }
 

@@ -7,23 +7,23 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.trafficmanager.Profile;
-import com.microsoft.azure.management.trafficmanager.Profiles;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import rx.Observable;
 
 /**
- * Implementation for {@link Profiles}
+ * Implementation for {@link TrafficManagerProfiles}
  */
-public class ProfilesImpl extends GroupableResourcesImpl<
-        Profile,
-        ProfileImpl,
+class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
+        TrafficManagerProfile,
+        TrafficManagerProfileImpl,
         ProfileInner,
         ProfilesInner,
         TrafficManager>
-        implements Profiles {
+        implements TrafficManagerProfiles {
     private final EndpointsInner endpointsClient;
 
-    ProfilesImpl(
+    TrafficManagerProfilesImpl(
             final TrafficManagerManagementClientImpl trafficManagementClient,
             final TrafficManager trafficManager) {
         super(trafficManagementClient.profiles(), trafficManager);
@@ -31,17 +31,17 @@ public class ProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public PagedList<Profile> list() {
+    public PagedList<TrafficManagerProfile> list() {
         return wrapList(this.innerCollection.listAll());
     }
 
     @Override
-    public PagedList<Profile> listByGroup(String groupName) {
+    public PagedList<TrafficManagerProfile> listByGroup(String groupName) {
         return wrapList(this.innerCollection.listAllInResourceGroup(groupName));
     }
 
     @Override
-    public Profile getByGroup(String groupName, String name) {
+    public TrafficManagerProfile getByGroup(String groupName, String name) {
         return wrapModel(this.innerCollection.get(groupName, name));
     }
 
@@ -51,8 +51,8 @@ public class ProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    protected ProfileImpl wrapModel(String name) {
-        return new ProfileImpl(name,
+    protected TrafficManagerProfileImpl wrapModel(String name) {
+        return new TrafficManagerProfileImpl(name,
                 new ProfileInner(),
                 this.innerCollection,
                 this.endpointsClient,
@@ -60,8 +60,8 @@ public class ProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    protected ProfileImpl wrapModel(ProfileInner inner) {
-        return new ProfileImpl(inner.name(),
+    protected TrafficManagerProfileImpl wrapModel(ProfileInner inner) {
+        return new TrafficManagerProfileImpl(inner.name(),
                 inner,
                 this.innerCollection,
                 this.endpointsClient,
@@ -69,7 +69,7 @@ public class ProfilesImpl extends GroupableResourcesImpl<
     }
 
     @Override
-    public ProfileImpl define(String name) {
+    public TrafficManagerProfileImpl define(String name) {
         return wrapModel(name);
     }
 }

@@ -21,11 +21,11 @@ import java.util.Map;
  * An immutable client-side representation of an Azure traffic manager profile.
  */
 @Fluent
-public interface Profile extends
+public interface TrafficManagerProfile extends
         GroupableResource,
-        Refreshable<Profile>,
+        Refreshable<TrafficManagerProfile>,
         Wrapper<ProfileInner>,
-        Updatable<Profile.Update> {
+        Updatable<TrafficManagerProfile.Update> {
     /**
      * @return the relative DNS name of the traffic manager profile
      */
@@ -71,19 +71,19 @@ public interface Profile extends
      *
      * @return external endpoints in the traffic manager profile, indexed by the name
      */
-    Map<String, ExternalEndpoint> externalEndpoints();
+    Map<String, TrafficManagerExternalEndpoint> externalEndpoints();
 
     /**
      *
      * @return Azure endpoints in the traffic manager profile, indexed by the name
      */
-    Map<String, AzureEndpoint> azureEndpoints();
+    Map<String, TrafficManagerAzureEndpoint> azureEndpoints();
 
     /**
      *
      * @return nested traffic manager profile endpoints in this traffic manager profile, indexed by the name
      */
-    Map<String, NestedProfileEndpoint> nestedProfileEndpoints();
+    Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints();
 
     /**
      * The entirety of the traffic manager profile definition.
@@ -139,7 +139,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withPriorityRouting();
+            WithMonitoringConfiguration withPriorityBasedRouting();
 
             /**
              * Specify that end user traffic should be distributed to the endpoints based on the weight assigned
@@ -147,7 +147,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withWeightedRouting();
+            WithMonitoringConfiguration withWeightBasedRouting();
 
             /**
              * Specify that end user traffic should be routed based on the geographic location of the endpoint
@@ -155,7 +155,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withPerformanceRouting();
+            WithMonitoringConfiguration withPerformanceBasedRouting();
 
             /**
              * Specify the traffic routing method for the profile.
@@ -217,7 +217,7 @@ public interface Profile extends
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            Endpoint.DefinitionStages.Blank<WithCreate> defineNewEndpoint(String name);
+            TrafficManagerEndpoint.DefinitionStages.Blank<WithCreate> defineEndpoint(String name);
         }
 
         /**
@@ -252,7 +252,7 @@ public interface Profile extends
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<Profile>,
+                Creatable<TrafficManagerProfile>,
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithTtl,
                 DefinitionStages.WithProfileStatus,
@@ -276,7 +276,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile update
              */
-            Update withPriorityRouting();
+            Update withPriorityBasedRouting();
 
             /**
              * Specify that end user traffic should be distributed to the endpoints based on the weight assigned
@@ -284,7 +284,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile update
              */
-            Update withWeightedRouting();
+            Update withWeightBasedRouting();
 
             /**
              * Specify that end user traffic should be routed based on the geographic location of the endpoint
@@ -292,7 +292,7 @@ public interface Profile extends
              *
              * @return the next stage of the traffic manager profile update
              */
-            Update withPerformanceRouting();
+            Update withPerformanceBasedRouting();
 
             /**
              * Specify the traffic routing method for the profile.
@@ -354,7 +354,7 @@ public interface Profile extends
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            Endpoint.UpdateDefinitionStages.Blank<Update> defineNewEndpoint(String name);
+            TrafficManagerEndpoint.UpdateDefinitionStages.Blank<Update> defineEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing Azure endpoint in this profile.
@@ -362,7 +362,7 @@ public interface Profile extends
              * @param name the name of the Azure endpoint
              * @return the stage representing updating configuration for the Azure endpoint
              */
-            Endpoint.UpdateAzureEndpoint updateAzureEndpoint(String name);
+            TrafficManagerEndpoint.UpdateAzureEndpoint updateAzureEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing external endpoint in this profile.
@@ -370,7 +370,7 @@ public interface Profile extends
              * @param name the name of the external endpoint
              * @return the stage representing updating configuration for the external endpoint
              */
-            Endpoint.UpdateExternalEndpoint updateExternalEndpoint(String name);
+            TrafficManagerEndpoint.UpdateExternalEndpoint updateExternalEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing nested traffic manager profile endpoint
@@ -379,7 +379,15 @@ public interface Profile extends
              * @param name the name of the nested profile endpoint
              * @return the stage representing updating configuration for the nested traffic manager profile endpoint
              */
-            Endpoint.UpdateNestedProfileEndpoint updateNestedProfileEndpoint(String name);
+            TrafficManagerEndpoint.UpdateNestedProfileEndpoint updateNestedProfileEndpoint(String name);
+
+            /**
+             * Removes an endpoint in the profile.
+             *
+             * @param name the name of the endpoint
+             * @return the next stage of the traffic manager profile update
+             */
+            Update withoutEndpoint(String name);
         }
 
         /**
@@ -425,7 +433,7 @@ public interface Profile extends
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<Profile>,
+            Appliable<TrafficManagerProfile>,
             UpdateStages.WithTrafficRoutingMethod,
             UpdateStages.WithMonitoringConfiguration,
             UpdateStages.WithEndpoint,

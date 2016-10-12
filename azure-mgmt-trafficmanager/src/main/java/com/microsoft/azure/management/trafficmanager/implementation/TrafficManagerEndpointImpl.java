@@ -7,34 +7,34 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
-import com.microsoft.azure.management.trafficmanager.Endpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
 import com.microsoft.azure.management.trafficmanager.EndpointMonitorStatus;
-import com.microsoft.azure.management.trafficmanager.Profile;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation for {@link Endpoint}
+ * Implementation for {@link TrafficManagerEndpoint}
  */
-class EndpointImpl extends ExternalChildResourceImpl<Endpoint,
+class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManagerEndpoint,
         EndpointInner,
-        ProfileImpl,
-        Profile>
-        implements Endpoint,
-        Endpoint.Definition<Profile.DefinitionStages.WithCreate>,
-        Endpoint.UpdateDefinition<Profile.Update>,
-        Endpoint.UpdateAzureEndpoint,
-        Endpoint.UpdateExternalEndpoint,
-        Endpoint.UpdateNestedProfileEndpoint {
+        TrafficManagerProfileImpl,
+        TrafficManagerProfile>
+        implements TrafficManagerEndpoint,
+        TrafficManagerEndpoint.Definition<TrafficManagerProfile.DefinitionStages.WithCreate>,
+        TrafficManagerEndpoint.UpdateDefinition<TrafficManagerProfile.Update>,
+        TrafficManagerEndpoint.UpdateAzureEndpoint,
+        TrafficManagerEndpoint.UpdateExternalEndpoint,
+        TrafficManagerEndpoint.UpdateNestedProfileEndpoint {
     private final EndpointsInner client;
     private final String endpointStatusDisabled = "Disabled";
     private final String endpointStatusEnabled = "Enabled";
 
-    EndpointImpl(String name,
-                 ProfileImpl parent,
-                 EndpointInner inner,
-                 EndpointsInner client) {
+    TrafficManagerEndpointImpl(String name,
+                               TrafficManagerProfileImpl parent,
+                               EndpointInner inner,
+                               EndpointsInner client) {
         super(name, parent, inner);
         this.client = client;
     }
@@ -51,7 +51,7 @@ class EndpointImpl extends ExternalChildResourceImpl<Endpoint,
 
     @Override
     public EndpointMonitorStatus monitorStatus() {
-        return EndpointMonitorStatus.fromValue(this.inner().endpointMonitorStatus());
+        return new EndpointMonitorStatus(this.inner().endpointMonitorStatus());
     }
 
     @Override
@@ -70,69 +70,69 @@ class EndpointImpl extends ExternalChildResourceImpl<Endpoint,
     }
 
     @Override
-    public EndpointImpl withMinimumChildEndpoints(int count) {
+    public TrafficManagerEndpointImpl withMinimumChildEndpoints(int count) {
         this.inner().withMinChildEndpoints(new Long(count));
         return this;
     }
 
     @Override
-    public EndpointImpl withTargetAzureResourceId(String resourceId) {
+    public TrafficManagerEndpointImpl withTargetAzureResourceId(String resourceId) {
         this.inner().withTargetResourceId(resourceId);
         return this;
     }
 
     @Override
-    public EndpointImpl withExternalFqdn(String externalFqdn) {
+    public TrafficManagerEndpointImpl withExternalFqdn(String externalFqdn) {
         this.inner().withTarget(externalFqdn);
         return this;
     }
 
-    public EndpointImpl withSourceTrafficLocation(Region location) {
+    public TrafficManagerEndpointImpl withSourceTrafficLocation(Region location) {
         this.inner().withEndpointLocation(location.toString());
         return this;
     }
 
     @Override
-    public EndpointImpl withNestedProfile(Profile nestedProfile) {
+    public TrafficManagerEndpointImpl withNestedProfile(TrafficManagerProfile nestedProfile) {
         this.inner().withTargetResourceId(nestedProfile.id());
         return this;
     }
 
     @Override
-    public EndpointImpl withRoutingPriority(int priority) {
+    public TrafficManagerEndpointImpl withRoutingPriority(int priority) {
         this.inner().withPriority(new Long(priority));
         return this;
     }
 
     @Override
-    public EndpointImpl withTrafficDisabled() {
+    public TrafficManagerEndpointImpl withTrafficDisabled() {
         this.inner().withEndpointStatus(this.endpointStatusDisabled);
         return this;
     }
 
     @Override
-    public EndpointImpl withTrafficEnabled() {
+    public TrafficManagerEndpointImpl withTrafficEnabled() {
         this.inner().withEndpointStatus(this.endpointStatusEnabled);
         return this;
     }
 
     @Override
-    public EndpointImpl withRoutingWeight(int weight) {
+    public TrafficManagerEndpointImpl withRoutingWeight(int weight) {
         this.inner().withWeight(new Long(weight));
         return this;
     }
 
     @Override
-    public Observable<Endpoint> createAsync() {
-        final EndpointImpl self = this;
+    public Observable<TrafficManagerEndpoint> createAsync() {
+        final TrafficManagerEndpointImpl self = this;
         return this.client.createOrUpdateAsync(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().toString(),
                 this.name(),
                 this.inner())
-                .map(new Func1<EndpointInner, Endpoint>() {
+                .map(new Func1<EndpointInner, TrafficManagerEndpoint>() {
                     @Override
-                    public Endpoint call(EndpointInner inner) {
+                    public TrafficManagerEndpoint call(EndpointInner inner) {
                         self.setInner(inner);
                         return self;
                     }
@@ -140,7 +140,7 @@ class EndpointImpl extends ExternalChildResourceImpl<Endpoint,
     }
 
     @Override
-    public Observable<Endpoint> updateAsync() {
+    public Observable<TrafficManagerEndpoint> updateAsync() {
         return createAsync();
     }
 
@@ -158,12 +158,12 @@ class EndpointImpl extends ExternalChildResourceImpl<Endpoint,
     }
 
     @Override
-    public ProfileImpl attach() {
+    public TrafficManagerProfileImpl attach() {
         return this.parent().withEndpoint(this);
     }
 
     @Override
-    public EndpointImpl refresh() {
+    public TrafficManagerEndpointImpl refresh() {
         EndpointInner inner = this.client.get(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.endpointType().toString(),

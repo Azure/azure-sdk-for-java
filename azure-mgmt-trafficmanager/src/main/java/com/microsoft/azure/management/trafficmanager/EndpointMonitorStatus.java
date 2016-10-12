@@ -6,63 +6,57 @@
 package com.microsoft.azure.management.trafficmanager;
 
 /**
- * Possible traffic manager profile endpoint monitor statuses.
+ * Traffic manager profile endpoint monitor statuses.
  */
-public enum EndpointMonitorStatus {
-    /**
-     * Enum value Inactive.
-     */
-    INACTIVE("Inactive"),
+public class EndpointMonitorStatus {
+    /** Static value Inactive for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus INACTIVE = new EndpointMonitorStatus("Inactive");
 
-    /**
-     * Enum value Disabled.
-     */
-    DISABLED("Disabled"),
+    /** Static value Disabled for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus DISABLED = new EndpointMonitorStatus("Disabled");
 
-    /**
-     * Enum value Online.
-     */
-    ONLINE("Online"),
+    /** Static value Online for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus ONLINE = new EndpointMonitorStatus("Online");
 
-    /**
-     * Enum value Degraded.
-     */
-    DEGRADED("Degraded"),
+    /** Static value Degraded for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus DEGRADED = new EndpointMonitorStatus("Degraded");
 
-    /**
-     * Enum value CheckingEndpoint.
-     */
-    CHECKINGENDPOINT("CheckingEndpoint"),
+    /** Static value CheckingEndpoint for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus CHECKINGENDPOINT = new EndpointMonitorStatus("CheckingEndpoint");
 
-    /**
-     * Enum value Stopped.
-     */
-    STOPPED("Stopped");
+    /** Static value Stopped for EndpointMonitorStatus. */
+    public static final EndpointMonitorStatus STOPPED = new EndpointMonitorStatus ("Stopped");
 
     private String value;
 
-    EndpointMonitorStatus(String value) {
+    public EndpointMonitorStatus(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a string value to a EndpointMonitorStatus instance.
-     *
-     * @param value the string value to parse.
-     * @return the parsed EndpointMonitorStatus object, or null if unable to parse.
-     */
-    public static EndpointMonitorStatus fromValue(String value) {
-        EndpointMonitorStatus[] items = EndpointMonitorStatus.values();
-        for (EndpointMonitorStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @Override
     public String toString() {
         return this.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        String value = this.toString();
+        if (!(obj instanceof EndpointMonitorStatus)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        EndpointMonitorStatus rhs = (EndpointMonitorStatus) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

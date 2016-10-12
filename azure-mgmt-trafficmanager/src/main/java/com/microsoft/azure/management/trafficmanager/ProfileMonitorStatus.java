@@ -6,58 +6,54 @@
 package com.microsoft.azure.management.trafficmanager;
 
 /**
- * Possible traffic manager profile statuses.
+ * Traffic manager profile statuses.
  */
-public enum ProfileMonitorStatus {
-    /**
-     * Enum value Inactive.
-     */
-    INACTIVE("Inactive"),
+public class ProfileMonitorStatus {
+    /** Static value Inactive for ProfileMonitorStatus. */
+    public static final ProfileMonitorStatus INACTIVE = new ProfileMonitorStatus("Inactive");
 
-    /**
-     * Enum value Disabled.
-     */
-    DISABLED("Disabled"),
+    /** Static value Disabled for ProfileMonitorStatus. */
+    public static final ProfileMonitorStatus DISABLED = new ProfileMonitorStatus("Disabled");
 
-    /**
-     * Enum value Online.
-     */
-    ONLINE("Online"),
+    /** Static value Online for ProfileMonitorStatus. */
+    public static final ProfileMonitorStatus ONLINE = new ProfileMonitorStatus("Online");
 
-    /**
-     * Enum value Degraded.
-     */
-    DEGRADED("Degraded"),
+    /** Static value Degraded for ProfileMonitorStatus. */
+    public static final ProfileMonitorStatus DEGRADED = new ProfileMonitorStatus("Degraded");
 
-    /**
-     * Enum value CheckingEndpoint.
-     */
-    CHECKINGENDPOINT("CheckingEndpoint");
+    /** Static value CheckingEndpoint for ProfileMonitorStatus. */
+    public static final ProfileMonitorStatus CHECKINGENDPOINT = new ProfileMonitorStatus("CheckingEndpoint");
 
     private String value;
 
-    ProfileMonitorStatus(String value) {
+    public ProfileMonitorStatus(String value) {
         this.value = value;
-    }
-
-    /**
-     * Parses a string value to a ProfileMonitorStatus instance.
-     *
-     * @param value the string value to parse.
-     * @return the parsed ProfileMonitorStatus object, or null if unable to parse.
-     */
-    public static ProfileMonitorStatus fromValue(String value) {
-        ProfileMonitorStatus[] items = ProfileMonitorStatus.values();
-        for (ProfileMonitorStatus item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
     }
 
     @Override
     public String toString() {
         return this.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return this.value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        String value = this.toString();
+        if (!(obj instanceof ProfileMonitorStatus)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ProfileMonitorStatus rhs = (ProfileMonitorStatus) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

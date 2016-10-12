@@ -5,17 +5,17 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
-import com.microsoft.azure.management.trafficmanager.NestedProfileEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 
 /**
- * Implementation for {@link NestedProfileEndpoint}
+ * Implementation for {@link TrafficManagerNestedProfileEndpoint}
  */
-public class NestedProfileEndpointImpl extends EndpointImpl
-    implements NestedProfileEndpoint {
-    NestedProfileEndpointImpl(String name,
-                      ProfileImpl parent,
-                      EndpointInner inner,
-                      EndpointsInner client) {
+class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
+    implements TrafficManagerNestedProfileEndpoint {
+    TrafficManagerNestedProfileEndpointImpl(String name,
+                                            TrafficManagerProfileImpl parent,
+                                            EndpointInner inner,
+                                            EndpointsInner client) {
         super(name, parent, inner, client);
     }
 

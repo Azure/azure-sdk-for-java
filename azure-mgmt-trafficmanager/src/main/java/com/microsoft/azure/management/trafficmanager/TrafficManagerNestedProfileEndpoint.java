@@ -8,7 +8,7 @@ package com.microsoft.azure.management.trafficmanager;
 /**
  * An immutable client-side representation of an Azure traffic manager profile nested profile endpoint.
  */
-public interface NestedProfileEndpoint extends Endpoint {
+public interface TrafficManagerNestedProfileEndpoint extends TrafficManagerEndpoint {
     /**
      * @return the nested traffic manager profile resource id
      */

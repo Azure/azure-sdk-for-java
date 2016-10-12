@@ -8,7 +8,7 @@ package com.microsoft.azure.management.trafficmanager;
 /**
  * An immutable client-side representation of an Azure traffic manager profile Azure endpoint.
  */
-public interface AzureEndpoint extends Endpoint {
+public interface TrafficManagerAzureEndpoint extends TrafficManagerEndpoint {
     /**
      * @return the resource id of the target Azure resource.
      */

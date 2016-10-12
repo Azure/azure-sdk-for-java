@@ -10,14 +10,14 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.trafficmanager.Profiles;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 
 /**
  * Entry point to Azure traffic manager management.
  */
 public final class TrafficManager extends Manager<TrafficManager, TrafficManagerManagementClientImpl> {
     // Collections
-    private Profiles profiles;
+    private TrafficManagerProfiles profiles;
 
     /**
      * Get a Configurable instance that can be used to create {@link TrafficManager}
@@ -88,9 +88,9 @@ public final class TrafficManager extends Manager<TrafficManager, TrafficManager
     /**
      * @return entry point to traffic manager profile management
      */
-    public Profiles profiles() {
+    public TrafficManagerProfiles profiles() {
         if (this.profiles == null) {
-            this.profiles = new ProfilesImpl(
+            this.profiles = new TrafficManagerProfilesImpl(
                     super.innerManagementClient,
                     this);
         }

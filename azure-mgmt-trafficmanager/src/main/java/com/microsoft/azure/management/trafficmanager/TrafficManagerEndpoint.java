@@ -17,8 +17,8 @@ import com.microsoft.azure.management.trafficmanager.implementation.EndpointInne
  * An immutable client-side representation of an Azure traffic manager profile endpoint.
  */
 @Fluent
-public interface Endpoint extends
-        ExternalChildResource<Endpoint, Profile>,
+public interface TrafficManagerEndpoint extends
+        ExternalChildResource<TrafficManagerEndpoint, TrafficManagerProfile>,
         Wrapper<EndpointInner> {
     /**
      * @return the endpoint type
@@ -101,7 +101,7 @@ public interface Endpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the endpoint definition
              */
-            WithEndpointThreshold<ParentT> withNestedProfile(Profile nestedProfile);
+            WithEndpointThreshold<ParentT> withNestedProfile(TrafficManagerProfile nestedProfile);
         }
 
         /**
@@ -186,8 +186,8 @@ public interface Endpoint extends
         /** The final stage of the traffic manager profile endpoint definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
-         * definition can be attached to the parent traffic manager profile definition using {@link Endpoint.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link Endpoint.DefinitionStages.WithAttach#attach()}
+         * definition can be attached to the parent traffic manager profile definition using {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
@@ -251,7 +251,7 @@ public interface Endpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the definition
              */
-            WithEndpointThreshold<ParentT> withNestedProfile(Profile nestedProfile);
+            WithEndpointThreshold<ParentT> withNestedProfile(TrafficManagerProfile nestedProfile);
         }
 
         /**
@@ -336,8 +336,8 @@ public interface Endpoint extends
         /** The final stage of the traffic manager profile endpoint definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the traffic manager profile endpoint
-         * definition can be attached to the parent traffic manager profile update using {@link Endpoint.DefinitionStages.WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link Endpoint.DefinitionStages.WithAttach#attach()}
+         * definition can be attached to the parent traffic manager profile update using {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link TrafficManagerEndpoint.DefinitionStages.WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
@@ -377,7 +377,7 @@ public interface Endpoint extends
      * the set of configurations that can be updated for all endpoint irrespective of their type (Azure, external, nested profile).
      */
     interface Update extends
-            Settable<Profile.Update>,
+            Settable<TrafficManagerProfile.Update>,
             UpdateStages.WithRoutingWeight,
             UpdateStages.WithRoutingPriority,
             UpdateStages.WithTrafficDisabledOrEnabled {
@@ -424,7 +424,7 @@ public interface Endpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the update
              */
-            UpdateNestedProfileEndpoint withNestedProfile(Profile nestedProfile);
+            UpdateNestedProfileEndpoint withNestedProfile(TrafficManagerProfile nestedProfile);
 
             /**
              * Specifies the child endpoint threshold.

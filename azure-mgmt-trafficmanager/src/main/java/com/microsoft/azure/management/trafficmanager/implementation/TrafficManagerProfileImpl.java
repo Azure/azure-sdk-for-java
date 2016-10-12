@@ -6,11 +6,11 @@
 package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.trafficmanager.AzureEndpoint;
-import com.microsoft.azure.management.trafficmanager.ExternalEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
-import com.microsoft.azure.management.trafficmanager.NestedProfileEndpoint;
-import com.microsoft.azure.management.trafficmanager.Profile;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.ProfileMonitorStatus;
 import com.microsoft.azure.management.trafficmanager.TrafficRoutingMethod;
 import rx.Observable;
@@ -20,33 +20,33 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation for {@link Profile}
+ * Implementation for {@link TrafficManagerProfile}
  */
-public class ProfileImpl
+class TrafficManagerProfileImpl
         extends GroupableResourceImpl<
-        Profile,
+        TrafficManagerProfile,
         ProfileInner,
-        ProfileImpl,
+        TrafficManagerProfileImpl,
         TrafficManager>
         implements
-        Profile,
-        Profile.Definition,
-        Profile.Update {
+        TrafficManagerProfile,
+        TrafficManagerProfile.Definition,
+        TrafficManagerProfile.Update {
     private final ProfilesInner innerCollection;
     private final EndpointsInner endpointsClient;
     private final String profileStatusDisabled = "Disabled";
     private final String profileStatusEnabled = "Enabled";
-    private EndpointsImpl endpoints;
+    private TrafficManagerEndpointsImpl endpoints;
 
-    ProfileImpl(String name,
-                final ProfileInner innerModel,
-                final ProfilesInner innerCollection,
-                final EndpointsInner endpointsClient,
-                final TrafficManager trafficManager) {
+    TrafficManagerProfileImpl(String name,
+                              final ProfileInner innerModel,
+                              final ProfilesInner innerCollection,
+                              final EndpointsInner endpointsClient,
+                              final TrafficManager trafficManager) {
         super(name, innerModel, trafficManager);
         this.innerCollection = innerCollection;
         this.endpointsClient = endpointsClient;
-        this.endpoints = new EndpointsImpl(endpointsClient, this);
+        this.endpoints = new TrafficManagerEndpointsImpl(endpointsClient, this);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class ProfileImpl
 
     @Override
     public ProfileMonitorStatus monitorStatus() {
-        return ProfileMonitorStatus.fromValue(this.inner().monitorConfig().profileMonitorStatus());
+        return new ProfileMonitorStatus(this.inner().monitorConfig().profileMonitorStatus());
     }
 
     @Override
@@ -92,22 +92,22 @@ public class ProfileImpl
     // TODO Expose monitoring protocol
 
     @Override
-    public Map<String, ExternalEndpoint> externalEndpoints() {
+    public Map<String, TrafficManagerExternalEndpoint> externalEndpoints() {
         return this.endpoints.externalEndpointsAsMap();
     }
 
     @Override
-    public Map<String, AzureEndpoint> azureEndpoints() {
+    public Map<String, TrafficManagerAzureEndpoint> azureEndpoints() {
         return this.endpoints.azureEndpointsAsMap();
     }
 
     @Override
-    public Map<String, NestedProfileEndpoint> nestedProfileEndpoints() {
+    public Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints() {
         return this.endpoints.nestedProfileEndpointsAsMap();
     }
 
     @Override
-    public Profile refresh() {
+    public TrafficManagerProfile refresh() {
         ProfileInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         this.endpoints.refresh();
@@ -115,67 +115,73 @@ public class ProfileImpl
     }
 
     @Override
-    public ProfileImpl withDnsLabel(String dnsLabel) {
+    public TrafficManagerProfileImpl withDnsLabel(String dnsLabel) {
         this.inner().dnsConfig().withRelativeName(dnsLabel);
         return this;
     }
 
     @Override
-    public ProfileImpl withPriorityRouting() {
+    public TrafficManagerProfileImpl withPriorityBasedRouting() {
         this.withTrafficRoutingMethod(TrafficRoutingMethod.PRIORITY);
         return this;
     }
 
     @Override
-    public ProfileImpl withWeightedRouting() {
+    public TrafficManagerProfileImpl withWeightBasedRouting() {
         this.withTrafficRoutingMethod(TrafficRoutingMethod.WEIGHTED);
         return this;
     }
 
     @Override
-    public ProfileImpl withPerformanceRouting() {
+    public TrafficManagerProfileImpl withPerformanceBasedRouting() {
         this.withTrafficRoutingMethod(TrafficRoutingMethod.PERFORMANCE);
         return this;
     }
 
     @Override
-    public ProfileImpl withTrafficRoutingMethod(TrafficRoutingMethod routingMethod) {
+    public TrafficManagerProfileImpl withTrafficRoutingMethod(TrafficRoutingMethod routingMethod) {
         this.inner().withTrafficRoutingMethod(routingMethod.toString());
         return this;
     }
 
     @Override
-    public EndpointImpl defineNewEndpoint(String name) {
+    public TrafficManagerEndpointImpl defineEndpoint(String name) {
         return this.endpoints.define(name);
     }
 
     @Override
-    public EndpointImpl updateAzureEndpoint(String name) {
+    public TrafficManagerEndpointImpl updateAzureEndpoint(String name) {
         return this.endpoints.updateAzureEndpoint(name);
     }
 
     @Override
-    public EndpointImpl updateExternalEndpoint(String name) {
+    public TrafficManagerEndpointImpl updateExternalEndpoint(String name) {
         return this.endpoints.updateExternalEndpoint(name);
     }
 
     @Override
-    public EndpointImpl updateNestedProfileEndpoint(String name) {
+    public TrafficManagerEndpointImpl updateNestedProfileEndpoint(String name) {
         return this.endpoints.updateNestedProfileEndpoint(name);
     }
 
     @Override
-    public ProfileImpl withHttpMonitoring() {
+    public TrafficManagerProfileImpl withoutEndpoint(String name) {
+        this.endpoints.remove(name);
+        return this;
+    }
+
+    @Override
+    public TrafficManagerProfileImpl withHttpMonitoring() {
         return this.withHttpMonitoring(80, "/");
     }
 
     @Override
-    public ProfileImpl withHttpsMonitoring() {
+    public TrafficManagerProfileImpl withHttpsMonitoring() {
         return this.withHttpsMonitoring(443, "/");
     }
 
     @Override
-    public ProfileImpl withHttpMonitoring(int port, String path) {
+    public TrafficManagerProfileImpl withHttpMonitoring(int port, String path) {
         this.inner().withMonitorConfig(new MonitorConfig()
         .withPort(new Long(port))
         .withPath(path)
@@ -184,7 +190,7 @@ public class ProfileImpl
     }
 
     @Override
-    public ProfileImpl withHttpsMonitoring(int port, String path) {
+    public TrafficManagerProfileImpl withHttpsMonitoring(int port, String path) {
         this.inner().withMonitorConfig(new MonitorConfig()
                 .withPort(new Long(port))
                 .withPath(path)
@@ -193,40 +199,40 @@ public class ProfileImpl
     }
 
     @Override
-    public ProfileImpl withProfileStatusDisabled() {
+    public TrafficManagerProfileImpl withProfileStatusDisabled() {
         this.inner().withProfileStatus(this.profileStatusDisabled);
         return this;
     }
 
     @Override
-    public ProfileImpl withProfileStatusEnabled() {
+    public TrafficManagerProfileImpl withProfileStatusEnabled() {
         this.inner().withProfileStatus(this.profileStatusEnabled);
         return this;
     }
 
     @Override
-    public ProfileImpl withTtl(int ttlInSeconds) {
+    public TrafficManagerProfileImpl withTtl(int ttlInSeconds) {
         this.inner().dnsConfig().withTtl(new Long(ttlInSeconds));
         return this;
     }
 
     @Override
-    public Observable<Profile> createResourceAsync() {
-        final ProfileImpl self = this;
+    public Observable<TrafficManagerProfile> createResourceAsync() {
+        final TrafficManagerProfileImpl self = this;
         return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(new Func1<ProfileInner, Profile>() {
+                .map(new Func1<ProfileInner, TrafficManagerProfile>() {
                     @Override
-                    public Profile call(ProfileInner profileInner) {
+                    public TrafficManagerProfile call(ProfileInner profileInner) {
                         self.setInner(profileInner);
                         return self;
                     }
-                }).flatMap(new Func1<Profile, Observable<? extends Profile>>() {
+                }).flatMap(new Func1<TrafficManagerProfile, Observable<? extends TrafficManagerProfile>>() {
                     @Override
-                    public Observable<? extends Profile> call(Profile profile) {
+                    public Observable<? extends TrafficManagerProfile> call(TrafficManagerProfile profile) {
                         return self.endpoints.commitAndGetAllAsync()
-                                .map(new Func1<List<EndpointImpl>, Profile>() {
+                                .map(new Func1<List<TrafficManagerEndpointImpl>, TrafficManagerProfile>() {
                                     @Override
-                                    public Profile call(List<EndpointImpl> endpoints) {
+                                    public TrafficManagerProfile call(List<TrafficManagerEndpointImpl> endpoints) {
                                         return self;
                                     }
                                 });
@@ -234,7 +240,7 @@ public class ProfileImpl
                 });
     }
 
-    ProfileImpl withEndpoint(EndpointImpl endpoint) {
+    TrafficManagerProfileImpl withEndpoint(TrafficManagerEndpointImpl endpoint) {
         this.endpoints.addEndpoint(endpoint);
         return this;
     }
