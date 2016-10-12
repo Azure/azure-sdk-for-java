@@ -40,7 +40,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
- * Test of virtual network management.
+ * Test of load balancer management.
  */
 public class TestLoadBalancer {
     static final long TEST_ID = System.currentTimeMillis();
