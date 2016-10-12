@@ -316,5 +316,6 @@
     <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-batch</module>
+    <module>./azure-mgmt-sql</module>
   </modules>
 </project>
