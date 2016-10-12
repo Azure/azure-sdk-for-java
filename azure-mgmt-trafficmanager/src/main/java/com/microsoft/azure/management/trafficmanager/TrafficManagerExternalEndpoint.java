@@ -10,7 +10,12 @@ package com.microsoft.azure.management.trafficmanager;
  */
 public interface TrafficManagerExternalEndpoint extends TrafficManagerEndpoint {
     /**
-     * @return the fully qualified DNS name of the external endpoint.
+     * @return the fully qualified DNS name of the external endpoint
      */
     String fqdn();
+
+    /**
+     * @return the location of the traffic that the endpoint handles
+     */
+    String sourceTrafficLocation();
 }

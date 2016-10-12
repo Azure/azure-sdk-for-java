@@ -8,7 +8,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
 
 /**
- * Implementation for  {@link TrafficManagerExternalEndpoint}
+ * Implementation for  {@link TrafficManagerExternalEndpoint}.
  */
 class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl
     implements TrafficManagerExternalEndpoint {
@@ -22,5 +22,10 @@ class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl
     @Override
     public String fqdn() {
         return inner().target();
+    }
+
+    @Override
+    public String sourceTrafficLocation() {
+        return inner().endpointLocation();
     }
 }

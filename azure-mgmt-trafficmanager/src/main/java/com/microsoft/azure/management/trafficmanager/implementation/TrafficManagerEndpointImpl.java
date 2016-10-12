@@ -15,7 +15,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * Implementation for {@link TrafficManagerEndpoint}
+ * Implementation for {@link TrafficManagerEndpoint}.
  */
 class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManagerEndpoint,
         EndpointInner,

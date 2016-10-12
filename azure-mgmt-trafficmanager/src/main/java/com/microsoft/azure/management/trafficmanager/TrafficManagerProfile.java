@@ -90,7 +90,6 @@ public interface TrafficManagerProfile extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
             DefinitionStages.WithDnsLabel,
             DefinitionStages.WithTrafficRoutingMethod,
             DefinitionStages.WithMonitoringConfiguration,
@@ -102,15 +101,9 @@ public interface TrafficManagerProfile extends
      */
     interface DefinitionStages {
         /**
-         * The first stage of a traffic manager profile definition.
-         */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
-        }
-
-        /**
          * The stage of the traffic manager profile definition allowing to specify the resource group.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithDnsLabel> {
+        interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithDnsLabel> {
         }
 
         /**

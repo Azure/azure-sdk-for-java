@@ -26,6 +26,11 @@ public class ProfileMonitorStatus {
 
     private String value;
 
+    /**
+     * Creates ProfileMonitorStatus.
+     *
+     * @param value the status
+     */
     public ProfileMonitorStatus(String value) {
         this.value = value;
     }

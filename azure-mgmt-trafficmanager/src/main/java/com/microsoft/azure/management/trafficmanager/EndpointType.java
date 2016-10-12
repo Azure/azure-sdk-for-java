@@ -10,19 +10,19 @@ package com.microsoft.azure.management.trafficmanager;
  */
 public enum EndpointType {
     /**
-     * Enum value AzureEndpoints.
+     * Enum value Microsoft.Network/trafficManagerProfiles/azureEndpoints.
      */
-    AZURE("AzureEndpoints"),
+    AZURE("Microsoft.Network/trafficManagerProfiles/azureEndpoints"),
 
     /**
-     * Enum value ExternalEndpoints.
+     * Enum value Microsoft.Network/trafficManagerProfiles/externalEndpoints.
      */
-    EXTERNAL("ExternalEndpoints"),
+    EXTERNAL("Microsoft.Network/trafficManagerProfiles/externalEndpoints"),
 
     /**
-     * Enum value NestedEndpoints.
+     * Enum value Microsoft.Network/trafficManagerProfiles/nestedEndpoints.
      */
-    NESTEDPROFILE("NestedEndpoints");
+    NESTEDPROFILE("Microsoft.Network/trafficManagerProfiles/nestedEndpoints");
 
     private String value;
 

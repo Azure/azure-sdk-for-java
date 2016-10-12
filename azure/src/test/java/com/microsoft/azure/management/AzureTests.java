@@ -302,4 +302,9 @@ public class AzureTests {
     public void testBatchAccount() throws Exception {
         new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
     }
+
+    @Test
+    public void testTrafficManager() throws Exception {
+        new TestTrafficManager().runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+    }
 }

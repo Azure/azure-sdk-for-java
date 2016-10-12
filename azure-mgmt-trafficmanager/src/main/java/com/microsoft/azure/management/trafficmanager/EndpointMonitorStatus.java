@@ -25,10 +25,15 @@ public class EndpointMonitorStatus {
     public static final EndpointMonitorStatus CHECKINGENDPOINT = new EndpointMonitorStatus("CheckingEndpoint");
 
     /** Static value Stopped for EndpointMonitorStatus. */
-    public static final EndpointMonitorStatus STOPPED = new EndpointMonitorStatus ("Stopped");
+    public static final EndpointMonitorStatus STOPPED = new EndpointMonitorStatus("Stopped");
 
     private String value;
 
+    /**
+     * Creates EndpointMonitorStatus.
+     *
+     * @param value the status
+     */
     public EndpointMonitorStatus(String value) {
         this.value = value;
     }

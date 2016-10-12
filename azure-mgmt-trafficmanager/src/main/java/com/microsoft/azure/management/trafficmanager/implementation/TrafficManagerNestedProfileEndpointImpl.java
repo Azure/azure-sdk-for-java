@@ -8,7 +8,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 
 /**
- * Implementation for {@link TrafficManagerNestedProfileEndpoint}
+ * Implementation for {@link TrafficManagerNestedProfileEndpoint}.
  */
 class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
     implements TrafficManagerNestedProfileEndpoint {
@@ -30,5 +30,10 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
             return 0;
         }
         return inner().minChildEndpoints().intValue();
+    }
+
+    @Override
+    public String sourceTrafficLocation() {
+        return inner().endpointLocation();
     }
 }

@@ -7,12 +7,16 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.trafficmanager.DnsConfig;
+import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import rx.Observable;
 
+import java.util.ArrayList;
+
 /**
- * Implementation for {@link TrafficManagerProfiles}
+ * Implementation for {@link TrafficManagerProfiles}.
  */
 class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
         TrafficManagerProfile,
@@ -70,6 +74,19 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
 
     @Override
     public TrafficManagerProfileImpl define(String name) {
-        return wrapModel(name);
+        return setDefaults(wrapModel(name));
+    }
+
+    private TrafficManagerProfileImpl setDefaults(TrafficManagerProfileImpl profile) {
+        // MonitorConfig is required
+        profile.inner().withMonitorConfig(new MonitorConfig());
+        // DnsConfig is required
+        profile.inner().withDnsConfig(new DnsConfig());
+        profile.withTtl(300);
+        // TM location must be 'global' irrespective of region of the resource group it resides.
+        profile.inner().withLocation("global");
+        // Endpoints are external child resource still initializing it avoid null checks in the model impl.
+        profile.inner().withEndpoints(new ArrayList<EndpointInner>());
+        return profile;
     }
 }

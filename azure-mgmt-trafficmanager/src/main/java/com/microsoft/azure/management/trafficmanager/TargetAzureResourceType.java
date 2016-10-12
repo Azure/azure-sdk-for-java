@@ -20,6 +20,12 @@ public class TargetAzureResourceType {
 
     private String value;
 
+    /**
+     * Creates TargetAzureResourceType.
+     *
+     * @param resourceProviderName the resource provider name
+     * @param resourceType the resource type
+     */
     public TargetAzureResourceType(String resourceProviderName, String resourceType) {
         this.value = resourceProviderName + "/" + resourceType;
     }

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation for {@link TrafficManagerProfile}
+ * Implementation for {@link TrafficManagerProfile}.
  */
 class TrafficManagerProfileImpl
         extends GroupableResourceImpl<
@@ -182,19 +182,19 @@ class TrafficManagerProfileImpl
 
     @Override
     public TrafficManagerProfileImpl withHttpMonitoring(int port, String path) {
-        this.inner().withMonitorConfig(new MonitorConfig()
-        .withPort(new Long(port))
-        .withPath(path)
-        .withProtocol("http"));
+        this.inner().monitorConfig()
+            .withPort(new Long(port))
+            .withPath(path)
+            .withProtocol("http");
         return this;
     }
 
     @Override
     public TrafficManagerProfileImpl withHttpsMonitoring(int port, String path) {
-        this.inner().withMonitorConfig(new MonitorConfig()
-                .withPort(new Long(port))
-                .withPath(path)
-                .withProtocol("https"));
+        this.inner().monitorConfig()
+            .withPort(new Long(port))
+            .withPath(path)
+            .withProtocol("https");
         return this;
     }
 

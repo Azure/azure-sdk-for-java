@@ -170,12 +170,10 @@ class TrafficManagerEndpointsImpl extends
         List<TrafficManagerEndpointImpl> childResources = new ArrayList<>();
         if (parent().inner().endpoints() != null) {
             for (EndpointInner inner : parent().inner().endpoints()) {
-                if (inner.name() == null) {
-                    childResources.add(new TrafficManagerEndpointImpl(inner.name(),
-                            this.parent(),
-                            inner,
-                            this.client));
-                }
+                childResources.add(new TrafficManagerEndpointImpl(inner.name(),
+                    this.parent(),
+                    inner,
+                    this.client));
             }
         }
         return childResources;
@@ -183,9 +181,12 @@ class TrafficManagerEndpointsImpl extends
 
     @Override
     protected TrafficManagerEndpointImpl newChildResource(String name) {
-        return new TrafficManagerEndpointImpl(name,
+        TrafficManagerEndpointImpl endpoint = new TrafficManagerEndpointImpl(name,
                 this.parent(),
                 new EndpointInner().withName(name),
                 this.client);
+        return endpoint
+                .withRoutingWeight(1)
+                .withTrafficEnabled();
     }
 }

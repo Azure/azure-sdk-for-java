@@ -18,4 +18,9 @@ public interface TrafficManagerNestedProfileEndpoint extends TrafficManagerEndpo
      * @return the number of child endpoints to be online to consider nested profile as healthy
      */
     int minChildEndpoints();
+
+    /**
+     * @return the location of the traffic that the endpoint handles
+     */
+    String sourceTrafficLocation();
 }

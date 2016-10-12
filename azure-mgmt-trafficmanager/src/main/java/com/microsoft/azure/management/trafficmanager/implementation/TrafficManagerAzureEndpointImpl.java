@@ -10,7 +10,7 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint
 import com.microsoft.azure.management.trafficmanager.TargetAzureResourceType;
 
 /**
- * Implementation for {@link TrafficManagerAzureEndpoint}
+ * Implementation for {@link TrafficManagerAzureEndpoint}.
  */
 class TrafficManagerAzureEndpointImpl extends TrafficManagerEndpointImpl
  implements TrafficManagerAzureEndpoint {
