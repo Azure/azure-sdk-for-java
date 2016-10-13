@@ -400,5 +400,7 @@ public final class Azure {
     /**
      * @return entry point to managing traffic manager profiles.
      */
-    public TrafficManagerProfiles trafficManagerProfiles() {return trafficManager.profiles(); }
+    public TrafficManagerProfiles trafficManagerProfiles() {
+        return trafficManager.profiles();
+    }
 }

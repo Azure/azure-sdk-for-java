@@ -50,4 +50,14 @@ public enum EndpointType {
     public String toString() {
         return this.value;
     }
+
+    /**
+     * @return the local name of the endpoint type
+     */
+    public String localName() {
+        if (this.value != null) {
+            return this.value.substring(this.value.lastIndexOf('/') + 1);
+        }
+        return null;
+    }
 }

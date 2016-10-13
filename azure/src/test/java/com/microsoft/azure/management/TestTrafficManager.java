@@ -33,6 +33,17 @@ public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, Traf
                     .withRoutingPriority(1)
                     .withRoutingWeight(1)
                     .attach()
+                .defineEndpoint("ep2")
+                    .withExternalFqdn("www.yahoo.com")
+                    .withSourceTrafficLocation(Region.EUROPE_NORTH)
+                    .withRoutingPriority(2)
+                    .withRoutingWeight(1)
+                    .attach()
+                .defineEndpoint("ep3")
+                    .withExternalFqdn("www.linkedin.com")
+                    .withSourceTrafficLocation(Region.US_EAST2)
+                    .withRoutingWeight(1)
+                    .attach()
                 .create();
         return profile;
     }
