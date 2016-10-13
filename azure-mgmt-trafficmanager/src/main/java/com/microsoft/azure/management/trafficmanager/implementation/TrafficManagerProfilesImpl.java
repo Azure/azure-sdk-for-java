@@ -7,6 +7,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
 import com.microsoft.azure.management.trafficmanager.MonitorConfig;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
@@ -32,6 +33,17 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
             final TrafficManager trafficManager) {
         super(trafficManagementClient.profiles(), trafficManager);
         this.endpointsClient = trafficManagementClient.endpoints();
+    }
+
+    @Override
+    public CheckProfileDnsNameAvailabilityResult checkDnsNameAvailability(String dnsNameLabel) {
+        CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner parameter =
+                new CheckTrafficManagerRelativeDnsNameAvailabilityParametersInner()
+                    .withName(dnsNameLabel)
+                    .withType("Microsoft.Network/trafficManagerProfiles");
+        return new CheckProfileDnsNameAvailabilityResult(this
+                .innerCollection
+                .checkTrafficManagerRelativeDnsNameAvailability(parameter));
     }
 
     @Override

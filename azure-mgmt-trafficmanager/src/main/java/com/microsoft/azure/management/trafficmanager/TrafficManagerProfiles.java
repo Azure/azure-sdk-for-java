@@ -28,4 +28,12 @@ public interface TrafficManagerProfiles extends
         SupportsDeleting,
         SupportsDeletingByGroup,
         SupportsBatchCreation<TrafficManagerProfile> {
+
+    /**
+     * Checks that the DNS name is valid for traffic manager profile and is not in use.
+     *
+     * @param dnsNameLabel the DNS name to check
+     * @return whether the DNS is available to be used for a traffic manager profile and other info if not
+     */
+    CheckProfileDnsNameAvailabilityResult checkDnsNameAvailability(String dnsNameLabel);
 }
