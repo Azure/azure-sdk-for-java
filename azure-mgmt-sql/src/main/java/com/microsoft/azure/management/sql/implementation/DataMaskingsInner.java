@@ -83,35 +83,41 @@ public final class DataMaskingsInner {
     /**
      * Creates or updates an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param parameters The required parameters for createing or updating a firewall rule.
      * @return the DataMaskingPolicyInner object if successful.
      */
-    public DataMaskingPolicyInner createOrUpdatePolicy(String databaseName, DataMaskingPolicyInner parameters) {
-        return createOrUpdatePolicyWithServiceResponseAsync(databaseName, parameters).toBlocking().single().getBody();
+    public DataMaskingPolicyInner createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
+        return createOrUpdatePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
     }
 
     /**
      * Creates or updates an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param parameters The required parameters for createing or updating a firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String databaseName, DataMaskingPolicyInner parameters, final ServiceCallback<DataMaskingPolicyInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdatePolicyWithServiceResponseAsync(databaseName, parameters), serviceCallback);
+    public ServiceCall<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters, final ServiceCallback<DataMaskingPolicyInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdatePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
      * Creates or updates an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param parameters The required parameters for createing or updating a firewall rule.
      * @return the observable to the DataMaskingPolicyInner object
      */
-    public Observable<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String databaseName, DataMaskingPolicyInner parameters) {
-        return createOrUpdatePolicyWithServiceResponseAsync(databaseName, parameters).map(new Func1<ServiceResponse<DataMaskingPolicyInner>, DataMaskingPolicyInner>() {
+    public Observable<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
+        return createOrUpdatePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DataMaskingPolicyInner>, DataMaskingPolicyInner>() {
             @Override
             public DataMaskingPolicyInner call(ServiceResponse<DataMaskingPolicyInner> response) {
                 return response.getBody();
@@ -122,19 +128,21 @@ public final class DataMaskingsInner {
     /**
      * Creates or updates an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param parameters The required parameters for createing or updating a firewall rule.
      * @return the observable to the DataMaskingPolicyInner object
      */
-    public Observable<ServiceResponse<DataMaskingPolicyInner>> createOrUpdatePolicyWithServiceResponseAsync(String databaseName, DataMaskingPolicyInner parameters) {
+    public Observable<ServiceResponse<DataMaskingPolicyInner>> createOrUpdatePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
@@ -144,7 +152,7 @@ public final class DataMaskingsInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdatePolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdatePolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMaskingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMaskingPolicyInner>> call(Response<ResponseBody> response) {
@@ -169,32 +177,38 @@ public final class DataMaskingsInner {
     /**
      * Returns an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
      * @return the DataMaskingPolicyInner object if successful.
      */
-    public DataMaskingPolicyInner getPolicy(String databaseName) {
-        return getPolicyWithServiceResponseAsync(databaseName).toBlocking().single().getBody();
+    public DataMaskingPolicyInner getPolicy(String resourceGroupName, String serverName, String databaseName) {
+        return getPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
      * Returns an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DataMaskingPolicyInner> getPolicyAsync(String databaseName, final ServiceCallback<DataMaskingPolicyInner> serviceCallback) {
-        return ServiceCall.create(getPolicyWithServiceResponseAsync(databaseName), serviceCallback);
+    public ServiceCall<DataMaskingPolicyInner> getPolicyAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DataMaskingPolicyInner> serviceCallback) {
+        return ServiceCall.create(getPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
      * Returns an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
      * @return the observable to the DataMaskingPolicyInner object
      */
-    public Observable<DataMaskingPolicyInner> getPolicyAsync(String databaseName) {
-        return getPolicyWithServiceResponseAsync(databaseName).map(new Func1<ServiceResponse<DataMaskingPolicyInner>, DataMaskingPolicyInner>() {
+    public Observable<DataMaskingPolicyInner> getPolicyAsync(String resourceGroupName, String serverName, String databaseName) {
+        return getPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DataMaskingPolicyInner>, DataMaskingPolicyInner>() {
             @Override
             public DataMaskingPolicyInner call(ServiceResponse<DataMaskingPolicyInner> response) {
                 return response.getBody();
@@ -205,24 +219,26 @@ public final class DataMaskingsInner {
     /**
      * Returns an Azure SQL Database data masking policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
      * @return the observable to the DataMaskingPolicyInner object
      */
-    public Observable<ServiceResponse<DataMaskingPolicyInner>> getPolicyWithServiceResponseAsync(String databaseName) {
+    public Observable<ServiceResponse<DataMaskingPolicyInner>> getPolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getPolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getPolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMaskingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMaskingPolicyInner>> call(Response<ResponseBody> response) {
@@ -246,38 +262,44 @@ public final class DataMaskingsInner {
     /**
      * Creates or updates an Azure SQL Server Firewall rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database data masking rule.
      * @param parameters The required parameters for createing or updating a data masking rule.
      * @return the DataMaskingRuleInner object if successful.
      */
-    public DataMaskingRuleInner createOrUpdateRule(String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
-        return createOrUpdateRuleWithServiceResponseAsync(databaseName, dataMaskingRule, parameters).toBlocking().single().getBody();
+    public DataMaskingRuleInner createOrUpdateRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
+        return createOrUpdateRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule, parameters).toBlocking().single().getBody();
     }
 
     /**
      * Creates or updates an Azure SQL Server Firewall rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database data masking rule.
      * @param parameters The required parameters for createing or updating a data masking rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DataMaskingRuleInner> createOrUpdateRuleAsync(String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters, final ServiceCallback<DataMaskingRuleInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateRuleWithServiceResponseAsync(databaseName, dataMaskingRule, parameters), serviceCallback);
+    public ServiceCall<DataMaskingRuleInner> createOrUpdateRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters, final ServiceCallback<DataMaskingRuleInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule, parameters), serviceCallback);
     }
 
     /**
      * Creates or updates an Azure SQL Server Firewall rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database data masking rule.
      * @param parameters The required parameters for createing or updating a data masking rule.
      * @return the observable to the DataMaskingRuleInner object
      */
-    public Observable<DataMaskingRuleInner> createOrUpdateRuleAsync(String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
-        return createOrUpdateRuleWithServiceResponseAsync(databaseName, dataMaskingRule, parameters).map(new Func1<ServiceResponse<DataMaskingRuleInner>, DataMaskingRuleInner>() {
+    public Observable<DataMaskingRuleInner> createOrUpdateRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
+        return createOrUpdateRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule, parameters).map(new Func1<ServiceResponse<DataMaskingRuleInner>, DataMaskingRuleInner>() {
             @Override
             public DataMaskingRuleInner call(ServiceResponse<DataMaskingRuleInner> response) {
                 return response.getBody();
@@ -288,20 +310,22 @@ public final class DataMaskingsInner {
     /**
      * Creates or updates an Azure SQL Server Firewall rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database data masking rule.
      * @param parameters The required parameters for createing or updating a data masking rule.
      * @return the observable to the DataMaskingRuleInner object
      */
-    public Observable<ServiceResponse<DataMaskingRuleInner>> createOrUpdateRuleWithServiceResponseAsync(String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
+    public Observable<ServiceResponse<DataMaskingRuleInner>> createOrUpdateRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, DataMaskingRuleInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
@@ -314,7 +338,7 @@ public final class DataMaskingsInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdateRule(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, dataMaskingRule, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateRule(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, dataMaskingRule, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataMaskingRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DataMaskingRuleInner>> call(Response<ResponseBody> response) {
@@ -339,34 +363,40 @@ public final class DataMaskingsInner {
     /**
      * Deletes an Azure SQL database data masking rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database  data masking rule.
      */
-    public void deleteRule(String databaseName, String dataMaskingRule) {
-        deleteRuleWithServiceResponseAsync(databaseName, dataMaskingRule).toBlocking().single().getBody();
+    public void deleteRule(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) {
+        deleteRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule).toBlocking().single().getBody();
     }
 
     /**
      * Deletes an Azure SQL database data masking rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database  data masking rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteRuleAsync(String databaseName, String dataMaskingRule, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteRuleWithServiceResponseAsync(databaseName, dataMaskingRule), serviceCallback);
+    public ServiceCall<Void> deleteRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule), serviceCallback);
     }
 
     /**
      * Deletes an Azure SQL database data masking rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database  data masking rule.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteRuleAsync(String databaseName, String dataMaskingRule) {
-        return deleteRuleWithServiceResponseAsync(databaseName, dataMaskingRule).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteRuleAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) {
+        return deleteRuleWithServiceResponseAsync(resourceGroupName, serverName, databaseName, dataMaskingRule).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
@@ -377,19 +407,21 @@ public final class DataMaskingsInner {
     /**
      * Deletes an Azure SQL database data masking rule.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
      * @param dataMaskingRule The name of the Azure SQL Database  data masking rule.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteRuleWithServiceResponseAsync(String databaseName, String dataMaskingRule) {
+    public Observable<ServiceResponse<Void>> deleteRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String dataMaskingRule) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
@@ -398,7 +430,7 @@ public final class DataMaskingsInner {
             throw new IllegalArgumentException("Parameter dataMaskingRule is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.deleteRule(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, dataMaskingRule, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.deleteRule(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, dataMaskingRule, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -422,32 +454,38 @@ public final class DataMaskingsInner {
     /**
      * Returns a list of Azure SQL database data masking rules.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rules applies.
      * @return the List&lt;DataMaskingRuleInner&gt; object if successful.
      */
-    public List<DataMaskingRuleInner> listRules(String databaseName) {
-        return listRulesWithServiceResponseAsync(databaseName).toBlocking().single().getBody();
+    public List<DataMaskingRuleInner> listRules(String resourceGroupName, String serverName, String databaseName) {
+        return listRulesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
      * Returns a list of Azure SQL database data masking rules.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rules applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<DataMaskingRuleInner>> listRulesAsync(String databaseName, final ServiceCallback<List<DataMaskingRuleInner>> serviceCallback) {
-        return ServiceCall.create(listRulesWithServiceResponseAsync(databaseName), serviceCallback);
+    public ServiceCall<List<DataMaskingRuleInner>> listRulesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DataMaskingRuleInner>> serviceCallback) {
+        return ServiceCall.create(listRulesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
      * Returns a list of Azure SQL database data masking rules.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rules applies.
      * @return the observable to the List&lt;DataMaskingRuleInner&gt; object
      */
-    public Observable<List<DataMaskingRuleInner>> listRulesAsync(String databaseName) {
-        return listRulesWithServiceResponseAsync(databaseName).map(new Func1<ServiceResponse<List<DataMaskingRuleInner>>, List<DataMaskingRuleInner>>() {
+    public Observable<List<DataMaskingRuleInner>> listRulesAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listRulesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DataMaskingRuleInner>>, List<DataMaskingRuleInner>>() {
             @Override
             public List<DataMaskingRuleInner> call(ServiceResponse<List<DataMaskingRuleInner>> response) {
                 return response.getBody();
@@ -458,24 +496,26 @@ public final class DataMaskingsInner {
     /**
      * Returns a list of Azure SQL database data masking rules.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the data masking rules applies.
      * @return the observable to the List&lt;DataMaskingRuleInner&gt; object
      */
-    public Observable<ServiceResponse<List<DataMaskingRuleInner>>> listRulesWithServiceResponseAsync(String databaseName) {
+    public Observable<ServiceResponse<List<DataMaskingRuleInner>>> listRulesWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.listRules(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRules(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DataMaskingRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DataMaskingRuleInner>>> call(Response<ResponseBody> response) {
