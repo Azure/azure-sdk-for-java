@@ -308,6 +308,7 @@ public class AzureTests {
 
     @Test
     public void testTrafficManager() throws Exception {
-        new TestTrafficManager().runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+        new TestTrafficManager(azure.resourceGroups(), azure.publicIpAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
 }

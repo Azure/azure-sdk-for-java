@@ -239,6 +239,28 @@ class TrafficManagerProfileImpl
                 });
     }
 
+    @Override
+    public Observable<TrafficManagerProfile> updateResourceAsync() {
+        final TrafficManagerProfileImpl self = this;
+        // In update we first commit the endpoints then update profile, the reason is through portal and direct API
+        // call one can create endpoints without properties those are not applicable for the profile's current routing
+        // method. We cannot update the routing method of the profile until existing endpoints contains the properties
+        // required for the new routing method.
+        return self.endpoints.commitAndGetAllAsync()
+                .flatMap(new Func1<List<TrafficManagerEndpointImpl>, Observable<? extends TrafficManagerProfile>>() {
+                    public Observable<? extends TrafficManagerProfile> call(List<TrafficManagerEndpointImpl> endpoints) {
+                        return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                            .map(new Func1<ProfileInner, TrafficManagerProfile>() {
+                                    @Override
+                                    public TrafficManagerProfile call(ProfileInner profileInner) {
+                                self.setInner(profileInner);
+                                return self;
+                                }
+                                });
+                    }
+                });
+    }
+
     TrafficManagerProfileImpl withEndpoint(TrafficManagerEndpointImpl endpoint) {
         this.endpoints.addEndpoint(endpoint);
         return this;

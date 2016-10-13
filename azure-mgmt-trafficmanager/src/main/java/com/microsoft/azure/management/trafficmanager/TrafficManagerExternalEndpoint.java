@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+
 /**
  * An immutable client-side representation of an Azure traffic manager profile external endpoint.
  */
@@ -17,5 +19,5 @@ public interface TrafficManagerExternalEndpoint extends TrafficManagerEndpoint {
     /**
      * @return the location of the traffic that the endpoint handles
      */
-    String sourceTrafficLocation();
+    Region sourceTrafficLocation();
 }

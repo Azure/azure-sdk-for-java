@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
 
 /**
@@ -25,7 +26,11 @@ class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl
     }
 
     @Override
-    public String sourceTrafficLocation() {
-        return inner().endpointLocation();
+    public Region sourceTrafficLocation() {
+        Region location = Region.fromLabel((inner().endpointLocation()));
+        if (location == null) {
+            return Region.fromName((inner().endpointLocation()));
+        }
+        return location;
     }
 }

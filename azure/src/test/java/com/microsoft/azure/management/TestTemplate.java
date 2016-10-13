@@ -110,7 +110,7 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify listing
-        Assert.assertTrue(verifyListing() - initialCount == 1);
+        Assert.assertTrue(verifyListing() - initialCount >= 1);
 
         // Verify getting
         this.resource = verifyGetting();

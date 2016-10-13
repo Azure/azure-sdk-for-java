@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+
 /**
  * An immutable client-side representation of an Azure traffic manager profile nested profile endpoint.
  */
@@ -22,5 +24,5 @@ public interface TrafficManagerNestedProfileEndpoint extends TrafficManagerEndpo
     /**
      * @return the location of the traffic that the endpoint handles
      */
-    String sourceTrafficLocation();
+    Region sourceTrafficLocation();
 }
