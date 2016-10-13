@@ -75,7 +75,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     /**
      * The implementation for Configurable interface.
      */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
             return BatchManager.authenticate(buildRestClient(credentials), subscriptionId);
