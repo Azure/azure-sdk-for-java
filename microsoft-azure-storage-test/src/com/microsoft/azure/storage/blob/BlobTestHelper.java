@@ -14,7 +14,10 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -27,10 +30,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestHelper;
+import static org.junit.Assert.*;
 
 /**
  * Blob Test Base

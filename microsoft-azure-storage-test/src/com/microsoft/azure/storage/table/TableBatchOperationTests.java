@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,19 @@
  */
 package com.microsoft.azure.storage.table;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.LocationMode;
+import com.microsoft.azure.storage.RetryNoRetry;
+import com.microsoft.azure.storage.SecondaryTests;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.table.TableTestHelper.Class1;
+import com.microsoft.azure.storage.table.TableTestHelper.Class2;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
@@ -26,22 +38,11 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.LocationMode;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SecondaryTests;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.table.TableTestHelper.Class1;
-import com.microsoft.azure.storage.table.TableTestHelper.Class2;
+
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class TableBatchOperationTests {
@@ -786,7 +787,7 @@ public class TableBatchOperationTests {
     private void testBatchDelete(TableRequestOptions options) throws StorageException {
         Class1 ref = TableTestHelper.generateRandomEntity("jxscl_odata");
 
-        // insert entity  
+        // insert entity
         this.table.execute(TableOperation.insert(ref), options, null);
 
         TableBatchOperation batch = new TableBatchOperation();

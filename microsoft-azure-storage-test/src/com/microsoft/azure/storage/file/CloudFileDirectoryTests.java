@@ -14,7 +14,19 @@
  */
 package com.microsoft.azure.storage.file;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.NameValidator;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResultSegment;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -28,18 +40,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.core.PathUtility;
-import com.microsoft.azure.storage.core.SR;
+import static org.junit.Assert.*;
 
 /**
  * File Directory Tests
@@ -50,13 +51,13 @@ public class CloudFileDirectoryTests {
     private CloudFileShare share;
 
     @Before
-    public void fileTestMethodSetup() throws URISyntaxException, StorageException {
+    public void cloudFileDirectorySetUp() throws URISyntaxException, StorageException {
         this.share = FileTestHelper.getRandomShareReference();
         this.share.create();
     }
 
     @After
-    public void fileTestMethodTearDown() throws StorageException {
+    public void cloudFileDirectoryTearDown() throws StorageException {
         this.share.deleteIfExists();
     }
     

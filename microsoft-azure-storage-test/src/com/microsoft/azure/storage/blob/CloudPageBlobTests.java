@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,7 +14,25 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.AccessCondition;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.Utility;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.RetryNoRetry;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -32,22 +50,7 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Random;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.AccessCondition;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.core.Utility;
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class CloudPageBlobTests {
@@ -66,7 +69,7 @@ public class CloudPageBlobTests {
 
     /**
      * Start copying a blob and then abort
-     * 
+     *
      * @throws StorageException
      * @throws URISyntaxException
      * @throws IOException
@@ -92,7 +95,7 @@ public class CloudPageBlobTests {
 
     /**
      * Create a snapshot
-     * 
+     *
      * @throws StorageException
      * @throws URISyntaxException
      * @throws IOException
@@ -171,7 +174,7 @@ public class CloudPageBlobTests {
 
     /**
      * Create a blob and try to download a range of its contents
-     * 
+     *
      * @throws StorageException
      * @throws URISyntaxException
      * @throws IOException
@@ -848,7 +851,7 @@ public class CloudPageBlobTests {
         // Upload pages 2-4
         inputStream = new ByteArrayInputStream(buffer, 512, 3 * 512);
         blobRef.uploadPages(inputStream, 2 * 512, 3 * 512);
-        
+
         // Upload page 6
         inputStream = new ByteArrayInputStream(buffer, 3 * 512, 512);
         blobRef.uploadPages(inputStream, 6 * 512, 512);
@@ -861,7 +864,7 @@ public class CloudPageBlobTests {
         // Page7-8: 2 * 512 bytes should be 0
         return blobRef;
     }
-    
+
     @Test
     public void testDownloadPages() throws StorageException, URISyntaxException, IOException {
         final CloudPageBlob blobRef = setUpPageRanges();
@@ -882,7 +885,7 @@ public class CloudPageBlobTests {
     @Test
     public void testDownloadPageRangesWithOffset() throws StorageException, URISyntaxException, IOException {
         final CloudPageBlob blobRef = setUpPageRanges();
-        
+
         List<PageRange> actualPageRanges = blobRef.downloadPageRanges((long)1*512, null);
         List<PageRange> expectedPageRanges = new ArrayList<PageRange>();
         expectedPageRanges.add(new PageRange(2 * 512, 5 * 512 - 1));
@@ -898,7 +901,7 @@ public class CloudPageBlobTests {
     @Test
     public void testDownloadPageRangesWithOffsetAndLength() throws StorageException, URISyntaxException, IOException {
         final CloudPageBlob blobRef = setUpPageRanges();
-        
+
         List<PageRange> actualPageRanges = blobRef.downloadPageRanges((long)1*512, (long)5*512);
         List<PageRange> expectedPageRanges = new ArrayList<PageRange>();
         expectedPageRanges.add(new PageRange(2 * 512, 5 * 512 - 1));
@@ -940,7 +943,7 @@ public class CloudPageBlobTests {
     public void testDownloadPageRangeDiffWithOffsetAndLength() throws StorageException, URISyntaxException, IOException {
         final CloudPageBlob blobRef = setUpPageRanges();
         final CloudPageBlob snapshot = (CloudPageBlob) blobRef.createSnapshot();
-        
+
         // Add page 1
         InputStream inputStream = new ByteArrayInputStream(BlobTestHelper.getRandomBuffer(512));
         blobRef.uploadPages(inputStream, 0, 512);
@@ -967,7 +970,7 @@ public class CloudPageBlobTests {
         BlobRequestOptions options = new BlobRequestOptions();
         options.setDisableContentMD5Validation(true);
 
-        // with explicit upload/download of properties 
+        // with explicit upload/download of properties
         String pageBlobName1 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
         CloudPageBlob pageBlobRef1 = this.container.getPageBlobReference(pageBlobName1);
 
@@ -982,7 +985,7 @@ public class CloudPageBlobTests {
 
         BlobTestHelper.assertAreEqual(props1, props2);
 
-        // by uploading/downloading the blob   
+        // by uploading/downloading the blob
         pageBlobName1 = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlockBlob");
         pageBlobRef1 = this.container.getPageBlobReference(pageBlobName1);
 

@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 package com.microsoft.azure.storage.table;
-
-import static org.junit.Assert.*;
 
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
@@ -43,6 +41,8 @@ import com.microsoft.azure.storage.table.TableQuery.QueryComparisons;
 import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 import com.microsoft.azure.storage.table.TableTestHelper.ComplexEntity;
 import com.microsoft.azure.storage.table.TableTestHelper.EmptyClass;
+
+import static org.junit.Assert.*;
 
 /**
  * Table Query Tests
@@ -102,28 +102,28 @@ public class TableQueryTests {
             assertEquals(ex.getMessage(), "Take count must be positive and greater than 0.");
         }
     }
-    
+
     @Test
     public void testTableWithSelectOnMissingFields() throws StorageException {
         TableRequestOptions options = new TableRequestOptions();
 
         options.setTablePayloadFormat(TablePayloadFormat.Json);
         testTableWithSelectOnMissingFields(options);
-        
+
         options.setTablePayloadFormat(TablePayloadFormat.JsonNoMetadata);
         testTableWithSelectOnMissingFields(options);
     }
-    
+
     private void testTableWithSelectOnMissingFields(TableRequestOptions options) throws StorageException {
         TableQuery<DynamicTableEntity> projectionQuery = TableQuery.from(DynamicTableEntity.class).where(
                 "(PartitionKey eq 'javatables_batch_0') and (RowKey eq '000000')");
-        
+
         // A exists, F does not
         projectionQuery.select(new String[]{"A", "F"});
-        
+
         ResultSegment<DynamicTableEntity> seg = table.executeSegmented(projectionQuery, null, options, null);
         assertEquals(1, seg.getResults().size());
-        
+
         DynamicTableEntity ent = seg.getResults().get(0);
         assertEquals("foo_A", ent.getProperties().get("A").getValueAsString());
         assertEquals(null, ent.getProperties().get("F").getValueAsString());
@@ -207,20 +207,20 @@ public class TableQueryTests {
             table.deleteIfExists();
         }
     }
-    
-    private void testTableQueryWithSpecialChars(char charToTest, CloudTable table) 
+
+    private void testTableQueryWithSpecialChars(char charToTest, CloudTable table)
             throws StorageException, URISyntaxException {
         String partitionKey = "partition" + charToTest + "key";
         String rowKey = "row" + charToTest + "key";
-        
+
         EmptyClass ref = new EmptyClass();
         ref.setPartitionKey(partitionKey);
         ref.setRowKey(rowKey);
-        
+
         table.execute(TableOperation.insert(ref));
         String condition = TableQuery.generateFilterCondition(TableConstants.PARTITION_KEY, QueryComparisons.EQUAL, partitionKey);
         ResultSegment<EmptyClass> seg = table.executeSegmented(TableQuery.from(EmptyClass.class).where(condition), null);
-        
+
         assertEquals(1, seg.getLength());
         assertEquals(partitionKey, seg.getResults().get(0).getPartitionKey());
     }
@@ -352,7 +352,7 @@ public class TableQueryTests {
                     TableQuery.generateFilterCondition("BoolPrimitive", QueryComparisons.EQUAL, middleRef.getBool()),
                     50, options, usePropertyResolver);
 
-            // 8. Filter on Binary 
+            // 8. Filter on Binary
             executeQueryAndAssertResults(
                     TableQuery.generateFilterCondition("Binary", QueryComparisons.EQUAL, middleRef.getBinary()), 1,
                     options, usePropertyResolver);

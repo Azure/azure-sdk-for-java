@@ -14,12 +14,12 @@
  */
 package com.microsoft.azure.storage.queue;
 
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestHelper;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
-
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestHelper;
 
 /**
  * Queue Test Base

@@ -14,7 +14,27 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import static org.junit.Assert.*;
+
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.NameValidator;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResultContinuation;
+import com.microsoft.azure.storage.ResultSegment;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageErrorCodeStrings;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -30,34 +50,13 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResultContinuation;
-import com.microsoft.azure.storage.ResultSegment;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.SR;
+import static org.junit.Assert.*;
 
 /**
  * Blob Container Tests
  */
 @Category({ CloudTests.class })
 public class CloudBlobContainerTests {
-
     protected static CloudBlobClient client;
     protected CloudBlobContainer container;
 
@@ -70,7 +69,7 @@ public class CloudBlobContainerTests {
     public void blobContainerTestMethodTearDown() throws StorageException {
         this.container.deleteIfExists();
     }
-    
+
     /**
      * Test container name validation.
      */
@@ -218,7 +217,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Create a container
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -251,7 +250,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Try to delete a non-existing container
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -299,7 +298,7 @@ public class CloudBlobContainerTests {
 
     /**
      * Check a container's existence
-     * 
+     *
      * @throws StorageException
      */
     @Test
@@ -437,28 +436,28 @@ public class CloudBlobContainerTests {
         CloudBlobContainer container2 = this.container.getServiceClient().getContainerReference(
                 this.container.getName());
         container2.downloadAttributes();
-        Assert.assertEquals(0, container2.getMetadata().size());
+        assertEquals(0, container2.getMetadata().size());
 
         this.container.getMetadata().put("key1", "value1");
         this.container.uploadMetadata();
 
         container2.downloadAttributes();
-        Assert.assertEquals(1, container2.getMetadata().size());
-        Assert.assertEquals("value1", container2.getMetadata().get("key1"));
+        assertEquals(1, container2.getMetadata().size());
+        assertEquals("value1", container2.getMetadata().get("key1"));
 
         Iterable<CloudBlobContainer> containers = this.container.getServiceClient().listContainers(
                 this.container.getName(), ContainerListingDetails.METADATA, null, null);
 
         for (CloudBlobContainer container3 : containers) {
-            Assert.assertEquals(1, container3.getMetadata().size());
-            Assert.assertEquals("value1", container3.getMetadata().get("key1"));
+            assertEquals(1, container3.getMetadata().size());
+            assertEquals("value1", container3.getMetadata().get("key1"));
         }
 
         this.container.getMetadata().clear();
         this.container.uploadMetadata();
 
         container2.downloadAttributes();
-        Assert.assertEquals(0, container2.getMetadata().size());
+        assertEquals(0, container2.getMetadata().size());
     }
 
     @Test
@@ -550,10 +549,10 @@ public class CloudBlobContainerTests {
 
         assertTrue(blobNames.size() == 0);
     }
-    
+
     /**
      * List the blobs in a container with a prefix
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -568,7 +567,7 @@ public class CloudBlobContainerTests {
 
         BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob1", 128, null);
         blobNames.add("pref/blob1");
-        
+
         BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB, "pref/blob2", 128, null);
         blobNames.add("pref/blob2");
 
@@ -580,7 +579,7 @@ public class CloudBlobContainerTests {
             count++;
         }
         assertEquals(1, count);
-        
+
         // Flat listing true
         count = 0;
         for (ListBlobItem blob : this.container.listBlobs("pref", true)) {
@@ -590,12 +589,12 @@ public class CloudBlobContainerTests {
         }
         assertEquals(2, count);
     }
-    
+
     /**
-     * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all 
-     * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if 
+     * List the blobs in a container with next(). This tests for the item in the changelog: "Fixed a bug for all
+     * listing API's where next() would sometimes throw an exception if hasNext() had not been called even if
      * there were more elements to iterate on."
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException
@@ -604,7 +603,7 @@ public class CloudBlobContainerTests {
     @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testCloudBlobContainerListBlobsNext() throws StorageException, IOException, URISyntaxException {
         this.container.create();
-        
+
         int numBlobs = 10;
         List<String> blobNames = BlobTestHelper.uploadNewBlobs(this.container, BlobType.PAGE_BLOB, 10, 512, null);
         assertEquals(numBlobs, blobNames.size());
@@ -614,16 +613,16 @@ public class CloudBlobContainerTests {
         iter.hasNext();
         iter.next();
         iter.next();
-        
+
         // next without hasNext
         iter = this.container.listBlobs().iterator();
         iter.next();
         iter.next();
     }
-    
+
     /**
      * Try to list the blobs in a container to ensure maxResults validation is working.
-     * 
+     *
      * @throws URISyntaxException
      * @throws StorageException
      * @throws IOException

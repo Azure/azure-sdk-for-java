@@ -15,7 +15,33 @@
 
 package com.microsoft.azure.storage.file;
 
-import static org.junit.Assert.*;
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.IPRange;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResponseReceivedEvent;
+import com.microsoft.azure.storage.SecondaryTests;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessProtocols;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
+import com.microsoft.azure.storage.StorageUri;
+import com.microsoft.azure.storage.TestHelper;
+import com.microsoft.azure.storage.TestRunners;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
+
+import junit.framework.Assert;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -33,33 +59,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.IPRange;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResponseReceivedEvent;
-import com.microsoft.azure.storage.SecondaryTests;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.SharedAccessProtocols;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.StorageUri;
-import com.microsoft.azure.storage.TestHelper;
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.PathUtility;
-import com.microsoft.azure.storage.core.SR;
+import static org.junit.Assert.*;
 
 @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class FileSasTests {
+
     protected static CloudFileClient fileClient = null;
     protected CloudFileShare share;
     protected CloudFile file;
@@ -79,7 +83,7 @@ public class FileSasTests {
     public void fileSASTestMethodTearDown() throws StorageException {
         this.share.deleteIfExists();
     }
-    
+
     @Test
     public void testApiVersion() throws InvalidKeyException, StorageException, URISyntaxException {
         SharedAccessFilePolicy policy = createSharedAccessPolicy(
@@ -104,7 +108,7 @@ public class FileSasTests {
         CloudFile sasFile = new CloudFile(new URI(this.file.getUri().toString() + "?" + sas));
         sasFile.uploadMetadata(null, null, ctx);
     }
-    
+
     @Test
     public void testDirectorySas() throws InvalidKeyException, IllegalArgumentException, StorageException,
             URISyntaxException, InterruptedException {
@@ -193,7 +197,7 @@ public class FileSasTests {
         CloudFile allFile = allShare.getRootDirectoryReference().getFileReference(this.file.getName());
         allFile.download(new ByteArrayOutputStream());
     }
-    
+
     @Test
     @Category({ SecondaryTests.class })
     public void testProtocolRestrictions()

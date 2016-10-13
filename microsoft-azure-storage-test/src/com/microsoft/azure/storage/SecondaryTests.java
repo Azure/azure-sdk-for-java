@@ -14,22 +14,6 @@
  */
 package com.microsoft.azure.storage;
 
-import static org.junit.Assert.*;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
-import com.microsoft.azure.storage.TestRunners.CloudTests;
-import com.microsoft.azure.storage.TestRunners.DevFabricTests;
-import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.BlobTestHelper;
 import com.microsoft.azure.storage.blob.BlobType;
@@ -46,6 +30,22 @@ import com.microsoft.azure.storage.table.CloudTable;
 import com.microsoft.azure.storage.table.CloudTableClient;
 import com.microsoft.azure.storage.table.TableRequestOptions;
 import com.microsoft.azure.storage.table.TableTestHelper;
+import com.microsoft.azure.storage.TestRunners.CloudTests;
+import com.microsoft.azure.storage.TestRunners.DevFabricTests;
+import com.microsoft.azure.storage.TestRunners.DevStoreTests;
+import com.microsoft.azure.storage.TestRunners.SlowTests;
+
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @Category({ SecondaryTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class SecondaryTests {
@@ -316,8 +316,8 @@ public class SecondaryTests {
         }
     }
 
-    @Category(SlowTests.class)
     @Test
+    @Category(SlowTests.class)
     public void testMultiLocationRetriesBlob() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();
         List<RetryContext> retryContextList = new ArrayList<RetryContext>();
@@ -425,8 +425,8 @@ public class SecondaryTests {
                 retryContextList, retryInfoList);
     }
 
-    @Category(SlowTests.class)
     @Test
+    @Category(SlowTests.class)
     public void testMultiLocationRetriesQueue() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();
         List<RetryContext> retryContextList = new ArrayList<RetryContext>();
@@ -534,8 +534,8 @@ public class SecondaryTests {
                 retryContextList, retryInfoList);
     }
 
-    @Category(SlowTests.class)
     @Test
+    @Category(SlowTests.class)
     public void testMultiLocationRetriesTable() throws URISyntaxException, StorageException {
         List<RetryInfo> retryInfoList = new ArrayList<RetryInfo>();
         List<RetryContext> retryContextList = new ArrayList<RetryContext>();
