@@ -62,54 +62,56 @@ public final class TopLevelDomainsInner {
     interface TopLevelDomainsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains")
-        Observable<Response<ResponseBody>> getGetTopLevelDomains(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}")
-        Observable<Response<ResponseBody>> getTopLevelDomain(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/topLevelDomains/{name}/listAgreements")
-        Observable<Response<ResponseBody>> listTopLevelDomainAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAgreements(@Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body TopLevelDomainAgreementOption agreementOption, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
-        Observable<Response<ResponseBody>> getGetTopLevelDomainsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("{nextLink}")
-        Observable<Response<ResponseBody>> listTopLevelDomainAgreementsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listAgreementsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
-    public PagedList<TopLevelDomainInner> getGetTopLevelDomains() {
-        ServiceResponse<Page<TopLevelDomainInner>> response = getGetTopLevelDomainsSinglePageAsync().toBlocking().single();
+    public PagedList<TopLevelDomainInner> list() {
+        ServiceResponse<Page<TopLevelDomainInner>> response = listSinglePageAsync().toBlocking().single();
         return new PagedList<TopLevelDomainInner>(response.getBody()) {
             @Override
             public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
-                return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<TopLevelDomainInner>> getGetTopLevelDomainsAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+    public ServiceCall<List<TopLevelDomainInner>> listAsync(final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
         return AzureServiceCall.create(
-            getGetTopLevelDomainsSinglePageAsync(),
+            listSinglePageAsync(),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(String nextPageLink) {
-                    return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink);
+                    return listNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -117,11 +119,12 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
-    public Observable<Page<TopLevelDomainInner>> getGetTopLevelDomainsAsync() {
-        return getGetTopLevelDomainsWithServiceResponseAsync()
+    public Observable<Page<TopLevelDomainInner>> listAsync() {
+        return listWithServiceResponseAsync()
             .map(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Page<TopLevelDomainInner>>() {
                 @Override
                 public Page<TopLevelDomainInner> call(ServiceResponse<Page<TopLevelDomainInner>> response) {
@@ -132,11 +135,12 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> getGetTopLevelDomainsWithServiceResponseAsync() {
-        return getGetTopLevelDomainsSinglePageAsync()
+    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listWithServiceResponseAsync() {
+        return listSinglePageAsync()
             .concatMap(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(ServiceResponse<Page<TopLevelDomainInner>> page) {
@@ -144,29 +148,28 @@ public final class TopLevelDomainsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getGetTopLevelDomainsNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> getGetTopLevelDomainsSinglePageAsync() {
+    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getGetTopLevelDomains(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-03-01";
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TopLevelDomainInner>> result = getGetTopLevelDomainsDelegate(response);
+                        ServiceResponse<PageImpl<TopLevelDomainInner>> result = listDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -175,7 +178,7 @@ public final class TopLevelDomainsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TopLevelDomainInner>> getGetTopLevelDomainsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<TopLevelDomainInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<TopLevelDomainInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TopLevelDomainInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -184,33 +187,36 @@ public final class TopLevelDomainsInner {
 
     /**
      * Gets details of a top level domain.
+     * Gets details of a top level domain.
      *
      * @param name Name of the top level domain
      * @return the TopLevelDomainInner object if successful.
      */
-    public TopLevelDomainInner getTopLevelDomain(String name) {
-        return getTopLevelDomainWithServiceResponseAsync(name).toBlocking().single().getBody();
+    public TopLevelDomainInner get(String name) {
+        return getWithServiceResponseAsync(name).toBlocking().single().getBody();
     }
 
     /**
+     * Gets details of a top level domain.
      * Gets details of a top level domain.
      *
      * @param name Name of the top level domain
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<TopLevelDomainInner> getTopLevelDomainAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
-        return ServiceCall.create(getTopLevelDomainWithServiceResponseAsync(name), serviceCallback);
+    public ServiceCall<TopLevelDomainInner> getAsync(String name, final ServiceCallback<TopLevelDomainInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(name), serviceCallback);
     }
 
     /**
+     * Gets details of a top level domain.
      * Gets details of a top level domain.
      *
      * @param name Name of the top level domain
      * @return the observable to the TopLevelDomainInner object
      */
-    public Observable<TopLevelDomainInner> getTopLevelDomainAsync(String name) {
-        return getTopLevelDomainWithServiceResponseAsync(name).map(new Func1<ServiceResponse<TopLevelDomainInner>, TopLevelDomainInner>() {
+    public Observable<TopLevelDomainInner> getAsync(String name) {
+        return getWithServiceResponseAsync(name).map(new Func1<ServiceResponse<TopLevelDomainInner>, TopLevelDomainInner>() {
             @Override
             public TopLevelDomainInner call(ServiceResponse<TopLevelDomainInner> response) {
                 return response.getBody();
@@ -220,26 +226,25 @@ public final class TopLevelDomainsInner {
 
     /**
      * Gets details of a top level domain.
+     * Gets details of a top level domain.
      *
      * @param name Name of the top level domain
      * @return the observable to the TopLevelDomainInner object
      */
-    public Observable<ServiceResponse<TopLevelDomainInner>> getTopLevelDomainWithServiceResponseAsync(String name) {
+    public Observable<ServiceResponse<TopLevelDomainInner>> getWithServiceResponseAsync(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.getTopLevelDomain(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-03-01";
+        return service.get(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopLevelDomainInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TopLevelDomainInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TopLevelDomainInner> clientResponse = getTopLevelDomainDelegate(response);
+                        ServiceResponse<TopLevelDomainInner> clientResponse = getDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -248,7 +253,7 @@ public final class TopLevelDomainsInner {
             });
     }
 
-    private ServiceResponse<TopLevelDomainInner> getTopLevelDomainDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TopLevelDomainInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TopLevelDomainInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TopLevelDomainInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -257,34 +262,36 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name) {
-        ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsSinglePageAsync(name).toBlocking().single();
+    public PagedList<TldLegalAgreementInner> listAgreements(final String name) {
+        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
-            listTopLevelDomainAgreementsSinglePageAsync(name),
+            listAgreementsSinglePageAsync(name),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(String nextPageLink) {
-                    return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink);
+                    return listAgreementsNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -292,12 +299,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name) {
-        return listTopLevelDomainAgreementsWithServiceResponseAsync(name)
+    public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name) {
+        return listAgreementsWithServiceResponseAsync(name)
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
@@ -308,12 +316,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsWithServiceResponseAsync(final String name) {
-        return listTopLevelDomainAgreementsSinglePageAsync(name)
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name) {
+        return listAgreementsSinglePageAsync(name)
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
@@ -321,36 +330,35 @@ public final class TopLevelDomainsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listTopLevelDomainAgreementsNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAgreementsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsSinglePageAsync(final String name) {
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-03-01";
         final Boolean includePrivacy = null;
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.withIncludePrivacy(null);
-        return service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent())
+        return service.listAgreements(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), agreementOption, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listTopLevelDomainAgreementsDelegate(response);
+                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -361,22 +369,24 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreements(final String name, final Boolean includePrivacy) {
-        ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsSinglePageAsync(name, includePrivacy).toBlocking().single();
+    public PagedList<TldLegalAgreementInner> listAgreements(final String name, final Boolean includePrivacy) {
+        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsSinglePageAsync(name, includePrivacy).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
+     * Lists legal agreements that user needs to accept before purchasing domain.
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
@@ -384,13 +394,13 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
-            listTopLevelDomainAgreementsSinglePageAsync(name, includePrivacy),
+            listAgreementsSinglePageAsync(name, includePrivacy),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(String nextPageLink) {
-                    return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink);
+                    return listAgreementsNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -398,13 +408,14 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsAsync(final String name, final Boolean includePrivacy) {
-        return listTopLevelDomainAgreementsWithServiceResponseAsync(name, includePrivacy)
+    public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy) {
+        return listAgreementsWithServiceResponseAsync(name, includePrivacy)
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
@@ -415,13 +426,14 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param name Name of the top level domain
      * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsWithServiceResponseAsync(final String name, final Boolean includePrivacy) {
-        return listTopLevelDomainAgreementsSinglePageAsync(name, includePrivacy)
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name, final Boolean includePrivacy) {
+        return listAgreementsSinglePageAsync(name, includePrivacy)
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
@@ -429,36 +441,35 @@ public final class TopLevelDomainsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listTopLevelDomainAgreementsNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAgreementsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
+     * Lists legal agreements that user needs to accept before purchasing domain.
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top level domain
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
         if (name == null) {
             throw new IllegalArgumentException("Parameter name is required and cannot be null.");
         }
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-03-01";
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.withIncludePrivacy(includePrivacy);
-        return service.listTopLevelDomainAgreements(name, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), agreementOption, this.client.userAgent())
+        return service.listAgreements(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), agreementOption, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listTopLevelDomainAgreementsDelegate(response);
+                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -467,7 +478,7 @@ public final class TopLevelDomainsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TldLegalAgreementInner>> listTopLevelDomainAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<TldLegalAgreementInner>> listAgreementsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<TldLegalAgreementInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TldLegalAgreementInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -476,21 +487,23 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
-    public PagedList<TopLevelDomainInner> getGetTopLevelDomainsNext(final String nextPageLink) {
-        ServiceResponse<Page<TopLevelDomainInner>> response = getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<TopLevelDomainInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<TopLevelDomainInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TopLevelDomainInner>(response.getBody()) {
             @Override
             public Page<TopLevelDomainInner> nextPage(String nextPageLink) {
-                return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
+     * Lists all top level domains supported for registration.
      * Lists all top level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -498,13 +511,13 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<TopLevelDomainInner>> getGetTopLevelDomainsNextAsync(final String nextPageLink, final ServiceCall<List<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
+    public ServiceCall<List<TopLevelDomainInner>> listNextAsync(final String nextPageLink, final ServiceCall<List<TopLevelDomainInner>> serviceCall, final ListOperationCallback<TopLevelDomainInner> serviceCallback) {
         return AzureServiceCall.create(
-            getGetTopLevelDomainsNextSinglePageAsync(nextPageLink),
+            listNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(String nextPageLink) {
-                    return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink);
+                    return listNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -512,12 +525,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
-    public Observable<Page<TopLevelDomainInner>> getGetTopLevelDomainsNextAsync(final String nextPageLink) {
-        return getGetTopLevelDomainsNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<TopLevelDomainInner>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Page<TopLevelDomainInner>>() {
                 @Override
                 public Page<TopLevelDomainInner> call(ServiceResponse<Page<TopLevelDomainInner>> response) {
@@ -528,12 +542,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> getGetTopLevelDomainsNextWithServiceResponseAsync(final String nextPageLink) {
-        return getGetTopLevelDomainsNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<TopLevelDomainInner>>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(ServiceResponse<Page<TopLevelDomainInner>> page) {
@@ -541,27 +556,28 @@ public final class TopLevelDomainsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(getGetTopLevelDomainsNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
      * Lists all top level domains supported for registration.
+     * Lists all top level domains supported for registration.
      *
     ServiceResponse<PageImpl<TopLevelDomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> getGetTopLevelDomainsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<TopLevelDomainInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.getGetTopLevelDomainsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TopLevelDomainInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TopLevelDomainInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TopLevelDomainInner>> result = getGetTopLevelDomainsNextDelegate(response);
+                        ServiceResponse<PageImpl<TopLevelDomainInner>> result = listNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TopLevelDomainInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -570,7 +586,7 @@ public final class TopLevelDomainsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TopLevelDomainInner>> getGetTopLevelDomainsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<TopLevelDomainInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<TopLevelDomainInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TopLevelDomainInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -579,21 +595,23 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
-    public PagedList<TldLegalAgreementInner> listTopLevelDomainAgreementsNext(final String nextPageLink) {
-        ServiceResponse<Page<TldLegalAgreementInner>> response = listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single();
+    public PagedList<TldLegalAgreementInner> listAgreementsNext(final String nextPageLink) {
+        ServiceResponse<Page<TldLegalAgreementInner>> response = listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single();
         return new PagedList<TldLegalAgreementInner>(response.getBody()) {
             @Override
             public Page<TldLegalAgreementInner> nextPage(String nextPageLink) {
-                return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+                return listAgreementsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
+     * Lists legal agreements that user needs to accept before purchasing domain.
      * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
@@ -601,13 +619,13 @@ public final class TopLevelDomainsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<TldLegalAgreementInner>> listTopLevelDomainAgreementsNextAsync(final String nextPageLink, final ServiceCall<List<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
+    public ServiceCall<List<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink, final ServiceCall<List<TldLegalAgreementInner>> serviceCall, final ListOperationCallback<TldLegalAgreementInner> serviceCallback) {
         return AzureServiceCall.create(
-            listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink),
+            listAgreementsNextSinglePageAsync(nextPageLink),
             new Func1<String, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(String nextPageLink) {
-                    return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink);
+                    return listAgreementsNextSinglePageAsync(nextPageLink);
                 }
             },
             serviceCallback);
@@ -615,12 +633,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<Page<TldLegalAgreementInner>> listTopLevelDomainAgreementsNextAsync(final String nextPageLink) {
-        return listTopLevelDomainAgreementsNextWithServiceResponseAsync(nextPageLink)
+    public Observable<Page<TldLegalAgreementInner>> listAgreementsNextAsync(final String nextPageLink) {
+        return listAgreementsNextWithServiceResponseAsync(nextPageLink)
             .map(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Page<TldLegalAgreementInner>>() {
                 @Override
                 public Page<TldLegalAgreementInner> call(ServiceResponse<Page<TldLegalAgreementInner>> response) {
@@ -631,12 +650,13 @@ public final class TopLevelDomainsInner {
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsNextWithServiceResponseAsync(final String nextPageLink) {
-        return listTopLevelDomainAgreementsNextSinglePageAsync(nextPageLink)
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listAgreementsNextSinglePageAsync(nextPageLink)
             .concatMap(new Func1<ServiceResponse<Page<TldLegalAgreementInner>>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(ServiceResponse<Page<TldLegalAgreementInner>> page) {
@@ -644,27 +664,28 @@ public final class TopLevelDomainsInner {
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listTopLevelDomainAgreementsNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAgreementsNextWithServiceResponseAsync(nextPageLink));
                 }
             });
     }
 
     /**
      * Lists legal agreements that user needs to accept before purchasing domain.
+     * Lists legal agreements that user needs to accept before purchasing domain.
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listTopLevelDomainAgreementsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
-        return service.listTopLevelDomainAgreementsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listAgreementsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<TldLegalAgreementInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listTopLevelDomainAgreementsNextDelegate(response);
+                        ServiceResponse<PageImpl<TldLegalAgreementInner>> result = listAgreementsNextDelegate(response);
                         return Observable.just(new ServiceResponse<Page<TldLegalAgreementInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -673,7 +694,7 @@ public final class TopLevelDomainsInner {
             });
     }
 
-    private ServiceResponse<PageImpl<TldLegalAgreementInner>> listTopLevelDomainAgreementsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl<TldLegalAgreementInner>> listAgreementsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl<TldLegalAgreementInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl<TldLegalAgreementInner>>() { }.getType())
                 .registerError(CloudException.class)

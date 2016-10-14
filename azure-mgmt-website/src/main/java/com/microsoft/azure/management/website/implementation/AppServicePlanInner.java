@@ -19,12 +19,12 @@ import com.microsoft.azure.Resource;
  * App Service Plan Model.
  */
 @JsonFlatten
-public class ServerFarmWithRichSkuInner extends Resource {
+public class AppServicePlanInner extends Resource {
     /**
      * Name for the App Service Plan.
      */
     @JsonProperty(value = "properties.name")
-    private String serverFarmWithRichSkuName;
+    private String appServicePlanName;
 
     /**
      * Target worker tier assigned to the App Service Plan.
@@ -35,13 +35,13 @@ public class ServerFarmWithRichSkuInner extends Resource {
     /**
      * App Service Plan Status. Possible values include: 'Ready', 'Pending'.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.status")
     private StatusOptions status;
 
     /**
      * App Service Plan Subscription.
      */
-    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.subscription")
     private String subscription;
 
     /**
@@ -67,7 +67,7 @@ public class ServerFarmWithRichSkuInner extends Resource {
     /**
      * Geographical location for the App Service Plan.
      */
-    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.geoRegion")
     private String geoRegion;
 
     /**
@@ -82,13 +82,13 @@ public class ServerFarmWithRichSkuInner extends Resource {
     /**
      * Number of web apps assigned to this App Service Plan.
      */
-    @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.numberOfSites")
     private Integer numberOfSites;
 
     /**
      * Resource group of the serverfarm.
      */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.resourceGroup")
     private String resourceGroup;
 
     /**
@@ -97,22 +97,22 @@ public class ServerFarmWithRichSkuInner extends Resource {
     private SkuDescription sku;
 
     /**
-     * Get the serverFarmWithRichSkuName value.
+     * Get the appServicePlanName value.
      *
-     * @return the serverFarmWithRichSkuName value
+     * @return the appServicePlanName value
      */
-    public String serverFarmWithRichSkuName() {
-        return this.serverFarmWithRichSkuName;
+    public String appServicePlanName() {
+        return this.appServicePlanName;
     }
 
     /**
-     * Set the serverFarmWithRichSkuName value.
+     * Set the appServicePlanName value.
      *
-     * @param serverFarmWithRichSkuName the serverFarmWithRichSkuName value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @param appServicePlanName the appServicePlanName value to set
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withServerFarmWithRichSkuName(String serverFarmWithRichSkuName) {
-        this.serverFarmWithRichSkuName = serverFarmWithRichSkuName;
+    public AppServicePlanInner withAppServicePlanName(String appServicePlanName) {
+        this.appServicePlanName = appServicePlanName;
         return this;
     }
 
@@ -129,9 +129,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the workerTierName value.
      *
      * @param workerTierName the workerTierName value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withWorkerTierName(String workerTierName) {
+    public AppServicePlanInner withWorkerTierName(String workerTierName) {
         this.workerTierName = workerTierName;
         return this;
     }
@@ -146,12 +146,34 @@ public class ServerFarmWithRichSkuInner extends Resource {
     }
 
     /**
+     * Set the status value.
+     *
+     * @param status the status value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withStatus(StatusOptions status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
      * Get the subscription value.
      *
      * @return the subscription value
      */
     public String subscription() {
         return this.subscription;
+    }
+
+    /**
+     * Set the subscription value.
+     *
+     * @param subscription the subscription value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withSubscription(String subscription) {
+        this.subscription = subscription;
+        return this;
     }
 
     /**
@@ -167,9 +189,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the adminSiteName value.
      *
      * @param adminSiteName the adminSiteName value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withAdminSiteName(String adminSiteName) {
+    public AppServicePlanInner withAdminSiteName(String adminSiteName) {
         this.adminSiteName = adminSiteName;
         return this;
     }
@@ -187,9 +209,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the hostingEnvironmentProfile value.
      *
      * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
+    public AppServicePlanInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
         this.hostingEnvironmentProfile = hostingEnvironmentProfile;
         return this;
     }
@@ -207,9 +229,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the maximumNumberOfWorkers value.
      *
      * @param maximumNumberOfWorkers the maximumNumberOfWorkers value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withMaximumNumberOfWorkers(Integer maximumNumberOfWorkers) {
+    public AppServicePlanInner withMaximumNumberOfWorkers(Integer maximumNumberOfWorkers) {
         this.maximumNumberOfWorkers = maximumNumberOfWorkers;
         return this;
     }
@@ -221,6 +243,17 @@ public class ServerFarmWithRichSkuInner extends Resource {
      */
     public String geoRegion() {
         return this.geoRegion;
+    }
+
+    /**
+     * Set the geoRegion value.
+     *
+     * @param geoRegion the geoRegion value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withGeoRegion(String geoRegion) {
+        this.geoRegion = geoRegion;
+        return this;
     }
 
     /**
@@ -236,9 +269,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the perSiteScaling value.
      *
      * @param perSiteScaling the perSiteScaling value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withPerSiteScaling(Boolean perSiteScaling) {
+    public AppServicePlanInner withPerSiteScaling(Boolean perSiteScaling) {
         this.perSiteScaling = perSiteScaling;
         return this;
     }
@@ -253,12 +286,34 @@ public class ServerFarmWithRichSkuInner extends Resource {
     }
 
     /**
+     * Set the numberOfSites value.
+     *
+     * @param numberOfSites the numberOfSites value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withNumberOfSites(Integer numberOfSites) {
+        this.numberOfSites = numberOfSites;
+        return this;
+    }
+
+    /**
      * Get the resourceGroup value.
      *
      * @return the resourceGroup value
      */
     public String resourceGroup() {
         return this.resourceGroup;
+    }
+
+    /**
+     * Set the resourceGroup value.
+     *
+     * @param resourceGroup the resourceGroup value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+        return this;
     }
 
     /**
@@ -274,9 +329,9 @@ public class ServerFarmWithRichSkuInner extends Resource {
      * Set the sku value.
      *
      * @param sku the sku value to set
-     * @return the ServerFarmWithRichSkuInner object itself.
+     * @return the AppServicePlanInner object itself.
      */
-    public ServerFarmWithRichSkuInner withSku(SkuDescription sku) {
+    public AppServicePlanInner withSku(SkuDescription sku) {
         this.sku = sku;
         return this;
     }

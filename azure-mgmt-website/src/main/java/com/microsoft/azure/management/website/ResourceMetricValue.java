@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.website;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Value of resource metric.
@@ -16,51 +18,52 @@ public class ResourceMetricValue {
     /**
      * Value timestamp.
      */
-    private String timeStamp;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String timestamp;
 
     /**
      * Value average.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double average;
 
     /**
      * Value minimum.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double minimum;
 
     /**
      * Value maximum.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double maximum;
 
     /**
      * Value total.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double total;
 
     /**
      * Value count.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double count;
 
     /**
-     * Get the timeStamp value.
-     *
-     * @return the timeStamp value
+     * Properties.
      */
-    public String timeStamp() {
-        return this.timeStamp;
-    }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ResourceMetricProperty> properties;
 
     /**
-     * Set the timeStamp value.
+     * Get the timestamp value.
      *
-     * @param timeStamp the timeStamp value to set
-     * @return the ResourceMetricValue object itself.
+     * @return the timestamp value
      */
-    public ResourceMetricValue withTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
-        return this;
+    public String timestamp() {
+        return this.timestamp;
     }
 
     /**
@@ -73,34 +76,12 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Set the average value.
-     *
-     * @param average the average value to set
-     * @return the ResourceMetricValue object itself.
-     */
-    public ResourceMetricValue withAverage(Double average) {
-        this.average = average;
-        return this;
-    }
-
-    /**
      * Get the minimum value.
      *
      * @return the minimum value
      */
     public Double minimum() {
         return this.minimum;
-    }
-
-    /**
-     * Set the minimum value.
-     *
-     * @param minimum the minimum value to set
-     * @return the ResourceMetricValue object itself.
-     */
-    public ResourceMetricValue withMinimum(Double minimum) {
-        this.minimum = minimum;
-        return this;
     }
 
     /**
@@ -113,34 +94,12 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Set the maximum value.
-     *
-     * @param maximum the maximum value to set
-     * @return the ResourceMetricValue object itself.
-     */
-    public ResourceMetricValue withMaximum(Double maximum) {
-        this.maximum = maximum;
-        return this;
-    }
-
-    /**
      * Get the total value.
      *
      * @return the total value
      */
     public Double total() {
         return this.total;
-    }
-
-    /**
-     * Set the total value.
-     *
-     * @param total the total value to set
-     * @return the ResourceMetricValue object itself.
-     */
-    public ResourceMetricValue withTotal(Double total) {
-        this.total = total;
-        return this;
     }
 
     /**
@@ -153,14 +112,12 @@ public class ResourceMetricValue {
     }
 
     /**
-     * Set the count value.
+     * Get the properties value.
      *
-     * @param count the count value to set
-     * @return the ResourceMetricValue object itself.
+     * @return the properties value
      */
-    public ResourceMetricValue withCount(Double count) {
-        this.count = count;
-        return this;
+    public List<ResourceMetricProperty> properties() {
+        return this.properties;
     }
 
 }
