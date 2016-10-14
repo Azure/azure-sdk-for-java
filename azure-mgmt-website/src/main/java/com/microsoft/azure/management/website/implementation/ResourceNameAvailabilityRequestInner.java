@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.microsoft.azure.management.website.CheckNameResourceTypes;
 
 /**
  * Resource name availability request content.
@@ -19,9 +20,10 @@ public class ResourceNameAvailabilityRequestInner {
     private String name;
 
     /**
-     * Resource type used for verification.
+     * Resource type used for verification. Possible values include: 'Site',
+     * 'Slot', 'HostingEnvironment'.
      */
-    private String type;
+    private CheckNameResourceTypes type;
 
     /**
      * Is fully qualified domain name.
@@ -53,7 +55,7 @@ public class ResourceNameAvailabilityRequestInner {
      *
      * @return the type value
      */
-    public String type() {
+    public CheckNameResourceTypes type() {
         return this.type;
     }
 
@@ -63,7 +65,7 @@ public class ResourceNameAvailabilityRequestInner {
      * @param type the type value to set
      * @return the ResourceNameAvailabilityRequestInner object itself.
      */
-    public ResourceNameAvailabilityRequestInner withType(String type) {
+    public ResourceNameAvailabilityRequestInner withType(CheckNameResourceTypes type) {
         this.type = type;
         return this;
     }

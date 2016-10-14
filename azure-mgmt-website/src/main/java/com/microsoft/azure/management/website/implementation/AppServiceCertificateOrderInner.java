@@ -21,12 +21,12 @@ import com.microsoft.azure.Resource;
  * Certificate purchase order.
  */
 @JsonFlatten
-public class CertificateOrderInner extends Resource {
+public class AppServiceCertificateOrderInner extends Resource {
     /**
      * State of the Key Vault secret.
      */
     @JsonProperty(value = "properties.certificates")
-    private Map<String, CertificateOrderCertificateInner> certificates;
+    private Map<String, AppServiceCertificateInner> certificates;
 
     /**
      * Certificate distinguished name.
@@ -123,11 +123,17 @@ public class CertificateOrderInner extends Resource {
     private DateTime expirationTime;
 
     /**
+     * Is Private Key External.
+     */
+    @JsonProperty(value = "properties.isPrivateKeyExternal")
+    private Boolean isPrivateKeyExternal;
+
+    /**
      * Get the certificates value.
      *
      * @return the certificates value
      */
-    public Map<String, CertificateOrderCertificateInner> certificates() {
+    public Map<String, AppServiceCertificateInner> certificates() {
         return this.certificates;
     }
 
@@ -135,9 +141,9 @@ public class CertificateOrderInner extends Resource {
      * Set the certificates value.
      *
      * @param certificates the certificates value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withCertificates(Map<String, CertificateOrderCertificateInner> certificates) {
+    public AppServiceCertificateOrderInner withCertificates(Map<String, AppServiceCertificateInner> certificates) {
         this.certificates = certificates;
         return this;
     }
@@ -155,9 +161,9 @@ public class CertificateOrderInner extends Resource {
      * Set the distinguishedName value.
      *
      * @param distinguishedName the distinguishedName value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withDistinguishedName(String distinguishedName) {
+    public AppServiceCertificateOrderInner withDistinguishedName(String distinguishedName) {
         this.distinguishedName = distinguishedName;
         return this;
     }
@@ -175,9 +181,9 @@ public class CertificateOrderInner extends Resource {
      * Set the domainVerificationToken value.
      *
      * @param domainVerificationToken the domainVerificationToken value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withDomainVerificationToken(String domainVerificationToken) {
+    public AppServiceCertificateOrderInner withDomainVerificationToken(String domainVerificationToken) {
         this.domainVerificationToken = domainVerificationToken;
         return this;
     }
@@ -195,9 +201,9 @@ public class CertificateOrderInner extends Resource {
      * Set the validityInYears value.
      *
      * @param validityInYears the validityInYears value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withValidityInYears(Integer validityInYears) {
+    public AppServiceCertificateOrderInner withValidityInYears(Integer validityInYears) {
         this.validityInYears = validityInYears;
         return this;
     }
@@ -215,9 +221,9 @@ public class CertificateOrderInner extends Resource {
      * Set the keySize value.
      *
      * @param keySize the keySize value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withKeySize(Integer keySize) {
+    public AppServiceCertificateOrderInner withKeySize(Integer keySize) {
         this.keySize = keySize;
         return this;
     }
@@ -235,9 +241,9 @@ public class CertificateOrderInner extends Resource {
      * Set the productType value.
      *
      * @param productType the productType value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withProductType(CertificateProductType productType) {
+    public AppServiceCertificateOrderInner withProductType(CertificateProductType productType) {
         this.productType = productType;
         return this;
     }
@@ -255,9 +261,9 @@ public class CertificateOrderInner extends Resource {
      * Set the autoRenew value.
      *
      * @param autoRenew the autoRenew value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withAutoRenew(Boolean autoRenew) {
+    public AppServiceCertificateOrderInner withAutoRenew(Boolean autoRenew) {
         this.autoRenew = autoRenew;
         return this;
     }
@@ -275,9 +281,9 @@ public class CertificateOrderInner extends Resource {
      * Set the provisioningState value.
      *
      * @param provisioningState the provisioningState value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withProvisioningState(ProvisioningState provisioningState) {
+    public AppServiceCertificateOrderInner withProvisioningState(ProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
@@ -295,9 +301,9 @@ public class CertificateOrderInner extends Resource {
      * Set the status value.
      *
      * @param status the status value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withStatus(CertificateOrderStatus status) {
+    public AppServiceCertificateOrderInner withStatus(CertificateOrderStatus status) {
         this.status = status;
         return this;
     }
@@ -315,9 +321,9 @@ public class CertificateOrderInner extends Resource {
      * Set the signedCertificate value.
      *
      * @param signedCertificate the signedCertificate value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withSignedCertificate(CertificateDetailsInner signedCertificate) {
+    public AppServiceCertificateOrderInner withSignedCertificate(CertificateDetailsInner signedCertificate) {
         this.signedCertificate = signedCertificate;
         return this;
     }
@@ -335,9 +341,9 @@ public class CertificateOrderInner extends Resource {
      * Set the csr value.
      *
      * @param csr the csr value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withCsr(String csr) {
+    public AppServiceCertificateOrderInner withCsr(String csr) {
         this.csr = csr;
         return this;
     }
@@ -355,9 +361,9 @@ public class CertificateOrderInner extends Resource {
      * Set the intermediate value.
      *
      * @param intermediate the intermediate value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withIntermediate(CertificateDetailsInner intermediate) {
+    public AppServiceCertificateOrderInner withIntermediate(CertificateDetailsInner intermediate) {
         this.intermediate = intermediate;
         return this;
     }
@@ -375,9 +381,9 @@ public class CertificateOrderInner extends Resource {
      * Set the root value.
      *
      * @param root the root value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withRoot(CertificateDetailsInner root) {
+    public AppServiceCertificateOrderInner withRoot(CertificateDetailsInner root) {
         this.root = root;
         return this;
     }
@@ -395,9 +401,9 @@ public class CertificateOrderInner extends Resource {
      * Set the serialNumber value.
      *
      * @param serialNumber the serialNumber value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withSerialNumber(String serialNumber) {
+    public AppServiceCertificateOrderInner withSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
         return this;
     }
@@ -415,9 +421,9 @@ public class CertificateOrderInner extends Resource {
      * Set the lastCertificateIssuanceTime value.
      *
      * @param lastCertificateIssuanceTime the lastCertificateIssuanceTime value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withLastCertificateIssuanceTime(DateTime lastCertificateIssuanceTime) {
+    public AppServiceCertificateOrderInner withLastCertificateIssuanceTime(DateTime lastCertificateIssuanceTime) {
         this.lastCertificateIssuanceTime = lastCertificateIssuanceTime;
         return this;
     }
@@ -435,10 +441,30 @@ public class CertificateOrderInner extends Resource {
      * Set the expirationTime value.
      *
      * @param expirationTime the expirationTime value to set
-     * @return the CertificateOrderInner object itself.
+     * @return the AppServiceCertificateOrderInner object itself.
      */
-    public CertificateOrderInner withExpirationTime(DateTime expirationTime) {
+    public AppServiceCertificateOrderInner withExpirationTime(DateTime expirationTime) {
         this.expirationTime = expirationTime;
+        return this;
+    }
+
+    /**
+     * Get the isPrivateKeyExternal value.
+     *
+     * @return the isPrivateKeyExternal value
+     */
+    public Boolean isPrivateKeyExternal() {
+        return this.isPrivateKeyExternal;
+    }
+
+    /**
+     * Set the isPrivateKeyExternal value.
+     *
+     * @param isPrivateKeyExternal the isPrivateKeyExternal value to set
+     * @return the AppServiceCertificateOrderInner object itself.
+     */
+    public AppServiceCertificateOrderInner withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
+        this.isPrivateKeyExternal = isPrivateKeyExternal;
         return this;
     }
 

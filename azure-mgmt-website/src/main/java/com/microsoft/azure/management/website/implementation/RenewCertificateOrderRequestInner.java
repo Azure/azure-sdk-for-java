@@ -24,6 +24,19 @@ public class RenewCertificateOrderRequestInner extends Resource {
     private Integer keySize;
 
     /**
+     * Csr to be used for re-key operation.
+     */
+    @JsonProperty(value = "properties.csr")
+    private String csr;
+
+    /**
+     * Should we change the ASC type (from managed private key to external
+     * private key and vice versa).
+     */
+    @JsonProperty(value = "properties.isPrivateKeyExternal")
+    private Boolean isPrivateKeyExternal;
+
+    /**
      * Get the keySize value.
      *
      * @return the keySize value
@@ -40,6 +53,46 @@ public class RenewCertificateOrderRequestInner extends Resource {
      */
     public RenewCertificateOrderRequestInner withKeySize(Integer keySize) {
         this.keySize = keySize;
+        return this;
+    }
+
+    /**
+     * Get the csr value.
+     *
+     * @return the csr value
+     */
+    public String csr() {
+        return this.csr;
+    }
+
+    /**
+     * Set the csr value.
+     *
+     * @param csr the csr value to set
+     * @return the RenewCertificateOrderRequestInner object itself.
+     */
+    public RenewCertificateOrderRequestInner withCsr(String csr) {
+        this.csr = csr;
+        return this;
+    }
+
+    /**
+     * Get the isPrivateKeyExternal value.
+     *
+     * @return the isPrivateKeyExternal value
+     */
+    public Boolean isPrivateKeyExternal() {
+        return this.isPrivateKeyExternal;
+    }
+
+    /**
+     * Set the isPrivateKeyExternal value.
+     *
+     * @param isPrivateKeyExternal the isPrivateKeyExternal value to set
+     * @return the RenewCertificateOrderRequestInner object itself.
+     */
+    public RenewCertificateOrderRequestInner withIsPrivateKeyExternal(Boolean isPrivateKeyExternal) {
+        this.isPrivateKeyExternal = isPrivateKeyExternal;
         return this;
     }
 

@@ -52,7 +52,7 @@ var mappings = {
     },
     'website': {
         'dir': 'azure-mgmt-website',
-        'source': 'arm-web/2015-08-01/swagger/service.json',
+        'source': 'arm-web/compositeWebAppClient.json',
         'package': 'com.microsoft.azure.management.website',
         'args': '-FT 1'
     },

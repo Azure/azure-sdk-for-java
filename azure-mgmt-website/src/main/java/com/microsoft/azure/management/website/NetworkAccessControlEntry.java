@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * The NetworkAccessControlEntry model.
+ * Network Access control entry.
  */
 public class NetworkAccessControlEntry {
     /**
