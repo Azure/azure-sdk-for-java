@@ -18,7 +18,7 @@ import com.microsoft.azure.Resource;
  * through Azure.
  */
 @JsonFlatten
-public class CertificateOrderCertificateInner extends Resource {
+public class AppServiceCertificateInner extends Resource {
     /**
      * Key Vault Csm resource Id.
      */
@@ -36,7 +36,8 @@ public class CertificateOrderCertificateInner extends Resource {
      * 'WaitingOnCertificateOrder', 'Succeeded', 'CertificateOrderFailed',
      * 'OperationNotPermittedOnKeyVault',
      * 'AzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultDoesNotExist',
-     * 'KeyVaultSecretDoesNotExist', 'UnknownError', 'Unknown'.
+     * 'KeyVaultSecretDoesNotExist', 'UnknownError', 'ExternalPrivateKey',
+     * 'Unknown'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private KeyVaultSecretStatus provisioningState;
@@ -54,9 +55,9 @@ public class CertificateOrderCertificateInner extends Resource {
      * Set the keyVaultId value.
      *
      * @param keyVaultId the keyVaultId value to set
-     * @return the CertificateOrderCertificateInner object itself.
+     * @return the AppServiceCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner withKeyVaultId(String keyVaultId) {
+    public AppServiceCertificateInner withKeyVaultId(String keyVaultId) {
         this.keyVaultId = keyVaultId;
         return this;
     }
@@ -74,9 +75,9 @@ public class CertificateOrderCertificateInner extends Resource {
      * Set the keyVaultSecretName value.
      *
      * @param keyVaultSecretName the keyVaultSecretName value to set
-     * @return the CertificateOrderCertificateInner object itself.
+     * @return the AppServiceCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
+    public AppServiceCertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
         this.keyVaultSecretName = keyVaultSecretName;
         return this;
     }
@@ -94,9 +95,9 @@ public class CertificateOrderCertificateInner extends Resource {
      * Set the provisioningState value.
      *
      * @param provisioningState the provisioningState value to set
-     * @return the CertificateOrderCertificateInner object itself.
+     * @return the AppServiceCertificateInner object itself.
      */
-    public CertificateOrderCertificateInner withProvisioningState(KeyVaultSecretStatus provisioningState) {
+    public AppServiceCertificateInner withProvisioningState(KeyVaultSecretStatus provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }

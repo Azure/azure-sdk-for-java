@@ -36,10 +36,16 @@ public class UserInner extends Resource {
     private String publishingPassword;
 
     /**
-     * Service Control Manager URI, including username and password.
+     * PasswordHash used for publishing.
      */
-    @JsonProperty(value = "properties.scmUri")
-    private String scmUri;
+    @JsonProperty(value = "properties.publishingPasswordHash")
+    private String publishingPasswordHash;
+
+    /**
+     * PasswordHashSalt used for publishing.
+     */
+    @JsonProperty(value = "properties.publishingPasswordHashSalt")
+    private String publishingPasswordHashSalt;
 
     /**
      * Get the userName value.
@@ -102,22 +108,42 @@ public class UserInner extends Resource {
     }
 
     /**
-     * Get the scmUri value.
+     * Get the publishingPasswordHash value.
      *
-     * @return the scmUri value
+     * @return the publishingPasswordHash value
      */
-    public String scmUri() {
-        return this.scmUri;
+    public String publishingPasswordHash() {
+        return this.publishingPasswordHash;
     }
 
     /**
-     * Set the scmUri value.
+     * Set the publishingPasswordHash value.
      *
-     * @param scmUri the scmUri value to set
+     * @param publishingPasswordHash the publishingPasswordHash value to set
      * @return the UserInner object itself.
      */
-    public UserInner withScmUri(String scmUri) {
-        this.scmUri = scmUri;
+    public UserInner withPublishingPasswordHash(String publishingPasswordHash) {
+        this.publishingPasswordHash = publishingPasswordHash;
+        return this;
+    }
+
+    /**
+     * Get the publishingPasswordHashSalt value.
+     *
+     * @return the publishingPasswordHashSalt value
+     */
+    public String publishingPasswordHashSalt() {
+        return this.publishingPasswordHashSalt;
+    }
+
+    /**
+     * Set the publishingPasswordHashSalt value.
+     *
+     * @param publishingPasswordHashSalt the publishingPasswordHashSalt value to set
+     * @return the UserInner object itself.
+     */
+    public UserInner withPublishingPasswordHashSalt(String publishingPasswordHashSalt) {
+        this.publishingPasswordHashSalt = publishingPasswordHashSalt;
         return this;
     }
 

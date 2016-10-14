@@ -42,6 +42,9 @@ public enum KeyVaultSecretStatus {
     /** Enum value UnknownError. */
     UNKNOWN_ERROR("UnknownError"),
 
+    /** Enum value ExternalPrivateKey. */
+    EXTERNAL_PRIVATE_KEY("ExternalPrivateKey"),
+
     /** Enum value Unknown. */
     UNKNOWN("Unknown");
 

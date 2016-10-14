@@ -10,8 +10,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import java.util.List;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.website.NameValuePair;
-import com.microsoft.azure.management.website.ConnStringInfo;
+import com.microsoft.azure.management.website.SiteMachineKey;
 import com.microsoft.azure.management.website.HandlerMapping;
 import com.microsoft.azure.management.website.ManagedPipelineMode;
 import com.microsoft.azure.management.website.VirtualApplication;
@@ -62,6 +61,12 @@ public class SiteConfigInner extends Resource {
     private String pythonVersion;
 
     /**
+     * Version of Node.
+     */
+    @JsonProperty(value = "properties.nodeVersion")
+    private String nodeVersion;
+
+    /**
      * Enable request tracing.
      */
     @JsonProperty(value = "properties.requestTracingEnabled")
@@ -110,28 +115,10 @@ public class SiteConfigInner extends Resource {
     private String publishingUsername;
 
     /**
-     * Publishing password.
+     * Site MachineKey.
      */
-    @JsonProperty(value = "properties.publishingPassword")
-    private String publishingPassword;
-
-    /**
-     * Application Settings.
-     */
-    @JsonProperty(value = "properties.appSettings")
-    private List<NameValuePair> appSettings;
-
-    /**
-     * Site Metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private List<NameValuePair> metadata;
-
-    /**
-     * Connection strings.
-     */
-    @JsonProperty(value = "properties.connectionStrings")
-    private List<ConnStringInfo> connectionStrings;
+    @JsonProperty(value = "properties.machineKey")
+    private SiteMachineKey machineKey;
 
     /**
      * Handler mappings.
@@ -186,6 +173,12 @@ public class SiteConfigInner extends Resource {
      */
     @JsonProperty(value = "properties.javaContainerVersion")
     private String javaContainerVersion;
+
+    /**
+     * App Command Line to launch.
+     */
+    @JsonProperty(value = "properties.appCommandLine")
+    private String appCommandLine;
 
     /**
      * Managed pipeline mode. Possible values include: 'Integrated', 'Classic'.
@@ -248,6 +241,12 @@ public class SiteConfigInner extends Resource {
      */
     @JsonProperty(value = "properties.cors")
     private CorsSettings cors;
+
+    /**
+     * Push endpoint settings.
+     */
+    @JsonProperty(value = "properties.push")
+    private PushSettingsInner push;
 
     /**
      * Information about the formal API definition for the web app.
@@ -370,6 +369,26 @@ public class SiteConfigInner extends Resource {
      */
     public SiteConfigInner withPythonVersion(String pythonVersion) {
         this.pythonVersion = pythonVersion;
+        return this;
+    }
+
+    /**
+     * Get the nodeVersion value.
+     *
+     * @return the nodeVersion value
+     */
+    public String nodeVersion() {
+        return this.nodeVersion;
+    }
+
+    /**
+     * Set the nodeVersion value.
+     *
+     * @param nodeVersion the nodeVersion value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withNodeVersion(String nodeVersion) {
+        this.nodeVersion = nodeVersion;
         return this;
     }
 
@@ -534,82 +553,22 @@ public class SiteConfigInner extends Resource {
     }
 
     /**
-     * Get the publishingPassword value.
+     * Get the machineKey value.
      *
-     * @return the publishingPassword value
+     * @return the machineKey value
      */
-    public String publishingPassword() {
-        return this.publishingPassword;
+    public SiteMachineKey machineKey() {
+        return this.machineKey;
     }
 
     /**
-     * Set the publishingPassword value.
+     * Set the machineKey value.
      *
-     * @param publishingPassword the publishingPassword value to set
+     * @param machineKey the machineKey value to set
      * @return the SiteConfigInner object itself.
      */
-    public SiteConfigInner withPublishingPassword(String publishingPassword) {
-        this.publishingPassword = publishingPassword;
-        return this;
-    }
-
-    /**
-     * Get the appSettings value.
-     *
-     * @return the appSettings value
-     */
-    public List<NameValuePair> appSettings() {
-        return this.appSettings;
-    }
-
-    /**
-     * Set the appSettings value.
-     *
-     * @param appSettings the appSettings value to set
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withAppSettings(List<NameValuePair> appSettings) {
-        this.appSettings = appSettings;
-        return this;
-    }
-
-    /**
-     * Get the metadata value.
-     *
-     * @return the metadata value
-     */
-    public List<NameValuePair> metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata value.
-     *
-     * @param metadata the metadata value to set
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withMetadata(List<NameValuePair> metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the connectionStrings value.
-     *
-     * @return the connectionStrings value
-     */
-    public List<ConnStringInfo> connectionStrings() {
-        return this.connectionStrings;
-    }
-
-    /**
-     * Set the connectionStrings value.
-     *
-     * @param connectionStrings the connectionStrings value to set
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withConnectionStrings(List<ConnStringInfo> connectionStrings) {
-        this.connectionStrings = connectionStrings;
+    public SiteConfigInner withMachineKey(SiteMachineKey machineKey) {
+        this.machineKey = machineKey;
         return this;
     }
 
@@ -790,6 +749,26 @@ public class SiteConfigInner extends Resource {
      */
     public SiteConfigInner withJavaContainerVersion(String javaContainerVersion) {
         this.javaContainerVersion = javaContainerVersion;
+        return this;
+    }
+
+    /**
+     * Get the appCommandLine value.
+     *
+     * @return the appCommandLine value
+     */
+    public String appCommandLine() {
+        return this.appCommandLine;
+    }
+
+    /**
+     * Set the appCommandLine value.
+     *
+     * @param appCommandLine the appCommandLine value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withAppCommandLine(String appCommandLine) {
+        this.appCommandLine = appCommandLine;
         return this;
     }
 
@@ -990,6 +969,26 @@ public class SiteConfigInner extends Resource {
      */
     public SiteConfigInner withCors(CorsSettings cors) {
         this.cors = cors;
+        return this;
+    }
+
+    /**
+     * Get the push value.
+     *
+     * @return the push value
+     */
+    public PushSettingsInner push() {
+        return this.push;
+    }
+
+    /**
+     * Set the push value.
+     *
+     * @param push the push value to set
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withPush(PushSettingsInner push) {
+        this.push = push;
         return this;
     }
 

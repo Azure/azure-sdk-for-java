@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.website;
 
 import java.util.Map;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents information needed for cloning operation.
@@ -44,6 +45,7 @@ public class CloningInfo {
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
      * for other slots.
      */
+    @JsonProperty(required = true)
     private String sourceWebAppId;
 
     /**
