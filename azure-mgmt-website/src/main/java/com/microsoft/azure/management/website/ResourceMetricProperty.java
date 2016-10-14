@@ -8,22 +8,19 @@
 
 package com.microsoft.azure.management.website;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyValuePairStringString model.
+ * Resource metric property.
  */
-public class KeyValuePairStringString {
+public class ResourceMetricProperty {
     /**
-     * The key property.
+     * Key for resource metric property.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
     /**
-     * The value property.
+     * Value of pair.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /**
@@ -36,12 +33,34 @@ public class KeyValuePairStringString {
     }
 
     /**
+     * Set the key value.
+     *
+     * @param key the key value to set
+     * @return the ResourceMetricProperty object itself.
+     */
+    public ResourceMetricProperty withKey(String key) {
+        this.key = key;
+        return this;
+    }
+
+    /**
      * Get the value value.
      *
      * @return the value value
      */
     public String value() {
         return this.value;
+    }
+
+    /**
+     * Set the value value.
+     *
+     * @param value the value value to set
+     * @return the ResourceMetricProperty object itself.
+     */
+    public ResourceMetricProperty withValue(String value) {
+        this.value = value;
+        return this;
     }
 
 }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specification for using a virtual network.
@@ -21,11 +22,13 @@ public class VirtualNetworkProfile {
     /**
      * Name of the virtual network (read-only).
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
      * Resource type of the virtual network (read-only).
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -63,34 +66,12 @@ public class VirtualNetworkProfile {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the VirtualNetworkProfile object itself.
-     */
-    public VirtualNetworkProfile withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the type value.
      *
      * @return the type value
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     * @return the VirtualNetworkProfile object itself.
-     */
-    public VirtualNetworkProfile withType(String type) {
-        this.type = type;
-        return this;
     }
 
     /**

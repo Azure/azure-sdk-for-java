@@ -13,7 +13,7 @@ import com.microsoft.azure.management.website.ArmPlan;
 import com.microsoft.azure.management.website.SkuDescription;
 
 /**
- * The PremierAddOnRequestInner model.
+ * Request representing premier add-on.
  */
 public class PremierAddOnRequestInner {
     /**

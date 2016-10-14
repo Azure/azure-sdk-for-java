@@ -12,38 +12,41 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for DatabaseServerType.
+ * Defines values for OperationStatus.
  */
-public enum DatabaseServerType {
-    /** Enum value MySql. */
-    MY_SQL("MySql"),
+public enum OperationStatus {
+    /** Enum value InProgress. */
+    IN_PROGRESS("InProgress"),
 
-    /** Enum value SQLServer. */
-    SQLSERVER("SQLServer"),
+    /** Enum value Failed. */
+    FAILED("Failed"),
 
-    /** Enum value SQLAzure. */
-    SQLAZURE("SQLAzure"),
+    /** Enum value Succeeded. */
+    SUCCEEDED("Succeeded"),
 
-    /** Enum value Custom. */
-    CUSTOM("Custom");
+    /** Enum value TimedOut. */
+    TIMED_OUT("TimedOut"),
 
-    /** The actual serialized value for a DatabaseServerType instance. */
+    /** Enum value Created. */
+    CREATED("Created");
+
+    /** The actual serialized value for a OperationStatus instance. */
     private String value;
 
-    DatabaseServerType(String value) {
+    OperationStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a DatabaseServerType instance.
+     * Parses a serialized value to a OperationStatus instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed DatabaseServerType object, or null if unable to parse.
+     * @return the parsed OperationStatus object, or null if unable to parse.
      */
     @JsonCreator
-    public static DatabaseServerType fromString(String value) {
-        DatabaseServerType[] items = DatabaseServerType.values();
-        for (DatabaseServerType item : items) {
+    public static OperationStatus fromString(String value) {
+        OperationStatus[] items = OperationStatus.values();
+        for (OperationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

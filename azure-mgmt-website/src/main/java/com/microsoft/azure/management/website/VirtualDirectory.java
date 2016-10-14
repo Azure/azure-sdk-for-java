@@ -10,16 +10,16 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * The VirtualDirectory model.
+ * Directory for virtual application.
  */
 public class VirtualDirectory {
     /**
-     * The virtualPath property.
+     * Path to virtual application.
      */
     private String virtualPath;
 
     /**
-     * The physicalPath property.
+     * Physical path.
      */
     private String physicalPath;
 

@@ -31,34 +31,28 @@ public class DeletedSiteInner extends Resource {
     private DateTime deletedTimestamp;
 
     /**
-     * Name of web app.
-     */
-    @JsonProperty(value = "properties.name")
-    private String deletedSiteName;
-
-    /**
      * State of the web app.
      */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.state")
     private String state;
 
     /**
      * Hostnames associated with web app.
      */
-    @JsonProperty(value = "properties.hostNames", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.hostNames")
     private List<String> hostNames;
 
     /**
      * Name of repository site.
      */
-    @JsonProperty(value = "properties.repositorySiteName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.repositorySiteName")
     private String repositorySiteName;
 
     /**
      * State indicating whether web app has exceeded its quota usage. Possible
      * values include: 'Normal', 'Exceeded'.
      */
-    @JsonProperty(value = "properties.usageState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.usageState")
     private UsageState usageState;
 
     /**
@@ -73,7 +67,7 @@ public class DeletedSiteInner extends Resource {
      * assigned and enabled. If some hostnames are assigned but not enabled
      * the app is not served on those hostnames.
      */
-    @JsonProperty(value = "properties.enabledHostNames", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.enabledHostNames")
     private List<String> enabledHostNames;
 
     /**
@@ -86,7 +80,7 @@ public class DeletedSiteInner extends Resource {
      * unavailable. Possible values include: 'Normal', 'Limited',
      * 'DisasterRecoveryMode'.
      */
-    @JsonProperty(value = "properties.availabilityState", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.availabilityState")
     private SiteAvailabilityState availabilityState;
 
     /**
@@ -103,9 +97,15 @@ public class DeletedSiteInner extends Resource {
     private String serverFarmId;
 
     /**
+     * Reserved.
+     */
+    @JsonProperty(value = "properties.reserved")
+    private Boolean reserved;
+
+    /**
      * Last time web app was modified in UTC.
      */
-    @JsonProperty(value = "properties.lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.lastModifiedTimeUtc")
     private DateTime lastModifiedTimeUtc;
 
     /**
@@ -118,13 +118,13 @@ public class DeletedSiteInner extends Resource {
      * Read-only list of Azure Traffic manager hostnames associated with web
      * app.
      */
-    @JsonProperty(value = "properties.trafficManagerHostNames", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.trafficManagerHostNames")
     private List<String> trafficManagerHostNames;
 
     /**
      * If set indicates whether web app is deployed as a premium app.
      */
-    @JsonProperty(value = "properties.premiumAppDeployed", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.premiumAppDeployed")
     private Boolean premiumAppDeployed;
 
     /**
@@ -137,7 +137,7 @@ public class DeletedSiteInner extends Resource {
     /**
      * Read-only property that specifies which slot this app will swap into.
      */
-    @JsonProperty(value = "properties.targetSwapSlot", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.targetSwapSlot")
     private String targetSwapSlot;
 
     /**
@@ -148,7 +148,7 @@ public class DeletedSiteInner extends Resource {
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /**
-     * The microService property.
+     * Micro services like WebSites, Logic Apps.
      */
     @JsonProperty(value = "properties.microService")
     private String microService;
@@ -185,7 +185,7 @@ public class DeletedSiteInner extends Resource {
      * outbound connections. Those can be used when configuring firewall
      * rules for databases accessed by this web app.
      */
-    @JsonProperty(value = "properties.outboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.outboundIpAddresses")
     private String outboundIpAddresses;
 
     /**
@@ -193,6 +193,19 @@ public class DeletedSiteInner extends Resource {
      */
     @JsonProperty(value = "properties.containerSize")
     private Integer containerSize;
+
+    /**
+     * Maximum allowed daily memory-time quota (applicable on dynamic sites
+     * only).
+     */
+    @JsonProperty(value = "properties.dailyMemoryTimeQuota")
+    private Integer dailyMemoryTimeQuota;
+
+    /**
+     * Site suspended till in case memory-time quota is exceeded.
+     */
+    @JsonProperty(value = "properties.suspendedTill")
+    private DateTime suspendedTill;
 
     /**
      * Maximum number of workers
@@ -212,19 +225,19 @@ public class DeletedSiteInner extends Resource {
     /**
      * Resource group web app belongs to.
      */
-    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.resourceGroup")
     private String resourceGroup;
 
     /**
      * Site is a default container.
      */
-    @JsonProperty(value = "properties.isDefaultContainer", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.isDefaultContainer")
     private Boolean isDefaultContainer;
 
     /**
      * Default hostname of the web app.
      */
-    @JsonProperty(value = "properties.defaultHostName", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.defaultHostName")
     private String defaultHostName;
 
     /**
@@ -248,32 +261,23 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Get the deletedSiteName value.
-     *
-     * @return the deletedSiteName value
-     */
-    public String deletedSiteName() {
-        return this.deletedSiteName;
-    }
-
-    /**
-     * Set the deletedSiteName value.
-     *
-     * @param deletedSiteName the deletedSiteName value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withDeletedSiteName(String deletedSiteName) {
-        this.deletedSiteName = deletedSiteName;
-        return this;
-    }
-
-    /**
      * Get the state value.
      *
      * @return the state value
      */
     public String state() {
         return this.state;
+    }
+
+    /**
+     * Set the state value.
+     *
+     * @param state the state value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withState(String state) {
+        this.state = state;
+        return this;
     }
 
     /**
@@ -286,6 +290,17 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the hostNames value.
+     *
+     * @param hostNames the hostNames value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withHostNames(List<String> hostNames) {
+        this.hostNames = hostNames;
+        return this;
+    }
+
+    /**
      * Get the repositorySiteName value.
      *
      * @return the repositorySiteName value
@@ -295,12 +310,34 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the repositorySiteName value.
+     *
+     * @param repositorySiteName the repositorySiteName value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withRepositorySiteName(String repositorySiteName) {
+        this.repositorySiteName = repositorySiteName;
+        return this;
+    }
+
+    /**
      * Get the usageState value.
      *
      * @return the usageState value
      */
     public UsageState usageState() {
         return this.usageState;
+    }
+
+    /**
+     * Set the usageState value.
+     *
+     * @param usageState the usageState value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withUsageState(UsageState usageState) {
+        this.usageState = usageState;
+        return this;
     }
 
     /**
@@ -333,12 +370,34 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the enabledHostNames value.
+     *
+     * @param enabledHostNames the enabledHostNames value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withEnabledHostNames(List<String> enabledHostNames) {
+        this.enabledHostNames = enabledHostNames;
+        return this;
+    }
+
+    /**
      * Get the availabilityState value.
      *
      * @return the availabilityState value
      */
     public SiteAvailabilityState availabilityState() {
         return this.availabilityState;
+    }
+
+    /**
+     * Set the availabilityState value.
+     *
+     * @param availabilityState the availabilityState value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withAvailabilityState(SiteAvailabilityState availabilityState) {
+        this.availabilityState = availabilityState;
+        return this;
     }
 
     /**
@@ -382,12 +441,43 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Get the reserved value.
+     *
+     * @return the reserved value
+     */
+    public Boolean reserved() {
+        return this.reserved;
+    }
+
+    /**
+     * Set the reserved value.
+     *
+     * @param reserved the reserved value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withReserved(Boolean reserved) {
+        this.reserved = reserved;
+        return this;
+    }
+
+    /**
      * Get the lastModifiedTimeUtc value.
      *
      * @return the lastModifiedTimeUtc value
      */
     public DateTime lastModifiedTimeUtc() {
         return this.lastModifiedTimeUtc;
+    }
+
+    /**
+     * Set the lastModifiedTimeUtc value.
+     *
+     * @param lastModifiedTimeUtc the lastModifiedTimeUtc value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withLastModifiedTimeUtc(DateTime lastModifiedTimeUtc) {
+        this.lastModifiedTimeUtc = lastModifiedTimeUtc;
+        return this;
     }
 
     /**
@@ -420,12 +510,34 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the trafficManagerHostNames value.
+     *
+     * @param trafficManagerHostNames the trafficManagerHostNames value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withTrafficManagerHostNames(List<String> trafficManagerHostNames) {
+        this.trafficManagerHostNames = trafficManagerHostNames;
+        return this;
+    }
+
+    /**
      * Get the premiumAppDeployed value.
      *
      * @return the premiumAppDeployed value
      */
     public Boolean premiumAppDeployed() {
         return this.premiumAppDeployed;
+    }
+
+    /**
+     * Set the premiumAppDeployed value.
+     *
+     * @param premiumAppDeployed the premiumAppDeployed value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withPremiumAppDeployed(Boolean premiumAppDeployed) {
+        this.premiumAppDeployed = premiumAppDeployed;
+        return this;
     }
 
     /**
@@ -455,6 +567,17 @@ public class DeletedSiteInner extends Resource {
      */
     public String targetSwapSlot() {
         return this.targetSwapSlot;
+    }
+
+    /**
+     * Set the targetSwapSlot value.
+     *
+     * @param targetSwapSlot the targetSwapSlot value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withTargetSwapSlot(String targetSwapSlot) {
+        this.targetSwapSlot = targetSwapSlot;
+        return this;
     }
 
     /**
@@ -587,6 +710,17 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the outboundIpAddresses value.
+     *
+     * @param outboundIpAddresses the outboundIpAddresses value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withOutboundIpAddresses(String outboundIpAddresses) {
+        this.outboundIpAddresses = outboundIpAddresses;
+        return this;
+    }
+
+    /**
      * Get the containerSize value.
      *
      * @return the containerSize value
@@ -603,6 +737,46 @@ public class DeletedSiteInner extends Resource {
      */
     public DeletedSiteInner withContainerSize(Integer containerSize) {
         this.containerSize = containerSize;
+        return this;
+    }
+
+    /**
+     * Get the dailyMemoryTimeQuota value.
+     *
+     * @return the dailyMemoryTimeQuota value
+     */
+    public Integer dailyMemoryTimeQuota() {
+        return this.dailyMemoryTimeQuota;
+    }
+
+    /**
+     * Set the dailyMemoryTimeQuota value.
+     *
+     * @param dailyMemoryTimeQuota the dailyMemoryTimeQuota value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withDailyMemoryTimeQuota(Integer dailyMemoryTimeQuota) {
+        this.dailyMemoryTimeQuota = dailyMemoryTimeQuota;
+        return this;
+    }
+
+    /**
+     * Get the suspendedTill value.
+     *
+     * @return the suspendedTill value
+     */
+    public DateTime suspendedTill() {
+        return this.suspendedTill;
+    }
+
+    /**
+     * Set the suspendedTill value.
+     *
+     * @param suspendedTill the suspendedTill value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withSuspendedTill(DateTime suspendedTill) {
+        this.suspendedTill = suspendedTill;
         return this;
     }
 
@@ -656,6 +830,17 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the resourceGroup value.
+     *
+     * @param resourceGroup the resourceGroup value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withResourceGroup(String resourceGroup) {
+        this.resourceGroup = resourceGroup;
+        return this;
+    }
+
+    /**
      * Get the isDefaultContainer value.
      *
      * @return the isDefaultContainer value
@@ -665,12 +850,34 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
+     * Set the isDefaultContainer value.
+     *
+     * @param isDefaultContainer the isDefaultContainer value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withIsDefaultContainer(Boolean isDefaultContainer) {
+        this.isDefaultContainer = isDefaultContainer;
+        return this;
+    }
+
+    /**
      * Get the defaultHostName value.
      *
      * @return the defaultHostName value
      */
     public String defaultHostName() {
         return this.defaultHostName;
+    }
+
+    /**
+     * Set the defaultHostName value.
+     *
+     * @param defaultHostName the defaultHostName value to set
+     * @return the DeletedSiteInner object itself.
+     */
+    public DeletedSiteInner withDefaultHostName(String defaultHostName) {
+        this.defaultHostName = defaultHostName;
+        return this;
     }
 
 }

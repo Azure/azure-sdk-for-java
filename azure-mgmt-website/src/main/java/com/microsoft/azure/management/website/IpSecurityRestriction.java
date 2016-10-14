@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents an ip security restriction on a web app.
@@ -16,6 +17,7 @@ public class IpSecurityRestriction {
     /**
      * IP address the security restriction is valid for.
      */
+    @JsonProperty(required = true)
     private String ipAddress;
 
     /**
