@@ -46,7 +46,6 @@ public final class EnumUtility {
             return (T) values.toArray()[index];
         }
 
-        throw new IllegalArgumentException(
-                "No enum constant " + enumClass.getCanonicalName() + "." + name);
+        return null;
     }
 }
