@@ -36,4 +36,9 @@ public enum RemoteDebuggingVersion {
     * Visual Studio 2013.
     */
     VS2013,
+        
+     /**
+    * Visual Studio 2015.
+    */
+    VS2015,
 }
