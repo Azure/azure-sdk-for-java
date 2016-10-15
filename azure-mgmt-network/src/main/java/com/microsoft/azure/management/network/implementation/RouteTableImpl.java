@@ -5,9 +5,13 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.Route;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -29,6 +33,7 @@ class RouteTableImpl
         RouteTable.Update {
 
     private final RouteTablesInner innerCollection;
+    private Map<String, Route> routes;
 
     RouteTableImpl(String name,
             final RouteTableInner innerModel,
@@ -40,11 +45,26 @@ class RouteTableImpl
 
     @Override
     protected void initializeChildrenFromInner() {
+        this.routes = new TreeMap<>();
+        List<RouteInner> inners = this.inner().routes();
+        if (inners != null) {
+            for (RouteInner inner : inners) {
+                RouteImpl route = new RouteImpl(inner, this);
+                this.routes.put(inner.name(), route);
+            }
+        }
     }
 
     // Getters
 
     // Verbs
+
+    @Override
+    public RouteImpl defineRoute(String name) {
+        RouteInner inner = new RouteInner()
+                .withName(name);
+        return new RouteImpl(inner, this);
+    }
 
     @Override
     public RouteTableImpl refresh() {
@@ -69,6 +89,8 @@ class RouteTableImpl
 
     @Override
     protected void beforeCreating() {
+        // Reset and update routes
+        this.inner().withRoutes(innersFromWrappers(this.routes.values()));
     }
 
     @Override
@@ -79,5 +101,15 @@ class RouteTableImpl
     @Override
     protected Observable<RouteTableInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    RouteTableImpl withRoute(RouteImpl route) {
+        this.routes.put(route.name(), route);
+        return this;
+    }
+
+    @Override
+    public Map<String, Route> routes() {
+        return Collections.unmodifiableMap(this.routes);
     }
 }

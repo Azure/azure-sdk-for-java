@@ -6,9 +6,12 @@
 package com.microsoft.azure.management;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.Route;
+import com.microsoft.azure.management.network.RouteNextHopType;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
@@ -32,6 +35,14 @@ public class TestRouteTables {
             final RouteTable routeTable = routeTables.define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
+                    .defineRoute("route1")
+                        .withDestinationAddressPrefix("10.1.0.0/29")
+                        .withNextHopToVirtualAppliance("10.1.1.1")
+                        .attach()
+                    .defineRoute("route2")
+                        .withDestinationAddressPrefix("10.0.0.0/29")
+                        .withNextHop(RouteNextHopType.VNET_LOCAL)
+                        .attach()
                     .create();
 
             return routeTable;
@@ -64,6 +75,16 @@ public class TestRouteTables {
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags());
+
+        // Output routes
+        Map<String, Route> routes = resource.routes();
+        info.append("\n\tRoutes: ").append(routes.values().size());
+        for (Route route : routes.values()) {
+            info.append("\n\t\tName: ").append(route.name())
+                .append("\n\t\t\tDestination address prefix: ").append(route.destinationAddressPrefix())
+                .append("\n\t\t\tNext hop type: ").append(route.nextHopType().toString())
+                .append("\n\t\t\tNext hop IP address: ").append(route.nextHopIpAddress());
+        }
 
         // Output associated subnets
         List<Subnet> subnets = resource.listAssociatedSubnets();

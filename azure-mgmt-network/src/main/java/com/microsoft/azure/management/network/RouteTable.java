@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.RouteTableInner;
 import com.microsoft.azure.management.network.model.HasAssociatedSubnets;
@@ -27,7 +29,10 @@ public interface RouteTable extends
         Updatable<RouteTable.Update>,
         HasAssociatedSubnets {
 
-    // Getters
+    /**
+     * @return the routes of this route table
+     */
+    Map<String, Route> routes();
 
     /**
      * The entirety of a route table definition.
@@ -57,13 +62,28 @@ public interface RouteTable extends
         }
 
         /**
+         * The stage of the virtual network definition allowing to add subnets.
+         */
+        interface WithRoute {
+            /**
+             * Begins the definition of a new route to add to the route table.
+             * <p>
+             * The definition must be completed with a call to {@link Route.DefinitionStages.WithAttach#attach()}
+             * @param name the name of the route
+             * @return the first stage of the definition
+             */
+            Route.DefinitionStages.Blank<WithCreate> defineRoute(String name);
+        }
+
+        /**
          * The stage of a route table definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
             Creatable<RouteTable>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithRoute {
         }
     }
 
