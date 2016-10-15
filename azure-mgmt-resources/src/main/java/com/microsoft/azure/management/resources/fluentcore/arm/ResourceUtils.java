@@ -52,6 +52,10 @@ public final class ResourceUtils {
         return id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
     }
 
+    public static String relativePathFromResourceId(String id) {
+        return id.split("/providers/" + resourceProviderFromResourceId(id) + "/")[1];
+    }
+
     /**
      * Extract information from a resource ID string with the resource type
      * as the identifier.
