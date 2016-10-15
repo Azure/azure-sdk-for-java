@@ -225,7 +225,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork(azure.networkSecurityGroups())
+        new TestNetwork.WithSubnets(azure.networkSecurityGroups())
             .runTest(azure.networks(), azure.resourceGroups());
     }
 
