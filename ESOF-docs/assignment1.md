@@ -7,7 +7,7 @@ The development process used by Microsoft is an agile process. An agile process 
 * More flexibility/agility: can choose to change direction or adapt the next iterations based on actually seeing and using the software
 * Better cost management: if, like all-too-many software development projects, you run over budget, some value can still be realised; you donít have to scrap the whole thing if you run short of funds
 
-The goal of Microsoft is to build software more incrementally in order to deliver it faster to consumers. That way, they can use the product and give their feedback and Microsoft can learn from it in order to make the product better.
+The goal of Microsoft is to build software more incrementally in order to deliver it faster to consumers through relatively frequent public releases. That way, they can use the product and give their feedback and Microsoft can learn from it in order to make the product better. For that reason, this project is customer feedback driven, since the developers try to be as responsive as possible to feedback, mainly through GitHub issues [[2]](https://github.com/Azure/azure-sdk-for-java/issues/1169#issuecomment-252742862). 
 
 Since this project includes several cloud services, an agile process is the ideal option: a version with some services can be released and then over time it will get updates with more services, adapting the product to the needs of the client. 
 
@@ -15,6 +15,8 @@ In this project, developing the software using a waterfall model would be a fail
 
 * Spending one year coding and one year testing all the services that the company is able to offer might lead to some services being unuseful for the client after two years (or being already delivered by other company);
 * The company wouldn't be able to change and adapt itself to its clients and, consequently, wouldnít be capable of delivering something new. A successful company is one that knows how to translate an idea into reality and can deliver the product to the clients quickly.
+
+There are also other work philosophies that the team working on this project likes to follow. For example, even though each team member has its own title and responsibilities/functions, there is a certain ìrole blendingî since a given team member can do work that goes beyond his/her function. Also, there isnít a designated person to approve pull-requests since the development runs based on peer code-reviews - team members review each other's pull requests depending on availability and expertise. Additionally, testing is not performed by a different team as it is considered part of the development process [[2]](https://github.com/Azure/azure-sdk-for-java/issues/1169#issuecomment-252742862).
 
 An alternative model that could be use in Azure Software Development is the RAD model. Rapid Application Development model is an incremental software process model that focuses on short development cycle time. This model is a high-speedù model which adapts many steps from waterfall model in which rapid development is achieved by using component based construction approach.
 
