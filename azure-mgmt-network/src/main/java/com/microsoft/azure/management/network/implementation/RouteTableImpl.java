@@ -25,7 +25,7 @@ class RouteTableImpl
         RouteTable.Definition,
         RouteTable.Update {
 
-    final private RouteTablesInner innerCollection;
+    private final RouteTablesInner innerCollection;
 
     RouteTableImpl(String name,
             final RouteTableInner innerModel,
