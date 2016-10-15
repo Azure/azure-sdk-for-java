@@ -37,6 +37,9 @@ public interface Route extends
 
     // Grouping of route definition stages
 
+    /**
+     * Grouping of route definition stages.
+     */
     interface DefinitionStages {
         /**
          * The first stage of a route definition.
@@ -56,7 +59,7 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the destination address prefix
+         * The stage of a route definition allowing to specify the destination address prefix.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithDestinationAddressPrefix<ParentT> {
@@ -69,7 +72,8 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the IP address of a virtual appliance to direct the traffic through.
+         * The stage of a route definition allowing to specify the IP address of a virtual
+         * appliance to direct the traffic through.
          */
         interface WithNextHopToVirtualAppliance<ParentT> {
             /**
@@ -111,13 +115,54 @@ public interface Route extends
      * Grouping of route update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of a route update allowing to modify the destination address prefix.
+         */
+        interface WithDestinationAddressPrefix {
+            /**
+             * Specifies the destination address prefix to apply the route to.
+             * @param cidr an address prefix expressed in the CIDR notation
+             * @return the next stage of the update
+             */
+            Update withDestinationAddressPrefix(String cidr);
+        }
+
+        /**
+         * The stage of a route update allowing to modify the IP address of a virtual appliance to
+         * direct the traffic through.
+         */
+        interface WithNextHopToVirtualAppliance {
+            /**
+             * Specifies the IP address of the virtual appliance for the next hop to go to.
+             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
+             * @return the next stage of the update
+             */
+            Update withNextHopToVirtualAppliance(String ipAddress);
+        }
+
+        /**
+         * The stage of a route update allowing to specify the next hop type.
+         */
+        interface WithNextHopType extends WithNextHopToVirtualAppliance {
+            /**
+             * Specifies the next hop type.
+             * <p>
+             * To use a virtual appliance, use {@link WithNextHopToVirtualAppliance#withNextHopToVirtualAppliance()} instead and specify its IP address.
+             * @param nextHopType a hop type
+             * @return the next stage of the update
+             */
+            Update withNextHop(RouteNextHopType nextHopType);
+        }
     }
 
     /**
-     * The entirety of a subnet update as part of a network update.
+     * The entirety of a route update as part of a route table update.
      */
     interface Update extends
-        Settable<RouteTable.Update> {
+        Settable<RouteTable.Update>,
+        UpdateStages.WithDestinationAddressPrefix,
+        UpdateStages.WithNextHopToVirtualAppliance,
+        UpdateStages.WithNextHopType {
     }
 
     /**
@@ -142,7 +187,7 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the destination address prefix
+         * The stage of a route definition allowing to specify the destination address prefix.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithDestinationAddressPrefix<ParentT> {
@@ -155,7 +200,8 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the IP address of a virtual appliance to direct the traffic through.
+         * The stage of a route definition allowing to specify the IP address of a virtual appliance
+         * to direct the traffic through.
          */
         interface WithNextHopToVirtualAppliance<ParentT> {
             /**

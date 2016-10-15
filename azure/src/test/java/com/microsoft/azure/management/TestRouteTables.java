@@ -79,6 +79,10 @@ public class TestRouteTables {
                         .withDestinationAddressPrefix("10.2.0.0/29")
                         .withNextHop(RouteNextHopType.NONE)
                         .attach()
+                    .updateRoute(ROUTE2_NAME)
+                        .withDestinationAddressPrefix("50.46.112.0/29")
+                        .withNextHop(RouteNextHopType.INTERNET)
+                        .parent()
                     .apply();
             Assert.assertTrue(routeTable.tags().containsKey("tag1"));
             Assert.assertTrue(routeTable.tags().containsKey("tag2"));

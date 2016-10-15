@@ -60,13 +60,6 @@ class RouteTableImpl
     // Verbs
 
     @Override
-    public RouteImpl defineRoute(String name) {
-        RouteInner inner = new RouteInner()
-                .withName(name);
-        return new RouteImpl(inner, this);
-    }
-
-    @Override
     public RouteTableImpl refresh() {
         RouteTableInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
@@ -86,6 +79,18 @@ class RouteTableImpl
     }
 
     // Setters (fluent)
+
+    @Override
+    public RouteImpl defineRoute(String name) {
+        RouteInner inner = new RouteInner()
+                .withName(name);
+        return new RouteImpl(inner, this);
+    }
+
+    @Override
+    public RouteImpl updateRoute(String name) {
+        return (RouteImpl) this.routes.get(name);
+    }
 
     @Override
     public Update withoutRoute(String name) {

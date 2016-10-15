@@ -110,6 +110,13 @@ public interface RouteTable extends
              * @return the next stage of the update
              */
             Update withoutRoute(String name);
+
+            /**
+             * Begins the update of an existing route on this route table.
+             * @param name the name of an existing route
+             * @return the first stage of the update
+             */
+            Route.Update updateRoute(String name);
         }
     }
 
