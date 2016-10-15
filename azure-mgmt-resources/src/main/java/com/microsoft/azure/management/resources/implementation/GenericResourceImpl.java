@@ -8,8 +8,14 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Plan;
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ProviderResourceType;
+import com.microsoft.azure.management.resources.Providers;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
+import rx.exceptions.Exceptions;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -26,7 +32,8 @@ final class GenericResourceImpl
         GenericResource.Definition,
         GenericResource.UpdateStages.WithApiVersion,
         GenericResource.Update {
-    private final ResourcesInner client;
+    private final ResourcesInner resourceClient;
+    private final Providers providersClient;
     private String resourceProviderNamespace;
     private String parentResourceId;
     private String resourceType;
@@ -34,11 +41,13 @@ final class GenericResourceImpl
 
     GenericResourceImpl(String key,
                         GenericResourceInner innerModel,
-                        ResourcesInner client,
+                        ResourcesInner innerCollection,
+                        Providers providerClient,
                         final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
-        this.client = client;
+        this.resourceClient = innerCollection;
+        this.providersClient = providerClient;
     }
 
     @Override
@@ -119,15 +128,38 @@ final class GenericResourceImpl
     // CreateUpdateTaskGroup.ResourceCreator implementation
     @Override
     public Observable<GenericResource> createResourceAsync() {
-        return client.createOrUpdateAsync(
-                resourceGroupName(),
-                resourceProviderNamespace,
-                parentResourceId,
-                resourceType,
-                name(),
-                apiVersion,
-                inner())
-                .subscribeOn(Schedulers.io())
-                .map(innerToFluentMap(this));
+        final GenericResourceImpl self = this;
+        Observable<String> observable = Observable.just(apiVersion);
+        if (apiVersion == null) {
+            observable = providersClient.getByNameAsync(resourceProviderNamespace)
+                    .map(new Func1<Provider, String>() {
+                        @Override
+                        public String call(Provider provider) {
+                            for (ProviderResourceType type : provider.resourceTypes()) {
+                                if (resourceType().equals(type.resourceType())) {
+                                    return type.apiVersions().get(0);
+                                }
+                            }
+                            throw Exceptions.propagate(new UnsupportedOperationException("Resource provider " + resourceProviderNamespace + " doesn't have a default api version, please specify one."));
+                        }
+                    });
+        }
+        return observable
+                .flatMap(new Func1<String, Observable<GenericResource>>() {
+                    @Override
+                    public Observable<GenericResource> call(String api) {
+                        return resourceClient.createOrUpdateAsync(
+                                resourceGroupName(),
+                                resourceProviderNamespace,
+                                ResourceUtils.relativePathFromResourceId(parentResourceId),
+                                resourceType,
+                                name(),
+                                api,
+                                inner())
+                                .subscribeOn(Schedulers.io())
+                                .map(innerToFluentMap(self));
+                    }
+                });
+
     }
 }

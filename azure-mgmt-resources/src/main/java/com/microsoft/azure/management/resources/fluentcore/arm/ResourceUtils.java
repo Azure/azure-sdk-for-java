@@ -53,7 +53,12 @@ public final class ResourceUtils {
     }
 
     public static String relativePathFromResourceId(String id) {
-        return id.split("/providers/" + resourceProviderFromResourceId(id) + "/")[1];
+        String[] paths = id.split("/providers/" + resourceProviderFromResourceId(id) + "/", 2);
+        if (paths.length == 1) {
+            return "";
+        } else {
+            return paths[1];
+        }
     }
 
     /**

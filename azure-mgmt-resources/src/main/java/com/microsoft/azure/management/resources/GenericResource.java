@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.implementation.GenericResourceIn
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
-        Updatable<GenericResource.UpdateStages.WithApiVersion>,
+        Updatable<GenericResource.Update>,
         Wrapper<GenericResourceInner> {
     /**
      * @return the namespace of the resource provider
@@ -251,6 +251,7 @@ public interface GenericResource extends
      */
     interface Update extends
             Appliable<GenericResource>,
+            UpdateStages.WithApiVersion,
             UpdateStages.WithPlan,
             UpdateStages.WithParentResource,
             UpdateStages.WithProperties,

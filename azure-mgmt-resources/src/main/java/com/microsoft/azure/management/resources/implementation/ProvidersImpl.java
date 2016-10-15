@@ -10,6 +10,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for {@link Providers}.
@@ -36,6 +38,17 @@ final class ProvidersImpl
     @Override
     public Provider register(String resourceProviderNamespace) {
         return wrapModel(client.register(resourceProviderNamespace));
+    }
+
+    @Override
+    public Observable<Provider> getByNameAsync(String name) {
+        return client.getAsync(name)
+                .map(new Func1<ProviderInner, Provider>() {
+                    @Override
+                    public Provider call(ProviderInner providerInner) {
+                        return wrapModel(providerInner);
+                    }
+                });
     }
 
     @Override

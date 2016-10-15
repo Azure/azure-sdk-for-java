@@ -23,8 +23,9 @@ public interface SupportsListingByTag<T> {
     /**
      * Lists all the resources of the specified type in the specified tag.
      *
-     * @param tag the tag value
+     * @param tagName tag's name as the key
+     * @param tagValue tag's value
      * @return list of resources
      */
-    PagedList<T> listByTag(String resourceGroupName, String tag);
+    PagedList<T> listByTag(String resourceGroupName, String tagName, String tagValue);
 }

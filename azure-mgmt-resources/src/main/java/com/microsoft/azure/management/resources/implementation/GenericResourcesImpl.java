@@ -42,11 +42,19 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
+        return wrapList(this.serviceClient.resourceGroups().listResources(
+                resourceGroupName,
+                String.format("%s eq '%s'", tagName, tagValue), null, null));
+    }
+
+    @Override
     public GenericResource.DefinitionStages.Blank define(String name) {
         return new GenericResourceImpl(
                 name,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 super.myManager);
     }
@@ -114,6 +122,7 @@ final class GenericResourcesImpl
                 resourceName,
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 this.myManager);
 
@@ -143,6 +152,7 @@ final class GenericResourcesImpl
                 id,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
@@ -157,6 +167,7 @@ final class GenericResourcesImpl
                 inner.id(),
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
