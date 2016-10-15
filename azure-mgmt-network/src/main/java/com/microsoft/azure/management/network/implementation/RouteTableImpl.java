@@ -25,8 +25,8 @@ class RouteTableImpl
         RouteTable.Definition,
         RouteTable.Update {
 
-	final RouteTablesInner innerCollection;
-	
+    final private RouteTablesInner innerCollection;
+
     RouteTableImpl(String name,
             final RouteTableInner innerModel,
             final RouteTablesInner innerCollection,
@@ -43,7 +43,6 @@ class RouteTableImpl
 
     @Override
     public RouteTableImpl refresh() {
-
         RouteTableInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
         initializeChildrenFromInner();

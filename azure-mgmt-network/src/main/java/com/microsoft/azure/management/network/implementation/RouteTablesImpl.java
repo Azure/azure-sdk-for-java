@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Observable;
 
 /**
- *  Implementation for RouteTables
+ *  Implementation for RouteTables.
  */
 @LangDefinition
 class RouteTablesImpl
