@@ -12,6 +12,7 @@ import java.util.TreeMap;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Route;
+import com.microsoft.azure.management.network.RouteNextHopType;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -72,12 +73,6 @@ class RouteTableImpl
         return this.myManager.listAssociatedSubnets(this.inner().subnets());
     }
 
-    // Helpers
-
-    NetworkManager manager() {
-        return super.myManager;
-    }
-
     // Setters (fluent)
 
     @Override
@@ -99,6 +94,33 @@ class RouteTableImpl
     }
 
     @Override
+    public RouteTableImpl withRoute(String destinationAddressPrefix, RouteNextHopType nextHop) {
+        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
+                .withDestinationAddressPrefix(destinationAddressPrefix)
+                .withNextHop(nextHop)
+                .attach();
+    }
+
+    @Override
+    public RouteTableImpl withRouteViaVirtualAppliance(String destinationAddressPrefix, String ipAddress) {
+        return this.defineRoute("route_" + this.name() + System.currentTimeMillis())
+                .withDestinationAddressPrefix(destinationAddressPrefix)
+                .withNextHopToVirtualAppliance(ipAddress)
+                .attach();
+    }
+
+    RouteTableImpl withRoute(RouteImpl route) {
+        this.routes.put(route.name(), route);
+        return this;
+    }
+
+    // Helpers
+
+    NetworkManager manager() {
+        return super.myManager;
+    }
+
+    @Override
     protected void beforeCreating() {
         // Reset and update routes
         this.inner().withRoutes(innersFromWrappers(this.routes.values()));
@@ -112,11 +134,6 @@ class RouteTableImpl
     @Override
     protected Observable<RouteTableInner> createInner() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner());
-    }
-
-    RouteTableImpl withRoute(RouteImpl route) {
-        this.routes.put(route.name(), route);
-        return this;
     }
 
     @Override

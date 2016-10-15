@@ -24,6 +24,7 @@ public class TestRouteTables {
     private static String ROUTE1_NAME = "route1";
     private static String ROUTE2_NAME = "route2";
     private static String ROUTE_ADDED_NAME = "route3";
+    private static String VIRTUAL_APPLIANCE_IP = "10.1.1.1";
 
     /**
      * Test of minimal route tables.
@@ -37,16 +38,16 @@ public class TestRouteTables {
 
             final String route1AddressPrefix = "10.1.0.0/29";
             final String route2AddressPrefix = "10.0.0.0/29";
-            final String nextHopIp = "10.1.1.1";
             final RouteNextHopType hopType = RouteNextHopType.VNET_LOCAL;
 
             // Create a route table
             final RouteTable routeTable = routeTables.define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
+                    .withRoute("10.3.0.0/29", RouteNextHopType.VNET_LOCAL)
                     .defineRoute(ROUTE1_NAME)
                         .withDestinationAddressPrefix(route1AddressPrefix)
-                        .withNextHopToVirtualAppliance(nextHopIp)
+                        .withNextHopToVirtualAppliance(VIRTUAL_APPLIANCE_IP)
                         .attach()
                     .defineRoute(ROUTE2_NAME)
                         .withDestinationAddressPrefix(route2AddressPrefix)
@@ -57,7 +58,7 @@ public class TestRouteTables {
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE1_NAME));
             Route route1 = routeTable.routes().get(ROUTE1_NAME);
             Assert.assertTrue(route1.destinationAddressPrefix().equalsIgnoreCase(route1AddressPrefix));
-            Assert.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(nextHopIp));
+            Assert.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(VIRTUAL_APPLIANCE_IP));
             Assert.assertTrue(route1.nextHopType().equals(RouteNextHopType.VIRTUAL_APPLIANCE));
 
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
@@ -83,7 +84,9 @@ public class TestRouteTables {
                         .withDestinationAddressPrefix("50.46.112.0/29")
                         .withNextHop(RouteNextHopType.INTERNET)
                         .parent()
+                    .withRouteViaVirtualAppliance("10.5.0.0/29", VIRTUAL_APPLIANCE_IP)
                     .apply();
+
             Assert.assertTrue(routeTable.tags().containsKey("tag1"));
             Assert.assertTrue(routeTable.tags().containsKey("tag2"));
             Assert.assertTrue(!routeTable.routes().containsKey(ROUTE1_NAME));

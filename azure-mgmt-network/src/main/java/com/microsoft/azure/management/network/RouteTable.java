@@ -73,6 +73,24 @@ public interface RouteTable extends
              * @return the first stage of the definition
              */
             Route.DefinitionStages.Blank<WithCreate> defineRoute(String name);
+
+            /**
+             * Creates a non-virtual appliance route.
+             * <p>
+             * The name is generated automatically.
+             * @param destinationAddressPrefix the destination address prefix, expressed in the CIDR notation, for the route to apply to
+             * @param nextHop the next hop type
+             * @return the next stage of the definition
+             */
+            WithCreate withRoute(String destinationAddressPrefix, RouteNextHopType nextHop);
+
+            /**
+             * Creates a route via a virtual appliance.
+             * @param destinationAddressPrefix the destination address prefix, expressed in the CIDR notation, for the route to apply to
+             * @param ipAddress the IP address of the virtual appliance to route the traffic through
+             * @return the next stage of the definition
+             */
+            WithCreate withRouteViaVirtualAppliance(String destinationAddressPrefix, String ipAddress);
         }
 
         /**
@@ -95,6 +113,24 @@ public interface RouteTable extends
          * The stage of the route table definition allowing to add, remove or modify routes.
          */
         interface WithRoute {
+            /**
+             * Creates a non-virtual appliance route.
+             * <p>
+             * The name is generated automatically.
+             * @param destinationAddressPrefix the destination address prefix, expressed in the CIDR notation, for the route to apply to
+             * @param nextHop the next hop type
+             * @return the next stage of the update
+             */
+            Update withRoute(String destinationAddressPrefix, RouteNextHopType nextHop);
+
+            /**
+             * Creates a route via a virtual appliance.
+             * @param destinationAddressPrefix the destination address prefix, expressed in the CIDR notation, for the route to apply to
+             * @param ipAddress the IP address of the virtual appliance to route the traffic through
+             * @return the next stage of the update
+             */
+            Update withRouteViaVirtualAppliance(String destinationAddressPrefix, String ipAddress);
+
             /**
              * Begins the definition of a new route to add to the route table.
              * <p>
