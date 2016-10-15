@@ -5,10 +5,13 @@
  */
 package com.microsoft.azure.management;
 
+import java.util.List;
+
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.RouteTables;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
@@ -61,6 +64,16 @@ public class TestRouteTables {
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags());
+
+        // Output associated subnets
+        List<Subnet> subnets = resource.listAssociatedSubnets();
+        info.append("\n\tAssociated subnets: ").append(subnets.size());
+        for (Subnet subnet : subnets) {
+            info.append("\n\t\tResource group: ").append(subnet.parent().resourceGroupName())
+                .append("\n\t\tNetwork name: ").append(subnet.parent().name())
+                .append("\n\t\tSubnet name: ").append(subnet.name());
+        }
+
         System.out.println(info.toString());
 	}
 }

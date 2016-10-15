@@ -10,6 +10,7 @@ import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkSecurityGroupInner;
+import com.microsoft.azure.management.network.model.HasAssociatedSubnets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -27,11 +28,11 @@ public interface NetworkSecurityGroup extends
         GroupableResource,
         Refreshable<NetworkSecurityGroup>,
         Wrapper<NetworkSecurityGroupInner>,
-        Updatable<NetworkSecurityGroup.Update> {
+        Updatable<NetworkSecurityGroup.Update>,
+        HasAssociatedSubnets {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    // Getters
+
     /**
      * @return security rules associated with this network security group, indexed by their names
      */
@@ -46,12 +47,6 @@ public interface NetworkSecurityGroup extends
      * @return list of the ids of the network interfaces associated with this network security group
      */
     List<String> networkInterfaceIds();
-
-    /**
-     * @return virtual networks associated with this security group,
-     * indexed by the names of the specific subnets referencing this security group
-     */
-    List<Subnet> listAssociatedSubnets();
 
     // Fluent interfaces for creating NSGs
 

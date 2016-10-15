@@ -5,8 +5,11 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.List;
+
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.RouteTable;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
 
@@ -39,6 +42,8 @@ class RouteTableImpl
     protected void initializeChildrenFromInner() {
     }
 
+    // Getters
+
     // Verbs
 
     @Override
@@ -49,6 +54,11 @@ class RouteTableImpl
         return this;
     }
 
+    @Override
+    public List<Subnet> listAssociatedSubnets() {
+        return this.myManager.listAssociatedSubnets(this.inner().subnets());
+    }
+
     // Helpers
 
     NetworkManager manager() {
@@ -56,8 +66,6 @@ class RouteTableImpl
     }
 
     // Setters (fluent)
-
-    // Getters
 
     @Override
     protected void beforeCreating() {

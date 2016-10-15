@@ -5,15 +5,24 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.RouteTables;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 
@@ -167,5 +176,27 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                     this);
         }
         return this.loadBalancers;
+    }
+
+    // Internal utility function
+    List<Subnet> listAssociatedSubnets(List<SubnetInner> subnetRefs) {
+        final Map<String, Network> networks = new HashMap<>();
+        final List<Subnet> subnets = new ArrayList<>();
+
+        if (subnetRefs != null) {
+            for (SubnetInner subnetRef : subnetRefs) {
+                String networkId = ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+                Network network = networks.get(networkId);
+                if (network == null) {
+                    network = this.networks().getById(networkId);
+                    networks.put(networkId, network);
+                }
+
+                String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
+                subnets.add(network.subnets().get(subnetName));
+            }
+        }
+
+        return Collections.unmodifiableList(subnets);
     }
 }
