@@ -74,6 +74,7 @@ public interface Route extends
         /**
          * The stage of a route definition allowing to specify the IP address of a virtual
          * appliance to direct the traffic through.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithNextHopToVirtualAppliance<ParentT> {
             /**
@@ -101,7 +102,7 @@ public interface Route extends
     }
 
     /** The entirety of a route definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+     * @param <ParentT> the return type of the final {@link WithAttach#attach()}
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -202,6 +203,7 @@ public interface Route extends
         /**
          * The stage of a route definition allowing to specify the IP address of a virtual appliance
          * to direct the traffic through.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithNextHopToVirtualAppliance<ParentT> {
             /**
