@@ -62,7 +62,7 @@ public interface RouteTable extends
         }
 
         /**
-         * The stage of the virtual network definition allowing to add subnets.
+         * The stage of the route table definition allowing to add routes.
          */
         interface WithRoute {
             /**
@@ -91,6 +91,26 @@ public interface RouteTable extends
      * Grouping of route table update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the route table definition allowing to add, remove or modify routes.
+         */
+        interface WithRoute {
+            /**
+             * Begins the definition of a new route to add to the route table.
+             * <p>
+             * The definition must be completed with a call to {@link Route.UpdateStages.WithAttach#attach()}
+             * @param name the name of the route
+             * @return the first stage of the definition
+             */
+            Route.UpdateDefinitionStages.Blank<Update> defineRoute(String name);
+
+            /**
+             * Removes the specified route from the route table.
+             * @param name the name of an existing route on this route table
+             * @return the next stage of the update
+             */
+            Update withoutRoute(String name);
+        }
     }
 
     /**
@@ -100,6 +120,7 @@ public interface RouteTable extends
      */
     interface Update extends
         Appliable<RouteTable>,
-        Resource.UpdateWithTags<Update> {
+        Resource.UpdateWithTags<Update>,
+        UpdateStages.WithRoute {
     }
 }

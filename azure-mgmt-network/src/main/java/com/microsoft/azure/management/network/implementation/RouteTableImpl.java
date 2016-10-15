@@ -88,6 +88,12 @@ class RouteTableImpl
     // Setters (fluent)
 
     @Override
+    public Update withoutRoute(String name) {
+        this.routes.remove(name);
+        return this;
+    }
+
+    @Override
     protected void beforeCreating() {
         // Reset and update routes
         this.inner().withRoutes(innersFromWrappers(this.routes.values()));

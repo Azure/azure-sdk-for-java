@@ -128,7 +128,7 @@ public interface Route extends
          * The first stage of a route definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithDestinationAddressPrefix<ParentT> {
         }
 
         /** The final stage of a route definition.
@@ -140,6 +140,46 @@ public interface Route extends
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT> {
         }
+
+        /**
+         * The stage of a route definition allowing to specify the destination address prefix
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithDestinationAddressPrefix<ParentT> {
+            /**
+             * Specifies the destination address prefix to apply the route to.
+             * @param cidr an address prefix expressed in the CIDR notation
+             * @return the next stage of the definition
+             */
+            WithNextHopType<ParentT> withDestinationAddressPrefix(String cidr);
+        }
+
+        /**
+         * The stage of a route definition allowing to specify the IP address of a virtual appliance to direct the traffic through.
+         */
+        interface WithNextHopToVirtualAppliance<ParentT> {
+            /**
+             * Specifies the IP address of the virtual appliance for the next hop to go to.
+             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNextHopToVirtualAppliance(String ipAddress);
+        }
+
+        /**
+         * The stage of a route definition allowing to specify the next hop type.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithNextHopType<ParentT> extends WithNextHopToVirtualAppliance<ParentT> {
+            /**
+             * Specifies the next hop type.
+             * <p>
+             * To use a virtual appliance, use {@link WithNextHopToVirtualAppliance#withNextHopToVirtualAppliance()} instead and specify its IP address.
+             * @param nextHopType a hop type
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNextHop(RouteNextHopType nextHopType);
+        }
     }
 
     /** The entirety of a route definition as part of a route table update.
@@ -147,6 +187,9 @@ public interface Route extends
      */
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
-       UpdateDefinitionStages.WithAttach<ParentT> {
+       UpdateDefinitionStages.WithAttach<ParentT>,
+       UpdateDefinitionStages.WithNextHopType<ParentT>,
+       UpdateDefinitionStages.WithDestinationAddressPrefix<ParentT>,
+       UpdateDefinitionStages.WithNextHopToVirtualAppliance<ParentT> {
     }
 }

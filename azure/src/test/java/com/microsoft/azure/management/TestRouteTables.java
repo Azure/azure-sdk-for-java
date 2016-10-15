@@ -21,6 +21,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
  * Test of virtual network management.
  */
 public class TestRouteTables {
+    private static String ROUTE1_NAME = "route1";
+    private static String ROUTE2_NAME = "route2";
+    private static String ROUTE_ADDED_NAME = "route3";
+
     /**
      * Test of minimal route tables.
      */
@@ -31,19 +35,36 @@ public class TestRouteTables {
             Region region = Region.US_WEST;
             String groupName = "rg" + this.testId;
 
+            final String route1AddressPrefix = "10.1.0.0/29";
+            final String route2AddressPrefix = "10.0.0.0/29";
+            final String nextHopIp = "10.1.1.1";
+            final RouteNextHopType hopType = RouteNextHopType.VNET_LOCAL;
+
             // Create a route table
             final RouteTable routeTable = routeTables.define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
-                    .defineRoute("route1")
-                        .withDestinationAddressPrefix("10.1.0.0/29")
-                        .withNextHopToVirtualAppliance("10.1.1.1")
+                    .defineRoute(ROUTE1_NAME)
+                        .withDestinationAddressPrefix(route1AddressPrefix)
+                        .withNextHopToVirtualAppliance(nextHopIp)
                         .attach()
-                    .defineRoute("route2")
-                        .withDestinationAddressPrefix("10.0.0.0/29")
-                        .withNextHop(RouteNextHopType.VNET_LOCAL)
+                    .defineRoute(ROUTE2_NAME)
+                        .withDestinationAddressPrefix(route2AddressPrefix)
+                        .withNextHop(hopType)
                         .attach()
                     .create();
+
+            Assert.assertTrue(routeTable.routes().containsKey(ROUTE1_NAME));
+            Route route1 = routeTable.routes().get(ROUTE1_NAME);
+            Assert.assertTrue(route1.destinationAddressPrefix().equalsIgnoreCase(route1AddressPrefix));
+            Assert.assertTrue(route1.nextHopIpAddress().equalsIgnoreCase(nextHopIp));
+            Assert.assertTrue(route1.nextHopType().equals(RouteNextHopType.VIRTUAL_APPLIANCE));
+
+            Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
+            Route route2 = routeTable.routes().get(ROUTE2_NAME);
+            Assert.assertTrue(route2.destinationAddressPrefix().equalsIgnoreCase(route2AddressPrefix));
+            Assert.assertTrue(route2.nextHopIpAddress() == null);
+            Assert.assertTrue(route2.nextHopType().equals(hopType));
 
             return routeTable;
         }
@@ -53,8 +74,18 @@ public class TestRouteTables {
             routeTable =  routeTable.update()
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
+                    .withoutRoute(ROUTE1_NAME)
+                    .defineRoute(ROUTE_ADDED_NAME)
+                        .withDestinationAddressPrefix("10.2.0.0/29")
+                        .withNextHop(RouteNextHopType.NONE)
+                        .attach()
                     .apply();
             Assert.assertTrue(routeTable.tags().containsKey("tag1"));
+            Assert.assertTrue(routeTable.tags().containsKey("tag2"));
+            Assert.assertTrue(!routeTable.routes().containsKey(ROUTE1_NAME));
+            Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
+            Assert.assertTrue(routeTable.routes().containsKey(ROUTE_ADDED_NAME));
+
             return routeTable;
         }
 
