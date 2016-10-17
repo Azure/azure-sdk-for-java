@@ -234,7 +234,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testRouteTables() throws Exception {
-        new TestRouteTables.Minimal()
+        new TestRouteTables.Minimal(azure.networks())
             .runTest(azure.routeTables(), azure.resourceGroups());
     }
 

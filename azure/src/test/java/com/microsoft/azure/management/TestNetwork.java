@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
@@ -111,8 +112,10 @@ public class TestNetwork {
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
-                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix())
-                .append("\n\tAssociated NSG: ");
+                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+
+            // Show associated NSG
+            info.append("\n\tAssociated NSG: ");
 
             NetworkSecurityGroup nsg;
             try {
@@ -121,11 +124,18 @@ public class TestNetwork {
                 nsg = null;
             }
 
-            if (null == nsg) {
-                info.append("(None)");
-            } else {
-                info.append(nsg.resourceGroupName() + "/" + nsg.name());
+            info.append((null == nsg) ? "(None)" : nsg.resourceGroupName() + "/" + nsg.name());
+
+            // Show associated route table
+            info.append("\n\tAssociated route table: ");
+            RouteTable routeTable;
+            try {
+                routeTable = subnet.getRouteTable();
+            } catch (Exception e) {
+                routeTable = null;
             }
+
+            info.append((null == routeTable) ? "(None)" : routeTable.resourceGroupName() + "/" + routeTable.name());
         }
 
         System.out.println(info.toString());

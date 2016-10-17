@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.Route;
 import com.microsoft.azure.management.network.RouteNextHopType;
 import com.microsoft.azure.management.network.RouteTable;
@@ -30,13 +31,19 @@ public class TestRouteTables {
      * Test of minimal route tables.
      */
     public static class Minimal extends TestTemplate<RouteTable, RouteTables> {
+        private final Networks networks;
+
+        Minimal(Networks networks) {
+            this.networks = networks;
+        }
+
         @Override
         public RouteTable createResource(RouteTables routeTables) throws Exception {
             final String newName = "rt" + this.testId;
             Region region = Region.US_WEST;
             String groupName = "rg" + this.testId;
 
-            final String route1AddressPrefix = "10.1.0.0/29";
+            final String route1AddressPrefix = "10.0.1.0/29";
             final String route2AddressPrefix = "10.0.0.0/29";
             final RouteNextHopType hopType = RouteNextHopType.VNET_LOCAL;
 
@@ -44,7 +51,7 @@ public class TestRouteTables {
             final RouteTable routeTable = routeTables.define(newName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
-                    .withRoute("10.3.0.0/29", RouteNextHopType.VNET_LOCAL)
+                    .withRoute("10.0.3.0/29", RouteNextHopType.VNET_LOCAL)
                     .defineRoute(ROUTE1_NAME)
                         .withDestinationAddressPrefix(route1AddressPrefix)
                         .withNextHopToVirtualAppliance(VIRTUAL_APPLIANCE_IP)
@@ -67,6 +74,20 @@ public class TestRouteTables {
             Assert.assertTrue(route2.nextHopIpAddress() == null);
             Assert.assertTrue(route2.nextHopType().equals(hopType));
 
+            // Create a subnet that references the route table
+            networks.define("net" + this.testId)
+                .withRegion(region)
+                .withExistingResourceGroup(groupName)
+                .withAddressSpace("10.0.0.0/22")
+                .defineSubnet("subnet1")
+                    .withAddressPrefix("10.0.0.0/22")
+                    .withExistingRouteTable(routeTable)
+                    .attach()
+                .create();
+
+            List<Subnet> subnets = routeTable.refresh().listAssociatedSubnets();
+            Assert.assertTrue(subnets.size() == 1);
+            Assert.assertTrue(subnets.get(0).routeTableId().equalsIgnoreCase(routeTable.id()));
             return routeTable;
         }
 
@@ -77,14 +98,14 @@ public class TestRouteTables {
                     .withTag("tag2", "value2")
                     .withoutRoute(ROUTE1_NAME)
                     .defineRoute(ROUTE_ADDED_NAME)
-                        .withDestinationAddressPrefix("10.2.0.0/29")
+                        .withDestinationAddressPrefix("10.0.2.0/29")
                         .withNextHop(RouteNextHopType.NONE)
                         .attach()
                     .updateRoute(ROUTE2_NAME)
                         .withDestinationAddressPrefix("50.46.112.0/29")
                         .withNextHop(RouteNextHopType.INTERNET)
                         .parent()
-                    .withRouteViaVirtualAppliance("10.5.0.0/29", VIRTUAL_APPLIANCE_IP)
+                    .withRouteViaVirtualAppliance("10.0.5.0/29", VIRTUAL_APPLIANCE_IP)
                     .apply();
 
             Assert.assertTrue(routeTable.tags().containsKey("tag1"));
@@ -92,6 +113,15 @@ public class TestRouteTables {
             Assert.assertTrue(!routeTable.routes().containsKey(ROUTE1_NAME));
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE2_NAME));
             Assert.assertTrue(routeTable.routes().containsKey(ROUTE_ADDED_NAME));
+
+            this.networks.getByGroup(routeTable.resourceGroupName(), "net" + this.testId).update()
+                .updateSubnet("subnet1")
+                    .withoutRouteTable()
+                        .parent()
+                .apply();
+
+            List<Subnet> subnets = routeTable.refresh().listAssociatedSubnets();
+            Assert.assertTrue(subnets.size() == 0);
 
             return routeTable;
         }
@@ -130,7 +160,8 @@ public class TestRouteTables {
         for (Subnet subnet : subnets) {
             info.append("\n\t\tResource group: ").append(subnet.parent().resourceGroupName())
                 .append("\n\t\tNetwork name: ").append(subnet.parent().name())
-                .append("\n\t\tSubnet name: ").append(subnet.name());
+                .append("\n\t\tSubnet name: ").append(subnet.name())
+                .append("\n\tSubnet's route table ID: ").append(subnet.routeTableId());
         }
 
         System.out.println(info.toString());
