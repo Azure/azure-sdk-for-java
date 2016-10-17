@@ -87,7 +87,7 @@ public interface TrafficManagerEndpoint extends
              * @param resourceId the Azure resource id
              * @return the next stage of the endpoint definition
              */
-            WithAttach<ParentT> withTargetAzureResourceId(String resourceId);
+            WithAttach<ParentT> withAzureEndpoint(String resourceId);
 
             /**
              * Specifies an external endpoint that is not hosted in Azure.
@@ -95,7 +95,7 @@ public interface TrafficManagerEndpoint extends
              * @param externalFqdn the external FQDN
              * @return the next stage of the endpoint definition
              */
-            WithSourceTrafficRegion<ParentT> withExternalFqdn(String externalFqdn);
+            WithSourceTrafficRegion<ParentT> withExternalEndpoint(String externalFqdn);
 
             /**
              * Specifies a nested traffic manager profile for the endpoint.
@@ -103,7 +103,7 @@ public interface TrafficManagerEndpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the endpoint definition
              */
-            WithEndpointThreshold<ParentT> withNestedProfile(TrafficManagerProfile nestedProfile);
+            WithEndpointThreshold<ParentT> withNestedEndpoint(TrafficManagerProfile nestedProfile);
         }
 
         /**
@@ -239,7 +239,7 @@ public interface TrafficManagerEndpoint extends
              * @param resourceId the Azure resource id
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withTargetAzureResourceId(String resourceId);
+            WithAttach<ParentT> withAzureEndpoint(String resourceId);
 
             /**
              * SSpecifies an external endpoint that is not hosted in Azure.
@@ -247,7 +247,7 @@ public interface TrafficManagerEndpoint extends
              * @param externalFqdn the external FQDN
              * @return the next stage of the definition
              */
-            WithSourceTrafficRegion<ParentT> withExternalFqdn(String externalFqdn);
+            WithSourceTrafficRegion<ParentT> withExternalEndpoint(String externalFqdn);
 
             /**
              * Specifies a nested traffic manager profile for the endpoint.
@@ -255,7 +255,7 @@ public interface TrafficManagerEndpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the definition
              */
-            WithEndpointThreshold<ParentT> withNestedProfile(TrafficManagerProfile nestedProfile);
+            WithEndpointThreshold<ParentT> withNestedEndpoint(TrafficManagerProfile nestedProfile);
         }
 
         /**
@@ -355,7 +355,7 @@ public interface TrafficManagerEndpoint extends
      * The entirety of an Azure endpoint update as a part of parent traffic manager profile profile update.
      */
     interface UpdateAzureEndpoint extends
-            UpdateStages.WithTargetAzureResourceId,
+            UpdateStages.WithAzureResource,
             Update {
     }
 
@@ -394,7 +394,7 @@ public interface TrafficManagerEndpoint extends
         /**
          * The stage of an Azure endpoint update allowing to specify the target Azure resource.
          */
-        interface WithTargetAzureResourceId {
+        interface WithAzureResource {
             /**
              * Specifies the resource ID of an Azure resource.
              * <p>
@@ -403,7 +403,7 @@ public interface TrafficManagerEndpoint extends
              * @param resourceId the Azure resource id
              * @return the next stage of the endpoint update
              */
-            Update withTargetAzureResourceId(String resourceId);
+            Update withAzureResource(String resourceId);
         }
 
         /**
@@ -416,7 +416,7 @@ public interface TrafficManagerEndpoint extends
              * @param externalFqdn the external FQDN
              * @return the next stage of the endpoint update
              */
-            UpdateExternalEndpoint withExternalFqdn(String externalFqdn);
+            UpdateExternalEndpoint withFqdn(String externalFqdn);
         }
 
         /**
@@ -430,7 +430,7 @@ public interface TrafficManagerEndpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the update
              */
-            UpdateNestedProfileEndpoint withNestedProfile(TrafficManagerProfile nestedProfile);
+            UpdateNestedProfileEndpoint withProfile(TrafficManagerProfile nestedProfile);
 
             /**
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.

@@ -114,7 +114,7 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public TrafficManagerProfileImpl withDnsLabel(String dnsLabel) {
+    public TrafficManagerProfileImpl withLeafDomainLabel(String dnsLabel) {
         this.inner().dnsConfig().withRelativeName(dnsLabel);
         return this;
     }

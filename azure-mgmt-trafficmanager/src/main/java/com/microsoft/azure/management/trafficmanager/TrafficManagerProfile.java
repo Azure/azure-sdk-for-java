@@ -90,9 +90,8 @@ public interface TrafficManagerProfile extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithDnsLabel,
+            DefinitionStages.WithLeafDomainLabel,
             DefinitionStages.WithTrafficRoutingMethod,
-            DefinitionStages.WithMonitoringConfiguration,
             DefinitionStages.WithCreate {
     }
 
@@ -103,21 +102,23 @@ public interface TrafficManagerProfile extends
         /**
          * The stage of the traffic manager profile definition allowing to specify the resource group.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithDnsLabel> {
+        interface Blank extends GroupableResource.DefinitionStages.WithGroupAndRegion<WithLeafDomainLabel> {
         }
 
         /**
          * The stage of the traffic manager profile definition allowing to specify the relative DNS name.
          */
-        interface WithDnsLabel {
+        interface WithLeafDomainLabel {
             /**
              * Specify the relative DNS name of the profile.
              * <p>
+             * The fully qualified domain name (FQDN)
+             * will be constructed automatically by appending the rest of the domain to this label.
              *
              * @param dnsLabel the relative DNS name of the profile
              * @return the next stage of the traffic manager profile definition
              */
-            WithTrafficRoutingMethod withDnsLabel(String dnsLabel);
+            WithTrafficRoutingMethod withLeafDomainLabel(String dnsLabel);
         }
 
         /**
@@ -132,7 +133,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withPriorityBasedRouting();
+            WithEndpoint withPriorityBasedRouting();
 
             /**
              * Specify that end user traffic should be distributed to the endpoints based on the weight assigned
@@ -140,7 +141,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withWeightBasedRouting();
+            WithEndpoint withWeightBasedRouting();
 
             /**
              * Specify that end user traffic should be routed based on the geographic location of the endpoint
@@ -148,7 +149,7 @@ public interface TrafficManagerProfile extends
              *
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withPerformanceBasedRouting();
+            WithEndpoint withPerformanceBasedRouting();
 
             /**
              * Specify the traffic routing method for the profile.
@@ -156,48 +157,7 @@ public interface TrafficManagerProfile extends
              * @param routingMethod the traffic routing method for the profile
              * @return the next stage of the traffic manager profile definition
              */
-            WithMonitoringConfiguration withTrafficRoutingMethod(TrafficRoutingMethod routingMethod);
-        }
-
-        /**
-         * The stage of the traffic manager profile definition allowing to specify the endpoint monitoring configuration.
-         */
-        interface WithMonitoringConfiguration {
-            /**
-             * Specify to use HTTP monitoring for the endpoints that checks for HTTP 200 response from the path '/'
-             * at regular intervals, using port 80.
-             *
-             * @return the next stage of the traffic manager profile definition
-             */
-            WithEndpoint withHttpMonitoring();
-
-            /**
-             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/'
-             * at regular intervals, using port 443.
-             *
-             * @return the next stage of the traffic manager profile definition
-             */
-            WithEndpoint withHttpsMonitoring();
-
-            /**
-             * Specify the HTTP monitoring for the endpoints that checks for HTTP 200 response from the specified
-             * path at regular intervals, using the specified port.
-             *
-             * @param port the monitoring port
-             * @param path  the monitoring path
-             * @return the next stage of the traffic manager profile definition
-             */
-            WithEndpoint withHttpMonitoring(int port, String path);
-
-            /**
-             * Specify the HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the specified
-             * path at regular intervals, using the specified port.
-             *
-             * @param port the monitoring port
-             * @param path  the monitoring path
-             * @return the next stage of the traffic manager profile definition
-             */
-            WithEndpoint withHttpsMonitoring(int port, String path);
+            WithEndpoint withTrafficRoutingMethod(TrafficRoutingMethod routingMethod);
         }
 
         /**
@@ -211,6 +171,47 @@ public interface TrafficManagerProfile extends
              * @return the stage representing configuration for the endpoint
              */
             TrafficManagerEndpoint.DefinitionStages.Blank<WithCreate> defineEndpoint(String name);
+        }
+
+        /**
+         * The stage of the traffic manager profile definition allowing to specify the endpoint monitoring configuration.
+         */
+        interface WithMonitoringConfiguration {
+            /**
+             * Specify to use HTTP monitoring for the endpoints that checks for HTTP 200 response from the path '/'
+             * at regular intervals, using port 80.
+             *
+             * @return the next stage of the traffic manager profile definition
+             */
+            WithCreate withHttpMonitoring();
+
+            /**
+             * Specify to use HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the path '/'
+             * at regular intervals, using port 443.
+             *
+             * @return the next stage of the traffic manager profile definition
+             */
+            WithCreate withHttpsMonitoring();
+
+            /**
+             * Specify the HTTP monitoring for the endpoints that checks for HTTP 200 response from the specified
+             * path at regular intervals, using the specified port.
+             *
+             * @param port the monitoring port
+             * @param path  the monitoring path
+             * @return the next stage of the traffic manager profile definition
+             */
+            WithCreate withHttpMonitoring(int port, String path);
+
+            /**
+             * Specify the HTTPS monitoring for the endpoints that checks for HTTPS 200 response from the specified
+             * path at regular intervals, using the specified port.
+             *
+             * @param port the monitoring port
+             * @param path  the monitoring path
+             * @return the next stage of the traffic manager profile definition
+             */
+            WithCreate withHttpsMonitoring(int port, String path);
         }
 
         /**
@@ -247,6 +248,7 @@ public interface TrafficManagerProfile extends
         interface WithCreate extends
                 Creatable<TrafficManagerProfile>,
                 Resource.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithMonitoringConfiguration,
                 DefinitionStages.WithTtl,
                 DefinitionStages.WithProfileStatus,
                 DefinitionStages.WithEndpoint {

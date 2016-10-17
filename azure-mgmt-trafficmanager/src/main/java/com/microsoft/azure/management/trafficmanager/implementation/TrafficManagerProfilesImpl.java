@@ -92,6 +92,7 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
     private TrafficManagerProfileImpl setDefaults(TrafficManagerProfileImpl profile) {
         // MonitorConfig is required
         profile.inner().withMonitorConfig(new MonitorConfig());
+        profile.withHttpMonitoring(); // Default to Http monitoring
         // DnsConfig is required
         profile.inner().withDnsConfig(new DnsConfig());
         profile.withTimeToLive(300);
