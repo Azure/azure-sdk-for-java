@@ -72,24 +72,10 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the IP address of a virtual
-         * appliance to direct the traffic through.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
-         */
-        interface WithNextHopToVirtualAppliance<ParentT> {
-            /**
-             * Specifies the IP address of the virtual appliance for the next hop to go to.
-             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withNextHopToVirtualAppliance(String ipAddress);
-        }
-
-        /**
          * The stage of a route definition allowing to specify the next hop type.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithNextHopType<ParentT> extends WithNextHopToVirtualAppliance<ParentT> {
+        interface WithNextHopType<ParentT> {
             /**
              * Specifies the next hop type.
              * <p>
@@ -98,6 +84,13 @@ public interface Route extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withNextHop(RouteNextHopType nextHopType);
+
+            /**
+             * Specifies the IP address of the virtual appliance for the next hop to go to.
+             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNextHopToVirtualAppliance(String ipAddress);
         }
     }
 
@@ -108,8 +101,7 @@ public interface Route extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithNextHopType<ParentT>,
-        DefinitionStages.WithDestinationAddressPrefix<ParentT>,
-        DefinitionStages.WithNextHopToVirtualAppliance<ParentT> {
+        DefinitionStages.WithDestinationAddressPrefix<ParentT> {
     }
 
     /**
@@ -129,22 +121,9 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route update allowing to modify the IP address of a virtual appliance to
-         * direct the traffic through.
-         */
-        interface WithNextHopToVirtualAppliance {
-            /**
-             * Specifies the IP address of the virtual appliance for the next hop to go to.
-             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
-             * @return the next stage of the update
-             */
-            Update withNextHopToVirtualAppliance(String ipAddress);
-        }
-
-        /**
          * The stage of a route update allowing to specify the next hop type.
          */
-        interface WithNextHopType extends WithNextHopToVirtualAppliance {
+        interface WithNextHopType {
             /**
              * Specifies the next hop type.
              * <p>
@@ -153,6 +132,13 @@ public interface Route extends
              * @return the next stage of the update
              */
             Update withNextHop(RouteNextHopType nextHopType);
+
+            /**
+             * Specifies the IP address of the virtual appliance for the next hop to go to.
+             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
+             * @return the next stage of the update
+             */
+            Update withNextHopToVirtualAppliance(String ipAddress);
         }
     }
 
@@ -162,7 +148,6 @@ public interface Route extends
     interface Update extends
         Settable<RouteTable.Update>,
         UpdateStages.WithDestinationAddressPrefix,
-        UpdateStages.WithNextHopToVirtualAppliance,
         UpdateStages.WithNextHopType {
     }
 
@@ -201,24 +186,10 @@ public interface Route extends
         }
 
         /**
-         * The stage of a route definition allowing to specify the IP address of a virtual appliance
-         * to direct the traffic through.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
-         */
-        interface WithNextHopToVirtualAppliance<ParentT> {
-            /**
-             * Specifies the IP address of the virtual appliance for the next hop to go to.
-             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withNextHopToVirtualAppliance(String ipAddress);
-        }
-
-        /**
          * The stage of a route definition allowing to specify the next hop type.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithNextHopType<ParentT> extends WithNextHopToVirtualAppliance<ParentT> {
+        interface WithNextHopType<ParentT> {
             /**
              * Specifies the next hop type.
              * <p>
@@ -227,6 +198,13 @@ public interface Route extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withNextHop(RouteNextHopType nextHopType);
+
+            /**
+             * Specifies the IP address of the virtual appliance for the next hop to go to.
+             * @param ipAddress an IP address of an existing virtual appliance (virtual machine)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withNextHopToVirtualAppliance(String ipAddress);
         }
     }
 
@@ -237,7 +215,6 @@ public interface Route extends
        UpdateDefinitionStages.Blank<ParentT>,
        UpdateDefinitionStages.WithAttach<ParentT>,
        UpdateDefinitionStages.WithNextHopType<ParentT>,
-       UpdateDefinitionStages.WithDestinationAddressPrefix<ParentT>,
-       UpdateDefinitionStages.WithNextHopToVirtualAppliance<ParentT> {
+       UpdateDefinitionStages.WithDestinationAddressPrefix<ParentT> {
     }
 }
