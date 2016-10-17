@@ -108,10 +108,11 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     public TrafficManagerEndpointImpl withNestedEndpoint(TrafficManagerProfile nestedProfile) {
         this.inner().withType(EndpointType.NESTED_PROFILE.toString());
         this.inner().withTargetResourceId(nestedProfile.id());
+        this.inner().withMinChildEndpoints(new Long(1));
         return this;
     }
 
-    public TrafficManagerEndpointImpl withSourceTrafficRegion(Region location) {
+    public TrafficManagerEndpointImpl withEndpointRegion(Region location) {
         this.inner().withEndpointLocation(location.toString());
         return this;
     }

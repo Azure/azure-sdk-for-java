@@ -56,7 +56,8 @@ public interface TrafficManagerEndpoint extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithEndpointType<ParentT>,
             DefinitionStages.WithEndpointThreshold<ParentT>,
-            DefinitionStages.WithSourceTrafficRegion<ParentT>,
+            DefinitionStages.WithEndpointRegion<ParentT>,
+            DefinitionStages.WithEndpointRegionThenThreshold<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
 
@@ -95,7 +96,7 @@ public interface TrafficManagerEndpoint extends
              * @param externalFqdn the external FQDN
              * @return the next stage of the endpoint definition
              */
-            WithSourceTrafficRegion<ParentT> withExternalEndpoint(String externalFqdn);
+            WithEndpointRegion<ParentT> withExternalEndpoint(String externalFqdn);
 
             /**
              * Specifies a nested traffic manager profile for the endpoint.
@@ -103,7 +104,24 @@ public interface TrafficManagerEndpoint extends
              * @param nestedProfile the nested traffic manager profile
              * @return the next stage of the endpoint definition
              */
-            WithEndpointThreshold<ParentT> withNestedEndpoint(TrafficManagerProfile nestedProfile);
+            WithEndpointRegionThenThreshold<ParentT> withNestedEndpoint(TrafficManagerProfile nestedProfile);
+        }
+
+        /**
+         * The stage of the traffic manager endpoint definition allowing to specify the location of the external
+         * endpoint.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithEndpointRegion<ParentT> {
+            /**
+             * Specifies the location of the endpoint that will be used when the parent profile is configured with
+             * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
+             *
+             * @param location the location
+             * @return the next stage of the endpoint definition
+             */
+            WithAttach<ParentT> withEndpointRegion(Region location);
         }
 
         /**
@@ -112,23 +130,23 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithEndpointThreshold<ParentT> {
+        interface WithEndpointThreshold<ParentT> extends WithAttach<ParentT> {
             /**
              * Specifies the minimum number of endpoints to be online for the nested profile to be considered healthy.
              *
              * @param count the number of endpoints
              * @return the next stage of the endpoint definition
              */
-            WithSourceTrafficRegion<ParentT> withMinimumChildEndpoints(int count);
+            WithAttach<ParentT> withMinimumChildEndpoints(int count);
         }
 
         /**
-         * The stage of the traffic manager endpoint definition allowing to specify the location of the external
-         * or nested profile endpoints.
+         * The stage of the traffic manager endpoint definition allowing to specify the location of the nested profile
+         * endpoint.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithSourceTrafficRegion<ParentT> {
+        interface WithEndpointRegionThenThreshold<ParentT> {
             /**
              * Specifies the location of the endpoint that will be used when the parent profile is configured with
              * Performance routing method {@link TrafficRoutingMethod#PERFORMANCE}.
@@ -136,7 +154,7 @@ public interface TrafficManagerEndpoint extends
              * @param location the location
              * @return the next stage of the endpoint definition
              */
-            WithAttach<ParentT> withSourceTrafficRegion(Region location);
+            WithEndpointThreshold<ParentT> withEndpointRegion(Region location);
         }
 
         /**
@@ -364,7 +382,7 @@ public interface TrafficManagerEndpoint extends
      */
     interface UpdateExternalEndpoint extends
             UpdateStages.WithExternalFqdn,
-            UpdateStages.WithSourceTrafficRegion,
+            UpdateStages.WithEndpointRegion,
             Update {
     }
 
@@ -373,7 +391,7 @@ public interface TrafficManagerEndpoint extends
      */
     interface UpdateNestedProfileEndpoint extends
             UpdateStages.WithNestedProfileConfig,
-            UpdateStages.WithSourceTrafficRegion,
+            UpdateStages.WithEndpointRegion,
             Update {
     }
 
@@ -445,7 +463,7 @@ public interface TrafficManagerEndpoint extends
          * The stage of the traffic manager endpoint update allowing to specify the location of the external
          * or nested profile endpoints.
          */
-        interface WithSourceTrafficRegion {
+        interface WithEndpointRegion {
             /**
              * Specifies the region of the endpoint that will be used when the performance-based routing method
              * {@link TrafficRoutingMethod#PERFORMANCE} is enabled on the profile.
@@ -453,7 +471,7 @@ public interface TrafficManagerEndpoint extends
              * @param location the location
              * @return the next stage of the endpoint update
              */
-            Update withSourceTrafficRegion(Region location);
+            Update withEndpointRegion(Region location);
         }
 
         /**
