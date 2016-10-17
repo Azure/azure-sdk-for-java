@@ -89,7 +89,7 @@ public class DatabaseInner extends Resource {
      * Gets the Service Level Objective of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID serviceLevelObjective;
+    private String serviceLevelObjective;
 
     /**
      * Gets the status of the Azure SQL Database.
@@ -281,7 +281,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the serviceLevelObjective value
      */
-    public UUID serviceLevelObjective() {
+    public String serviceLevelObjective() {
         return this.serviceLevelObjective;
     }
 
