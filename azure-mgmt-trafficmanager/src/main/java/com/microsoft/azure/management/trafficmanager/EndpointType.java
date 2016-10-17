@@ -22,7 +22,7 @@ public enum EndpointType {
     /**
      * Enum value Microsoft.Network/trafficManagerProfiles/nestedEndpoints.
      */
-    NESTEDPROFILE("Microsoft.Network/trafficManagerProfiles/nestedEndpoints");
+    NESTED_PROFILE("Microsoft.Network/trafficManagerProfiles/nestedEndpoints");
 
     private String value;
 

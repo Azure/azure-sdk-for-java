@@ -45,7 +45,7 @@ class TrafficManagerEndpointsImpl extends
     /**
      * @return the azure endpoints as a map indexed by name.
      */
-    public Map<String, TrafficManagerAzureEndpoint> azureEndpointsAsMap() {
+    Map<String, TrafficManagerAzureEndpoint> azureEndpointsAsMap() {
         Map<String, TrafficManagerAzureEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
@@ -63,7 +63,7 @@ class TrafficManagerEndpointsImpl extends
     /**
      * @return the external endpoints as a map indexed by name.
      */
-    public Map<String, TrafficManagerExternalEndpoint> externalEndpointsAsMap() {
+    Map<String, TrafficManagerExternalEndpoint> externalEndpointsAsMap() {
         Map<String, TrafficManagerExternalEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
@@ -81,11 +81,11 @@ class TrafficManagerEndpointsImpl extends
     /**
      * @return the nested profile endpoints as a map indexed by name.
      */
-    public Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpointsAsMap() {
+    Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpointsAsMap() {
         Map<String, TrafficManagerNestedProfileEndpoint> result = new HashMap<>();
         for (Map.Entry<String, TrafficManagerEndpointImpl> entry : this.collection().entrySet()) {
             TrafficManagerEndpointImpl endpoint = entry.getValue();
-            if (endpoint.endpointType() == EndpointType.NESTEDPROFILE) {
+            if (endpoint.endpointType() == EndpointType.NESTED_PROFILE) {
                 TrafficManagerNestedProfileEndpoint nestedProfileEndpoint = new TrafficManagerNestedProfileEndpointImpl(entry.getKey(),
                         this.parent(),
                         endpoint.inner(),
@@ -142,7 +142,7 @@ class TrafficManagerEndpointsImpl extends
      */
     public TrafficManagerEndpointImpl updateNestedProfileEndpoint(String name) {
         TrafficManagerEndpointImpl endpoint = this.prepareUpdate(name);
-        if (endpoint.endpointType() != EndpointType.NESTEDPROFILE) {
+        if (endpoint.endpointType() != EndpointType.NESTED_PROFILE) {
             throw new IllegalArgumentException("A nested profile endpoint with name " + name + " not found in the profile");
         }
         return endpoint;

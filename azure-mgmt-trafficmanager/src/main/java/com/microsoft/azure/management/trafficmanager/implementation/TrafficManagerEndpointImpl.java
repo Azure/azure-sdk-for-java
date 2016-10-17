@@ -55,8 +55,8 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public boolean isDisabled() {
-        return this.inner().endpointStatus().equalsIgnoreCase(this.endpointStatusDisabled);
+    public boolean isEnabled() {
+        return this.inner().endpointStatus().equalsIgnoreCase(this.endpointStatusEnabled);
     }
 
     @Override
@@ -91,12 +91,12 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
 
     @Override
     public TrafficManagerEndpointImpl withNestedProfile(TrafficManagerProfile nestedProfile) {
-        this.inner().withType(EndpointType.NESTEDPROFILE.toString());
+        this.inner().withType(EndpointType.NESTED_PROFILE.toString());
         this.inner().withTargetResourceId(nestedProfile.id());
         return this;
     }
 
-    public TrafficManagerEndpointImpl withSourceTrafficLocation(Region location) {
+    public TrafficManagerEndpointImpl withSourceTrafficRegion(Region location) {
         this.inner().withEndpointLocation(location.toString());
         return this;
     }

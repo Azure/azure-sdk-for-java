@@ -22,7 +22,7 @@ public class ProfileMonitorStatus {
     public static final ProfileMonitorStatus DEGRADED = new ProfileMonitorStatus("Degraded");
 
     /** Static value CheckingEndpoint for ProfileMonitorStatus. */
-    public static final ProfileMonitorStatus CHECKINGENDPOINT = new ProfileMonitorStatus("CheckingEndpoint");
+    public static final ProfileMonitorStatus CHECKING_ENDPOINT = new ProfileMonitorStatus("CheckingEndpoint");
 
     private String value;
 

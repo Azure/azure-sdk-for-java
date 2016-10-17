@@ -37,14 +37,14 @@ public interface TrafficManagerProfile extends
     String fqdn();
 
     /**
-     * @return the DNS Ttime-To-Live (TTL), in seconds
+     * @return the DNS Time-To-Live (TTL), in seconds
      */
-    int ttl();
+    int timeToLive();
 
     /**
-     * @return true if the traffic manager profile is disabled, false if enabled
+     * @return true if the traffic manager profile is enabled, false if enabled
      */
-    boolean isDisabled();
+    boolean isEnabled();
 
     /**
      * @return the routing method used to route traffic to traffic manager profile endpoints
@@ -223,7 +223,7 @@ public interface TrafficManagerProfile extends
              * @param ttlInSeconds DNS TTL in seconds
              * @return the next stage of the traffic manager profile definition
              */
-            WithCreate withTtl(int ttlInSeconds);
+            WithCreate withTimeToLive(int ttlInSeconds);
         }
 
         /**
@@ -393,7 +393,7 @@ public interface TrafficManagerProfile extends
              * @param ttlInSeconds DNS TTL in seconds
              * @return the next stage of the traffic manager profile update
              */
-            Update withTtl(int ttlInSeconds);
+            Update withTimeToLive(int ttlInSeconds);
         }
 
         /**

@@ -22,7 +22,7 @@ public class EndpointMonitorStatus {
     public static final EndpointMonitorStatus DEGRADED = new EndpointMonitorStatus("Degraded");
 
     /** Static value CheckingEndpoint for EndpointMonitorStatus. */
-    public static final EndpointMonitorStatus CHECKINGENDPOINT = new EndpointMonitorStatus("CheckingEndpoint");
+    public static final EndpointMonitorStatus CHECKING_ENDPOINT = new EndpointMonitorStatus("CheckingEndpoint");
 
     /** Static value Stopped for EndpointMonitorStatus. */
     public static final EndpointMonitorStatus STOPPED = new EndpointMonitorStatus("Stopped");

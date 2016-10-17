@@ -94,7 +94,7 @@ class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
         profile.inner().withMonitorConfig(new MonitorConfig());
         // DnsConfig is required
         profile.inner().withDnsConfig(new DnsConfig());
-        profile.withTtl(300);
+        profile.withTimeToLive(300);
         // TM location must be 'global' irrespective of region of the resource group it resides.
         profile.inner().withLocation("global");
         // Endpoints are external child resource still initializing it avoid null checks in the model impl.

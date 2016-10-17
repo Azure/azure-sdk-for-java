@@ -59,13 +59,13 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public int ttl() {
+    public int timeToLive() {
         return this.inner().dnsConfig().ttl().intValue();
     }
 
     @Override
-    public boolean isDisabled() {
-        return this.inner().profileStatus().equalsIgnoreCase(this.profileStatusDisabled);
+    public boolean isEnabled() {
+        return this.inner().profileStatus().equalsIgnoreCase(this.profileStatusEnabled);
     }
 
     @Override
@@ -210,7 +210,7 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public TrafficManagerProfileImpl withTtl(int ttlInSeconds) {
+    public TrafficManagerProfileImpl withTimeToLive(int ttlInSeconds) {
         this.inner().dnsConfig().withTtl(new Long(ttlInSeconds));
         return this;
     }

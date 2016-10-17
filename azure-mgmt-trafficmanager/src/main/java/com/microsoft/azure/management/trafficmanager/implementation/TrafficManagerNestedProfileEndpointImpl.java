@@ -26,7 +26,7 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
     }
 
     @Override
-    public int minChildEndpoints() {
+    public int minimumChildEndpointCount() {
         if (inner().minChildEndpoints() == null) {
             return 0;
         }
