@@ -12,7 +12,8 @@ import com.microsoft.azure.management.website.ResourceMetricName;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.microsoft.azure.management.website.ResourceMetricValue;
-import com.microsoft.azure.management.website.KeyValuePairStringString;
+import com.microsoft.azure.management.website.ResourceMetricProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Object representing a metric for any resource.
@@ -21,42 +22,56 @@ public class ResourceMetricInner {
     /**
      * Name of metric.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private ResourceMetricName name;
 
     /**
      * Metric unit.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
      * Metric granularity. E.g PT1H, PT5M, P1D.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String timeGrain;
 
     /**
      * Metric start time.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
      * Metric end time.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
      * Metric resource Id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
+
+    /**
+     * Resource Id.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
 
     /**
      * Metric values.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricValue> metricValues;
 
     /**
      * Properties.
      */
-    private List<KeyValuePairStringString> properties;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<ResourceMetricProperty> properties;
 
     /**
      * Get the name value.
@@ -65,17 +80,6 @@ public class ResourceMetricInner {
      */
     public ResourceMetricName name() {
         return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withName(ResourceMetricName name) {
-        this.name = name;
-        return this;
     }
 
     /**
@@ -88,34 +92,12 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Set the unit value.
-     *
-     * @param unit the unit value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withUnit(String unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
      * Get the timeGrain value.
      *
      * @return the timeGrain value
      */
     public String timeGrain() {
         return this.timeGrain;
-    }
-
-    /**
-     * Set the timeGrain value.
-     *
-     * @param timeGrain the timeGrain value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withTimeGrain(String timeGrain) {
-        this.timeGrain = timeGrain;
-        return this;
     }
 
     /**
@@ -128,34 +110,12 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Set the startTime value.
-     *
-     * @param startTime the startTime value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withStartTime(DateTime startTime) {
-        this.startTime = startTime;
-        return this;
-    }
-
-    /**
      * Get the endTime value.
      *
      * @return the endTime value
      */
     public DateTime endTime() {
         return this.endTime;
-    }
-
-    /**
-     * Set the endTime value.
-     *
-     * @param endTime the endTime value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withEndTime(DateTime endTime) {
-        this.endTime = endTime;
-        return this;
     }
 
     /**
@@ -168,14 +128,12 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Set the resourceId value.
+     * Get the id value.
      *
-     * @param resourceId the resourceId value to set
-     * @return the ResourceMetricInner object itself.
+     * @return the id value
      */
-    public ResourceMetricInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -188,34 +146,12 @@ public class ResourceMetricInner {
     }
 
     /**
-     * Set the metricValues value.
-     *
-     * @param metricValues the metricValues value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withMetricValues(List<ResourceMetricValue> metricValues) {
-        this.metricValues = metricValues;
-        return this;
-    }
-
-    /**
      * Get the properties value.
      *
      * @return the properties value
      */
-    public List<KeyValuePairStringString> properties() {
+    public List<ResourceMetricProperty> properties() {
         return this.properties;
-    }
-
-    /**
-     * Set the properties value.
-     *
-     * @param properties the properties value to set
-     * @return the ResourceMetricInner object itself.
-     */
-    public ResourceMetricInner withProperties(List<KeyValuePairStringString> properties) {
-        this.properties = properties;
-        return this;
     }
 
 }

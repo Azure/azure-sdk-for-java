@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.website;
 
+import java.util.List;
+import com.microsoft.azure.management.website.implementation.CapabilityInner;
 
 /**
  * Describes a sku for a scalable resource.
@@ -37,6 +39,21 @@ public class SkuDescription {
      * Current number of instances assigned to the resource.
      */
     private Integer capacity;
+
+    /**
+     * Min, max, and default scale values of the sku.
+     */
+    private SkuCapacity skuCapacity;
+
+    /**
+     * Locations of the sku.
+     */
+    private List<String> locations;
+
+    /**
+     * Capabilities of the sku, eg., is traffic manager enabled?.
+     */
+    private List<CapabilityInner> capabilities;
 
     /**
      * Get the name value.
@@ -135,6 +152,66 @@ public class SkuDescription {
      */
     public SkuDescription withCapacity(Integer capacity) {
         this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the skuCapacity value.
+     *
+     * @return the skuCapacity value
+     */
+    public SkuCapacity skuCapacity() {
+        return this.skuCapacity;
+    }
+
+    /**
+     * Set the skuCapacity value.
+     *
+     * @param skuCapacity the skuCapacity value to set
+     * @return the SkuDescription object itself.
+     */
+    public SkuDescription withSkuCapacity(SkuCapacity skuCapacity) {
+        this.skuCapacity = skuCapacity;
+        return this;
+    }
+
+    /**
+     * Get the locations value.
+     *
+     * @return the locations value
+     */
+    public List<String> locations() {
+        return this.locations;
+    }
+
+    /**
+     * Set the locations value.
+     *
+     * @param locations the locations value to set
+     * @return the SkuDescription object itself.
+     */
+    public SkuDescription withLocations(List<String> locations) {
+        this.locations = locations;
+        return this;
+    }
+
+    /**
+     * Get the capabilities value.
+     *
+     * @return the capabilities value
+     */
+    public List<CapabilityInner> capabilities() {
+        return this.capabilities;
+    }
+
+    /**
+     * Set the capabilities value.
+     *
+     * @param capabilities the capabilities value to set
+     * @return the SkuDescription object itself.
+     */
+    public SkuDescription withCapabilities(List<CapabilityInner> capabilities) {
+        this.capabilities = capabilities;
         return this;
     }
 

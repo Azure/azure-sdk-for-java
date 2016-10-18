@@ -21,10 +21,11 @@ public class ConnStringValueTypePair {
 
     /**
      * Type of database. Possible values include: 'MySql', 'SQLServer',
-     * 'SQLAzure', 'Custom'.
+     * 'SQLAzure', 'Custom', 'NotificationHub', 'ServiceBus', 'EventHub',
+     * 'ApiHub', 'DocDb', 'RedisCache'.
      */
     @JsonProperty(required = true)
-    private DatabaseServerType type;
+    private ConnectionStringType type;
 
     /**
      * Get the value value.
@@ -51,7 +52,7 @@ public class ConnStringValueTypePair {
      *
      * @return the type value
      */
-    public DatabaseServerType type() {
+    public ConnectionStringType type() {
         return this.type;
     }
 
@@ -61,7 +62,7 @@ public class ConnStringValueTypePair {
      * @param type the type value to set
      * @return the ConnStringValueTypePair object itself.
      */
-    public ConnStringValueTypePair withType(DatabaseServerType type) {
+    public ConnStringValueTypePair withType(ConnectionStringType type) {
         this.type = type;
         return this;
     }

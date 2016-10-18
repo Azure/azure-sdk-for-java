@@ -13,80 +13,93 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
+import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Test of virtual network management.
  */
-public class TestNetwork extends TestTemplate<Network, Networks> {
+public class TestNetwork {
+    /**
+     * Test of plain subnets.
+     */
+    public static class WithSubnets extends TestTemplate<Network, Networks> {
+        private final NetworkSecurityGroups nsgs;
+        WithSubnets(NetworkSecurityGroups nsgs) {
+            this.nsgs = nsgs;
+        }
 
-    private final NetworkSecurityGroups nsgs;
-    TestNetwork(NetworkSecurityGroups nsgs) {
-        this.nsgs = nsgs;
+        @Override
+        public Network createResource(Networks networks) throws Exception {
+            final String newName = "net" + this.testId;
+            Region region = Region.US_WEST;
+            String groupName = "rg" + this.testId;
+
+            // Create an NSG
+            NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
+                    .withRegion(region)
+                    .withNewResourceGroup(groupName)
+                    .create();
+
+            // Create a network
+            final Network network = networks.define(newName)
+                    .withRegion(region)
+                    .withNewResourceGroup(groupName)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnetA", "10.0.0.0/29")
+                    .defineSubnet("subnetB")
+                        .withAddressPrefix("10.0.0.8/29")
+                        .withExistingNetworkSecurityGroup(nsg)
+                        .attach()
+                    .create();
+
+            List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
+            Assert.assertTrue(subnets.size() == 1);
+            Subnet subnet = subnets.get(0);
+            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
+            Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
+            return network;
+        }
+
+        @Override
+        public Network updateResource(Network resource) throws Exception {
+            NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
+                    .withRegion(resource.region())
+                    .withExistingResourceGroup(resource.resourceGroupName())
+                    .create();
+
+            resource =  resource.update()
+                    .withTag("tag1", "value1")
+                    .withTag("tag2", "value2")
+                    .withAddressSpace("141.25.0.0/16")
+                    .withSubnet("subnetC", "141.25.0.0/29")
+                    .withoutSubnet("subnetA")
+                    .updateSubnet("subnetB")
+                        .withAddressPrefix("141.25.0.8/29")
+                        .withExistingNetworkSecurityGroup(nsg)
+                        .parent()
+                    .defineSubnet("subnetD")
+                        .withAddressPrefix("141.25.0.16/29")
+                        .withExistingNetworkSecurityGroup(nsg)
+                        .attach()
+                    .apply();
+            Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+            return resource;
+        }
+
+        @Override
+        public void print(Network resource) {
+            printNetwork(resource);
+        }
     }
 
-    @Override
-    public Network createResource(Networks networks) throws Exception {
-        final String newName = "net" + this.testId;
-        Region region = Region.US_WEST;
-        String groupName = "rg" + this.testId;
-
-        // Create an NSG
-        NetworkSecurityGroup nsg = nsgs.define("nsg" + this.testId)
-                .withRegion(region)
-                .withNewResourceGroup(groupName)
-                .create();
-
-        // Create a network
-        final Network network = networks.define(newName)
-                .withRegion(region)
-                .withNewResourceGroup(groupName)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnetA", "10.0.0.0/29")
-                .defineSubnet("subnetB")
-                    .withAddressPrefix("10.0.0.8/29")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .attach()
-                .create();
-
-        List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
-        Assert.assertTrue(subnets.size() == 1);
-        Subnet subnet = subnets.get(0);
-        Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
-        Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
-        return network;
-    }
-
-    @Override
-    public Network updateResource(Network resource) throws Exception {
-        NetworkSecurityGroup nsg = nsgs.define("nsgB" + this.testId)
-                .withRegion(resource.region())
-                .withExistingResourceGroup(resource.resourceGroupName())
-                .create();
-
-        resource =  resource.update()
-                .withTag("tag1", "value1")
-                .withTag("tag2", "value2")
-                .withAddressSpace("141.25.0.0/16")
-                .withSubnet("subnetC", "141.25.0.0/29")
-                .withoutSubnet("subnetA")
-                .updateSubnet("subnetB")
-                    .withAddressPrefix("141.25.0.8/29")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .parent()
-                .defineSubnet("subnetD")
-                    .withAddressPrefix("141.25.0.16/29")
-                    .withExistingNetworkSecurityGroup(nsg)
-                    .attach()
-                .apply();
-        Assert.assertTrue(resource.tags().containsKey("tag1"));
-
-        return resource;
-    }
-
-    @Override
-    public void print(Network resource) {
+	/**
+	 * Outputs info about a network
+	 * @param resource a network
+	 */
+	public static void printNetwork(Network resource) {
         StringBuilder info = new StringBuilder();
         info.append("Network: ").append(resource.id())
                 .append("Name: ").append(resource.name())
@@ -99,8 +112,10 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
         // Output subnets
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
-                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix())
-                .append("\n\tAssociated NSG: ");
+                .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+
+            // Show associated NSG
+            info.append("\n\tAssociated NSG: ");
 
             NetworkSecurityGroup nsg;
             try {
@@ -109,13 +124,20 @@ public class TestNetwork extends TestTemplate<Network, Networks> {
                 nsg = null;
             }
 
-            if (null == nsg) {
-                info.append("(None)");
-            } else {
-                info.append(nsg.resourceGroupName() + "/" + nsg.name());
+            info.append((null == nsg) ? "(None)" : nsg.resourceGroupName() + "/" + nsg.name());
+
+            // Show associated route table
+            info.append("\n\tAssociated route table: ");
+            RouteTable routeTable;
+            try {
+                routeTable = subnet.getRouteTable();
+            } catch (Exception e) {
+                routeTable = null;
             }
+
+            info.append((null == routeTable) ? "(None)" : routeTable.resourceGroupName() + "/" + routeTable.name());
         }
 
         System.out.println(info.toString());
-    }
+	}
 }

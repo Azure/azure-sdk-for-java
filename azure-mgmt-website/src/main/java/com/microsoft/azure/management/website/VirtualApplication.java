@@ -11,26 +11,26 @@ package com.microsoft.azure.management.website;
 import java.util.List;
 
 /**
- * The VirtualApplication model.
+ * Virtual application under web app.
  */
 public class VirtualApplication {
     /**
-     * The virtualPath property.
+     * Virtual path.
      */
     private String virtualPath;
 
     /**
-     * The physicalPath property.
+     * Physical path.
      */
     private String physicalPath;
 
     /**
-     * The preloadEnabled property.
+     * Is preload enabled.
      */
     private Boolean preloadEnabled;
 
     /**
-     * The virtualDirectories property.
+     * Virtual Directories for virtual application.
      */
     private List<VirtualDirectory> virtualDirectories;
 

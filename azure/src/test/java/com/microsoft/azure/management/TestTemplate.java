@@ -102,7 +102,7 @@ public abstract class TestTemplate<
         this.resourceGroups = resourceGroups;
 
         // Initial listing
-        final int initialCount = verifyListing();
+        verifyListing();
 
         // Verify creation
         this.resource = createResource(collection);
@@ -110,7 +110,7 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify listing
-        Assert.assertTrue(verifyListing() - initialCount >= 1);
+        verifyListing();
 
         // Verify getting
         this.resource = verifyGetting();

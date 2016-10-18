@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources;
 
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment operation properties.
@@ -17,41 +18,49 @@ public class DeploymentOperationProperties {
     /**
      * The state of the provisioning.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
      * The date and time of the operation.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestamp;
 
     /**
      * Deployment operation service request id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String serviceRequestId;
 
     /**
      * Operation status code.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String statusCode;
 
     /**
      * Operation status message.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Object statusMessage;
 
     /**
      * The target resource.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private TargetResource targetResource;
 
     /**
      * The HTTP request message.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage request;
 
     /**
      * The HTTP response message.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private HttpMessage response;
 
     /**
@@ -64,34 +73,12 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the timestamp value.
      *
      * @return the timestamp value
      */
     public DateTime timestamp() {
         return this.timestamp;
-    }
-
-    /**
-     * Set the timestamp value.
-     *
-     * @param timestamp the timestamp value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withTimestamp(DateTime timestamp) {
-        this.timestamp = timestamp;
-        return this;
     }
 
     /**
@@ -104,34 +91,12 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Set the serviceRequestId value.
-     *
-     * @param serviceRequestId the serviceRequestId value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withServiceRequestId(String serviceRequestId) {
-        this.serviceRequestId = serviceRequestId;
-        return this;
-    }
-
-    /**
      * Get the statusCode value.
      *
      * @return the statusCode value
      */
     public String statusCode() {
         return this.statusCode;
-    }
-
-    /**
-     * Set the statusCode value.
-     *
-     * @param statusCode the statusCode value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withStatusCode(String statusCode) {
-        this.statusCode = statusCode;
-        return this;
     }
 
     /**
@@ -144,34 +109,12 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Set the statusMessage value.
-     *
-     * @param statusMessage the statusMessage value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withStatusMessage(Object statusMessage) {
-        this.statusMessage = statusMessage;
-        return this;
-    }
-
-    /**
      * Get the targetResource value.
      *
      * @return the targetResource value
      */
     public TargetResource targetResource() {
         return this.targetResource;
-    }
-
-    /**
-     * Set the targetResource value.
-     *
-     * @param targetResource the targetResource value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withTargetResource(TargetResource targetResource) {
-        this.targetResource = targetResource;
-        return this;
     }
 
     /**
@@ -184,34 +127,12 @@ public class DeploymentOperationProperties {
     }
 
     /**
-     * Set the request value.
-     *
-     * @param request the request value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withRequest(HttpMessage request) {
-        this.request = request;
-        return this;
-    }
-
-    /**
      * Get the response value.
      *
      * @return the response value
      */
     public HttpMessage response() {
         return this.response;
-    }
-
-    /**
-     * Set the response value.
-     *
-     * @param response the response value to set
-     * @return the DeploymentOperationProperties object itself.
-     */
-    public DeploymentOperationProperties withResponse(HttpMessage response) {
-        this.response = response;
-        return this;
     }
 
 }

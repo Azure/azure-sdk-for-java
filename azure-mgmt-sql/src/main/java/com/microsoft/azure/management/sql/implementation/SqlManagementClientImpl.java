@@ -53,52 +53,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The name of the Resource Group to which the resource belongs. */
-    private String resourceGroupName;
-
-    /**
-     * Gets The name of the Resource Group to which the resource belongs.
-     *
-     * @return the resourceGroupName value.
-     */
-    public String resourceGroupName() {
-        return this.resourceGroupName;
-    }
-
-    /**
-     * Sets The name of the Resource Group to which the resource belongs.
-     *
-     * @param resourceGroupName the resourceGroupName value.
-     * @return the service client itself
-     */
-    public SqlManagementClientImpl withResourceGroupName(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    /** The name of the Azure SQL Server. */
-    private String serverName;
-
-    /**
-     * Gets The name of the Azure SQL Server.
-     *
-     * @return the serverName value.
-     */
-    public String serverName() {
-        return this.serverName;
-    }
-
-    /**
-     * Sets The name of the Azure SQL Server.
-     *
-     * @param serverName the serverName value.
-     * @return the service client itself
-     */
-    public SqlManagementClientImpl withServerName(String serverName) {
-        this.serverName = serverName;
-        return this;
-    }
-
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 

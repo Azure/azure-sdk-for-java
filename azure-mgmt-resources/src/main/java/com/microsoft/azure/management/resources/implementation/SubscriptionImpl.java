@@ -11,6 +11,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.Location;
 import com.microsoft.azure.management.resources.Subscription;
 import com.microsoft.azure.management.resources.SubscriptionPolicies;
+import com.microsoft.azure.management.resources.SubscriptionState;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 
@@ -42,7 +43,7 @@ final class SubscriptionImpl extends
     }
 
     @Override
-    public String state() {
+    public SubscriptionState state() {
         return this.inner().state();
     }
 

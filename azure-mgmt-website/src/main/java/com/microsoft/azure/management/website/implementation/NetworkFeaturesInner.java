@@ -39,6 +39,12 @@ public class NetworkFeaturesInner extends Resource {
     private List<RelayServiceConnectionEntityInner> hybridConnections;
 
     /**
+     * The Hybrid Connection V2 (service bus) view.
+     */
+    @JsonProperty(value = "properties.hybridConnectionsV2")
+    private List<HybridConnectionInner> hybridConnectionsV2;
+
+    /**
      * Get the virtualNetworkName value.
      *
      * @return the virtualNetworkName value
@@ -95,6 +101,26 @@ public class NetworkFeaturesInner extends Resource {
      */
     public NetworkFeaturesInner withHybridConnections(List<RelayServiceConnectionEntityInner> hybridConnections) {
         this.hybridConnections = hybridConnections;
+        return this;
+    }
+
+    /**
+     * Get the hybridConnectionsV2 value.
+     *
+     * @return the hybridConnectionsV2 value
+     */
+    public List<HybridConnectionInner> hybridConnectionsV2() {
+        return this.hybridConnectionsV2;
+    }
+
+    /**
+     * Set the hybridConnectionsV2 value.
+     *
+     * @param hybridConnectionsV2 the hybridConnectionsV2 value to set
+     * @return the NetworkFeaturesInner object itself.
+     */
+    public NetworkFeaturesInner withHybridConnectionsV2(List<HybridConnectionInner> hybridConnectionsV2) {
+        this.hybridConnectionsV2 = hybridConnectionsV2;
         return this;
     }
 
