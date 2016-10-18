@@ -8,18 +8,19 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.ServerDisasterRecoveryAutoFailover;
 import com.microsoft.azure.management.sql.ServerDisasterRecoveryPolicy;
 import com.microsoft.azure.management.sql.ServerDisasterRecoveryRole;
 import com.microsoft.azure.management.sql.ServerDisasterRecoveryType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents a server disaster recovery configuration.
  */
 @JsonFlatten
-public class ServerDisasterRecoveryConfigurationInner extends com.microsoft.azure.management.sql.SubResource {
+public class ServerDisasterRecoveryConfigurationInner extends SqlSubResource {
     /**
      * Whether or not automatic failover is enabled. Possible values include:
      * 'Off', 'On'.

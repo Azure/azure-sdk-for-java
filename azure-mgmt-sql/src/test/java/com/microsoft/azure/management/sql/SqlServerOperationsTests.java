@@ -146,6 +146,4 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(sqlDatabase.collation(), COLLATION);
         Assert.assertEquals(sqlDatabase.edition(), DatabaseEditions.FREE);
     }
-
-
 }

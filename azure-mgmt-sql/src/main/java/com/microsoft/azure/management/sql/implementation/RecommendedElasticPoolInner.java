@@ -53,13 +53,13 @@ public class RecommendedElasticPoolInner extends Resource {
     private Double storageMB;
 
     /**
-     * The observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * The observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;

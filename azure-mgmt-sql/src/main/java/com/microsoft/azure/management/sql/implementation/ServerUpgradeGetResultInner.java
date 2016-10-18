@@ -23,7 +23,7 @@ public class ServerUpgradeGetResultInner {
     private String status;
 
     /**
-     * The schedule time of the Azure SQL Server Upgrade.
+     * The schedule time of the Azure SQL Server Upgrade (ISO8601 format).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime scheduleUpgradeAfterTime;

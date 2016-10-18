@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.ServerConnectionTypes;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Server secure connection policy.
  */
 @JsonFlatten
-public class ServerSecureConnectionPolicyInner extends com.microsoft.azure.management.sql.SubResource {
+public class ServerSecureConnectionPolicyInner extends SqlSubResource {
     /**
      * The server connection type. The ServerConnectionTypes enumeration
      * contains all the valid connection types. Possible values include:

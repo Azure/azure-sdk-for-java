@@ -80,7 +80,7 @@ public class SqlDatabaseImpl
     }
 
     @Override
-    public long maxSizeBytes() {
+    public String maxSizeBytes() {
         return this.inner().maxSizeBytes();
     }
 

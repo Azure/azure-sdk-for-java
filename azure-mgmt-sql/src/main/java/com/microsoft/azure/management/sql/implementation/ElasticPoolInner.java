@@ -20,7 +20,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolInner extends Resource {
     /**
-     * The creation date of the Azure SQL Elastic Pool.
+     * The creation date of the Azure SQL Elastic Pool (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;

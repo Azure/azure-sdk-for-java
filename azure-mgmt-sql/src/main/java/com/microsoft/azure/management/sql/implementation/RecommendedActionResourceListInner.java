@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql.implementation;
 import java.util.List;
 
 /**
- * The RecommendedActionResourceListInner model.
+ * Response to a list request for the recommended action resource.
  */
 public class RecommendedActionResourceListInner {
     /**

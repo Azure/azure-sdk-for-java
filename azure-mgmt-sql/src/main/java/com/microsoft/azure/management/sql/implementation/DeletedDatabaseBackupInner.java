@@ -8,16 +8,17 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.management.sql.RecoverableDatabaseEditions;
-import com.microsoft.rest.serializer.JsonFlatten;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.RecoverableDatabaseEditions;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database restorable deleted database.
  */
 @JsonFlatten
-public class DeletedDatabaseBackupInner extends com.microsoft.azure.management.sql.SubResource {
+public class DeletedDatabaseBackupInner extends SqlSubResource {
     /**
      * The Azure SQL Database name.
      */
@@ -25,13 +26,13 @@ public class DeletedDatabaseBackupInner extends com.microsoft.azure.management.s
     private String databaseName;
 
     /**
-     * The creation date of the Azure SQL Database.
+     * The creation date of the Azure SQL Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * The deletion date of the Azure SQL Database.
+     * The deletion date of the Azure SQL Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime deletionDate;
@@ -39,7 +40,7 @@ public class DeletedDatabaseBackupInner extends com.microsoft.azure.management.s
     /**
      * The recovery period starte date of the Azure SQL Database. This records
      * the start date and time when recovery is available for this Azure SQL
-     * Database.
+     * Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;

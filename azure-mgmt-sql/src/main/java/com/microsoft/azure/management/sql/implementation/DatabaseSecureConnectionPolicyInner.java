@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.DatabaseSecureConnectionAccess;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database secure connection policy.
  */
 @JsonFlatten
-public class DatabaseSecureConnectionPolicyInner extends com.microsoft.azure.management.sql.SubResource {
+public class DatabaseSecureConnectionPolicyInner extends SqlSubResource {
     /**
      * The Data Security Proxy DNS name.
      */

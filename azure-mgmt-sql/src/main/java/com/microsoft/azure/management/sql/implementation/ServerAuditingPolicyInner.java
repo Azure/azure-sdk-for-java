@@ -10,12 +10,13 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Server auditing policy.
  */
 @JsonFlatten
-public class ServerAuditingPolicyInner extends com.microsoft.azure.management.sql.SubResource {
+public class ServerAuditingPolicyInner extends SqlSubResource {
     /**
      * The auditing state of the Azure SQL Server auditing policy.
      */

@@ -11,9 +11,9 @@ package com.microsoft.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Subresource properties.
+ * SqlSubResource properties.
  */
-public class SubResource {
+public class SqlSubResource {
     /**
      * Resource name.
      */

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql.implementation;
 import java.util.List;
 
 /**
- * The AdvisorResourceListInner model.
+ * Response to a list request for the advisor resource.
  */
 public class AdvisorResourceListInner {
     /**

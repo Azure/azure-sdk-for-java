@@ -44,13 +44,15 @@ public class RecommendedIndexInner extends Resource {
     private RecommendedIndexStates state;
 
     /**
-     * The UTC datetime showing when this resource was created.
+     * The UTC datetime showing when this resource was created (ISO8601
+     * format).
      */
     @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
-     * The UTC datetime of when was this resource last changed.
+     * The UTC datetime of when was this resource last changed (ISO8601
+     * format).
      */
     @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;

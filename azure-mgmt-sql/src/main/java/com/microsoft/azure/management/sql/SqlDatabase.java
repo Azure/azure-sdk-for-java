@@ -84,7 +84,7 @@ public interface SqlDatabase extends
     /**
      * @return the max size of the Azure SQL Database expressed in bytes.
      */
-    long maxSizeBytes();
+    String maxSizeBytes();
 
     /**
      * @return the name of the configured Service Level Objective of the Azure

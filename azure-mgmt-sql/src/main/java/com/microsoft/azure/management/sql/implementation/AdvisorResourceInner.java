@@ -9,11 +9,14 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import java.util.Map;
-import com.microsoft.azure.management.sql.AdvisorResourceProperties;
+import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * The AdvisorResourceInner model.
+ * Definition of an advisor.
  */
+@JsonFlatten
 public class AdvisorResourceInner {
     /**
      * The id property.
@@ -47,9 +50,40 @@ public class AdvisorResourceInner {
     private Map<String, String> tags;
 
     /**
-     * The properties property.
+     * Status of the advisor.
      */
-    private AdvisorResourceProperties properties;
+    @JsonProperty(value = "properties.advisorStatus")
+    private String advisorStatus;
+
+    /**
+     * Auto-execution status of the advisor.
+     */
+    @JsonProperty(value = "properties.autoExecuteStatus")
+    private String autoExecuteStatus;
+
+    /**
+     * The inheritance parent for the auto-execution status.
+     */
+    @JsonProperty(value = "properties.autoExecuteStatusInheritedFrom")
+    private String autoExecuteStatusInheritedFrom;
+
+    /**
+     * The Recommendations status for the advisor on a resource.
+     */
+    @JsonProperty(value = "properties.recommendationsStatus")
+    private String recommendationsStatus;
+
+    /**
+     * (ISO8601 format).
+     */
+    @JsonProperty(value = "properties.lastChecked")
+    private DateTime lastChecked;
+
+    /**
+     * The recommendedActions property.
+     */
+    @JsonProperty(value = "properties.recommendedActions")
+    private RecommendedActionResourceListInner recommendedActions;
 
     /**
      * Get the id value.
@@ -172,22 +206,122 @@ public class AdvisorResourceInner {
     }
 
     /**
-     * Get the properties value.
+     * Get the advisorStatus value.
      *
-     * @return the properties value
+     * @return the advisorStatus value
      */
-    public AdvisorResourceProperties properties() {
-        return this.properties;
+    public String advisorStatus() {
+        return this.advisorStatus;
     }
 
     /**
-     * Set the properties value.
+     * Set the advisorStatus value.
      *
-     * @param properties the properties value to set
+     * @param advisorStatus the advisorStatus value to set
      * @return the AdvisorResourceInner object itself.
      */
-    public AdvisorResourceInner withProperties(AdvisorResourceProperties properties) {
-        this.properties = properties;
+    public AdvisorResourceInner withAdvisorStatus(String advisorStatus) {
+        this.advisorStatus = advisorStatus;
+        return this;
+    }
+
+    /**
+     * Get the autoExecuteStatus value.
+     *
+     * @return the autoExecuteStatus value
+     */
+    public String autoExecuteStatus() {
+        return this.autoExecuteStatus;
+    }
+
+    /**
+     * Set the autoExecuteStatus value.
+     *
+     * @param autoExecuteStatus the autoExecuteStatus value to set
+     * @return the AdvisorResourceInner object itself.
+     */
+    public AdvisorResourceInner withAutoExecuteStatus(String autoExecuteStatus) {
+        this.autoExecuteStatus = autoExecuteStatus;
+        return this;
+    }
+
+    /**
+     * Get the autoExecuteStatusInheritedFrom value.
+     *
+     * @return the autoExecuteStatusInheritedFrom value
+     */
+    public String autoExecuteStatusInheritedFrom() {
+        return this.autoExecuteStatusInheritedFrom;
+    }
+
+    /**
+     * Set the autoExecuteStatusInheritedFrom value.
+     *
+     * @param autoExecuteStatusInheritedFrom the autoExecuteStatusInheritedFrom value to set
+     * @return the AdvisorResourceInner object itself.
+     */
+    public AdvisorResourceInner withAutoExecuteStatusInheritedFrom(String autoExecuteStatusInheritedFrom) {
+        this.autoExecuteStatusInheritedFrom = autoExecuteStatusInheritedFrom;
+        return this;
+    }
+
+    /**
+     * Get the recommendationsStatus value.
+     *
+     * @return the recommendationsStatus value
+     */
+    public String recommendationsStatus() {
+        return this.recommendationsStatus;
+    }
+
+    /**
+     * Set the recommendationsStatus value.
+     *
+     * @param recommendationsStatus the recommendationsStatus value to set
+     * @return the AdvisorResourceInner object itself.
+     */
+    public AdvisorResourceInner withRecommendationsStatus(String recommendationsStatus) {
+        this.recommendationsStatus = recommendationsStatus;
+        return this;
+    }
+
+    /**
+     * Get the lastChecked value.
+     *
+     * @return the lastChecked value
+     */
+    public DateTime lastChecked() {
+        return this.lastChecked;
+    }
+
+    /**
+     * Set the lastChecked value.
+     *
+     * @param lastChecked the lastChecked value to set
+     * @return the AdvisorResourceInner object itself.
+     */
+    public AdvisorResourceInner withLastChecked(DateTime lastChecked) {
+        this.lastChecked = lastChecked;
+        return this;
+    }
+
+    /**
+     * Get the recommendedActions value.
+     *
+     * @return the recommendedActions value
+     */
+    public RecommendedActionResourceListInner recommendedActions() {
+        return this.recommendedActions;
+    }
+
+    /**
+     * Set the recommendedActions value.
+     *
+     * @param recommendedActions the recommendedActions value to set
+     * @return the AdvisorResourceInner object itself.
+     */
+    public AdvisorResourceInner withRecommendedActions(RecommendedActionResourceListInner recommendedActions) {
+        this.recommendedActions = recommendedActions;
         return this;
     }
 

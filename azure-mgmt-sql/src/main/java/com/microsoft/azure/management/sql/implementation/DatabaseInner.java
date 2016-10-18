@@ -28,10 +28,16 @@ public class DatabaseInner extends Resource {
     private String collation;
 
     /**
-     * The creation date of the Azure SQL Database.
+     * The creation date of the Azure SQL Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
+
+    /**
+     * The containment state of the Azure SQL Database.
+     */
+    @JsonProperty(value = "properties.containmentState", access = JsonProperty.Access.WRITE_ONLY)
+    private Long containmentState;
 
     /**
      * The current Service Level Objective Id of the Azure SQL Database. This
@@ -49,7 +55,7 @@ public class DatabaseInner extends Resource {
     /**
      * The recovery period start date of the Azure SQL Database. This records
      * the start date and time when recovery is available for this Azure SQL
-     * Database.
+     * Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;
@@ -64,10 +70,13 @@ public class DatabaseInner extends Resource {
     private DatabaseEditions edition;
 
     /**
-     * The max size of the Azure SQL Database expressed in bytes.
+     * The max size of the Azure SQL Database expressed in bytes. Note: Only
+     * the following sizes are supported (in addition to limitations being
+     * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
+     * GB | 30 GB … 150 GB | 200 GB … 500 GB }.
      */
     @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
+    private String maxSizeBytes;
 
     /**
      * The configured Service Level Objective Id of the Azure SQL Database.
@@ -169,6 +178,15 @@ public class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the containmentState value.
+     *
+     * @return the containmentState value
+     */
+    public Long containmentState() {
+        return this.containmentState;
+    }
+
+    /**
      * Get the currentServiceObjectiveId value.
      *
      * @return the currentServiceObjectiveId value
@@ -220,7 +238,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the maxSizeBytes value
      */
-    public Long maxSizeBytes() {
+    public String maxSizeBytes() {
         return this.maxSizeBytes;
     }
 
@@ -230,7 +248,7 @@ public class DatabaseInner extends Resource {
      * @param maxSizeBytes the maxSizeBytes value to set
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withMaxSizeBytes(Long maxSizeBytes) {
+    public DatabaseInner withMaxSizeBytes(String maxSizeBytes) {
         this.maxSizeBytes = maxSizeBytes;
         return this;
     }

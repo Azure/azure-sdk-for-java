@@ -8,26 +8,26 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import org.joda.time.DateTime;
-
 import java.util.List;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents a Service Tier Advisor.
  */
 @JsonFlatten
-public class ServiceTierAdvisorInner extends com.microsoft.azure.management.sql.SubResource {
+public class ServiceTierAdvisorInner extends SqlSubResource {
     /**
-     * The observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * The observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;

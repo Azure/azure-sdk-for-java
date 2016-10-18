@@ -10,12 +10,13 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Server Active Directory Administrator.
  */
 @JsonFlatten
-public class ServerAzureADAdministratorInner extends com.microsoft.azure.management.sql.SubResource {
+public class ServerAzureADAdministratorInner extends SqlSubResource {
     /**
      * The type of Azure SQL Server Administrator.
      */
