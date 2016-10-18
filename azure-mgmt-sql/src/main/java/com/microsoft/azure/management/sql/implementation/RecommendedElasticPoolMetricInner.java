@@ -16,13 +16,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RecommendedElasticPoolMetricInner {
     /**
-     * Gets or sets the time of metric.
+     * The time of metric.
      */
     @JsonProperty(value = "dateTime")
     private DateTime dateTimeProperty;
 
     /**
-     * Gets or sets the DTU.
+     * Gets or sets the DTUs (Database Transaction Units).  See
+     * https://azure.microsoft.com/en-us/documentation/articles/sql-database-what-is-a-dtu/.
      */
     private Double dtu;
 

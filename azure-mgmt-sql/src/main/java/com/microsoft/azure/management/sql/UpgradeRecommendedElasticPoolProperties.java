@@ -17,50 +17,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class UpgradeRecommendedElasticPoolProperties {
     /**
-     * Gets or sets the name of the Azure SQL Recommended Elastic Pool being
-     * upgraded.
+     * The name of the Azure SQL Recommended Elastic Pool being upgraded.
      */
-    @JsonProperty(value = "Name")
+    @JsonProperty(value = "Name", required = true)
     private String name;
 
     /**
-     * Gets or sets the target edition for the Azure SQL Recommended Elastic
-     * Pool being upgraded.
+     * The target edition for the Azure SQL Recommended Elastic Pool being
+     * upgraded. Possible values include: 'Basic', 'Standard', 'Premium'.
      */
-    @JsonProperty(value = "Edition")
-    private String edition;
+    @JsonProperty(value = "Edition", required = true)
+    private TargetElasticPoolEditions edition;
 
     /**
-     * Gets or sets the DTU guarantee for the Azure SQL Recommended Elastic
-     * Pool being upgraded.
+     * The DTU guarantee for the Azure SQL Recommended Elastic Pool being
+     * upgraded.
      */
     @JsonProperty(value = "Dtu")
     private Integer dtu;
 
     /**
-     * Gets or sets the storage limit in MB for the Azure SQL Recommended
-     * Elastic Pool being upgraded.
+     * The storage limit in MB for the Azure SQL Recommended Elastic Pool
+     * being upgraded.
      */
     @JsonProperty(value = "StorageMb")
     private Integer storageMb;
 
     /**
-     * Gets or sets the DTU guarantee for database for the Azure SQL
-     * Recommended Elastic Pool being upgraded.
+     * The DTU guarantee for database for the Azure SQL Recommended Elastic
+     * Pool being upgraded.
      */
     @JsonProperty(value = "DatabaseDtuMin")
     private Integer databaseDtuMin;
 
     /**
-     * Gets or sets the DTU cap for database for the Azure SQL Recommended
-     * Elastic Pool being upgraded.
+     * The DTU cap for database for the Azure SQL Recommended Elastic Pool
+     * being upgraded.
      */
     @JsonProperty(value = "DatabaseDtuMax")
     private Integer databaseDtuMax;
 
     /**
-     * Gets or sets the list of database names to be put in the Azure SQL
-     * Recommended Elastic Pool being upgraded.
+     * The list of database names to be put in the Azure SQL Recommended
+     * Elastic Pool being upgraded.
      */
     @JsonProperty(value = "DatabaseCollection")
     private List<String> databaseCollection;
@@ -97,7 +96,7 @@ public class UpgradeRecommendedElasticPoolProperties {
      *
      * @return the edition value
      */
-    public String edition() {
+    public TargetElasticPoolEditions edition() {
         return this.edition;
     }
 
@@ -107,7 +106,7 @@ public class UpgradeRecommendedElasticPoolProperties {
      * @param edition the edition value to set
      * @return the UpgradeRecommendedElasticPoolProperties object itself.
      */
-    public UpgradeRecommendedElasticPoolProperties withEdition(String edition) {
+    public UpgradeRecommendedElasticPoolProperties withEdition(TargetElasticPoolEditions edition) {
         this.edition = edition;
         return this;
     }

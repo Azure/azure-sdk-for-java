@@ -13,36 +13,45 @@ import java.util.List;
 import com.microsoft.azure.management.sql.RecommendedDatabaseProperties;
 import com.microsoft.azure.management.sql.UpgradeRecommendedElasticPoolProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Start Azure SQL Server Upgrade properties.
+ * Start Azure SQL Server Upgrade parameters.
  */
-public class ServerUpgradePropertiesInner {
+@JsonFlatten
+public class ServerUpgradeStartParametersInner {
     /**
-     * Gets or sets the version for the Azure SQL Server being upgraded.
+     * The version for the Azure SQL Server being upgraded.
      */
-    @JsonProperty(value = "Version", required = true)
+    @JsonProperty(value = "serverUpgradeProperties.Version", required = true)
     private String version;
 
     /**
-     * Gets or sets the earliest time to upgrade the Azure SQL Server.
+     * The earliest time to upgrade the Azure SQL Server.
      */
-    @JsonProperty(value = "ScheduleUpgradeAfterUtcDateTime")
+    @JsonProperty(value = "serverUpgradeProperties.ScheduleUpgradeAfterUtcDateTime")
     private DateTime scheduleUpgradeAfterUtcDateTime;
 
     /**
-     * Gets or sets the collection of recommended database properties to
-     * upgrade the Azure SQL Server.
+     * The collection of recommended database properties to upgrade the Azure
+     * SQL Server.
      */
-    @JsonProperty(value = "DatabaseCollection")
+    @JsonProperty(value = "serverUpgradeProperties.DatabaseCollection")
     private List<RecommendedDatabaseProperties> databaseCollection;
 
     /**
-     * Gets or sets the collection of recommended elastic pool properties to
-     * upgrade the Azure SQL Server.
+     * The collection of recommended elastic pool properties to upgrade the
+     * Azure SQL Server.
      */
-    @JsonProperty(value = "ElasticPoolCollection")
+    @JsonProperty(value = "serverUpgradeProperties.ElasticPoolCollection")
     private List<UpgradeRecommendedElasticPoolProperties> elasticPoolCollection;
+
+    /**
+     * Creates an instance of ServerUpgradeStartParametersInner class.
+     */
+    public ServerUpgradeStartParametersInner() {
+        version = "12.0";
+    }
 
     /**
      * Get the version value.
@@ -57,9 +66,9 @@ public class ServerUpgradePropertiesInner {
      * Set the version value.
      *
      * @param version the version value to set
-     * @return the ServerUpgradePropertiesInner object itself.
+     * @return the ServerUpgradeStartParametersInner object itself.
      */
-    public ServerUpgradePropertiesInner withVersion(String version) {
+    public ServerUpgradeStartParametersInner withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -77,9 +86,9 @@ public class ServerUpgradePropertiesInner {
      * Set the scheduleUpgradeAfterUtcDateTime value.
      *
      * @param scheduleUpgradeAfterUtcDateTime the scheduleUpgradeAfterUtcDateTime value to set
-     * @return the ServerUpgradePropertiesInner object itself.
+     * @return the ServerUpgradeStartParametersInner object itself.
      */
-    public ServerUpgradePropertiesInner withScheduleUpgradeAfterUtcDateTime(DateTime scheduleUpgradeAfterUtcDateTime) {
+    public ServerUpgradeStartParametersInner withScheduleUpgradeAfterUtcDateTime(DateTime scheduleUpgradeAfterUtcDateTime) {
         this.scheduleUpgradeAfterUtcDateTime = scheduleUpgradeAfterUtcDateTime;
         return this;
     }
@@ -97,9 +106,9 @@ public class ServerUpgradePropertiesInner {
      * Set the databaseCollection value.
      *
      * @param databaseCollection the databaseCollection value to set
-     * @return the ServerUpgradePropertiesInner object itself.
+     * @return the ServerUpgradeStartParametersInner object itself.
      */
-    public ServerUpgradePropertiesInner withDatabaseCollection(List<RecommendedDatabaseProperties> databaseCollection) {
+    public ServerUpgradeStartParametersInner withDatabaseCollection(List<RecommendedDatabaseProperties> databaseCollection) {
         this.databaseCollection = databaseCollection;
         return this;
     }
@@ -117,9 +126,9 @@ public class ServerUpgradePropertiesInner {
      * Set the elasticPoolCollection value.
      *
      * @param elasticPoolCollection the elasticPoolCollection value to set
-     * @return the ServerUpgradePropertiesInner object itself.
+     * @return the ServerUpgradeStartParametersInner object itself.
      */
-    public ServerUpgradePropertiesInner withElasticPoolCollection(List<UpgradeRecommendedElasticPoolProperties> elasticPoolCollection) {
+    public ServerUpgradeStartParametersInner withElasticPoolCollection(List<UpgradeRecommendedElasticPoolProperties> elasticPoolCollection) {
         this.elasticPoolCollection = elasticPoolCollection;
         return this;
     }

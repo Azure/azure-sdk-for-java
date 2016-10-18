@@ -34,7 +34,7 @@ public interface SqlServer extends
     /**
      * @return the version of the SQL Server
      */
-    String version();
+    ServerVersion version();
 
     /**
      *
@@ -95,7 +95,7 @@ public interface SqlServer extends
          * A SQL Server definition setting version.
          */
         interface WithVersion {
-            WithCreate withVersion(String version);
+            WithCreate withVersion(ServerVersion version);
         }
 
         /**

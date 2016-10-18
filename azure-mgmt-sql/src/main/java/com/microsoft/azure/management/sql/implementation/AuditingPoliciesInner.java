@@ -32,33 +32,33 @@ import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
- * in AuditingPolicys.
+ * in AuditingPolicies.
  */
-public final class AuditingPolicysInner {
+public final class AuditingPoliciesInner {
     /** The Retrofit service to perform REST calls. */
-    private AuditingPolicysService service;
+    private AuditingPoliciesService service;
     /** The service client containing this operation class. */
     private SqlManagementClientImpl client;
 
     /**
-     * Initializes an instance of AuditingPolicysInner.
+     * Initializes an instance of AuditingPoliciesInner.
      *
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public AuditingPolicysInner(Retrofit retrofit, SqlManagementClientImpl client) {
-        this.service = retrofit.create(AuditingPolicysService.class);
+    public AuditingPoliciesInner(Retrofit retrofit, SqlManagementClientImpl client) {
+        this.service = retrofit.create(AuditingPoliciesService.class);
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AuditingPolicys to be
+     * The interface defining all the services for AuditingPolicies to be
      * used by Retrofit to perform actually REST calls.
      */
-    interface AuditingPolicysService {
+    interface AuditingPoliciesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingPolicies/Default")
-        Observable<Response<ResponseBody>> createOrUpdateDatebasePolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateDatabasePolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingPolicies/Default")
@@ -83,8 +83,8 @@ public final class AuditingPolicysInner {
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the DatabaseAuditingPolicyInner object if successful.
      */
-    public DatabaseAuditingPolicyInner createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
-        return createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+    public DatabaseAuditingPolicyInner createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
+        return createOrUpdateDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -97,8 +97,8 @@ public final class AuditingPolicysInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    public ServiceCall<DatabaseAuditingPolicyInner> createOrUpdateDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
@@ -110,8 +110,8 @@ public final class AuditingPolicysInner {
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
-        return createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
+    public Observable<DatabaseAuditingPolicyInner> createOrUpdateDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
+        return createOrUpdateDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
             @Override
             public DatabaseAuditingPolicyInner call(ServiceResponse<DatabaseAuditingPolicyInner> response) {
                 return response.getBody();
@@ -128,7 +128,7 @@ public final class AuditingPolicysInner {
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> createOrUpdateDatebasePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
+    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> createOrUpdateDatabasePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -146,12 +146,12 @@ public final class AuditingPolicysInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdateDatebasePolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateDatabasePolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAuditingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DatabaseAuditingPolicyInner> clientResponse = createOrUpdateDatebasePolicyDelegate(response);
+                        ServiceResponse<DatabaseAuditingPolicyInner> clientResponse = createOrUpdateDatabasePolicyDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -160,7 +160,7 @@ public final class AuditingPolicysInner {
             });
     }
 
-    private ServiceResponse<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DatabaseAuditingPolicyInner> createOrUpdateDatabasePolicyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DatabaseAuditingPolicyInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DatabaseAuditingPolicyInner>() { }.getType())
                 .register(201, new TypeToken<DatabaseAuditingPolicyInner>() { }.getType())

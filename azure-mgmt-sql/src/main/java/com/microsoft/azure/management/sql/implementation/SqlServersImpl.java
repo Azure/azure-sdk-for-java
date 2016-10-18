@@ -45,7 +45,7 @@ public class SqlServersImpl
 
     @Override
     public PagedList<SqlServer> listByGroup(String resourceGroupName) {
-        return wrapList(this.innerCollection.list(resourceGroupName));
+        return wrapList(this.innerCollection.listByResourceGroup(resourceGroupName));
     }
 
     @Override
@@ -64,6 +64,6 @@ public class SqlServersImpl
 
     @Override
     public SqlServer getByGroup(String groupName, String name) {
-        return wrapModel(this.innerCollection.get(groupName, name));
+        return wrapModel(this.innerCollection.getByResourceGroup(groupName, name));
     }
 }

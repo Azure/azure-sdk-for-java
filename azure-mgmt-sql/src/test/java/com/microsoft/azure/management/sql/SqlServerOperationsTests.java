@@ -17,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver124";
-    private static final String SQL_SERVER_NAME = "javasqlserver124";
+    private static final String RG_NAME = "javasqlserver1234";
+    private static final String SQL_SERVER_NAME = "javasqlserver1234";
     private static final String SQL_DATABASE_NAME = "myTestDatabase";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
 
@@ -41,7 +41,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewResourceGroup(RG_NAME)
                 .withAdminUserName("userName")
                 .withPassword("P@ssword~1")
-                .withVersion("12.0")
+                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
                 .createAsync()
                 .toBlocking().last();
         validateSqlServer(sqlServer);
@@ -79,7 +79,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewResourceGroup(RG_NAME)
                 .withAdminUserName("userName")
                 .withPassword("P@ssword~1")
-                .withVersion("12.0");
+                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
 
         SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
                 .define(SQL_DATABASE_NAME)
@@ -136,7 +136,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(sqlServer);
         Assert.assertEquals(RG_NAME, sqlServer.resourceGroupName());
         Assert.assertNotNull(sqlServer.fullyQualifiedDomainName());
-        Assert.assertEquals("12.0", sqlServer.version());
+        Assert.assertEquals(ServerVersion.ONE_TWO_FULL_STOP_ZERO, sqlServer.version());
         Assert.assertEquals("userName", sqlServer.adminLogin());
     }
 

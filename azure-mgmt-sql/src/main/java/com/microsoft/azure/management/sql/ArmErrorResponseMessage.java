@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ArmErrorResponseMessage model.
+ * represents and error message.
  */
 public class ArmErrorResponseMessage {
     /**
-     * The error property.
+     * Contains the information about the error.
      */
+    @JsonProperty(required = true)
     private ArmErrorResponseExtendedErrorInfo error;
 
     /**

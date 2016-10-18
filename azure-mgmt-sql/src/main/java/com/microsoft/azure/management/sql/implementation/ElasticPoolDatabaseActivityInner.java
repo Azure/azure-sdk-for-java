@@ -19,93 +19,91 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolDatabaseActivityInner extends Resource {
     /**
-     * Gets the database name.
+     * The database name.
      */
     @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /**
-     * Gets the time the operation finished.
+     * The time the operation finished.
      */
     @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
-     * Gets the error code if available.
+     * The error code if available.
      */
     @JsonProperty(value = "properties.errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /**
-     * Gets the error message if available.
+     * The error message if available.
      */
     @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /**
-     * Gets the error severity if available.
+     * The error severity if available.
      */
     @JsonProperty(value = "properties.errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorSeverity;
 
     /**
-     * Gets the operation name.
+     * The operation name.
      */
     @JsonProperty(value = "properties.operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /**
-     * Gets the unique operation ID.
+     * The unique operation ID.
      */
     @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
-     * Gets the percentage complete if available.
+     * The percentage complete if available.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /**
-     * Gets the name for the Elastic Pool the database is moving into if
-     * available.
+     * The name for the Elastic Pool the database is moving into if available.
      */
     @JsonProperty(value = "properties.requestedElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedElasticPoolName;
 
     /**
-     * Gets the name of the current Elastic Pool the database is in if
-     * available.
+     * The name of the current Elastic Pool the database is in if available.
      */
     @JsonProperty(value = "properties.currentElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String currentElasticPoolName;
 
     /**
-     * Gets the name of the current service objective if available.
+     * The name of the current service objective if available.
      */
     @JsonProperty(value = "properties.currentServiceObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String currentServiceObjective;
 
     /**
-     * Gets the name of the requested service objective if available.
+     * The name of the requested service objective if available.
      */
     @JsonProperty(value = "properties.requestedServiceObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedServiceObjective;
 
     /**
-     * Gets the name of the Azure SQL Server the Elastic Pool is in.
+     * The name of the Azure SQL Server the Elastic Pool is in.
      */
     @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /**
-     * Gets the time the operation started.
+     * The time the operation started.
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
-     * Gets the current state of the operation.
+     * The current state of the operation.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;

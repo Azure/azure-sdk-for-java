@@ -16,37 +16,37 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServerMetricInner {
     /**
-     * Gets or sets the name of the resource.
+     * The name of the resource.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /**
-     * Gets or sets the metric display name.
+     * The metric display name.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
-     * Gets or sets the current value of the metric.
+     * The current value of the metric.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double currentValue;
 
     /**
-     * Gets or sets the current limit of the metric.
+     * The current limit of the metric.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double limit;
 
     /**
-     * Gets or sets the units of the metric.
+     * The units of the metric.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
-     * Gets or sets the next reset time for the metric.
+     * The next reset time for the metric.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime nextResetTime;

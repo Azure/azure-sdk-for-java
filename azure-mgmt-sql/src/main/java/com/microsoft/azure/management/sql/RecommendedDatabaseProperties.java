@@ -16,21 +16,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RecommendedDatabaseProperties {
     /**
-     * Gets or sets the name of the Azure SQL Database being upgraded.
+     * The name of the Azure SQL Database being upgraded.
      */
     @JsonProperty(value = "Name")
     private String name;
 
     /**
-     * Gets or sets the target edition for the Azure SQL Database being
-     * upgraded.
+     * The target edition for the Azure SQL Database being upgraded. Possible
+     * values include: 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
+     * 'DataWarehouse'.
      */
     @JsonProperty(value = "TargetEdition")
-    private String targetEdition;
+    private TargetDatabaseEditions targetEdition;
 
     /**
-     * Gets or sets the target Service Level Objective for the Azure SQL
-     * Database being upgraded.
+     * The target Service Level Objective for the Azure SQL Database being
+     * upgraded.
      */
     @JsonProperty(value = "TargetServiceLevelObjective")
     private String targetServiceLevelObjective;
@@ -60,7 +61,7 @@ public class RecommendedDatabaseProperties {
      *
      * @return the targetEdition value
      */
-    public String targetEdition() {
+    public TargetDatabaseEditions targetEdition() {
         return this.targetEdition;
     }
 
@@ -70,7 +71,7 @@ public class RecommendedDatabaseProperties {
      * @param targetEdition the targetEdition value to set
      * @return the RecommendedDatabaseProperties object itself.
      */
-    public RecommendedDatabaseProperties withTargetEdition(String targetEdition) {
+    public RecommendedDatabaseProperties withTargetEdition(TargetDatabaseEditions targetEdition) {
         this.targetEdition = targetEdition;
         return this;
     }

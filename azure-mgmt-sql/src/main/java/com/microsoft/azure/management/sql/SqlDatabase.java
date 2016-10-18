@@ -205,7 +205,7 @@ public interface SqlDatabase extends
             WithElasticPoolName {
         }
     }
-    
+
     /**
      * The template for a SQLDatabase update operation, containing all the settings that can be modified.
      */

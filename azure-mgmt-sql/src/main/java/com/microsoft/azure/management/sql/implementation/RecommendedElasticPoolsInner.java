@@ -162,7 +162,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -175,7 +175,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -189,7 +189,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -207,7 +207,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -333,7 +333,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -345,7 +345,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -358,7 +358,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -375,7 +375,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure Sql Recommended Elastic Pool.
+     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server

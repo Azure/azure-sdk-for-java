@@ -11,25 +11,25 @@ package com.microsoft.azure.management.sql;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for ServerConnectonTypes.
+ * Defines values for RecoverableDatabaseEditions.
  */
-public final class ServerConnectonTypes {
-    /** Static value Default for ServerConnectonTypes. */
-    public static final ServerConnectonTypes DEFAULT = new ServerConnectonTypes("Default");
+public final class RecoverableDatabaseEditions {
+    /** Static value Basic for RecoverableDatabaseEditions. */
+    public static final RecoverableDatabaseEditions BASIC = new RecoverableDatabaseEditions("Basic");
 
-    /** Static value Proxy for ServerConnectonTypes. */
-    public static final ServerConnectonTypes PROXY = new ServerConnectonTypes("Proxy");
+    /** Static value Standard for RecoverableDatabaseEditions. */
+    public static final RecoverableDatabaseEditions STANDARD = new RecoverableDatabaseEditions("Standard");
 
-    /** Static value Redirect for ServerConnectonTypes. */
-    public static final ServerConnectonTypes REDIRECT = new ServerConnectonTypes("Redirect");
+    /** Static value Premium for RecoverableDatabaseEditions. */
+    public static final RecoverableDatabaseEditions PREMIUM = new RecoverableDatabaseEditions("Premium");
 
     private String value;
 
     /**
-     * Creates a custom value for ServerConnectonTypes.
+     * Creates a custom value for RecoverableDatabaseEditions.
      * @param value the custom value
      */
-    public ServerConnectonTypes(String value) {
+    public RecoverableDatabaseEditions(String value) {
         this.value = value;
     }
 
@@ -46,13 +46,13 @@ public final class ServerConnectonTypes {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ServerConnectonTypes)) {
+        if (!(obj instanceof RecoverableDatabaseEditions)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        ServerConnectonTypes rhs = (ServerConnectonTypes) obj;
+        RecoverableDatabaseEditions rhs = (RecoverableDatabaseEditions) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

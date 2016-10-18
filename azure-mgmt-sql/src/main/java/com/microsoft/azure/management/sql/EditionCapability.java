@@ -12,24 +12,25 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents the Azure SQL Server edition capabilities.
+ * Represents the Azure SQL Server edition capabilities. This represents the
+ * service tier of the database (Eg: Basic, Standard, Premium, ...).
  */
 public class EditionCapability {
     /**
-     * Gets the edition name.
+     * The edition name (eg: Basic, Standard, Premium, ...).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets the status of the Azure SQL Server edition. Possible values
-     * include: 'Visible', 'Available', 'Default'.
+     * The status of the Azure SQL Database edition. Possible values include:
+     * 'Visible', 'Available', 'Default'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /**
-     * Gets the list of supported Service Objectives for the edition.
+     * The list of supported Service Objectives for the edition.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceObjectiveCapability> supportedServiceLevelObjectives;

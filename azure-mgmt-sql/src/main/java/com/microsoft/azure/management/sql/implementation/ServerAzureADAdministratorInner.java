@@ -10,36 +10,42 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Represents an Azure SQL Server Active Directory Administrator.
  */
 @JsonFlatten
-public class ServerAzureADAdministratorInner extends SubResource {
+public class ServerAzureADAdministratorInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Gets the type of Azure SQL Server Administrator.
+     * The type of Azure SQL Server Administrator.
      */
     @JsonProperty(value = "properties.administratorType", required = true)
     private String administratorType;
 
     /**
-     * Gets the Azure SQL Server Administrator Login Value.
+     * The Azure SQL Server Administrator Login Value.
      */
     @JsonProperty(value = "properties.login", required = true)
     private String login;
 
     /**
-     * Gets the Azure SQL Server Administrator Sid.
+     * The Azure SQL Server Administrator Sid (Secure ID).
      */
     @JsonProperty(value = "properties.sid", required = true)
     private String sid;
 
     /**
-     * Gets the Azure SQL Server Active Directory Administrator tenant id.
+     * The Azure SQL Server Active Directory Administrator tenant id.
      */
     @JsonProperty(value = "properties.tenantId", required = true)
     private String tenantId;
+
+    /**
+     * Creates an instance of ServerAzureADAdministratorInner class.
+     */
+    public ServerAzureADAdministratorInner() {
+        administratorType = "ActiveDirectory";
+    }
 
     /**
      * Get the administratorType value.
