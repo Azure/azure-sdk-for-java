@@ -11,7 +11,7 @@ package com.microsoft.azure.management.resources;
 import java.util.List;
 
 /**
- * The AliasPathType model.
+ * The type of the paths for alias.
  */
 public class AliasPathType {
     /**

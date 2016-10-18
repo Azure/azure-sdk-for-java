@@ -67,7 +67,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
      */
@@ -82,7 +82,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -100,7 +100,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
@@ -115,7 +115,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
      */
@@ -134,7 +134,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -164,7 +164,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object if successful.
@@ -180,7 +180,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -200,7 +200,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
@@ -216,7 +216,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TenantIdDescriptionInner&gt; object
@@ -236,7 +236,7 @@ public final class TenantsInner {
     }
 
     /**
-     * Gets a list of the tenantIds.
+     * Gets a list of tenants.
      *
     ServiceResponse<PageImpl1<TenantIdDescriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TenantIdDescriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.

@@ -18,23 +18,25 @@ public class ResourceManagementErrorWithDetails {
     /**
      * The error code returned from the server.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
 
     /**
      * The error message returned from the server.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
      * The target of the error.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /**
      * Validation error.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceManagementErrorWithDetails> details;
 
     /**
@@ -47,34 +49,12 @@ public class ResourceManagementErrorWithDetails {
     }
 
     /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     * @return the ResourceManagementErrorWithDetails object itself.
-     */
-    public ResourceManagementErrorWithDetails withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
      * Get the message value.
      *
      * @return the message value
      */
     public String message() {
         return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the ResourceManagementErrorWithDetails object itself.
-     */
-    public ResourceManagementErrorWithDetails withMessage(String message) {
-        this.message = message;
-        return this;
     }
 
     /**
@@ -87,34 +67,12 @@ public class ResourceManagementErrorWithDetails {
     }
 
     /**
-     * Set the target value.
-     *
-     * @param target the target value to set
-     * @return the ResourceManagementErrorWithDetails object itself.
-     */
-    public ResourceManagementErrorWithDetails withTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
      * Get the details value.
      *
      * @return the details value
      */
     public List<ResourceManagementErrorWithDetails> details() {
         return this.details;
-    }
-
-    /**
-     * Set the details value.
-     *
-     * @param details the details value to set
-     * @return the ResourceManagementErrorWithDetails object itself.
-     */
-    public ResourceManagementErrorWithDetails withDetails(List<ResourceManagementErrorWithDetails> details) {
-        this.details = details;
-        return this;
     }
 
 }

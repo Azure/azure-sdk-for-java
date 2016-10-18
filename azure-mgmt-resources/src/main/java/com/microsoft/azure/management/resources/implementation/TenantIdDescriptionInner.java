@@ -8,19 +8,23 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Tenant Id information.
  */
 public class TenantIdDescriptionInner {
     /**
-     * Gets or sets Id.
+     * The fully qualified Id. For example,
+     * /tenants/00000000-0000-0000-0000-000000000000.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets tenantId.
+     * The tenantId. For example, 00000000-0000-0000-0000-000000000000.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /**
@@ -33,34 +37,12 @@ public class TenantIdDescriptionInner {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the TenantIdDescriptionInner object itself.
-     */
-    public TenantIdDescriptionInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the tenantId value.
      *
      * @return the tenantId value
      */
     public String tenantId() {
         return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId value.
-     *
-     * @param tenantId the tenantId value to set
-     * @return the TenantIdDescriptionInner object itself.
-     */
-    public TenantIdDescriptionInner withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
     }
 
 }

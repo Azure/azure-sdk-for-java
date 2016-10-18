@@ -10,6 +10,8 @@ import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ProviderResourceType;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
@@ -37,8 +39,28 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public PagedList<GenericResource> list() {
+        return wrapList(this.serviceClient.resources().list());
+    }
+
+    @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
         return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
+    }
+
+    @Override
+    public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
+        if (tagName == null) {
+            throw new IllegalArgumentException("tagName == null");
+        }
+        String odataFilter;
+        if (tagValue == null) {
+            odataFilter = String.format("tagname eq '%s'", tagName);
+        } else {
+            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
+        }
+        return wrapList(this.serviceClient.resourceGroups().listResources(
+                resourceGroupName, odataFilter, null, null));
     }
 
     @Override
@@ -47,6 +69,7 @@ final class GenericResourcesImpl
                 name,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 super.myManager);
     }
@@ -64,11 +87,17 @@ final class GenericResourcesImpl
 
     @Override
     public GenericResource getById(String id) {
-        return this.get(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.resourceProviderFromResourceId(id),
-                ResourceUtils.resourceTypeFromResourceId(id),
-                ResourceUtils.nameFromResourceId(id));
+        Provider provider = myManager.providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
+        String apiVersion = null;
+        for (ProviderResourceType type : provider.resourceTypes()) {
+            if (ResourceUtils.resourceTypeFromResourceId(id).equalsIgnoreCase(type.resourceType())) {
+                apiVersion = type.apiVersions().get(0);
+            }
+        }
+        if (apiVersion == null) {
+            apiVersion = provider.resourceTypes().get(0).apiVersions().get(0);
+        }
+        return wrapModel(this.innerCollection.getById(id, apiVersion));
     }
 
     @Override
@@ -114,6 +143,7 @@ final class GenericResourcesImpl
                 resourceName,
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 this.myManager);
 
@@ -143,6 +173,7 @@ final class GenericResourcesImpl
                 id,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
@@ -157,6 +188,7 @@ final class GenericResourcesImpl
                 inner.id(),
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
