@@ -95,7 +95,7 @@ public interface Subnet extends
 
         /**
          * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
-         * @return the next stage of the definition
+         * @param <ParentT> the parent network type
          */
         interface WithRouteTable<ParentT> {
             /**
@@ -254,7 +254,7 @@ public interface Subnet extends
 
         /**
          * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
-         * @return the next stage of the definition
+         * @param <ParentT> the parent type
          */
         interface WithRouteTable<ParentT> {
             /**
