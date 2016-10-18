@@ -37,15 +37,28 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public PagedList<GenericResource> list() {
+        return wrapList(this.serviceClient.resources().list());
+    }
+
+    @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
         return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
     }
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
+        if (tagName == null) {
+            throw new IllegalArgumentException("tagName == null");
+        }
+        String odataFilter = "";
+        if (tagValue == null) {
+            odataFilter = String.format("tagname eq %s", tagName);
+        } else {
+            odataFilter = String.format("tagname eq %s and tagvalue eq %s", tagName, tagValue);
+        }
         return wrapList(this.serviceClient.resourceGroups().listResources(
-                resourceGroupName,
-                String.format("%s eq '%s'", tagName, tagValue), null, null));
+                resourceGroupName, odataFilter, null, null));
     }
 
     @Override

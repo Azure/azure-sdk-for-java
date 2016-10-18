@@ -7,6 +7,10 @@
 
 package com.microsoft.azure.management.resources.samples;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
@@ -17,6 +21,8 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,9 +56,7 @@ public final class DeployUsingARMTemplateWithTags {
                         .withDefaultSubscription();
 
                 try {
-                    String templateLink = "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-multiple-data-disk/azuredeploy.json";
-                    String parameterJson = "{\"adminUsername\":{\"value\":\"azureUser\"},\"adminPassword\":{\"value\":\"StrongPass!123\"},\"dnsLabelPrefix\":{\"value\":\"uniqueazure58889\"},\"vmSize\":{\"value\":\"Standard_D2\"},\"sizeOfEachDataDiskInGB\":{\"value\":\"100\"}}";
-
+                    String templateJson = getTemplate();
 
                     //=============================================================
                     // Create resource group.
@@ -60,7 +64,7 @@ public final class DeployUsingARMTemplateWithTags {
                     System.out.println("Creating a resource group with name: " + rgName);
 
                     azure.resourceGroups().define(rgName)
-                        .withRegion(Region.US_WEST)
+                        .withRegion(Region.GERMANY_CENTRAL)
                         .create();
 
                     System.out.println("Created a resource group with name: " + rgName);
@@ -70,16 +74,16 @@ public final class DeployUsingARMTemplateWithTags {
                     // Create a deployment for an Azure App Service via an ARM
                     // template.
 
-                    System.out.println("Starting a deployment for an Azure VM with multiple data disks: " + deploymentName);
+                    System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
                     Deployment deployment = azure.deployments().define(deploymentName)
                         .withExistingResourceGroup(rgName)
-                        .withTemplateLink(templateLink, "1.0.0.0")
-                        .withParameters(parameterJson)
+                        .withTemplate(templateJson)
+                        .withParameters("{}")
                         .withMode(DeploymentMode.INCREMENTAL)
                         .create();
 
-                    System.out.println("Started a deployment for an Azure VM with multiple data disks: " + deploymentName);
+                    System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
 
                     List<DeploymentOperation> operations  = deployment.deploymentOperations().list();
                     List<GenericResource> genericResources = new ArrayList<>();
@@ -131,5 +135,36 @@ public final class DeployUsingARMTemplateWithTags {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+    private static String getTemplate() throws IllegalAccessException, JsonProcessingException, IOException {
+        final String hostingPlanName = ResourceNamer.randomResourceName("hpRSAT", 24);
+        final String webappName = ResourceNamer.randomResourceName("wnRSAT", 24);
+        final InputStream embeddedTemplate;
+        embeddedTemplate = DeployUsingARMTemplate.class.getResourceAsStream("/templateValue.json");
+
+        final ObjectMapper mapper = new ObjectMapper();
+        final JsonNode tmp = mapper.readTree(embeddedTemplate);
+
+        validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
+        validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
+        validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
+        validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
+
+        return tmp.toString();
+    }
+
+    private static void validateAndAddFieldValue(String type, String fieldValue, String fieldName, String errorMessage,
+                                                 JsonNode tmp) throws IllegalAccessException {
+        // Add count variable for loop....
+        final ObjectMapper mapper = new ObjectMapper();
+        final ObjectNode parameter = mapper.createObjectNode();
+        parameter.put("type", type);
+        if (type == "int") {
+            parameter.put("defaultValue", Integer.parseInt(fieldValue));
+        } else {
+            parameter.put("defaultValue", fieldValue);
+        }
+        ObjectNode.class.cast(tmp.get("parameters")).replace(fieldName, parameter);
     }
 }

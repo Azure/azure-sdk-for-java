@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.fluentcore.arm.collection;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 
 /**
  * Provides access to listing Azure resources of a specific type based on their tag.
@@ -21,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 @LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
 public interface SupportsListingByTag<T> {
     /**
-     * Lists all the resources of the specified type in the specified tag.
+     * Lists all the resources with the specified tag.
      *
      * @param tagName tag's name as the key
      * @param tagValue tag's value

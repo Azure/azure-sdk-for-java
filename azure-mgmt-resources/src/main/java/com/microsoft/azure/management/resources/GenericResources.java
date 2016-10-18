@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByTag;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
  */
 @Fluent
 public interface GenericResources extends
+        SupportsListing<GenericResource>,
         SupportsListingByGroup<GenericResource>,
         SupportsListingByTag<GenericResource>,
         SupportsGettingById<GenericResource>,
