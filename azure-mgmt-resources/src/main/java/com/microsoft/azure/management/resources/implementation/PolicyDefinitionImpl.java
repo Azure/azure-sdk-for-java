@@ -6,10 +6,13 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.management.resources.PolicyDefinition;
 import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+
+import java.io.IOException;
 
 /**
  * Implementation for {@link PolicyDefinition}.
@@ -73,6 +76,16 @@ final class PolicyDefinitionImpl extends
     @Override
     public PolicyDefinitionImpl withPolicyRule(Object policyRule) {
         inner().withPolicyRule(policyRule);
+        return this;
+    }
+
+    @Override
+    public PolicyDefinitionImpl withPolicyRuleJson(String policyRuleJson) {
+        try {
+            inner().withPolicyRule(new ObjectMapper().readTree(policyRuleJson));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 

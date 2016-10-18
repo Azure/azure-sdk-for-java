@@ -80,6 +80,14 @@ public interface PolicyDefinition extends
              * @return the next stage of policy definition
              */
             WithCreate withPolicyRule(Object policyRule);
+
+            /**
+             * Specifies the rule of the policy in JSON format.
+             *
+             * @param policyRuleJson the rule object
+             * @return the next stage of policy definition
+             */
+            WithCreate withPolicyRuleJson(String policyRuleJson);
         }
 
         /**

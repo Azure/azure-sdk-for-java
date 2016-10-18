@@ -45,6 +45,9 @@ final class GenericResourceImpl
                         final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
+        resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
+        parentResourceId = ResourceUtils.parentResourcePathFromResourceId(innerModel.id());
+        resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
         this.resourceClient = innerCollection;
         this.providersClient = providerClient;
     }
@@ -148,18 +151,21 @@ final class GenericResourceImpl
                 .flatMap(new Func1<String, Observable<GenericResource>>() {
                     @Override
                     public Observable<GenericResource> call(String api) {
+                        String name = name();
+                        if (!isInCreateMode()) {
+                            name = ResourceUtils.nameFromResourceId(inner().id());
+                        }
                         return resourceClient.createOrUpdateAsync(
                                 resourceGroupName(),
-                                ResourceUtils.resourceProviderFromResourceId(inner().id()),
+                                resourceProviderNamespace,
                                 ResourceUtils.relativePathFromResourceId(parentResourceId),
-                                ResourceUtils.resourceTypeFromResourceId(inner().id()),
-                                ResourceUtils.nameFromResourceId(inner().id()),
+                                resourceType,
+                                name,
                                 api,
                                 inner())
                                 .subscribeOn(Schedulers.io())
                                 .map(innerToFluentMap(self));
                     }
                 });
-
     }
 }

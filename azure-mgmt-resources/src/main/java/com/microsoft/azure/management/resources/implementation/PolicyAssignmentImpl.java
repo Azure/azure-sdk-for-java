@@ -66,12 +66,11 @@ final class PolicyAssignmentImpl extends
     }
 
     @Override
-    public PolicyAssignmentImpl forResource(ResourceGroup resourceGroup) {
+    public PolicyAssignmentImpl forResourceGroup(ResourceGroup resourceGroup) {
         inner().withScope(resourceGroup.id());
         return this;
     }
 
-    @Override
     public PolicyAssignmentImpl forResource(GenericResource genericResource) {
         inner().withScope(genericResource.id());
         return this;

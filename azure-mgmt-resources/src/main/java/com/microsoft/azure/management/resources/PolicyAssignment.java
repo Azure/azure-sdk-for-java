@@ -84,7 +84,7 @@ public interface PolicyAssignment extends
              * @param resourceGroup the resource group to assign the policy
              * @return the next stage of policy assignment
              */
-            WithPolicyDefinition forResource(ResourceGroup resourceGroup);
+            WithPolicyDefinition forResourceGroup(ResourceGroup resourceGroup);
 
             /**
              * Specifies the scope of the policy assignment to be a resource.
