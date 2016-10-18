@@ -12,11 +12,11 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <artifactId>azure</artifactId>
+  <artifactId>azure-mgmt-trafficmanager</artifactId>
   <packaging>jar</packaging>
 
-  <name>Microsoft Azure SDK</name>
-  <description>This package contains Microsoft Azure SDK.</description>
+  <name>Microsoft Azure SDK for Traffic Manager Management</name>
+  <description>This package contains Microsoft Azure Traffic Manager Management SDK.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -49,49 +49,11 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-client-authentication</artifactId>
+      <version>1.0.0-beta3</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-resources</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-storage</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-network</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-compute</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-graph-rbac</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-keyvault</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-batch</artifactId>
-      <version>1.0.0-beta4-SNAPSHOT</version>
-    </dependency>
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-trafficmanager</artifactId>
       <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -100,23 +62,21 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>1.0.0-beta3</version>
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>com.jcraft</groupId>
-      <artifactId>jsch</artifactId>
-      <version>0.1.53</version>
-      <scope>test</scope>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-storage</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>api-annotations</artifactId>
       <version>0.0.1</version>
     </dependency>
-
   </dependencies>
   <build>
     <plugins>
@@ -133,6 +93,11 @@
         </configuration>
       </plugin>
       <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
@@ -140,7 +105,8 @@
           <source>1.7</source>
           <target>1.7</target>
           <annotationProcessors>
-            <annotationProcessor>com.microsoft.azure.management.apigeneration.LangDefinitionProcessor</annotationProcessor>
+            <annotationProcessor>
+              com.microsoft.azure.management.apigeneration.LangDefinitionProcessor</annotationProcessor>
           </annotationProcessors>
           <debug>true</debug>
           <optimize>true</optimize>
@@ -153,20 +119,10 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8</version>
         <configuration>
-          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
+          <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.search</excludePackageNames>
           <bottom><![CDATA[<code>/**
 <br />* Copyright (c) Microsoft Corporation. All rights reserved.
 <br />* Licensed under the MIT License. See License.txt in the project root for
@@ -174,7 +130,7 @@
 <br />*/</code>]]></bottom>
         </configuration>
       </plugin>
-      
+
     </plugins>
   </build>
 </project>

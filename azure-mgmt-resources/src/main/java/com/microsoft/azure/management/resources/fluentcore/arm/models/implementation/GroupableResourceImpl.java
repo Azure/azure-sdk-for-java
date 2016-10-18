@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -86,11 +87,38 @@ public abstract class GroupableResourceImpl<
      * Creates a new resource group to put the resource in.
      * <p>
      * The group will be created in the same location as the resource.
+     *
+     * @param groupName the name of the new group
+     * @param region the region where resource group needs to be created
+     * @return the next stage of the resource definition
+     */
+    public final FluentModelImplT withNewResourceGroup(String groupName, Region region) {
+        return this.withNewResourceGroup(
+                this.myManager.resourceManager().resourceGroups().define(groupName).withRegion(region));
+    }
+
+    /**
+     * Creates a new resource group to put the resource in.
+     * <p>
+     * The group will be created in the same location as the resource.
      * The group's name is automatically derived from the resource's name.
      * @return the next stage of the resource definition
      */
     public final FluentModelImplT withNewResourceGroup() {
         return this.withNewResourceGroup(this.name() + "group");
+    }
+
+    /**
+     * Creates a new resource group to put the resource in.
+     * <p>
+     * The group will be created in the same location as the resource.
+     * The group's name is automatically derived from the resource's name.
+     *
+     * @param region the region where resource group needs to be created
+     * @return the next stage of the resource definition
+     */
+    public final FluentModelImplT withNewResourceGroup(Region region) {
+        return this.withNewResourceGroup(this.name() + "group", region);
     }
 
     /**

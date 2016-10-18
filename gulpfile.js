@@ -74,6 +74,12 @@ var mappings = {
         'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },
+    'trafficmanager': {
+        'dir': 'azure-mgmt-trafficmanager',
+        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'package': 'com.microsoft.azure.management.trafficmanager',
+        'args': '-FT 1'
+    },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
         'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
