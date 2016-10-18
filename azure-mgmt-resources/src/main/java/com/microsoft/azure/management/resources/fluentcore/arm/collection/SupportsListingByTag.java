@@ -22,6 +22,7 @@ public interface SupportsListingByTag<T> {
     /**
      * Lists all the resources with the specified tag.
      *
+     * @param resourceGroupName the name of the resource group
      * @param tagName tag's name as the key
      * @param tagValue tag's value
      * @return list of resources

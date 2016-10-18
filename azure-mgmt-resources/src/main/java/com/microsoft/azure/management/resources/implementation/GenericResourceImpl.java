@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
-import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
