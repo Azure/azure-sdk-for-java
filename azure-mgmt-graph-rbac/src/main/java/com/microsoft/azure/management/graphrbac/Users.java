@@ -18,7 +18,7 @@ import rx.Observable;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface Users extends
-        SupportsCreating<User.DefinitionStages.Blank>,
+        //SupportsCreating<User.DefinitionStages.Blank>,
         SupportsListing<User> {
     /**
      * Gets the information about a user.

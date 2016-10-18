@@ -18,7 +18,7 @@ import rx.Observable;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface ServicePrincipals extends
-        SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
+        // SupportsCreating<ServicePrincipal.DefinitionStages.Blank>,
         SupportsListing<ServicePrincipal> {
     /**
      * Gets the information about a service principal.
