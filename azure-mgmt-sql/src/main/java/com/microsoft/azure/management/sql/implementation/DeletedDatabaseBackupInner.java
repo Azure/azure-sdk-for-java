@@ -8,62 +8,63 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.sql.RecoverableDatabaseEditions;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import org.joda.time.DateTime;
 
 /**
  * Represents an Azure SQL Database restorable deleted database.
  */
 @JsonFlatten
-public class DeletedDatabaseBackupInner extends SubResource {
+public class DeletedDatabaseBackupInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Gets the Azure SQL Database name.
+     * The Azure SQL Database name.
      */
     @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /**
-     * Gets the creation date of the Azure SQL Database.
+     * The creation date of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * Gets the deletion date of the Azure SQL Database.
+     * The deletion date of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime deletionDate;
 
     /**
-     * Gets the recovery period starte date of the Azure SQL Database. This
-     * records the start date and time when recovery is available for this
-     * Azure SQL Database.
+     * The recovery period starte date of the Azure SQL Database. This records
+     * the start date and time when recovery is available for this Azure SQL
+     * Database.
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;
 
     /**
-     * Gets the edition of the Azure SQL Database.
+     * The edition of the Azure SQL Database. Possible values include:
+     * 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
+    private RecoverableDatabaseEditions edition;
 
     /**
-     * Gets the max size of the Azure SQL Database expressed in bytes.
+     * The max size of the Azure SQL Database expressed in bytes.
      */
     @JsonProperty(value = "properties.maxSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxSizeBytes;
 
     /**
-     * Gets the Service Level Objective of the Azure SQL Database.
+     * The Service Level Objective of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
 
     /**
-     * Gets the name of the Azure SQL Elastic Pool the database is in.
+     * The name of the Azure SQL Elastic Pool the database is in.
      */
     @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
@@ -109,7 +110,7 @@ public class DeletedDatabaseBackupInner extends SubResource {
      *
      * @return the edition value
      */
-    public String edition() {
+    public RecoverableDatabaseEditions edition() {
         return this.edition;
     }
 

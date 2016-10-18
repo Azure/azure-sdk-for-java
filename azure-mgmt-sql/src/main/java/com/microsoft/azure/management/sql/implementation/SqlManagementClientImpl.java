@@ -30,11 +30,11 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
+    /** The subscription credentials which uniquely identify Microsoft Azure subscription. */
     private UUID subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The subscription credentials which uniquely identify Microsoft Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -43,7 +43,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The subscription credentials which uniquely identify Microsoft Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -136,16 +136,81 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The EngineAuditRecordsInner object to access its operations.
+     * The DatabaseAdvisorsInner object to access its operations.
      */
-    private EngineAuditRecordsInner engineAuditRecords;
+    private DatabaseAdvisorsInner databaseAdvisors;
 
     /**
-     * Gets the EngineAuditRecordsInner object to access its operations.
-     * @return the EngineAuditRecordsInner object.
+     * Gets the DatabaseAdvisorsInner object to access its operations.
+     * @return the DatabaseAdvisorsInner object.
      */
-    public EngineAuditRecordsInner engineAuditRecords() {
-        return this.engineAuditRecords;
+    public DatabaseAdvisorsInner databaseAdvisors() {
+        return this.databaseAdvisors;
+    }
+
+    /**
+     * The DatabaseRecommendedActionsInner object to access its operations.
+     */
+    private DatabaseRecommendedActionsInner databaseRecommendedActions;
+
+    /**
+     * Gets the DatabaseRecommendedActionsInner object to access its operations.
+     * @return the DatabaseRecommendedActionsInner object.
+     */
+    public DatabaseRecommendedActionsInner databaseRecommendedActions() {
+        return this.databaseRecommendedActions;
+    }
+
+    /**
+     * The ElasticPoolAdvisorsInner object to access its operations.
+     */
+    private ElasticPoolAdvisorsInner elasticPoolAdvisors;
+
+    /**
+     * Gets the ElasticPoolAdvisorsInner object to access its operations.
+     * @return the ElasticPoolAdvisorsInner object.
+     */
+    public ElasticPoolAdvisorsInner elasticPoolAdvisors() {
+        return this.elasticPoolAdvisors;
+    }
+
+    /**
+     * The ElasticPoolRecommendedActionsInner object to access its operations.
+     */
+    private ElasticPoolRecommendedActionsInner elasticPoolRecommendedActions;
+
+    /**
+     * Gets the ElasticPoolRecommendedActionsInner object to access its operations.
+     * @return the ElasticPoolRecommendedActionsInner object.
+     */
+    public ElasticPoolRecommendedActionsInner elasticPoolRecommendedActions() {
+        return this.elasticPoolRecommendedActions;
+    }
+
+    /**
+     * The ServerAdvisorsInner object to access its operations.
+     */
+    private ServerAdvisorsInner serverAdvisors;
+
+    /**
+     * Gets the ServerAdvisorsInner object to access its operations.
+     * @return the ServerAdvisorsInner object.
+     */
+    public ServerAdvisorsInner serverAdvisors() {
+        return this.serverAdvisors;
+    }
+
+    /**
+     * The ServerRecommendedActionsInner object to access its operations.
+     */
+    private ServerRecommendedActionsInner serverRecommendedActions;
+
+    /**
+     * Gets the ServerRecommendedActionsInner object to access its operations.
+     * @return the ServerRecommendedActionsInner object.
+     */
+    public ServerRecommendedActionsInner serverRecommendedActions() {
+        return this.serverRecommendedActions;
     }
 
     /**
@@ -162,6 +227,32 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ServerUpgradesInner object to access its operations.
+     */
+    private ServerUpgradesInner serverUpgrades;
+
+    /**
+     * Gets the ServerUpgradesInner object to access its operations.
+     * @return the ServerUpgradesInner object.
+     */
+    public ServerUpgradesInner serverUpgrades() {
+        return this.serverUpgrades;
+    }
+
+    /**
+     * The ServerUsagesInner object to access its operations.
+     */
+    private ServerUsagesInner serverUsages;
+
+    /**
+     * Gets the ServerUsagesInner object to access its operations.
+     * @return the ServerUsagesInner object.
+     */
+    public ServerUsagesInner serverUsages() {
+        return this.serverUsages;
+    }
+
+    /**
      * The ElasticPoolsInner object to access its operations.
      */
     private ElasticPoolsInner elasticPools;
@@ -172,6 +263,19 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
      */
     public ElasticPoolsInner elasticPools() {
         return this.elasticPools;
+    }
+
+    /**
+     * The ElasticPoolsDatabaseActivitysInner object to access its operations.
+     */
+    private ElasticPoolsDatabaseActivitysInner elasticPoolsDatabaseActivitys;
+
+    /**
+     * Gets the ElasticPoolsDatabaseActivitysInner object to access its operations.
+     * @return the ElasticPoolsDatabaseActivitysInner object.
+     */
+    public ElasticPoolsDatabaseActivitysInner elasticPoolsDatabaseActivitys() {
+        return this.elasticPoolsDatabaseActivitys;
     }
 
     /**
@@ -188,16 +292,16 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The AuditingPolicysInner object to access its operations.
+     * The AuditingPoliciesInner object to access its operations.
      */
-    private AuditingPolicysInner auditingPolicys;
+    private AuditingPoliciesInner auditingPolicies;
 
     /**
-     * Gets the AuditingPolicysInner object to access its operations.
-     * @return the AuditingPolicysInner object.
+     * Gets the AuditingPoliciesInner object to access its operations.
+     * @return the AuditingPoliciesInner object.
      */
-    public AuditingPolicysInner auditingPolicys() {
-        return this.auditingPolicys;
+    public AuditingPoliciesInner auditingPolicies() {
+        return this.auditingPolicies;
     }
 
     /**
@@ -263,11 +367,19 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.databases = new DatabasesInner(restClient().retrofit(), this);
-        this.engineAuditRecords = new EngineAuditRecordsInner(restClient().retrofit(), this);
+        this.databaseAdvisors = new DatabaseAdvisorsInner(restClient().retrofit(), this);
+        this.databaseRecommendedActions = new DatabaseRecommendedActionsInner(restClient().retrofit(), this);
+        this.elasticPoolAdvisors = new ElasticPoolAdvisorsInner(restClient().retrofit(), this);
+        this.elasticPoolRecommendedActions = new ElasticPoolRecommendedActionsInner(restClient().retrofit(), this);
+        this.serverAdvisors = new ServerAdvisorsInner(restClient().retrofit(), this);
+        this.serverRecommendedActions = new ServerRecommendedActionsInner(restClient().retrofit(), this);
         this.servers = new ServersInner(restClient().retrofit(), this);
+        this.serverUpgrades = new ServerUpgradesInner(restClient().retrofit(), this);
+        this.serverUsages = new ServerUsagesInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
+        this.elasticPoolsDatabaseActivitys = new ElasticPoolsDatabaseActivitysInner(restClient().retrofit(), this);
         this.recommendedElasticPools = new RecommendedElasticPoolsInner(restClient().retrofit(), this);
-        this.auditingPolicys = new AuditingPolicysInner(restClient().retrofit(), this);
+        this.auditingPolicies = new AuditingPoliciesInner(restClient().retrofit(), this);
         this.dataMaskings = new DataMaskingsInner(restClient().retrofit(), this);
         this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

@@ -9,56 +9,63 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.sql.ServerDisasterRecoveryAutoFailover;
+import com.microsoft.azure.management.sql.ServerDisasterRecoveryPolicy;
+import com.microsoft.azure.management.sql.ServerDisasterRecoveryRole;
+import com.microsoft.azure.management.sql.ServerDisasterRecoveryType;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Represents a server disaster recovery configuration.
  */
 @JsonFlatten
-public class ServerDisasterRecoveryConfigurationInner extends SubResource {
+public class ServerDisasterRecoveryConfigurationInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Whether or not automatic failover is enabled.
+     * Whether or not automatic failover is enabled. Possible values include:
+     * 'Off', 'On'.
      */
     @JsonProperty(value = "properties.autoFailover")
-    private String autoFailover;
+    private ServerDisasterRecoveryAutoFailover autoFailover;
 
     /**
-     * The policy for automatically failing over.
+     * The policy for automatically failing over. Possible values include:
+     * 'Manual', 'Automatic', 'Off'.
      */
     @JsonProperty(value = "properties.failoverPolicy")
-    private String failoverPolicy;
+    private ServerDisasterRecoveryPolicy failoverPolicy;
 
     /**
-     * Gets the name of the partner server.
+     * The name of the partner server.
      */
     @JsonProperty(value = "properties.partnerLogicalServerName")
     private String partnerLogicalServerName;
 
     /**
-     * Gets the id path the partner server.
+     * The id path the partner server.
      */
     @JsonProperty(value = "properties.partnerServerId")
     private String partnerServerId;
 
     /**
-     * Gets the role of the server.
+     * The role of the server. Possible values include: 'None', 'Primary',
+     * 'Secondary'.
      */
     @JsonProperty(value = "properties.role")
-    private String role;
+    private ServerDisasterRecoveryRole role;
 
     /**
-     * The type of server disaster recovery configuration.
+     * The type of server disaster recovery configuration. Possible values
+     * include: 'AutoDR', 'Migration', 'Copy', 'ContinuousCopy'.
      */
     @JsonProperty(value = "properties.type")
-    private String type;
+    private ServerDisasterRecoveryType type;
 
     /**
      * Get the autoFailover value.
      *
      * @return the autoFailover value
      */
-    public String autoFailover() {
+    public ServerDisasterRecoveryAutoFailover autoFailover() {
         return this.autoFailover;
     }
 
@@ -68,7 +75,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      * @param autoFailover the autoFailover value to set
      * @return the ServerDisasterRecoveryConfigurationInner object itself.
      */
-    public ServerDisasterRecoveryConfigurationInner withAutoFailover(String autoFailover) {
+    public ServerDisasterRecoveryConfigurationInner withAutoFailover(ServerDisasterRecoveryAutoFailover autoFailover) {
         this.autoFailover = autoFailover;
         return this;
     }
@@ -78,7 +85,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      *
      * @return the failoverPolicy value
      */
-    public String failoverPolicy() {
+    public ServerDisasterRecoveryPolicy failoverPolicy() {
         return this.failoverPolicy;
     }
 
@@ -88,7 +95,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      * @param failoverPolicy the failoverPolicy value to set
      * @return the ServerDisasterRecoveryConfigurationInner object itself.
      */
-    public ServerDisasterRecoveryConfigurationInner withFailoverPolicy(String failoverPolicy) {
+    public ServerDisasterRecoveryConfigurationInner withFailoverPolicy(ServerDisasterRecoveryPolicy failoverPolicy) {
         this.failoverPolicy = failoverPolicy;
         return this;
     }
@@ -138,7 +145,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      *
      * @return the role value
      */
-    public String role() {
+    public ServerDisasterRecoveryRole role() {
         return this.role;
     }
 
@@ -148,7 +155,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      * @param role the role value to set
      * @return the ServerDisasterRecoveryConfigurationInner object itself.
      */
-    public ServerDisasterRecoveryConfigurationInner withRole(String role) {
+    public ServerDisasterRecoveryConfigurationInner withRole(ServerDisasterRecoveryRole role) {
         this.role = role;
         return this;
     }
@@ -158,7 +165,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      *
      * @return the type value
      */
-    public String type() {
+    public ServerDisasterRecoveryType type() {
         return this.type;
     }
 
@@ -168,7 +175,7 @@ public class ServerDisasterRecoveryConfigurationInner extends SubResource {
      * @param type the type value to set
      * @return the ServerDisasterRecoveryConfigurationInner object itself.
      */
-    public ServerDisasterRecoveryConfigurationInner withType(String type) {
+    public ServerDisasterRecoveryConfigurationInner withType(ServerDisasterRecoveryType type) {
         this.type = type;
         return this;
     }

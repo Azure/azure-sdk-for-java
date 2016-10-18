@@ -8,6 +8,8 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.ImportExportOperationMode;
+import com.microsoft.azure.management.sql.StorageKeyType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -17,54 +19,55 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ImportExtensionRequestParametersInner {
     /**
-     * Gets the name of the extenstion.
+     * The name of the extenstion.
      */
     private String name;
 
     /**
-     * Gets the type of the extenstion.
+     * The type of the extenstion.
      */
     private String type;
 
     /**
-     * Gets the type of Import/Export opertion being performed.
+     * The type of Import/Export opertion being performed. Possible values
+     * include: 'Import', 'Export'.
      */
     @JsonProperty(value = "properties.operationMode")
-    private String operationMode;
+    private ImportExportOperationMode operationMode;
 
     /**
-     * Gets or sets the type of the storage key to use. Valid values are
-     * StorageAccessKey and SharedAccessKey.
+     * The type of the storage key to use. Possible values include:
+     * 'StorageAccessKey', 'SharedAccessKey'.
      */
     @JsonProperty(value = "properties.storageKeyType")
-    private String storageKeyType;
+    private StorageKeyType storageKeyType;
 
     /**
-     * Gets or sets the storage key to use.
+     * The storage key to use.
      */
     @JsonProperty(value = "properties.storageKey")
     private String storageKey;
 
     /**
-     * Gets or sets the storage uri to use.
+     * The storage uri to use.
      */
     @JsonProperty(value = "properties.storageUri")
     private String storageUri;
 
     /**
-     * Gets or sets the name of the SQL administrator.
+     * The name of the SQL administrator.
      */
     @JsonProperty(value = "properties.administratorLogin")
     private String administratorLogin;
 
     /**
-     * Gets or sets the password of the SQL administrator.
+     * The password of the SQL administrator.
      */
     @JsonProperty(value = "properties.administratorLoginPassword")
     private String administratorLoginPassword;
 
     /**
-     * Gets or sets the authentication type.
+     * The authentication type.
      */
     @JsonProperty(value = "properties.authenticationType")
     private String authenticationType;
@@ -114,7 +117,7 @@ public class ImportExtensionRequestParametersInner {
      *
      * @return the operationMode value
      */
-    public String operationMode() {
+    public ImportExportOperationMode operationMode() {
         return this.operationMode;
     }
 
@@ -124,7 +127,7 @@ public class ImportExtensionRequestParametersInner {
      * @param operationMode the operationMode value to set
      * @return the ImportExtensionRequestParametersInner object itself.
      */
-    public ImportExtensionRequestParametersInner withOperationMode(String operationMode) {
+    public ImportExtensionRequestParametersInner withOperationMode(ImportExportOperationMode operationMode) {
         this.operationMode = operationMode;
         return this;
     }
@@ -134,7 +137,7 @@ public class ImportExtensionRequestParametersInner {
      *
      * @return the storageKeyType value
      */
-    public String storageKeyType() {
+    public StorageKeyType storageKeyType() {
         return this.storageKeyType;
     }
 
@@ -144,7 +147,7 @@ public class ImportExtensionRequestParametersInner {
      * @param storageKeyType the storageKeyType value to set
      * @return the ImportExtensionRequestParametersInner object itself.
      */
-    public ImportExtensionRequestParametersInner withStorageKeyType(String storageKeyType) {
+    public ImportExtensionRequestParametersInner withStorageKeyType(StorageKeyType storageKeyType) {
         this.storageKeyType = storageKeyType;
         return this;
     }

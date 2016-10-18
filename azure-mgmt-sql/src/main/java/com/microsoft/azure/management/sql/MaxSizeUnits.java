@@ -8,58 +8,52 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for MaxSizeUnits.
  */
-public final class MaxSizeUnits {
-    /** Static value Megabytes for MaxSizeUnits. */
-    public static final MaxSizeUnits MEGABYTES = new MaxSizeUnits("Megabytes");
+public enum MaxSizeUnits {
+    /** Enum value Megabytes. */
+    MEGABYTES("Megabytes"),
 
-    /** Static value Gigabytes for MaxSizeUnits. */
-    public static final MaxSizeUnits GIGABYTES = new MaxSizeUnits("Gigabytes");
+    /** Enum value Gigabytes. */
+    GIGABYTES("Gigabytes"),
 
-    /** Static value Terabytes for MaxSizeUnits. */
-    public static final MaxSizeUnits TERABYTES = new MaxSizeUnits("Terabytes");
+    /** Enum value Terabytes. */
+    TERABYTES("Terabytes"),
 
-    /** Static value Petabytes for MaxSizeUnits. */
-    public static final MaxSizeUnits PETABYTES = new MaxSizeUnits("Petabytes");
+    /** Enum value Petabytes. */
+    PETABYTES("Petabytes");
 
+    /** The actual serialized value for a MaxSizeUnits instance. */
     private String value;
 
-    /**
-     * Creates a custom value for MaxSizeUnits.
-     * @param value the custom value
-     */
-    public MaxSizeUnits(String value) {
+    MaxSizeUnits(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a MaxSizeUnits instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed MaxSizeUnits object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static MaxSizeUnits fromString(String value) {
+        MaxSizeUnits[] items = MaxSizeUnits.values();
+        for (MaxSizeUnits item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof MaxSizeUnits)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        MaxSizeUnits rhs = (MaxSizeUnits) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }

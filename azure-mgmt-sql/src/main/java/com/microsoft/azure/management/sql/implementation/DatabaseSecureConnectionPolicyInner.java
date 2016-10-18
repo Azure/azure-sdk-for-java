@@ -9,31 +9,32 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.sql.DatabaseSecureConnectionAccess;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Represents an Azure SQL Database secure connection policy.
  */
 @JsonFlatten
-public class DatabaseSecureConnectionPolicyInner extends SubResource {
+public class DatabaseSecureConnectionPolicyInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Gets the Data Security Proxy DNS name.
+     * The Data Security Proxy DNS name.
      */
     @JsonProperty(value = "properties.proxyDnsName", access = JsonProperty.Access.WRITE_ONLY)
     private String proxyDnsName;
 
     /**
-     * Gets the Data Security Proxy port number.
+     * The Data Security Proxy port number.
      */
     @JsonProperty(value = "properties.proxyPort", access = JsonProperty.Access.WRITE_ONLY)
     private String proxyPort;
 
     /**
-     * Gets whether block direct access is applied.
+     * Whether or not block direct access is applied. Possible values include:
+     * 'Required', 'Optional'.
      */
     @JsonProperty(value = "properties.securityEnabledAccess")
-    private String securityEnabledAccess;
+    private DatabaseSecureConnectionAccess securityEnabledAccess;
 
     /**
      * Get the proxyDnsName value.
@@ -58,7 +59,7 @@ public class DatabaseSecureConnectionPolicyInner extends SubResource {
      *
      * @return the securityEnabledAccess value
      */
-    public String securityEnabledAccess() {
+    public DatabaseSecureConnectionAccess securityEnabledAccess() {
         return this.securityEnabledAccess;
     }
 
@@ -68,7 +69,7 @@ public class DatabaseSecureConnectionPolicyInner extends SubResource {
      * @param securityEnabledAccess the securityEnabledAccess value to set
      * @return the DatabaseSecureConnectionPolicyInner object itself.
      */
-    public DatabaseSecureConnectionPolicyInner withSecurityEnabledAccess(String securityEnabledAccess) {
+    public DatabaseSecureConnectionPolicyInner withSecurityEnabledAccess(DatabaseSecureConnectionAccess securityEnabledAccess) {
         this.securityEnabledAccess = securityEnabledAccess;
         return this;
     }

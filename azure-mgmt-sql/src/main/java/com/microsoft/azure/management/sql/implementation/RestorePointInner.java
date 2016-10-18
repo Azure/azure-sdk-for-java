@@ -20,7 +20,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RestorePointInner extends Resource {
     /**
-     * Gets the restore point type of the Azure SQL Database restore point.
+     * The restore point type of the Azure SQL Database restore point.
      * Possible values include: 'DISCRETE', 'CONTINUOUS'.
      */
     @JsonProperty(value = "properties.restorePointType", access = JsonProperty.Access.WRITE_ONLY)

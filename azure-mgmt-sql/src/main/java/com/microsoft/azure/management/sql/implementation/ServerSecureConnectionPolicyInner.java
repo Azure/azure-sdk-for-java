@@ -8,30 +8,29 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.sql.ServerConnectonTypes;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.sql.ServerConnectionTypes;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
 
 /**
  * Represents an Azure SQL Server secure connection policy.
  */
 @JsonFlatten
-public class ServerSecureConnectionPolicyInner extends SubResource {
+public class ServerSecureConnectionPolicyInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Gets or Sets server connection type. The ServerConnectonTypes
-     * enumeration contains all the valid connection types. Possible values
-     * include: 'Default', 'Proxy', 'Redirect'.
+     * The server connection type. The ServerConnectionTypes enumeration
+     * contains all the valid connection types. Possible values include:
+     * 'Default', 'Proxy', 'Redirect'.
      */
     @JsonProperty(value = "properties.connectionType")
-    private ServerConnectonTypes connectionType;
+    private ServerConnectionTypes connectionType;
 
     /**
      * Get the connectionType value.
      *
      * @return the connectionType value
      */
-    public ServerConnectonTypes connectionType() {
+    public ServerConnectionTypes connectionType() {
         return this.connectionType;
     }
 
@@ -41,7 +40,7 @@ public class ServerSecureConnectionPolicyInner extends SubResource {
      * @param connectionType the connectionType value to set
      * @return the ServerSecureConnectionPolicyInner object itself.
      */
-    public ServerSecureConnectionPolicyInner withConnectionType(ServerConnectonTypes connectionType) {
+    public ServerSecureConnectionPolicyInner withConnectionType(ServerConnectionTypes connectionType) {
         this.connectionType = connectionType;
         return this;
     }

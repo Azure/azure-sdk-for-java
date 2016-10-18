@@ -8,7 +8,10 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.RecommendedIndexActions;
+import com.microsoft.azure.management.sql.RecommendedIndexStates;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.RecommendedIndexTypes;
 import java.util.List;
 import com.microsoft.azure.management.sql.OperationImpact;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -21,49 +24,53 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RecommendedIndexInner extends Resource {
     /**
-     * Gets the proposed index action. We suggest user to create missing
-     * index, drop unused index or to rebuild already existing index to
-     * improve its performance. Possible values are 'Create', 'Drop',
-     * 'Rebuild'.
+     * The proposed index action. We suggest user to create missing index,
+     * drop unused index or to rebuild already existing index to improve its
+     * performance. Possible values are 'Create', 'Drop', 'Rebuild'. Possible
+     * values include: 'Create', 'Drop', 'Rebuild'.
      */
     @JsonProperty(value = "properties.action", access = JsonProperty.Access.WRITE_ONLY)
-    private String action;
+    private RecommendedIndexActions action;
 
     /**
-     * Gets the state recommendation is in. Current options are: 'Active',
+     * The state recommendation is in. Current options are: 'Active',
      * 'Pending', 'Executing', 'Verifying', 'Pending Revert', 'Reverting',
-     * 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'.
+     * 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'. Possible
+     * values include: 'Active', 'Pending', 'Executing', 'Verifying',
+     * 'Pending Revert', 'Reverting', 'Reverted', 'Ignored', 'Expired',
+     * 'Blocked', 'Success'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
+    private RecommendedIndexStates state;
 
     /**
-     * Gets the UTC datetime showing when this resource was created.
+     * The UTC datetime showing when this resource was created.
      */
     @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
-     * Gets the UTC datetime of when was this resource last changed.
+     * The UTC datetime of when was this resource last changed.
      */
     @JsonProperty(value = "properties.lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModified;
 
     /**
-     * Gets the type of index (CLUSTERED, NONCLUSTERED, COLUMNSTORE, CLUSTERED
-     * COLUMNSTORE).
+     * The type of index (CLUSTERED, NONCLUSTERED, COLUMNSTORE, CLUSTERED
+     * COLUMNSTORE). Possible values include: 'CLUSTERED', 'NONCLUSTERED',
+     * 'COLUMNSTORE', 'CLUSTERED COLUMNSTORE'.
      */
     @JsonProperty(value = "properties.indexType", access = JsonProperty.Access.WRITE_ONLY)
-    private String indexType;
+    private RecommendedIndexTypes indexType;
 
     /**
-     * Gets the schema where table to build index over resides.
+     * The schema where table to build index over resides.
      */
     @JsonProperty(value = "properties.schema", access = JsonProperty.Access.WRITE_ONLY)
     private String schema;
 
     /**
-     * Gets the table on which to build index.
+     * The table on which to build index.
      */
     @JsonProperty(value = "properties.table", access = JsonProperty.Access.WRITE_ONLY)
     private String table;
@@ -75,25 +82,25 @@ public class RecommendedIndexInner extends Resource {
     private List<String> columns;
 
     /**
-     * Gets the list of column names to be included in the index.
+     * The list of column names to be included in the index.
      */
     @JsonProperty(value = "properties.includedColumns", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> includedColumns;
 
     /**
-     * Gets the full build index script.
+     * The full build index script.
      */
     @JsonProperty(value = "properties.indexScript", access = JsonProperty.Access.WRITE_ONLY)
     private String indexScript;
 
     /**
-     * Gets the estimated impact of doing recommended index action.
+     * The estimated impact of doing recommended index action.
      */
     @JsonProperty(value = "properties.estimatedImpact", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationImpact> estimatedImpact;
 
     /**
-     * Gets the values reported after index action is complete.
+     * The values reported after index action is complete.
      */
     @JsonProperty(value = "properties.reportedImpact", access = JsonProperty.Access.WRITE_ONLY)
     private List<OperationImpact> reportedImpact;
@@ -103,7 +110,7 @@ public class RecommendedIndexInner extends Resource {
      *
      * @return the action value
      */
-    public String action() {
+    public RecommendedIndexActions action() {
         return this.action;
     }
 
@@ -112,7 +119,7 @@ public class RecommendedIndexInner extends Resource {
      *
      * @return the state value
      */
-    public String state() {
+    public RecommendedIndexStates state() {
         return this.state;
     }
 
@@ -139,7 +146,7 @@ public class RecommendedIndexInner extends Resource {
      *
      * @return the indexType value
      */
-    public String indexType() {
+    public RecommendedIndexTypes indexType() {
         return this.indexType;
     }
 

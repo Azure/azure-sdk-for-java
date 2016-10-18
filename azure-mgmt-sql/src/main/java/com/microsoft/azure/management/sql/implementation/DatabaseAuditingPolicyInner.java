@@ -10,13 +10,12 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
 
 /**
  * Represents an Azure SQL Database auditing policy.
  */
 @JsonFlatten
-public class DatabaseAuditingPolicyInner extends Resource {
+public class DatabaseAuditingPolicyInner extends com.microsoft.azure.management.sql.SubResource {
     /**
      * Indicates whether the default server auditing policy is used for that
      * Azure SQL Database.
@@ -25,73 +24,72 @@ public class DatabaseAuditingPolicyInner extends Resource {
     private String useServerDefault;
 
     /**
-     * Gets the auditing state of the Azure SQL Server auditing policy.
+     * The auditing state of the Azure SQL Server auditing policy.
      */
     @JsonProperty(value = "properties.auditingState")
     private String auditingState;
 
     /**
-     * Gets the events types of the Azure SQL Server auditing policy.
+     * The events types of the Azure SQL Server auditing policy.
      */
     @JsonProperty(value = "properties.eventTypesToAudit")
     private String eventTypesToAudit;
 
     /**
-     * Gets the storage account name of the Azure SQL Server auditing policy.
+     * The storage account name of the Azure SQL Server auditing policy.
      */
     @JsonProperty(value = "properties.storageAccountName")
     private String storageAccountName;
 
     /**
-     * Gets the primary storage account key of the Azure SQL Server auditing
-     * policy.
+     * The primary storage account key of the Azure SQL Server auditing policy.
      */
     @JsonProperty(value = "properties.storageAccountKey")
     private String storageAccountKey;
 
     /**
-     * Gets secondary key of the storage account of the Azure SQL Server
+     * The secondary key of the storage account of the Azure SQL Server
      * auditing policy.
      */
     @JsonProperty(value = "properties.storageAccountSecondaryKey")
     private String storageAccountSecondaryKey;
 
     /**
-     * Gets the storage table endpoint of the Azure SQL Server auditing policy.
+     * The storage table endpoint of the Azure SQL Server auditing policy.
      */
     @JsonProperty(value = "properties.storageTableEndpoint")
     private String storageTableEndpoint;
 
     /**
-     * Gets the resource group of the storage account of the Azure SQL Server
+     * The resource group of the storage account of the Azure SQL Server
      * auditing policy.
      */
     @JsonProperty(value = "properties.storageAccountResourceGroupName")
     private String storageAccountResourceGroupName;
 
     /**
-     * Gets the subscription Id of the storage account of the Azure SQL Server
+     * The subscription Id of the storage account of the Azure SQL Server
      * auditing policy.
      */
     @JsonProperty(value = "properties.storageAccountSubscriptionId")
     private String storageAccountSubscriptionId;
 
     /**
-     * Gets the retention in days of the Azure SQL Database auditing policy.
+     * The retention in days of the Azure SQL Database auditing policy.
      */
     @JsonProperty(value = "properties.retentionDays")
     private String retentionDays;
 
     /**
-     * Gets the name of the table audit logs are written to in the Azure SQL
+     * The name of the table audit logs are written to in the Azure SQL
      * Database auditing policy.
      */
     @JsonProperty(value = "properties.auditLogsTableName")
     private String auditLogsTableName;
 
     /**
-     * Gets the full name of the table audit logs are written to in the Azure
-     * SQL Database auditing policy.
+     * The full name of the table audit logs are written to in the Azure SQL
+     * Database auditing policy.
      */
     @JsonProperty(value = "properties.fullAuditLogsTableName")
     private String fullAuditLogsTableName;

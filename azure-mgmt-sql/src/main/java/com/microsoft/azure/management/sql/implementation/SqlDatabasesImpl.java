@@ -49,7 +49,7 @@ public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
 
     @Override
     public PagedList<SqlDatabase> listByParent(String resourceGroupName, String parentName) {
-        return wrapList(this.innerCollection.list(resourceGroupName, parentName));
+        return wrapList(this.innerCollection.listByServer(resourceGroupName, parentName));
     }
 
     @Override

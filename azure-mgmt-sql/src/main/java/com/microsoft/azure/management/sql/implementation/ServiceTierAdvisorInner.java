@@ -8,32 +8,32 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import org.joda.time.DateTime;
-import java.util.List;
-import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import org.joda.time.DateTime;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a Service Tier Advisor.
  */
 @JsonFlatten
-public class ServiceTierAdvisorInner extends SubResource {
+public class ServiceTierAdvisorInner extends com.microsoft.azure.management.sql.SubResource {
     /**
-     * Gets the observation period start.
+     * The observation period start.
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * Gets the observation period start.
+     * The observation period start.
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;
 
     /**
-     * Gets the activeTimeRatio for service tier advisor.
+     * The activeTimeRatio for service tier advisor.
      */
     @JsonProperty(value = "properties.activeTimeRatio", access = JsonProperty.Access.WRITE_ONLY)
     private Double activeTimeRatio;
