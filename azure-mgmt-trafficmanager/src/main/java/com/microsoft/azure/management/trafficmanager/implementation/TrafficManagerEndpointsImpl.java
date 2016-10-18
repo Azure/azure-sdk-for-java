@@ -97,13 +97,39 @@ class TrafficManagerEndpointsImpl extends
     }
 
     /**
-     * Starts an endpoint definition chain.
+     * Starts an Azure endpoint definition chain.
      *
      * @param name the name of the endpoint to be added
      * @return the endpoint
      */
-    public TrafficManagerEndpointImpl define(String name) {
-        return this.prepareDefine(name);
+    public TrafficManagerEndpointImpl defineAzureTargetEndpoint(String name) {
+        TrafficManagerEndpointImpl endpoint = this.prepareDefine(name);
+        endpoint.inner().withType(EndpointType.AZURE.toString());
+        return endpoint;
+    }
+
+    /**
+     * Starts an external endpoint definition chain.
+     *
+     * @param name the name of the endpoint to be added
+     * @return the endpoint
+     */
+    public TrafficManagerEndpointImpl defineExteralTargetEndpoint(String name) {
+        TrafficManagerEndpointImpl endpoint = this.prepareDefine(name);
+        endpoint.inner().withType(EndpointType.EXTERNAL.toString());
+        return endpoint;
+    }
+
+    /**
+     * Starts an nested profile endpoint definition chain.
+     *
+     * @param name the name of the endpoint to be added
+     * @return the endpoint
+     */
+    public TrafficManagerEndpointImpl defineNestedProfileTargetEndpoint(String name) {
+        TrafficManagerEndpointImpl endpoint = this.prepareDefine(name);
+        endpoint.inner().withType(EndpointType.NESTED_PROFILE.toString());
+        return endpoint;
     }
 
     /**

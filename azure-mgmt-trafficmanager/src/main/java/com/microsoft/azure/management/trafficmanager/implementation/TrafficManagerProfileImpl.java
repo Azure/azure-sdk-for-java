@@ -144,22 +144,32 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public TrafficManagerEndpointImpl defineEndpoint(String name) {
-        return this.endpoints.define(name);
+    public TrafficManagerEndpointImpl defineAzureTargetEndpoint(String name) {
+        return this.endpoints.defineAzureTargetEndpoint(name);
     }
 
     @Override
-    public TrafficManagerEndpointImpl updateAzureEndpoint(String name) {
+    public TrafficManagerEndpointImpl defineExternalTargetEndpoint(String name) {
+        return this.endpoints.defineExteralTargetEndpoint(name);
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl defineNestedTargetEndpoint(String name) {
+        return this.endpoints.defineNestedProfileTargetEndpoint(name);
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl updateAzureTargetEndpoint(String name) {
         return this.endpoints.updateAzureEndpoint(name);
     }
 
     @Override
-    public TrafficManagerEndpointImpl updateExternalEndpoint(String name) {
+    public TrafficManagerEndpointImpl updateExternalTargetEndpoint(String name) {
         return this.endpoints.updateExternalEndpoint(name);
     }
 
     @Override
-    public TrafficManagerEndpointImpl updateNestedProfileEndpoint(String name) {
+    public TrafficManagerEndpointImpl updateNestedProfileTargetEndpoint(String name) {
         return this.endpoints.updateNestedProfileEndpoint(name);
     }
 

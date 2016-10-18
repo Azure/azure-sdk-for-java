@@ -70,50 +70,32 @@ class TrafficManagerEndpointImpl extends ExternalChildResourceImpl<TrafficManage
     }
 
     @Override
-    public TrafficManagerEndpointImpl withMinimumChildEndpoints(int count) {
-        this.inner().withMinChildEndpoints(new Long(count));
-        return this;
-    }
-
-    @Override
-    public TrafficManagerEndpointImpl withAzureResource(String resourceId) {
-        return this.withAzureEndpoint(resourceId);
-    }
-
-    @Override
-    public TrafficManagerEndpointImpl withFqdn(String externalFqdn) {
-        return this.withExternalEndpoint(externalFqdn);
-    }
-
-    @Override
-    public TrafficManagerEndpointImpl withProfile(TrafficManagerProfile nestedProfile) {
-        return this.withNestedEndpoint(nestedProfile);
-    }
-
-    @Override
-    public TrafficManagerEndpointImpl withAzureEndpoint(String resourceId) {
-        this.inner().withType(EndpointType.AZURE.toString());
+    public TrafficManagerEndpointImpl toResourceId(String resourceId) {
         this.inner().withTargetResourceId(resourceId);
         return this;
     }
 
     @Override
-    public TrafficManagerEndpointImpl withExternalEndpoint(String externalFqdn) {
-        this.inner().withType(EndpointType.EXTERNAL.toString());
+    public TrafficManagerEndpointImpl toFqdn(String externalFqdn) {
         this.inner().withTarget(externalFqdn);
         return this;
     }
 
     @Override
-    public TrafficManagerEndpointImpl withNestedEndpoint(TrafficManagerProfile nestedProfile) {
-        this.inner().withType(EndpointType.NESTED_PROFILE.toString());
+    public TrafficManagerEndpointImpl toProfile(TrafficManagerProfile nestedProfile) {
         this.inner().withTargetResourceId(nestedProfile.id());
         this.inner().withMinChildEndpoints(new Long(1));
         return this;
     }
 
-    public TrafficManagerEndpointImpl withEndpointRegion(Region location) {
+    public TrafficManagerEndpointImpl fromRegion(Region location) {
         this.inner().withEndpointLocation(location.toString());
+        return this;
+    }
+
+    @Override
+    public TrafficManagerEndpointImpl withMinimumEndpointsToEnableTraffic(int count) {
+        this.inner().withMinChildEndpoints(new Long(count));
         return this;
     }
 

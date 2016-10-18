@@ -165,12 +165,28 @@ public interface TrafficManagerProfile extends
          */
         interface WithEndpoint {
             /**
-             * Specifies definition of an endpoint to be attached to the traffic manager profile.
+             * Specifies definition of an Azure endpoint to be attached to the traffic manager profile.
              *
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            TrafficManagerEndpoint.DefinitionStages.Blank<WithCreate> defineEndpoint(String name);
+            TrafficManagerEndpoint.DefinitionStages.AzureTargetEndpointBlank<WithCreate> defineAzureTargetEndpoint(String name);
+
+            /**
+             * Specifies definition of an external endpoint to be attached to the traffic manager profile.
+             *
+             * @param name the name for the endpoint
+             * @return the stage representing configuration for the endpoint
+             */
+            TrafficManagerEndpoint.DefinitionStages.ExternalTargetEndpointBlank<WithCreate> defineExternalTargetEndpoint(String name);
+
+            /**
+             * Specifies definition of an nested profile endpoint to be attached to the traffic manager profile.
+             *
+             * @param name the name for the endpoint
+             * @return the stage representing configuration for the endpoint
+             */
+            TrafficManagerEndpoint.DefinitionStages.NestedProfileTargetEndpointBlank<WithCreate> defineNestedTargetEndpoint(String name);
         }
 
         /**
@@ -344,12 +360,28 @@ public interface TrafficManagerProfile extends
          */
         interface WithEndpoint {
             /**
-             * Specifies definition of an endpoint to be attached to the traffic manager profile.
+             * Specifies definition of an Azure endpoint to be attached to the traffic manager profile.
              *
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            TrafficManagerEndpoint.UpdateDefinitionStages.Blank<Update> defineEndpoint(String name);
+            TrafficManagerEndpoint.UpdateDefinitionStages.AzureTargetEndpointBlank<Update> defineAzureTargetEndpoint(String name);
+
+            /**
+             * Specifies definition of an external endpoint to be attached to the traffic manager profile.
+             *
+             * @param name the name for the endpoint
+             * @return the stage representing configuration for the endpoint
+             */
+            TrafficManagerEndpoint.UpdateDefinitionStages.ExternalTargetEndpointBlank<Update> defineExternalTargetEndpoint(String name);
+
+            /**
+             * Specifies definition of an nested profile endpoint to be attached to the traffic manager profile.
+             *
+             * @param name the name for the endpoint
+             * @return the stage representing configuration for the endpoint
+             */
+            TrafficManagerEndpoint.UpdateDefinitionStages.NestedProfileTargetEndpointBlank<Update> defineNestedTargetEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing Azure endpoint in this profile.
@@ -357,7 +389,7 @@ public interface TrafficManagerProfile extends
              * @param name the name of the Azure endpoint
              * @return the stage representing updating configuration for the Azure endpoint
              */
-            TrafficManagerEndpoint.UpdateAzureEndpoint updateAzureEndpoint(String name);
+            TrafficManagerEndpoint.UpdateAzureEndpoint updateAzureTargetEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing external endpoint in this profile.
@@ -365,7 +397,7 @@ public interface TrafficManagerProfile extends
              * @param name the name of the external endpoint
              * @return the stage representing updating configuration for the external endpoint
              */
-            TrafficManagerEndpoint.UpdateExternalEndpoint updateExternalEndpoint(String name);
+            TrafficManagerEndpoint.UpdateExternalEndpoint updateExternalTargetEndpoint(String name);
 
             /**
              * Begins the description of an update of an existing nested traffic manager profile endpoint
@@ -374,7 +406,7 @@ public interface TrafficManagerProfile extends
              * @param name the name of the nested profile endpoint
              * @return the stage representing updating configuration for the nested traffic manager profile endpoint
              */
-            TrafficManagerEndpoint.UpdateNestedProfileEndpoint updateNestedProfileEndpoint(String name);
+            TrafficManagerEndpoint.UpdateNestedProfileEndpoint updateNestedProfileTargetEndpoint(String name);
 
             /**
              * Removes an endpoint in the profile.
