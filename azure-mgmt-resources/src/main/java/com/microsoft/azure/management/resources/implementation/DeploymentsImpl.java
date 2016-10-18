@@ -62,21 +62,6 @@ final class DeploymentsImpl
     }
 
     @Override
-    public PagedList<Deployment> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        if (tagName == null) {
-            throw new IllegalArgumentException("tagName == null");
-        }
-        String odataFilter;
-        if (tagValue == null) {
-            odataFilter = String.format("tagname eq '%s'", tagName);
-        } else {
-            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
-        }
-        return converter.convert(client.list(
-                resourceGroupName, odataFilter, null));
-    }
-
-    @Override
     public Deployment getByName(String name) {
         for (ResourceGroup group : this.resourceManager.resourceGroups().list()) {
             DeploymentExtendedInner inner = client.get(group.name(), name);
