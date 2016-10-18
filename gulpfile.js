@@ -44,6 +44,11 @@ var mappings = {
         'source': 'arm-resources/features/2015-12-01/swagger/features.json',
         'package': 'com.microsoft.azure.management.resources'
     },
+    'policy': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/policy/2016-04-01/swagger/policy.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
     'network': {
         'dir': 'azure-mgmt-network',
         'source': 'arm-network/2016-06-01/swagger/network.json',
