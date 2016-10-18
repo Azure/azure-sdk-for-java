@@ -10,7 +10,7 @@ package com.microsoft.azure.management.sql;
 
 
 /**
- * The ImplementationInfo model.
+ * The implementation information for a recommended action.
  */
 public class ImplementationInfo {
     /**

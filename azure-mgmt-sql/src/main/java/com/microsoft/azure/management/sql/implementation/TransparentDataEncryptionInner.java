@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionStates;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database Transparent Data Encryption .
  */
 @JsonFlatten
-public class TransparentDataEncryptionInner extends com.microsoft.azure.management.sql.SubResource {
+public class TransparentDataEncryptionInner extends SqlSubResource {
     /**
      * The status of the Azure SQL Database Transparent Data Encryption.
      * Possible values include: 'Enabled', 'Disabled'.

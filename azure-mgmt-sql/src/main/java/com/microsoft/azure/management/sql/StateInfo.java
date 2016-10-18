@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql;
 import org.joda.time.DateTime;
 
 /**
- * The StateInfo model.
+ * The state information for a recommended action.
  */
 public class StateInfo {
     /**

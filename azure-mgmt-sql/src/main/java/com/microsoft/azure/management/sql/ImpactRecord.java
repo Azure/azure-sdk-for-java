@@ -10,7 +10,7 @@ package com.microsoft.azure.management.sql;
 
 
 /**
- * The ImpactRecord model.
+ * The observed impact information for a recommended action.
  */
 public class ImpactRecord {
     /**

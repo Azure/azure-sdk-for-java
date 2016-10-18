@@ -27,7 +27,7 @@ public class ServerUpgradeStartParametersInner {
     private String version;
 
     /**
-     * The earliest time to upgrade the Azure SQL Server.
+     * The earliest time to upgrade the Azure SQL Server (ISO8601 format).
      */
     @JsonProperty(value = "serverUpgradeProperties.ScheduleUpgradeAfterUtcDateTime")
     private DateTime scheduleUpgradeAfterUtcDateTime;

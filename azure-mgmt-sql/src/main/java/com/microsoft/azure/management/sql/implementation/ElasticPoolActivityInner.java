@@ -19,7 +19,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolActivityInner extends Resource {
     /**
-     * The time the operation finished.
+     * The time the operation finished (ISO8601 format).
      */
     @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
@@ -103,7 +103,7 @@ public class ElasticPoolActivityInner extends Resource {
     private String serverName;
 
     /**
-     * The time the operation started.
+     * The time the operation started (ISO8601 format).
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;

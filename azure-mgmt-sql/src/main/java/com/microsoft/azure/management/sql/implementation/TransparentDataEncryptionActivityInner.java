@@ -8,15 +8,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionActivityStates;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database Transparent Data Encryption Scan.
  */
 @JsonFlatten
-public class TransparentDataEncryptionActivityInner extends com.microsoft.azure.management.sql.SubResource {
+public class TransparentDataEncryptionActivityInner extends SqlSubResource {
     /**
      * The status of the Azure SQL Database. Possible values include:
      * 'Encrypting', 'Decrypting'.

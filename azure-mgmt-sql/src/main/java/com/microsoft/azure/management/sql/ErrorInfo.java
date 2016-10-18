@@ -10,7 +10,7 @@ package com.microsoft.azure.management.sql;
 
 
 /**
- * The ErrorInfo model.
+ * The error information for a recommended action.
  */
 public class ErrorInfo {
     /**

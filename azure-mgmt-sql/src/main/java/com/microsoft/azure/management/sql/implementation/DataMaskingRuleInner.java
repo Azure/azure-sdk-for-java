@@ -9,11 +9,12 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.sql.DataMaskingRuleProperties;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database data masking rule.
  */
-public class DataMaskingRuleInner extends com.microsoft.azure.management.sql.SubResource {
+public class DataMaskingRuleInner extends SqlSubResource {
     /**
      * Represents the properties of the resource.
      */

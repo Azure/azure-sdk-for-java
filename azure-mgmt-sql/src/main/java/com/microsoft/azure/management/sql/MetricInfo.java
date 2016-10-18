@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql;
 import org.joda.time.DateTime;
 
 /**
- * The MetricInfo model.
+ * The time series metrics information for a recommended action.
  */
 public class MetricInfo {
     /**

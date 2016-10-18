@@ -61,7 +61,7 @@ public final class ServersInner {
     interface ServersService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/servers")
-        Observable<Response<ResponseBody>> listBySubscription(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") UUID subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}")
@@ -182,8 +182,8 @@ public final class ServersInner {
      *
      * @return the List&lt;ServerInner&gt; object if successful.
      */
-    public List<ServerInner> listBySubscription() {
-        return listBySubscriptionWithServiceResponseAsync().toBlocking().single().getBody();
+    public List<ServerInner> list() {
+        return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
@@ -192,8 +192,8 @@ public final class ServersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<ServerInner>> listBySubscriptionAsync(final ServiceCallback<List<ServerInner>> serviceCallback) {
-        return ServiceCall.create(listBySubscriptionWithServiceResponseAsync(), serviceCallback);
+    public ServiceCall<List<ServerInner>> listAsync(final ServiceCallback<List<ServerInner>> serviceCallback) {
+        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
@@ -201,8 +201,8 @@ public final class ServersInner {
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
-    public Observable<List<ServerInner>> listBySubscriptionAsync() {
-        return listBySubscriptionWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
+    public Observable<List<ServerInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<ServerInner>>, List<ServerInner>>() {
             @Override
             public List<ServerInner> call(ServiceResponse<List<ServerInner>> response) {
                 return response.getBody();
@@ -215,17 +215,17 @@ public final class ServersInner {
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
-    public Observable<ServiceResponse<List<ServerInner>>> listBySubscriptionWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<ServerInner>>> listWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.listBySubscription(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ServerInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ServerInner>> result = listBySubscriptionDelegate(response);
+                        ServiceResponse<PageImpl1<ServerInner>> result = listDelegate(response);
                         ServiceResponse<List<ServerInner>> clientResponse = new ServiceResponse<List<ServerInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -235,7 +235,7 @@ public final class ServersInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ServerInner>> listBySubscriptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl1<ServerInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<ServerInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<ServerInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1381,6 +1381,7 @@ public final class ServersInner {
     private ServiceResponse<PageImpl1<ServerDisasterRecoveryConfigurationInner>> listDisasterRecoveryConfigurationsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<ServerDisasterRecoveryConfigurationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<ServerDisasterRecoveryConfigurationInner>>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

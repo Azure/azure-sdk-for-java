@@ -8,17 +8,18 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.sql.ReplicationRole;
-import com.microsoft.azure.management.sql.ReplicationState;
-import com.microsoft.rest.serializer.JsonFlatten;
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.ReplicationState;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database Replication Link.
  */
 @JsonFlatten
-public class ReplicationLinkInner extends com.microsoft.azure.management.sql.SubResource {
+public class ReplicationLinkInner extends SqlSubResource {
     /**
      * The name of the Azure SQL Server hosting the partner Azure SQL Database.
      */
@@ -54,7 +55,7 @@ public class ReplicationLinkInner extends com.microsoft.azure.management.sql.Sub
     private ReplicationRole partnerRole;
 
     /**
-     * The start time for the replication link.
+     * The start time for the replication link (ISO8601 format).
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;

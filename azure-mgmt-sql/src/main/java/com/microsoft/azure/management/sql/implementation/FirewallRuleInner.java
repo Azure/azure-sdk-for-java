@@ -10,12 +10,13 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Server Firewall Rule.
  */
 @JsonFlatten
-public class FirewallRuleInner extends com.microsoft.azure.management.sql.SubResource {
+public class FirewallRuleInner extends SqlSubResource {
     /**
      * The start IP address of the Azure SQL Database Firewall Rule. Must be
      * IPv4 format.

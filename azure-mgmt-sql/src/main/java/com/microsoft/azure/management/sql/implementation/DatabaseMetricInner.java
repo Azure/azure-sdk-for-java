@@ -46,7 +46,7 @@ public class DatabaseMetricInner {
     private String unit;
 
     /**
-     * The next reset time for the metric.
+     * The next reset time for the metric (ISO8601 format).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime nextResetTime;

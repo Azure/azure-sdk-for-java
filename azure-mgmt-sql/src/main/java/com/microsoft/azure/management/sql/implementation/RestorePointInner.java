@@ -27,15 +27,15 @@ public class RestorePointInner extends Resource {
     private RestorePointTypes restorePointType;
 
     /**
-     * Restore point creation time. Populated when restorePointType =
-     * CONTINUOUS. Null otherwise.
+     * Restore point creation time (ISO8601 format). Populated when
+     * restorePointType = CONTINUOUS. Null otherwise.
      */
     @JsonProperty(value = "properties.restorePointCreationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime restorePointCreationDate;
 
     /**
-     * Earliest restore time. Populated when restorePointType = DISCRETE. Null
-     * otherwise.
+     * Earliest restore time (ISO8601 format). Populated when restorePointType
+     * = DISCRETE. Null otherwise.
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;

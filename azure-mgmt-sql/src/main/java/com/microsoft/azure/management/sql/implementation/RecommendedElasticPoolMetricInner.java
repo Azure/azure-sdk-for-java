@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RecommendedElasticPoolMetricInner {
     /**
-     * The time of metric.
+     * The time of metric (ISO8601 format).
      */
     @JsonProperty(value = "dateTime")
     private DateTime dateTimeProperty;
