@@ -42,6 +42,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
+import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +58,7 @@ public final class Azure {
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
     private final BatchManager batchManager;
+    private final TrafficManager trafficManager;
     private final String subscriptionId;
 
     /**
@@ -258,6 +261,7 @@ public final class Azure {
         this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
+        this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -401,4 +405,10 @@ public final class Azure {
         return batchManager.batchAccounts();
     }
 
+    /**
+     * @return entry point to managing traffic manager profiles.
+     */
+    public TrafficManagerProfiles trafficManagerProfiles() {
+        return trafficManager.profiles();
+    }
 }

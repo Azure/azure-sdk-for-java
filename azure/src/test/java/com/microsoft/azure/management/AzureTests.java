@@ -71,7 +71,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.NONE)
+                .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -313,5 +313,11 @@ public class AzureTests {
     @Test
     public void testBatchAccount() throws Exception {
         new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testTrafficManager() throws Exception {
+        new TestTrafficManager(azure.resourceGroups(), azure.publicIpAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
 }
