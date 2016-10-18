@@ -25,6 +25,7 @@ import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
@@ -328,6 +329,13 @@ public final class Azure {
      */
     public Networks networks() {
         return networkManager.networks();
+    }
+
+    /**
+     * @return entry point to managing route tables
+     */
+    public RouteTables routeTables() {
+        return networkManager.routeTables();
     }
 
     /**

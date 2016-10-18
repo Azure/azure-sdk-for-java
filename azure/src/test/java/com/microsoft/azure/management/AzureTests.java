@@ -225,8 +225,17 @@ public class AzureTests {
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork(azure.networkSecurityGroups())
+        new TestNetwork.WithSubnets(azure.networkSecurityGroups())
             .runTest(azure.networks(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests route tables
+     * @throws Exception
+     */
+    @Test public void testRouteTables() throws Exception {
+        new TestRouteTables.Minimal(azure.networks())
+            .runTest(azure.routeTables(), azure.resourceGroups());
     }
 
     /**
