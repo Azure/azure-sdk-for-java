@@ -217,7 +217,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
      */
@@ -232,7 +232,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -250,7 +250,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
@@ -265,7 +265,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
      */
@@ -284,7 +284,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -314,7 +314,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SubscriptionInner&gt; object if successful.
@@ -330,7 +330,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -350,7 +350,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
@@ -366,7 +366,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SubscriptionInner&gt; object
@@ -386,7 +386,7 @@ public final class SubscriptionsInner {
     }
 
     /**
-     * Gets a list of the subscriptionIds.
+     * Gets a list of subscriptions.
      *
     ServiceResponse<PageImpl1<SubscriptionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SubscriptionInner&gt; object wrapped in {@link ServiceResponse} if successful.

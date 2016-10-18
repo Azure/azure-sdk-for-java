@@ -10,6 +10,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 import java.util.List;
 import com.microsoft.azure.management.resources.ProviderResourceType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Resource provider information.
@@ -18,6 +19,7 @@ public class ProviderInner {
     /**
      * The provider id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
@@ -28,11 +30,13 @@ public class ProviderInner {
     /**
      * The registration state of the provider.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String registrationState;
 
     /**
      * The collection of provider resource types.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderResourceType> resourceTypes;
 
     /**
@@ -42,17 +46,6 @@ public class ProviderInner {
      */
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the ProviderInner object itself.
-     */
-    public ProviderInner withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -85,34 +78,12 @@ public class ProviderInner {
     }
 
     /**
-     * Set the registrationState value.
-     *
-     * @param registrationState the registrationState value to set
-     * @return the ProviderInner object itself.
-     */
-    public ProviderInner withRegistrationState(String registrationState) {
-        this.registrationState = registrationState;
-        return this;
-    }
-
-    /**
      * Get the resourceTypes value.
      *
      * @return the resourceTypes value
      */
     public List<ProviderResourceType> resourceTypes() {
         return this.resourceTypes;
-    }
-
-    /**
-     * Set the resourceTypes value.
-     *
-     * @param resourceTypes the resourceTypes value to set
-     * @return the ProviderInner object itself.
-     */
-    public ProviderInner withResourceTypes(List<ProviderResourceType> resourceTypes) {
-        this.resourceTypes = resourceTypes;
-        return this;
     }
 
 }

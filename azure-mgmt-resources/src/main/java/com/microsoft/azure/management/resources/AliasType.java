@@ -11,7 +11,7 @@ package com.microsoft.azure.management.resources;
 import java.util.List;
 
 /**
- * The AliasType model.
+ * The alias type.
  */
 public class AliasType {
     /**

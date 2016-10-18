@@ -41,6 +41,11 @@ public class ResourceGroupInner {
     private String location;
 
     /**
+     * Id of the resource that manages this resource group.
+     */
+    private String managedBy;
+
+    /**
      * The tags attached to the resource group.
      */
     private Map<String, String> tags;
@@ -111,6 +116,26 @@ public class ResourceGroupInner {
      */
     public ResourceGroupInner withLocation(String location) {
         this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the managedBy value.
+     *
+     * @return the managedBy value
+     */
+    public String managedBy() {
+        return this.managedBy;
+    }
+
+    /**
+     * Set the managedBy value.
+     *
+     * @param managedBy the managedBy value to set
+     * @return the ResourceGroupInner object itself.
+     */
+    public ResourceGroupInner withManagedBy(String managedBy) {
+        this.managedBy = managedBy;
         return this;
     }
 

@@ -140,7 +140,8 @@ final class GenericResourceImpl
                                     return type.apiVersions().get(0);
                                 }
                             }
-                            throw Exceptions.propagate(new UnsupportedOperationException("Resource provider " + resourceProviderNamespace + " doesn't have a default api version, please specify one."));
+                            // Use the first available one as default
+                            return provider.resourceTypes().get(0).apiVersions().get(0);
                         }
                     });
         }
@@ -150,10 +151,10 @@ final class GenericResourceImpl
                     public Observable<GenericResource> call(String api) {
                         return resourceClient.createOrUpdateAsync(
                                 resourceGroupName(),
-                                resourceProviderNamespace,
+                                ResourceUtils.resourceProviderFromResourceId(inner().id()),
                                 ResourceUtils.relativePathFromResourceId(parentResourceId),
-                                resourceType,
-                                name(),
+                                ResourceUtils.resourceTypeFromResourceId(inner().id()),
+                                ResourceUtils.nameFromResourceId(inner().id()),
                                 api,
                                 inner())
                                 .subscribeOn(Schedulers.io())

@@ -51,7 +51,7 @@ public final class DeployUsingARMTemplateWithTags {
                 final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
                 Azure azure = Azure.configure()
-                        .withLogLevel(HttpLoggingInterceptor.Level.HEADERS)
+                        .withLogLevel(HttpLoggingInterceptor.Level.NONE)
                         .authenticate(credFile)
                         .withDefaultSubscription();
 
@@ -83,7 +83,7 @@ public final class DeployUsingARMTemplateWithTags {
                         .withMode(DeploymentMode.INCREMENTAL)
                         .create();
 
-                    System.out.println("Starting a deployment for an Azure App Service: " + deploymentName);
+                    System.out.println("Finished a deployment for an Azure App Service: " + deploymentName);
 
                     List<DeploymentOperation> operations  = deployment.deploymentOperations().list();
                     List<GenericResource> genericResources = new ArrayList<>();
