@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.PolicyDefinition;
 import com.microsoft.azure.management.resources.PolicyDefinitions;
+import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
 import rx.Observable;
@@ -53,7 +54,7 @@ final class PolicyDefinitionsImpl
     @Override
     protected PolicyDefinitionImpl wrapModel(String name) {
         return new PolicyDefinitionImpl(
-                new PolicyDefinitionInner().withName(name),
+                new PolicyDefinitionInner().withName(name).withPolicyType(PolicyType.NOT_SPECIFIED).withDisplayName(name),
                 client);
     }
 

@@ -11,7 +11,7 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
-import com.microsoft.azure.management.resources.PolicyDefinition;
+import com.microsoft.azure.management.resources.PolicyAssignments;
 import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.ResourceGroups;
@@ -36,6 +36,7 @@ public final class ResourceManager extends ManagerBase {
     private Features features;
     private Providers providers;
     private PolicyDefinitions policyDefinitions;
+    private PolicyAssignments policyAssignments;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -213,12 +214,22 @@ public final class ResourceManager extends ManagerBase {
     }
 
     /**
-     * @return the resource provider management API entry point
+     * @return the policy definition management API entry point
      */
     public PolicyDefinitions policyDefinitions() {
         if (policyDefinitions == null) {
             policyDefinitions = new PolicyDefinitionsImpl(policyClient.policyDefinitions());
         }
         return policyDefinitions;
+    }
+
+    /**
+     * @return the policy assignment management API entry point
+     */
+    public PolicyAssignments policyAssignments() {
+        if (policyAssignments == null) {
+            policyAssignments = new PolicyAssignmentsImpl(policyClient.policyAssignments());
+        }
+        return policyAssignments;
     }
 }

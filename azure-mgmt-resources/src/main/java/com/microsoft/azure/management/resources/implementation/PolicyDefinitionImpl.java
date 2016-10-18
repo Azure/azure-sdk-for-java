@@ -7,12 +7,8 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.PolicyDefinition;
-import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
-import com.microsoft.rest.ServiceCall;
-import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
 /**

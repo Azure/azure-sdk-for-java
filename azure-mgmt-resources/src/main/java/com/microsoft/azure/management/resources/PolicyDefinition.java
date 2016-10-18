@@ -8,15 +8,12 @@ package com.microsoft.azure.management.resources;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.PolicyDefinitionInner;
-import com.microsoft.azure.management.resources.implementation.TenantIdDescriptionInner;
 
 /**
  * An immutable client-side representation of an Azure policy.
@@ -29,28 +26,28 @@ public interface PolicyDefinition extends
         Wrapper<PolicyDefinitionInner> {
 
     /**
-     * Gets or sets policy definition policy type. Possible values include:
+     * @return policy definition policy type. Possible values include:
      * 'NotSpecified', 'BuiltIn', 'Custom'.
      */
     PolicyType policyType();
 
     /**
-     * Gets or sets the policy definition display name.
+     * @return the policy definition display name
      */
     String displayName();
 
     /**
-     * Gets or sets the policy definition description.
+     * @return the policy definition description
      */
     String description();
 
     /**
-     * Gets or sets the policy rule.
+     * @return the policy rule
      */
     Object policyRule();
 
     /**
-     * Gets or sets the Id of the policy definition.
+     * @return the Id of the policy definition
      */
     String id();
 
@@ -73,11 +70,11 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition allowing the sku to be set.
+         * A policy definition allowing the policy rule to be set.
          */
         interface WithPolicyRule {
             /**
-             * Specifies the rule of the policy
+             * Specifies the rule of the policy.
              *
              * @param policyRule the rule object
              * @return the next stage of policy definition
@@ -86,7 +83,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition specifying the account kind to be blob.
+         * A policy definition specifying the policy type to be blob.
          */
         interface WithPolicyType {
             /**
@@ -99,7 +96,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition selecting the general purpose account kind.
+         * A policy definition allowing the display name to be set.
          */
         interface WithDisplayName {
             /**
@@ -112,7 +109,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition selecting the general purpose account kind.
+         * A policy definition allowing policy description to be set.
          */
         interface WithDescription {
             /**
@@ -142,11 +139,11 @@ public interface PolicyDefinition extends
      */
     interface UpdateStages {
         /**
-         * A policy definition allowing the sku to be set.
+         * A policy definition allowing the policy rule to be set.
          */
         interface WithPolicyRule {
             /**
-             * Specifies the rule of the policy
+             * Specifies the rule of the policy.
              *
              * @param policyRule the rule object
              * @return the next stage of policy update
@@ -155,7 +152,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition specifying the account kind to be blob.
+         * A policy definition allowing the policy type to be set.
          */
         interface WithPolicyType {
             /**
@@ -168,7 +165,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition selecting the general purpose account kind.
+         * A policy definition allowing the display name to be set.
          */
         interface WithDisplayName {
             /**
@@ -181,7 +178,7 @@ public interface PolicyDefinition extends
         }
 
         /**
-         * A policy definition selecting the general purpose account kind.
+         * A policy definition allowing the policy description to be set.
          */
         interface WithDescription {
             /**
