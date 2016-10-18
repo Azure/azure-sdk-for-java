@@ -184,7 +184,7 @@ public interface BatchAccount extends
         }
     }
     /**
-     * The template for a storage account update operation, containing all the settings that can be modified.
+     * The template for a batch account update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<BatchAccount>,
@@ -194,7 +194,7 @@ public interface BatchAccount extends
     }
 
     /**
-     * Grouping of all the storage account update stages.
+     * Grouping of all the batch account update stages.
      */
     interface UpdateStages {
         /**

@@ -77,35 +77,41 @@ public final class AuditingPolicysInner {
     /**
      * Creates or updates an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the DatabaseAuditingPolicyInner object if successful.
      */
-    public DatabaseAuditingPolicyInner createOrUpdateDatebasePolicy(String databaseName, DatabaseAuditingPolicyInner parameters) {
-        return createOrUpdateDatebasePolicyWithServiceResponseAsync(databaseName, parameters).toBlocking().single().getBody();
+    public DatabaseAuditingPolicyInner createOrUpdateDatebasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
+        return createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
     }
 
     /**
      * Creates or updates an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String databaseName, DatabaseAuditingPolicyInner parameters, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateDatebasePolicyWithServiceResponseAsync(databaseName, parameters), serviceCallback);
+    public ServiceCall<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
      * Creates or updates an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String databaseName, DatabaseAuditingPolicyInner parameters) {
-        return createOrUpdateDatebasePolicyWithServiceResponseAsync(databaseName, parameters).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
+    public Observable<DatabaseAuditingPolicyInner> createOrUpdateDatebasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
+        return createOrUpdateDatebasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
             @Override
             public DatabaseAuditingPolicyInner call(ServiceResponse<DatabaseAuditingPolicyInner> response) {
                 return response.getBody();
@@ -116,19 +122,21 @@ public final class AuditingPolicysInner {
     /**
      * Creates or updates an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> createOrUpdateDatebasePolicyWithServiceResponseAsync(String databaseName, DatabaseAuditingPolicyInner parameters) {
+    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> createOrUpdateDatebasePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
@@ -138,7 +146,7 @@ public final class AuditingPolicysInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdateDatebasePolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateDatebasePolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAuditingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> call(Response<ResponseBody> response) {
@@ -163,32 +171,38 @@ public final class AuditingPolicysInner {
     /**
      * Returns an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @return the DatabaseAuditingPolicyInner object if successful.
      */
-    public DatabaseAuditingPolicyInner getDatabasePolicy(String databaseName) {
-        return getDatabasePolicyWithServiceResponseAsync(databaseName).toBlocking().single().getBody();
+    public DatabaseAuditingPolicyInner getDatabasePolicy(String resourceGroupName, String serverName, String databaseName) {
+        return getDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
      * Returns an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseAuditingPolicyInner> getDatabasePolicyAsync(String databaseName, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
-        return ServiceCall.create(getDatabasePolicyWithServiceResponseAsync(databaseName), serviceCallback);
+    public ServiceCall<DatabaseAuditingPolicyInner> getDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseAuditingPolicyInner> serviceCallback) {
+        return ServiceCall.create(getDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
      * Returns an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<DatabaseAuditingPolicyInner> getDatabasePolicyAsync(String databaseName) {
-        return getDatabasePolicyWithServiceResponseAsync(databaseName).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
+    public Observable<DatabaseAuditingPolicyInner> getDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName) {
+        return getDatabasePolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DatabaseAuditingPolicyInner>, DatabaseAuditingPolicyInner>() {
             @Override
             public DatabaseAuditingPolicyInner call(ServiceResponse<DatabaseAuditingPolicyInner> response) {
                 return response.getBody();
@@ -199,24 +213,26 @@ public final class AuditingPolicysInner {
     /**
      * Returns an Azure SQL Database auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
-    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> getDatabasePolicyWithServiceResponseAsync(String databaseName) {
+    public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> getDatabasePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (databaseName == null) {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getDatabasePolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getDatabasePolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseAuditingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> call(Response<ResponseBody> response) {
@@ -240,32 +256,38 @@ public final class AuditingPolicysInner {
     /**
      * Creates or updates an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for createing or updating a Azure SQL Server auditing policy.
      * @return the ServerAuditingPolicyInner object if successful.
      */
-    public ServerAuditingPolicyInner createOrUpdateServerPolicy(ServerAuditingPolicyInner parameters) {
-        return createOrUpdateServerPolicyWithServiceResponseAsync(parameters).toBlocking().single().getBody();
+    public ServerAuditingPolicyInner createOrUpdateServerPolicy(String resourceGroupName, String serverName, ServerAuditingPolicyInner parameters) {
+        return createOrUpdateServerPolicyWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
     }
 
     /**
      * Creates or updates an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for createing or updating a Azure SQL Server auditing policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerAuditingPolicyInner> createOrUpdateServerPolicyAsync(ServerAuditingPolicyInner parameters, final ServiceCallback<ServerAuditingPolicyInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateServerPolicyWithServiceResponseAsync(parameters), serviceCallback);
+    public ServiceCall<ServerAuditingPolicyInner> createOrUpdateServerPolicyAsync(String resourceGroupName, String serverName, ServerAuditingPolicyInner parameters, final ServiceCallback<ServerAuditingPolicyInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateServerPolicyWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
     }
 
     /**
      * Creates or updates an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for createing or updating a Azure SQL Server auditing policy.
      * @return the observable to the ServerAuditingPolicyInner object
      */
-    public Observable<ServerAuditingPolicyInner> createOrUpdateServerPolicyAsync(ServerAuditingPolicyInner parameters) {
-        return createOrUpdateServerPolicyWithServiceResponseAsync(parameters).map(new Func1<ServiceResponse<ServerAuditingPolicyInner>, ServerAuditingPolicyInner>() {
+    public Observable<ServerAuditingPolicyInner> createOrUpdateServerPolicyAsync(String resourceGroupName, String serverName, ServerAuditingPolicyInner parameters) {
+        return createOrUpdateServerPolicyWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<ServerAuditingPolicyInner>, ServerAuditingPolicyInner>() {
             @Override
             public ServerAuditingPolicyInner call(ServiceResponse<ServerAuditingPolicyInner> response) {
                 return response.getBody();
@@ -276,25 +298,27 @@ public final class AuditingPolicysInner {
     /**
      * Creates or updates an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for createing or updating a Azure SQL Server auditing policy.
      * @return the observable to the ServerAuditingPolicyInner object
      */
-    public Observable<ServiceResponse<ServerAuditingPolicyInner>> createOrUpdateServerPolicyWithServiceResponseAsync(ServerAuditingPolicyInner parameters) {
+    public Observable<ServiceResponse<ServerAuditingPolicyInner>> createOrUpdateServerPolicyWithServiceResponseAsync(String resourceGroupName, String serverName, ServerAuditingPolicyInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdateServerPolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateServerPolicy(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerAuditingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServerAuditingPolicyInner>> call(Response<ResponseBody> response) {
@@ -319,29 +343,35 @@ public final class AuditingPolicysInner {
     /**
      * Returns an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @return the ServerAuditingPolicyInner object if successful.
      */
-    public ServerAuditingPolicyInner getServerPolicy() {
-        return getServerPolicyWithServiceResponseAsync().toBlocking().single().getBody();
+    public ServerAuditingPolicyInner getServerPolicy(String resourceGroupName, String serverName) {
+        return getServerPolicyWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
     }
 
     /**
      * Returns an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<ServerAuditingPolicyInner> getServerPolicyAsync(final ServiceCallback<ServerAuditingPolicyInner> serviceCallback) {
-        return ServiceCall.create(getServerPolicyWithServiceResponseAsync(), serviceCallback);
+    public ServiceCall<ServerAuditingPolicyInner> getServerPolicyAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerAuditingPolicyInner> serviceCallback) {
+        return ServiceCall.create(getServerPolicyWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
      * Returns an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @return the observable to the ServerAuditingPolicyInner object
      */
-    public Observable<ServerAuditingPolicyInner> getServerPolicyAsync() {
-        return getServerPolicyWithServiceResponseAsync().map(new Func1<ServiceResponse<ServerAuditingPolicyInner>, ServerAuditingPolicyInner>() {
+    public Observable<ServerAuditingPolicyInner> getServerPolicyAsync(String resourceGroupName, String serverName) {
+        return getServerPolicyWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<ServerAuditingPolicyInner>, ServerAuditingPolicyInner>() {
             @Override
             public ServerAuditingPolicyInner call(ServiceResponse<ServerAuditingPolicyInner> response) {
                 return response.getBody();
@@ -352,20 +382,22 @@ public final class AuditingPolicysInner {
     /**
      * Returns an Azure SQL Server auditing policy.
      *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
      * @return the observable to the ServerAuditingPolicyInner object
      */
-    public Observable<ServiceResponse<ServerAuditingPolicyInner>> getServerPolicyWithServiceResponseAsync() {
+    public Observable<ServiceResponse<ServerAuditingPolicyInner>> getServerPolicyWithServiceResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.resourceGroupName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.resourceGroupName() is required and cannot be null.");
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
-        if (this.client.serverName() == null) {
-            throw new IllegalArgumentException("Parameter this.client.serverName() is required and cannot be null.");
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getServerPolicy(this.client.subscriptionId(), this.client.resourceGroupName(), this.client.serverName(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getServerPolicy(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerAuditingPolicyInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ServerAuditingPolicyInner>> call(Response<ResponseBody> response) {
