@@ -37,6 +37,21 @@ final class ResourceGroupsImpl
     }
 
     @Override
+    public PagedList<ResourceGroup> listByTag(String tagName, String tagValue) {
+        if (tagName == null) {
+            throw new IllegalArgumentException("tagName == null");
+        }
+        String odataFilter;
+        if (tagValue == null) {
+            odataFilter = String.format("tagname eq '%s'", tagName);
+        } else {
+            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
+        }
+        return wrapList(client.list(
+                odataFilter, null));
+    }
+
+    @Override
     public ResourceGroupImpl getByName(String name) {
         return wrapModel(client.get(name));
     }

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingInGroupByTag;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -24,6 +25,7 @@ public interface Deployments extends
         SupportsCreating<Deployment.DefinitionStages.Blank>,
         SupportsListing<Deployment>,
         SupportsListingByGroup<Deployment>,
+        SupportsListingInGroupByTag<Deployment>,
         SupportsGettingByName<Deployment>,
         SupportsGettingByGroup<Deployment>,
         SupportsGettingById<Deployment>,

@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.management.resources.fluentcore.arm.collection;
+package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -22,10 +22,9 @@ public interface SupportsListingByTag<T> {
     /**
      * Lists all the resources with the specified tag.
      *
-     * @param resourceGroupName the name of the resource group
      * @param tagName tag's name as the key
      * @param tagValue tag's value
      * @return list of resources
      */
-    PagedList<T> listByTag(String resourceGroupName, String tagName, String tagValue);
+    PagedList<T> listByTag(String tagName, String tagValue);
 }
