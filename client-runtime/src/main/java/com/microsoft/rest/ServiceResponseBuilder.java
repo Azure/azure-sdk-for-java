@@ -141,6 +141,8 @@ public class ServiceResponseBuilder<T, E extends RestException> {
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
         } else if (response.isSuccessful() && responseTypes.size() == 1) {
             return new ServiceResponse<>((T) buildBody(statusCode, responseBody), response);
+        } else if ("GET".equals(response.raw().request().method()) && statusCode == 404) {
+            return new ServiceResponse<>(null, response);
         } else {
             try {
                 String responseContent = responseBody.string();
