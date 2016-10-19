@@ -67,147 +67,147 @@ public final class DatabasesInner {
     interface DatabasesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move")
-        Observable<Response<ResponseBody>> rename(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceMoveDefinition definition, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> rename(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceMoveDefinition definition, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditRecords")
-        Observable<Response<ResponseBody>> listEngineAuditRecords(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listEngineAuditRecords(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause")
-        Observable<Response<ResponseBody>> pauseDataWarehouse(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> pauseDataWarehouse(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause")
-        Observable<Response<ResponseBody>> beginPauseDataWarehouse(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginPauseDataWarehouse(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume")
-        Observable<Response<ResponseBody>> resumeDataWarehouse(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> resumeDataWarehouse(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/resume")
-        Observable<Response<ResponseBody>> beginResumeDataWarehouse(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginResumeDataWarehouse(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints")
-        Observable<Response<ResponseBody>> listRestorePointsByDatabase(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRestorePointss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases")
-        Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/usages")
-        Observable<Response<ResponseBody>> listUsagesByDatabase(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/serviceTierAdvisors/{serviceTierAdvisorName}")
-        Observable<Response<ResponseBody>> getServiceTierAdvisor(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("serviceTierAdvisorName") String serviceTierAdvisorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServiceTierAdvisor(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("serviceTierAdvisorName") String serviceTierAdvisorName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/serviceTierAdvisors")
-        Observable<Response<ResponseBody>> listServiceTierAdvisors(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listServiceTierAdvisors(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryption(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTransparentDataEncryption(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current/operationResults")
-        Observable<Response<ResponseBody>> listTransparentDataEncryptionActivity(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listTransparentDataEncryptionActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/import")
-        Observable<Response<ResponseBody>> importMethod(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> importMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/import")
-        Observable<Response<ResponseBody>> beginImport(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginImport(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
-        Observable<Response<ResponseBody>> export(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> export(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
-        Observable<Response<ResponseBody>> beginExport(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginExport(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/importExportOperationResults/{operationId}")
-        Observable<Response<ResponseBody>> getImportExportStatus(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("operationId") UUID operationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getImportExportStatus(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("operationId") UUID operationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases")
-        Observable<Response<ResponseBody>> listGeoBackups(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listGeoBackups(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases/{databaseName}")
-        Observable<Response<ResponseBody>> getGeoBackup(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getGeoBackup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/restorableDroppedDatabases")
-        Observable<Response<ResponseBody>> listBackupsForDeletedDatabases(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listBackupsForDeletedDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/restorableDroppedDatabases/{databaseName}")
-        Observable<Response<ResponseBody>> getBackupForDeletedDatabase(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getBackupForDeletedDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteReplicationLink(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
-        Observable<Response<ResponseBody>> getReplicationLink(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
-        Observable<Response<ResponseBody>> failoverReplicationLink(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> failoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
-        Observable<Response<ResponseBody>> beginFailoverReplicationLink(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginFailoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
-        Observable<Response<ResponseBody>> failoverReplicationLinkAllowDataLoss(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> failoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
-        Observable<Response<ResponseBody>> beginFailoverReplicationLinkAllowDataLoss(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginFailoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
-        Observable<Response<ResponseBody>> listReplicationLinks(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listReplicationLinks(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/connectionPolicies/Default")
-        Observable<Response<ResponseBody>> setSecureConnectionPolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseSecureConnectionPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> setSecureConnectionPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseSecureConnectionPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/connectionPolicies/Default")
-        Observable<Response<ResponseBody>> getSecureConnectionPolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getSecureConnectionPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
@@ -938,8 +938,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the List&lt;RestorePointInner&gt; object if successful.
      */
-    public List<RestorePointInner> listRestorePointsByDatabase(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointsByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    public List<RestorePointInner> listRestorePointss(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
@@ -951,8 +951,8 @@ public final class DatabasesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RestorePointInner>> listRestorePointsByDatabaseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
-        return ServiceCall.create(listRestorePointsByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceCall<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
+        return ServiceCall.create(listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -963,8 +963,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
-    public Observable<List<RestorePointInner>> listRestorePointsByDatabaseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointsByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
+    public Observable<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
             @Override
             public List<RestorePointInner> call(ServiceResponse<List<RestorePointInner>> response) {
                 return response.getBody();
@@ -980,7 +980,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
-    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointsByDatabaseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointssWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -994,12 +994,12 @@ public final class DatabasesInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.listRestorePointsByDatabase(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRestorePointss(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RestorePointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RestorePointInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<RestorePointInner>> result = listRestorePointsByDatabaseDelegate(response);
+                        ServiceResponse<PageImpl1<RestorePointInner>> result = listRestorePointssDelegate(response);
                         ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -1009,7 +1009,7 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<RestorePointInner>> listRestorePointsByDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl1<RestorePointInner>> listRestorePointssDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<RestorePointInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<RestorePointInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1180,9 +1180,9 @@ public final class DatabasesInner {
 
     private ServiceResponse<DatabaseInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<DatabaseInner>() { }.getType())
                 .register(201, new TypeToken<DatabaseInner>() { }.getType())
+                .register(202, new TypeToken<DatabaseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1356,7 +1356,7 @@ public final class DatabasesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption, advisors.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName, String expand) {
@@ -1369,7 +1369,7 @@ public final class DatabasesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption, advisors.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1383,7 +1383,7 @@ public final class DatabasesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption, advisors.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the observable to the DatabaseInner object
      */
     public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
@@ -1401,7 +1401,7 @@ public final class DatabasesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption, advisors.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the observable to the DatabaseInner object
      */
     public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
@@ -1526,8 +1526,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database.
      * @return the List&lt;DatabaseMetricInner&gt; object if successful.
      */
-    public List<DatabaseMetricInner> listUsagesByDatabase(String resourceGroupName, String serverName, String databaseName) {
-        return listUsagesByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    public List<DatabaseMetricInner> listUsages(String resourceGroupName, String serverName, String databaseName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
@@ -1539,8 +1539,8 @@ public final class DatabasesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<DatabaseMetricInner>> listUsagesByDatabaseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
-        return ServiceCall.create(listUsagesByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceCall<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
+        return ServiceCall.create(listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1551,8 +1551,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database.
      * @return the observable to the List&lt;DatabaseMetricInner&gt; object
      */
-    public Observable<List<DatabaseMetricInner>> listUsagesByDatabaseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listUsagesByDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DatabaseMetricInner>>, List<DatabaseMetricInner>>() {
+    public Observable<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DatabaseMetricInner>>, List<DatabaseMetricInner>>() {
             @Override
             public List<DatabaseMetricInner> call(ServiceResponse<List<DatabaseMetricInner>> response) {
                 return response.getBody();
@@ -1568,7 +1568,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database.
      * @return the observable to the List&lt;DatabaseMetricInner&gt; object
      */
-    public Observable<ServiceResponse<List<DatabaseMetricInner>>> listUsagesByDatabaseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<ServiceResponse<List<DatabaseMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1582,12 +1582,12 @@ public final class DatabasesInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.listUsagesByDatabase(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listUsages(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseMetricInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<DatabaseMetricInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<DatabaseMetricInner>> result = listUsagesByDatabaseDelegate(response);
+                        ServiceResponse<PageImpl1<DatabaseMetricInner>> result = listUsagesDelegate(response);
                         ServiceResponse<List<DatabaseMetricInner>> clientResponse = new ServiceResponse<List<DatabaseMetricInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -1597,7 +1597,7 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<DatabaseMetricInner>> listUsagesByDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl1<DatabaseMetricInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<DatabaseMetricInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<DatabaseMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -2211,9 +2211,9 @@ public final class DatabasesInner {
 
     private ServiceResponse<ImportExportOperationStatusResponseInner> beginImportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
+                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2382,9 +2382,9 @@ public final class DatabasesInner {
 
     private ServiceResponse<ImportExportOperationStatusResponseInner> beginExportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
+                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -2476,9 +2476,9 @@ public final class DatabasesInner {
 
     private ServiceResponse<ImportExportOperationStatusResponseInner> getImportExportStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
+                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
