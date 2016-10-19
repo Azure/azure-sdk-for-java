@@ -138,7 +138,7 @@ final class GenericResourceImpl
                         @Override
                         public String call(Provider provider) {
                             for (ProviderResourceType type : provider.resourceTypes()) {
-                                if (resourceType().equals(type.resourceType())) {
+                                if (resourceType().equalsIgnoreCase(type.resourceType())) {
                                     return type.apiVersions().get(0);
                                 }
                             }

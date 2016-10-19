@@ -47,11 +47,11 @@ public final class ResourceUtils {
     }
 
     /**
-     * Extract parent resource path from a resource ID string.
+     * Extract parent resource ID from a resource ID string.
      * @param id the resource ID string
-     * @return the parent resource path
+     * @return the parent resource ID
      */
-    public static String parentResourcePathFromResourceId(String id) {
+    public static String parentResourceIdFromResourceId(String id) {
         if (id == null) {
             return null;
         }

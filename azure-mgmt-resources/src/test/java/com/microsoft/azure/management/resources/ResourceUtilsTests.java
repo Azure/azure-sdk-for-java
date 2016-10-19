@@ -13,14 +13,14 @@ public class ResourceUtilsTests {
 
     @Test
     public void canExtractParentPathFromId() throws Exception {
-        Assert.assertEquals("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1", ResourceUtils.parentResourcePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1/bazs/baz1"));
-        Assert.assertEquals("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar", ResourceUtils.parentResourcePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1"));
+        Assert.assertEquals("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1", ResourceUtils.parentResourceIdFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1/bazs/baz1"));
+        Assert.assertEquals("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar", ResourceUtils.parentResourceIdFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1"));
     }
 
     @Test
     public void canExtractRelativePathFromid() throws Exception {
         Assert.assertEquals("bars/bar1", ResourceUtils.relativePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1"));
-        Assert.assertEquals("", ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourcePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1")));
+        Assert.assertEquals("", ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourceIdFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1")));
         Assert.assertEquals("bars/bar1/providers/provider1", ResourceUtils.relativePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/bars/bar1/providers/provider1"));
         Assert.assertEquals("providers/provider1/bars/bar1", ResourceUtils.relativePathFromResourceId("subscriptions/123/resourceGroups/foo/providers/Microsoft.Bar/providers/provider1/bars/bar1"));
     }

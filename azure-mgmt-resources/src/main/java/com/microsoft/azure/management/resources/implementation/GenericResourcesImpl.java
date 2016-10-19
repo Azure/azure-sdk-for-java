@@ -170,7 +170,7 @@ final class GenericResourcesImpl
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(id));
+                .withParentResource(ResourceUtils.parentResourceIdFromResourceId(id));
     }
 
     @Override
@@ -188,7 +188,7 @@ final class GenericResourcesImpl
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(inner.id()));
+                .withParentResource(ResourceUtils.parentResourceIdFromResourceId(inner.id()));
     }
 
     @Override
