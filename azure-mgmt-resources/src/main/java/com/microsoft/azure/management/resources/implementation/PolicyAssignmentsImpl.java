@@ -69,7 +69,7 @@ final class PolicyAssignmentsImpl
         return wrapList(client.listForResource(
                 ResourceUtils.groupFromResourceId(resourceId),
                 ResourceUtils.resourceProviderFromResourceId(resourceId),
-                ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourcePathFromResourceId(resourceId)),
+                ResourceUtils.relativePathFromResourceId(ResourceUtils.parentResourceIdFromResourceId(resourceId)),
                 ResourceUtils.resourceTypeFromResourceId(resourceId),
                 ResourceUtils.nameFromResourceId(resourceId)
         ));
