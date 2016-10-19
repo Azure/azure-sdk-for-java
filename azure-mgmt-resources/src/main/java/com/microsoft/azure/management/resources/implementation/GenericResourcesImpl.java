@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.ProviderResourceType;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 import java.util.List;
@@ -50,17 +51,8 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        if (tagName == null) {
-            throw new IllegalArgumentException("tagName == null");
-        }
-        String odataFilter;
-        if (tagValue == null) {
-            odataFilter = String.format("tagname eq '%s'", tagName);
-        } else {
-            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
-        }
         return wrapList(this.serviceClient.resourceGroups().listResources(
-                resourceGroupName, odataFilter, null, null));
+                resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
     @Override
