@@ -11,6 +11,7 @@ package com.microsoft.azure.management.resources;
 import org.joda.time.DateTime;
 import java.util.List;
 import com.microsoft.azure.management.resources.implementation.ProviderInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment properties with additional details.
@@ -19,16 +20,19 @@ public class DeploymentPropertiesExtended {
     /**
      * The state of the provisioning.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
      * The correlation ID of the deployment.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /**
      * The timestamp of the template deployment.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime timestamp;
 
     /**
@@ -88,17 +92,6 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the correlationId value.
      *
      * @return the correlationId value
@@ -108,34 +101,12 @@ public class DeploymentPropertiesExtended {
     }
 
     /**
-     * Set the correlationId value.
-     *
-     * @param correlationId the correlationId value to set
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
-    }
-
-    /**
      * Get the timestamp value.
      *
      * @return the timestamp value
      */
     public DateTime timestamp() {
         return this.timestamp;
-    }
-
-    /**
-     * Set the timestamp value.
-     *
-     * @param timestamp the timestamp value to set
-     * @return the DeploymentPropertiesExtended object itself.
-     */
-    public DeploymentPropertiesExtended withTimestamp(DateTime timestamp) {
-        this.timestamp = timestamp;
-        return this;
     }
 
     /**

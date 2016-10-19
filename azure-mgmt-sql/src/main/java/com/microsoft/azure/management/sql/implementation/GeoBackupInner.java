@@ -11,33 +11,33 @@ package com.microsoft.azure.management.sql.implementation;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database geo backup.
  */
 @JsonFlatten
-public class GeoBackupInner extends SubResource {
+public class GeoBackupInner extends SqlSubResource {
     /**
-     * Gets the edition of the Azure SQL Database.
+     * The edition of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.edition", access = JsonProperty.Access.WRITE_ONLY)
     private String edition;
 
     /**
-     * Gets the current service level objective name for the database.
+     * The current service level objective name for the database.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceLevelObjective;
 
     /**
-     * Gets the elastic pool name for the database.
+     * The elastic pool name for the database.
      */
     @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
 
     /**
-     * Gets the last available backup date.
+     * The last available backup date (ISO8601 format).
      */
     @JsonProperty(value = "properties.lastAvailableBackupDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastAvailableBackupDate;

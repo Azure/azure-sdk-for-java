@@ -31,12 +31,12 @@ var mappings = {
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/resources/2016-02-01/swagger/resources.json',
+        'source': 'arm-resources/resources/2016-09-01/swagger/resources.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/subscriptions/2015-11-01/swagger/subscriptions.json',
+        'source': 'arm-resources/subscriptions/2016-06-01/swagger/subscriptions.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'features': {
@@ -72,6 +72,12 @@ var mappings = {
         'dir': 'azure-mgmt-search',
         'source': 'arm-search/2015-02-28/swagger/search.json',
         'package': 'com.microsoft.azure.management.search',
+        'args': '-FT 1'
+    },
+    'trafficmanager': {
+        'dir': 'azure-mgmt-trafficmanager',
+        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'package': 'com.microsoft.azure.management.trafficmanager',
         'args': '-FT 1'
     },
     'datalake.store.account': {

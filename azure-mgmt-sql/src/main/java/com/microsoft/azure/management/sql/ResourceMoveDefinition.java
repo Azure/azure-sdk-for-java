@@ -10,11 +10,11 @@ package com.microsoft.azure.management.sql;
 
 
 /**
- * The ResourceMoveDefinition model.
+ * Contains the information necessary to perform a resource move (rename).
  */
 public class ResourceMoveDefinition {
     /**
-     * The id property.
+     * The target ID for the resource.
      */
     private String id;
 

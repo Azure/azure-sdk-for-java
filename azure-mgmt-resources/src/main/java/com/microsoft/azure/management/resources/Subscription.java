@@ -33,7 +33,7 @@ public interface Subscription extends
     /**
      * @return the state of the subscription.
      */
-    String state();
+    SubscriptionState state();
 
     /**
      * @return the policies defined in the subscription

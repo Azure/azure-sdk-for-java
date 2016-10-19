@@ -22,40 +22,46 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DatabaseInner extends Resource {
     /**
-     * Gets the collation of the Azure SQL Database.
+     * The collation of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.collation")
     private String collation;
 
     /**
-     * Gets the creation date of the Azure SQL Database.
+     * The creation date of the Azure SQL Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * Gets the current Service Level Objective Id of the Azure SQL Database.
-     * This is the Id of the Service Level Objective that is currently active.
+     * The containment state of the Azure SQL Database.
+     */
+    @JsonProperty(value = "properties.containmentState", access = JsonProperty.Access.WRITE_ONLY)
+    private Long containmentState;
+
+    /**
+     * The current Service Level Objective Id of the Azure SQL Database. This
+     * is the Id of the Service Level Objective that is currently active.
      */
     @JsonProperty(value = "properties.currentServiceObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID currentServiceObjectiveId;
 
     /**
-     * Gets the Id of the Azure SQL Database.
+     * The Id of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.databaseId", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseId;
 
     /**
-     * Gets the recovery period starte date of the Azure SQL Database. This
-     * records the start date and time when recovery is available for this
-     * Azure SQL Database.
+     * The recovery period start date of the Azure SQL Database. This records
+     * the start date and time when recovery is available for this Azure SQL
+     * Database (ISO8601 format).
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;
 
     /**
-     * Gets the edition of the Azure SQL Database.  The DatabaseEditions
+     * The edition of the Azure SQL Database.  The DatabaseEditions
      * enumeration contains all the valid editions. Possible values include:
      * 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
      * 'DataWarehouse'.
@@ -64,78 +70,80 @@ public class DatabaseInner extends Resource {
     private DatabaseEditions edition;
 
     /**
-     * Gets the max size of the Azure SQL Database expressed in bytes.
+     * The max size of the Azure SQL Database expressed in bytes. Note: Only
+     * the following sizes are supported (in addition to limitations being
+     * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
+     * GB | 30 GB … 150 GB | 200 GB … 500 GB }.
      */
     @JsonProperty(value = "properties.maxSizeBytes")
-    private Long maxSizeBytes;
+    private String maxSizeBytes;
 
     /**
-     * Gets the configured Service Level Objective Id of the Azure SQL
-     * Database. This is the Service Level Objective that is being applied to
-     * the Azure SQL Database.
+     * The configured Service Level Objective Id of the Azure SQL Database.
+     * This is the Service Level Objective that is being applied to the Azure
+     * SQL Database.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveId")
     private UUID requestedServiceObjectiveId;
 
     /**
-     * Gets the name of the configured Service Level Objective of the Azure
-     * SQL Database. This is the Service Level Objective that is being
-     * applied to the Azure SQL Database.
+     * The name of the configured Service Level Objective of the Azure SQL
+     * Database. This is the Service Level Objective that is being applied to
+     * the Azure SQL Database.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveName")
     private String requestedServiceObjectiveName;
 
     /**
-     * Gets the Service Level Objective of the Azure SQL Database.
+     * The Service Level Objective of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID serviceLevelObjective;
+    private String serviceLevelObjective;
 
     /**
-     * Gets the status of the Azure SQL Database.
+     * The status of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
-     * Gets the name of the Azure SQL Elastic Pool the database is in.
+     * The name of the Azure SQL Elastic Pool the database is in.
      */
     @JsonProperty(value = "properties.elasticPoolName")
     private String elasticPoolName;
 
     /**
-     * Gets the default secondary region for this database.
+     * The default secondary region for this database.
      */
     @JsonProperty(value = "properties.defaultSecondaryLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultSecondaryLocation;
 
     /**
-     * Gets the list of service tier advisors for this database. Expanded
-     * property.
+     * The list of service tier advisors for this database. Expanded property.
      */
     @JsonProperty(value = "properties.serviceTierAdvisors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceTierAdvisorInner> serviceTierAdvisors;
 
     /**
-     * Gets the upgrade hint for this database.
+     * The upgrade hint for this database.
      */
     @JsonProperty(value = "properties.upgradeHint", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeHintInner upgradeHint;
 
     /**
-     * Gets the schemas from this database.
+     * The schemas from this database.
      */
     @JsonProperty(value = "properties.schemas", access = JsonProperty.Access.WRITE_ONLY)
     private List<SchemaInner> schemas;
 
     /**
-     * Gets the transparent data encryption info for this database.
+     * The transparent data encryption info for this database.
      */
     @JsonProperty(value = "properties.transparentDataEncryption", access = JsonProperty.Access.WRITE_ONLY)
     private List<TransparentDataEncryptionInner> transparentDataEncryption;
 
     /**
-     * Gets the recommended indices for this database.
+     * The recommended indices for this database.
      */
     @JsonProperty(value = "properties.recommendedIndex", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedIndexInner> recommendedIndex;
@@ -167,6 +175,15 @@ public class DatabaseInner extends Resource {
      */
     public DateTime creationDate() {
         return this.creationDate;
+    }
+
+    /**
+     * Get the containmentState value.
+     *
+     * @return the containmentState value
+     */
+    public Long containmentState() {
+        return this.containmentState;
     }
 
     /**
@@ -221,7 +238,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the maxSizeBytes value
      */
-    public Long maxSizeBytes() {
+    public String maxSizeBytes() {
         return this.maxSizeBytes;
     }
 
@@ -231,7 +248,7 @@ public class DatabaseInner extends Resource {
      * @param maxSizeBytes the maxSizeBytes value to set
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withMaxSizeBytes(Long maxSizeBytes) {
+    public DatabaseInner withMaxSizeBytes(String maxSizeBytes) {
         this.maxSizeBytes = maxSizeBytes;
         return this;
     }
@@ -281,7 +298,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the serviceLevelObjective value
      */
-    public UUID serviceLevelObjective() {
+    public String serviceLevelObjective() {
         return this.serviceLevelObjective;
     }
 

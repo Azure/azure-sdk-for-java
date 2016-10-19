@@ -49,9 +49,6 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public abstract T getByGroup(String groupName, String name);
-
-    @Override
     public T getById(String id) {
         return this.getByGroup(
                 ResourceUtils.groupFromResourceId(id),

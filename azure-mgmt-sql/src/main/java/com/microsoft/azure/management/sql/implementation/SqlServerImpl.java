@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.sql.ServerVersion;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Observable;
 import rx.functions.Func1;
@@ -40,7 +41,7 @@ public class SqlServerImpl
     @Override
     public SqlServer refresh() {
         ServerInner response =
-                this.innerCollection.get(this.resourceGroupName(), this.name());
+                this.innerCollection.getByResourceGroup(this.resourceGroupName(), this.name());
         this.setInner(response);
 
         return this;
@@ -66,7 +67,7 @@ public class SqlServerImpl
     }
 
     @Override
-    public String version() {
+    public ServerVersion version() {
         return this.inner().version();
     }
 
@@ -88,7 +89,7 @@ public class SqlServerImpl
     }
 
     @Override
-    public SqlServerImpl withVersion(String version) {
+    public SqlServerImpl withVersion(ServerVersion version) {
         this.inner().withVersion(version);
         return this;
     }

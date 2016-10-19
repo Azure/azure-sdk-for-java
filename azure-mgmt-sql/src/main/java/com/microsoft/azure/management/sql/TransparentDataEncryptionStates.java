@@ -8,52 +8,46 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for TransparentDataEncryptionStates.
  */
-public final class TransparentDataEncryptionStates {
-    /** Static value Enabled for TransparentDataEncryptionStates. */
-    public static final TransparentDataEncryptionStates ENABLED = new TransparentDataEncryptionStates("Enabled");
+public enum TransparentDataEncryptionStates {
+    /** Enum value Enabled. */
+    ENABLED("Enabled"),
 
-    /** Static value Disabled for TransparentDataEncryptionStates. */
-    public static final TransparentDataEncryptionStates DISABLED = new TransparentDataEncryptionStates("Disabled");
+    /** Enum value Disabled. */
+    DISABLED("Disabled");
 
+    /** The actual serialized value for a TransparentDataEncryptionStates instance. */
     private String value;
 
-    /**
-     * Creates a custom value for TransparentDataEncryptionStates.
-     * @param value the custom value
-     */
-    public TransparentDataEncryptionStates(String value) {
+    TransparentDataEncryptionStates(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a TransparentDataEncryptionStates instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed TransparentDataEncryptionStates object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static TransparentDataEncryptionStates fromString(String value) {
+        TransparentDataEncryptionStates[] items = TransparentDataEncryptionStates.values();
+        for (TransparentDataEncryptionStates item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof TransparentDataEncryptionStates)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        TransparentDataEncryptionStates rhs = (TransparentDataEncryptionStates) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }

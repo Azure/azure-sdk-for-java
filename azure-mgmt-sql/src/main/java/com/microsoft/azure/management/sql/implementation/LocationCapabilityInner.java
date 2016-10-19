@@ -18,20 +18,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class LocationCapabilityInner {
     /**
-     * Gets the region name.
+     * The region name.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets the status for the region with respect to Azure SQL. Possible
-     * values include: 'Visible', 'Available', 'Default'.
+     * The status for the region with respect to Azure SQL. Possible values
+     * include: 'Visible', 'Available', 'Default'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /**
-     * Gets the list of supported Azure SQL Server versions.
+     * The list of supported Azure SQL Server versions.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ServerVersionCapability> supportedServerVersions;

@@ -85,8 +85,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the DataMaskingPolicyInner object if successful.
      */
     public DataMaskingPolicyInner createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -98,8 +98,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -112,8 +112,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the observable to the DataMaskingPolicyInner object
      */
     public Observable<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -130,8 +130,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the observable to the DataMaskingPolicyInner object
      */
     public Observable<ServiceResponse<DataMaskingPolicyInner>> createOrUpdatePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -260,7 +260,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -274,7 +274,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -289,7 +289,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -308,7 +308,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server

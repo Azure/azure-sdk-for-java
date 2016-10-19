@@ -19,97 +19,98 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolActivityInner extends Resource {
     /**
-     * Gets the time the operation finished.
+     * The time the operation finished (ISO8601 format).
      */
     @JsonProperty(value = "properties.endTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime endTime;
 
     /**
-     * Gets the error code if available.
+     * The error code if available.
      */
     @JsonProperty(value = "properties.errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /**
-     * Gets the error message if available.
+     * The error message if available.
      */
     @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
 
     /**
-     * Gets the error severity if available.
+     * The error severity if available.
      */
     @JsonProperty(value = "properties.errorSeverity", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorSeverity;
 
     /**
-     * Gets the operation name.
+     * The operation name.
      */
     @JsonProperty(value = "properties.operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /**
-     * Gets the unique operation ID.
+     * The unique operation ID.
      */
     @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
-     * Gets the percentage complete if available.
+     * The percentage complete if available.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /**
-     * Gets the requested max DTU per database if available.
+     * The requested max DTU per database if available.
      */
     @JsonProperty(value = "properties.requestedDatabaseDtuMax", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedDatabaseDtuMax;
 
     /**
-     * Gets the requested min DTU per database if available.
+     * The requested min DTU per database if available.
      */
     @JsonProperty(value = "properties.requestedDatabaseDtuMin", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedDatabaseDtuMin;
 
     /**
-     * Gets the requested DTU for the pool if available.
+     * The requested DTU for the pool if available.
      */
     @JsonProperty(value = "properties.requestedDtu", access = JsonProperty.Access.WRITE_ONLY)
     private Integer requestedDtu;
 
     /**
-     * Gets the requested name for the Elastic Pool if available.
+     * The requested name for the Elastic Pool if available.
      */
     @JsonProperty(value = "properties.requestedElasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String requestedElasticPoolName;
 
     /**
-     * Gets the requested storage limit for the pool in GB if available.
+     * The requested storage limit for the pool in GB if available.
      */
     @JsonProperty(value = "properties.requestedStorageLimitInGB", access = JsonProperty.Access.WRITE_ONLY)
     private Long requestedStorageLimitInGB;
 
     /**
-     * Gets the name of the Elastic Pool.
+     * The name of the Elastic Pool.
      */
     @JsonProperty(value = "properties.elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
     private String elasticPoolName;
 
     /**
-     * Gets the name of the Azure SQL Server the Elastic Pool is in.
+     * The name of the Azure SQL Server the Elastic Pool is in.
      */
     @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;
 
     /**
-     * Gets the time the operation started.
+     * The time the operation started (ISO8601 format).
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
-     * Gets the current state of the operation.
+     * The current state of the operation. Possible values include:
+     * 'Creating', 'Ready', 'Disabled'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;

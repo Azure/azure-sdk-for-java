@@ -53,6 +53,22 @@ public final class ResourceUtils {
     }
 
     /**
+     * Extract the relative path to the current resource provider.
+     * E.g. subscriptions/sub1/resourceGroups/rg1/providers/Microsoft.Foo/foos/foo1 will return foos/foo1.
+     *
+     * @param id the id of the resource
+     * @return the relative path
+     */
+    public static String relativePathFromResourceId(String id) {
+        String[] paths = id.split("/providers/" + resourceProviderFromResourceId(id) + "/", 2);
+        if (paths.length == 1) {
+            return "";
+        } else {
+            return paths[1];
+        }
+    }
+
+    /**
      * Extract information from a resource ID string with the resource type
      * as the identifier.
      *

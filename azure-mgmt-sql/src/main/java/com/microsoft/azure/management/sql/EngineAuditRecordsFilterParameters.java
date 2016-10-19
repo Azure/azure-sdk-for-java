@@ -11,7 +11,7 @@ package com.microsoft.azure.management.sql;
 import org.joda.time.DateTime;
 
 /**
- * The EngineAuditRecordsFilterParameters model.
+ * Supported properties when using $filter.
  */
 public class EngineAuditRecordsFilterParameters {
     /**
@@ -28,6 +28,11 @@ public class EngineAuditRecordsFilterParameters {
      * The showServerRecords property.
      */
     private Boolean showServerRecords;
+
+    /**
+     * The showSecurityAlertsRecords property.
+     */
+    private Boolean showSecurityAlertsRecords;
 
     /**
      * Get the eventTime value.
@@ -86,6 +91,26 @@ public class EngineAuditRecordsFilterParameters {
      */
     public EngineAuditRecordsFilterParameters withShowServerRecords(Boolean showServerRecords) {
         this.showServerRecords = showServerRecords;
+        return this;
+    }
+
+    /**
+     * Get the showSecurityAlertsRecords value.
+     *
+     * @return the showSecurityAlertsRecords value
+     */
+    public Boolean showSecurityAlertsRecords() {
+        return this.showSecurityAlertsRecords;
+    }
+
+    /**
+     * Set the showSecurityAlertsRecords value.
+     *
+     * @param showSecurityAlertsRecords the showSecurityAlertsRecords value to set
+     * @return the EngineAuditRecordsFilterParameters object itself.
+     */
+    public EngineAuditRecordsFilterParameters withShowSecurityAlertsRecords(Boolean showSecurityAlertsRecords) {
+        this.showSecurityAlertsRecords = showSecurityAlertsRecords;
         return this;
     }
 

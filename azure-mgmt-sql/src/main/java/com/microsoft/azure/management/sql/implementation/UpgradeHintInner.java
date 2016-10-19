@@ -16,12 +16,12 @@ import com.microsoft.azure.Resource;
  */
 public class UpgradeHintInner extends Resource {
     /**
-     * Gets or sets targetServiceLevelObjective for upgrade hint.
+     * TargetServiceLevelObjective for upgrade hint.
      */
     private String targetServiceLevelObjective;
 
     /**
-     * Gets or sets targetServiceLevelObjectiveId for upgrade hint.
+     * TargetServiceLevelObjectiveId for upgrade hint.
      */
     private UUID targetServiceLevelObjectiveId;
 

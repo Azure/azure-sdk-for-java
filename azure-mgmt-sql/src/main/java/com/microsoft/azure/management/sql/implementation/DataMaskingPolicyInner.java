@@ -10,21 +10,21 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database data masking policy.
  */
 @JsonFlatten
-public class DataMaskingPolicyInner extends SubResource {
+public class DataMaskingPolicyInner extends SqlSubResource {
     /**
-     * Gets or sets the state of the data masking policy.
+     * The state of the data masking policy.
      */
     @JsonProperty(value = "properties.dataMaskingState", required = true)
     private String dataMaskingState;
 
     /**
-     * Gets or sets the list of the exempt principals.
+     * The list of the exempt principals.
      */
     @JsonProperty(value = "properties.exemptPrincipals", required = true)
     private String exemptPrincipals;

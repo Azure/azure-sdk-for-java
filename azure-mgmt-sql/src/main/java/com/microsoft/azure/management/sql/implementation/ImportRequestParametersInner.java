@@ -8,29 +8,30 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.ImportExportDatabaseEditions;
 
 /**
  * Import Azure SQL Database parameters.
  */
 public class ImportRequestParametersInner extends ExportRequestParametersInner {
     /**
-     * Gets or sets the name of the Azure SQL database to import.
+     * The name of the Azure SQL database to import.
      */
     private String databaseName;
 
     /**
-     * Gets or sets the edition for the Azure Sql Database being created.
+     * The edition for the Azure SQL Database being created. Possible values
+     * include: 'Basic', 'Standard', 'Premium'.
      */
-    private String edition;
+    private ImportExportDatabaseEditions edition;
 
     /**
-     * Gets or sets the name of the service objective to assign to the Azure
-     * SQL Database.
+     * The name of the service objective to assign to the Azure SQL Database.
      */
     private String serviceObjectiveName;
 
     /**
-     * Gets or sets the maximum size for the newly imported database.
+     * The maximum size for the newly imported database.
      */
     private String maxSizeBytes;
 
@@ -59,7 +60,7 @@ public class ImportRequestParametersInner extends ExportRequestParametersInner {
      *
      * @return the edition value
      */
-    public String edition() {
+    public ImportExportDatabaseEditions edition() {
         return this.edition;
     }
 
@@ -69,7 +70,7 @@ public class ImportRequestParametersInner extends ExportRequestParametersInner {
      * @param edition the edition value to set
      * @return the ImportRequestParametersInner object itself.
      */
-    public ImportRequestParametersInner withEdition(String edition) {
+    public ImportRequestParametersInner withEdition(ImportExportDatabaseEditions edition) {
         this.edition = edition;
         return this;
     }

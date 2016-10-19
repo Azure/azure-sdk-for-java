@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * The EngineAuditRecordResourceInner model.
+ * Contains an engine auditing record.
  */
 @JsonFlatten
 public class EngineAuditRecordResourceInner {

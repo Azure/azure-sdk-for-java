@@ -8,52 +8,46 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for RestorePointTypes.
  */
-public final class RestorePointTypes {
-    /** Static value DISCRETE for RestorePointTypes. */
-    public static final RestorePointTypes DISCRETE = new RestorePointTypes("DISCRETE");
+public enum RestorePointTypes {
+    /** Enum value DISCRETE. */
+    DISCRETE("DISCRETE"),
 
-    /** Static value CONTINUOUS for RestorePointTypes. */
-    public static final RestorePointTypes CONTINUOUS = new RestorePointTypes("CONTINUOUS");
+    /** Enum value CONTINUOUS. */
+    CONTINUOUS("CONTINUOUS");
 
+    /** The actual serialized value for a RestorePointTypes instance. */
     private String value;
 
-    /**
-     * Creates a custom value for RestorePointTypes.
-     * @param value the custom value
-     */
-    public RestorePointTypes(String value) {
+    RestorePointTypes(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a RestorePointTypes instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed RestorePointTypes object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static RestorePointTypes fromString(String value) {
+        RestorePointTypes[] items = RestorePointTypes.values();
+        for (RestorePointTypes item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof RestorePointTypes)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        RestorePointTypes rhs = (RestorePointTypes) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }

@@ -8,35 +8,40 @@
 
 package com.microsoft.azure.management.sql;
 
+import java.util.UUID;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents the Service Objectives capabilities.
+ * Represents the Service Objectives capabilities. The service objective
+ * represents the performance level assigned to the database (eg: S0, P2,
+ * Basic, ...). See
+ * https://azure.microsoft.com/en-us/documentation/articles/sql-database-service-tiers/
+ * for more info.
  */
 public class ServiceObjectiveCapability {
     /**
-     * Gets the Service Objective name.
+     * The Service Objective name (Eg: S0, S1, S2).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets the status of the Service Objective. Possible values include:
+     * The status of the Service Objective. Possible values include:
      * 'Visible', 'Available', 'Default'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /**
-     * Gets the unique ID of the Service Objective.
+     * The unique ID of the Service Objective.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    private UUID id;
 
     /**
-     * Gets the list of supported maximum Azure SQL Database sizes for this
-     * Service Objective.
+     * The list of supported maximum Azure SQL Database sizes for this Service
+     * Objective.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<MaxSizeCapability> supportedMaxSizes;
@@ -64,7 +69,7 @@ public class ServiceObjectiveCapability {
      *
      * @return the id value
      */
-    public String id() {
+    public UUID id() {
         return this.id;
     }
 

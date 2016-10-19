@@ -8,39 +8,40 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.StorageKeyType;
 
 /**
  * Export Azure SQL Database parameters.
  */
 public class ExportRequestParametersInner {
     /**
-     * Gets or sets the type of the storage key to use. Valid values are
-     * StorageAccessKey and SharedAccessKey.
+     * The type of the storage key to use. Possible values include:
+     * 'StorageAccessKey', 'SharedAccessKey'.
      */
-    private String storageKeyType;
+    private StorageKeyType storageKeyType;
 
     /**
-     * Gets or sets the storage key to use.
+     * The storage key to use.
      */
     private String storageKey;
 
     /**
-     * Gets or sets the storage uri to use.
+     * The storage uri to use.
      */
     private String storageUri;
 
     /**
-     * Gets or sets the name of the SQL administrator.
+     * The name of the SQL administrator.
      */
     private String administratorLogin;
 
     /**
-     * Gets or sets the password of the SQL administrator.
+     * The password of the SQL administrator.
      */
     private String administratorLoginPassword;
 
     /**
-     * Gets or sets the authentication type.
+     * The authentication type.
      */
     private String authenticationType;
 
@@ -49,7 +50,7 @@ public class ExportRequestParametersInner {
      *
      * @return the storageKeyType value
      */
-    public String storageKeyType() {
+    public StorageKeyType storageKeyType() {
         return this.storageKeyType;
     }
 
@@ -59,7 +60,7 @@ public class ExportRequestParametersInner {
      * @param storageKeyType the storageKeyType value to set
      * @return the ExportRequestParametersInner object itself.
      */
-    public ExportRequestParametersInner withStorageKeyType(String storageKeyType) {
+    public ExportRequestParametersInner withStorageKeyType(StorageKeyType storageKeyType) {
         this.storageKeyType = storageKeyType;
         return this;
     }

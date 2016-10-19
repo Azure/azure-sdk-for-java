@@ -8,55 +8,49 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for CapabilityStatus.
  */
-public final class CapabilityStatus {
-    /** Static value Visible for CapabilityStatus. */
-    public static final CapabilityStatus VISIBLE = new CapabilityStatus("Visible");
+public enum CapabilityStatus {
+    /** Enum value Visible. */
+    VISIBLE("Visible"),
 
-    /** Static value Available for CapabilityStatus. */
-    public static final CapabilityStatus AVAILABLE = new CapabilityStatus("Available");
+    /** Enum value Available. */
+    AVAILABLE("Available"),
 
-    /** Static value Default for CapabilityStatus. */
-    public static final CapabilityStatus DEFAULT = new CapabilityStatus("Default");
+    /** Enum value Default. */
+    DEFAULT("Default");
 
+    /** The actual serialized value for a CapabilityStatus instance. */
     private String value;
 
-    /**
-     * Creates a custom value for CapabilityStatus.
-     * @param value the custom value
-     */
-    public CapabilityStatus(String value) {
+    CapabilityStatus(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a CapabilityStatus instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed CapabilityStatus object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static CapabilityStatus fromString(String value) {
+        CapabilityStatus[] items = CapabilityStatus.values();
+        for (CapabilityStatus item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof CapabilityStatus)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        CapabilityStatus rhs = (CapabilityStatus) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }
