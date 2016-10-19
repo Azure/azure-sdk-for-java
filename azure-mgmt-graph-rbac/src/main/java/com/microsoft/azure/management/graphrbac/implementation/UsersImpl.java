@@ -44,6 +44,9 @@ class UsersImpl
 
     @Override
     protected UserImpl wrapModel(UserInner userInner) {
+        if (userInner == null) {
+            return null;
+        }
         return new UserImpl(userInner, this.innerCollection);
     }
 

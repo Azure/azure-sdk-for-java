@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
@@ -107,7 +106,7 @@ final class GenericResourcesImpl
                 return resource;
             }
         }
-        throw new CloudException("Generic resource not found.");
+        return null;
     }
 
     @Override
@@ -176,6 +175,9 @@ final class GenericResourcesImpl
 
     @Override
     protected GenericResourceImpl wrapModel(GenericResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new GenericResourceImpl(
                 inner.id(),
                 inner,

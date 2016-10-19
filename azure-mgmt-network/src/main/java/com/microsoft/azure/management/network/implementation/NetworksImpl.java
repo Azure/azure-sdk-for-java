@@ -102,6 +102,9 @@ class NetworksImpl
 
     @Override
     protected NetworkImpl wrapModel(VirtualNetworkInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NetworkImpl(
                 inner.name(),
                 inner,

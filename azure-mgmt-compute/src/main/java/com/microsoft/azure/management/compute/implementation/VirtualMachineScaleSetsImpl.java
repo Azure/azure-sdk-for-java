@@ -133,6 +133,9 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     protected VirtualMachineScaleSetImpl wrapModel(VirtualMachineScaleSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineScaleSetImpl(inner.name(),
                 inner,
                 this.innerCollection,

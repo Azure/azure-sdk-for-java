@@ -46,6 +46,9 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(SiteInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new WebAppImpl(inner.name(), inner, innerCollection, super.myManager);
     }
 
