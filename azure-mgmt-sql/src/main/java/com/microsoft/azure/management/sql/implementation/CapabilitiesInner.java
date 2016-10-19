@@ -16,7 +16,6 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -55,7 +54,7 @@ public final class CapabilitiesInner {
     interface CapabilitiesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Sql/locations/{locationName}/capabilities")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") UUID subscriptionId, @Path("locationName") String locationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("locationName") String locationName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 

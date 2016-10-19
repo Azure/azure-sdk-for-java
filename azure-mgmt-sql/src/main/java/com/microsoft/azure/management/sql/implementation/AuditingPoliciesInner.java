@@ -17,7 +17,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -58,19 +57,19 @@ public final class AuditingPoliciesInner {
     interface AuditingPoliciesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingPolicies/Default")
-        Observable<Response<ResponseBody>> createOrUpdateDatabasePolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateDatabasePolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditingPolicies/Default")
-        Observable<Response<ResponseBody>> getDatabasePolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDatabasePolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingPolicies/Default")
-        Observable<Response<ResponseBody>> createOrUpdateServerPolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateServerPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerAuditingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/auditingPolicies/Default")
-        Observable<Response<ResponseBody>> getServerPolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getServerPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -80,7 +79,7 @@ public final class AuditingPoliciesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
-     * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
+     * @param parameters The required parameters for creating or updating a Azure SQL Database auditing policy.
      * @return the DatabaseAuditingPolicyInner object if successful.
      */
     public DatabaseAuditingPolicyInner createOrUpdateDatabasePolicy(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
@@ -93,7 +92,7 @@ public final class AuditingPoliciesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
-     * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
+     * @param parameters The required parameters for creating or updating a Azure SQL Database auditing policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -107,7 +106,7 @@ public final class AuditingPoliciesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
-     * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
+     * @param parameters The required parameters for creating or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
     public Observable<DatabaseAuditingPolicyInner> createOrUpdateDatabasePolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {
@@ -125,7 +124,7 @@ public final class AuditingPoliciesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param databaseName The name of the Azure SQL Database for which the auditing policy applies.
-     * @param parameters The required parameters for createing or updating a Azure SQL Database auditing policy.
+     * @param parameters The required parameters for creating or updating a Azure SQL Database auditing policy.
      * @return the observable to the DatabaseAuditingPolicyInner object
      */
     public Observable<ServiceResponse<DatabaseAuditingPolicyInner>> createOrUpdateDatabasePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseAuditingPolicyInner parameters) {

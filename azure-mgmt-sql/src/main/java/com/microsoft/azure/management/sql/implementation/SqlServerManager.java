@@ -14,8 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServers;
 
-import java.util.UUID;
-
 /**
  * Entry point to Azure SQLServer resource management.
  */
@@ -27,7 +25,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         super(
                 restClient,
                 subscriptionId,
-                new SqlManagementClientImpl(restClient).withSubscriptionId(UUID.fromString(subscriptionId)));
+                new SqlManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 
     /**

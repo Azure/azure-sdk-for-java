@@ -17,7 +17,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -59,15 +58,19 @@ public final class ServerUpgradesInner {
     interface ServerUpgradesService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> cancel(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> cancel(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
-        Observable<Response<ResponseBody>> start(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> start(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
+        Observable<Response<ResponseBody>> beginStart(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -143,7 +146,8 @@ public final class ServerUpgradesInner {
 
     private ServiceResponse<Void> cancelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -221,7 +225,6 @@ public final class ServerUpgradesInner {
     private ServiceResponse<ServerUpgradeGetResultInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ServerUpgradeGetResultInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<ServerUpgradeGetResultInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -234,7 +237,7 @@ public final class ServerUpgradesInner {
      * @param parameters The required parameters for the Azure SQL Server Upgrade.
      */
     public void start(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        startWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
+        startWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -256,7 +259,7 @@ public final class ServerUpgradesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> startAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
         return startWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -273,7 +276,7 @@ public final class ServerUpgradesInner {
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
      * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> startWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
         if (this.client.subscriptionId() == null) {
@@ -290,12 +293,80 @@ public final class ServerUpgradesInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.start(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.start(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     */
+    public void beginStart(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        beginStartWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginStartAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginStartWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginStartAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        return beginStartWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStartWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2014-04-01";
+        return service.beginStart(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = startDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginStartDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -304,7 +375,7 @@ public final class ServerUpgradesInner {
             });
     }
 
-    private ServiceResponse<Void> startDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginStartDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .build(response);

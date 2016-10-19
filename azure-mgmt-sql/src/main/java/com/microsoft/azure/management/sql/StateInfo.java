@@ -25,7 +25,7 @@ public class StateInfo {
     private String actionInitiatedBy;
 
     /**
-     * The lastModified property.
+     * Last modified time for recommended action (ISO8601 Format).
      */
     private DateTime lastModified;
 

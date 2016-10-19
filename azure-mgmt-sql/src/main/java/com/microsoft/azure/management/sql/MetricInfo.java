@@ -30,7 +30,7 @@ public class MetricInfo {
     private String timeGrain;
 
     /**
-     * The startTime property.
+     * Start time (ISO8601 Format).
      */
     private DateTime startTime;
 
