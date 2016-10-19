@@ -62,13 +62,13 @@ public class RecommendedActionResourceInner {
     private String recommendationReason;
 
     /**
-     * The validSince property.
+     * Time when this recommended action became valid (ISO8601 Format).
      */
     @JsonProperty(value = "properties.validSince")
     private DateTime validSince;
 
     /**
-     * The lastRefresh property.
+     * Time when this recommended action was last refreshed (ISO8601 Format).
      */
     @JsonProperty(value = "properties.lastRefresh")
     private DateTime lastRefresh;
@@ -98,7 +98,7 @@ public class RecommendedActionResourceInner {
     private Boolean isArchivedAction;
 
     /**
-     * The executeActionStartTime property.
+     * Time when execution of this action began (ISO8601 Format).
      */
     @JsonProperty(value = "properties.executeActionStartTime")
     private DateTime executeActionStartTime;
@@ -110,7 +110,7 @@ public class RecommendedActionResourceInner {
     private String executeActionDuration;
 
     /**
-     * The revertActionStartTime property.
+     * Time when revert of this action began (ISO8601 Format).
      */
     @JsonProperty(value = "properties.revertActionStartTime")
     private DateTime revertActionStartTime;
@@ -128,7 +128,7 @@ public class RecommendedActionResourceInner {
     private String executeActionInitiatedBy;
 
     /**
-     * The executeActionInitiatedTime property.
+     * Time when action was initiated (ISO8601 Format).
      */
     @JsonProperty(value = "properties.executeActionInitiatedTime")
     private DateTime executeActionInitiatedTime;
@@ -140,7 +140,7 @@ public class RecommendedActionResourceInner {
     private String revertActionInitiatedBy;
 
     /**
-     * The revertActionInitiatedTime property.
+     * Time when revert of this action was initiated (ISO8601 Format).
      */
     @JsonProperty(value = "properties.revertActionInitiatedTime")
     private DateTime revertActionInitiatedTime;

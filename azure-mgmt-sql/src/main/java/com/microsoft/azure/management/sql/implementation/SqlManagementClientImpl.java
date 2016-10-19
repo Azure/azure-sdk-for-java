@@ -13,8 +13,6 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-import java.util.UUID;
-
 /**
  * Initializes a new instance of the SqlManagementClientImpl class.
  */
@@ -31,14 +29,14 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /** The subscription credentials which uniquely identify Microsoft Azure subscription. */
-    private UUID subscriptionId;
+    private String subscriptionId;
 
     /**
      * Gets The subscription credentials which uniquely identify Microsoft Azure subscription.
      *
      * @return the subscriptionId value.
      */
-    public UUID subscriptionId() {
+    public String subscriptionId() {
         return this.subscriptionId;
     }
 
@@ -48,7 +46,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
      */
-    public SqlManagementClientImpl withSubscriptionId(UUID subscriptionId) {
+    public SqlManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
