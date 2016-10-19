@@ -39,6 +39,9 @@ final class DeploymentOperationsImpl
 
     @Override
     protected DeploymentOperationImpl wrapModel(DeploymentOperationInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new DeploymentOperationImpl(inner, this.client);
     }
 }

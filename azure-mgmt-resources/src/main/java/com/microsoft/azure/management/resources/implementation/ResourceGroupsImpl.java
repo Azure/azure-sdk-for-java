@@ -71,6 +71,9 @@ final class ResourceGroupsImpl
 
     @Override
     protected ResourceGroupImpl wrapModel(ResourceGroupInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new ResourceGroupImpl(inner, serviceClient);
     }
 }

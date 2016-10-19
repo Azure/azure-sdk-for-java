@@ -70,6 +70,9 @@ class LoadBalancersImpl
 
     @Override
     protected LoadBalancerImpl wrapModel(LoadBalancerInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new LoadBalancerImpl(
                 inner.name(),
                 inner,

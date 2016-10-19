@@ -47,6 +47,9 @@ class CertificatesImpl
 
     @Override
     protected CertificateImpl wrapModel(CertificateInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new CertificateImpl(inner.name(), inner, innerCollection, myManager);
     }
 

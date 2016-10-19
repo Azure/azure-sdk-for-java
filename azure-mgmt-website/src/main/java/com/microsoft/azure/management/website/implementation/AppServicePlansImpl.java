@@ -57,6 +57,9 @@ class AppServicePlansImpl
 
     @Override
     protected AppServicePlanImpl wrapModel(AppServicePlanInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new AppServicePlanImpl(inner.name(), inner, innerCollection, myManager);
     }
 

@@ -75,6 +75,9 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(StorageAccountInner storageAccountInner) {
+        if (storageAccountInner == null) {
+            return null;
+        }
         return new StorageAccountImpl(
                 storageAccountInner.name(),
                 storageAccountInner,

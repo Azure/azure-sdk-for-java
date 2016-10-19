@@ -33,6 +33,9 @@ class VirtualMachinePublishersImpl
 
     @Override
     protected VirtualMachinePublisherImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachinePublisherImpl(Region.fromName(inner.location()),
                 inner.name(),
                 this.imagesInnerCollection,
