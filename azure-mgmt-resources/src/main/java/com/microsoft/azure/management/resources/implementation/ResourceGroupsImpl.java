@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
@@ -38,17 +39,7 @@ final class ResourceGroupsImpl
 
     @Override
     public PagedList<ResourceGroup> listByTag(String tagName, String tagValue) {
-        if (tagName == null) {
-            throw new IllegalArgumentException("tagName == null");
-        }
-        String odataFilter;
-        if (tagValue == null) {
-            odataFilter = String.format("tagname eq '%s'", tagName);
-        } else {
-            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
-        }
-        return wrapList(client.list(
-                odataFilter, null));
+        return wrapList(client.list(Utils.createOdataFilterForTags(tagName, tagValue), null));
     }
 
     @Override
