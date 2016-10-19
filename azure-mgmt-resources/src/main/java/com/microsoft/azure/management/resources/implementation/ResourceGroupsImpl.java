@@ -10,6 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
@@ -34,6 +35,11 @@ final class ResourceGroupsImpl
     @Override
     public PagedList<ResourceGroup> list() {
         return wrapList(client.list());
+    }
+
+    @Override
+    public PagedList<ResourceGroup> listByTag(String tagName, String tagValue) {
+        return wrapList(client.list(Utils.createOdataFilterForTags(tagName, tagValue), null));
     }
 
     @Override
