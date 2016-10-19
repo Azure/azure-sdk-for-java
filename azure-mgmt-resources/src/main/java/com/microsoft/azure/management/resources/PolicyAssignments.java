@@ -25,7 +25,7 @@ public interface PolicyAssignments extends
         SupportsCreating<PolicyAssignment.DefinitionStages.Blank>,
         SupportsDeleting {
     /**
-     * Get policy assignments of the resource.
+     * List policy assignments of the resource.
      *
      * @param resourceId the ID of the resource
      * @return the list of policy assignments

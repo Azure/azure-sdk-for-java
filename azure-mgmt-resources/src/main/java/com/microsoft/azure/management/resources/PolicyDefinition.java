@@ -26,8 +26,7 @@ public interface PolicyDefinition extends
         Wrapper<PolicyDefinitionInner> {
 
     /**
-     * @return policy definition policy type. Possible values include:
-     * 'NotSpecified', 'BuiltIn', 'Custom'.
+     * @return the type of the policy definition
      */
     PolicyType policyType();
 
