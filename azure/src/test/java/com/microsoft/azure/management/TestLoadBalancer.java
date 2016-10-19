@@ -21,7 +21,7 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.InboundNatPool;
 import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LoadBalancingRule;
@@ -29,7 +29,7 @@ import com.microsoft.azure.management.network.LoadDistribution;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.Networks;
-import com.microsoft.azure.management.network.PrivateFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
@@ -451,7 +451,7 @@ public class TestLoadBalancer {
 
             LoadBalancerFrontend frontend = resource.frontends().get("default");
             Assert.assertTrue(frontend.isPublic());
-            Assert.assertTrue(((PublicFrontend) frontend).publicIpAddressId().equalsIgnoreCase(pip.id()));
+            Assert.assertTrue(((LoadBalancerPublicFrontend) frontend).publicIpAddressId().equalsIgnoreCase(pip.id()));
             Assert.assertTrue(lbRule.probe().name().equalsIgnoreCase("default"));
 
             lbRule = resource.loadBalancingRules().get("lbrule2");
@@ -498,7 +498,7 @@ public class TestLoadBalancer {
                     .withRegion(TestLoadBalancer.REGION)
                     .withExistingResourceGroup(TestLoadBalancer.GROUP_NAME)
                     // Frontend (default)
-                    .withExistingSubnet(network, "subnet1")
+                    .withFrontendSubnet(network, "subnet1")
                     // Backend (default)
                     .withExistingVirtualMachines(existingVMs)
                     .defineBackend("foo")
@@ -745,12 +745,12 @@ public class TestLoadBalancer {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                 .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((PublicFrontend) frontend).publicIpAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
-                info.append("\n\t\t\tVirtual network ID: ").append(((PrivateFrontend) frontend).networkId())
-                    .append("\n\t\t\tSubnet name: ").append(((PrivateFrontend) frontend).subnetName())
-                    .append("\n\t\t\tPrivate IP address: ").append(((PrivateFrontend) frontend).privateIpAddress())
-                    .append("\n\t\t\tPrivate IP allocation method: ").append(((PrivateFrontend) frontend).privateIpAllocationMethod());
+                info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
+                    .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
+                    .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                    .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references

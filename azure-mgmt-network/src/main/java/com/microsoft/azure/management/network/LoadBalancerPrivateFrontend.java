@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a private frontend of an internal load balancer.
  */
 @Fluent()
-public interface PrivateFrontend extends
+public interface LoadBalancerPrivateFrontend extends
     LoadBalancerFrontend,
     HasPrivateIpAddress,
     HasSubnet {

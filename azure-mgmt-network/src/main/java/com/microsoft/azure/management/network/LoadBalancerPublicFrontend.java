@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
  */
 @Fluent()
-public interface PublicFrontend extends
+public interface LoadBalancerPublicFrontend extends
     LoadBalancerFrontend,
     HasPublicIpAddress {
 

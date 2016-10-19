@@ -11,7 +11,7 @@ import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -178,13 +178,13 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicFrontend getAssignedLoadBalancerFrontend() {
+    public LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend() {
         if (this.hasAssignedLoadBalancer()) {
             final String refId = this.inner().ipConfiguration().id();
             final String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(refId);
             final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
             final String frontendName = ResourceUtils.nameFromResourceId(refId);
-            return (PublicFrontend) lb.frontends().get(frontendName);
+            return (LoadBalancerPublicFrontend) lb.frontends().get(frontendName);
         } else {
             return null;
         }

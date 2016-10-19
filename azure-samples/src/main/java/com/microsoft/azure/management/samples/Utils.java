@@ -34,8 +34,8 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
-import com.microsoft.azure.management.network.PublicFrontend;
-import com.microsoft.azure.management.network.PrivateFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
@@ -436,12 +436,12 @@ public final class Utils {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((PublicFrontend) frontend).publicIpAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
-                info.append("\n\t\t\tVirtual network ID: ").append(((PrivateFrontend) frontend).networkId())
-                        .append("\n\t\t\tSubnet name: ").append(((PrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((PrivateFrontend) frontend).privateIpAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((PrivateFrontend) frontend).privateIpAllocationMethod());
+                info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
+                        .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
+                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references
