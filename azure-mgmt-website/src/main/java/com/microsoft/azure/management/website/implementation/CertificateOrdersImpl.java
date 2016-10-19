@@ -58,6 +58,9 @@ class CertificateOrdersImpl
 
     @Override
     protected CertificateOrderImpl wrapModel(AppServiceCertificateOrderInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new CertificateOrderImpl(inner.name(), inner, innerCollection, myManager);
     }
 

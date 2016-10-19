@@ -76,6 +76,9 @@ class PublicIpAddressesImpl
 
     @Override
     protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new PublicIpAddressImpl(
                 inner.id(),
                 inner,

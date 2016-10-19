@@ -73,6 +73,9 @@ class RedisCachesImpl
 
     @Override
     protected RedisCacheImpl wrapModel(RedisResourceInner redisResourceInner) {
+        if (redisResourceInner == null) {
+            return null;
+        }
         return new RedisCacheImpl(
                 redisResourceInner.name(),
                 redisResourceInner,

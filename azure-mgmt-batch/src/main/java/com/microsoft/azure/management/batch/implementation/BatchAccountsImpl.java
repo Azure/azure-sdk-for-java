@@ -66,6 +66,9 @@ public class BatchAccountsImpl
 
     @Override
     protected BatchAccountImpl wrapModel(BatchAccountInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new BatchAccountImpl(
                 inner.name(),
                 inner,

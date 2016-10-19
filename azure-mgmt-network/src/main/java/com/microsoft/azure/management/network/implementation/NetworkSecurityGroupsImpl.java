@@ -70,6 +70,9 @@ class NetworkSecurityGroupsImpl
 
     @Override
     protected NetworkSecurityGroupImpl wrapModel(NetworkSecurityGroupInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NetworkSecurityGroupImpl(
                 inner.name(),
                 inner,

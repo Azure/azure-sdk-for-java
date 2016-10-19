@@ -45,6 +45,9 @@ final class ProvidersImpl
 
     @Override
     protected ProviderImpl wrapModel(ProviderInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new ProviderImpl(inner);
     }
 }

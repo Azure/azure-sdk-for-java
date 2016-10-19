@@ -58,6 +58,9 @@ class ServicePrincipalsImpl
 
     @Override
     protected ServicePrincipalImpl wrapModel(ServicePrincipalInner servicePrincipalInner) {
+        if (servicePrincipalInner == null) {
+            return null;
+        }
         return new ServicePrincipalImpl(servicePrincipalInner, this.innerCollection);
     }
 
