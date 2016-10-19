@@ -39,6 +39,9 @@ public final class ResourceUtils {
      * @return the resource type
      */
     public static String resourceTypeFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         String[] splits = id.split("/");
         return splits[splits.length - 2];
     }
@@ -49,6 +52,9 @@ public final class ResourceUtils {
      * @return the parent resource path
      */
     public static String parentResourcePathFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         return id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
     }
 
@@ -60,6 +66,9 @@ public final class ResourceUtils {
      * @return the relative path
      */
     public static String relativePathFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         String[] paths = id.split("/providers/" + resourceProviderFromResourceId(id) + "/", 2);
         if (paths.length == 1) {
             return "";
@@ -95,6 +104,9 @@ public final class ResourceUtils {
      * @return the name of the resource
      */
     public static String nameFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         String[] splits = id.split("/");
         return splits[splits.length - 1];
     }

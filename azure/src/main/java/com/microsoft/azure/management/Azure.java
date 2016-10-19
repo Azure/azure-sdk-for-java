@@ -31,6 +31,8 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.PolicyAssignments;
+import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscription;
@@ -306,6 +308,20 @@ public final class Azure {
      */
     public Providers providers() {
         return resourceManager.providers();
+    }
+
+    /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
     }
 
     /**
