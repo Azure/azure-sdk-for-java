@@ -109,13 +109,13 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl withAutoUpgradeMinorVersionEnabled() {
+    public VirtualMachineExtensionImpl withMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(true);
         return this;
     }
 
     @Override
-    public VirtualMachineExtensionImpl withAutoUpgradeMinorVersionDisabled() {
+    public VirtualMachineExtensionImpl withoutMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(false);
         return this;
     }

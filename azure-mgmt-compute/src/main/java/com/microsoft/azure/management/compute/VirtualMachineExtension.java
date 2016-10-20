@@ -166,14 +166,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
              * disables auto upgrade of the extension.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
@@ -357,14 +357,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
              * disables auto upgrade of the extension.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
@@ -458,14 +458,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionEnabled();
+            Update withMinorVersionAutoUpgrade();
 
             /**
              * enables auto upgrade of the extension.
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionDisabled();
+            Update withoutMinorVersionAutoUpgrade();
         }
 
         /**

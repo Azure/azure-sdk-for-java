@@ -116,10 +116,12 @@ class VirtualMachinesImpl
     @Override
     public String capture(String groupName, String name,
                           String containerName,
+                          String vhdPrefix,
                           boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
+        parameters.withVhdPrefix(vhdPrefix);
         VirtualMachineCaptureResultInner captureResult = this.innerCollection.capture(groupName, name, parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string

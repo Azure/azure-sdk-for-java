@@ -116,21 +116,26 @@ public final class Utils {
         }
 
         StringBuilder osProfile = new StringBuilder().append("\n\tOSProfile: ");
-        osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
-        if (resource.osProfile().windowsConfiguration() != null) {
-            osProfile.append("\n\t\t\tWindowsConfiguration: ");
-            osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
-                    .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
-            osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
-                    .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
-            osProfile.append("\n\t\t\t\tTimeZone: ")
-                    .append(resource.osProfile().windowsConfiguration().timeZone());
-        }
+        if (resource.osProfile() != null) {
+            osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
+            if (resource.osProfile().windowsConfiguration() != null) {
+                osProfile.append("\n\t\t\tWindowsConfiguration: ");
+                osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
+                        .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
+                osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
+                        .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
+                osProfile.append("\n\t\t\t\tTimeZone: ")
+                        .append(resource.osProfile().windowsConfiguration().timeZone());
+            }
 
-        if (resource.osProfile().linuxConfiguration() != null) {
-            osProfile.append("\n\t\t\tLinuxConfiguration: ");
-            osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
-                    .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
+            if (resource.osProfile().linuxConfiguration() != null) {
+                osProfile.append("\n\t\t\tLinuxConfiguration: ");
+                osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
+                        .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
+            }
+        } else {
+            // OSProfile will be null for a VM attached to specialized VHD.
+            osProfile.append("null");
         }
 
         StringBuilder networkProfile = new StringBuilder().append("\n\tNetworkProfile: ");

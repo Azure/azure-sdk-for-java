@@ -27,7 +27,12 @@ public enum PowerState {
     /**
      * Enum value PowerState/starting.
      */
-    STARTING("PowerState/starting");
+    STARTING("PowerState/starting"),
+
+    /**
+     * Enum value PowerState/stopped.
+     */
+    STOPPED("PowerState/stopped");
 
     private String value;
 
