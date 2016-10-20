@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -15,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.website.implementation.AppServicePlanInner;
 
 /**
- * An immutable client-side representation of an Azure Web App.
+ * An immutable client-side representation of an Azure App Service Plan.
  */
 public interface AppServicePlan extends
         GroupableResource,
@@ -23,66 +24,30 @@ public interface AppServicePlan extends
         Refreshable<AppServicePlan>,
         Updatable<AppServicePlan.Update>,
         Wrapper<AppServicePlanInner> {
-
     /**
-     * @return target worker tier assigned to the App Service Plan.
+     * @return maximum number of instances that can be assigned
      */
-    String workerTierName();
+    int maxInstances();
 
     /**
-     * @return app Service Plan Status. Possible values include: 'Ready', 'Pending'.
+     * @return maximum number of instances that can be assigned
      */
-    StatusOptions status();
+    int capacity();
 
     /**
-     * @return app Service Plan Subscription.
-     */
-    String subscription();
-
-    /**
-     * @return app Service Plan administration site.
-     */
-    String adminSiteName();
-
-    /**
-     * @return specification for the hosting environment (App Service Environment) to
-     * use for the App Service Plan.
-     */
-    HostingEnvironmentProfile hostingEnvironmentProfile();
-
-    /**
-     * @return maximum number of instances that can be assigned to this App Service
-     * Plan.
-     */
-    int maximumNumberOfWorkers();
-
-    /**
-     * @return geographical location for the App Service Plan.
-     */
-    String geoRegion();
-
-    /**
-     * @return if True apps assigned to this App Service Plan can be scaled
-     * independently
-     * If False apps assigned to this App Service Plan will scale
-     * to all instances of the plan.
+     * @return if apps assigned to this App Service Plan can be scaled independently
      */
     boolean perSiteScaling();
 
     /**
-     * @return number of web apps assigned to this App Service Plan.
+     * @return number of web apps assigned to this App Service Plan
      */
-    int numberOfSites();
+    int numberOfWebApps();
 
     /**
-     * @return resource group of the server farm.
+     * @return the pricing tier information of the App Service Plan
      */
-    String resourceGroup();
-
-    /**
-     * @return the sku property.
-     */
-    SkuDescription sku();
+    AppServicePricingTier pricingTier();
 
     /**************************************************************
      * Fluent interfaces to provision a App service plan
@@ -118,7 +83,39 @@ public interface AppServicePlan extends
          * An app service plan definition allowing pricing tier to be set.
          */
         interface WithPricingTier {
+            /**
+             * Specifies the pricing tier for the app service plan.
+             *
+             * @param pricingTier the pricing tier enum
+             * @return the next stage of the app service plan definition
+             */
             WithCreate withPricingTier(AppServicePricingTier pricingTier);
+        }
+
+        /**
+         * An app service plan definition allowing per site scaling configuration to be set.
+         */
+        interface WithPerSiteScaling {
+            /**
+             * Specifies whether per-site scaling will be turned on.
+             *
+             * @param perSiteScaling if each site can be scaled individually
+             * @return the next stage of the app service plan definition
+             */
+            WithCreate withPerSiteScaling(boolean perSiteScaling);
+        }
+
+        /**
+         * An app service plan definition allowing instance capacity to be set.
+         */
+        interface WithCapacity {
+            /**
+             * Specifies the maximum number of instances running for this app service plan.
+             *
+             * @param capacity the maximum number of instances
+             * @return the next stage of an app service plan definition
+             */
+            WithCreate withCapacity(int capacity);
         }
 
         /**
@@ -126,7 +123,10 @@ public interface AppServicePlan extends
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends Creatable<AppServicePlan> {
+        interface WithCreate extends
+                WithPerSiteScaling,
+                WithCapacity,
+                Creatable<AppServicePlan> {
         }
     }
 
@@ -134,12 +134,53 @@ public interface AppServicePlan extends
      * Grouping of all the site update stages.
      */
     interface UpdateStages {
+        /**
+         * An app service plan definition allowing pricing tier to be set.
+         */
+        interface WithPricingTier {
+            /**
+             * Specifies the pricing tier for the app service plan.
+             *
+             * @param pricingTier the pricing tier enum
+             * @return the next stage of the app service plan update
+             */
+            Update withPricingTier(AppServicePricingTier pricingTier);
+        }
 
+        /**
+         * An app service plan update allowing per site scaling configuration to be set.
+         */
+        interface WithPerSiteScaling {
+            /**
+             * Specifies whether per-site scaling will be turned on.
+             *
+             * @param perSiteScaling if each site can be scaled individually
+             * @return the next stage of the app service plan update
+             */
+            Update withPerSiteScaling(boolean perSiteScaling);
+        }
+
+        /**
+         * An app service plan definition allowing instance capacity to be set.
+         */
+        interface WithCapacity {
+            /**
+             * Specifies the maximum number of instances running for this app service plan.
+             *
+             * @param capacity the maximum number of instances
+             * @return the next stage of an app service plan update
+             */
+            Update withCapacity(int capacity);
+        }
     }
 
     /**
      * The template for a site update operation, containing all the settings that can be modified.
      */
-    interface Update {
+    interface Update extends
+            Appliable<AppServicePlan>,
+            UpdateStages.WithCapacity,
+            UpdateStages.WithPerSiteScaling,
+            UpdateStages.WithPricingTier {
     }
 }
