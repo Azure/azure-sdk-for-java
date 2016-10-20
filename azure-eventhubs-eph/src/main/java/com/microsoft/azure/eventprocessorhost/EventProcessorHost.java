@@ -5,6 +5,7 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
@@ -199,6 +200,8 @@ public final class EventProcessorHost
             final String storageBlobPrefix,
             final ExecutorService executorService)
     {
+    	// Want to check storageConnectionString and storageContainerName here but can't because Java doesn't allow statements before
+    	// calling another constructor. storageBlobPrefix is allowed to be null or empty, doesn't need checking. 
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
                 new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix), executorService);
         this.initializeLeaseManager = true;
@@ -267,8 +270,58 @@ public final class EventProcessorHost
     {
     	EventProcessorHost.TRACE_LOGGER.setLevel(Level.SEVERE);
     	
+    	if ((hostName == null) || hostName.isEmpty())
+    	{
+    		throw new IllegalArgumentException("hostName argument must not be null or empty string");
+    	}
+    	
+    	// eventHubPath is allowed to be null or empty if it is provided in the connection string. That will be checked later.
+    	
+    	if ((consumerGroupName == null) || consumerGroupName.isEmpty())
+    	{
+    		throw new IllegalArgumentException("consumerGroupName argument must not be null or empty");
+    	}
+    	
+    	if ((eventHubConnectionString == null) || eventHubConnectionString.isEmpty())
+    	{
+    		throw new IllegalArgumentException("eventHubConnectionString argument must not be null or empty");
+    	}
+    	
+    	// The event hub path must appear in at least one of the eventHubPath argument or the connection string.
+    	// If it appears in both, then it must be the same in both.
+    	String extractedEntityPath = (new ConnectionStringBuilder(eventHubConnectionString)).getEntityPath();
+    	if ((eventHubPath != null) && !eventHubPath.isEmpty())
+    	{
+    		this.eventHubPath = eventHubPath;
+    		if ((extractedEntityPath != null) && (eventHubPath.compareTo(extractedEntityPath) != 0))
+    		{
+    			throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
+    		}
+    	}
+    	else
+    	{
+    		if ((extractedEntityPath != null) && !extractedEntityPath.isEmpty())
+    		{
+    			this.eventHubPath = extractedEntityPath;
+    		}
+    		else
+    		{
+    			throw new IllegalArgumentException("Provide EventHub entity path in either eventHubPath argument or in eventHubConnectionString");
+    		}
+    	}
+    	
+    	if (checkpointManager == null)
+    	{
+    		throw new IllegalArgumentException("Must provide an object which implements ICheckpointManager");
+    	}
+    	if (leaseManager == null)
+    	{
+    		throw new IllegalArgumentException("Must provide an object which implements ILeaseManager");
+    	}
+    	// executorService argument is allowed to be null, that is the indication to use an internal threadpool.
+    	
         this.hostName = hostName;
-        this.eventHubPath = eventHubPath;
+        //this.eventHubPath = eventHubPath;
         this.consumerGroupName = consumerGroupName;
         this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointManager = checkpointManager;
@@ -523,22 +576,19 @@ public final class EventProcessorHost
      * not need to create any new EventProcessorHost instances, because calling this method means that any new
      * instances will fail when a register* method is called.
      * <p>
-     * If using a user-supplied ExecutorService, calling this method is not required or recommended.
+     * If using a user-supplied ExecutorService, calling this method is not required and has no effect.
      * 
      * @param secondsToWait  How long to wait for the ExecutorService to shut down
      * @throws InterruptedException
      */
     public static void forceExecutorShutdown(long secondsToWait) throws InterruptedException
     {
-    	if (EventProcessorHost.weOwnExecutor)
-    	{
-    		EventProcessorHost.executorService.shutdown();
-    		EventProcessorHost.executorService.awaitTermination(secondsToWait, TimeUnit.SECONDS);
-    	}
-    	else
-    	{
-    		// TODO -- should we throw here or just ignore the bad call?
-    	}
+    	if (EventProcessorHost.weOwnExecutor && (EventProcessorHost.executorService != null))
+		{
+			EventProcessorHost.executorService.shutdown();
+			EventProcessorHost.executorService.awaitTermination(secondsToWait, TimeUnit.SECONDS);
+		}
+    	// else just ignore
     }
 
     

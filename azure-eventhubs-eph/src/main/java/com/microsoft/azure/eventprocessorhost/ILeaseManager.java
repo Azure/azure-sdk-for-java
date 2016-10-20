@@ -74,7 +74,7 @@ public interface ILeaseManager
      * 
      * @return  Iterable list of lease info.
      */
-    public Iterable<Future<Lease>> getAllLeases();
+    public Iterable<Future<Lease>> getAllLeases() throws Exception;
 
     /**
      * Create in the store the lease info for the given partition, if it does not exist. Do nothing if it does exist

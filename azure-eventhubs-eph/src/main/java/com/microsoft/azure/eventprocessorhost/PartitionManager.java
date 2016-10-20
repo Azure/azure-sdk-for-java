@@ -7,6 +7,7 @@ package com.microsoft.azure.eventprocessorhost;
 
 import java.util.List;
 import java.util.Locale;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -38,6 +39,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
 
 class PartitionManager
@@ -56,7 +58,7 @@ class PartitionManager
         this.host = host;
     }
     
-    Iterable<String> getPartitionIds()
+    Iterable<String> getPartitionIds() throws IllegalEntityException
     {
         if (this.partitionIds == null)
         {
@@ -90,6 +92,10 @@ class PartitionManager
 	        	
 	        	XPath xpath = XPathFactory.newInstance().newXPath();
 	        	NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
+	        	if (partitionIdsNodes.getLength() == 0)
+	        	{
+	        		throw new IllegalEntityException("EventHub does not exist");
+	        	}
 	        	
 	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
 	        	{
@@ -98,7 +104,11 @@ class PartitionManager
         	}
         	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
         	{
-        		final String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
+        		String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
+        		if (exception instanceof FileNotFoundException)
+        		{
+        			errorMessage = "Consumer group does not exist";
+        		}
         		this.host.logWithHost(Level.SEVERE, errorMessage);
         		throw new EPHConfigurationException(errorMessage, exception);
         	}
@@ -217,7 +227,7 @@ class PartitionManager
     	return null;
     }
     
-    private void initializeStores() throws InterruptedException, ExecutionException, ExceptionWithAction
+    private void initializeStores() throws InterruptedException, ExecutionException, ExceptionWithAction, IllegalEntityException
     {
         ILeaseManager leaseManager = this.host.getLeaseManager();
         
