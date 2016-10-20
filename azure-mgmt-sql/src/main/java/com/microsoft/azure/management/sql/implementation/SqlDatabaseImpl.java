@@ -6,11 +6,15 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.DatabaseEditions;
+import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.SqlDatabase;
+import com.microsoft.azure.management.sql.SqlElasticPool;
+import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
-import org.apache.commons.lang3.NotImplementedException;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -29,14 +33,20 @@ public class SqlDatabaseImpl
                             SqlDatabaseImpl>
         implements SqlDatabase,
             SqlDatabase.Definition,
-            SqlDatabase.Update {
+            SqlDatabase.Update,
+            IndependentChildResource.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
     private final DatabasesInner innerCollection;
+    private final SqlElasticPools sqlElasticPools;
+    private SqlElasticPool.DefinitionStages.WithCreate creatableSqlElasticPool;
+    private String elasticPoolCreatableKey;
 
     protected SqlDatabaseImpl(String name,
                             DatabaseInner innerObject,
-                            DatabasesInner innerCollection) {
+                            DatabasesInner innerCollection,
+                            SqlElasticPools sqlElasticPools) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
+        this.sqlElasticPools = sqlElasticPools;
     }
 
     @Override
@@ -143,6 +153,10 @@ public class SqlDatabaseImpl
     @Override
     protected Observable<SqlDatabase> createChildResourceAsync() {
         final SqlDatabase self = this;
+        if (this.elasticPoolCreatableKey != null) {
+            SqlElasticPool sqlElasticPool = (SqlElasticPool) this.createdResource(this.elasticPoolCreatableKey);
+            withExistingElasticPoolName(sqlElasticPool);
+        }
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<DatabaseInner, SqlDatabase>() {
             @Override
@@ -168,6 +182,57 @@ public class SqlDatabaseImpl
 
     @Override
     public SqlDatabaseImpl withExistingElasticPoolName(String elasticPoolName) {
-        throw new NotImplementedException("Will be implemented once we put support for elastic pools");
+        this.inner().withElasticPoolName(elasticPoolName);
+        return this;
+    }
+
+    @Override
+    public SqlDatabaseImpl withExistingElasticPoolName(SqlElasticPool sqlElasticPool) {
+        return this.withExistingElasticPoolName(sqlElasticPool.name());
+    }
+
+    @Override
+    public SqlDatabaseImpl withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition) {
+        creatableSqlElasticPool = this.sqlElasticPools.define(elasticPoolName).withEdition(elasticPoolEdition);
+        return this.withExistingElasticPoolName(elasticPoolName);
+    }
+
+    @Override
+    public SqlDatabaseImpl withNewElasticPool(SqlElasticPool.DefinitionStages.WithCreate sqlElasticPool) {
+        creatableSqlElasticPool = sqlElasticPool;
+        return this;
+    }
+
+    @Override
+    public Creatable<SqlDatabase> withExistingSqlServer(String groupName, String sqlServerName) {
+        if (creatableSqlElasticPool != null) {
+            handleElasticPoolCreatable(creatableSqlElasticPool.withExistingSqlServer(groupName, sqlServerName));
+        }
+        return withExistingParentResource(groupName, sqlServerName);
+    }
+
+    @Override
+    public Creatable<SqlDatabase> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable) {
+        if (creatableSqlElasticPool != null) {
+            handleElasticPoolCreatable(creatableSqlElasticPool.withNewSqlServer(sqlServerCreatable));
+        }
+        return withNewParentResource(sqlServerCreatable);
+    }
+
+    @Override
+    public Creatable<SqlDatabase> withExistingSqlServer(SqlServer existingSqlServer) {
+        if (creatableSqlElasticPool != null) {
+            handleElasticPoolCreatable(creatableSqlElasticPool.withExistingSqlServer(existingSqlServer));
+        }
+        return withExistingParentResource(existingSqlServer);
+    }
+
+
+    void handleElasticPoolCreatable(Creatable<SqlElasticPool> sqlElasticPoolCreatable) {
+        if (this.elasticPoolCreatableKey == null) {
+            this.elasticPoolCreatableKey = sqlElasticPoolCreatable.key();
+            this.addCreatableDependency(sqlElasticPoolCreatable);
+        }
+        this.creatableSqlElasticPool = null;
     }
 }

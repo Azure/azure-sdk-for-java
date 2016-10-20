@@ -86,12 +86,10 @@ public interface SqlServer extends
          * A SQL Server definition setting admin user password.
          */
         interface WithPassword {
-            WithVersion withPassword(String password);
+            WithCreate withPassword(String password);
         }
 
         /**
-         * TODO - ans - Remove this if this is optional. Currently from REST APIs if I don't pass it then it
-         * it became 2.0.
          * A SQL Server definition setting version.
          */
         interface WithVersion {
@@ -105,7 +103,8 @@ public interface SqlServer extends
          */
         interface WithCreate extends
             Creatable<SqlServer>,
-            DefinitionWithTags<WithCreate> {
+            DefinitionWithTags<WithCreate>,
+            WithVersion {
         }
     }
     /**

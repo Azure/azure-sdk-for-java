@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -25,7 +26,7 @@ import java.util.UUID;
 
 
 /**
- * An immutable client-side representation of an Azure SQL Server.
+ * An immutable client-side representation of an Azure SQL Database.
  */
 @Fluent
 public interface SqlDatabase extends
@@ -35,7 +36,7 @@ public interface SqlDatabase extends
         Wrapper<DatabaseInner> {
 
     /**
-     * @return the SQL Server name in which this database resides.
+     * @return the SQL Server name to which this database belongs
      */
     String sqlServerName();
 
@@ -188,19 +189,71 @@ public interface SqlDatabase extends
         interface WithElasticPoolName {
             /**
              * Sets the existing elastic pool for the SQLDatabase.
-             * @param elasticPoolName of for the SQL Database.
+             * @param elasticPoolName for the SQL Database.
              * @return The next stage of definition.
              */
             WithCreate withExistingElasticPoolName(String elasticPoolName);
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             * @param sqlElasticPool for the SQL Database.
+             * @return The next stage of definition.
+             */
+            WithCreate withExistingElasticPoolName(SqlElasticPool sqlElasticPool);
+
+            /**
+             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
+             * @param elasticPoolName name for new elastic pool to be created for the SQL Database.
+             * @param elasticPoolEdition edition for new elastic pool to be created for the SQL Database.
+             * @return The next stage of definition.
+             */
+            WithCreate withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition);
+
+            /**
+             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
+             * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database.
+             * @return The next stage of definition.
+             */
+            WithCreate withNewElasticPool(SqlElasticPool.DefinitionStages.WithCreate sqlElasticPool);
         }
 
         /**
-         * A SQL Server definition with sufficient inputs to create a new
+         * A resource definition allowing SQLServer to be attached with SQLDatabase.
+         */
+        interface WithSqlServer {
+            /**
+             * Creates a new database resource under SQLServer.
+             *
+             * @param groupName the name of the resource group for SQLServer.
+             * @param sqlServerName the name of the sQLServer.
+             * @return the creatable for the child resource
+             */
+            Creatable<SqlDatabase> withExistingSqlServer(String groupName, String sqlServerName);
+
+            /**
+             * Creates a new database resource under SQLServer.
+             *
+             * @param sqlServerCreatable a creatable definition for the SQLServer
+             * @return the creatable for the SQLDatabase
+             */
+            Creatable<SqlDatabase> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable);
+
+            /**
+             * Creates a new database resource under SQLServer.
+             *
+             * @param existingSqlServer the SQLServer under which this database to be created.
+             * @return the creatable for the SQLDatabase
+             */
+            Creatable<SqlDatabase> withExistingSqlServer(SqlServer existingSqlServer);
+        }
+
+        /**
+         * A SQL Database definition with sufficient inputs to create a new
          * SQL Server in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
-            IndependentChildResource.DefinitionStages.WithParentResource<SqlDatabase, SqlServer>,
+            WithSqlServer,
             DefinitionWithTags<WithCreate>,
             WithElasticPoolName {
         }
