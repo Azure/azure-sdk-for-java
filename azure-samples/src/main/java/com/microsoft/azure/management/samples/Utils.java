@@ -36,6 +36,10 @@ import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
 import com.microsoft.azure.management.network.PublicFrontend;
 import com.microsoft.azure.management.network.PrivateFrontend;
+import com.microsoft.azure.management.redis.RedisAccessKeys;
+import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.management.redis.RedisCachePremium;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 
@@ -339,6 +343,57 @@ public final class Utils {
         }
     }
 
+
+    /**
+     * Print Redis Cache.
+     * @param redisCache a Redis cache.
+     */
+    public static void print(RedisCache redisCache) {
+        StringBuilder redisInfo = new StringBuilder()
+                .append("Redis Cache Name: ").append(redisCache.name())
+                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
+                .append("\n\tRegion: ").append(redisCache.region())
+                .append("\n\tSKU Name: ").append(redisCache.sku().name())
+                .append("\n\tSKU Family: ").append(redisCache.sku().family())
+                .append("\n\tHost name: ").append(redisCache.hostName())
+                .append("\n\tSSL port: ").append(redisCache.sslPort())
+                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
+        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
+            redisInfo.append("\n\tRedis Configuration:");
+            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
+                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
+                         .append("' : '").append(redisConfiguration.getValue()).append("'");
+            }
+        }
+        if (redisCache.isPremium()) {
+            RedisCachePremium premium = redisCache.asPremium();
+            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
+            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
+                redisInfo.append("\n\tRedis Patch Schedule:");
+                for (ScheduleEntry schedule : scheduleEntries) {
+                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
+                            .append("', start at: '").append(schedule.startHourUtc())
+                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
+                            .append("'");
+                }
+            }
+        }
+
+        System.out.println(redisInfo.toString());
+    }
+
+    /**
+     * Print Redis Cache access keys.
+     * @param redisAccessKeys a keys for Redis Cache
+     */
+    public static void print(RedisAccessKeys redisAccessKeys) {
+        StringBuilder redisKeys = new StringBuilder()
+                .append("Redis Access Keys: ")
+                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
+                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
+
+        System.out.println(redisKeys.toString());
+    }
 
     /**
      * Print load balancer.
