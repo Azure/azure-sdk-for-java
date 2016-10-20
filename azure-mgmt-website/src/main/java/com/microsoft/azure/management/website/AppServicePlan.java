@@ -126,7 +126,8 @@ public interface AppServicePlan extends
         interface WithCreate extends
                 WithPerSiteScaling,
                 WithCapacity,
-                Creatable<AppServicePlan> {
+                Creatable<AppServicePlan>,
+                GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -181,6 +182,7 @@ public interface AppServicePlan extends
             Appliable<AppServicePlan>,
             UpdateStages.WithCapacity,
             UpdateStages.WithPerSiteScaling,
-            UpdateStages.WithPricingTier {
+            UpdateStages.WithPricingTier,
+            GroupableResource.UpdateWithTags<Update> {
     }
 }
