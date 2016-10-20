@@ -45,6 +45,9 @@ public abstract class PagedList<E> implements List<E> {
      */
     public PagedList(Page<E> page) {
         this();
+        if (page == null) {
+            return;
+        }
         List<E> retrievedItems = page.getItems();
         if (retrievedItems != null) {
             items.addAll(retrievedItems);
