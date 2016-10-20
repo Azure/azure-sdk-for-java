@@ -84,7 +84,7 @@ public interface VirtualMachine extends
      * @param overwriteVhd whether to overwrites destination vhd if it exists
      * @return the template as json string
      */
-    String capture(String containerName, String vhdPrefix ,boolean overwriteVhd);
+    String capture(String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
