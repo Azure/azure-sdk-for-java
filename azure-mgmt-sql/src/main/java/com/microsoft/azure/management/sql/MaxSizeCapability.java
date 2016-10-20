@@ -15,21 +15,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MaxSizeCapability {
     /**
-     * Gets the maximum size of the database (see 'unit' for the units).
+     * The maximum size of the database (see 'unit' for the units).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;
 
     /**
-     * Gets the units that the limit is expressed in. Possible values include:
+     * The units that the limit is expressed in. Possible values include:
      * 'Megabytes', 'Gigabytes', 'Terabytes', 'Petabytes'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MaxSizeUnits unit;
 
     /**
-     * Gets the status of the maximum size capability. Possible values
-     * include: 'Visible', 'Available', 'Default'.
+     * The status of the maximum size capability. Possible values include:
+     * 'Visible', 'Available', 'Default'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;

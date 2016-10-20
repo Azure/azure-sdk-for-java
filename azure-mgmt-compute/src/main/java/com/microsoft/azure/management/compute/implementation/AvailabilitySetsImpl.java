@@ -79,6 +79,9 @@ class AvailabilitySetsImpl
 
     @Override
     protected AvailabilitySetImpl wrapModel(AvailabilitySetInner availabilitySetInner) {
+        if (availabilitySetInner == null) {
+            return null;
+        }
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.innerCollection,

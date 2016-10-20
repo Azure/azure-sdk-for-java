@@ -6,15 +6,14 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
 import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.ProviderResourceType;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 import java.util.List;
@@ -50,17 +49,8 @@ final class GenericResourcesImpl
 
     @Override
     public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
-        if (tagName == null) {
-            throw new IllegalArgumentException("tagName == null");
-        }
-        String odataFilter;
-        if (tagValue == null) {
-            odataFilter = String.format("tagname eq '%s'", tagName);
-        } else {
-            odataFilter = String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
-        }
         return wrapList(this.serviceClient.resourceGroups().listResources(
-                resourceGroupName, odataFilter, null, null));
+                resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
     @Override
@@ -88,16 +78,8 @@ final class GenericResourcesImpl
     @Override
     public GenericResource getById(String id) {
         Provider provider = myManager.providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
-        String apiVersion = null;
-        for (ProviderResourceType type : provider.resourceTypes()) {
-            if (ResourceUtils.resourceTypeFromResourceId(id).equalsIgnoreCase(type.resourceType())) {
-                apiVersion = type.apiVersions().get(0);
-            }
-        }
-        if (apiVersion == null) {
-            apiVersion = provider.resourceTypes().get(0).apiVersions().get(0);
-        }
-        return wrapModel(this.innerCollection.getById(id, apiVersion));
+        String apiVersion = ResourceUtils.defaultApiVersion(id, provider);
+        return wrapModel(this.innerCollection.getById(id, apiVersion)).withApiVersion(apiVersion);
     }
 
     @Override
@@ -115,7 +97,7 @@ final class GenericResourcesImpl
                 return resource;
             }
         }
-        throw new CloudException("Generic resource not found.");
+        return null;
     }
 
     @Override
@@ -149,7 +131,7 @@ final class GenericResourcesImpl
 
         return resource.withExistingResourceGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
-                .withParentResource(parentResourcePath)
+                .withParentResourcePath(parentResourcePath)
                 .withResourceType(resourceType)
                 .withApiVersion(apiVersion);
     }
@@ -179,11 +161,14 @@ final class GenericResourcesImpl
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(id));
+                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(id));
     }
 
     @Override
     protected GenericResourceImpl wrapModel(GenericResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new GenericResourceImpl(
                 inner.id(),
                 inner,
@@ -194,7 +179,7 @@ final class GenericResourcesImpl
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(inner.id()));
+                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(inner.id()));
     }
 
     @Override

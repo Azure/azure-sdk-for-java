@@ -8,82 +8,89 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.ImportExportOperationMode;
 import java.util.UUID;
+import com.microsoft.azure.management.sql.ImportExportOperationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Response for Azure Sql Import/Export Status operation.
+ * Response for Azure SQL Import/Export Status operation.
  */
 @JsonFlatten
 public class ImportExportOperationStatusResponseInner {
     /**
-     * Gets or sets the request type of the operation.
+     * The type of the requested operation. Possible values include: 'Import',
+     * 'Export'.
      */
     @JsonProperty(value = "properties.requestType")
-    private String requestType;
+    private ImportExportOperationMode requestType;
 
     /**
-     * Gets or sets the request type of the operation.
+     * The request id for the operation.
      */
     @JsonProperty(value = "properties.requestId")
     private UUID requestId;
 
     /**
-     * Gets or sets the name of the Azure SQL Server.
+     * The name of the Azure SQL Server.
      */
     @JsonProperty(value = "properties.serverName")
     private String serverName;
 
     /**
-     * Gets or sets the name of the Azure SQL Database.
+     * The name of the Azure SQL Database.
      */
     @JsonProperty(value = "properties.databaseName")
     private String databaseName;
 
     /**
-     * Gets or sets the status message returned from the server.
+     * The status message returned from the server. Possible values include:
+     * 'Running', 'RunningAfterRestart', 'Pending', 'Completed', 'Failed'.
      */
     @JsonProperty(value = "properties.status")
-    private String status;
+    private ImportExportOperationStatus status;
 
     /**
-     * Gets or sets the operation status last modified time.
+     * The operation status last modified time.
      */
     @JsonProperty(value = "properties.lastModifiedTime")
     private String lastModifiedTime;
 
     /**
-     * Gets or sets the operation queued time.
+     * The operation queued time.
      */
     @JsonProperty(value = "properties.queuedTime")
     private String queuedTime;
 
     /**
-     * Gets or sets the blob uri.
+     * The blob uri.
      */
     @JsonProperty(value = "properties.blobUri")
     private String blobUri;
 
     /**
-     * Gets or sets the error message returned from the server.
+     * The error message returned from the server.
      */
     @JsonProperty(value = "properties.errorMessage")
     private String errorMessage;
 
     /**
-     * Gets or sets the id returned from the server.
+     * The id returned from the server.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the name returned from the server.
+     * The name returned from the server.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets or sets the type returned from the server.
+     * The type returned from the server.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -91,7 +98,7 @@ public class ImportExportOperationStatusResponseInner {
      *
      * @return the requestType value
      */
-    public String requestType() {
+    public ImportExportOperationMode requestType() {
         return this.requestType;
     }
 
@@ -101,7 +108,7 @@ public class ImportExportOperationStatusResponseInner {
      * @param requestType the requestType value to set
      * @return the ImportExportOperationStatusResponseInner object itself.
      */
-    public ImportExportOperationStatusResponseInner withRequestType(String requestType) {
+    public ImportExportOperationStatusResponseInner withRequestType(ImportExportOperationMode requestType) {
         this.requestType = requestType;
         return this;
     }
@@ -171,7 +178,7 @@ public class ImportExportOperationStatusResponseInner {
      *
      * @return the status value
      */
-    public String status() {
+    public ImportExportOperationStatus status() {
         return this.status;
     }
 
@@ -181,7 +188,7 @@ public class ImportExportOperationStatusResponseInner {
      * @param status the status value to set
      * @return the ImportExportOperationStatusResponseInner object itself.
      */
-    public ImportExportOperationStatusResponseInner withStatus(String status) {
+    public ImportExportOperationStatusResponseInner withStatus(ImportExportOperationStatus status) {
         this.status = status;
         return this;
     }
@@ -276,17 +283,6 @@ public class ImportExportOperationStatusResponseInner {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the ImportExportOperationStatusResponseInner object itself.
-     */
-    public ImportExportOperationStatusResponseInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the name value.
      *
      * @return the name value
@@ -296,34 +292,12 @@ public class ImportExportOperationStatusResponseInner {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the ImportExportOperationStatusResponseInner object itself.
-     */
-    public ImportExportOperationStatusResponseInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the type value.
      *
      * @return the type value
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     * @return the ImportExportOperationStatusResponseInner object itself.
-     */
-    public ImportExportOperationStatusResponseInner withType(String type) {
-        this.type = type;
-        return this;
     }
 
 }

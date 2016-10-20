@@ -9,7 +9,6 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.Plan;
 import com.microsoft.azure.management.resources.Provider;
-import com.microsoft.azure.management.resources.ProviderResourceType;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -31,10 +30,11 @@ final class GenericResourceImpl
         GenericResource.Definition,
         GenericResource.UpdateStages.WithApiVersion,
         GenericResource.Update {
+    private final ResourceManagementClientImpl serviceCleint;
     private final ResourcesInner resourceClient;
     private final Providers providersClient;
     private String resourceProviderNamespace;
-    private String parentResourceId;
+    private String parentResourcePath;
     private String resourceType;
     private String apiVersion;
 
@@ -45,6 +45,10 @@ final class GenericResourceImpl
                         final ResourceManagementClientImpl serviceClient,
                         final ResourceManager resourceManager) {
         super(key, innerModel, resourceManager);
+        resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
+        resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
+        parentResourcePath = ResourceUtils.parentRelativePathFromResourceId(innerModel.id());
+        this.serviceCleint = serviceClient;
         this.resourceClient = innerCollection;
         this.providersClient = providerClient;
     }
@@ -55,8 +59,8 @@ final class GenericResourceImpl
     }
 
     @Override
-    public String parentResourceId() {
-        return parentResourceId;
+    public String parentResourcePath() {
+        return parentResourcePath;
     }
 
     @Override
@@ -90,8 +94,13 @@ final class GenericResourceImpl
     }
 
     @Override
-    public GenericResourceImpl withParentResource(String parentResourceId) {
-        this.parentResourceId = parentResourceId;
+    public GenericResourceImpl withParentResourceId(String parentResourceId) {
+        return withParentResourcePath(ResourceUtils.relativePathFromResourceId(parentResourceId));
+    }
+
+    @Override
+    public GenericResourceImpl withParentResourcePath(String parentResourcePath) {
+        this.parentResourcePath = parentResourcePath;
         return this;
     }
 
@@ -134,13 +143,20 @@ final class GenericResourceImpl
                     .map(new Func1<Provider, String>() {
                         @Override
                         public String call(Provider provider) {
-                            for (ProviderResourceType type : provider.resourceTypes()) {
-                                if (resourceType().equals(type.resourceType())) {
-                                    return type.apiVersions().get(0);
-                                }
+                            String id;
+                            if (!isInCreateMode()) {
+                                id = inner().id();
+                            } else {
+                                id = ResourceUtils.constructResourceId(
+                                        serviceCleint.subscriptionId(),
+                                        resourceGroupName(),
+                                        resourceProviderNamespace(),
+                                        resourceType(),
+                                        name(),
+                                        parentResourcePath());
                             }
-                            // Use the first available one as default
-                            return provider.resourceTypes().get(0).apiVersions().get(0);
+                            self.apiVersion = ResourceUtils.defaultApiVersion(id, provider);
+                            return self.apiVersion;
                         }
                     });
         }
@@ -148,18 +164,21 @@ final class GenericResourceImpl
                 .flatMap(new Func1<String, Observable<GenericResource>>() {
                     @Override
                     public Observable<GenericResource> call(String api) {
+                        String name = name();
+                        if (!isInCreateMode()) {
+                            name = ResourceUtils.nameFromResourceId(inner().id());
+                        }
                         return resourceClient.createOrUpdateAsync(
                                 resourceGroupName(),
-                                ResourceUtils.resourceProviderFromResourceId(inner().id()),
-                                ResourceUtils.relativePathFromResourceId(parentResourceId),
-                                ResourceUtils.resourceTypeFromResourceId(inner().id()),
-                                ResourceUtils.nameFromResourceId(inner().id()),
+                                resourceProviderNamespace,
+                                parentResourcePath(),
+                                resourceType,
+                                name,
                                 api,
                                 inner())
                                 .subscribeOn(Schedulers.io())
                                 .map(innerToFluentMap(self));
                     }
                 });
-
     }
 }

@@ -13,27 +13,27 @@ import java.util.List;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents a Service Tier Advisor.
  */
 @JsonFlatten
-public class ServiceTierAdvisorInner extends SubResource {
+public class ServiceTierAdvisorInner extends SqlSubResource {
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;
 
     /**
-     * Gets the activeTimeRatio for service tier advisor.
+     * The activeTimeRatio for service tier advisor.
      */
     @JsonProperty(value = "properties.activeTimeRatio", access = JsonProperty.Access.WRITE_ONLY)
     private Double activeTimeRatio;

@@ -30,6 +30,8 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.PolicyAssignments;
+import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscription;
@@ -42,6 +44,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
+import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,6 +60,7 @@ public final class Azure {
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
     private final BatchManager batchManager;
+    private final TrafficManager trafficManager;
     private final String subscriptionId;
 
     /**
@@ -258,6 +263,7 @@ public final class Azure {
         this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
+        this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -301,6 +307,20 @@ public final class Azure {
      */
     public Providers providers() {
         return resourceManager.providers();
+    }
+
+    /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
     }
 
     /**
@@ -401,4 +421,10 @@ public final class Azure {
         return batchManager.batchAccounts();
     }
 
+    /**
+     * @return entry point to managing traffic manager profiles.
+     */
+    public TrafficManagerProfiles trafficManagerProfiles() {
+        return trafficManager.profiles();
+    }
 }

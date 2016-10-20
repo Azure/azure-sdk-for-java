@@ -17,13 +17,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServerUpgradeGetResultInner {
     /**
-     * Gets the status of the Azure SQL Server Upgrade.
+     * The status of the Azure SQL Server Upgrade.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /**
-     * Gets the schedule time of the Azure SQL Server Upgrade.
+     * The schedule time of the Azure SQL Server Upgrade (ISO8601 format).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime scheduleUpgradeAfterTime;

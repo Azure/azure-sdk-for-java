@@ -18,7 +18,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ColumnInner extends Resource {
     /**
-     * Gets the type of Azure SQL Database table column.
+     * The type of Azure SQL Database table column.
      */
     @JsonProperty(value = "properties.columnType", access = JsonProperty.Access.WRITE_ONLY)
     private String columnType;

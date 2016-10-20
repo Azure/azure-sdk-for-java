@@ -163,6 +163,9 @@ class VirtualMachinesImpl
 
     @Override
     protected VirtualMachineImpl wrapModel(VirtualMachineInner virtualMachineInner) {
+        if (virtualMachineInner == null) {
+            return null;
+        }
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,

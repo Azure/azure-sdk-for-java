@@ -12,7 +12,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.GraphErrorException;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.graphrbac.ServicePrincipals;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -26,10 +26,10 @@ import java.util.List;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class ServicePrincipalsImpl
-        extends CreatableWrappersImpl<
-            ServicePrincipal,
-            ServicePrincipalImpl,
-            ServicePrincipalInner>
+        extends ReadableWrappersImpl<
+                    ServicePrincipal,
+                    ServicePrincipalImpl,
+                    ServicePrincipalInner>
         implements ServicePrincipals {
     private ServicePrincipalsInner innerCollection;
     private GraphRbacManager manager;
@@ -47,17 +47,10 @@ class ServicePrincipalsImpl
     }
 
     @Override
-    public ServicePrincipalImpl define(String appId) {
-        return wrapModel(appId);
-    }
-
-    @Override
-    protected ServicePrincipalImpl wrapModel(String appId) {
-        return new ServicePrincipalImpl(appId, innerCollection);
-    }
-
-    @Override
     protected ServicePrincipalImpl wrapModel(ServicePrincipalInner servicePrincipalInner) {
+        if (servicePrincipalInner == null) {
+            return null;
+        }
         return new ServicePrincipalImpl(servicePrincipalInner, this.innerCollection);
     }
 

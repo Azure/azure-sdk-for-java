@@ -10,15 +10,15 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database Service Objective.
  */
 @JsonFlatten
-public class ServiceObjectiveInner extends SubResource {
+public class ServiceObjectiveInner extends SqlSubResource {
     /**
-     * Gets the name for the service objective.
+     * The name for the service objective.
      */
     @JsonProperty(value = "properties.serviceObjectiveName", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceObjectiveName;
@@ -37,7 +37,7 @@ public class ServiceObjectiveInner extends SubResource {
     private Boolean isSystem;
 
     /**
-     * Gets the description for the service level objective.
+     * The description for the service level objective.
      */
     @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;

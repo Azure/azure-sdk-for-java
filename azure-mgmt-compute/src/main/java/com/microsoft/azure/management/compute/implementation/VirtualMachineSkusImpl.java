@@ -36,6 +36,9 @@ class VirtualMachineSkusImpl
 
     @Override
     protected VirtualMachineSkuImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineSkuImpl(this.offer, inner.name(), innerCollection);
     }
 }

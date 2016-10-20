@@ -84,6 +84,9 @@ class VaultsImpl
 
     @Override
     protected VaultImpl wrapModel(VaultInner vaultInner) {
+        if (vaultInner == null) {
+            return null;
+        }
         return new VaultImpl(
                 vaultInner.name(),
                 vaultInner,

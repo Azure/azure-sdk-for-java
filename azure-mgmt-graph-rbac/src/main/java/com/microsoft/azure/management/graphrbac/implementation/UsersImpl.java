@@ -10,7 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.graphrbac.User;
 import com.microsoft.azure.management.graphrbac.Users;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -22,10 +22,10 @@ import rx.functions.Func1;
  */
 @LangDefinition(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 class UsersImpl
-        extends CreatableWrappersImpl<
-            User,
-            UserImpl,
-            UserInner>
+        extends ReadableWrappersImpl<
+                    User,
+                    UserImpl,
+                    UserInner>
         implements Users {
     private UsersInner innerCollection;
     private GraphRbacManager manager;
@@ -43,17 +43,10 @@ class UsersImpl
     }
 
     @Override
-    public UserImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    protected UserImpl wrapModel(String userPrincipalName) {
-        return new UserImpl(userPrincipalName, innerCollection);
-    }
-
-    @Override
     protected UserImpl wrapModel(UserInner userInner) {
+        if (userInner == null) {
+            return null;
+        }
         return new UserImpl(userInner, this.innerCollection);
     }
 

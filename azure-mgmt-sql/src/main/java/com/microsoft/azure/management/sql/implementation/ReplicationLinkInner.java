@@ -13,62 +13,61 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.sql.ReplicationState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents an Azure SQL Database Replication Link.
  */
 @JsonFlatten
-public class ReplicationLinkInner extends SubResource {
+public class ReplicationLinkInner extends SqlSubResource {
     /**
-     * Gets the name of the Azure SQL Server hosting the partner Azure SQL
-     * Database.
+     * The name of the Azure SQL Server hosting the partner Azure SQL Database.
      */
     @JsonProperty(value = "properties.partnerServer", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerServer;
 
     /**
-     * Gets the name of the partner Azure SQL Database.
+     * The name of the partner Azure SQL Database.
      */
     @JsonProperty(value = "properties.partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerDatabase;
 
     /**
-     * Gets the Azure Region of the partner Azure SQL Database.
+     * The Azure Region of the partner Azure SQL Database.
      */
     @JsonProperty(value = "properties.partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerLocation;
 
     /**
-     * Gets the role of the Azure SQL Database in the replication link.
-     * Possible values include: 'Primary', 'Secondary',
-     * 'NonReadableSecondary', 'Source', 'Copy'.
+     * The role of the Azure SQL Database in the replication link. Possible
+     * values include: 'Primary', 'Secondary', 'NonReadableSecondary',
+     * 'Source', 'Copy'.
      */
     @JsonProperty(value = "properties.role", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole role;
 
     /**
-     * Gets the role of the partner Azure SQL Database in the replication
-     * link. Possible values include: 'Primary', 'Secondary',
+     * The role of the partner Azure SQL Database in the replication link.
+     * Possible values include: 'Primary', 'Secondary',
      * 'NonReadableSecondary', 'Source', 'Copy'.
      */
     @JsonProperty(value = "properties.partnerRole", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole partnerRole;
 
     /**
-     * Gets the start time for the replication link.
+     * The start time for the replication link (ISO8601 format).
      */
     @JsonProperty(value = "properties.startTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime startTime;
 
     /**
-     * Gets the percentage of seeding complete for the replication link.
+     * The percentage of seeding complete for the replication link.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private String percentComplete;
 
     /**
-     * Gets the replication state for the replication link. Possible values
+     * The replication state for the replication link. Possible values
      * include: 'PENDING', 'SEEDING', 'CATCH_UP', 'SUSPENDED'.
      */
     @JsonProperty(value = "properties.replicationState", access = JsonProperty.Access.WRITE_ONLY)

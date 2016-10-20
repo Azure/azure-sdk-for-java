@@ -11,31 +11,21 @@ package com.microsoft.azure.management.sql;
 import java.util.List;
 
 /**
- * The ArmErrorResponseExtendedErrorInfo model.
+ * Contains additional information about the error that occured.
  */
 public class ArmErrorResponseExtendedErrorInfo {
     /**
-     * The details property.
+     * A list of error details.
      */
     private List<ArmErrorResponseErrorDetail> details;
 
     /**
-     * The innerError property.
+     * The inner error if available.
      */
     private Object innerError;
 
     /**
-     * The code property.
-     */
-    private String code;
-
-    /**
-     * The message property.
-     */
-    private String message;
-
-    /**
-     * The target property.
+     * The target of the particular error.
      */
     private String target;
 
@@ -76,46 +66,6 @@ public class ArmErrorResponseExtendedErrorInfo {
      */
     public ArmErrorResponseExtendedErrorInfo withInnerError(Object innerError) {
         this.innerError = innerError;
-        return this;
-    }
-
-    /**
-     * Get the code value.
-     *
-     * @return the code value
-     */
-    public String code() {
-        return this.code;
-    }
-
-    /**
-     * Set the code value.
-     *
-     * @param code the code value to set
-     * @return the ArmErrorResponseExtendedErrorInfo object itself.
-     */
-    public ArmErrorResponseExtendedErrorInfo withCode(String code) {
-        this.code = code;
-        return this;
-    }
-
-    /**
-     * Get the message value.
-     *
-     * @return the message value
-     */
-    public String message() {
-        return this.message;
-    }
-
-    /**
-     * Set the message value.
-     *
-     * @param message the message value to set
-     * @return the ArmErrorResponseExtendedErrorInfo object itself.
-     */
-    public ArmErrorResponseExtendedErrorInfo withMessage(String message) {
-        this.message = message;
         return this;
     }
 

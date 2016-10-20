@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.RestClient;
@@ -5,21 +11,21 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServers;
 
-import java.util.UUID;
-
 /**
- * Entry point to Azure Batch Account resource management.
+ * Entry point to Azure SQLServer resource management.
  */
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
+    private SqlDatabases sqlDatabases;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
                 restClient,
                 subscriptionId,
-                new SqlManagementClientImpl(restClient).withSubscriptionId(UUID.fromString(subscriptionId)));
+                new SqlManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
     }
 
     /**
@@ -80,7 +86,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     }
 
     /**
-     * @return the batch account management API entry point
+     * @return the SQL Server management API entry point
      */
     public SqlServers sqlServers() {
         if (sqlServers == null) {
@@ -90,5 +96,18 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         }
 
         return sqlServers;
+    }
+
+    /**
+     * @return the SQL Server management API entry point
+     */
+    public SqlDatabases sqlDatabases() {
+        if (sqlDatabases == null) {
+            sqlDatabases = new SqlDatabasesImpl(
+                    super.innerManagementClient.databases(),
+                    this);
+        }
+
+        return sqlDatabases;
     }
 }

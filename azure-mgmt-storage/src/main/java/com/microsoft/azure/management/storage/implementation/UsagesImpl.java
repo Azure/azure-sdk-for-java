@@ -23,6 +23,9 @@ class UsagesImpl extends ReadableWrappersImpl<StorageUsage, UsageImpl, UsageInne
 
     @Override
     protected UsageImpl wrapModel(UsageInner usageInner) {
+        if (usageInner == null) {
+            return null;
+        }
         return new UsageImpl(usageInner);
     }
 }

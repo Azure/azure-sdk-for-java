@@ -26,7 +26,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
                 .create();
         // List
         ResourceGroup groupResult = null;
-        for (ResourceGroup rg : resourceGroups.list()) {
+        for (ResourceGroup rg : resourceGroups.listByTag("department", "finance")) {
             if (rg.name().equals(rgName)) {
                 groupResult = rg;
                 break;

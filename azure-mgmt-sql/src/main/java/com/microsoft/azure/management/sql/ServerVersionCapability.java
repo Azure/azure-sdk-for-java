@@ -16,20 +16,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ServerVersionCapability {
     /**
-     * Gets the server version name.
+     * The server version name.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets the status of the Azure SQL Server version. Possible values
-     * include: 'Visible', 'Available', 'Default'.
+     * The status of the Azure SQL Server version. Possible values include:
+     * 'Visible', 'Available', 'Default'.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private CapabilityStatus status;
 
     /**
-     * Gets the list of supported Azure SQL Server editions.
+     * The list of supported Azure SQL Server editions.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<EditionCapability> supportedEditions;

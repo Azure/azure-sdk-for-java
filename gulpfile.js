@@ -44,6 +44,11 @@ var mappings = {
         'source': 'arm-resources/features/2015-12-01/swagger/features.json',
         'package': 'com.microsoft.azure.management.resources'
     },
+    'policy': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/policy/2016-04-01/swagger/policy.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
     'network': {
         'dir': 'azure-mgmt-network',
         'source': 'arm-network/2016-06-01/swagger/network.json',
@@ -72,6 +77,12 @@ var mappings = {
         'dir': 'azure-mgmt-search',
         'source': 'arm-search/2015-02-28/swagger/search.json',
         'package': 'com.microsoft.azure.management.search',
+        'args': '-FT 1'
+    },
+    'trafficmanager': {
+        'dir': 'azure-mgmt-trafficmanager',
+        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'package': 'com.microsoft.azure.management.trafficmanager',
         'args': '-FT 1'
     },
     'datalake.store.account': {
@@ -123,6 +134,12 @@ var mappings = {
         'source': 'arm-sql/compositeSql.json',
         'package': 'com.microsoft.azure.management.sql',
         'args': '-FT 1'
+    },
+    'cdn': {
+        'dir': 'azure-mgmt-cdn',
+        'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
+        'package': 'com.microsoft.azure.management.cdn',
+        'args': '-FT 2'
     }
 };
 

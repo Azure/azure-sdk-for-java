@@ -18,7 +18,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -60,23 +59,23 @@ public final class DataMaskingsInner {
     interface DataMaskingsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/Default")
-        Observable<Response<ResponseBody>> createOrUpdatePolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DataMaskingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdatePolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DataMaskingPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/Default")
-        Observable<Response<ResponseBody>> getPolicy(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/Default/rules/{dataMaskingRule}")
-        Observable<Response<ResponseBody>> createOrUpdateRule(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("dataMaskingRule") String dataMaskingRule, @Query("api-version") String apiVersion, @Body DataMaskingRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("dataMaskingRule") String dataMaskingRule, @Query("api-version") String apiVersion, @Body DataMaskingRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/Default/rules/{dataMaskingRule}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteRule(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("dataMaskingRule") String dataMaskingRule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("dataMaskingRule") String dataMaskingRule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/dataMaskingPolicies/Default/Rules")
-        Observable<Response<ResponseBody>> listRules(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRules(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -85,8 +84,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the DataMaskingPolicyInner object if successful.
      */
     public DataMaskingPolicyInner createOrUpdatePolicy(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -98,8 +97,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -112,8 +111,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the observable to the DataMaskingPolicyInner object
      */
     public Observable<DataMaskingPolicyInner> createOrUpdatePolicyAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -130,8 +129,8 @@ public final class DataMaskingsInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the data masking rule applies.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param databaseName The name of the Azure SQL Database for which the data masking policy applies.
+     * @param parameters The required parameters for creating or updating a data masking policy.
      * @return the observable to the DataMaskingPolicyInner object
      */
     public Observable<ServiceResponse<DataMaskingPolicyInner>> createOrUpdatePolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DataMaskingPolicyInner parameters) {
@@ -260,7 +259,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -274,7 +273,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -289,7 +288,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -308,7 +307,7 @@ public final class DataMaskingsInner {
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Creates or updates an Azure SQL Database data masking rule.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server

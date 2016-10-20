@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.PagedList;
@@ -66,6 +72,9 @@ public class BatchAccountsImpl
 
     @Override
     protected BatchAccountImpl wrapModel(BatchAccountInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new BatchAccountImpl(
                 inner.name(),
                 inner,

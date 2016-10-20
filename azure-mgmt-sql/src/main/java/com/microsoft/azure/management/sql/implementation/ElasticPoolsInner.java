@@ -18,7 +18,6 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -60,39 +59,35 @@ public final class ElasticPoolsInner {
     interface ElasticPoolsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Body ElasticPoolInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listByServer(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolActivity")
-        Observable<Response<ResponseBody>> listActivity(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
-        Observable<Response<ResponseBody>> listDatabaseActivity(@Path("elasticPoolName") String elasticPoolName, @Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases/{databaseName}")
-        Observable<Response<ResponseBody>> getDatabases(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases")
-        Observable<Response<ResponseBody>> listDatabases(@Path("subscriptionId") UUID subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -260,9 +255,9 @@ public final class ElasticPoolsInner {
 
     private ServiceResponse<ElasticPoolInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<ElasticPoolInner, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
                 .register(200, new TypeToken<ElasticPoolInner>() { }.getType())
                 .register(201, new TypeToken<ElasticPoolInner>() { }.getType())
+                .register(202, new TypeToken<ElasticPoolInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -443,8 +438,8 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL Server
      * @return the List&lt;ElasticPoolInner&gt; object if successful.
      */
-    public List<ElasticPoolInner> list(String resourceGroupName, String serverName) {
-        return listWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+    public List<ElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
     }
 
     /**
@@ -455,8 +450,8 @@ public final class ElasticPoolsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<ElasticPoolInner>> listAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolInner>> serviceCallback) {
-        return ServiceCall.create(listWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    public ServiceCall<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolInner>> serviceCallback) {
+        return ServiceCall.create(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
     /**
@@ -466,8 +461,8 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL Server
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
-    public Observable<List<ElasticPoolInner>> listAsync(String resourceGroupName, String serverName) {
-        return listWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolInner>>, List<ElasticPoolInner>>() {
+    public Observable<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName) {
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolInner>>, List<ElasticPoolInner>>() {
             @Override
             public List<ElasticPoolInner> call(ServiceResponse<List<ElasticPoolInner>> response) {
                 return response.getBody();
@@ -482,7 +477,7 @@ public final class ElasticPoolsInner {
      * @param serverName The name of the Azure SQL Server
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
-    public Observable<ServiceResponse<List<ElasticPoolInner>>> listWithServiceResponseAsync(String resourceGroupName, String serverName) {
+    public Observable<ServiceResponse<List<ElasticPoolInner>>> listByServerWithServiceResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -493,12 +488,12 @@ public final class ElasticPoolsInner {
             throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.list(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listByServer(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ElasticPoolInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ElasticPoolInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl1<ElasticPoolInner>> result = listByServerDelegate(response);
                         ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -508,7 +503,7 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ElasticPoolInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl1<ElasticPoolInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<ElasticPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -602,92 +597,6 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
-     *
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the List&lt;ElasticPoolDatabaseActivityInner&gt; object if successful.
-     */
-    public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String elasticPoolName, String resourceGroupName, String serverName) {
-        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
-     *
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
-        return ServiceCall.create(listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
-     *
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
-     */
-    public Observable<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName) {
-        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
-            @Override
-            public List<ElasticPoolDatabaseActivityInner> call(ServiceResponse<List<ElasticPoolDatabaseActivityInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
-     *
-     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
-     */
-    public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> listDatabaseActivityWithServiceResponseAsync(String elasticPoolName, String resourceGroupName, String serverName) {
-        if (elasticPoolName == null) {
-            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listDatabaseActivity(elasticPoolName, this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
-                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> listDatabaseActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolDatabaseActivityInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ElasticPoolDatabaseActivityInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
      * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
@@ -696,8 +605,8 @@ public final class ElasticPoolsInner {
      * @param databaseName The name of the Azure SQL Database to be retrieved.
      * @return the DatabaseInner object if successful.
      */
-    public DatabaseInner getDatabases(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
-        return getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().getBody();
+    public DatabaseInner getDatabase(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
+        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).toBlocking().single().getBody();
     }
 
     /**
@@ -710,8 +619,8 @@ public final class ElasticPoolsInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
+    public ServiceCall<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceCall.create(getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName), serviceCallback);
     }
 
     /**
@@ -723,8 +632,8 @@ public final class ElasticPoolsInner {
      * @param databaseName The name of the Azure SQL Database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
-    public Observable<DatabaseInner> getDatabasesAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
-        return getDatabasesWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
+    public Observable<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
+        return getDatabaseWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
             @Override
             public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
                 return response.getBody();
@@ -741,7 +650,7 @@ public final class ElasticPoolsInner {
      * @param databaseName The name of the Azure SQL Database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
-    public Observable<ServiceResponse<DatabaseInner>> getDatabasesWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
+    public Observable<ServiceResponse<DatabaseInner>> getDatabaseWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -758,12 +667,12 @@ public final class ElasticPoolsInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getDatabases(this.client.subscriptionId(), resourceGroupName, serverName, elasticPoolName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getDatabase(this.client.subscriptionId(), resourceGroupName, serverName, elasticPoolName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
                 @Override
                 public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DatabaseInner> clientResponse = getDatabasesDelegate(response);
+                        ServiceResponse<DatabaseInner> clientResponse = getDatabaseDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -772,7 +681,7 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<DatabaseInner> getDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<DatabaseInner> getDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<DatabaseInner>() { }.getType())
                 .registerError(CloudException.class)
