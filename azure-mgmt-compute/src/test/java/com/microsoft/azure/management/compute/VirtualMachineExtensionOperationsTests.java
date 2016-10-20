@@ -149,7 +149,7 @@ public class VirtualMachineExtensionOperationsTests extends ComputeManagementTes
                     .withPublisher("Microsoft.OSTCExtensions")
                     .withType("CustomScriptForLinux")
                     .withVersion("1.4")
-                    .withAutoUpgradeMinorVersionEnabled()
+                    .withMinorVersionAutoUpgrade()
                     .withPublicSetting("fileUris",fileUris)
                     .withPublicSetting("commandToExecute", installCommand)
                 .attach()

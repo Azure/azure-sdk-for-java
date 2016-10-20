@@ -84,8 +84,9 @@ public interface VirtualMachines extends
      * @param groupName the resource group name
      * @param name the virtual machine name
      * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the vhd holding captured image
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return the template as JSON string
      */
-    String capture(String groupName, String name, String containerName, boolean overwriteVhd);
+    String capture(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
 }
