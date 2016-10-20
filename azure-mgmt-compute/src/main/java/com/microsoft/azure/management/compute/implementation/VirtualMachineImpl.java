@@ -52,7 +52,8 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
-
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -196,10 +197,11 @@ class VirtualMachineImpl
     }
 
     @Override
-    public String capture(String containerName, boolean overwriteVhd) {
+    public String capture(String containerName, String vhdPrefix, boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
+        parameters.withVhdPrefix(vhdPrefix);
         VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
@@ -507,9 +509,29 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
-        VirtualHardDisk osVhd = new VirtualHardDisk();
-        osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
-        this.inner().storageProfile().osDisk().withVhd(osVhd);
+        StorageProfile storageProfile = this.inner().storageProfile();
+        OSDisk osDisk = storageProfile.osDisk();
+        if (this.isOSDiskFromImage(osDisk)) {
+            VirtualHardDisk osVhd = new VirtualHardDisk();
+            if (this.isOSDiskFromPlatformImage(storageProfile)) {
+                // OS Disk from 'Platform image' requires explicit storage account to be specified.
+                osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
+            } else if (this.isOSDiskFromCustomImage(osDisk)) {
+                // 'Captured image' and 'Bring your own feature image' has a restriction that the
+                // OS disk based on these images should reside in the same storage account as the
+                // image.
+                try {
+                    URL sourceCustomImageUrl = new URL(osDisk.image().uri());
+                    URL destinationVhdUrl = new URL(sourceCustomImageUrl.getProtocol(),
+                            sourceCustomImageUrl.getHost(),
+                            "/" + containerName + "/" + vhdName);
+                    osVhd.withUri(destinationVhdUrl.toString());
+                } catch (MalformedURLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            this.inner().storageProfile().osDisk().withVhd(osVhd);
+        }
         return this;
     }
 
@@ -930,8 +952,10 @@ class VirtualMachineImpl
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isOSDiskFromImage(osDisk)) {
             if (osDisk.vhd() == null) {
-                // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                // Sets the OS disk container and VHD for "CustomImage (Captured BringYourOwn)" or "PlatformImage"
+                String osDiskVhdContainerName = "vhds";
+                String osDiskVhdName = this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd";
+                withOsDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
@@ -941,6 +965,21 @@ class VirtualMachineImpl
                 }
                 this.inner().osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
+
+            if (this.inner().osProfile().computerName() == null) {
+                // VM name cannot contain only numeric values and cannot exceed 15 chars
+                if (vmName.matches("[0-9]+")) {
+                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                } else if (vmName.length() <= 15) {
+                    this.inner().osProfile().withComputerName(vmName);
+                } else {
+                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                }
+            }
+        } else {
+            // Compute has a new restriction that OS Profile property need to set null
+            // when an VM's OS disk is ATTACH-ed to a Specialized VHD
+            this.inner().withOsProfile(null);
         }
 
         if (osDisk.caching() == null) {
@@ -949,17 +988,6 @@ class VirtualMachineImpl
 
         if (osDisk.name() == null) {
             withOsDiskName(this.vmName + "-os-disk");
-        }
-
-        if (this.inner().osProfile().computerName() == null) {
-            // VM name cannot contain only numeric values and cannot exceed 15 chars
-            if (vmName.matches("[0-9]+")) {
-                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
-            } else if (vmName.length() <= 15) {
-                this.inner().osProfile().withComputerName(vmName);
-            } else {
-                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
-            }
         }
     }
 
@@ -979,7 +1007,7 @@ class VirtualMachineImpl
             @Override
             public StorageAccount call(StorageAccount storageAccount) {
                 if (isInCreateMode()) {
-                    if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
+                    if (isOSDiskFromPlatformImage(inner().storageProfile())) {
                         String uri = inner()
                                 .storageProfile()
                                 .osDisk().vhd().uri()
@@ -1079,7 +1107,7 @@ class VirtualMachineImpl
             return false;
         }
 
-        return isOSDiskFromImage(this.inner().storageProfile().osDisk());
+        return isOSDiskFromPlatformImage(this.inner().storageProfile());
     }
 
     private boolean dataDisksRequiresImplicitStorageAccountCreation() {
@@ -1117,12 +1145,44 @@ class VirtualMachineImpl
         return false;
     }
 
+    /**
+     * Checks whether the OS disk is directly attached to a VHD.
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is attached to a VHD, false otherwise
+     */
     private boolean isOSDiskAttached(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
     }
 
+    /**
+     * Checks whether the OS disk is based on an image (image from PIR or custom image [captured, bringYourOwnFeature]).
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is configured to use image from PIR or custom image
+     */
     private boolean isOSDiskFromImage(OSDisk osDisk) {
-        return !isOSDiskAttached(osDisk);
+        return osDisk.createOption() == DiskCreateOptionTypes.FROM_IMAGE;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an platform image (image in PIR).
+     *
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to be based on platform image.
+     */
+    private boolean isOSDiskFromPlatformImage(StorageProfile storageProfile) {
+        return isOSDiskFromImage(storageProfile.osDisk()) && storageProfile.imageReference() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an custom image ('captured' or 'bring your own feature').
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is configured to use custom image ('captured' or 'bring your own feature')
+     */
+    private boolean isOSDiskFromCustomImage(OSDisk osDisk) {
+        return isOSDiskFromImage(osDisk) && osDisk.image() != null && osDisk.image().uri() != null;
     }
 
     private String temporaryBlobUrl(String containerName, String blobName) {

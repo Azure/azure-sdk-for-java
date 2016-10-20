@@ -80,10 +80,11 @@ public interface VirtualMachine extends
      * string that can be used to create similar VMs.
      *
      * @param containerName destination container name to store the captured Vhd
+     * @param vhdPrefix the prefix for the vhd holding captured image
      * @param overwriteVhd whether to overwrites destination vhd if it exists
      * @return the template as json string
      */
-    String capture(String containerName, boolean overwriteVhd);
+    String capture(String containerName, String vhdPrefix ,boolean overwriteVhd);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
