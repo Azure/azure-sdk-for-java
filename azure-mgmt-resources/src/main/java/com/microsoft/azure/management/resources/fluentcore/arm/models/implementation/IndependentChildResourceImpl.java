@@ -161,7 +161,6 @@ public abstract class IndependentChildResourceImpl<
     public FluentModelImplT withExistingParentResource(FluentParentModelT existingParentResource) {
         this.inner().withLocation(existingParentResource.regionName());
         return withExistingParentResource(existingParentResource.resourceGroupName(), existingParentResource.name());
-
     }
 
     @Override
@@ -175,7 +174,9 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public void setInner(InnerModelT inner) {
-        this.parentName = ResourceId.parseResourceId(inner.id()).name();
+        if (inner.id() != null) {
+            this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
+        }
         super.setInner(inner);
     }
 

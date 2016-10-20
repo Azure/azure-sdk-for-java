@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.sql.SqlDatabases;
+import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServers;
 
 /**
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.sql.SqlServers;
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
     private SqlDatabases sqlDatabases;
+    private SqlElasticPools sqlElasticPools;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
@@ -61,6 +63,8 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         return new SqlServerManager(restClient, subscriptionId);
     }
 
+
+
     /**
      * The interface allowing configurations to be set.
      */
@@ -99,7 +103,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     }
 
     /**
-     * @return the SQL Server management API entry point
+     * @return the SQL Database management API entry point
      */
     public SqlDatabases sqlDatabases() {
         if (sqlDatabases == null) {
@@ -109,5 +113,17 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         }
 
         return sqlDatabases;
+    }
+
+    /**
+     * @return the SQL ElasticPool management API entry point
+     */
+    public SqlElasticPools sqlElasticPools() {
+        if (sqlElasticPools == null) {
+            sqlElasticPools = new SqlElasticPoolsImpl(
+                    super.innerManagementClient.elasticPools(),
+                    this);
+        }
+        return sqlElasticPools;
     }
 }
