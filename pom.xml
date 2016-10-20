@@ -313,11 +313,11 @@
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
     <module>./azure-samples</module>
-    <module>./azure-mgmt-redis</module>
     <module>./azure-mgmt-search</module>
     <module>./azure-mgmt-batch</module>
     <module>./azure-mgmt-trafficmanager</module>
     <module>./azure-mgmt-dns</module>
     <module>./azure-mgmt-sql</module>
+    <module>./azure-mgmt-redis</module>
   </modules>
 </project>
