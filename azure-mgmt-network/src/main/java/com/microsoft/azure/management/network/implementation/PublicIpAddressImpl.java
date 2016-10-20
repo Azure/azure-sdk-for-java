@@ -181,7 +181,7 @@ class PublicIpAddressImpl
     public PublicFrontend getAssignedLoadBalancerFrontend() {
         if (this.hasAssignedLoadBalancer()) {
             final String refId = this.inner().ipConfiguration().id();
-            final String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
             final String frontendName = ResourceUtils.nameFromResourceId(refId);
             return (PublicFrontend) lb.frontends().get(frontendName);
@@ -199,7 +199,7 @@ class PublicIpAddressImpl
     public NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
             final String refId = this.inner().ipConfiguration().id();
-            final String parentId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final NetworkInterface nic = this.myManager.networkInterfaces().getById(parentId);
             final String childName = ResourceUtils.nameFromResourceId(refId);
             return nic.ipConfigurations().get(childName);

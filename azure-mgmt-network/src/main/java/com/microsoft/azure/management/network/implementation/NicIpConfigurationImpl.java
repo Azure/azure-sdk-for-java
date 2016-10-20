@@ -120,7 +120,7 @@ class NicIpConfigurationImpl
     @Override
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
-        return (subnetRef != null) ? ResourceUtils.parentResourcePathFromResourceId(subnetRef.id()) : null;
+        return (subnetRef != null) ? ResourceUtils.parentResourceIdFromResourceId(subnetRef.id()) : null;
     }
 
     @Override
@@ -393,7 +393,7 @@ class NicIpConfigurationImpl
 
         if (refs != null) {
             for (InboundNatRuleInner ref : refs) {
-                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(ref.id());
+                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.id());
                 LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
                 if (loadBalancer == null) {
                     loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
@@ -416,7 +416,7 @@ class NicIpConfigurationImpl
 
         if (backendRefs != null) {
             for (BackendAddressPoolInner backendRef : backendRefs) {
-                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(backendRef.id());
+                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
                 LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
                 if (loadBalancer == null) {
                     loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
