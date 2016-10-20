@@ -23,9 +23,9 @@ import java.io.IOException;
  *  - Capture the virtual machine to get a captured image
  *  - Create a second virtual machine using the captured image
  *  - Delete the second virtual machine
- *  - Create a new virtual machine by attaching OS disk of deleted VM to it
+ *  - Create a new virtual machine by attaching OS disk of deleted VM to it.
  */
-public class VirtualMachinesFromCustomImageAndSpecializedVHD {
+public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
     /**
      * Main entry point.
      * @param args the parameters
@@ -139,9 +139,9 @@ public class VirtualMachinesFromCustomImageAndSpecializedVHD {
                 //=============================================================
                 // Create a Linux VM using 'specialized VHD' of previous VM
 
-                System.out.println("Creating a new Linux VM by attaching OS Disk vhd - " +
-                        specializedVhd +
-                        " of deleted VM");
+                System.out.println("Creating a new Linux VM by attaching OS Disk vhd - "
+                        + specializedVhd
+                        + " of deleted VM");
 
                 VirtualMachine linuxVM3 = azure.virtualMachines().define(linuxVmName3)
                         .withRegion(Region.US_EAST)
@@ -196,7 +196,7 @@ public class VirtualMachinesFromCustomImageAndSpecializedVHD {
         }
 
         String imageUri = null;
-        for(JsonNode resourceNode : resourcesNode) {
+        for (JsonNode resourceNode : resourcesNode) {
             JsonNode propertiesNodes = resourceNode.path("properties");
             if (!(propertiesNodes instanceof MissingNode)) {
                 JsonNode storageProfileNode = propertiesNodes.path("storageProfile");
