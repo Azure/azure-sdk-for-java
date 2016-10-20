@@ -14,18 +14,20 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Azure Compute sample for managing virtual machines -
  *  - Create a virtual machine
- *  - Stop a virtual machine
  *  - Deallocate the virtual machine
- *  - Capture the virtual machine to get a captured image
- *  - Create a second virtual machine using the captured image
+ *  - Generalize the virtual machine
+ *  - Capture the virtual machine to create a generalized image
+ *  - Create a second virtual machine using the generalized image
  *  - Delete the second virtual machine
  *  - Create a new virtual machine by attaching OS disk of deleted VM to it.
  */
-public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
+public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
     /**
      * Main entry point.
      * @param args the parameters
@@ -39,6 +41,11 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
         final String publicIpDnsLabel = Utils.createRandomName("pip");
         final String userName = "tirekicker";
         final String password = "12NewPA$$w0rd!";
+
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-samples/src/main/resources/install_apache.sh";
+        final String apacheInstallCommand = "bash install_apache.sh";
+        List<String> apacheInstallScriptUris = new ArrayList<>();
+        apacheInstallScriptUris.add(apacheInstallScript);
 
         try {
 
@@ -58,7 +65,7 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
 
             try {
                 //=============================================================
-                // Create a Linux VM using an image from PIT (Platform Image Repository)
+                // Create a Linux VM using an image from PIR (Platform Image Repository)
 
                 System.out.println("Creating a Linux VM");
 
@@ -72,14 +79,22 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
                         .withRootUserName(userName)
                         .withPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
+                        .defineNewExtension("CustomScriptForLinux")
+                            .withPublisher("Microsoft.OSTCExtensions")
+                            .withType("CustomScriptForLinux")
+                            .withVersion("1.4")
+                            .withMinorVersionAutoUpgrade()
+                            .withPublicSetting("fileUris", apacheInstallScriptUris)
+                            .withPublicSetting("commandToExecute", apacheInstallCommand)
+                            .attach()
                         .create();
 
                 System.out.println("Created a Linux VM: " + linuxVM.id());
                 Utils.print(linuxVM);
 
-                System.out.println("Please SSH into the VM [" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
+                System.out.println("SSH into the VM [" + linuxVM.getPrimaryPublicIpAddress().fqdn() + "]");
                 System.out.println("and run 'sudo waagent -deprovision+user' to prepare it for capturing");
-                System.out.println("after that please 'Enter' to continue.");
+                System.out.println("after that press 'Enter' to continue.");
                 System.in.read();
 
                 //=============================================================
@@ -99,7 +114,7 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
                 System.out.println("Generalized VM: " + linuxVM.id());
 
                 //=============================================================
-                // Capture the virtual machine
+                // Capture the virtual machine to get a 'Generalized image' with Apache
                 System.out.println("Capturing VM: " + linuxVM.id());
 
                 String capturedResultJson = linuxVM.capture("capturedvhds", "img", true);
@@ -107,7 +122,7 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
                 System.out.println("Captured VM: " + linuxVM.id());
 
                 //=============================================================
-                // Create a Linux VM using captured image
+                // Create a Linux VM using captured image (Generalized image)
                 String capturedImageUri = extractCapturedImageUri(capturedResultJson);
 
                 System.out.println("Creating a Linux VM using captured image - " + capturedImageUri);
@@ -118,7 +133,7 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
-                        .withStoredLinuxImage(capturedImageUri) // Note: A URI to generalized VHD is also considered as stored image
+                        .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
                         .withRootUserName(userName)
                         .withPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
@@ -178,7 +193,7 @@ public final class VirtualMachinesFromCustomImageAndSpecializedVHD {
         }
     }
 
-    private VirtualMachinesFromCustomImageAndSpecializedVHD() {
+    private CreateVirtualMachinesUsingCustomImageOrSpecializedVHD() {
     }
 
     private static String extractCapturedImageUri(String capturedResultJson) {
