@@ -60,7 +60,7 @@ class InboundNatRuleImpl
         if (this.inner().backendIPConfiguration() == null) {
             return null;
         } else {
-            return ResourceUtils.parentResourcePathFromResourceId(this.inner().backendIPConfiguration().id());
+            return ResourceUtils.parentResourceIdFromResourceId(this.inner().backendIPConfiguration().id());
         }
     }
 

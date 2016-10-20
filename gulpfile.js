@@ -134,6 +134,12 @@ var mappings = {
         'source': 'arm-sql/compositeSql.json',
         'package': 'com.microsoft.azure.management.sql',
         'args': '-FT 1'
+    },
+    'cdn': {
+        'dir': 'azure-mgmt-cdn',
+        'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
+        'package': 'com.microsoft.azure.management.cdn',
+        'args': '-FT 2'
     }
 };
 

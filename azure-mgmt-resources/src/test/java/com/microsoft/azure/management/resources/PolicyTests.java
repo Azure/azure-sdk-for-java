@@ -3,7 +3,6 @@ package com.microsoft.azure.management.resources;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
@@ -92,7 +91,7 @@ public class PolicyTests {
                     .withProviderNamespace("Microsoft.Web")
                     .withoutPlan()
                     .withApiVersion("2015-08-01")
-                    .withParentResource("")
+                    .withParentResourcePath("")
                     .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                     .create();
             fail();

@@ -46,7 +46,7 @@ class LoadBalancerBackendImpl
         final Map<String, String> ipConfigNames = new TreeMap<>();
         if (this.inner().backendIPConfigurations() != null) {
             for (NetworkInterfaceIPConfigurationInner inner : this.inner().backendIPConfigurations()) {
-                String nicId = ResourceUtils.parentResourcePathFromResourceId(inner.id());
+                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
                 String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
                 ipConfigNames.put(nicId, ipConfigName);
             }

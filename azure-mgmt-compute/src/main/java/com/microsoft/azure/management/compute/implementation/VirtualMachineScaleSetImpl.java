@@ -209,7 +209,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Network getPrimaryNetwork() throws IOException {
         String subnetId = primaryNicDefaultIPConfiguration().subnet().id();
-        String virtualNetworkId = ResourceUtils.parentResourcePathFromResourceId(subnetId);
+        String virtualNetworkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
         return this.networkManager
                     .networks()
                     .getById(virtualNetworkId);
@@ -374,12 +374,12 @@ public class VirtualMachineScaleSetImpl
         String lbNetworkId = null;
         for (LoadBalancerFrontend frontEnd : loadBalancer.frontends().values()) {
             if (frontEnd.inner().subnet().id() != null) {
-                lbNetworkId = ResourceUtils.parentResourcePathFromResourceId(frontEnd.inner().subnet().id());
+                lbNetworkId = ResourceUtils.parentResourceIdFromResourceId(frontEnd.inner().subnet().id());
             }
         }
 
         if (isInCreateMode()) {
-            String vmNICNetworkId = ResourceUtils.parentResourcePathFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
+            String vmNICNetworkId = ResourceUtils.parentResourceIdFromResourceId(this.existingPrimaryNetworkSubnetNameToAssociate);
             // Azure has a really wired BUG that - it throws exception when vnet of VMSS and LB are not same
             // (code: NetworkInterfaceAndInternalLoadBalancerMustUseSameVnet) but at the same time Azure update
             // the VMSS's network section to refer this invalid internal LB. This makes VMSS un-usable and portal
@@ -396,7 +396,7 @@ public class VirtualMachineScaleSetImpl
             associateLoadBalancerToIpConfiguration(this.primaryInternalLoadBalancer,
                     this.primaryNicDefaultIPConfiguration());
         } else {
-            String vmNicVnetId = ResourceUtils.parentResourcePathFromResourceId(primaryNicDefaultIPConfiguration()
+            String vmNicVnetId = ResourceUtils.parentResourceIdFromResourceId(primaryNicDefaultIPConfiguration()
                     .subnet()
                     .id());
             if (!vmNicVnetId.equalsIgnoreCase(lbNetworkId)) {
@@ -1109,12 +1109,12 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSetIPConfigurationInner ipConfig = primaryNicDefaultIPConfiguration();
         if (!ipConfig.loadBalancerBackendAddressPools().isEmpty()) {
             firstLoadBalancerId = ResourceUtils
-                    .parentResourcePathFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).id());
+                    .parentResourceIdFromResourceId(ipConfig.loadBalancerBackendAddressPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null && !ipConfig.loadBalancerInboundNatPools().isEmpty()) {
             firstLoadBalancerId = ResourceUtils
-                    .parentResourcePathFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).id());
+                    .parentResourceIdFromResourceId(ipConfig.loadBalancerInboundNatPools().get(0).id());
         }
 
         if (firstLoadBalancerId == null) {
@@ -1134,7 +1134,7 @@ public class VirtualMachineScaleSetImpl
         for (SubResource subResource: ipConfig.loadBalancerBackendAddressPools()) {
             if (!subResource.id().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
                 secondLoadBalancerId = ResourceUtils
-                        .parentResourcePathFromResourceId(subResource.id());
+                        .parentResourceIdFromResourceId(subResource.id());
                 break;
             }
         }
@@ -1143,7 +1143,7 @@ public class VirtualMachineScaleSetImpl
             for (SubResource subResource: ipConfig.loadBalancerInboundNatPools()) {
                 if (!subResource.id().toLowerCase().startsWith(firstLoadBalancerId.toLowerCase())) {
                     secondLoadBalancerId = ResourceUtils
-                            .parentResourcePathFromResourceId(subResource.id());
+                            .parentResourceIdFromResourceId(subResource.id());
                     break;
                 }
             }

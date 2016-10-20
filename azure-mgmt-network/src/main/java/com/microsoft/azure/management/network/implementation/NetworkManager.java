@@ -196,7 +196,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
 
         if (subnetRefs != null) {
             for (SubnetInner subnetRef : subnetRefs) {
-                String networkId = ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+                String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
                 Network network = networks.get(networkId);
                 if (network == null) {
                     network = this.networks().getById(networkId);

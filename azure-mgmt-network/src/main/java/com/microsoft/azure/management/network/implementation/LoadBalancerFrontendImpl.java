@@ -51,7 +51,7 @@ class LoadBalancerFrontendImpl
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
         if (subnetRef != null) {
-            return ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
         } else {
             return null;
         }
