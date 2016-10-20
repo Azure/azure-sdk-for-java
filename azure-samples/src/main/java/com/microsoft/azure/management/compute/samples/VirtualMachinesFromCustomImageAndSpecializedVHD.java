@@ -94,7 +94,7 @@ public class VirtualMachinesFromCustomImageAndSpecializedVHD {
                 // Generalize the virtual machine
                 System.out.println("Generalize VM: " + linuxVM.id());
 
-               // linuxVM.generalize();
+                linuxVM.generalize();
 
                 System.out.println("Generalized VM: " + linuxVM.id());
 
