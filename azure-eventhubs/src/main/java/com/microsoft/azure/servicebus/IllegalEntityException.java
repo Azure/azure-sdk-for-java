@@ -22,17 +22,17 @@ public class IllegalEntityException extends ServiceBusException
 		super(false);
 	}
 
-	IllegalEntityException(final String message)
+	public IllegalEntityException(final String message)
 	{
 		super(false, message);
 	}
 
-	IllegalEntityException(final Throwable cause)
+	public IllegalEntityException(final Throwable cause)
 	{
 		super(false, cause);
 	}
 
-	IllegalEntityException(final String message, final Throwable cause)
+	public IllegalEntityException(final String message, final Throwable cause)
 	{
 		super(false, message, cause);
 	}
