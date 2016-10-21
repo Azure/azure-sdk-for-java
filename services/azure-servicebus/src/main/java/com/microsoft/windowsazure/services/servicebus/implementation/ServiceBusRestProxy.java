@@ -337,7 +337,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
 
     @Override
     public void unlockMessage(BrokeredMessage message) throws ServiceException {
-        getChannel().resource(message.getLockLocation()).put("");
+        getChannel().resource(message.getLockLocation()).put("0");
     }
 
     @Override
@@ -617,7 +617,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             String lockToken) throws ServiceException {
         ClientResponse clientResponse = getResource().path(queueName)
                 .path("messages").path(messageId).path(lockToken)
-                .post(ClientResponse.class, "");
+                .post(ClientResponse.class, "0");
         PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
@@ -627,7 +627,7 @@ public class ServiceBusRestProxy implements ServiceBusContract {
             throws ServiceException {
         ClientResponse clientResponse = getResource().path(topicName)
                 .path("Subscriptions").path(subscriptionName).path("messages")
-                .path(messageId).path(lockToken).post(ClientResponse.class, "");
+                .path(messageId).path(lockToken).post(ClientResponse.class, "0");
         PipelineHelpers.throwIfNotSuccess(clientResponse);
     }
 
