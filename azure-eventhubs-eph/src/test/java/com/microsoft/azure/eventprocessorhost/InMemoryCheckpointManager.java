@@ -89,6 +89,11 @@ public class InMemoryCheckpointManager implements ICheckpointManager
         	this.host.logWithHostAndPartition(Level.SEVERE, partitionId, "getCheckpoint() no existing Checkpoint");
         	returnCheckpoint = null;
         }
+        else if (checkpointInStore.getSequenceNumber() == -1)
+        {
+        	// Uninitialized, so return null.
+        	returnCheckpoint = null;
+        }
         else
         {
         	returnCheckpoint = new Checkpoint(checkpointInStore);
@@ -109,14 +114,27 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	if (checkpointInStore != null)
     	{
         	this.host.logWithHostAndPartition(Level.INFO, partitionId, "createCheckpointIfNotExists() found existing checkpoint, OK");
-        	returnCheckpoint = new Checkpoint(checkpointInStore);
+        	if (checkpointInStore.getSequenceNumber() != -1)
+        	{
+        		returnCheckpoint = new Checkpoint(checkpointInStore);
+        	}
+        	else
+        	{
+        		// The checkpoint is uninitialized so return null to match the behavior of AzureStorageCheckpointLeaseMananger.
+        		returnCheckpoint = null;
+        	}
     	}
     	else
     	{
         	this.host.logWithHostAndPartition(Level.INFO, partitionId, "createCheckpointIfNotExists() creating new checkpoint");
         	Checkpoint newStoreCheckpoint = new Checkpoint(partitionId);
+        	newStoreCheckpoint.setOffset(null);
+        	newStoreCheckpoint.setSequenceNumber(-1);
             InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
-            returnCheckpoint = new Checkpoint(newStoreCheckpoint);
+        	// This API actually creates the holder, not the checkpoint itself. In this implementation, we do create a Checkpoint object
+            // and put it in the store, but the values are set to indicate that it is not initialized. Meanwhile, return null to match the
+            // behavior of AzureStorageCheckpointLeaseMananger.
+            returnCheckpoint = null;
     	}
     	return returnCheckpoint;
     }

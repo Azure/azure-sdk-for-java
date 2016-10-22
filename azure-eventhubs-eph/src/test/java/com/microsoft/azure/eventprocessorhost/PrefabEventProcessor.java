@@ -15,15 +15,17 @@ public class PrefabEventProcessor implements IEventProcessor
 	private byte[] telltaleBytes;
 	private boolean doCheckpoint;
 	private boolean doMarker;
+	private boolean logEveryMessage;
 	
 	private int eventCount = 0;
 	
-	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, boolean doCheckpoint, boolean doMarker)
+	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, boolean doCheckpoint, boolean doMarker, boolean logEveryMessage)
 	{
 		this.factory = factory;
 		this.telltaleBytes = telltale.getBytes();
 		this.doCheckpoint = doCheckpoint;
 		this.doMarker = doMarker;
+		this.logEveryMessage = logEveryMessage;
 	}
 	
 	@Override
@@ -40,24 +42,30 @@ public class PrefabEventProcessor implements IEventProcessor
 	public void onEvents(PartitionContext context, Iterable<EventData> messages) throws Exception
 	{
 		int batchSize = 0;
+		EventData lastEvent = null;
 		for (EventData event : messages)
 		{
 			this.eventCount++;
 			batchSize++;
 			if (((this.eventCount % 100) == 0) && this.doMarker)
 			{
-				System.out.print(context.getPartitionId());
+				TestUtilities.console(context.getPartitionId());
+			}
+			if (this.logEveryMessage)
+			{
+				TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + "\n");
 			}
 			if (Arrays.equals(event.getBody(), this.telltaleBytes))
 			{
 				this.factory.setTelltaleFound(context.getPartitionId());
 			}
-			if (doCheckpoint)
-			{
-				context.checkpoint(event);
-			}
+			lastEvent = event;
 		}
 		this.factory.addBatch(batchSize);
+		if (doCheckpoint)
+		{
+			context.checkpoint(lastEvent);
+		}
 	}
 
 	@Override

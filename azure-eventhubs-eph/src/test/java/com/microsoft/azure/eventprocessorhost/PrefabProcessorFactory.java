@@ -13,6 +13,7 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	private String telltale;
 	private boolean doCheckpoint;
 	private boolean doMarker;
+	private boolean logEveryMessage;
 	
 	private ArrayList<String> errors = new ArrayList<String>();
 	private HashMap<String, Boolean> foundTelltale = new HashMap<String, Boolean>(); 
@@ -20,9 +21,15 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	
 	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker)
 	{
+		this(telltale, doCheckpoint, doMarker, false);
+	}
+	
+	PrefabProcessorFactory(String telltale, boolean doCheckpoint, boolean doMarker, boolean logEveryMessage)
+	{
 		this.telltale = telltale;
 		this.doCheckpoint = doCheckpoint;
 		this.doMarker = doMarker;
+		this.logEveryMessage = logEveryMessage;
 	}
 	
 	void putError(String error)
@@ -69,6 +76,6 @@ public class PrefabProcessorFactory implements IEventProcessorFactory<IEventProc
 	@Override
 	public IEventProcessor createEventProcessor(PartitionContext context) throws Exception
 	{
-		return new PrefabEventProcessor(this, this.telltale, this.doCheckpoint, this.doMarker);
+		return new PrefabEventProcessor(this, this.telltale, this.doCheckpoint, this.doMarker, this.logEveryMessage);
 	}
 }

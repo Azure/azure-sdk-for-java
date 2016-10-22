@@ -17,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,7 +28,6 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -35,26 +35,29 @@ import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.IllegalEntityException;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.SharedAccessSignatureTokenProvider;
 
 class RealEventHubUtilities
 {
-	private ConnectionStringBuilder hubConnectionString;
-	private String hubName;
+	private ConnectionStringBuilder hubConnectionString = null;
+	private String hubName = null;
 	private String consumerGroup = EventHubClient.DEFAULT_CONSUMER_GROUP_NAME;
 	private EventHubClient client;
+	private ArrayList<String> partitionIds = null;
 	private HashMap<String, PartitionSender> partitionSenders = new HashMap<String, PartitionSender>();
+	
+	static int QUERY_ENTITY_FOR_PARTITIONS = -1;
 	
 	RealEventHubUtilities()
 	{
 	}
 	
-	ArrayList<String> setup() throws ServiceBusException, IOException
+	ArrayList<String> setup(int fakePartitions) throws ServiceBusException, IOException
 	{
 		// Get the connection string from the environment
-		this.hubConnectionString = new ConnectionStringBuilder(System.getenv("EVENT_HUB_CONNECTION_STRING"));
-		this.hubName = this.hubConnectionString.getEntityPath();
+		ehCacheCheck();
 		
 		// Get the consumer group from the environment, if present.
 		String tempConsumerGroup = System.getenv("EVENT_HUB_CONSUMER_GROUP");
@@ -63,8 +66,20 @@ class RealEventHubUtilities
 			this.consumerGroup = tempConsumerGroup;
 		}
 		
-		// Get the partition ids in part to verify that the eventhub actually exists
-		ArrayList<String> partitionIds = getPartitionIds();
+		ArrayList<String> partitionIds = null;
+		
+		if (fakePartitions == RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS)
+		{
+			partitionIds = getPartitionIdsForTest();
+		}
+		else
+		{
+			partitionIds = new ArrayList<String>();
+			for (int i = 0; i < fakePartitions; i++)
+			{
+				partitionIds.add(Integer.toString(i));
+			}
+		}
 		
 		// EventHubClient is source of all senders
 		this.client = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
@@ -83,12 +98,23 @@ class RealEventHubUtilities
 	
 	ConnectionStringBuilder getConnectionString()
 	{
+		ehCacheCheck();
 		return this.hubConnectionString;
 	}
 	
 	String getHubName()
 	{
+		ehCacheCheck();
 		return this.hubName;
+	}
+	
+	private void ehCacheCheck()
+	{
+		if (this.hubName == null)
+		{
+			this.hubConnectionString = new ConnectionStringBuilder(System.getenv("EVENT_HUB_CONNECTION_STRING"));
+			this.hubName = this.hubConnectionString.getEntityPath();
+		}
 	}
 	
 	String getConsumerGroup()
@@ -126,48 +152,58 @@ class RealEventHubUtilities
 		sender.sendSync(event);
 	}
 	
-	// Code borrowed from PartitionManager, requires Manage claim
-	// Replace when PartitionManager is upgraded with better code
-    ArrayList<String> getPartitionIds()
+    ArrayList<String> getPartitionIdsForTest() throws IllegalEntityException
     {
-    	ArrayList<String> partitionIds = null;
-    	
-    	try
+    	if (this.partitionIds == null)
     	{
-        	String contentEncoding = StandardCharsets.UTF_8.name();
-        	URI namespaceUri = new URI("https", this.hubConnectionString.getEndpoint().getHost(), null, null);
-        	String resourcePath = String.join("/", namespaceUri.toString(), this.hubName);
-        	
-        	final String authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
-        			this.hubConnectionString.getSasKeyName(), this.hubConnectionString.getSasKey(), 
-        			resourcePath, Duration.ofMinutes(20));
-        	        	
-            URLConnection connection = new URL(resourcePath).openConnection();
-        	connection.addRequestProperty("Authorization", authorizationToken);
-        	connection.setRequestProperty("Content-Type", "application/atom+xml;type=entry");
-        	connection.setRequestProperty("charset", contentEncoding);
-        	InputStream responseStream = connection.getInputStream();
-        	
-        	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        	Document doc = docBuilder.parse(responseStream);
-        	
-        	XPath xpath = XPathFactory.newInstance().newXPath();
-        	Node partitionIdsNode = ((NodeList) xpath.evaluate("//entry/content/EventHubDescription/PartitionIds", doc.getDocumentElement(), XPathConstants.NODESET)).item(0);
-        	NodeList partitionIdsNodes = partitionIdsNode.getChildNodes();
-        	
-        	partitionIds = new ArrayList<String>();
-            for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
-        	{
-        		partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
-        	}
-    	}
-    	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
-    	{
-    		throw new EPHConfigurationException("Encountered error while fetching the list of EventHub PartitionIds", exception);
+	    	this.partitionIds = new ArrayList<String>();
+	    	ehCacheCheck();
+	    	
+	    	try
+	    	{
+	        	String contentEncoding = StandardCharsets.UTF_8.name();
+	        	URI namespaceUri = new URI("https", this.hubConnectionString.getEndpoint().getHost(), null, null);
+	        	String resourcePath = String.join("/", 
+	        			namespaceUri.toString(),
+	        			this.hubConnectionString.getEntityPath(),
+	        			"consumergroups",
+	        			this.consumerGroup,
+	        			"partitions");
+	        	
+	        	final String authorizationToken = SharedAccessSignatureTokenProvider.generateSharedAccessSignature(
+	        			this.hubConnectionString.getSasKeyName(), this.hubConnectionString.getSasKey(), 
+	        			resourcePath, Duration.ofMinutes(20));
+	        	        	
+	            URLConnection connection = new URL(resourcePath).openConnection();
+	        	connection.addRequestProperty("Authorization", authorizationToken);
+	        	connection.setRequestProperty("Content-Type", "application/atom+xml;type=entry");
+	        	connection.setRequestProperty("charset", contentEncoding);
+	        	InputStream responseStream = connection.getInputStream();
+	        	
+	        	DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+	        	DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+	        	Document doc = docBuilder.parse(responseStream);
+	        	
+	        	XPath xpath = XPathFactory.newInstance().newXPath();
+	        	NodeList partitionIdsNodes = (NodeList) xpath.evaluate("//feed/entry/title", doc.getDocumentElement(), XPathConstants.NODESET);
+	        	if (partitionIdsNodes.getLength() == 0)
+	        	{
+	        		throw new IllegalEntityException("EventHub does not exist");
+	        	}
+	        	
+	        	for (int partitionIndex = 0; partitionIndex < partitionIdsNodes.getLength(); partitionIndex++)
+	        	{
+	        		this.partitionIds.add(partitionIdsNodes.item(partitionIndex).getTextContent());    		
+	        	}
+	    	}
+	    	catch(XPathExpressionException|ParserConfigurationException|IOException|InvalidKeyException|NoSuchAlgorithmException|URISyntaxException|SAXException exception)
+	    	{
+	    		final String errorMessage = String.format(Locale.US, "Encountered error while fetching the list of EventHub PartitionIds: %s", exception.getMessage());
+	    		throw new EPHConfigurationException(errorMessage, exception);
+	    	}
     	}
 
-    	return partitionIds;
+    	return this.partitionIds;
     }
 	
 }

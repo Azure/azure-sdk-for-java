@@ -113,7 +113,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     }
 
     @Override
-    public Iterable<Future<Lease>> getAllLeases()
+    public Iterable<Future<Lease>> getAllLeases() throws Exception
     {
         ArrayList<Future<Lease>> leases = new ArrayList<Future<Lease>>();
         Iterable<String> partitionIds = this.host.getPartitionManager().getPartitionIds();
@@ -383,7 +383,7 @@ public class InMemoryLeaseManager implements ILeaseManager
         	InMemoryLease leaseInStore = getLease(partitionId);
             try
             {
-				if (leaseInStore.isExpired() || (leaseInStore.getOwner() == null) || (leaseInStore.getOwner().length() == 0))
+				if (leaseInStore.isExpired() || (leaseInStore.getOwner() == null) || leaseInStore.getOwner().isEmpty())
 				{
 					leaseInStore.setOwner(newOwner);
 	                leaseInStore.setExpirationTime(System.currentTimeMillis() + InMemoryLeaseManager.leaseDurationInMillieconds);
