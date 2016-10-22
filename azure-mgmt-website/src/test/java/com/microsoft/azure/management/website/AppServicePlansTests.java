@@ -29,7 +29,7 @@ public class AppServicePlansTests extends AppServiceTestBase {
     }
 
     @Test
-    public void canCRUBAppServicePlan() throws Exception {
+    public void canCRUDAppServicePlan() throws Exception {
         // CREATE
         AppServicePlan appServicePlan = appServiceManager.appServicePlans()
                 .define(APP_SERVICE_PLAN_NAME)
