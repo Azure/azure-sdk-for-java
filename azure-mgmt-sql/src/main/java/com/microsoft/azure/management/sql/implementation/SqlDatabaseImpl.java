@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.DatabaseEditions;
@@ -34,7 +34,7 @@ public class SqlDatabaseImpl
         implements SqlDatabase,
             SqlDatabase.Definition,
             SqlDatabase.Update,
-            IndependentChildResource.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
+        IndependentChild.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
     private final DatabasesInner innerCollection;
     private final SqlElasticPools sqlElasticPools;
     private SqlElasticPool.DefinitionStages.WithCreate creatableSqlElasticPool;

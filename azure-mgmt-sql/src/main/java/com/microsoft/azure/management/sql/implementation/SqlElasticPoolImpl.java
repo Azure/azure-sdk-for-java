@@ -6,7 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
@@ -28,7 +28,7 @@ public class SqlElasticPoolImpl
         implements SqlElasticPool,
             SqlElasticPool.Definition,
             SqlElasticPool.Update,
-        IndependentChildResource.DefinitionStages.WithParentResource<SqlElasticPool, SqlServer> {
+        IndependentChild.DefinitionStages.WithParentResource<SqlElasticPool, SqlServer> {
     private final ElasticPoolsInner innerCollection;
 
     protected SqlElasticPoolImpl(String name,
