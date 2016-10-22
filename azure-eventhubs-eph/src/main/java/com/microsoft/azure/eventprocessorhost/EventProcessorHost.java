@@ -28,7 +28,7 @@ public final class EventProcessorHost
     private ILeaseManager leaseManager;
     private boolean initializeLeaseManager = false; 
     private PartitionManager partitionManager;
-    private IEventProcessorFactory<?> processorFactory;
+    private IEventProcessorFactory<?> processorFactory = null;
     private EventProcessorOptions processorOptions;
 
     // Thread pool is shared among all instances of EventProcessorHost
@@ -288,14 +288,29 @@ public final class EventProcessorHost
     	}
     	
     	// The event hub path must appear in at least one of the eventHubPath argument or the connection string.
-    	// If it appears in both, then it must be the same in both.
-    	String extractedEntityPath = (new ConnectionStringBuilder(eventHubConnectionString)).getEntityPath();
+    	// If it appears in both, then it must be the same in both. If it appears in only one, populate the other.
+    	ConnectionStringBuilder providedCSB = new ConnectionStringBuilder(eventHubConnectionString); 
+    	String extractedEntityPath = providedCSB.getEntityPath();
+        this.eventHubConnectionString = eventHubConnectionString;
     	if ((eventHubPath != null) && !eventHubPath.isEmpty())
     	{
     		this.eventHubPath = eventHubPath;
-    		if ((extractedEntityPath != null) && (eventHubPath.compareTo(extractedEntityPath) != 0))
+    		if (extractedEntityPath != null)
+   			{
+    			if (eventHubPath.compareTo(extractedEntityPath) != 0)
+	    		{
+	    			throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
+	    		}
+    			// else they are the same and that's fine
+   			}
+    		else
     		{
-    			throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
+    			// There is no entity path in the connection string, so put it there.
+    			ConnectionStringBuilder rebuildCSB = new ConnectionStringBuilder(providedCSB.getEndpoint(), this.eventHubPath,
+    					providedCSB.getSasKeyName(), providedCSB.getSasKey());
+    			rebuildCSB.setOperationTimeout(providedCSB.getOperationTimeout());
+    			rebuildCSB.setRetryPolicy(providedCSB.getRetryPolicy());
+    			this.eventHubConnectionString = rebuildCSB.toString();
     		}
     	}
     	else
@@ -321,9 +336,7 @@ public final class EventProcessorHost
     	// executorService argument is allowed to be null, that is the indication to use an internal threadpool.
     	
         this.hostName = hostName;
-        //this.eventHubPath = eventHubPath;
         this.consumerGroupName = consumerGroupName;
-        this.eventHubConnectionString = eventHubConnectionString;
         this.checkpointManager = checkpointManager;
         this.leaseManager = leaseManager;
 
@@ -468,6 +481,11 @@ public final class EventProcessorHost
      */
     public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions) throws Exception
     {
+    	if (this.processorFactory != null)
+    	{
+    		throw new IllegalStateException("Register has already been called on this EventProcessorHost");
+    	}
+    	
     	if (EventProcessorHost.executorService.isShutdown() || EventProcessorHost.executorService.isTerminated())
     	{
     		this.logWithHost(Level.SEVERE, "Calling registerEventProcessor/Factory after executor service has been shut down");
@@ -503,28 +521,35 @@ public final class EventProcessorHost
     {
     	logWithHost(Level.INFO, "Stopping event processing");
     	
-        try
-        {
-            this.partitionManager.stopPartitions().get();
-            
-	        if (EventProcessorHost.weOwnExecutor)
+    	if (this.partitionManager != null)
+    	{
+	        try
 	        {
-	        	// If there are multiple EventProcessorHosts in one process, only await the shutdown on the last one.
-	        	// Otherwise the first one will block forever here.
-	        	// This could race with stopExecutor() but that is harmless: it is legal to call awaitTermination()
-	        	// at any time, whether executorServer.shutdown() has been called yet or not.
-	        	if ((EventProcessorHost.executorRefCount <= 0) && EventProcessorHost.autoShutdownExecutor)
+	        	Future<?> stoppingPartitions = this.partitionManager.stopPartitions();
+	        	if (stoppingPartitions != null)
 	        	{
-	        		EventProcessorHost.executorService.awaitTermination(10, TimeUnit.MINUTES);
+	        		stoppingPartitions.get();
 	        	}
-	        }
-		}
-        catch (InterruptedException | ExecutionException e)
-        {
-        	// Log the failure but nothing really to do about it.
-        	logWithHost(Level.SEVERE, "Failure shutting down", e);
-        	throw e;
-		}
+	            
+		        if (EventProcessorHost.weOwnExecutor)
+		        {
+		        	// If there are multiple EventProcessorHosts in one process, only await the shutdown on the last one.
+		        	// Otherwise the first one will block forever here.
+		        	// This could race with stopExecutor() but that is harmless: it is legal to call awaitTermination()
+		        	// at any time, whether executorServer.shutdown() has been called yet or not.
+		        	if ((EventProcessorHost.executorRefCount <= 0) && EventProcessorHost.autoShutdownExecutor)
+		        	{
+		        		EventProcessorHost.executorService.awaitTermination(10, TimeUnit.MINUTES);
+		        	}
+		        }
+			}
+	        catch (InterruptedException | ExecutionException e)
+	        {
+	        	// Log the failure but nothing really to do about it.
+	        	logWithHost(Level.SEVERE, "Failure shutting down", e);
+	        	throw e;
+			}
+    	}
     }
     
     // PartitionManager calls this after all shutdown tasks have been submitted to the ExecutorService.
