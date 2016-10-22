@@ -8,12 +8,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
-import rx.Observable;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,14 +30,9 @@ public abstract class IndependentChildResourceImpl<
             InnerModelT extends com.microsoft.azure.Resource,
             FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>>
         extends
-            CreatableUpdatableImpl<FluentModelT, InnerModelT, FluentModelImplT>
+            IndependentChildImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT>
         implements
-            IndependentChildResource,
-            IndependentChildResource.DefinitionStages.WithParentResource<FluentModelT, FluentParentModelT> {
-    private String groupName;
-    protected String parentName;
-    private String creatableParentResourceKey;
-
+            IndependentChildResource {
     /**
      * Creates a new instance of CreatableUpdatableImpl.
      *
@@ -94,15 +85,6 @@ public abstract class IndependentChildResourceImpl<
         }
     }
 
-    @Override
-    public String resourceGroupName() {
-        if (this.groupName == null) {
-            return ResourceUtils.groupFromResourceId(this.id());
-        } else {
-            return this.groupName;
-        }
-    }
-
     /**************************************************
      * Tag setters.
      **************************************************/
@@ -150,44 +132,15 @@ public abstract class IndependentChildResourceImpl<
     }
 
     @Override
-    public FluentModelImplT withExistingParentResource(String groupName, String parentName) {
-        this.groupName = groupName;
-        this.parentName = parentName;
-
-        return (FluentModelImplT) this;
-    }
-
-    @Override
     public FluentModelImplT withExistingParentResource(FluentParentModelT existingParentResource) {
         this.inner().withLocation(existingParentResource.regionName());
-        return withExistingParentResource(existingParentResource.resourceGroupName(), existingParentResource.name());
+        return super.withExistingParentResource(existingParentResource);
     }
 
     @Override
-    public FluentModelImplT withNewParentResource(Creatable<FluentParentModelT> parentResourceCreatable) {
-        if (this.creatableParentResourceKey == null) {
-            this.creatableParentResourceKey = parentResourceCreatable.key();
-            this.addCreatableDependency(parentResourceCreatable);
-        }
-        return (FluentModelImplT) this;
-    }
-
-    @Override
-    public void setInner(InnerModelT inner) {
+    protected void setParentName(InnerModelT inner) {
         if (inner.id() != null) {
             this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
         }
-        super.setInner(inner);
     }
-
-    @Override
-    public Observable<FluentModelT> createResourceAsync() {
-        if (this.creatableParentResourceKey != null) {
-            FluentParentModelT parentResource = (FluentParentModelT) this.createdResource(this.creatableParentResourceKey);
-            withExistingParentResource(parentResource);
-        }
-        return this.createChildResourceAsync();
-    }
-
-    protected abstract Observable<FluentModelT> createChildResourceAsync();
 }
