@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.website.AppServicePlan;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CloningInfo;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
-import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.SslState;
 import com.microsoft.azure.management.website.UsageState;
@@ -23,7 +21,6 @@ import com.microsoft.azure.management.website.WebApp;
 import org.joda.time.DateTime;
 import rx.Observable;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,14 +31,14 @@ import java.util.Map;
  */
 class WebAppImpl
         extends GroupableResourceImpl<
-        WebApp,
-        SiteInner,
-        WebAppImpl,
-        AppServiceManager>
+            WebApp,
+            SiteInner,
+            WebAppImpl,
+            AppServiceManager>
         implements
-        WebApp,
-        WebApp.Definition,
-        WebApp.Update {
+            WebApp,
+            WebApp.Definition,
+            WebApp.Update {
 
     private final WebAppsInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
@@ -55,11 +52,6 @@ class WebAppImpl
                 hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
             }
         }
-    }
-
-    @Override
-    public String siteName() {
-        return inner().name();
     }
 
     @Override
@@ -108,7 +100,7 @@ class WebAppImpl
     }
 
     @Override
-    public DateTime lastModifiedTimeUtc() {
+    public DateTime lastModifiedTime() {
         return inner().lastModifiedTimeUtc();
     }
 
@@ -135,11 +127,6 @@ class WebAppImpl
     @Override
     public String targetSwapSlot() {
         return inner().targetSwapSlot();
-    }
-
-    @Override
-    public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return inner().hostingEnvironmentProfile();
     }
 
     @Override
@@ -178,18 +165,8 @@ class WebAppImpl
     }
 
     @Override
-    public int maxNumberOfWorkers() {
-        return inner().maxNumberOfWorkers();
-    }
-
-    @Override
     public CloningInfo cloningInfo() {
         return inner().cloningInfo();
-    }
-
-    @Override
-    public String resourceGroup() {
-        return inner().resourceGroup();
     }
 
     @Override
@@ -203,7 +180,7 @@ class WebAppImpl
     }
 
     @Override
-    public List<HostNameBinding> hostNameBindings() throws CloudException, IOException {
+    public List<HostNameBinding> getHostNameBindings() {
         //TODO: Use wrapList()
         List<HostNameBindingInner> collectionInner = client.listHostNameBindings(resourceGroupName(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
@@ -313,10 +290,6 @@ class WebAppImpl
         return this;
     }
 
-    AppServiceManager myManager() {
-        return super.myManager;
-    }
-
     @Override
     public Observable<WebApp> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
@@ -324,5 +297,29 @@ class WebAppImpl
         }
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public WebAppImpl withAppDisabledOnCreation() {
+        inner().withEnabled(false);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withScmSiteAlsoStopped(boolean scmSiteAlsoStopped) {
+        inner().withScmSiteAlsoStopped(scmSiteAlsoStopped);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withClientAffinityEnabled(boolean enabled) {
+        inner().withClientAffinityEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withClientCertEnabled(boolean enabled) {
+        inner().withClientCertEnabled(enabled);
+        return this;
     }
 }

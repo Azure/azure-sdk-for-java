@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.website;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -17,22 +17,17 @@ import com.microsoft.azure.management.website.implementation.SiteConfigInner;
 import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure Web App.
  */
 public interface WebApp extends
+        HasName,
         GroupableResource,
         Refreshable<WebApp>,
         Updatable<WebApp.Update>,
         Wrapper<SiteInner> {
-
-    /**
-     * @return name of web app
-     */
-    String siteName();
 
     /**
      * @return state of the web app
@@ -50,27 +45,23 @@ public interface WebApp extends
     String repositorySiteName();
 
     /**
-     * @return state indicating whether web app has exceeded its quota usage. Possible
-     * values include: 'Normal', 'Exceeded'.
+     * @return state indicating whether web app has exceeded its quota usage
      */
     UsageState usageState();
 
     /**
-     * @return true if the site is enabled; otherwise, false. Setting this  value to
-     * false disables the site (takes the site off line).
+     * @return true if the site is enabled; otherwise, false
      */
     boolean enabled();
 
     /**
-     * @return hostnames for the web app that are enabled. Hostnames need to be
-     * assigned and enabled. If some hostnames are assigned but not enabled
-     * the app is not served on those hostnames.
+     * @return host names for the web app that are enabled
      */
     List<String> enabledHostNames();
 
     /**
-     * @return management information availability state for the web app. Possible
-     * values are Normal or Limited.
+     * @return management information availability state for the web app.
+     *
      * Normal means that the site is running correctly and that
      * management information for the site is available.
      * Limited means that only partial management information for
@@ -93,10 +84,10 @@ public interface WebApp extends
     /**
      * @return Last time web app was modified in UTC
      */
-    DateTime lastModifiedTimeUtc();
+    DateTime lastModifiedTime();
 
     /**
-     * @return Configuration of web app
+     * @return configuration of web app
      */
     SiteConfigInner siteConfig();
 
@@ -121,12 +112,6 @@ public interface WebApp extends
      * @return which slot this app will swap into
      */
     String targetSwapSlot();
-
-    /**
-     * @return specification for the hosting environment (App Service Environment) to
-     * use for the web app
-     */
-    HostingEnvironmentProfile hostingEnvironmentProfile();
 
     /**
      * @return the micro-service name
@@ -169,20 +154,9 @@ public interface WebApp extends
     int containerSize();
 
     /**
-     * @return maximum number of workers
-     * This only applies to function container.
-     */
-    int maxNumberOfWorkers();
-
-    /**
      * @return information about whether the web app is cloned from another
      */
     CloningInfo cloningInfo();
-
-    /**
-     * @return resource group web app belongs to
-     */
-    String resourceGroup();
 
     /**
      * @return site is a default container
@@ -194,7 +168,7 @@ public interface WebApp extends
      */
     String defaultHostName();
 
-    List<HostNameBinding> hostNameBindings() throws CloudException, IOException;
+    List<HostNameBinding> getHostNameBindings();
 
     /**************************************************************
      * Fluent interfaces to provision a Web App
@@ -242,19 +216,19 @@ public interface WebApp extends
         }
 
         interface WithSiteEnabled {
-            WithCreate siteEnabled(boolean enabled);
+            WithCreate withAppDisabledOnCreation();
         }
 
         interface WithScmSiteAlsoStopped {
-            WithCreate alsoStopScmSiteWhenStopped(boolean scmSiteAlsoStopped);
+            WithCreate withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
         }
 
         interface WithClientAffinityEnabled {
-            WithCreate clientAffinityEnabled(boolean enabled);
+            WithCreate withClientAffinityEnabled(boolean enabled);
         }
 
         interface WithClientCertEnabled {
-            WithCreate clientCertEnabled(boolean enabled);
+            WithCreate withClientCertEnabled(boolean enabled);
         }
 
         /**
@@ -264,7 +238,11 @@ public interface WebApp extends
          */
         interface WithCreate extends
                 Creatable<WebApp>,
-                DefinitionStages.WithHostNameSslStates {
+                WithHostNameSslStates,
+                WithSiteEnabled,
+                WithScmSiteAlsoStopped,
+                WithClientAffinityEnabled,
+                WithClientCertEnabled {
         }
     }
 

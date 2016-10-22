@@ -11,12 +11,11 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class WebAppTests extends AppServiceTestBase {
-    private static final String RG_NAME = "javacsmrg219";
-    private static final String WEBAPP_NAME = "java-webapp-219";
+    private static final String RG_NAME = "javacsmrg323";
+    private static final String WEBAPP_NAME = "java-webapp-323";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
@@ -29,12 +28,13 @@ public class WebAppTests extends AppServiceTestBase {
         //resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
-    @Ignore
+    @Test
     public void canCreateWebApp() throws Exception {
         WebApp webApp = appServiceManager.sites().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
-                .withNewAppServicePlan("java-webapp-plan-219", AppServicePricingTier.STANDARD_S1)
+                .withNewAppServicePlan("java-plan-323", AppServicePricingTier.STANDARD_S1)
+                .enableSniSsl(WEBAPP_NAME + ".azurewebsites.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
                 .create();
         Assert.assertNotNull(webApp);
     }
