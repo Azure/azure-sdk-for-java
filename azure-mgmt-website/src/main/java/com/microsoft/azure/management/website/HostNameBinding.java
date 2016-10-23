@@ -86,4 +86,36 @@ public interface HostNameBinding
                 Attachable.InDefinition<ParentT> {
         }
     }
+
+    interface UpdateDefinition<ParentT> extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithHostNameType<ParentT>,
+            UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
+    }
+
+    /**
+     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     */
+    interface UpdateDefinitionStages {
+        /**
+         * The first stage of a host name binding definition.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface Blank<ParentT> extends WithHostNameType<ParentT> {
+        }
+
+        interface WithHostNameType<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withHostNameType(HostNameType hostNameType);
+        }
+
+        interface WithHostNameDnsRecordType<ParentT> {
+            WithAttach<ParentT> withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+        }
+
+        interface WithAttach<ParentT> extends
+                Attachable.InUpdate<ParentT> {
+        }
+    }
 }

@@ -20,6 +20,7 @@ import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.azure.management.website.WebApp;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ class WebAppImpl
 
     private final WebAppsInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
+    private HostNameBindingImpl hostNameBinding;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
@@ -277,7 +279,7 @@ class WebAppImpl
     }
 
     @Override
-    public HostNameBinding.DefinitionStages.Blank<WebApp.Update> defineHostNameBinding(String name) {
+    public HostNameBindingImpl defineHostNameBinding(String name) {
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());
@@ -285,8 +287,8 @@ class WebAppImpl
         return new HostNameBindingImpl(name, inner, this, client);
     }
 
-    WebAppImpl withHostNameBinding(HostNameBindingImpl hostNameBinding) {
-        addCreatableDependency(hostNameBinding);
+    WebAppImpl withHostNameBinding(final HostNameBindingImpl hostNameBinding) {
+        this.hostNameBinding = hostNameBinding;
         return this;
     }
 
@@ -296,7 +298,23 @@ class WebAppImpl
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .flatMap(new Func1<WebApp, Observable<WebApp>>() {
+                    @Override
+                    public Observable<WebApp> call(final WebApp webApp) {
+                        if (hostNameBinding != null) {
+                            return hostNameBinding.createAsync()
+                                    .map(new Func1<HostNameBinding, WebApp>() {
+                                        @Override
+                                        public WebApp call(HostNameBinding hostNameBinding) {
+                                            return webApp;
+                                        }
+                                    });
+                        } else {
+                            return Observable.just(webApp);
+                        }
+                    }
+                });
     }
 
     @Override

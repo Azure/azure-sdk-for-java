@@ -231,6 +231,10 @@ public interface WebApp extends
             WithCreate withClientCertEnabled(boolean enabled);
         }
 
+        interface WithHostNameBinding {
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(String name);
+        }
+
         /**
          * A site definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
@@ -242,7 +246,8 @@ public interface WebApp extends
                 WithSiteEnabled,
                 WithScmSiteAlsoStopped,
                 WithClientAffinityEnabled,
-                WithClientCertEnabled {
+                WithClientCertEnabled,
+                WithHostNameBinding {
         }
     }
 
@@ -266,7 +271,7 @@ public interface WebApp extends
         }
 
         interface WithHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<Update> defineHostNameBinding(String name);
+            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(String name);
         }
     }
 

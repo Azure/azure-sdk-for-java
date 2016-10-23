@@ -29,25 +29,23 @@ public class WebAppTests extends AppServiceTestBase {
     }
 
     @Test
-    public void canCreateWebApp() throws Exception {
+    public void canCRUDWebApp() throws Exception {
         WebApp webApp = appServiceManager.sites().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withNewAppServicePlan("java-plan-323", AppServicePricingTier.STANDARD_S1)
-                .enableSniSsl(WEBAPP_NAME + ".azurewebsites.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
+                .defineHostNameBinding("javatest.quarterquota.net")
+                    .withHostNameType(HostNameType.VERIFIED)
+                    .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
+                    .attach()
                 .create();
         Assert.assertNotNull(webApp);
-    }
-
-    @Test
-    public void canUpdateWebApp() throws Exception {
-        WebApp webApp = appServiceManager.sites().getByGroup(RG_NAME, WEBAPP_NAME);
-        webApp.update()
-                .defineHostNameBinding("javatest.quarterquota.net")
-                .withHostNameType(HostNameType.VERIFIED)
-                .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
-                .attach()
-                .enableSniSsl("javatest.quarterquota.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
-                .apply();
+//        webApp.update()
+//                .defineHostNameBinding("javatest.quarterquota.net")
+//                .withHostNameType(HostNameType.VERIFIED)
+//                .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
+//                .attach()
+//                .enableSniSsl("javatest.quarterquota.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
+//                .apply();
     }
 }

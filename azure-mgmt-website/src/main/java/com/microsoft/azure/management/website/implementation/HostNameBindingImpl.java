@@ -26,11 +26,15 @@ import java.util.Map;
  * A host name binding object.
  */
 class HostNameBindingImpl
-        extends ExternalChildResourceImpl<HostNameBinding, HostNameBindingInner, WebAppImpl, WebApp>
+        extends ExternalChildResourceImpl<HostNameBinding,
+                HostNameBindingInner,
+                WebAppImpl,
+                WebApp>
         implements
         Creatable<HostNameBinding>,
         HostNameBinding,
-        HostNameBinding.Definition<WebApp.Update> {
+        HostNameBinding.Definition<WebApp.DefinitionStages.WithCreate>,
+        HostNameBinding.UpdateDefinition<WebApp.Update> {
     private WebAppsInner client;
     HostNameBindingImpl(String name, HostNameBindingInner innerObject, WebAppImpl parent, WebAppsInner client) {
         super(name, parent, innerObject);
