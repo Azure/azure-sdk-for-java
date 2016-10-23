@@ -6,6 +6,9 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import org.junit.Test;
+
+import com.microsoft.azure.eventhubs.EventHubClient;
+
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -26,11 +29,12 @@ public class PartitionManagerTest
 	private boolean expectEqualDistribution;
 	private boolean ignoreZeroes;
 	private int maxChecks;
+	private boolean shuttingDown;
 	
 	@Test
 	public void partitionBalancingExactMultipleTest() throws Exception
 	{
-		System.out.println("partitionBalancingExactMultipleTest");
+		TestUtilities.log("partitionBalancingExactMultipleTest");
 		
 		setup(2, 4); // two hosts, four partitions
 		this.countOfChecks = 0;
@@ -50,7 +54,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -65,13 +69,13 @@ public class PartitionManagerTest
 		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up checkpoint store", boolret);
 		
-		System.out.println("DONE");
+		TestUtilities.log("DONE");
 	}
 	
 	@Test
 	public void partitionBalancingUnevenTest() throws Exception
 	{
-		System.out.println("partitionBalancingUnevenTest");
+		TestUtilities.log("partitionBalancingUnevenTest");
 		
 		setup(5, 16); // five hosts, sixteen partitions
 		this.countOfChecks = 0;
@@ -91,7 +95,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -106,13 +110,13 @@ public class PartitionManagerTest
 		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up checkpoint store", boolret);
 		
-		System.out.println("DONE");
+		TestUtilities.log("DONE");
 	}
 	
 	@Test
 	public void partitionRebalancingTest() throws Exception
 	{
-		System.out.println("partitionRebalancingTest");
+		TestUtilities.log("partitionRebalancingTest");
 		
 		setup(3,8); // three hosts, eight partitions
 		
@@ -134,7 +138,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -159,7 +163,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -184,7 +188,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -198,13 +202,13 @@ public class PartitionManagerTest
 		boolret = this.checkpointManagers[1].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up checkpoint store", boolret);
 		
-		System.out.println("DONE");
+		TestUtilities.log("DONE");
 	}
 
 	@Test
 	public void partitionBalancingTooManyHostsTest() throws Exception
 	{
-		System.out.println("partitionBalancingTooManyHostsTest");
+		TestUtilities.log("partitionBalancingTooManyHostsTest");
 		
 		setup(10, 4); // ten hosts, four partitions
 		this.countOfChecks = 0;
@@ -224,7 +228,7 @@ public class PartitionManagerTest
 			}
 			catch (InterruptedException e)
 			{
-				System.out.println("Sleep interrupted, emergency bail");
+				TestUtilities.log("Sleep interrupted, emergency bail");
 				Thread.currentThread().interrupt();
 				throw e;
 			}
@@ -239,12 +243,17 @@ public class PartitionManagerTest
 		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up checkpoint store", boolret);
 		
-		System.out.println("DONE");
+		TestUtilities.log("DONE");
 	}
 	
 	synchronized void checkPartitionDistribution(boolean ignoreStopped)
 	{
-		System.out.println("Partitions redistributed");
+		if (this.shuttingDown)
+		{
+			return;
+		}
+		
+		TestUtilities.log("Partitions redistributed");
 		int[] countsPerHost = new int[this.partitionManagers.length];
 		for (int i = 0; i < this.partitionManagers.length; i++)
 		{
@@ -263,7 +272,7 @@ public class PartitionManagerTest
 				blah.append(", ");
 				countsPerHost[i]++;
 			}
-			System.out.println(blah.toString());
+			TestUtilities.log(blah.toString());
 		}
 		
 		boolean desired = true;
@@ -281,7 +290,7 @@ public class PartitionManagerTest
 				lowest = Integer.min(lowest, countsPerHost[i]);
 			}
 		}
-		System.out.println("Check " + this.countOfChecks + "  Highest " + highest + "  Lowest " + lowest + "  Descnt " + this.desiredDistributionDetected);
+		TestUtilities.log("Check " + this.countOfChecks + "  Highest " + highest + "  Lowest " + lowest + "  Descnt " + this.desiredDistributionDetected);
 		if (this.expectEqualDistribution)
 		{
 			// All hosts should have exactly equal counts, so highest == lowest
@@ -295,24 +304,24 @@ public class PartitionManagerTest
 		}
 		if (desired)
 		{
-			System.out.println("Evenest distribution detected");
+			TestUtilities.log("Evenest distribution detected");
 			this.desiredDistributionDetected++;
 			if (this.desiredDistributionDetected > this.partitionManagers.length)
 			{
 				// Every partition manager has looked at the current distribution and
 				// it has not changed. The algorithm is stable once it reaches the desired state.
 				// No need to keep iterating.
-				System.out.println("Desired distribution is stable");
+				TestUtilities.log("Desired distribution is stable");
 				this.keepGoing = false;
 			}
 		}
 		else
 		{
-			if (this.desiredDistributionDetected > 0)
+			if ((this.desiredDistributionDetected > 0) && !this.shuttingDown)
 			{
 				// If we have detected the desired distribution on previous iterations
 				// but not on this one, then the algorithm is unstable. Bail and fail.
-				System.out.println("Desired distribution was not stable");
+				TestUtilities.log("Desired distribution was not stable");
 				this.keepGoing = false;
 			}
 		}
@@ -340,8 +349,9 @@ public class PartitionManagerTest
 			
 			// In order to test hosts competing for partitions, each host must have a unique name, but they must share the
 			// target eventhub/consumer group.
-			this.hosts[i] = new EventProcessorHost("dummyHost" + String.valueOf(i), "dummyEventHub", "dummyConsumerGroup", "dummyEventHubConnectionString", cm, lm);
-			
+			this.hosts[i] = new EventProcessorHost("dummyHost" + String.valueOf(i), "NOTREAL", EventHubClient.DEFAULT_CONSUMER_GROUP_NAME,
+					TestUtilities.syntacticallyCorrectDummyConnectionString, cm, lm);
+
 			lm.initialize(this.hosts[i]);
 			this.leaseManagers[i] = lm;
 			cm.initialize(this.hosts[i]);
@@ -360,6 +370,7 @@ public class PartitionManagerTest
 	
 	private void startManagers(int maxIndex) throws Exception
 	{
+		this.shuttingDown = false;
 		for (int i = 0; i < maxIndex; i++)
 		{
 			startSingleManager(i);
@@ -375,18 +386,21 @@ public class PartitionManagerTest
 		}
 		catch (Exception e)
 		{
-			System.out.println("TASK START FAILED " + e.toString() + " " + e.getMessage());
+			TestUtilities.log("TASK START FAILED " + e.toString() + " " + e.getMessage());
 			throw e;
 		}
 	}
 	
 	private void stopManagers() throws InterruptedException, ExecutionException
 	{
+		TestUtilities.log("SHUTTING DOWN");
+		this.shuttingDown = true;
 		for (int i = 0; i < this.partitionManagers.length; i++)
 		{
 			if (this.running[i])
 			{
 				this.partitionManagers[i].stopPartitions().get();
+				TestUtilities.log("Host " + i + " stopped");
 			}
 		}
 	}
@@ -396,6 +410,7 @@ public class PartitionManagerTest
 		if (this.running[index])
 		{
 			this.partitionManagers[index].stopPartitions().get();
+			TestUtilities.log("Host " + index + " stopped");
 			this.running[index] = false;
 		}
 	}
@@ -454,7 +469,7 @@ public class PartitionManagerTest
 		@Override
 		void onInitializeCompleteTestHook()
 		{
-			System.out.println("PartitionManager for host " + this.host.getHostName() + " initialized stores OK");
+			TestUtilities.log("PartitionManager for host " + this.host.getHostName() + " initialized stores OK");
 		}
 		
 		@Override

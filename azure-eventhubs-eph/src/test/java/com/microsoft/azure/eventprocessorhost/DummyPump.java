@@ -28,7 +28,6 @@ class DummyPump extends Pump
 	
 	void fastCleanup()
 	{
-		System.out.println("Host " + this.host.getHostName() + " fast cleanup");
 		HashSet<String> capturedList = new HashSet<String>(this.pumps); // avoid deadlock!
 		for (String p : capturedList)
 		{
@@ -36,7 +35,6 @@ class DummyPump extends Pump
 			try
 			{
 				l = this.host.getLeaseManager().getLease(p).get();
-				//System.out.println("Host " + this.host.getHostName() + " cleanup retrieved lease for " + p);
 			} 
 			catch (InterruptedException | ExecutionException e)
 			{
@@ -48,7 +46,7 @@ class DummyPump extends Pump
 				// Another host has stolen this lease.
 				try
 				{
-					System.out.println("Steal detected, host " + this.host.getHostName() + " removing " + p);
+					TestUtilities.log("Steal detected, host " + this.host.getHostName() + " removing " + p);
 					removePump(p, CloseReason.LeaseLost).get();
 				}
 				catch (InterruptedException | ExecutionException e)
@@ -57,7 +55,7 @@ class DummyPump extends Pump
 			}
 			else
 			{
-				//System.out.println("Host " + this.host.getHostName() + " cleanup still own " + p);
+				
 			}
 		}
 	}

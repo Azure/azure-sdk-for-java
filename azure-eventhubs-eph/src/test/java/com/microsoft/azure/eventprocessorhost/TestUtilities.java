@@ -18,6 +18,9 @@ class TestUtilities
 	
 	static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test-eph.trace");
 	
+	static final String syntacticallyCorrectDummyConnectionString =
+			"Endpoint=sb://notreal.servicebus.windows.net/;SharedAccessKeyName=notreal;SharedAccessKey=NOTREALNOTREALNOTREALNOTREALNOTREALNOTREALN=;EntityPath=NOTREAL";
+	
 	static Boolean logToConsole = null;
 	
 	static void setupLogging()

@@ -261,10 +261,8 @@ public class CheckpointManagerTest
 		}
 		
 		// Host name needs to be unique per host so use index. Event hub should be the same for all hosts in a test, so use the supplied suffix.
-		String syntactiallyCorrectDummyConnectionString =
-				"Endpoint=sb://notreal.servicebus.windows.net/;SharedAccessKeyName=notreal;SharedAccessKey=NOTREALNOTREALNOTREALNOTREALNOTREALNOTREALN=;EntityPath=NOTREAL" + suffix;
     	EventProcessorHost host = new EventProcessorHost("dummyHost" + String.valueOf(index), "NOTREAL" + suffix,
-    			EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, syntactiallyCorrectDummyConnectionString, checkpointMgr, leaseMgr);
+    			EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, TestUtilities.syntacticallyCorrectDummyConnectionString + suffix, checkpointMgr, leaseMgr);
     	
     	
     	try
