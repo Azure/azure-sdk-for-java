@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -18,6 +19,7 @@ import org.joda.time.DateTime;
 /**
  * An immutable client-side representation of an Azure SQL ElasticPool.
  */
+@Fluent
 public interface SqlElasticPool extends
         IndependentChildResource,
         Refreshable<SqlElasticPool>,
@@ -91,6 +93,7 @@ public interface SqlElasticPool extends
         interface WithEdition {
             /**
              * Sets the edition for the SQL Elastic Pool.
+             *
              * @param edition edition to be set for elastic pool.
              * @return The next stage of definition.
              */

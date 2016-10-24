@@ -18,11 +18,14 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1238";
-    private static final String SQL_SERVER_NAME = "javasqlserver1238";
+    private static final String RG_NAME = "javasqlserver1239";
+    private static final String SQL_SERVER_NAME = "javasqlserver1239";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
-    private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool2";
+    private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
+    private static final String SQL_FIREWALLRULE_NAME = "firewallrule1";
+    private static final String START_IPADDRESS = "10.102.1.10";
+    private static final String END_IPADDRESS = "10.102.1.12";
 
 
     @BeforeClass
@@ -64,13 +67,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(sqlServer);
 
         sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
-        try {
-            sqlServerManager.sqlServers().getById(sqlServer.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        validateSqlServerNotFound(sqlServer);
     }
 
     @Test
@@ -117,13 +114,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServerManager.sqlDatabases().delete(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
 
         sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
-        try {
-            sqlServerManager.sqlServers().getById(sqlServer.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        validateSqlServerNotFound(sqlServer);
     }
 
     @Test
@@ -171,6 +162,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
 
         sqlServerManager.sqlDatabases().delete(sqlDatabase.id());
+        validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
         sqlDatabase = sqlServerManager.sqlDatabases()
@@ -181,15 +173,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
         sqlServerManager.sqlDatabases().delete(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        validateSqlDatabaseNotFound("newDatabase");
 
         sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
-        try {
-            sqlServerManager.sqlServers().getById(sqlServer.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        validateSqlServerNotFound(sqlServer);
     }
 
     @Test
@@ -224,6 +211,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer));
 
         sqlServerManager.sqlElasticPools().delete(sqlElasticPool.id());
+        validateSqlElasticPoolNotFound(SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
         sqlElasticPool = sqlServerManager.sqlElasticPools()
@@ -232,8 +220,105 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
         sqlServerManager.sqlElasticPools().delete(sqlElasticPool.resourceGroupName(), sqlElasticPool.sqlServerName(), sqlElasticPool.name());
+        validateSqlElasticPoolNotFound("newElasticPool");
 
         sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        validateSqlServerNotFound(sqlServer);
+    }
+
+
+    @Test
+    public void canCRUDSqlFirewallRule() throws Exception {
+        // Create
+        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
+                .define(SQL_SERVER_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withAdminUserName("userName")
+                .withPassword("P@ssword~1")
+                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+
+        SqlFirewallRule sqlFirewallRule = sqlServerManager.sqlFirewallRules()
+                .define(SQL_FIREWALLRULE_NAME)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .withNewSqlServer(sqlServerCreatable)
+                .createAsync().toBlocking().first();
+
+        validateSqlFirewallRule(sqlFirewallRule);
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME));
+
+        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        validateSqlServer(sqlServer);
+
+
+        // Get
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(sqlServer, SQL_FIREWALLRULE_NAME));
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getById(sqlFirewallRule.id()));
+
+        // List
+        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
+        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer));
+
+        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.id());
+        validateSqlFirewallRuleNotFound();
+
+        // Add firewall rule again with existing server.
+        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
+                .define(SQL_FIREWALLRULE_NAME)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .withExistingSqlServer(sqlServer)
+                .createAsync().toBlocking().first();
+        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
+        validateSqlFirewallRuleNotFound();
+
+        // Add firewall rule again with existing server.
+        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
+                .define(SQL_FIREWALLRULE_NAME)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .withExistingSqlServer(sqlServer.resourceGroupName(), sqlServer.name())
+                .createAsync().toBlocking().first();
+        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
+        validateSqlFirewallRuleNotFound();
+
+        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        validateSqlServerNotFound(sqlServer);
+    }
+
+    private static void validateSqlFirewallRuleNotFound() {
+        try {
+            sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME);
+            Assert.assertTrue(false);
+        } catch (CloudException exception) {
+            Assert.assertEquals(exception.getResponse().code(), 404);
+        }
+    }
+
+
+    private static void validateSqlElasticPoolNotFound(String elasticPoolName) {
+        try {
+            sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, elasticPoolName);
+            Assert.assertTrue(false);
+        }
+        catch (CloudException exception) {
+            Assert.assertEquals(exception.getResponse().code(), 404);
+        }
+    }
+
+    private static void validateSqlDatabaseNotFound(String newDatabase) {
+        try {
+            sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase);
+            Assert.assertTrue(false);
+        }
+        catch (CloudException exception) {
+            Assert.assertEquals(exception.getResponse().code(), 404);
+        }
+    }
+
+
+    private static void validateSqlServerNotFound(SqlServer sqlServer) {
         try {
             sqlServerManager.sqlServers().getById(sqlServer.id());
             Assert.assertTrue(false);
@@ -243,7 +328,25 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         }
     }
 
-    private void validateListSqlElasticPool(PagedList<SqlElasticPool> sqlElasticPools) {
+    private static void validateListSqlFirewallRule(PagedList<SqlFirewallRule> sqlFirewallRules) {
+        boolean found = false;
+        for (SqlFirewallRule firewallRule: sqlFirewallRules) {
+            if (firewallRule.name().equals(SQL_FIREWALLRULE_NAME)) {
+                found = true;
+            }
+        }
+        Assert.assertTrue(found);
+    }
+
+    private static void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule) {
+        Assert.assertNotNull(sqlFirewallRule);
+        Assert.assertEquals(SQL_FIREWALLRULE_NAME, sqlFirewallRule.name());
+        Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
+        Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
+        Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
+    }
+
+    private static void validateListSqlElasticPool(PagedList<SqlElasticPool> sqlElasticPools) {
         boolean found = false;
         for (SqlElasticPool elasticPool : sqlElasticPools) {
             if (elasticPool.name().equals(SQL_ELASTIC_POOL_NAME)) {

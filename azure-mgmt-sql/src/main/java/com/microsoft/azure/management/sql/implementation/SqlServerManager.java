@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Az
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlElasticPools;
+import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServers;
 
 /**
@@ -22,6 +23,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     private SqlServers sqlServers;
     private SqlDatabases sqlDatabases;
     private SqlElasticPools sqlElasticPools;
+    private SqlFirewallRules sqlFirewallRules;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
@@ -125,5 +127,18 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
                     this);
         }
         return sqlElasticPools;
+    }
+
+    /**
+     * @return the SQL FirewallRules management API entry point
+     */
+    public SqlFirewallRules sqlFirewallRules() {
+        if (sqlFirewallRules == null) {
+            sqlFirewallRules = new SqlFirewallRulesImpl(
+                    super.innerManagementClient.servers(),
+                    this) {
+            };
+        }
+        return sqlFirewallRules;
     }
 }

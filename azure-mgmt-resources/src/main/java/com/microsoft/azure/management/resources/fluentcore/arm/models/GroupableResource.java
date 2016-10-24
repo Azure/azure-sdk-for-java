@@ -15,11 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
  * Base interface for resources in resource groups.
  */
 @Fluent()
-public interface GroupableResource extends Resource {
-    /**
-     * @return the name of the resource group
-     */
-    String resourceGroupName();
+public interface GroupableResource extends Resource, HasResourceGroup {
+
 
     /**
      * Grouping of all the definition stages.

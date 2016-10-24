@@ -18,12 +18,8 @@ import java.util.Map;
 @LangDefinition()
 public interface Resource extends
     Indexable,
+    HasId,
     HasName {
-
-    /**
-     * @return the resource ID string
-     */
-    String id();
 
     /**
      * @return the type of the resource
