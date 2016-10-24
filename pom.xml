@@ -37,10 +37,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <projectVersion>0.8.0-SNAPSHOT</projectVersion>
-  </properties>
-
   <developers>
     <developer>
       <id>microsoft</id>

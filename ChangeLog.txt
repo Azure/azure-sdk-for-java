@@ -1,3 +1,9 @@
+2016.10.24 Version 0.9.7
+* ServiceBus
+  * Fixing UnlockMessage, RenewQueueLock and RenewSubscriptionLock
+* Core
+  * Allow new enum values to be returned as null
+
 2016.10.11 Version 0.9.6
 * Media
   * REST API updated to 2.13
