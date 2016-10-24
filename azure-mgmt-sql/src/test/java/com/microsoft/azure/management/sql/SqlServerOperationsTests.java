@@ -309,7 +309,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
         try {
-            sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_DATABASE_NAME);
+            sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase);
             Assert.assertTrue(false);
         }
         catch (CloudException exception) {
