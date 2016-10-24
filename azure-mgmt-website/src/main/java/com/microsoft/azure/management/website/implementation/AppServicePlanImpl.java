@@ -9,9 +9,6 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
-import com.microsoft.azure.management.website.HostingEnvironmentProfile;
-import com.microsoft.azure.management.website.SkuDescription;
-import com.microsoft.azure.management.website.StatusOptions;
 import rx.Observable;
 
 /**
@@ -43,44 +40,19 @@ class AppServicePlanImpl
     }
 
     @Override
-    public AppServicePlan refresh() {
+    public AppServicePlanImpl refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
     }
 
     @Override
-    public String workerTierName() {
-        return inner().workerTierName();
-    }
-
-    @Override
-    public StatusOptions status() {
-        return inner().status();
-    }
-
-    @Override
-    public String subscription() {
-        return inner().subscription();
-    }
-
-    @Override
-    public String adminSiteName() {
-        return inner().adminSiteName();
-    }
-
-    @Override
-    public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return inner().hostingEnvironmentProfile();
-    }
-
-    @Override
-    public int maximumNumberOfWorkers() {
+    public int maxInstances() {
         return inner().maximumNumberOfWorkers();
     }
 
     @Override
-    public String geoRegion() {
-        return inner().geoRegion();
+    public int capacity() {
+        return inner().sku().capacity();
     }
 
     @Override
@@ -89,23 +61,36 @@ class AppServicePlanImpl
     }
 
     @Override
-    public int numberOfSites() {
+    public int numberOfWebApps() {
         return inner().numberOfSites();
     }
 
     @Override
-    public String resourceGroup() {
-        return inner().resourceGroup();
-    }
-
-    @Override
-    public SkuDescription sku() {
-        return inner().sku();
+    public AppServicePricingTier pricingTier() {
+        return AppServicePricingTier.fromSkuDescription(inner().sku());
     }
 
     @Override
     public AppServicePlanImpl withPricingTier(AppServicePricingTier pricingTier) {
+        if (pricingTier == null) {
+            throw new IllegalArgumentException("pricingTier == null");
+        }
         inner().withSku(pricingTier.toSkuDescription());
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withPerSiteScaling(boolean perSiteScaling) {
+        inner().withPerSiteScaling(perSiteScaling);
+        return this;
+    }
+
+    @Override
+    public AppServicePlanImpl withCapacity(int capacity) {
+        if (capacity < 1) {
+            throw new IllegalArgumentException("Capacity is at least 1.");
+        }
+        inner().sku().withCapacity(capacity);
         return this;
     }
 }
