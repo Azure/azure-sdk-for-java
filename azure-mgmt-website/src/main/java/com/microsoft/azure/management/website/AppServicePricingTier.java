@@ -11,44 +11,44 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines App service pricing tiers.
  */
-public enum AppServicePricingTier {
+public class AppServicePricingTier {
     /** Free app service plan. */
-    FREE_F1("Free", "F1"),
+    public static final AppServicePricingTier FREE_F1 = new AppServicePricingTier("Free", "F1");
 
     /** App service plan with shared infrastructure. */
-    SHARED_D1("Shared", "D1"),
+    public static final AppServicePricingTier SHARED_D1 = new AppServicePricingTier("Shared", "D1");
 
     /** Basic pricing tier with a small size. */
-    BASIC_B1("Basic", "B1"),
+    public static final AppServicePricingTier BASIC_B1 = new AppServicePricingTier("Basic", "B1");
 
     /** Basic pricing tier with a medium size. */
-    BASIC_B2("Basic", "B2"),
+    public static final AppServicePricingTier BASIC_B2 = new AppServicePricingTier("Basic", "B2");
 
     /** Basic pricing tier with a large size. */
-    BASIC_B3("Basic", "B3"),
+    public static final AppServicePricingTier BASIC_B3 = new AppServicePricingTier("Basic", "B3");
 
     /** Standard pricing tier with a small size. */
-    STANDARD_S1("Standard", "S1"),
+    public static final AppServicePricingTier STANDARD_S1 = new AppServicePricingTier("Standard", "S1");
 
     /** Standard pricing tier with a medium size. */
-    STANDARD_S2("Standard", "S2"),
+    public static final AppServicePricingTier STANDARD_S2 = new AppServicePricingTier("Standard", "S2");
 
     /** Standard pricing tier with a large size. */
-    STANDARD_S3("Standard", "S3"),
+    public static final AppServicePricingTier STANDARD_S3 = new AppServicePricingTier("Standard", "S3");
 
     /** Premium pricing tier with a small size. */
-    PREMIUM_P1("Premium", "P1"),
+    public static final AppServicePricingTier PREMIUM_P1 = new AppServicePricingTier("Premium", "P1");
 
     /** Premium pricing tier with a medium size. */
-    PREMIUM_P2("Premium", "P2"),
+    public static final AppServicePricingTier PREMIUM_P2 = new AppServicePricingTier("Premium", "P2");
 
     /** Premium pricing tier with a large size. */
-    PREMIUM_P3("Premium", "P3");
+    public static final AppServicePricingTier PREMIUM_P3 = new AppServicePricingTier("Premium", "P3");
 
     /** The actual serialized value for a SiteAvailabilityState instance. */
     private SkuDescription skuDescription;
 
-    AppServicePricingTier(String tier, String size) {
+    public AppServicePricingTier(String tier, String size) {
         this.skuDescription = new SkuDescription()
                 .withName(size)
                 .withTier(tier)
@@ -62,14 +62,15 @@ public enum AppServicePricingTier {
      * @return the parsed AppServicePricingTier object, or null if unable to parse.
      */
     public static AppServicePricingTier fromSkuDescription(SkuDescription skuDescription) {
-        AppServicePricingTier[] items = AppServicePricingTier.values();
-        for (AppServicePricingTier item : items) {
-            if (item.skuDescription.tier().equalsIgnoreCase(skuDescription.tier())
-                    && item.skuDescription.size().equalsIgnoreCase(skuDescription.size())) {
-                return item;
-            }
+        if (skuDescription == null) {
+            return null;
         }
-        return null;
+        return new AppServicePricingTier(skuDescription.tier(), skuDescription.size());
+    }
+
+    @Override
+    public String toString() {
+        return skuDescription.tier() + "_" + skuDescription.size();
     }
 
     /**
@@ -81,7 +82,19 @@ public enum AppServicePricingTier {
     }
 
     @Override
-    public String toString() {
-        return this.skuDescription.tier() + "_" + this.skuDescription.size();
+    public int hashCode() {
+        return skuDescription.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof AppServicePricingTier)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        AppServicePricingTier rhs = (AppServicePricingTier) obj;
+        return toString().equalsIgnoreCase(rhs.toString());
     }
 }
