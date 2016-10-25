@@ -11,7 +11,11 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -75,5 +79,26 @@ final class ResourceGroupsImpl
             return null;
         }
         return new ResourceGroupImpl(inner, serviceClient);
+    }
+
+    @Override
+    public void beginDelete(String id) {
+        beginDeleteAsync(id).toBlocking().subscribe();
+    }
+
+    @Override
+    public ServiceCall<Void> beginDeleteAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceCall.create(beginDeleteAsync(id)
+                .flatMap(new Func1<Void, Observable<ServiceResponse<Void>>>() {
+                    @Override
+                    public Observable<ServiceResponse<Void>> call(Void aVoid) {
+                        return null;
+                    }
+                }), callback);
+    }
+
+    @Override
+    public Observable<Void> beginDeleteAsync(String name) {
+        return client.beginDeleteAsync(name);
     }
 }

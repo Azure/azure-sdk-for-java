@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBeginDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
@@ -24,6 +25,7 @@ public interface ResourceGroups extends
         SupportsGettingByName<ResourceGroup>,
         SupportsCreating<ResourceGroup.DefinitionStages.Blank>,
         SupportsDeleting,
+        SupportsBeginDeleting,
         SupportsBatchCreation<ResourceGroup> {
     /**
      * Checks whether resource group exists.
