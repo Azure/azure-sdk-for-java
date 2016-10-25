@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingInGroupByTag;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.util.List;
@@ -24,7 +25,8 @@ public interface GenericResources extends
         SupportsListingByGroup<GenericResource>,
         SupportsListingInGroupByTag<GenericResource>,
         SupportsGettingById<GenericResource>,
-        SupportsCreating<GenericResource.DefinitionStages.Blank> {
+        SupportsCreating<GenericResource.DefinitionStages.Blank>,
+        SupportsDeleting {
     /**
      * Checks if a resource exists in a resource group.
      *
@@ -43,6 +45,14 @@ public interface GenericResources extends
             String resourceType,
             String resourceName,
             String apiVersion);
+
+    /**
+     * Checks if a resource exists.
+     *
+     * @param id the ID of the resource.
+     * @return true if the resource exists; false otherwise
+     */
+    boolean checkExistenceById(String id);
 
     /**
      * Returns a resource belonging to a resource group.

@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -73,6 +74,12 @@ final class GenericResourcesImpl
                 resourceType,
                 resourceName,
                 apiVersion);
+    }
+
+    @Override
+    public boolean checkExistenceById(String id) {
+        String apiVersion = getApiVersionFromId(id).toBlocking().single();
+        return innerCollection.checkExistenceById(id, apiVersion);
     }
 
     @Override
@@ -192,5 +199,26 @@ final class GenericResourcesImpl
     public Observable<Void> deleteAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(final String id) {
+        return getApiVersionFromId(id)
+                .flatMap(new Func1<String, Observable<Void>>() {
+                    @Override
+                    public Observable<Void> call(String apiVersion) {
+                        return innerCollection.deleteByIdAsync(id, apiVersion);
+                    }
+                });
+    }
+
+    private Observable<String> getApiVersionFromId(final String id) {
+        return myManager.providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
+                .map(new Func1<Provider, String>() {
+                    @Override
+                    public String call(Provider provider) {
+                        return ResourceUtils.defaultApiVersion(id, provider);
+                    }
+                });
     }
 }
