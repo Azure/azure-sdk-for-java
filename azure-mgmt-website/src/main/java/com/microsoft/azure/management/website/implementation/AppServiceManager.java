@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 import com.microsoft.azure.management.website.AppServicePlans;
 import com.microsoft.azure.management.website.CertificateOrders;
 import com.microsoft.azure.management.website.Certificates;
+import com.microsoft.azure.management.website.Domains;
 import com.microsoft.azure.management.website.WebApps;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -27,6 +28,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     private AppServicePlans appServicePlans;
     private CertificateOrders certificateOrders;
     private Certificates certificates;
+    private Domains domains;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -129,5 +131,15 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             certificates = new CertificatesImpl(innerManagementClient.certificates(), this);
         }
         return certificates;
+    }
+
+    /**
+     * @return the app service plan management API entry point
+     */
+    public Domains domains() {
+        if (domains == null) {
+            domains = new DomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
+        }
+        return domains;
     }
 }
