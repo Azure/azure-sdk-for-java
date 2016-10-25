@@ -129,7 +129,7 @@ public final class ManageStorageAccount {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteById(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 }
                 catch (Exception e) {

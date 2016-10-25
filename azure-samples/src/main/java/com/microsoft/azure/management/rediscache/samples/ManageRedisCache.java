@@ -162,7 +162,7 @@ public final class ManageRedisCache {
             } finally {
                 if (azure.resourceGroups().getByName(rgName) != null) {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteById(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } else {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

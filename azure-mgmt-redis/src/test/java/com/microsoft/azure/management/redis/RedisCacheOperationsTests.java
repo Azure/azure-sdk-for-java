@@ -36,8 +36,8 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteById(RG_NAME);
-        resourceManager.resourceGroups().deleteById(RG_NAME_SECOND);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME_SECOND);
     }
 
     @Test

@@ -81,7 +81,7 @@ public abstract class TestTemplate<
     public void verifyDeleting() throws Exception {
         final String groupName = this.resource.resourceGroupName();
         this.collection.deleteById(this.resource.id());
-        this.resourceGroups.deleteById(groupName);
+        this.resourceGroups.deleteByName(groupName);
     }
 
     /**
