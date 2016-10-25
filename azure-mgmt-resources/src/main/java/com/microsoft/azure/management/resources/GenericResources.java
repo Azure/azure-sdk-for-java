@@ -46,6 +46,12 @@ public interface GenericResources extends
             String resourceName,
             String apiVersion);
 
+    /**
+     * Checks if a resource exists.
+     *
+     * @param id the ID of the resource.
+     * @return true if the resource exists; false otherwise
+     */
     boolean checkExistenceById(String id);
 
     /**
