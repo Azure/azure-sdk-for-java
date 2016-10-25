@@ -11,14 +11,14 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
  * Entry point for storage accounts management API.
  */
 public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsListingByGroup<AppServicePlan>,
         SupportsGettingByGroup<AppServicePlan>,
         SupportsGettingById<AppServicePlan>,

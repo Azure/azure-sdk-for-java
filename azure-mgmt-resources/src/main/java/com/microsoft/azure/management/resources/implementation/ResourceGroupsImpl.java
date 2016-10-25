@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
@@ -52,7 +53,17 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String name) {
+    public void deleteByName(String name) {
+        deleteByNameAsync(name).toBlocking().subscribe();
+    }
+
+    @Override
+    public ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return ServiceCall.create(client.deleteWithServiceResponseAsync(name), callback);
+    }
+
+    @Override
+    public Observable<Void> deleteByNameAsync(String name) {
         return client.deleteAsync(name);
     }
 
@@ -82,13 +93,13 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public void beginDelete(String id) {
-        beginDeleteAsync(id).toBlocking().subscribe();
+    public void beginDeleteByName(String id) {
+        beginDeleteByNameAsync(id).toBlocking().subscribe();
     }
 
     @Override
-    public ServiceCall<Void> beginDeleteAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(beginDeleteAsync(id)
+    public ServiceCall<Void> beginDeleteByNameAsync(String name, ServiceCallback<Void> callback) {
+        return ServiceCall.create(beginDeleteByNameAsync(name)
                 .flatMap(new Func1<Void, Observable<ServiceResponse<Void>>>() {
                     @Override
                     public Observable<ServiceResponse<Void>> call(Void aVoid) {
@@ -98,7 +109,12 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public Observable<Void> beginDeleteAsync(String name) {
+    public Observable<Void> beginDeleteByNameAsync(String name) {
         return client.beginDeleteAsync(name);
+    }
+
+    @Override
+    public Observable<Void> deleteByIdAsync(String id) {
+        return deleteByNameAsync(ResourceUtils.nameFromResourceId(id));
     }
 }

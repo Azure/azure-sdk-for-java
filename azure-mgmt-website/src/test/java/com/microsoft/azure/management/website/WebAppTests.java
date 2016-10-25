@@ -26,7 +26,7 @@ public class WebAppTests extends AppServiceTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        //resourceManager.resourceGroups().delete(RG_NAME);
+        //resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Ignore

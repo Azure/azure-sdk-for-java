@@ -256,14 +256,14 @@ public final class ManageVirtualNetwork {
                 //============================================================
                 // Delete a virtual network
                 System.out.println("Deleting the virtual network");
-                azure.networks().delete(virtualNetwork2.id());
+                azure.networks().deleteById(virtualNetwork2.id());
                 System.out.println("Deleted the virtual network");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

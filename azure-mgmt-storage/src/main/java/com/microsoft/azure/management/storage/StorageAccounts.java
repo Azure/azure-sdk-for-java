@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface StorageAccounts extends
         SupportsListing<StorageAccount>,
         SupportsCreating<StorageAccount.DefinitionStages.Blank>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsListingByGroup<StorageAccount>,
         SupportsGettingByGroup<StorageAccount>,
         SupportsGettingById<StorageAccount>,

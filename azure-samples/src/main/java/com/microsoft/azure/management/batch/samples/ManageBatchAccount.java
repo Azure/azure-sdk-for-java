@@ -222,13 +222,13 @@ public final class ManageBatchAccount {
                     batchAccount.update().withoutApplication(applicationEntry.getKey()).apply();
                 }
 
-                azure.batchAccounts().delete(batchAccount.id());
+                azure.batchAccounts().deleteById(batchAccount.id());
 
                 System.out.println("Deleted batch account");
 
                 if (batchAccount2 != null) {
                     System.out.println("Deleting second batch account - " + batchAccount2.name());
-                    azure.batchAccounts().delete(batchAccount2.id());
+                    azure.batchAccounts().deleteById(batchAccount2.id());
                     System.out.println("Deleted second batch account");
                 }
             } catch (Exception f) {
@@ -237,7 +237,7 @@ public final class ManageBatchAccount {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 }
                 catch (Exception e) {

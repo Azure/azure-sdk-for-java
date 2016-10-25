@@ -42,7 +42,7 @@ final class PolicyDefinitionsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String name) {
+    public Observable<Void> deleteByIdAsync(String name) {
         return client.deleteAsync(name);
     }
 

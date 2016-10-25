@@ -25,7 +25,7 @@ public interface SupportsDeletingByParent<T> {
      * @param parentName the name of parent resource.
      * @param name The name of the resource
      */
-    void delete(String groupName, String parentName, String name);
+    void deleteByParent(String groupName, String parentName, String name);
 
     /**
      * Asynchronously delete a resource from Azure, identifying it by its name and its resource group.
@@ -36,7 +36,7 @@ public interface SupportsDeletingByParent<T> {
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    ServiceCall<Void> deleteAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback);
+    ServiceCall<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback);
 
     /**
      * Asynchronously delete a resource from Azure, identifying it by its name and its resource group.
@@ -46,5 +46,5 @@ public interface SupportsDeletingByParent<T> {
      * @param name The name of the resource
      * @return an observable to the request
      */
-    Observable<Void> deleteAsync(String groupName, String parentName, String name);
+    Observable<Void> deleteByParentAsync(String groupName, String parentName, String name);
 }

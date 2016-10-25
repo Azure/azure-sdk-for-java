@@ -63,7 +63,7 @@ public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String parentName, String name) {
+    public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
         return this.innerCollection.deleteAsync(groupName, parentName, name);
     }
 

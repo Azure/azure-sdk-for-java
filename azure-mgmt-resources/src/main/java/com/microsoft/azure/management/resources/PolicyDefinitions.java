@@ -9,7 +9,7 @@ package com.microsoft.azure.management.resources;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -20,5 +20,5 @@ public interface PolicyDefinitions extends
         SupportsListing<PolicyDefinition>,
         SupportsGettingByName<PolicyDefinition>,
         SupportsCreating<PolicyDefinition.DefinitionStages.Blank>,
-        SupportsDeleting {
+        SupportsDeletingById {
 }

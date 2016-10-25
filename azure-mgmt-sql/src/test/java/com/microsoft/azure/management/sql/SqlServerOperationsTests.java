@@ -35,7 +35,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         Assert.assertNotNull(sqlServer);
 
-        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -102,7 +102,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
         validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
 
-        sqlServerManager.sqlDatabases().delete(sqlDatabase.id());
+        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
 
         // Add another database to the server
         sqlDatabase = sqlServerManager.sqlDatabases()
@@ -111,9 +111,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withEdition(DatabaseEditions.STANDARD)
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().delete(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
 
-        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -161,7 +161,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
         validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
 
-        sqlServerManager.sqlDatabases().delete(sqlDatabase.id());
+        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
@@ -172,10 +172,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withExistingElasticPoolName(sqlElasticPool)
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().delete(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
-        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -210,7 +210,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
         validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer));
 
-        sqlServerManager.sqlElasticPools().delete(sqlElasticPool.id());
+        sqlServerManager.sqlElasticPools().deleteById(sqlElasticPool.id());
         validateSqlElasticPoolNotFound(SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
@@ -219,10 +219,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withEdition(ElasticPoolEditions.STANDARD)
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlElasticPools().delete(sqlElasticPool.resourceGroupName(), sqlElasticPool.sqlServerName(), sqlElasticPool.name());
+        sqlServerManager.sqlElasticPools().deleteByParent(sqlElasticPool.resourceGroupName(), sqlElasticPool.sqlServerName(), sqlElasticPool.name());
         validateSqlElasticPoolNotFound("newElasticPool");
 
-        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
@@ -260,7 +260,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
         validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer));
 
-        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.id());
+        sqlServerManager.sqlFirewallRules().deleteById(sqlFirewallRule.id());
         validateSqlFirewallRuleNotFound();
 
         // Add firewall rule again with existing server.
@@ -270,7 +270,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withEndIpAddress(END_IPADDRESS)
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
+        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
         validateSqlFirewallRuleNotFound();
 
         // Add firewall rule again with existing server.
@@ -280,10 +280,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withEndIpAddress(END_IPADDRESS)
                 .withExistingSqlServer(sqlServer.resourceGroupName(), sqlServer.name())
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().delete(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
+        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
         validateSqlFirewallRuleNotFound();
 
-        sqlServerManager.sqlServers().delete(sqlServer.resourceGroupName(), sqlServer.name());
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 

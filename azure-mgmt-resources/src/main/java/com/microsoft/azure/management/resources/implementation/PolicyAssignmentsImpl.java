@@ -38,7 +38,7 @@ final class PolicyAssignmentsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String id) {
+    public Observable<Void> deleteByIdAsync(String id) {
         return client.deleteByIdAsync(id).map(new Func1<PolicyAssignmentInner, Void>() {
             @Override
             public Void call(PolicyAssignmentInner policyAssignmentInner) {

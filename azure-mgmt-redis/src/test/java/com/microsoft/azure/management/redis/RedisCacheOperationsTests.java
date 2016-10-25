@@ -36,8 +36,8 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
-        resourceManager.resourceGroups().delete(RG_NAME_SECOND);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME_SECOND);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
         redisCache.refresh();
 
         // delete
-        redisManager.redisCaches().delete(redisCache.id());
+        redisManager.redisCaches().deleteById(redisCache.id());
 
         // Premium SKU Functionality
         RedisCachePremium premiumCache = redisCachePremium.asPremium();
