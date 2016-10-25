@@ -77,6 +77,11 @@ public class SqlServerImpl
     }
 
     @Override
+    public FirewallRules firewallRules() {
+        return new FirewallRulesImpl(this.innerCollection, this.myManager, this.resourceGroupName(), this.name());
+    }
+
+    @Override
     public SqlServerImpl withAdminUserName(String administratorUserName) {
         this.inner().withAdministratorLogin(administratorUserName);
         return this;

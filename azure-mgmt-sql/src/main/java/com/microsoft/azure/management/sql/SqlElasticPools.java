@@ -24,7 +24,7 @@ public interface SqlElasticPools extends
         SupportsDeletingById,
         SupportsGettingById<SqlElasticPool>,
         SupportsBatchCreation<SqlElasticPool>,
-        SupportsDeletingByParent<SqlElasticPool> {
+        SupportsDeletingByParent {
 
     /**
      * Gets the SQLElasticPool based on the resource group name, SQLServer name and SQLElasticPool name.
