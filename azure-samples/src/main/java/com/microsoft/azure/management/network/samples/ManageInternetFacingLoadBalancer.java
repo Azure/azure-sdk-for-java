@@ -511,7 +511,7 @@ public final class ManageInternetFacingLoadBalancer {
 
                 System.out.println("Deleting load balancer " + loadBalancerName2
                         + "(" + loadBalancer2.id() + ")");
-                azure.loadBalancers().delete(loadBalancer2.id());
+                azure.loadBalancers().deleteById(loadBalancer2.id());
                 System.out.println("Deleted load balancer" + loadBalancerName2);
 
 
@@ -523,7 +523,7 @@ public final class ManageInternetFacingLoadBalancer {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

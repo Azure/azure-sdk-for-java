@@ -111,7 +111,7 @@ public class AzureTests {
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
 
-        azure.resourceGroups().delete("rg" + testId);
+        azure.resourceGroups().deleteByName("rg" + testId);
     }
 
 

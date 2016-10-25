@@ -120,7 +120,7 @@ public final class ManageResource {
 
                 System.out.println("Deleting storage account: " + resourceName2);
 
-                azure.storageAccounts().delete(storageAccount2.id());
+                azure.storageAccounts().deleteById(storageAccount2.id());
 
                 System.out.println("Deleted storage account: " + resourceName2);
 
@@ -133,7 +133,7 @@ public final class ManageResource {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

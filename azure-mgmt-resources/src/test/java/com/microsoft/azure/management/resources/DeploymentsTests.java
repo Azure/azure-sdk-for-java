@@ -36,7 +36,7 @@ public class DeploymentsTests extends ResourceManagerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceGroups.delete(rgName);
+        resourceGroups.deleteByName(rgName);
     }
 
     @Test

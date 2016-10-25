@@ -9,7 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.util.List;
 public interface Groups extends
         SupportsCreating<ActiveDirectoryGroup.DefinitionStages.Blank>,
         SupportsListing<ActiveDirectoryGroup>,
-        SupportsDeleting {
+        SupportsDeletingById {
     /**
      * Gets the information about a group.
      *

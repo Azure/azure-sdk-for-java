@@ -196,13 +196,13 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
     }
 
     @Override
-    public Observable<Void> deleteAsync(final String id) {
+    public Observable<Void> deleteByIdAsync(final String id) {
         return getApiVersionFromId(id)
                 .flatMap(new Func1<String, Observable<Void>>() {
                     @Override

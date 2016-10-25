@@ -153,7 +153,7 @@ public final class ManageRedisCache {
 
                 System.out.println("Deleting a Redis Cache  - " + redisCache1.name());
 
-                azure.redisCaches().delete(redisCache1.id());
+                azure.redisCaches().deleteById(redisCache1.id());
 
                 System.out.println("Deleted Redis Cache");
             } catch (Exception f) {
@@ -162,7 +162,7 @@ public final class ManageRedisCache {
             } finally {
                 if (azure.resourceGroups().getByName(rgName) != null) {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } else {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

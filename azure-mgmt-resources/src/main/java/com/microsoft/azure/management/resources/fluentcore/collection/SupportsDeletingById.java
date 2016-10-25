@@ -17,31 +17,28 @@ import rx.Observable;
  * (Note: this interface is not intended to be implemented by user code)
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true)
-public interface SupportsBeginDeleting {
+public interface SupportsDeletingById {
     /**
-     * Begins deleting a resource from Azure, identifying it by its resource ID. The
-     * resource will stay until get() returns null.
+     * Deletes a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
      */
-    void beginDelete(String id);
+    void deleteById(String id);
 
     /**
-     * Asynchronously begins deleting a resource from Azure, identifying it by its resource ID.
-     * The resource will stay until get() returns null.
+     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
      * @param callback the callback on success or failure
      * @return a handle to cancel the request
      */
-    ServiceCall<Void> beginDeleteAsync(String id, ServiceCallback<Void> callback);
+    ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback);
 
     /**
-     * Asynchronously begins deleting a resource from Azure, identifying it by its resource ID.
-     * The resource will stay until get() returns null.
+     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
      *
      * @param id the resource ID of the resource to delete
      * @return an observable of the request
      */
-    Observable<Void> beginDeleteAsync(String id);
+    Observable<Void> deleteByIdAsync(String id);
 }

@@ -56,13 +56,13 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public void delete(String groupName, String name) {
-        deleteAsync(groupName, name).toBlocking().subscribe();
+    public void deleteByGroup(String groupName, String name) {
+        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
     }
 
     @Override
-    public ServiceCall<Void> deleteAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
+    public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
             @Override
             public ServiceResponse<Void> call(Void aVoid) {
                 return new ServiceResponse<>(aVoid, null);
@@ -71,7 +71,7 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteAsync(String id) {
-        return deleteAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    public Observable<Void> deleteByIdAsync(String id) {
+        return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 }
