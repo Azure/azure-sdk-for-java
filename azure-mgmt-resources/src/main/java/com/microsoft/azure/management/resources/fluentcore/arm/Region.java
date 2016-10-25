@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public class Region {
     public static final Region GOV_US_VIRGINIA = new Region("usgovvirginia", "US Gov Virginia");
     public static final Region GOV_US_IOWA = new Region("usgoviowa", "US Gov Iowa");
 
-    private static final List<Region> VALUES;
+    private static final Region[] VALUES;
 
     private final String name;
     private final String label;
@@ -86,7 +85,11 @@ public class Region {
                 }
             }
         }
-        VALUES = Collections.unmodifiableList(values);
+        VALUES = values.toArray(new Region[values.size()]);
+    }
+
+    public static Region[] values() {
+        return VALUES;
     }
 
     /**
