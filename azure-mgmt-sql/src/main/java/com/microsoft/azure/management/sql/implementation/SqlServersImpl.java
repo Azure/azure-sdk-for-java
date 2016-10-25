@@ -50,6 +50,10 @@ public class SqlServersImpl
 
     @Override
     protected SqlServerImpl wrapModel(ServerInner inner) {
+        if (inner == null) {
+            return null;
+        }
+
         return new SqlServerImpl(
                 inner.name(),
                 inner,

@@ -23,7 +23,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     private SqlServers sqlServers;
     private SqlDatabases sqlDatabases;
     private SqlElasticPools sqlElasticPools;
-    private SqlFirewallRules sqlFirewallRules;
+    private SqlFirewallRules.SqlFirewallRulesParentable sqlFirewallRules;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
@@ -132,7 +132,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
     /**
      * @return the SQL FirewallRules management API entry point
      */
-    public SqlFirewallRules sqlFirewallRules() {
+    public SqlFirewallRules.SqlFirewallRulesParentable sqlFirewallRules() {
         if (sqlFirewallRules == null) {
             sqlFirewallRules = new SqlFirewallRulesImpl(
                     super.innerManagementClient.servers(),

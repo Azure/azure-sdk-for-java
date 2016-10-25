@@ -28,7 +28,9 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlServerManager>
         implements SqlFirewallRules,
         SupportsGettingByParent<SqlFirewallRule>,
-        SupportsListingByParent<SqlFirewallRule> {
+        SupportsListingByParent<SqlFirewallRule>,
+        SqlFirewallRules.SqlFirewallRulesCreatable,
+        SqlFirewallRules.SqlFirewallRulesParentable {
     protected SqlFirewallRulesImpl(ServersInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
@@ -36,7 +38,8 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     @Override
     protected SqlFirewallRuleImpl wrapModel(String name) {
         FirewallRuleInner inner = new FirewallRuleInner();
-        return new SqlFirewallRuleImpl(
+
+        return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.Parentable>(
                 name,
                 inner,
                 this.innerCollection);
@@ -54,6 +57,9 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
 
     @Override
     protected SqlFirewallRuleImpl wrapModel(FirewallRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new SqlFirewallRuleImpl(inner.name(), inner, this.innerCollection);
     }
 
@@ -85,5 +91,15 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     @Override
     public PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
+    }
+
+    @Override
+    public SqlFirewallRuleImpl definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName) {
+        FirewallRuleInner inner = new FirewallRuleInner();
+
+        return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.WithCreate>(
+                firewallRuleName,
+                inner,
+                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

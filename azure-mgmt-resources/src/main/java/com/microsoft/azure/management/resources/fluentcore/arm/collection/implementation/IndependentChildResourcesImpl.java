@@ -41,7 +41,7 @@ public abstract class IndependentChildResourcesImpl<
         SupportsGettingById<T>,
         SupportsGettingByParent<T>,
         SupportsListingByParent<T>,
-        SupportsDeletingByParent<T> {
+        SupportsDeletingByParent {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 
@@ -66,8 +66,6 @@ public abstract class IndependentChildResourcesImpl<
     public PagedList<T> listByParent(GroupableResource parentResource) {
         return listByParent(parentResource.resourceGroupName(), parentResource.name());
     }
-
-
 
     @Override
     public void deleteByParent(String groupName, String parentName, String name) {

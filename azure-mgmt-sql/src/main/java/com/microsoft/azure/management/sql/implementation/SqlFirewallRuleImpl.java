@@ -18,15 +18,16 @@ import rx.functions.Func1;
 
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
+ * @param <CreateStageT> The final stage for which return creatable for FirewallRule
  */
-public class SqlFirewallRuleImpl
+public class SqlFirewallRuleImpl<CreateStageT>
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,
                                     FirewallRuleInner,
-                                    SqlFirewallRuleImpl>
+                                    SqlFirewallRuleImpl<CreateStageT>>
         implements SqlFirewallRule,
-            SqlFirewallRule.Definition,
+            SqlFirewallRule.Definition<CreateStageT>,
             SqlFirewallRule.Update,
             IndependentChild.DefinitionStages.WithParentResource<SqlFirewallRule, SqlServer> {
     private final ServersInner innerCollection;
@@ -99,15 +100,15 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.WithEndIpAddress withStartIpAddress(String startIpAddress) {
+    public SqlFirewallRuleImpl<CreateStageT> withStartIpAddress(String startIpAddress) {
         this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.WithCreate withEndIpAddress(String endIpAddress) {
+    public CreateStageT withEndIpAddress(String endIpAddress) {
         this.inner().withEndIpAddress(endIpAddress);
-        return this;
+        return (CreateStageT) this;
     }
 
     @Override
