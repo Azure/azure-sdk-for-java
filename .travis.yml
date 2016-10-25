@@ -7,4 +7,4 @@ jdk:
 script:
 - mvn install -DskipTests=true
 - mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
-- mvn package javadoc:aggregate -DskipTests=true
+- mvn -pl !azure-keyvault-cryptography,!azure-samples package javadoc:aggregate -DskipTests=true
