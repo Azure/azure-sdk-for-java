@@ -35,8 +35,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceGroups.beginDelete(newRgName);
-        resourceGroups.beginDelete(rgName);
+        resourceGroups.beginDeleteByName(newRgName);
+        resourceGroups.beginDeleteByName(rgName);
     }
 
     @Test
@@ -73,7 +73,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}"))
                 .apply();
         // Delete
-        genericResources.delete(resource.id());
+        genericResources.deleteById(resource.id());
         Assert.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
     }
 }

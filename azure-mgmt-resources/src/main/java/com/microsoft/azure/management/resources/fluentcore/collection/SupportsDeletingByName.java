@@ -12,33 +12,33 @@ import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
 
 /**
- * Provides access to deleting a resource from Azure, identifying it by its resource ID.
+ * Provides access to deleting a resource from Azure, identifying it by its resource name.
  * <p>
  * (Note: this interface is not intended to be implemented by user code)
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true)
-public interface SupportsDeleting {
+public interface SupportsDeletingByName {
     /**
-     * Deletes a resource from Azure, identifying it by its resource ID.
+     * Deletes a resource from Azure, identifying it by its resource name.
      *
-     * @param id the resource ID of the resource to delete
+     * @param name the name of the resource to delete
      */
-    void delete(String id);
+    void deleteByName(String name);
 
     /**
-     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
+     * Asynchronously delete a resource from Azure, identifying it by its resource name.
      *
-     * @param id the resource ID of the resource to delete
+     * @param name the name of the resource to delete
      * @param callback the callback on success or failure
      * @return a handle to cancel the request
      */
-    ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback);
+    ServiceCall<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback);
 
     /**
-     * Asynchronously delete a resource from Azure, identifying it by its resource ID.
+     * Asynchronously delete a resource from Azure, identifying it by its resource name.
      *
-     * @param id the resource ID of the resource to delete
+     * @param name the name of the resource to delete
      * @return an observable of the request
      */
-    Observable<Void> deleteAsync(String id);
+    Observable<Void> deleteByNameAsync(String name);
 }

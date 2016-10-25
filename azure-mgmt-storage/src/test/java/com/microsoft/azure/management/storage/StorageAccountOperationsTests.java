@@ -29,7 +29,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteById(RG_NAME);
     }
 
     @Test

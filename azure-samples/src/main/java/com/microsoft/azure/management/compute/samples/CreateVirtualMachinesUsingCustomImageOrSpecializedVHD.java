@@ -146,7 +146,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                 // Deleting the virtual machine
                 System.out.println("Deleting VM: " + linuxVM2.id());
 
-                azure.virtualMachines().delete(linuxVM2.id()); // VM required to be deleted to be able to attach it's
+                azure.virtualMachines().deleteById(linuxVM2.id()); // VM required to be deleted to be able to attach it's
                                                                // OS Disk VHD to another VM (Deallocate is not sufficient)
 
                 System.out.println("Deleted VM");
@@ -178,7 +178,7 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteById(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

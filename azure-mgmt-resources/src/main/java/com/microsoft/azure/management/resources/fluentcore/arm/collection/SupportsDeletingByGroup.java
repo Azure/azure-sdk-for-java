@@ -25,7 +25,7 @@ public interface SupportsDeletingByGroup {
      * @param groupName The group the resource is part of
      * @param name The name of the resource
      */
-    void delete(String groupName, String name);
+    void deleteByGroup(String groupName, String name);
 
     /**
      * Asynchronously delete a resource from Azure, identifying it by its name and its resource group.
@@ -35,7 +35,7 @@ public interface SupportsDeletingByGroup {
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    ServiceCall<Void> deleteAsync(String groupName, String name, ServiceCallback<Void> callback);
+    ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
      * Asynchronously delete a resource from Azure, identifying it by its name and its resource group.
@@ -44,5 +44,5 @@ public interface SupportsDeletingByGroup {
      * @param name The name of the resource
      * @return an observable to the request
      */
-    Observable<Void> deleteAsync(String groupName, String name);
+    Observable<Void> deleteByGroupAsync(String groupName, String name);
 }

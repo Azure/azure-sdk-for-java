@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -22,7 +22,7 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
     extends ReadableWrappersImpl<T, ImplT, InnerT>
     implements
         // Assume anything creatable is deletable
-        SupportsDeleting {
+        SupportsDeletingById {
 
     protected CreatableWrappersImpl() {
     }
@@ -30,13 +30,13 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
     protected abstract ImplT wrapModel(String name);
 
     @Override
-    public void delete(String id) {
-        deleteAsync(id).toBlocking().subscribe();
+    public void deleteById(String id) {
+        deleteByIdAsync(id).toBlocking().subscribe();
     }
 
     @Override
-    public ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
+    public ServiceCall<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteByIdAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
             @Override
             public ServiceResponse<Void> call(Void aVoid) {
                 return new ServiceResponse<>(aVoid, null);

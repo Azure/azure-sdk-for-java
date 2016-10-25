@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
  *  Entry point to SQL Elastic Pool management API.
@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 @Fluent
 public interface SqlElasticPools extends
         SupportsCreating<SqlElasticPool.DefinitionStages.Blank>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsGettingById<SqlElasticPool>,
         SupportsBatchCreation<SqlElasticPool>,
         SupportsDeletingByParent<SqlElasticPool> {

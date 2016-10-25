@@ -35,7 +35,7 @@ class AppServicePlansImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return innerCollection.deleteAsync(groupName, name)
                 .map(new Func1<Object, Void>() {
                     @Override

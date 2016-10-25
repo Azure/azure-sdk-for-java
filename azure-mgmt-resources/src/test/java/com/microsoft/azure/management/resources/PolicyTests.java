@@ -61,7 +61,7 @@ public class PolicyTests {
         Assert.assertNotNull(definition);
         Assert.assertEquals("My Policy", definition.displayName());
         // Delete
-        resourceManager.policyDefinitions().delete(definition.id());
+        resourceManager.policyDefinitions().deleteById(definition.id());
     }
 
     @Test
@@ -101,7 +101,7 @@ public class PolicyTests {
         }
         // Delete
         resourceManager.resourceGroups().define(group.name());
-        resourceManager.policyAssignments().delete(assignment.id());
-        resourceManager.policyDefinitions().delete(definition.id());
+        resourceManager.policyAssignments().deleteById(assignment.id());
+        resourceManager.policyDefinitions().deleteById(definition.id());
     }
 }

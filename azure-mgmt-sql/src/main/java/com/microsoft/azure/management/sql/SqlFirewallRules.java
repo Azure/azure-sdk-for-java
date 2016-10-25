@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
  *  Entry point to SQL FirewallRule management API.
@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 @Fluent
 public interface SqlFirewallRules extends
         SupportsCreating<SqlFirewallRule.DefinitionStages.Blank>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsGettingById<SqlFirewallRule>,
         SupportsDeletingByParent<SqlFirewallRule> {
 

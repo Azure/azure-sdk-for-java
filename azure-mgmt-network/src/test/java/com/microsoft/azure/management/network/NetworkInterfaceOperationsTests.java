@@ -24,7 +24,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         if (resourceGroupId != null) {
-            resourceManager.resourceGroups().delete(resourceGroupId);
+            resourceManager.resourceGroups().deleteById(resourceGroupId);
         }
     }
 
