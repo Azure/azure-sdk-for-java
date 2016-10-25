@@ -88,6 +88,11 @@ public class Region {
         VALUES = values.toArray(new Region[values.size()]);
     }
 
+    /**
+     * Get an array of pre-defined regions.
+     * 
+     * @return an array of pre-defined regions.
+     */
     public static Region[] values() {
         return VALUES;
     }
