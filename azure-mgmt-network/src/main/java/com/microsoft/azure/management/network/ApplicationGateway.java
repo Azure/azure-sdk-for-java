@@ -65,7 +65,9 @@ public interface ApplicationGateway extends
         DefinitionStages.WithBackendHttpConfig,
         DefinitionStages.WithBackendHttpConfigOrListener,
         DefinitionStages.WithHttpListener,
-        DefinitionStages.WithHttpListenerOrCreate {
+        DefinitionStages.WithHttpListenerOrRequestRoutingRule,
+        DefinitionStages.WithRequestRoutingRule,
+        DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
 
     /**
@@ -223,14 +225,33 @@ public interface ApplicationGateway extends
              * @param name a unique name for the HTTP listener
              * @return the first stage of the HTTP listener definition
              */
-            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrCreate> defineHttpListener(String name);
+            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrRequestRoutingRule> defineHttpListener(String name);
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more HTTP listeners,
+         * or start specifying request routing rules.
+         */
+        interface WithHttpListenerOrRequestRoutingRule extends WithHttpListener, WithRequestRoutingRule {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a request routing rule.
+         */
+        interface WithRequestRoutingRule {
+            /**
+             * Begins the definition of a new application gateway request routing rule to be attached to the gateway.
+             * @param name a unique name for the request routing rule
+             * @return the first stage of the request routing rule
+             */
+            ApplicationGatewayRequestRoutingRule.DefinitionStages.Blank<WithRequestRoutingRuleOrCreate> defineRequestRoutingRule(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to continue adding more request routing rules,
          * or start specifying optional settings, or create the resource.
          */
-        interface WithHttpListenerOrCreate extends WithHttpListener, WithCreate {
+        interface WithRequestRoutingRuleOrCreate extends WithRequestRoutingRule, WithCreate {
         }
 
         /**

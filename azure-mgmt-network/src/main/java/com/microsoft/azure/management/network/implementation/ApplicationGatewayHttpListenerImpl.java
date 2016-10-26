@@ -18,7 +18,7 @@ class ApplicationGatewayHttpListenerImpl
     extends ChildResourceImpl<ApplicationGatewayHttpListenerInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayHttpListener,
-        ApplicationGatewayHttpListener.Definition<ApplicationGateway.DefinitionStages.WithHttpListenerOrCreate>,
+        ApplicationGatewayHttpListener.Definition<ApplicationGateway.DefinitionStages.WithHttpListenerOrRequestRoutingRule>,
         ApplicationGatewayHttpListener.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayHttpListener.Update {
 

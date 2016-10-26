@@ -6,14 +6,13 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithHttpListenerOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpListener.DefinitionStages.Blank;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
@@ -51,6 +50,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
     private Map<String, ApplicationGatewayHttpListener> httpListeners;
+    private Map<String, ApplicationGatewayRequestRoutingRule> rules;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -78,6 +78,7 @@ class ApplicationGatewayImpl
         initializeBackendsFromInner();
         initializeBackendHttpConfigsFromInner();
         initializeHttpListenersFromInner();
+        initializeRequestRoutingRulesFromInner();
     }
 
     private void initializeFrontendsFromInner() {
@@ -124,6 +125,17 @@ class ApplicationGatewayImpl
         }
     }
 
+    private void initializeRequestRoutingRulesFromInner() {
+        this.rules = new TreeMap<>();
+        List<ApplicationGatewayRequestRoutingRuleInner> inners = this.inner().requestRoutingRules();
+        if (inners != null) {
+            for (ApplicationGatewayRequestRoutingRuleInner inner : inners) {
+                ApplicationGatewayRequestRoutingRuleImpl rule = new ApplicationGatewayRequestRoutingRuleImpl(inner, this);
+                this.rules.put(inner.name(), rule);
+            }
+        }
+    }
+
     private void initializeConfigsFromInner() {
         this.configs = new TreeMap<>();
         List<ApplicationGatewayIPConfigurationInner> inners = this.inner().gatewayIPConfigurations();
@@ -160,6 +172,9 @@ class ApplicationGatewayImpl
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.httpListeners.values()));
+
+        // Reset and update request routing rules
+        this.inner().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
     }
 
     @Override
@@ -207,6 +222,15 @@ class ApplicationGatewayImpl
             return null;
         } else {
             this.httpListeners.put(httpListener.name(), httpListener);
+            return this;
+        }
+    }
+
+    ApplicationGatewayImpl withRequestRoutingRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
+        if (rule == null) {
+            return null;
+        } else {
+            this.rules.put(rule.name(), rule);
             return this;
         }
     }
@@ -333,7 +357,7 @@ class ApplicationGatewayImpl
 
 
     @Override
-    public Blank<WithHttpListenerOrCreate> defineHttpListener(String name) {
+    public ApplicationGatewayHttpListenerImpl defineHttpListener(String name) {
         ApplicationGatewayHttpListener httpListener = this.httpListeners.get(name);
         if (httpListener == null) {
             ApplicationGatewayHttpListenerInner inner = new ApplicationGatewayHttpListenerInner()
@@ -341,6 +365,18 @@ class ApplicationGatewayImpl
             return new ApplicationGatewayHttpListenerImpl(inner, this);
         } else {
             return (ApplicationGatewayHttpListenerImpl) httpListener;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
+        ApplicationGatewayRequestRoutingRule rule = this.rules.get(name);
+        if (rule == null) {
+            ApplicationGatewayRequestRoutingRuleInner inner = new ApplicationGatewayRequestRoutingRuleInner()
+                    .withName(name);
+            return new ApplicationGatewayRequestRoutingRuleImpl(inner, this);
+        } else {
+            return (ApplicationGatewayRequestRoutingRuleImpl) rule;
         }
     }
 

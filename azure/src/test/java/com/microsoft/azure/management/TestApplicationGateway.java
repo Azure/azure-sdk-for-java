@@ -87,6 +87,8 @@ public class TestApplicationGateway {
                         .attach()
                     .defineHttpListener("listener1")
                         .attach()
+                    .defineRequestRoutingRule("rule1")
+                        .attach()
                     .create();
 
             return appGateway;
