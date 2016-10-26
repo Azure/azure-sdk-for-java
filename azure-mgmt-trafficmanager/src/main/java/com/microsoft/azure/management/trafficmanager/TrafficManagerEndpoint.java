@@ -423,7 +423,8 @@ public interface TrafficManagerEndpoint extends
              * Specifies the weight for the endpoint that will be used when priority-based routing method
              * is {@link TrafficRoutingMethod#PRIORITY} enabled on the profile.
              *
-             * @param priority
+             * @param priority priority of this endpoint. Possible values are from 1 to 1000, lower
+             *                 values represent higher priority.
              * @return the next stage of the definition
              */
             WithAttach<ParentT>  withRoutingPriority(int priority);

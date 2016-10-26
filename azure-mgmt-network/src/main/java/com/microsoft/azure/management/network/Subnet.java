@@ -172,7 +172,6 @@ public interface Subnet extends
 
         /**
          * The stage of a subnet update allowing to specify a route table to associate with the subnet, or remove an existing association.
-         * @return the next stage of the update
          */
         interface WithRouteTable {
             /**
