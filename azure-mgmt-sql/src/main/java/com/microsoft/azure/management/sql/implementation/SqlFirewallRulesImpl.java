@@ -23,7 +23,7 @@ import rx.Observable;
 public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlFirewallRule,
             SqlFirewallRuleImpl,
-            FirewallRuleInner,
+            ServerFirewallRuleInner,
             ServersInner,
             SqlServerManager>
         implements SqlFirewallRules,
@@ -37,7 +37,7 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
 
     @Override
     protected SqlFirewallRuleImpl wrapModel(String name) {
-        FirewallRuleInner inner = new FirewallRuleInner();
+        ServerFirewallRuleInner inner = new ServerFirewallRuleInner();
 
         return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.Parentable>(
                 name,
@@ -56,7 +56,7 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    protected SqlFirewallRuleImpl wrapModel(FirewallRuleInner inner) {
+    protected SqlFirewallRuleImpl wrapModel(ServerFirewallRuleInner inner) {
         if (inner == null) {
             return null;
         }
@@ -70,7 +70,7 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
 
     @Override
     public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteFirewallRulesAsync(groupName, parentName, name);
+        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
 
     @Override
     public SqlFirewallRuleImpl definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName) {
-        FirewallRuleInner inner = new FirewallRuleInner();
+        ServerFirewallRuleInner inner = new ServerFirewallRuleInner();
 
         return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.WithCreate>(
                 firewallRuleName,

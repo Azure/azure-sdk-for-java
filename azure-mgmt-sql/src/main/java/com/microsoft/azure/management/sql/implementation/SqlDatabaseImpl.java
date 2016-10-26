@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
+import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
@@ -95,12 +96,12 @@ public class SqlDatabaseImpl
     }
 
     @Override
-    public String requestedServiceObjectiveName() {
+    public ServiceObjectiveName requestedServiceObjectiveName() {
         return this.inner().requestedServiceObjectiveName();
     }
 
     @Override
-    public String serviceLevelObjective() {
+    public ServiceObjectiveName serviceLevelObjective() {
         return this.inner().serviceLevelObjective();
     }
 

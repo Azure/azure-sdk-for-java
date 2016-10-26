@@ -80,6 +80,26 @@ public final class ServersInner {
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> cancelUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade")
+        Observable<Response<ResponseBody>> getUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
+        Observable<Response<ResponseBody>> startUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
+        Observable<Response<ResponseBody>> beginStartUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/usages")
+        Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/serviceObjectives/{serviceObjectiveName}")
         Observable<Response<ResponseBody>> getServiceObjective(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("serviceObjectiveName") String serviceObjectiveName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -88,16 +108,16 @@ public final class ServersInner {
         Observable<Response<ResponseBody>> listServiceObjectives(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRule}")
-        Observable<Response<ResponseBody>> createOrUpdateFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRule") String firewallRule, @Query("api-version") String apiVersion, @Body FirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
+        Observable<Response<ResponseBody>> createOrUpdateFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Body ServerFirewallRuleInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRule}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFirewallRules(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRule") String firewallRule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRule}")
-        Observable<Response<ResponseBody>> getFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRule") String firewallRule, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules/{firewallRuleName}")
+        Observable<Response<ResponseBody>> getFirewallRule(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("firewallRuleName") String firewallRuleName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/firewallRules")
@@ -557,6 +577,392 @@ public final class ServersInner {
     }
 
     /**
+     * Cancel a pending upgrade for the Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     */
+    public void cancelUpgrade(String resourceGroupName, String serverName) {
+        cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Cancel a pending upgrade for the Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> cancelUpgradeAsync(String resourceGroupName, String serverName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    }
+
+    /**
+     * Cancel a pending upgrade for the Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> cancelUpgradeAsync(String resourceGroupName, String serverName) {
+        return cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Cancel a pending upgrade for the Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> cancelUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.cancelUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = cancelUpgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> cancelUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Returns information about Upgrade status of an Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the ServerUpgradeGetResultInner object if successful.
+     */
+    public ServerUpgradeGetResultInner getUpgrade(String resourceGroupName, String serverName) {
+        return getUpgradeWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about Upgrade status of an Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServerUpgradeGetResultInner> getUpgradeAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerUpgradeGetResultInner> serviceCallback) {
+        return ServiceCall.create(getUpgradeWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    }
+
+    /**
+     * Returns information about Upgrade status of an Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the ServerUpgradeGetResultInner object
+     */
+    public Observable<ServerUpgradeGetResultInner> getUpgradeAsync(String resourceGroupName, String serverName) {
+        return getUpgradeWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<ServerUpgradeGetResultInner>, ServerUpgradeGetResultInner>() {
+            @Override
+            public ServerUpgradeGetResultInner call(ServiceResponse<ServerUpgradeGetResultInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about Upgrade status of an Azure SQL Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the ServerUpgradeGetResultInner object
+     */
+    public Observable<ServiceResponse<ServerUpgradeGetResultInner>> getUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.getUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerUpgradeGetResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServerUpgradeGetResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServerUpgradeGetResultInner> clientResponse = getUpgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ServerUpgradeGetResultInner> getUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServerUpgradeGetResultInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ServerUpgradeGetResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     */
+    public void startUpgrade(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().last().getBody();
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> startUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the observable for the request
+     */
+    public Observable<Void> startUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        return startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> startUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2014-04-01";
+        Observable<Response<ResponseBody>> observable = service.startUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     */
+    public void beginStartUpgrade(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginStartUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginStartUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        return beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Start an Azure SQL Server Upgrade.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param parameters The required parameters for the Azure SQL Server Upgrade.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginStartUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2014-04-01";
+        return service.beginStartUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginStartUpgradeDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginStartUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Returns information about Azure SQL Server usage.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the List&lt;ServerMetricInner&gt; object if successful.
+     */
+    public List<ServerMetricInner> listUsages(String resourceGroupName, String serverName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about Azure SQL Server usage.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerMetricInner>> serviceCallback) {
+        return ServiceCall.create(listUsagesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    }
+
+    /**
+     * Returns information about Azure SQL Server usage.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;ServerMetricInner&gt; object
+     */
+    public Observable<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServerMetricInner>>, List<ServerMetricInner>>() {
+            @Override
+            public List<ServerMetricInner> call(ServiceResponse<List<ServerMetricInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about Azure SQL Server usage.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;ServerMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ServerMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listUsages(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServerMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ServerMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ServerMetricInner>> result = listUsagesDelegate(response);
+                        ServiceResponse<List<ServerMetricInner>> clientResponse = new ServiceResponse<List<ServerMetricInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ServerMetricInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<ServerMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<ServerMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
      * Returns information about an Azure SQL Database Service Objective.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
@@ -725,12 +1131,12 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param parameters The required parameters for createing or updating a firewall rule.
-     * @return the FirewallRuleInner object if successful.
+     * @return the ServerFirewallRuleInner object if successful.
      */
-    public FirewallRuleInner createOrUpdateFirewallRule(String resourceGroupName, String serverName, String firewallRule, FirewallRuleInner parameters) {
-        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule, parameters).toBlocking().single().getBody();
+    public ServerFirewallRuleInner createOrUpdateFirewallRule(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
+        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -738,13 +1144,13 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param parameters The required parameters for createing or updating a firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<FirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRule, FirewallRuleInner parameters, final ServiceCallback<FirewallRuleInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule, parameters), serviceCallback);
+    public ServiceCall<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters), serviceCallback);
     }
 
     /**
@@ -752,14 +1158,14 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param parameters The required parameters for createing or updating a firewall rule.
-     * @return the observable to the FirewallRuleInner object
+     * @return the observable to the ServerFirewallRuleInner object
      */
-    public Observable<FirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRule, FirewallRuleInner parameters) {
-        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule, parameters).map(new Func1<ServiceResponse<FirewallRuleInner>, FirewallRuleInner>() {
+    public Observable<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
+        return createOrUpdateFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName, parameters).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
             @Override
-            public FirewallRuleInner call(ServiceResponse<FirewallRuleInner> response) {
+            public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
                 return response.getBody();
             }
         });
@@ -770,11 +1176,11 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param parameters The required parameters for createing or updating a firewall rule.
-     * @return the observable to the FirewallRuleInner object
+     * @return the observable to the ServerFirewallRuleInner object
      */
-    public Observable<ServiceResponse<FirewallRuleInner>> createOrUpdateFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRule, FirewallRuleInner parameters) {
+    public Observable<ServiceResponse<ServerFirewallRuleInner>> createOrUpdateFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -784,20 +1190,20 @@ public final class ServersInner {
         if (serverName == null) {
             throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
-        if (firewallRule == null) {
-            throw new IllegalArgumentException("Parameter firewallRule is required and cannot be null.");
+        if (firewallRuleName == null) {
+            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
         }
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.createOrUpdateFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRule, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FirewallRuleInner>>>() {
+        return service.createOrUpdateFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFirewallRuleInner>>>() {
                 @Override
-                public Observable<ServiceResponse<FirewallRuleInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ServerFirewallRuleInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FirewallRuleInner> clientResponse = createOrUpdateFirewallRuleDelegate(response);
+                        ServiceResponse<ServerFirewallRuleInner> clientResponse = createOrUpdateFirewallRuleDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -806,10 +1212,10 @@ public final class ServersInner {
             });
     }
 
-    private ServiceResponse<FirewallRuleInner> createOrUpdateFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FirewallRuleInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<FirewallRuleInner>() { }.getType())
-                .register(201, new TypeToken<FirewallRuleInner>() { }.getType())
+    private ServiceResponse<ServerFirewallRuleInner> createOrUpdateFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServerFirewallRuleInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
+                .register(201, new TypeToken<ServerFirewallRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -819,10 +1225,10 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      */
-    public void deleteFirewallRules(String resourceGroupName, String serverName, String firewallRule) {
-        deleteFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName, firewallRule).toBlocking().single().getBody();
+    public void deleteFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
+        deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().getBody();
     }
 
     /**
@@ -830,12 +1236,12 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Void> deleteFirewallRulesAsync(String resourceGroupName, String serverName, String firewallRule, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName, firewallRule), serviceCallback);
+    public ServiceCall<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -843,11 +1249,11 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteFirewallRulesAsync(String resourceGroupName, String serverName, String firewallRule) {
-        return deleteFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName, firewallRule).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+        return deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
@@ -860,10 +1266,10 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteFirewallRulesWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRule) {
+    public Observable<ServiceResponse<Void>> deleteFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -873,16 +1279,16 @@ public final class ServersInner {
         if (serverName == null) {
             throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
-        if (firewallRule == null) {
-            throw new IllegalArgumentException("Parameter firewallRule is required and cannot be null.");
+        if (firewallRuleName == null) {
+            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.deleteFirewallRules(this.client.subscriptionId(), resourceGroupName, serverName, firewallRule, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.deleteFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteFirewallRulesDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteFirewallRuleDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -891,7 +1297,7 @@ public final class ServersInner {
             });
     }
 
-    private ServiceResponse<Void> deleteFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -903,11 +1309,11 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
-     * @return the FirewallRuleInner object if successful.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @return the ServerFirewallRuleInner object if successful.
      */
-    public FirewallRuleInner getFirewallRule(String resourceGroupName, String serverName, String firewallRule) {
-        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule).toBlocking().single().getBody();
+    public ServerFirewallRuleInner getFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
+        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().getBody();
     }
 
     /**
@@ -915,12 +1321,12 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<FirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRule, final ServiceCallback<FirewallRuleInner> serviceCallback) {
-        return ServiceCall.create(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule), serviceCallback);
+    public ServiceCall<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, final ServiceCallback<ServerFirewallRuleInner> serviceCallback) {
+        return ServiceCall.create(getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName), serviceCallback);
     }
 
     /**
@@ -928,13 +1334,13 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
-     * @return the observable to the FirewallRuleInner object
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @return the observable to the ServerFirewallRuleInner object
      */
-    public Observable<FirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRule) {
-        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRule).map(new Func1<ServiceResponse<FirewallRuleInner>, FirewallRuleInner>() {
+    public Observable<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+        return getFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).map(new Func1<ServiceResponse<ServerFirewallRuleInner>, ServerFirewallRuleInner>() {
             @Override
-            public FirewallRuleInner call(ServiceResponse<FirewallRuleInner> response) {
+            public ServerFirewallRuleInner call(ServiceResponse<ServerFirewallRuleInner> response) {
                 return response.getBody();
             }
         });
@@ -945,10 +1351,10 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param firewallRule The name of the Azure SQL Server Firewall Rule.
-     * @return the observable to the FirewallRuleInner object
+     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @return the observable to the ServerFirewallRuleInner object
      */
-    public Observable<ServiceResponse<FirewallRuleInner>> getFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRule) {
+    public Observable<ServiceResponse<ServerFirewallRuleInner>> getFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -958,16 +1364,16 @@ public final class ServersInner {
         if (serverName == null) {
             throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
-        if (firewallRule == null) {
-            throw new IllegalArgumentException("Parameter firewallRule is required and cannot be null.");
+        if (firewallRuleName == null) {
+            throw new IllegalArgumentException("Parameter firewallRuleName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRule, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<FirewallRuleInner>>>() {
+        return service.getFirewallRule(this.client.subscriptionId(), resourceGroupName, serverName, firewallRuleName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerFirewallRuleInner>>>() {
                 @Override
-                public Observable<ServiceResponse<FirewallRuleInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ServerFirewallRuleInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<FirewallRuleInner> clientResponse = getFirewallRuleDelegate(response);
+                        ServiceResponse<ServerFirewallRuleInner> clientResponse = getFirewallRuleDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -976,9 +1382,9 @@ public final class ServersInner {
             });
     }
 
-    private ServiceResponse<FirewallRuleInner> getFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<FirewallRuleInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<FirewallRuleInner>() { }.getType())
+    private ServiceResponse<ServerFirewallRuleInner> getFirewallRuleDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServerFirewallRuleInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ServerFirewallRuleInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -988,9 +1394,9 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @return the List&lt;FirewallRuleInner&gt; object if successful.
+     * @return the List&lt;ServerFirewallRuleInner&gt; object if successful.
      */
-    public List<FirewallRuleInner> listFirewallRules(String resourceGroupName, String serverName) {
+    public List<ServerFirewallRuleInner> listFirewallRules(String resourceGroupName, String serverName) {
         return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
     }
 
@@ -1002,7 +1408,7 @@ public final class ServersInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<FirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<FirewallRuleInner>> serviceCallback) {
+    public ServiceCall<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<ServerFirewallRuleInner>> serviceCallback) {
         return ServiceCall.create(listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
     }
 
@@ -1011,12 +1417,12 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;FirewallRuleInner&gt; object
+     * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
      */
-    public Observable<List<FirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName) {
-        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<FirewallRuleInner>>, List<FirewallRuleInner>>() {
+    public Observable<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName) {
+        return listFirewallRulesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ServerFirewallRuleInner>>, List<ServerFirewallRuleInner>>() {
             @Override
-            public List<FirewallRuleInner> call(ServiceResponse<List<FirewallRuleInner>> response) {
+            public List<ServerFirewallRuleInner> call(ServiceResponse<List<ServerFirewallRuleInner>> response) {
                 return response.getBody();
             }
         });
@@ -1027,9 +1433,9 @@ public final class ServersInner {
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;FirewallRuleInner&gt; object
+     * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
      */
-    public Observable<ServiceResponse<List<FirewallRuleInner>>> listFirewallRulesWithServiceResponseAsync(String resourceGroupName, String serverName) {
+    public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> listFirewallRulesWithServiceResponseAsync(String resourceGroupName, String serverName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1041,12 +1447,12 @@ public final class ServersInner {
         }
         final String apiVersion = "2014-04-01";
         return service.listFirewallRules(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<FirewallRuleInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServerFirewallRuleInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<List<FirewallRuleInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<FirewallRuleInner>> result = listFirewallRulesDelegate(response);
-                        ServiceResponse<List<FirewallRuleInner>> clientResponse = new ServiceResponse<List<FirewallRuleInner>>(result.getBody().getItems(), result.getResponse());
+                        ServiceResponse<PageImpl1<ServerFirewallRuleInner>> result = listFirewallRulesDelegate(response);
+                        ServiceResponse<List<ServerFirewallRuleInner>> clientResponse = new ServiceResponse<List<ServerFirewallRuleInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1055,9 +1461,9 @@ public final class ServersInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<FirewallRuleInner>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<FirewallRuleInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<FirewallRuleInner>>() { }.getType())
+    private ServiceResponse<PageImpl1<ServerFirewallRuleInner>> listFirewallRulesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<ServerFirewallRuleInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<ServerFirewallRuleInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

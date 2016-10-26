@@ -39,7 +39,7 @@ public interface SqlElasticPool extends
     /**
      * @return the state of the Azure SQL Elastic Pool
      */
-    String state();
+    ElasticPoolState state();
 
     /**
      * @return the edition of Azure SQL Elastic Pool
