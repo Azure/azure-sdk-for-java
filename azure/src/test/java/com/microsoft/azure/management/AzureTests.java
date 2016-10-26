@@ -90,7 +90,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests ARM template deployments
+     * Tests ARM template deployments.
      * @throws IOException
      * @throws CloudException
      */
@@ -116,7 +116,7 @@ public class AzureTests {
 
 
     /**
-     * Tests basic generic resources retrieval
+     * Tests basic generic resources retrieval.
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
@@ -132,7 +132,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests VM images
+     * Tests VM images.
      * @throws IOException
      * @throws CloudException
      */
@@ -161,7 +161,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the network security group implementation
+     * Tests the network security group implementation.
      * @throws Exception
      */
     @Test
@@ -169,6 +169,10 @@ public class AzureTests {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the inbound NAT rule support in load balancers.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer.InternetWithNatRule(
@@ -178,6 +182,10 @@ public class AzureTests {
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the inbound NAT pool support in load balancers.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer.InternetWithNatPool(
@@ -187,6 +195,10 @@ public class AzureTests {
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the minimum internet-facing load balancer.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer.InternetMinimal(
@@ -196,6 +208,10 @@ public class AzureTests {
             .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
+    /**
+     * Tests the minimum internal load balancer.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
@@ -204,6 +220,10 @@ public class AzureTests {
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the minimum Internet facing application gateway
+     * @throws Exception
+     */
     @Test
     public void testAppGatewaysInternetMinimum() throws Exception {
         new TestApplicationGateway.PublicMinimal(
@@ -214,7 +234,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the public IP address implementation
+     * Tests the public IP address implementation.
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
@@ -222,7 +242,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the availability set implementation
+     * Tests the availability set implementation.
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
@@ -230,7 +250,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual network implementation
+     * Tests the virtual network implementation.
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
@@ -239,7 +259,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests route tables
+     * Tests route tables.
      * @throws Exception
      */
     @Test public void testRouteTables() throws Exception {
@@ -248,13 +268,17 @@ public class AzureTests {
     }
 
     /**
-     * Tests the network interface implementation
+     * Tests the network interface implementation.
      * @throws Exception
      */
     @Test public void testNetworkInterfaces() throws Exception {
         new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machines.
+     * @throws Exception
+     */
     @Test public void testVirtualMachines() throws Exception {
         // Future: This method needs to have a better specific name since we are going to include unit test for
         // different vm scenarios.
@@ -262,7 +286,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual machine data disk implementation
+     * Tests the virtual machine data disk implementation.
      * @throws Exception
      */
     @Test public void testVirtualMachineDataDisk() throws Exception {
@@ -270,7 +294,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual machine network interface implementation
+     * Tests the virtual machine network interface implementation.
      * @throws Exception
      */
     @Test public void testVirtualMachineNics() throws Exception {
@@ -280,21 +304,37 @@ public class AzureTests {
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machine support for SSH.
+     * @throws Exception
+     */
     @Test public void testVirtualMachineSSh() throws Exception {
         new TestVirtualMachineSsh(azure.publicIpAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machine sizes.
+     * @throws Exception
+     */
     @Test public void testVirtualMachineSizes() throws Exception {
         new TestVirtualMachineSizes()
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    /**
+     * Tests subscription listing.
+     * @throws Exception
+     */
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
     }
 
+    /**
+     * Tests resource group listing.
+     * @throws Exception
+     */
     @Test
     public void listResourceGroups() throws Exception {
         int groupCount = azure.resourceGroups().list().size();
@@ -302,6 +342,10 @@ public class AzureTests {
         Assert.assertTrue(0 < groupCount);
     }
 
+    /**
+     * Tests storage account listing.
+     * @throws Exception
+     */
     @Test
     public void listStorageAccounts() throws Exception {
         Assert.assertTrue(0 < azure.storageAccounts().list().size());
