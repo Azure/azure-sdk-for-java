@@ -59,7 +59,11 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPublicFrontendOrPort,
         DefinitionStages.WithFrontendPort,
         DefinitionStages.WithFrontend,
-        DefinitionStages.WithCreateOrFrontendPort {
+        DefinitionStages.WithFrontendPortOrBackend,
+        DefinitionStages.WithBackend,
+        DefinitionStages.WithBackendOrHttpConfig,
+        DefinitionStages.WithBackendHttpConfig,
+        DefinitionStages.WithBackendHttpConfigOrCreate {
     }
 
     /**
@@ -153,7 +157,7 @@ public interface ApplicationGateway extends
              * @param portNumber a port number
              * @return the next stage of the definition
              */
-            WithCreateOrFrontendPort withFrontendPort(int portNumber);
+            WithFrontendPortOrBackend withFrontendPort(int portNumber);
 
             /**
              * Creates a port.
@@ -161,18 +165,61 @@ public interface ApplicationGateway extends
              * @param name the name to assign to the port
              * @return the next stage of the definition
              */
-            WithCreateOrFrontendPort withFrontendPort(int portNumber, String name);
-        }
-
-        interface WithCreateOrFrontendPort extends WithFrontendPort, WithCreate {
+            WithFrontendPortOrBackend withFrontendPort(int portNumber, String name);
         }
 
         /**
-         * The stage of an application gateway definition allowing to specify the SKU
+         * The stage of an application gateway definition allowing to add a backend or continue adding frontend ports.
+         */
+        interface WithFrontendPortOrBackend extends WithFrontendPort, WithBackend {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a backend.
+         */
+        interface WithBackend {
+            /**
+             * Begins the definition of a new application gateway backend to be attached to the gateway.
+             * @param name a unique name for the backend
+             * @return the first stage of the backend definition
+             */
+            ApplicationGatewayBackend.DefinitionStages.Blank<WithBackendOrHttpConfig> defineBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to continue adding more backends
+         * or start defining backend HTTP configurations.
+         */
+        interface WithBackendOrHttpConfig extends WithBackend, WithBackendHttpConfig {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a backend HTTP configuration.
+         */
+        interface WithBackendHttpConfig {
+            /**
+             * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
+             * @param name a unique name for the backend HTTP configuration
+             * @return the first stage of the backend HTTP configuration definition
+             */
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrCreate> defineBackendHttpConfiguration(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to continue adding more backend
+         * HTTP configurations or start editing optional settings, or create the resource.
+         * @author marcins
+         *
+         */
+        interface WithBackendHttpConfigOrCreate extends WithBackendHttpConfig, WithCreate {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to specify the SKU.
          */
         interface WithSku {
             /**
-             * Specifies the SKU of the application gateway to create
+             * Specifies the SKU of the application gateway to create.
              * @param skuName an application gateway SKU name
              * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the definition
@@ -215,7 +262,7 @@ public interface ApplicationGateway extends
             WithFrontend withContainingSubnet(String networkResourceId, String subnetName);
 
             /**
-             * Begins the definition of a new IP configuration to add to this application gateway
+             * Begins the definition of a new IP configuration to add to this application gateway.
              * @param name a name to assign to the IP configuration
              * @return the first stage of the IP configuration definition
              */
@@ -238,11 +285,11 @@ public interface ApplicationGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of an application gateway definition allowing to modify the SKU
+         * The stage of an application gateway definition allowing to modify the SKU.
          */
         interface WithSku {
             /**
-             * Specifies the SKU of the application gateway
+             * Specifies the SKU of the application gateway.
              * @param skuName an application gateway SKU name
              * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the update

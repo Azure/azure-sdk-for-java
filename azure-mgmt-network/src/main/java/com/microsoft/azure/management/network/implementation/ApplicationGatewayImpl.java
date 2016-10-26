@@ -6,6 +6,8 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
@@ -43,6 +45,8 @@ class ApplicationGatewayImpl
 
     private Map<String, ApplicationGatewayIpConfiguration> configs;
     private Map<String, ApplicationGatewayFrontend> frontends;
+    private Map<String, ApplicationGatewayBackend> backends;
+    private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -67,6 +71,8 @@ class ApplicationGatewayImpl
     protected void initializeChildrenFromInner() {
         initializeConfigsFromInner();
         initializeFrontendsFromInner();
+        initializeBackendsFromInner();
+        initializeBackendHttpConfigsFromInner();
     }
 
     private void initializeFrontendsFromInner() {
@@ -76,6 +82,28 @@ class ApplicationGatewayImpl
             for (ApplicationGatewayFrontendIPConfigurationInner inner : inners) {
                 ApplicationGatewayFrontendImpl frontend = new ApplicationGatewayFrontendImpl(inner, this);
                 this.frontends.put(inner.name(), frontend);
+            }
+        }
+    }
+
+    private void initializeBackendsFromInner() {
+        this.backends = new TreeMap<>();
+        List<ApplicationGatewayBackendAddressPoolInner> inners = this.inner().backendAddressPools();
+        if (inners != null) {
+            for (ApplicationGatewayBackendAddressPoolInner inner : inners) {
+                ApplicationGatewayBackendImpl backend = new ApplicationGatewayBackendImpl(inner, this);
+                this.backends.put(inner.name(), backend);
+            }
+        }
+    }
+
+    private void initializeBackendHttpConfigsFromInner() {
+        this.httpConfigs = new TreeMap<>();
+        List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
+        if (inners != null) {
+            for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
+                ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
+                this.httpConfigs.put(inner.name(), httpConfig);
             }
         }
     }
@@ -107,6 +135,12 @@ class ApplicationGatewayImpl
 
         // Reset and update frontends
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
+
+        // Reset and update backends
+        this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
+
+        // Reset and update backend HTTP configs
+        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.httpConfigs.values()));
     }
 
     @Override
@@ -136,6 +170,24 @@ class ApplicationGatewayImpl
             return null;
         } else {
             this.frontends.put(frontend.name(), frontend);
+            return this;
+        }
+    }
+
+    ApplicationGatewayImpl withBackend(ApplicationGatewayBackendImpl backend) {
+        if (backend == null) {
+            return null;
+        } else {
+            this.backends.put(backend.name(), backend);
+            return this;
+        }
+    }
+
+    ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
+        if (httpConfig == null) {
+            return null;
+        } else {
+            this.httpConfigs.put(httpConfig.name(), httpConfig);
             return this;
         }
     }
@@ -240,6 +292,30 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayBackendImpl defineBackend(String name) {
+        ApplicationGatewayBackend backend = this.backends.get(name);
+        if (backend == null) {
+            ApplicationGatewayBackendAddressPoolInner inner = new ApplicationGatewayBackendAddressPoolInner()
+                    .withName(name);
+            return new ApplicationGatewayBackendImpl(inner, this);
+        } else {
+            return (ApplicationGatewayBackendImpl) backend;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
+        ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
+        if (httpConfig == null) {
+            ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
+                    .withName(name);
+            return new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
+        } else {
+            return (ApplicationGatewayBackendHttpConfigurationImpl) httpConfig;
+        }
+    }
+
+    @Override
     protected ApplicationGatewayImpl withExistingPublicIpAddress(String resourceId, String frontendName) {
         if (frontendName == null) {
             frontendName = DEFAULT;
@@ -259,7 +335,11 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withFrontendPort(int portNumber, String name) {
         if (name == null) {
             // Auto-name the port if no name provided
-            name = "port" + this.inner().frontendPorts().size();
+            if (this.inner().frontendPorts() != null) {
+                name = "port" + (this.inner().frontendPorts().size() + 1); // TODO: better uniqueness would be nice
+            } else {
+                name = "port1";
+            }
         }
 
         List<ApplicationGatewayFrontendPortInner> frontendPorts = this.inner().frontendPorts();
@@ -276,11 +356,13 @@ class ApplicationGatewayImpl
             }
         }
 
-        if (frontendPort != null) {
+        if (frontendPort == null) {
             frontendPort = new ApplicationGatewayFrontendPortInner()
                     .withName(name)
                     .withPort(portNumber);
             frontendPorts.add(frontendPort);
+        } else {
+            frontendPort.withPort(portNumber);
         }
 
         return this;

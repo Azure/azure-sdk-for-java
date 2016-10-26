@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;

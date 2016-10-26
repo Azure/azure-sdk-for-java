@@ -81,6 +81,10 @@ public class TestApplicationGateway {
                     .withFrontendSubnet(vnet, "subnet1")
                     .withFrontendPort(80)
                     .withFrontendPort(8080)
+                    .defineBackend("backend1")
+                        .attach()
+                    .defineBackendHttpConfiguration("httpConfig1")
+                        .attach()
                     .create();
 
             return appGateway;
