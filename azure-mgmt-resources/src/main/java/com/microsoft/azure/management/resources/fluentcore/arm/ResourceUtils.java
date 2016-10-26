@@ -24,7 +24,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String groupFromResourceId(String id) {
-        return extractFromResourceId(id, "resource[gG]roups");
+        return ResourceId.parseResourceId(id).resourceGroupName();
     }
 
     /**
@@ -33,7 +33,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String resourceProviderFromResourceId(String id) {
-        return extractFromResourceId(id, "providers");
+        return ResourceId.parseResourceId(id).providerNamespace();
     }
 
     /**
@@ -45,8 +45,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        String[] splits = id.split("/");
-        return splits[splits.length - 2];
+        return ResourceId.parseResourceId(id).resourceType();
     }
 
     /**
@@ -61,14 +60,12 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        String parentId = id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
-        Pattern pattern = Pattern.compile("[-\\w._/]+/providers/Microsoft.[\\w]+$");
-        Matcher matcher = pattern.matcher(id);
-        if (matcher.find()) {
-            return null;
-        } else {
-            return parentId;
+        ResourceId resourceId = ResourceId.parseResourceId(id);
+        if (resourceId != null && resourceId.parent() != null) {
+            return ResourceId.parseResourceId(id).parent().id();
         }
+
+        return null;
     }
 
     /**
@@ -82,14 +79,13 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        String parentId = id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
-        Pattern pattern = Pattern.compile("[-\\w._/]+/providers/Microsoft.[\\w]+$");
-        Matcher matcher = pattern.matcher(id);
-        if (matcher.find()) {
-            return "";
-        } else {
-            return relativePathFromResourceId(parentId);
+
+        ResourceId parent = ResourceId.parseResourceId(id).parent();
+        if (parent != null) {
+            return parent.resourceType() + "/" + parent.name();
         }
+
+        return "";
     }
 
     /**
@@ -141,8 +137,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        String[] splits = id.split("/");
-        return splits[splits.length - 1];
+        return ResourceId.parseResourceId(id).name();
     }
 
     /**
