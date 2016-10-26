@@ -24,7 +24,7 @@ public class SqlFirewallRuleImpl<CreateStageT>
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,
-                                    FirewallRuleInner,
+                                    ServerFirewallRuleInner,
                                     SqlFirewallRuleImpl<CreateStageT>>
         implements SqlFirewallRule,
             SqlFirewallRule.Definition<CreateStageT>,
@@ -33,7 +33,7 @@ public class SqlFirewallRuleImpl<CreateStageT>
     private final ServersInner innerCollection;
 
     protected SqlFirewallRuleImpl(String name,
-                                  FirewallRuleInner innerObject,
+                                  ServerFirewallRuleInner innerObject,
                                   ServersInner innerCollection) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
@@ -62,7 +62,7 @@ public class SqlFirewallRuleImpl<CreateStageT>
     }
 
     @Override
-    protected void setParentName(FirewallRuleInner inner) {
+    protected void setParentName(ServerFirewallRuleInner inner) {
         if (inner.id() != null) {
             this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
         }
@@ -73,9 +73,9 @@ public class SqlFirewallRuleImpl<CreateStageT>
         final SqlFirewallRule self = this;
 
         return this.innerCollection.createOrUpdateFirewallRuleAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
-                .map(new Func1<FirewallRuleInner, SqlFirewallRule>() {
+                .map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
             @Override
-            public SqlFirewallRule call(FirewallRuleInner databaseInner) {
+            public SqlFirewallRule call(ServerFirewallRuleInner databaseInner) {
                 setInner(databaseInner);
 
                 return self;

@@ -92,12 +92,12 @@ public interface SqlDatabase extends
      * SQL Database, this is the Service Level Objective that is being
      * applied to the Azure SQL Database
      */
-    String requestedServiceObjectiveName();
+    ServiceObjectiveName requestedServiceObjectiveName();
 
     /**
      * @return the Service Level Objective of the Azure SQL Database.
      */
-    String serviceLevelObjective();
+    ServiceObjectiveName serviceLevelObjective();
 
     /**
      * @return the status of the Azure SQL Database
