@@ -5,8 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.Map;
-
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.RouteTableInner;
 import com.microsoft.azure.management.network.model.HasAssociatedSubnets;
@@ -17,6 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+
+import java.util.Map;
 
 /**
  * Entry point for route table management.
@@ -134,7 +134,7 @@ public interface RouteTable extends
             /**
              * Begins the definition of a new route to add to the route table.
              * <p>
-             * The definition must be completed with a call to {@link Route.UpdateStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link Route.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name of the route
              * @return the first stage of the definition
              */

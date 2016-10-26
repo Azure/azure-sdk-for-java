@@ -79,7 +79,7 @@ public interface Route extends
             /**
              * Specifies the next hop type.
              * <p>
-             * To use a virtual appliance, use {@link WithNextHopToVirtualAppliance#withNextHopToVirtualAppliance()} instead and specify its IP address.
+             * To use a virtual appliance, use {@link #withNextHopToVirtualAppliance(String)} instead and specify its IP address.
              * @param nextHopType a hop type
              * @return the next stage of the definition
              */
@@ -95,7 +95,7 @@ public interface Route extends
     }
 
     /** The entirety of a route definition.
-     * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -127,7 +127,7 @@ public interface Route extends
             /**
              * Specifies the next hop type.
              * <p>
-             * To use a virtual appliance, use {@link WithNextHopToVirtualAppliance#withNextHopToVirtualAppliance()} instead and specify its IP address.
+             * To use a virtual appliance, use {@link #withNextHopToVirtualAppliance(String)} instead and specify its IP address.
              * @param nextHopType a hop type
              * @return the next stage of the update
              */
@@ -193,7 +193,7 @@ public interface Route extends
             /**
              * Specifies the next hop type.
              * <p>
-             * To use a virtual appliance, use {@link WithNextHopToVirtualAppliance#withNextHopToVirtualAppliance()} instead and specify its IP address.
+             * To use a virtual appliance, use {@link #withNextHopToVirtualAppliance(String)} instead and specify its IP address.
              * @param nextHopType a hop type
              * @return the next stage of the definition
              */
