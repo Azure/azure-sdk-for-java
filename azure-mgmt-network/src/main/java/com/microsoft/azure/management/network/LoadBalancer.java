@@ -56,7 +56,7 @@ public interface LoadBalancer extends
     /**
      * @return inbound NAT rules for this balancer
      */
-    Map<String, InboundNatRule> inboundNatRules();
+    Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 
     /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
@@ -66,7 +66,7 @@ public interface LoadBalancer extends
     /**
      * @return inbound NAT pools, indexed by name
      */
-    Map<String, InboundNatPool> inboundNatPools();
+    Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
     /**
      * The entirety of the load balancer definition.
@@ -348,11 +348,11 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbound NAT rule to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatRule.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatRule.DefinitionStages.WithAttach#attach()}
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
+            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
         }
 
         /**
@@ -362,11 +362,11 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbount NAT pool to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatPool.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatPool.DefinitionStages.WithAttach#attach()}
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
+            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
         }
     }
 
@@ -591,18 +591,18 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbound NAT rule.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name for the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.UpdateDefinitionStages.Blank<Update> defineInboundNatRule(String name);
+            LoadBalancerInboundNatRule.UpdateDefinitionStages.Blank<Update> defineInboundNatRule(String name);
 
             /**
              * Begins the description of an update to an existing inbound NAT rule.
              * @param name the name of the inbound NAT rule to update
              * @return the first stage of the inbound NAT rule update
              */
-            InboundNatRule.Update updateInboundNatRule(String name);
+            LoadBalancerInboundNatRule.Update updateInboundNatRule(String name);
         }
 
         /**
@@ -621,14 +621,14 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.UpdateDefinitionStages.Blank<Update> defineInboundNatPool(String name);
+            LoadBalancerInboundNatPool.UpdateDefinitionStages.Blank<Update> defineInboundNatPool(String name);
 
             /**
              * Begins the description of an update to an existing inbound NAT pool.
              * @param name the name of the inbound NAT pool to update
              * @return the first stage of the inbound NAT pool update
              */
-            InboundNatPool.Update updateInboundNatPool(String name);
+            LoadBalancerInboundNatPool.Update updateInboundNatPool(String name);
         }
     }
 

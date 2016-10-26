@@ -30,7 +30,7 @@ import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -233,7 +233,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
+    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
         if (this.getPrimaryInternetFacingLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -259,7 +259,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
+    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
         if (this.getPrimaryInternalLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -1248,12 +1248,12 @@ public class VirtualMachineScaleSetImpl
         return attachedBackends;
     }
 
-    private static Map<String, InboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
+    private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
                                                                                                VirtualMachineScaleSetIPConfigurationInner ipConfig) {
         String loadBalancerId = loadBalancer.id();
-        Map<String, InboundNatPool> attachedInboundNatPools = new HashMap<>();
-        Map<String, InboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
-        for (InboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
+        Map<String, LoadBalancerInboundNatPool> attachedInboundNatPools = new HashMap<>();
+        Map<String, LoadBalancerInboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
+        for (LoadBalancerInboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
             String inboundNatPoolId =  mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
                 if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
@@ -1278,10 +1278,10 @@ public class VirtualMachineScaleSetImpl
                 ipConfig,
                 backendNames);
 
-        Collection<InboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
+        Collection<LoadBalancerInboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
         String[] natPoolNames = new String[inboundNatPools.size()];
         i = 0;
-        for (InboundNatPool inboundNatPool : inboundNatPools) {
+        for (LoadBalancerInboundNatPool inboundNatPool : inboundNatPools) {
             natPoolNames[i] = inboundNatPool.name();
             i++;
         }

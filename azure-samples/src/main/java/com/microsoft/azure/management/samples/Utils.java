@@ -28,8 +28,8 @@ import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.InboundNatPool;
-import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerProbe;
@@ -507,14 +507,14 @@ public final class Utils {
             // Inbound NAT pool references
             info.append("\n\t\t\tReferenced inbound NAT pools: ")
                     .append(frontend.inboundNatPools().size());
-            for (InboundNatPool pool : frontend.inboundNatPools().values()) {
+            for (LoadBalancerInboundNatPool pool : frontend.inboundNatPools().values()) {
                 info.append("\n\t\t\t\tName: ").append(pool.name());
             }
 
             // Inbound NAT rule references
             info.append("\n\t\t\tReferenced inbound NAT rules: ")
                     .append(frontend.inboundNatRules().size());
-            for (InboundNatRule rule : frontend.inboundNatRules().values()) {
+            for (LoadBalancerInboundNatRule rule : frontend.inboundNatRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
 
@@ -529,7 +529,7 @@ public final class Utils {
         // Show inbound NAT rules
         info.append("\n\tInbound NAT rules: ")
                 .append(resource.inboundNatRules().size());
-        for (InboundNatRule natRule : resource.inboundNatRules().values()) {
+        for (LoadBalancerInboundNatRule natRule : resource.inboundNatRules().values()) {
             info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
                     .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
                     .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
@@ -544,7 +544,7 @@ public final class Utils {
         // Show inbound NAT pools
         info.append("\n\tInbound NAT pools: ")
                 .append(resource.inboundNatPools().size());
-        for (InboundNatPool natPool: resource.inboundNatPools().values()) {
+        for (LoadBalancerInboundNatPool natPool: resource.inboundNatPools().values()) {
             info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
                     .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
                     .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())

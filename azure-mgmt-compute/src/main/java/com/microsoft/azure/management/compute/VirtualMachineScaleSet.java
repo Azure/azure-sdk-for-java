@@ -5,7 +5,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetInner;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
-import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -161,7 +161,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
+    Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the internal load balancer associated with the primary network interface of
@@ -185,7 +185,7 @@ public interface VirtualMachineScaleSet extends
      *
      * @throws IOException the IO exception
      */
-    Map<String, InboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException;
+    Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException;
 
     /**
      * @return the list of IDs of the public IP addresses associated with the primary Internet-facing load balancer
