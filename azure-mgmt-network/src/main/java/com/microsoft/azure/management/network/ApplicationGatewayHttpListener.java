@@ -6,32 +6,32 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
+import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An immutable client-side representation of an application gateway's backend HTTP configuration.
+ * An immutable client-side representation of an application gateway's HTTP listener.
  */
 @Fluent()
-public interface ApplicationGatewayBackendHttpConfiguration extends
-    Wrapper<ApplicationGatewayBackendHttpSettingsInner>,
+public interface ApplicationGatewayHttpListener extends
+    Wrapper<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway> {
 
     /**
-     * Grouping of application gateway backend HTTP configuration stages.
+     * Grouping of application gateway HTTP listener configuration stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of an application gateway backend HTTP configuration.
+         * The first stage of an application gateway HTTP listener.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
-        /** The final stage of an application gateway backend HTTP configuration.
+        /** The final stage of an application gateway HTTP listener.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
@@ -42,7 +42,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         }
     }
 
-    /** The entirety of an application gateway backend HTTP configuration definition.
+    /** The entirety of an application gateway HTTP listener definition.
      * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
      */
     interface Definition<ParentT> extends
@@ -51,30 +51,30 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
     }
 
     /**
-     * Grouping of application gateway backend HTTP configuration update stages.
+     * Grouping of application gateway HTTP listener update stages.
      */
     interface UpdateStages {
     }
 
     /**
-     * The entirety of an application gateway backend HTTP configuration update as part of an application gateway update.
+     * The entirety of an application gateway HTTP listener update as part of an application gateway update.
      */
     interface Update extends
         Settable<ApplicationGateway.Update> {
     }
 
     /**
-     * Grouping of application gateway backend HTTP configuration definition stages applicable as part of an application gateway update.
+     * Grouping of application gateway HTTP listener definition stages applicable as part of an application gateway update.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of an application gateway backend HTTP configuration definition.
+         * The first stage of an application gateway HTTP listener configuration definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
-        /** The final stage of an application gateway backend HTTP configuration definition.
+        /** The final stage of an application gateway HTTP listener definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
@@ -85,7 +85,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         }
     }
 
-    /** The entirety of an application gateway backend HTTP configuration definition as part of an application gateway update.
+    /** The entirety of an application gateway HTTP listener definition as part of an application gateway update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends

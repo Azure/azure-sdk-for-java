@@ -63,7 +63,9 @@ public interface ApplicationGateway extends
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrHttpConfig,
         DefinitionStages.WithBackendHttpConfig,
-        DefinitionStages.WithBackendHttpConfigOrCreate {
+        DefinitionStages.WithBackendHttpConfigOrListener,
+        DefinitionStages.WithHttpListener,
+        DefinitionStages.WithHttpListenerOrCreate {
     }
 
     /**
@@ -202,16 +204,33 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrCreate> defineBackendHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrListener> defineBackendHttpConfiguration(String name);
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more backend
-         * HTTP configurations or start editing optional settings, or create the resource.
-         * @author marcins
-         *
+         * HTTP configurations or start adding HTTP listeners.
          */
-        interface WithBackendHttpConfigOrCreate extends WithBackendHttpConfig, WithCreate {
+        interface WithBackendHttpConfigOrListener extends WithBackendHttpConfig, WithHttpListener {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add an HTTP listener.
+         */
+        interface WithHttpListener {
+            /**
+             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
+             * @param name a unique name for the HTTP listener
+             * @return the first stage of the HTTP listener definition
+             */
+            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrCreate> defineHttpListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to continue adding more HTTP listeners,
+         * or start specifying optional settings, or create the resource.
+         */
+        interface WithHttpListenerOrCreate extends WithHttpListener, WithCreate {
         }
 
         /**

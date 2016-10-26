@@ -85,6 +85,8 @@ public class TestApplicationGateway {
                         .attach()
                     .defineBackendHttpConfiguration("httpConfig1")
                         .attach()
+                    .defineHttpListener("listener1")
+                        .attach()
                     .create();
 
             return appGateway;

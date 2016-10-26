@@ -6,9 +6,12 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithHttpListenerOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpListener.DefinitionStages.Blank;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
@@ -47,6 +50,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
+    private Map<String, ApplicationGatewayHttpListener> httpListeners;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -73,6 +77,7 @@ class ApplicationGatewayImpl
         initializeFrontendsFromInner();
         initializeBackendsFromInner();
         initializeBackendHttpConfigsFromInner();
+        initializeHttpListenersFromInner();
     }
 
     private void initializeFrontendsFromInner() {
@@ -104,6 +109,17 @@ class ApplicationGatewayImpl
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
                 ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
                 this.httpConfigs.put(inner.name(), httpConfig);
+            }
+        }
+    }
+
+    private void initializeHttpListenersFromInner() {
+        this.httpListeners = new TreeMap<>();
+        List<ApplicationGatewayHttpListenerInner> inners = this.inner().httpListeners();
+        if (inners != null) {
+            for (ApplicationGatewayHttpListenerInner inner : inners) {
+                ApplicationGatewayHttpListenerImpl httpListener = new ApplicationGatewayHttpListenerImpl(inner, this);
+                this.httpListeners.put(inner.name(), httpListener);
             }
         }
     }
@@ -141,6 +157,9 @@ class ApplicationGatewayImpl
 
         // Reset and update backend HTTP configs
         this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.httpConfigs.values()));
+
+        // Reset and update HTTP listeners
+        this.inner().withHttpListeners(innersFromWrappers(this.httpListeners.values()));
     }
 
     @Override
@@ -179,6 +198,15 @@ class ApplicationGatewayImpl
             return null;
         } else {
             this.backends.put(backend.name(), backend);
+            return this;
+        }
+    }
+
+    ApplicationGatewayImpl withHttpListener(ApplicationGatewayHttpListenerImpl httpListener) {
+        if (httpListener == null) {
+            return null;
+        } else {
+            this.httpListeners.put(httpListener.name(), httpListener);
             return this;
         }
     }
@@ -300,6 +328,19 @@ class ApplicationGatewayImpl
             return new ApplicationGatewayBackendImpl(inner, this);
         } else {
             return (ApplicationGatewayBackendImpl) backend;
+        }
+    }
+
+
+    @Override
+    public Blank<WithHttpListenerOrCreate> defineHttpListener(String name) {
+        ApplicationGatewayHttpListener httpListener = this.httpListeners.get(name);
+        if (httpListener == null) {
+            ApplicationGatewayHttpListenerInner inner = new ApplicationGatewayHttpListenerInner()
+                    .withName(name);
+            return new ApplicationGatewayHttpListenerImpl(inner, this);
+        } else {
+            return (ApplicationGatewayHttpListenerImpl) httpListener;
         }
     }
 
