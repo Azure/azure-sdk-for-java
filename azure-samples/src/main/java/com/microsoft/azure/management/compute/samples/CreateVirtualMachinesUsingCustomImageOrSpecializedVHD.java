@@ -76,8 +76,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpDnsLabel)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
-                        .withPassword(password)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .defineNewExtension("CustomScriptForLinux")
                             .withPublisher("Microsoft.OSTCExtensions")
@@ -134,8 +134,8 @@ public final class CreateVirtualMachinesUsingCustomImageOrSpecializedVHD {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withStoredLinuxImage(capturedImageUri) // Note: A Generalized Image can also be an uploaded VHD prepared from an on-premise generalized VM.
-                        .withRootUserName(userName)
-                        .withPassword(password)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 

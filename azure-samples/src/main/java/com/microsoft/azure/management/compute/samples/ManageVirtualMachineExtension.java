@@ -124,8 +124,8 @@ public final class ManageVirtualMachineExtension {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(pipDnsLabelLinuxVM)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                        .withRootUserName(firstLinuxUserName)
-                        .withPassword(firstLinuxUserPassword)
+                        .withRootUsername(firstLinuxUserName)
+                        .withRootPassword(firstLinuxUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 
@@ -222,8 +222,8 @@ public final class ManageVirtualMachineExtension {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(pipDnsLabelWindowsVM)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(firstWindowsUserName)
-                        .withPassword(firstWindowsUserPassword)
+                        .withAdminUsername(firstWindowsUserName)
+                        .withAdminPassword(firstWindowsUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .defineNewExtension(windowsCustomScriptExtensionName)
                             .withPublisher(windowsCustomScriptExtensionPublisherName)

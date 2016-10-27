@@ -303,7 +303,7 @@ public final class ManageInternalLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces2.get(0))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet2);
@@ -316,7 +316,7 @@ public final class ManageInternalLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces2.get(1))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet2);
