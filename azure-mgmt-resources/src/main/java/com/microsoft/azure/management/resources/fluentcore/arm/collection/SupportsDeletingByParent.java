@@ -13,11 +13,9 @@ import rx.Observable;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource group and parent.
- *
- * @param <T> the type of the resource collection
  */
 @LangDefinition(ContainerName = "CollectionActions", CreateAsyncMethods = true, MethodConversionType = LangDefinition.MethodConversion.OnlyMethod)
-public interface SupportsDeletingByParent<T> {
+public interface SupportsDeletingByParent {
     /**
      * Deletes a resource from Azure, identifying it by its name and its resource group.
      *

@@ -43,7 +43,7 @@ public abstract class IndependentChildrenImpl<
         SupportsGettingByParent<T>,
         SupportsListingByParent<T>,
         SupportsDeletingById,
-        SupportsDeletingByParent<T> {
+        SupportsDeletingByParent {
     protected final InnerCollectionT innerCollection;
     protected final ManagerT manager;
 

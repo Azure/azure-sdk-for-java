@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
+import com.microsoft.azure.management.sql.ElasticPoolState;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
 import org.joda.time.DateTime;
@@ -49,7 +50,7 @@ public class SqlElasticPoolImpl
     }
 
     @Override
-    public String state() {
+    public ElasticPoolState state() {
         return this.inner().state();
     }
 

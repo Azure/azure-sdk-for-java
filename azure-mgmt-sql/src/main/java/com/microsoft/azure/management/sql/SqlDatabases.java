@@ -24,7 +24,7 @@ public interface SqlDatabases extends
         SupportsDeletingById,
         SupportsGettingById<SqlDatabase>,
         SupportsBatchCreation<SqlDatabase>,
-        SupportsDeletingByParent<SqlDatabase> {
+        SupportsDeletingByParent {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and SQLDatabase name.

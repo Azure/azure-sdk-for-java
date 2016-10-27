@@ -109,8 +109,7 @@ public class ElasticPoolActivityInner extends Resource {
     private DateTime startTime;
 
     /**
-     * The current state of the operation. Possible values include:
-     * 'Creating', 'Ready', 'Disabled'.
+     * The current state of the operation.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;

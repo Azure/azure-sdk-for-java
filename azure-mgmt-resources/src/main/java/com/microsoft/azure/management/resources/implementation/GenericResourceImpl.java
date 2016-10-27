@@ -30,7 +30,7 @@ final class GenericResourceImpl
         GenericResource.Definition,
         GenericResource.UpdateStages.WithApiVersion,
         GenericResource.Update {
-    private final ResourceManagementClientImpl serviceCleint;
+    private final ResourceManagementClientImpl serviceClient;
     private final ResourcesInner resourceClient;
     private final Providers providersClient;
     private String resourceProviderNamespace;
@@ -48,7 +48,7 @@ final class GenericResourceImpl
         resourceProviderNamespace = ResourceUtils.resourceProviderFromResourceId(innerModel.id());
         resourceType = ResourceUtils.resourceTypeFromResourceId(innerModel.id());
         parentResourcePath = ResourceUtils.parentRelativePathFromResourceId(innerModel.id());
-        this.serviceCleint = serviceClient;
+        this.serviceClient = serviceClient;
         this.resourceClient = innerCollection;
         this.providersClient = providerClient;
     }
@@ -148,7 +148,7 @@ final class GenericResourceImpl
                                 id = inner().id();
                             } else {
                                 id = ResourceUtils.constructResourceId(
-                                        serviceCleint.subscriptionId(),
+                                        serviceClient.subscriptionId(),
                                         resourceGroupName(),
                                         resourceProviderNamespace(),
                                         resourceType(),

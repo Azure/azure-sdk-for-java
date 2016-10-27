@@ -82,6 +82,10 @@ public final class ElasticPoolsInner {
         Observable<Response<ResponseBody>> listActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
+        Observable<Response<ResponseBody>> listDatabaseActivity(@Path("elasticPoolName") String elasticPoolName, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases/{databaseName}")
         Observable<Response<ResponseBody>> getDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -592,6 +596,92 @@ public final class ElasticPoolsInner {
     private ServiceResponse<PageImpl1<ElasticPoolActivityInner>> listActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolActivityInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<ElasticPoolActivityInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     *
+     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the List&lt;ElasticPoolDatabaseActivityInner&gt; object if successful.
+     */
+    public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String elasticPoolName, String resourceGroupName, String serverName) {
+        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     *
+     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
+        return ServiceCall.create(listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName), serviceCallback);
+    }
+
+    /**
+     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     *
+     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
+     */
+    public Observable<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName) {
+        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
+            @Override
+            public List<ElasticPoolDatabaseActivityInner> call(ServiceResponse<List<ElasticPoolDatabaseActivityInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
+     *
+     * @param elasticPoolName The name of the Azure SQL Elastic Pool.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> listDatabaseActivityWithServiceResponseAsync(String elasticPoolName, String resourceGroupName, String serverName) {
+        if (elasticPoolName == null) {
+            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listDatabaseActivity(elasticPoolName, this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
+                        ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> listDatabaseActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolDatabaseActivityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl1<ElasticPoolDatabaseActivityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

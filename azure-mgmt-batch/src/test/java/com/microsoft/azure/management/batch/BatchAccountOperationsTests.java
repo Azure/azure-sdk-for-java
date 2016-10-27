@@ -165,13 +165,9 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
                 .parent()
                 .apply();
         batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 
     @Test
@@ -217,12 +213,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         Assert.assertEquals(application.updatesAllowed(), allowUpdates);
 
         batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 }

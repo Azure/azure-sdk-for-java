@@ -11,7 +11,6 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
@@ -19,10 +18,9 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
  */
 @Fluent
 public interface SqlFirewallRules extends
-        SupportsCreating<SqlFirewallRule.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsGettingById<SqlFirewallRule>,
-        SupportsDeletingByParent<SqlFirewallRule> {
+        SupportsDeletingByParent {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and FirewallRule name.
@@ -59,4 +57,20 @@ public interface SqlFirewallRules extends
      * @return the list of SQLDatabases in a SQLServer
      */
     PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer);
+
+    /**
+     * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.
+     */
+    interface SqlFirewallRulesCreatable extends SqlFirewallRules {
+        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.WithCreate> definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName);
+    }
+
+    /**
+     * Entry point to SQL FirewallRule management API, which does not have SqlServer specified yet.
+     */
+    interface SqlFirewallRulesParentable extends  SqlFirewallRules {
+        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.Parentable> define(String firewallRuleName);
+    }
 }
+
+

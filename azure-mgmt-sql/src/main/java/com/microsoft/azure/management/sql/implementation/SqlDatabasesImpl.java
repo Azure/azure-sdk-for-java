@@ -55,6 +55,10 @@ public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
 
     @Override
     protected SqlDatabaseImpl wrapModel(DatabaseInner inner) {
+        if (inner == null) {
+            return null;
+        }
+
         return new SqlDatabaseImpl(inner.name(), inner, this.innerCollection, manager.sqlElasticPools());
     }
 

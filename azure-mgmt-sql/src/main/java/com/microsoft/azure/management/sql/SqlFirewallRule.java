@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.sql.implementation.FirewallRuleInner;
+import com.microsoft.azure.management.sql.implementation.ServerFirewallRuleInner;
 
 /**
  * An immutable client-side representation of an Azure SQL Server FirewallRule.
@@ -22,7 +22,7 @@ public interface SqlFirewallRule extends
         IndependentChild,
         Refreshable<SqlFirewallRule>,
         Updatable<SqlFirewallRule.Update>,
-        Wrapper<FirewallRuleInner> {
+        Wrapper<ServerFirewallRuleInner> {
 
     /**
      * @return the SQL Server name to which this firewall rule belongs
@@ -41,11 +41,13 @@ public interface SqlFirewallRule extends
 
     /**
      * Container interface for all the definitions that need to be implemented.
+     * @param <CreateStageT> The final stage for which return creatable for FirewallRule
      */
-    interface Definition extends
-            SqlFirewallRule.DefinitionStages.Blank,
-            SqlFirewallRule.DefinitionStages.WithStartIpAddress,
-            SqlFirewallRule.DefinitionStages.WithEndIpAddress,
+    interface Definition<CreateStageT> extends
+            SqlFirewallRule.DefinitionStages.Blank<CreateStageT>,
+            SqlFirewallRule.DefinitionStages.WithStartIpAddress<CreateStageT>,
+            SqlFirewallRule.DefinitionStages.WithEndIpAddress<CreateStageT>,
+            SqlFirewallRule.DefinitionStages.Parentable,
             SqlFirewallRule.DefinitionStages.WithCreate {
     }
 
@@ -55,34 +57,37 @@ public interface SqlFirewallRule extends
     interface DefinitionStages {
         /**
          * The first stage of the SQL Server definition.
+         * @param <CreateStageT> The final stage for which return creatable for FirewallRule
          */
-        interface Blank extends SqlFirewallRule.DefinitionStages.WithStartIpAddress {
+        interface Blank<CreateStageT> extends SqlFirewallRule.DefinitionStages.WithStartIpAddress<CreateStageT> {
         }
 
         /**
          * The SQL Firewall Rule definition to set the starting IP Address for the server.
+         * @param <CreateStageT> The final stage for which return creatable for FirewallRule
          */
-        interface WithStartIpAddress {
+        interface WithStartIpAddress<CreateStageT> {
             /**
              * Sets the starting IP address of SQL server's firewall rule.
              *
              * @param startIpAddress start IP address in IPv4 format.
              * @return The next stage of definition.
              */
-            SqlFirewallRule.DefinitionStages.WithEndIpAddress withStartIpAddress(String startIpAddress);
+            SqlFirewallRule.DefinitionStages.WithEndIpAddress<CreateStageT> withStartIpAddress(String startIpAddress);
         }
 
         /**
          * The SQL Firewall Rule definition to set the starting IP Address for the server.
+         * @param <CreateStageT> The final stage for which return creatable for FirewallRule
          */
-        interface WithEndIpAddress {
+        interface WithEndIpAddress<CreateStageT> {
             /**
              * Sets the ending IP address of SQL server's firewall rule.
              *
              * @param endIpAddress end IP address in IPv4 format.
              * @return The next stage of definition.
              */
-            SqlFirewallRule.DefinitionStages.WithCreate withEndIpAddress(String endIpAddress);
+            CreateStageT withEndIpAddress(String endIpAddress);
         }
 
         /**
@@ -119,8 +124,16 @@ public interface SqlFirewallRule extends
          * SQL Server in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends
+        interface Parentable extends
                 SqlFirewallRule.DefinitionStages.WithSqlServer {
+        }
+
+        /**
+         * A SQL Server definition with sufficient inputs to create a new
+         * SQL Server in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreate extends Creatable<SqlFirewallRule> {
         }
     }
 

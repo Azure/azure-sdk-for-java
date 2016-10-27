@@ -18,8 +18,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1239";
-    private static final String SQL_SERVER_NAME = "javasqlserver1239";
+    private static final String RG_NAME = "javasqlserver1235";
+    private static final String SQL_SERVER_NAME = "javasqlserver1235";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -226,7 +226,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlServerNotFound(sqlServer);
     }
 
-
     @Test
     public void canCRUDSqlFirewallRule() throws Exception {
         // Create
@@ -245,16 +244,27 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
 
-        validateSqlFirewallRule(sqlFirewallRule);
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME));
+        validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
 
         SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
+        String secondFirewallRuleName = "secondFireWallRule";
+        SqlFirewallRule secondFirewallRule = sqlServer.firewallRules()
+                .define(secondFirewallRuleName)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .create();
+
+        Assert.assertNotNull(sqlServer.firewallRules().get(secondFirewallRuleName));
+        validateSqlFirewallRule(secondFirewallRule, secondFirewallRuleName);
+        sqlServer.firewallRules().delete(secondFirewallRuleName);
+        Assert.assertNull(sqlServer.firewallRules().get(secondFirewallRuleName));
 
         // Get
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(sqlServer, SQL_FIREWALLRULE_NAME));
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getById(sqlFirewallRule.id()));
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(sqlServer, SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getById(sqlFirewallRule.id()), SQL_FIREWALLRULE_NAME);
 
         // List
         validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
@@ -288,44 +298,21 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     private static void validateSqlFirewallRuleNotFound() {
-        try {
-            sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME);
-            Assert.assertTrue(false);
-        } catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME));
     }
 
 
     private static void validateSqlElasticPoolNotFound(String elasticPoolName) {
-        try {
-            sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, elasticPoolName);
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, elasticPoolName));
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
-        try {
-            sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase);
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase));
     }
 
 
     private static void validateSqlServerNotFound(SqlServer sqlServer) {
-        try {
-            sqlServerManager.sqlServers().getById(sqlServer.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlServers().getById(sqlServer.id()));
     }
 
     private static void validateListSqlFirewallRule(PagedList<SqlFirewallRule> sqlFirewallRules) {
@@ -338,9 +325,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertTrue(found);
     }
 
-    private static void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule) {
+    private static void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule, String firewallName) {
         Assert.assertNotNull(sqlFirewallRule);
-        Assert.assertEquals(SQL_FIREWALLRULE_NAME, sqlFirewallRule.name());
+        Assert.assertEquals(firewallName, sqlFirewallRule.name());
         Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
         Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
         Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
