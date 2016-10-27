@@ -29,7 +29,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The first stage of an application gateway request routing rule definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithListener<ParentT> {
         }
 
         /** The final stage of an application gateway request routing rule definition.
@@ -41,6 +41,47 @@ public interface ApplicationGatewayRequestRoutingRule extends
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
         }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to specify the listener to associate the routing rule with.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithListener<ParentT> {
+            /**
+             * Associates the request routing rule with an existing HTTP listener on this application gateway.
+             * @param name the name of an existing listener
+             * @return the next stage of the definition
+             */
+            WithBackend<ParentT> withListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to specify the backend to associate the routing rule with.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithBackend<ParentT> {
+            /**
+             * Associates the request routing rule with an existing backend on this application gateway.
+             * @param name the name of an existing backend
+             * @return the next stage of the definition
+             */
+            WithBackendHttpConfiguration<ParentT> withBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to specify the backend HTTP settings configuration
+         * to associate the routing rule with.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+
+        interface WithBackendHttpConfiguration<ParentT> {
+            /**
+             * Associates the request routing rule with an existing backend HTTP settings configuration on this application gateway.
+             * @param name the name of an existing backend HTTP settings configuration
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withBackendHttpConfiguration(String name);
+        }
     }
 
     /** The entirety of an application gateway request routing rule definition.
@@ -48,7 +89,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+        DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithListener<ParentT>,
+        DefinitionStages.WithBackend<ParentT>,
+        DefinitionStages.WithBackendHttpConfiguration<ParentT>  {
     }
 
     /**

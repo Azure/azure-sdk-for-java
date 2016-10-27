@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
@@ -39,5 +40,23 @@ class ApplicationGatewayHttpListenerImpl
     public ApplicationGatewayImpl attach() {
         this.parent().withHttpListener(this);
         return this.parent();
+    }
+
+    // Withers
+
+    @Override
+    public ApplicationGatewayHttpListenerImpl withFrontend(String name) {
+        SubResource frontendRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
+        this.inner().withFrontendIPConfiguration(frontendRef);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayHttpListenerImpl withPort(String name) {
+        SubResource portRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
+        this.inner().withFrontendPort(portRef);
+        return this;
     }
 }

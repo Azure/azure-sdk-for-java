@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
+import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -38,7 +39,15 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithPort<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithPort<ParentT> extends HasBackendPort.DefinitionStages.WithBackendPort<WithAttach<ParentT>> {
         }
     }
 

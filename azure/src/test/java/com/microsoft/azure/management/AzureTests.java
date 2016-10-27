@@ -226,7 +226,7 @@ public class AzureTests {
      */
     @Test
     public void testAppGatewaysInternetMinimum() throws Exception {
-        new TestApplicationGateway.PublicMinimal(
+        new TestApplicationGateway.PrivateMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())

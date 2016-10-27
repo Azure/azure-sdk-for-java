@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
@@ -39,5 +40,29 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayImpl attach() {
         this.parent().withRequestRoutingRule(this);
         return this.parent();
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withListener(String name) {
+        SubResource listenerRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
+        this.inner().withHttpListener(listenerRef);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withBackend(String name) {
+        SubResource backendRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
+        this.inner().withBackendAddressPool(backendRef);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withBackendHttpConfiguration(String name) {
+        SubResource httpConfigRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
+        this.inner().withBackendHttpSettings(httpConfigRef);
+        return this;
     }
 }

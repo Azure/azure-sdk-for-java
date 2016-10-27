@@ -42,12 +42,18 @@ public class TestApplicationGateway {
     /**
      * Internet-facing LB test with NAT pool test.
      */
-    public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+    public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
         private final Networks networks;
 
-        public PublicMinimal(
+        /**
+         * Tests minimal internal app gateways.
+         * @param pips public IPs
+         * @param vms virtual machines
+         * @param networks networks
+         */
+        public PrivateMinimal(
                 PublicIpAddresses pips,
                 VirtualMachines vms,
                 Networks networks) {
@@ -78,16 +84,24 @@ public class TestApplicationGateway {
                     .withExistingResourceGroup(GROUP_NAME)
                     .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                     .withContainingSubnet(vnet, "subnet1")
-                    .withFrontendSubnet(vnet, "subnet1")
-                    .withFrontendPort(80)
+                    .definePrivateFrontend("frontend1")
+                        .withExistingSubnet(vnet, "subnet1")
+                        .attach()
+                    .withFrontendPort(80, "port1")
                     .withFrontendPort(8080)
                     .defineBackend("backend1")
                         .attach()
-                    .defineBackendHttpConfiguration("httpConfig1")
+                    .defineHttpConfiguration("httpConfig1")
+                        // .withBackendPort(80) // Optional, 80 default
                         .attach()
                     .defineHttpListener("listener1")
+                        .withFrontend("frontend1")
+                        .withPort("port1")
                         .attach()
                     .defineRequestRoutingRule("rule1")
+                        .withListener("listener1")
+                        .withBackend("backend1")
+                        .withBackendHttpConfiguration("httpConfig1")
                         .attach()
                     .create();
 
@@ -186,7 +200,7 @@ public class TestApplicationGateway {
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
                 .append("SKU: ").append(resource.sku().toString())
-                .append("Operational state: ").append(resource.operationalState().toString())
+                .append("Operational state: ").append(resource.operationalState())
                 .append("SSL policy: ").append(resource.sslPolicy().toString());
 
         System.out.println(info.toString());

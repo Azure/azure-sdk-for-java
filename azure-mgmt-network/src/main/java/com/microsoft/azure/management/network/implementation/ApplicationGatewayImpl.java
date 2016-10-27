@@ -381,7 +381,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
+    public ApplicationGatewayBackendHttpConfigurationImpl defineHttpConfiguration(String name) {
         ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()

@@ -24,6 +24,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     ApplicationGatewayBackendHttpConfigurationImpl(ApplicationGatewayBackendHttpSettingsInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
+        this.inner().withPort(80);
     }
 
     // Getters
@@ -39,5 +40,11 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     public ApplicationGatewayImpl attach() {
         this.parent().withBackendHttpConfiguration(this);
         return this.parent();
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withBackendPort(int port) {
+        this.inner().withPort(port);
+        return this;
     }
 }

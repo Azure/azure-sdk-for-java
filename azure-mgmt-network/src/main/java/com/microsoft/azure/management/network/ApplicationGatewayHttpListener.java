@@ -28,10 +28,11 @@ public interface ApplicationGatewayHttpListener extends
          * The first stage of an application gateway HTTP listener.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ParentT> extends WithFrontend<ParentT> {
         }
 
-        /** The final stage of an application gateway HTTP listener.
+        /**
+         * The final stage of an application gateway HTTP listener.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
@@ -40,6 +41,32 @@ public interface ApplicationGatewayHttpListener extends
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
         }
+
+        /**
+         * The stage of an application gateway HTTP listener definition allowing to specify the frontend IP configuration to associate the listener with.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithFrontend<ParentT> {
+            /**
+             * Associates the HTTP listener with a frontend existing on this application gateway.
+             * @param name the name of an existing frontend
+             * @return the next stage of the definition
+             */
+            WithPort<ParentT> withFrontend(String name);
+        }
+
+        /**
+         * The stage of an application gateway HTTP listener definition allowing to specify the frontend port to associate the listener with.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface WithPort<ParentT> {
+            /**
+             * Associates the listener with an existing frontend port.
+             * @param name the name of an existing frontend port
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withPort(String name);
+        }
     }
 
     /** The entirety of an application gateway HTTP listener definition.
@@ -47,7 +74,9 @@ public interface ApplicationGatewayHttpListener extends
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+        DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>,
+        DefinitionStages.WithPort<ParentT> {
     }
 
     /**
