@@ -244,7 +244,7 @@ public interface VirtualMachine extends
             DefinitionStages.WithLinuxRootPasswordOrPublicKey,
             DefinitionStages.WithWindowsAdminUsername,
             DefinitionStages.WithWindowsAdminPassword,
-            DefinitionStages.WithCustomData,
+            DefinitionStages.WithFromImageCreateOptions,
             DefinitionStages.WithLinuxCreate,
             DefinitionStages.WithWindowsCreate,
             DefinitionStages.WithCreate {
