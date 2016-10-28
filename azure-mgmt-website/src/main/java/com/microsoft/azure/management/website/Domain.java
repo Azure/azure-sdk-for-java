@@ -264,20 +264,6 @@ public interface Domain extends
         }
 
         /**
-         * A domain definition allowing registrant contact to be set.
-         */
-        interface WithRegistrantContact {
-            /**
-             * Specify the registrant contact. By default, this is also the contact for
-             * admin, billing, and tech.
-             *
-             * @param contact the registrant contact
-             * @return the next stage of domain definition
-             */
-            Update withRegistrantContact(Contact contact);
-        }
-
-        /**
          * A domain definition allowing tech contact to be set.
          */
         interface WithTechContact {
@@ -326,7 +312,6 @@ public interface Domain extends
     interface Update extends
             Appliable<Domain>,
             UpdateStages.WithAdminContact,
-            UpdateStages.WithRegistrantContact,
             UpdateStages.WithBillingContact,
             UpdateStages.WithTechContact,
             UpdateStages.WithAutoRenew,

@@ -36,24 +36,21 @@ public class DomainTests extends AppServiceTestBase {
                     .withLastName("Lu")
                     .withEmail("jianghlu@microsoft.com")
                     .withAddressLine1("1 Microsoft Way")
-                    .withCity("Redmond")
+                    .withCity("Seattle")
                     .withStateOrProvince("WA")
                     .withCountry(CountryISOCode.United_States)
-                    .withPostalCode("98052")
+                    .withPostalCode("98101")
                     .withPhoneCountryCode(CountryPhoneCode.United_States)
                     .withPhoneNumber("4258828080")
                     .withOrganziation("Microsoft")
                     .attach()
                 .withDomainPrivacyEnabled(false)
                 .withAutoRenewEnabled(true)
-                .withNameServer("f1g1ns1.dnspod.net")
-                .withNameServer("f1g1ns2.dnspod.net")
                 .create();
 //        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
         Assert.assertNotNull(domain);
         domain.update()
-                .withNameServer("f1g1ns1.dnspod.net")
-                .withNameServer("f1g1ns2.dnspod.net")
+                .withAutoRenewEnabled(false)
                 .apply();
     }
 }

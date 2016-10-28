@@ -8,14 +8,13 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
-import com.microsoft.azure.management.website.AppServicePlans;
 import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.Domains;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link AppServicePlans}.
+ * The implementation for {@link Domains}.
  */
 class DomainsImpl
         extends GroupableResourcesImpl<
