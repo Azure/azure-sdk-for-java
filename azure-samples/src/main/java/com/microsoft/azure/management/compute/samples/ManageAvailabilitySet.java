@@ -107,8 +107,8 @@ public final class ManageAvailabilitySet {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(userName)
-                        .withPassword(password)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1)
                         .create();
@@ -130,8 +130,8 @@ public final class ManageAvailabilitySet {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
-                        .withPassword(password)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1)
                         .create();

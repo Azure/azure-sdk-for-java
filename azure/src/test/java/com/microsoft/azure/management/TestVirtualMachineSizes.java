@@ -29,8 +29,8 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUserName("testuser")
-                .withPassword("12NewPA$$w0rd!")
+                .withAdminUsername("testuser")
+                .withAdminPassword("12NewPA$$w0rd!")
                 .withSize(availableSizes.get(0).name()) // Use the first size
                 .create();
 
