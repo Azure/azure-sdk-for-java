@@ -62,14 +62,7 @@ public interface SqlFirewallRules extends
      * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.
      */
     interface SqlFirewallRulesCreatable extends SqlFirewallRules {
-        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.WithCreate> definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName);
-    }
-
-    /**
-     * Entry point to SQL FirewallRule management API, which does not have SqlServer specified yet.
-     */
-    interface SqlFirewallRulesParentable extends  SqlFirewallRules {
-        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.Parentable> define(String firewallRuleName);
+        SqlFirewallRule.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName);
     }
 }
 

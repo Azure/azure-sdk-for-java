@@ -66,7 +66,7 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to be created
          * @return Returns a stage to specify arguments of the firewall rule
          */
-        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.WithCreate> define(String firewallRuleName);
+        SqlFirewallRule.DefinitionStages.Blank define(String firewallRuleName);
 
         /**
          * Returns all the firewall rules for the server.

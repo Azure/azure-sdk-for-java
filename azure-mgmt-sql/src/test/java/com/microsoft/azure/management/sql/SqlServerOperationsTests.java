@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -18,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1235";
-    private static final String SQL_SERVER_NAME = "javasqlserver1235";
+    private static final String RG_NAME = "javasqlserver1236";
+    private static final String SQL_SERVER_NAME = "javasqlserver1236";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -41,15 +40,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlServer() throws Exception {
         // Create
-        SqlServer sqlServer = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
-                .createAsync()
-                .toBlocking().last();
+        SqlServer sqlServer = createSqlServer();
+
         validateSqlServer(sqlServer);
         sqlServer.update().withPassword("P@ssword~2").apply();
 
@@ -229,26 +221,20 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlFirewallRule() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlFirewallRule sqlFirewallRule = sqlServerManager.sqlFirewallRules()
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        validateSqlServer(sqlServer);
+
+        SqlFirewallRule sqlFirewallRule = sqlServer.firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
                 .withStartIpAddress(START_IPADDRESS)
                 .withEndIpAddress(END_IPADDRESS)
-                .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
 
         validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
-        validateSqlServer(sqlServer);
 
         String secondFirewallRuleName = "secondFireWallRule";
         SqlFirewallRule secondFirewallRule = sqlServer.firewallRules()
@@ -263,42 +249,29 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNull(sqlServer.firewallRules().get(secondFirewallRuleName));
 
         // Get
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(sqlServer, SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getById(sqlFirewallRule.id()), SQL_FIREWALLRULE_NAME);
+        sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
+
+        // Update
+        // Making start and end IP address same.
+        sqlFirewallRule.update().withEndIpAddress(START_IPADDRESS).apply();
+        sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
+        Assert.assertEquals(sqlFirewallRule.endIpAddress(), START_IPADDRESS);
 
         // List
-        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer));
+        validateListSqlFirewallRule(sqlServer.firewallRules().list());
 
-        sqlServerManager.sqlFirewallRules().deleteById(sqlFirewallRule.id());
+        // Delete
+        sqlServer.firewallRules().delete(sqlFirewallRule.name());
         validateSqlFirewallRuleNotFound();
 
-        // Add firewall rule again with existing server.
-        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
-                .withExistingSqlServer(sqlServer)
-                .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
-        validateSqlFirewallRuleNotFound();
-
-        // Add firewall rule again with existing server.
-        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
-                .withExistingSqlServer(sqlServer.resourceGroupName(), sqlServer.name())
-                .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
-        validateSqlFirewallRuleNotFound();
-
+        // Delete server
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
     private static void validateSqlFirewallRuleNotFound() {
-        Assert.assertNull(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME));
+        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
     }
 
 
@@ -315,6 +288,16 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNull(sqlServerManager.sqlServers().getById(sqlServer.id()));
     }
 
+    private static SqlServer createSqlServer() {
+        return sqlServerManager.sqlServers()
+                .define(SQL_SERVER_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withAdminUserName("userName")
+                .withPassword("P@ssword~1")
+                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
+                .create();
+    }
     private static void validateListSqlFirewallRule(PagedList<SqlFirewallRule> sqlFirewallRules) {
         boolean found = false;
         for (SqlFirewallRule firewallRule: sqlFirewallRules) {
@@ -331,6 +314,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
         Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
         Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
+        Assert.assertEquals(RG_NAME, sqlFirewallRule.resourceGroupName());
+        Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
+        Assert.assertEquals(Region.US_CENTRAL, sqlFirewallRule.region());
     }
 
     private static void validateListSqlElasticPool(PagedList<SqlElasticPool> sqlElasticPools) {

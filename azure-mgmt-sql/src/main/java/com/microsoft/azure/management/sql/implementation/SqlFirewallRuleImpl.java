@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Observable;
@@ -18,16 +18,15 @@ import rx.functions.Func1;
 
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
- * @param <CreateStageT> The final stage for which return creatable for FirewallRule
  */
-public class SqlFirewallRuleImpl<CreateStageT>
+public class SqlFirewallRuleImpl
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,
                                     ServerFirewallRuleInner,
-                                    SqlFirewallRuleImpl<CreateStageT>>
+                                    SqlFirewallRuleImpl>
         implements SqlFirewallRule,
-            SqlFirewallRule.Definition<CreateStageT>,
+            SqlFirewallRule.Definition,
             SqlFirewallRule.Update,
             IndependentChild.DefinitionStages.WithParentResource<SqlFirewallRule, SqlServer> {
     private final ServersInner innerCollection;
@@ -54,7 +53,15 @@ public class SqlFirewallRuleImpl<CreateStageT>
         return this.inner().endIpAddress();
     }
 
+    @Override
+    public String kind() {
+        return this.inner().kind();
+    }
 
+    @Override
+    public Region region() {
+        return Region.fromLabelOrName(this.inner().location());
+    }
     @Override
     public SqlFirewallRule refresh() {
         this.innerCollection.getFirewallRule(this.resourceGroupName(), this.sqlServerName(), this.name());
@@ -83,32 +90,16 @@ public class SqlFirewallRuleImpl<CreateStageT>
         });
     }
 
-
     @Override
-    public Creatable<SqlFirewallRule> withExistingSqlServer(String groupName, String sqlServerName) {
-        return withExistingParentResource(groupName, sqlServerName);
-    }
-
-    @Override
-    public Creatable<SqlFirewallRule> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable) {
-        return withNewParentResource(sqlServerCreatable);
-    }
-
-    @Override
-    public Creatable<SqlFirewallRule> withExistingSqlServer(SqlServer existingSqlServer) {
-        return withExistingParentResource(existingSqlServer);
-    }
-
-    @Override
-    public SqlFirewallRuleImpl<CreateStageT> withStartIpAddress(String startIpAddress) {
+    public SqlFirewallRuleImpl withStartIpAddress(String startIpAddress) {
         this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public CreateStageT withEndIpAddress(String endIpAddress) {
+    public SqlFirewallRuleImpl withEndIpAddress(String endIpAddress) {
         this.inner().withEndIpAddress(endIpAddress);
-        return (CreateStageT) this;
+        return this;
     }
 
     @Override

@@ -129,20 +129,18 @@ public class Region {
     }
 
     /**
-     * Parses a label into a Region object.
+     * Parses a label or name into a Region object.
      *
-     * @param label the region label
+     * @param labelOrName the region name or label
      * @return the parsed region or null if there's no such region
      */
-    public static Region fromLabel(String label) {
-        for (Region region : Region.VALUES) {
-            if (region.label.equalsIgnoreCase(label)) {
-                return region;
-            }
+    public static Region fromLabelOrName(String labelOrName) {
+        Region location = Region.fromLabel(labelOrName);
+        if (location == null) {
+            return Region.fromName(labelOrName);
         }
-        return null;
+        return location;
     }
-
     /**
      * Parses a name into a Region object.
      *
@@ -157,6 +155,22 @@ public class Region {
         }
         return null;
     }
+
+    /**
+     * Parses a label into a Region object.
+     *
+     * @param label the region label
+     * @return the parsed region or null if there's no such region
+     */
+    private static Region fromLabel(String label) {
+        for (Region region : Region.VALUES) {
+            if (region.label.equalsIgnoreCase(label)) {
+                return region;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public int hashCode() {
