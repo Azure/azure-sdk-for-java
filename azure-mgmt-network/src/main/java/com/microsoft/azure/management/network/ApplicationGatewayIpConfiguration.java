@@ -129,7 +129,7 @@ public interface ApplicationGatewayIpConfiguration extends
     }
 
     /** The entirety of an application gateway IP configuration definition as part of an application gateway update.
-     * @param <ParentT> the return type of the final {@link WithAttach<ParentT>#attach()}
+     * @param <ParentT> the return type of the final {@link WithAttach<>#attach()}
      */
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
