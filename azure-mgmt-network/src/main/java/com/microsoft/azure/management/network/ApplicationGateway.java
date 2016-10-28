@@ -151,8 +151,6 @@ public interface ApplicationGateway extends
         interface WithPublicFrontend {
             /**
              * Begins the definition of a new public frontend.
-             * <p>
-             * The definition must be completed with a call to {@link DefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
