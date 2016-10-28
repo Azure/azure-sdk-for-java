@@ -14,6 +14,7 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
@@ -24,6 +25,7 @@ import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.RouteTables;
@@ -385,6 +387,13 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing network resource usages
+     */
+    public NetworkUsages networkUsages() {
+        return networkManager.usages();
+    }
+
+    /**
      * @return entry point to managing virtual machines
      */
     public VirtualMachines virtualMachines() {
@@ -417,6 +426,13 @@ public final class Azure {
      */
     public NetworkInterfaces networkInterfaces() {
         return this.networkManager.networkInterfaces();
+    }
+
+    /**
+     * @return entry point to managing compute resource usages
+     */
+    public ComputeUsages computeUsages() {
+        return computeManager.usages();
     }
 
     /**

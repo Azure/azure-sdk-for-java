@@ -18,6 +18,7 @@ import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.RouteTables;
@@ -40,6 +41,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private LoadBalancers loadBalancers;
     private RouteTables routeTables;
     private ApplicationGateways applicationGateways;
+    private NetworkUsages networkUsages;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -190,6 +192,16 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                     this);
         }
         return this.loadBalancers;
+    }
+
+    /**
+     * @return entry point to network resource usage management API entry point
+     */
+    public NetworkUsages usages() {
+        if (this.networkUsages == null) {
+            this.networkUsages = new NetworkUsagesImpl(super.innerManagementClient);
+        }
+        return this.networkUsages;
     }
 
     // Internal utility function
