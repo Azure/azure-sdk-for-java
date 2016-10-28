@@ -5,9 +5,14 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -39,5 +44,21 @@ class ApplicationGatewayBackendImpl
     public ApplicationGatewayImpl attach() {
         this.parent().withBackend(this);
         return this.parent();
+    }
+
+    @Override
+    public Map<String, String> backendNicIpConfigurationNames() {
+        // This assumes a NIC can only have one IP config associated with the backend of an app gateway,
+        // which is correct at the time of this implementation and seems unlikely to ever change
+        final Map<String, String> ipConfigNames = new TreeMap<>();
+        if (this.inner().backendIPConfigurations() != null) {
+            for (NetworkInterfaceIPConfigurationInner inner : this.inner().backendIPConfigurations()) {
+                String nicId = ResourceUtils.parentResourceIdFromResourceId(inner.id());
+                String ipConfigName = ResourceUtils.nameFromResourceId(inner.id());
+                ipConfigNames.put(nicId, ipConfigName);
+            }
+        }
+
+        return Collections.unmodifiableMap(ipConfigNames);
     }
 }

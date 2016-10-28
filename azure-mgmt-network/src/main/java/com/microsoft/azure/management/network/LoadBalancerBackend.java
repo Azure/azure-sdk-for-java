@@ -5,11 +5,11 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.Map;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
+import com.microsoft.azure.management.network.model.HasBackendNics;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -23,13 +23,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface LoadBalancerBackend extends
     Wrapper<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
-    HasLoadBalancingRules {
-
-    /**
-     * @return a map of names of the IP configurations of network interfaces assigned to this backend,
-     * indexed by their NIC's resource id
-     */
-    Map<String, String> backendNicIpConfigurationNames();
+    HasLoadBalancingRules,
+    HasBackendNics {
 
     /**
      * @return a list of the resource IDs of the virtual machines associated with this backend

@@ -7,6 +7,7 @@ package com.microsoft.azure.management;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
@@ -201,7 +203,15 @@ public class TestApplicationGateway {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("SKU: ").append(resource.sku().toString())
                 .append("Operational state: ").append(resource.operationalState())
-                .append("SSL policy: ").append(resource.sslPolicy().toString());
+                .append("SSL policy: ").append(resource.sslPolicy());
+
+        // Show backends
+        Map<String, ApplicationGatewayBackend> backends = resource.backends();
+        info.append("\n\tBackends: ").append(backends.size());
+        for (ApplicationGatewayBackend backend : backends.values()) {
+            info.append("\n\t\tName: ").append(backend.name())
+                .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+        }
 
         System.out.println(info.toString());
     }

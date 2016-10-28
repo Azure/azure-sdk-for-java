@@ -245,7 +245,7 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition allowing to add a public IP address as the default public frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddress<ReturnT> 
+        interface WithPublicIpAddress<ReturnT>
             extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddress<ReturnT> {
         }
 
