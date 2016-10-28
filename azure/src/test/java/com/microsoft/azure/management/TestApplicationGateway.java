@@ -201,9 +201,9 @@ public class TestApplicationGateway {
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tTags: ").append(resource.tags())
-                .append("SKU: ").append(resource.sku().toString())
-                .append("Operational state: ").append(resource.operationalState())
-                .append("SSL policy: ").append(resource.sslPolicy());
+                .append("\n\tSKU: ").append(resource.sku().toString())
+                .append("\n\tOperational state: ").append(resource.operationalState())
+                .append("\n\tSSL policy: ").append(resource.sslPolicy());
 
         // Show backends
         Map<String, ApplicationGatewayBackend> backends = resource.backends();
