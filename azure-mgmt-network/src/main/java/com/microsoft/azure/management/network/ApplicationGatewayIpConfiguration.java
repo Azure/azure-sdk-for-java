@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * An immutable client-side representation of an application gateway IP conifguration.
+ * An immutable client-side representation of an application gateway IP configuration.
  */
 @Fluent()
 public interface ApplicationGatewayIpConfiguration extends
@@ -129,7 +129,7 @@ public interface ApplicationGatewayIpConfiguration extends
     }
 
     /** The entirety of an application gateway IP configuration definition as part of an application gateway update.
-     * @param <ParentT> the return type of the final {@link WithAttach<>#attach()}
+     * @param <ParentT> the parent type
      */
     interface UpdateDefinition<ParentT> extends
        UpdateDefinitionStages.Blank<ParentT>,
