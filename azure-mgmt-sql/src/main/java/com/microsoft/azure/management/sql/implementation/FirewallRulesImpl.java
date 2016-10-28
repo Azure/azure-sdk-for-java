@@ -24,7 +24,6 @@ public class FirewallRulesImpl implements SqlServer.FirewallRules {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.sqlFirewallRules = new SqlFirewallRulesImpl(innerCollection, manager);
-
     }
 
     @Override
