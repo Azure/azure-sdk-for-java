@@ -233,6 +233,7 @@ public interface WebApp extends
 
         interface WithHostNameBinding {
             HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(String name);
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(Domain domain, String subDomain);
         }
 
         /**
@@ -272,6 +273,7 @@ public interface WebApp extends
 
         interface WithHostNameBinding {
             HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(String name);
+            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(Domain domain, String subDomain);
         }
     }
 

@@ -13,7 +13,7 @@ import org.junit.Test;
 
 public class DomainTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
-    private static final String DOMAIN_NAME = "javatest319.com";
+    private static final String DOMAIN_NAME = "javatest319-3.com";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -31,20 +31,29 @@ public class DomainTests extends AppServiceTestBase {
         Domain domain = appServiceManager.domains()
                 .define(DOMAIN_NAME)
                 .withExistingResourceGroup(RG_NAME)
-                .withContact(new Contact()
-                        .withNameFirst("Jianghao")
-                        .withNameLast("Lu")
-                        .withEmail("jianghlu@microsoft.com")
-                        .withAddressMailing(new Address()
-                            .withAddress1("1 Microsoft Way")
-                            .withCity("Redmond")
-                            .withState("WA")
-                            .withCountry("US")
-                            .withPostalCode("98052"))
-                        .withPhone("+1.4258828080"))
+                .defineRegistrantContact()
+                    .withFirstName("Jianghao")
+                    .withLastName("Lu")
+                    .withEmail("jianghlu@microsoft.com")
+                    .withAddressLine1("1 Microsoft Way")
+                    .withCity("Redmond")
+                    .withStateOrProvince("WA")
+                    .withCountry(CountryISOCode.United_States)
+                    .withPostalCode("98052")
+                    .withPhoneCountryCode(CountryPhoneCode.United_States)
+                    .withPhoneNumber("4258828080")
+                    .withOrganziation("Microsoft")
+                    .attach()
                 .withDomainPrivacyEnabled(false)
                 .withAutoRenewEnabled(true)
+                .withNameServer("f1g1ns1.dnspod.net")
+                .withNameServer("f1g1ns2.dnspod.net")
                 .create();
+//        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
         Assert.assertNotNull(domain);
+        domain.update()
+                .withNameServer("f1g1ns1.dnspod.net")
+                .withNameServer("f1g1ns2.dnspod.net")
+                .apply();
     }
 }

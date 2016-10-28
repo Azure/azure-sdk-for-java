@@ -14,8 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class WebAppTests extends AppServiceTestBase {
-    private static final String RG_NAME = "javacsmrg323";
-    private static final String WEBAPP_NAME = "java-webapp-323";
+    private static final String RG_NAME = "javacsmrg319";
+    private static final String WEBAPP_NAME = "java-webapp-319";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
@@ -30,12 +30,13 @@ public class WebAppTests extends AppServiceTestBase {
 
     @Test
     public void canCRUDWebApp() throws Exception {
-        WebApp webApp = appServiceManager.sites().define(WEBAPP_NAME)
+        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, "javatestpr319.com");
+        WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withNewResourceGroup(RG_NAME)
                 .withNewAppServicePlan("java-plan-323", AppServicePricingTier.STANDARD_S1)
-                .defineHostNameBinding("javatest.quarterquota.net")
-                    .withHostNameType(HostNameType.VERIFIED)
+                .defineHostNameBinding(domain, "test2.javatestpr319.com")
+                    .withHostNameType(HostNameType.MANAGED)
                     .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
                     .attach()
                 .create();

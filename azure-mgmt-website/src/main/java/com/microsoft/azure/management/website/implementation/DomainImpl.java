@@ -9,9 +9,9 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.Contact;
 import com.microsoft.azure.management.website.Domain;
+import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.DomainPurchaseConsent;
 import com.microsoft.azure.management.website.DomainStatus;
 import com.microsoft.azure.management.website.HostName;
@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The implementation for {@link AppServicePlan}.
+ * The implementation for {@link Domain}.
  */
 class DomainImpl
         extends
@@ -42,10 +42,13 @@ class DomainImpl
     private final DomainsInner client;
     private final TopLevelDomainsInner topLevelClient;
 
+    private List<HostNameBindingImpl> hostNameBindings;
+
     DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelClient, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
         this.topLevelClient = topLevelClient;
+        hostNameBindings = new ArrayList<>();
         inner().withLocation("global");
     }
 
@@ -172,21 +175,20 @@ class DomainImpl
 
     @Override
     public DomainImpl withRegistrantContact(Contact contact) {
+        inner().withContactAdmin(contact);
+        inner().withContactBilling(contact);
         inner().withContactRegistrant(contact);
-        return this;
-    }
-
-    @Override
-    public DomainImpl withTechContact(Contact contact) {
         inner().withContactTech(contact);
         return this;
     }
 
     @Override
-    public DomainImpl withContact(Contact contact) {
-        inner().withContactAdmin(contact);
-        inner().withContactBilling(contact);
-        inner().withContactRegistrant(contact);
+    public DomainContact.DefinitionStages.Blank<Domain.DefinitionStages.WithCreate> defineRegistrantContact() {
+        return new DomainContactImpl(new Contact(), this);
+    }
+
+    @Override
+    public DomainImpl withTechContact(Contact contact) {
         inner().withContactTech(contact);
         return this;
     }
@@ -200,24 +202,6 @@ class DomainImpl
     @Override
     public DomainImpl withAutoRenewEnabled(boolean autoRenew) {
         inner().withAutoRenew(autoRenew);
-        return this;
-    }
-
-    @Override
-    public DomainImpl withNameServer(String nameServer) {
-        if (inner().nameServers() == null) {
-            inner().withNameServers(new ArrayList<String>());
-        }
-        inner().nameServers().add(nameServer);
-        return this;
-    }
-
-    @Override
-    public DomainImpl withNameServers(List<String> nameServers) {
-        if (inner().nameServers() == null) {
-            inner().withNameServers(new ArrayList<String>());
-        }
-        inner().nameServers().addAll(nameServers);
         return this;
     }
 }

@@ -67,7 +67,7 @@ class HostNameBindingImpl
     }
 
     @Override
-    public String hostNameBindingName() {
+    public String hostName() {
         return inner().hostNameBindingName();
     }
 

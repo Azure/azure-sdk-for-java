@@ -19,7 +19,11 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
- * An immutable client-side representation of an Azure App Service Plan.
+ * An immutable client-side representation of a domain.
+ *
+ * Domains in Azure are purchased from 3rd party domain providers. By calling
+ * {@link Creatable#create()} or {@link Creatable#createAsync()} you agree to
+ * the agreements listed in {@link Domains#listAgreements(String)}.
  */
 public interface Domain extends
         GroupableResource,
@@ -118,83 +122,215 @@ public interface Domain extends
     }
 
     /**
-     * Grouping of all the site definition stages.
+     * Grouping of all the domain definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the app service plan definition.
+         * The first stage of the domain definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithAdminContact> {
+        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithRegistrantContact> {
         }
 
         /**
-         * An app service plan definition allowing pricing tier to be set.
+         * A domain definition allowing admin contact to be set.
          */
         interface WithAdminContact {
-            WithBillingContact withAdminContact(Contact contact);
-
-            WithCreate withContact(Contact contact);
+            /**
+             * Specify the admin contact.
+             *
+             * @param contact the admin contact
+             * @return the next stage of domain definition
+             */
+            WithCreate withAdminContact(Contact contact);
         }
 
         /**
-         * An app service plan definition allowing per site scaling configuration to be set.
+         * A domain definition allowing billing contact to be set.
          */
         interface WithBillingContact {
-            WithRegistrantContact withBillingContact(Contact contact);
+            /**
+             * Specify the billing contact.
+             *
+             * @param contact the billing contact
+             * @return the next stage of domain definition
+             */
+            WithCreate withBillingContact(Contact contact);
         }
 
         /**
-         * An app service plan definition allowing instance capacity to be set.
+         * A domain definition allowing registrant contact to be set.
          */
         interface WithRegistrantContact {
-            WithTechContact withRegistrantContact(Contact contact);
+            /**
+             * Specify the registrant contact. By default, this is also the contact for
+             * admin, billing, and tech.
+             *
+             * @param contact the registrant contact
+             * @return the next stage of domain definition
+             */
+            WithCreate withRegistrantContact(Contact contact);
+
+            /**
+             * Starts the definition of a new domain contact.
+             *
+             * @return the first stage of the domain contact definition
+             */
+            DomainContact.DefinitionStages.Blank<WithCreate> defineRegistrantContact();
         }
 
         /**
-         * An app service plan definition allowing instance capacity to be set.
+         * A domain definition allowing tech contact to be set.
          */
         interface WithTechContact {
+            /**
+             * Specify the tech contact.
+             *
+             * @param contact the tech contact
+             * @return the next stage of domain definition.
+             */
             WithCreate withTechContact(Contact contact);
         }
 
+        /**
+         * A domain definition allowing domain privacy to be set.
+         */
         interface WithDomainPrivacy {
+            /**
+             * Specifies if the registrant contact information is exposed publicly.
+             * If domain privacy is turned on, the contact information will NOT be
+             * available publicly.
+             *
+             * @param domainPrivacy true if domain privacy is turned on
+             * @return the next stage of domain definition
+             */
             WithCreate withDomainPrivacyEnabled(boolean domainPrivacy);
         }
 
+        /**
+         * A domain definition allowing auto-renew setting to be set.
+         */
         interface WithAutoRenew {
+            /**
+             * Specifies if the domain should be automatically renewed when it's
+             * about to expire.
+             *
+             * @param autoRenew true if the domain should be automatically renewed
+             * @return the next stage of domain definition
+             */
             WithCreate withAutoRenewEnabled(boolean autoRenew);
         }
 
-        interface WithNameServers {
-            WithCreate withNameServer(String nameServer);
-            WithCreate withNameServers(List<String> nameServers);
-        }
-
         /**
-         * An app service plan definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
+         * A domain definition with sufficient inputs to create a new
+         * domain in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
                 WithDomainPrivacy,
                 WithAutoRenew,
-                WithNameServers,
                 Creatable<Domain>,
                 DefinitionWithTags<WithCreate> {
         }
     }
 
     /**
-     * Grouping of all the site update stages.
+     * Grouping of all the domain update stages.
      */
     interface UpdateStages {
+        /**
+         * A domain definition allowing admin contact to be set.
+         */
+        interface WithAdminContact {
+            /**
+             * Specify the admin contact.
+             *
+             * @param contact the admin contact
+             * @return the next stage of domain definition
+             */
+            Update withAdminContact(Contact contact);
+        }
+
+        /**
+         * A domain definition allowing billing contact to be set.
+         */
+        interface WithBillingContact {
+            /**
+             * Specify the billing contact.
+             *
+             * @param contact the billing contact
+             * @return the next stage of domain definition
+             */
+            Update withBillingContact(Contact contact);
+        }
+
+        /**
+         * A domain definition allowing registrant contact to be set.
+         */
+        interface WithRegistrantContact {
+            /**
+             * Specify the registrant contact. By default, this is also the contact for
+             * admin, billing, and tech.
+             *
+             * @param contact the registrant contact
+             * @return the next stage of domain definition
+             */
+            Update withRegistrantContact(Contact contact);
+        }
+
+        /**
+         * A domain definition allowing tech contact to be set.
+         */
+        interface WithTechContact {
+            /**
+             * Specify the tech contact.
+             *
+             * @param contact the tech contact
+             * @return the next stage of domain definition.
+             */
+            Update withTechContact(Contact contact);
+        }
+
+        /**
+         * A domain definition allowing domain privacy to be set.
+         */
+        interface WithDomainPrivacy {
+            /**
+             * Specifies if the registrant contact information is exposed publicly.
+             * If domain privacy is turned on, the contact information will NOT be
+             * available publicly.
+             *
+             * @param domainPrivacy true if domain privacy is turned on
+             * @return the next stage of domain definition
+             */
+            Update withDomainPrivacyEnabled(boolean domainPrivacy);
+        }
+
+        /**
+         * A domain definition allowing auto-renew setting to be set.
+         */
+        interface WithAutoRenew {
+            /**
+             * Specifies if the domain should be automatically renewed when it's
+             * about to expire.
+             *
+             * @param autoRenew true if the domain should be automatically renewed
+             * @return the next stage of domain definition
+             */
+            Update withAutoRenewEnabled(boolean autoRenew);
+        }
     }
 
     /**
-     * The template for a site update operation, containing all the settings that can be modified.
+     * The template for a domain update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<Domain>,
+            UpdateStages.WithAdminContact,
+            UpdateStages.WithRegistrantContact,
+            UpdateStages.WithBillingContact,
+            UpdateStages.WithTechContact,
+            UpdateStages.WithAutoRenew,
+            UpdateStages.WithDomainPrivacy,
             GroupableResource.UpdateWithTags<Update> {
     }
 }

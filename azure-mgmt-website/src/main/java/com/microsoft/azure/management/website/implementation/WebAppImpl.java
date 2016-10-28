@@ -12,6 +12,7 @@ import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CloningInfo;
+import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The implementation for {@link WebApp}.
@@ -44,6 +47,7 @@ class WebAppImpl
     private final WebAppsInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private HostNameBindingImpl hostNameBinding;
+    String domainName;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
@@ -51,6 +55,10 @@ class WebAppImpl
         this.hostNameSslStateMap = new HashMap<>();
         if (innerObject.hostNameSslStates() != null) {
             for (HostNameSslState hostNameSslState : innerObject.hostNameSslStates()) {
+                // Server returns null sometimes, invalid on update, so we set default
+                if (hostNameSslState.sslState() == null) {
+                    hostNameSslState.withSslState(SslState.DISABLED);
+                }
                 hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
             }
         }
@@ -279,12 +287,29 @@ class WebAppImpl
     }
 
     @Override
-    public HostNameBindingImpl defineHostNameBinding(String name) {
+    public HostNameBindingImpl defineHostNameBinding(String hostname) {
+        Pattern pattern = Pattern.compile("([.\\w]+)\\.(\\w+\\.\\w+)");
+        Matcher matcher = pattern.matcher(hostname);
+        matcher.matches();
+        String subdomain =matcher.group(1);
+        String domain = matcher.group(2);
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
-        return new HostNameBindingImpl(name, inner, this, client);
+        inner.withAzureResourceName(name());
+        return new HostNameBindingImpl(hostname, inner, this, client);
+    }
+
+    @Override
+    public HostNameBindingImpl defineHostNameBinding(Domain domain, String hostname) {
+        HostNameBindingInner inner = new HostNameBindingInner();
+        inner.withSiteName(name());
+        inner.withLocation(regionName());
+        inner.withAzureResourceType(AzureResourceType.WEBSITE);
+        inner.withAzureResourceName(name());
+        inner.withDomainId(domain.id());
+        return new HostNameBindingImpl(hostname, inner, this, client);
     }
 
     WebAppImpl withHostNameBinding(final HostNameBindingImpl hostNameBinding) {

@@ -22,7 +22,7 @@ public interface HostNameBinding
     /**
      * @return Hostname.
      */
-    String hostNameBindingName();
+    String hostName();
 
     /**
      * @return Web app name.
@@ -72,6 +72,11 @@ public interface HostNameBinding
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithHostNameType<ParentT> {
+        }
+
+        interface WithManagedDomain<Parent> {
+            WithHostNameType<Parent> withNewDomainPurchase(String domainName);
+            WithHostNameType<Parent> withDomainPurchasedFromAzure(String domainName);
         }
 
         interface WithHostNameType<ParentT> {
