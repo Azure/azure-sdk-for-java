@@ -61,28 +61,27 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	 */
 	MessagingFactory(final ConnectionStringBuilder builder)
 	{
-		super("MessagingFactory".concat(StringUtil.getRandomString()), null);
+            super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 
-		Timer.register(this.getClientId());
-		this.hostName = builder.getEndpoint().getHost();
-		
-		this.operationTimeout = builder.getOperationTimeout();
-		this.retryPolicy = builder.getRetryPolicy();
-		this.registeredLinks = new LinkedList<Link>();
-		this.reactorLock = new Object();
-		this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
-		this.openConnection = new CompletableFuture<Connection>();
-		
-		this.closeTask = new CompletableFuture<Void>();
-		this.closeTask.thenAccept(new Consumer<Void>()
-		{
-			@Override
-			public void accept(Void arg0)
-			{
-				Timer.unregister(getClientId());
-			}
-		});
-		
+            Timer.register(this.getClientId());
+            this.hostName = builder.getEndpoint().getHost();
+
+            this.operationTimeout = builder.getOperationTimeout();
+            this.retryPolicy = builder.getRetryPolicy();
+            this.registeredLinks = new LinkedList<Link>();
+            this.reactorLock = new Object();
+            this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
+            this.openConnection = new CompletableFuture<Connection>();
+
+            this.closeTask = new CompletableFuture<Void>();
+            this.closeTask.thenAccept(new Consumer<Void>()
+            {
+                @Override
+                public void accept(Void arg0)
+                {
+                    Timer.unregister(getClientId());
+                }
+            });
 	}
 
 	String getHostName()
@@ -218,7 +217,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 		if (this.getIsClosingOrClosed() && !this.closeTask.isDone())
 		{
-			this.closeTask.complete(null);
+                    this.getReactor().stop();
 		}
 	}
 
@@ -236,9 +235,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				if (this.getIsClosingOrClosed())
 				{
-					if (!this.closeTask.isDone())
-						this.closeTask.complete(null);
-					
 					return;
 				}
 				else
@@ -278,36 +274,48 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	protected CompletableFuture<Void> onClose()
 	{
-		if (!this.getIsClosed())
-		{
-			if (this.connection != null && this.connection.getRemoteState() != EndpointState.CLOSED)
-			{
-				if (this.connection.getLocalState() != EndpointState.CLOSED)
-				{
-					this.connection.close();
-				}
+            if (!this.getIsClosed())
+            {
+                try
+                {
+                    this.scheduleOnReactorThread(new CloseWork());
+                }
+                catch (IOException ioException)
+                {
+                    this.closeTask.completeExceptionally(new ServiceBusException(false, "Failed to Close MessagingFactory, see cause for more details.", ioException));
+                }
+            }		
 
-				Timer.schedule(new Runnable()
-				{
-					@Override
-					public void run()
-					{
-						if (!MessagingFactory.this.closeTask.isDone())
-						{
-							MessagingFactory.this.closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
-						}
-					}
-				},
-				this.operationTimeout, TimerType.OneTimeRun);
-			}
-			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
-			{
-				this.closeTask.complete(null);
-			}
-		}		
-
-		return this.closeTask;
+            return this.closeTask;
 	}
+        
+        private class CloseWork extends DispatchHandler
+        {
+            @Override
+            public void onEvent()
+            {
+                if (connection != null && connection.getRemoteState() != EndpointState.CLOSED)
+                {
+                    if (connection.getLocalState() != EndpointState.CLOSED)
+                    {
+                        connection.close();
+                    }
+
+                    Timer.schedule(new Runnable()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            if (!closeTask.isDone())
+                            {
+                                closeTask.completeExceptionally(new TimeoutException("Closing MessagingFactory timed out."));
+                            }
+                        }
+                    },
+                    operationTimeout, TimerType.OneTimeRun);
+                }
+            }
+        }
 
 	private class RunReactor implements Runnable
 	{
@@ -368,7 +376,12 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			}
 			finally
 			{
-				this.rctr.free();
+                            this.rctr.free();
+                        
+                            if (getIsClosingOrClosed() && !closeTask.isDone())
+                            {
+                                closeTask.complete(null);
+                            }
 			}
 		}
 	}

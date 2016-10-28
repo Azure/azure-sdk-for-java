@@ -917,7 +917,7 @@ public class EventHubClient extends ClientEntity
 	public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch)
 			throws ServiceBusException
 	{
-		return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true);
+            return PartitionReceiver.create(this.underlyingFactory,  this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true);
 	}
 
 	@Override
@@ -925,18 +925,19 @@ public class EventHubClient extends ClientEntity
 	{
 		if (this.underlyingFactory != null)
 		{
-			synchronized (this.senderCreateSync)
-			{
-				return this.sender != null 
-						? this.sender.close().thenRunAsync(new Runnable()
-						{
-							@Override
-							public void run() {
-								EventHubClient.this.underlyingFactory.close();
-							}
-						})
-								: this.underlyingFactory.close();
-			}
+                    synchronized (this.senderCreateSync)
+                    {
+                        return this.sender != null 
+                            ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
+                                {
+                                    @Override
+                                    public CompletableFuture<Void> apply(Void voidArg)
+                                    {
+                                        return EventHubClient.this.underlyingFactory.close();
+                                    }
+                                })
+                            : this.underlyingFactory.close();
+                    }
 		}
 
 		return CompletableFuture.completedFuture(null);
