@@ -17,6 +17,9 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
@@ -86,11 +89,12 @@ public class TestApplicationGateway {
                     .withExistingResourceGroup(GROUP_NAME)
                     .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                     .withContainingSubnet(vnet, "subnet1")
+                    .withoutPublicFrontend()
                     .definePrivateFrontend("frontend1")
                         .withExistingSubnet(vnet, "subnet1")
                         .attach()
                     .withFrontendPort(80, "port1")
-                    .withFrontendPort(8080)
+                    .withFrontendPort(8080, "port2")
                     .defineBackend("backend1")
                         .attach()
                     .defineHttpConfiguration("httpConfig1")
@@ -204,6 +208,27 @@ public class TestApplicationGateway {
                 .append("\n\tSKU: ").append(resource.sku().toString())
                 .append("\n\tOperational state: ").append(resource.operationalState())
                 .append("\n\tSSL policy: ").append(resource.sslPolicy());
+
+        // Show frontends
+        Map<String, ApplicationGatewayFrontend> frontends = resource.frontends();
+        info.append("\n\tFrontends: ").append(frontends.size());
+        for (ApplicationGatewayFrontend frontend : frontends.values()) {
+            info.append("\n\t\tName: ").append(frontend.name())
+                .append("\n\t\t\tIs public? ").append(frontend.isPublic());
+
+            if (frontend.isPublic()) {
+                // Show public frontend
+                ApplicationGatewayPublicFrontend publicFrontend = (ApplicationGatewayPublicFrontend) frontend;
+                info.append("\n\t\t\tPublic IP address ID: ").append(publicFrontend.publicIpAddressId());
+            } else {
+                // Show private frontend
+                ApplicationGatewayPrivateFrontend privateFrontend = (ApplicationGatewayPrivateFrontend) frontend;
+                info.append("\n\t\t\tPrivate IP address: ").append(privateFrontend.privateIpAddress())
+                    .append("\n\t\t\tPrivate IP allocation method: ").append(privateFrontend.privateIpAllocationMethod())
+                    .append("\n\t\t\tSubnet name: ").append(privateFrontend.subnetName())
+                    .append("\n\t\t\tVirtual network ID: ").append(privateFrontend.networkId());
+            }
+        }
 
         // Show backends
         Map<String, ApplicationGatewayBackend> backends = resource.backends();

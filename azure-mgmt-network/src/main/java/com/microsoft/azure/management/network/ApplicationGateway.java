@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.Map;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -51,6 +52,11 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayBackend> backends();
 
     /**
+     * @return frontend IP configurations of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayFrontend> frontends();
+
+    /**
      * The entirety of the application gateway definition.
      */
     interface Definition extends
@@ -61,11 +67,9 @@ public interface ApplicationGateway extends
         DefinitionStages.WithContainingSubnet,
         DefinitionStages.WithFrontendSubnet,
         DefinitionStages.WithPrivateFrontend,
-        DefinitionStages.WithPrivateFrontendOrPort,
+        DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithPublicFrontendOrPort,
         DefinitionStages.WithFrontendPort,
-        DefinitionStages.WithFrontend,
         DefinitionStages.WithFrontendPortOrBackend,
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrHttpConfig,
@@ -96,15 +100,6 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition describing the nature of the frontend : internal or Internet-facing.
-         */
-        interface WithFrontend extends
-            WithPublicIpAddress<WithPublicFrontendOrPort>,
-            WithPublicFrontend,
-            WithPrivateFrontend {
-        }
-
-        /**
          * The stage of an application gateway definition allowing to add a public IP address as the default public frontend.
          * @param <ReturnT> the next stage of the definition
          */
@@ -122,39 +117,51 @@ public interface ApplicationGateway extends
              * @param subnetName the name of an existing subnet on the specified network
              * @return the next stage of the definition
              */
-            WithPrivateFrontendOrPort withFrontendSubnet(Network network, String subnetName);
+            WithFrontendPort withFrontendSubnet(Network network, String subnetName);
         }
 
         /**
-         * The stage of an internal application gateway definition allowing to define one or more private frontends.
+         * The stage of an internal application gateway definition allowing to define a private frontend.
          */
         interface WithPrivateFrontend extends WithFrontendSubnet {
-            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrPort> definePrivateFrontend(String name);
-        }
-
-        /**
-         * The stage of an internal application gateway definition allowing to specify another private frontend or start specifying a frontend port.
-         */
-        interface WithPrivateFrontendOrPort extends WithPrivateFrontend, WithFrontendPort {
-        }
-
-        /**
-         * The stage of an Internet-facing application gateway definition allowing to add additional public frontends
-         * or add the first frontend port.
-         */
-        interface WithPublicFrontendOrPort extends WithPublicFrontend, WithFrontendPort {
-        }
-
-        /**
-         * The stage of an Internet-facing application gateway definition allowing to define one or more public frontends.
-         */
-        interface WithPublicFrontend {
             /**
-             * Begins the definition of a new public frontend.
+             * Begins the definition of a private, or internal, application gateway frontend IP configuration.
+             * @param name the name for the frontend
+             * @return the first stage of a private frontend IP configuration definition
+             */
+            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithFrontendPort> definePrivateFrontend(String name);
+        }
+
+        /**
+         * The stage of an internal application gateway definition allowing to optionally define a private,
+         * or internal, frontend IP configuration.
+         */
+        interface WithPrivateFrontendOptional extends WithPrivateFrontend {
+            /**
+             * Specifies that no private, or internal, frontend should be enabled.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithFrontendPort withoutPrivateFrontend();
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to define one or more public, or Internet-facing, frontends.
+         */
+        interface WithPublicFrontend extends WithPublicIpAddress<WithPrivateFrontendOptional> {
+            /**
+             * Begins the definition of a new public, or Internet-facing, frontend.
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            ApplicationGatewayPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrPort> definePublicFrontend(String name);
+            ApplicationGatewayPublicFrontend.DefinitionStages.Blank<WithPrivateFrontendOptional> definePublicFrontend(String name);
+
+            /**
+             * Specifies that the application gateway should not be Internet-facing.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithPrivateFrontend withoutPublicFrontend();
         }
 
         /**
@@ -284,7 +291,7 @@ public interface ApplicationGateway extends
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
-            WithFrontend withContainingSubnet(Subnet subnet);
+            WithPublicFrontend withContainingSubnet(Subnet subnet);
 
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
@@ -294,7 +301,7 @@ public interface ApplicationGateway extends
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
-            WithFrontend withContainingSubnet(Network network, String subnetName);
+            WithPublicFrontend withContainingSubnet(Network network, String subnetName);
 
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
@@ -304,14 +311,14 @@ public interface ApplicationGateway extends
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
-            WithFrontend withContainingSubnet(String networkResourceId, String subnetName);
+            WithPublicFrontend withContainingSubnet(String networkResourceId, String subnetName);
 
             /**
              * Begins the definition of a new IP configuration to add to this application gateway.
              * @param name a name to assign to the IP configuration
              * @return the first stage of the IP configuration definition
              */
-            ApplicationGatewayIpConfiguration.DefinitionStages.Blank<WithFrontend> defineIpConfiguration(String name);
+            ApplicationGatewayIpConfiguration.DefinitionStages.Blank<WithPublicFrontend> defineIpConfiguration(String name);
         }
 
         /**

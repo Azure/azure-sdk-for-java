@@ -22,10 +22,12 @@ import com.microsoft.azure.management.network.Subnet;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
@@ -290,6 +292,16 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
+    public Map<String, ApplicationGatewayBackend> backends() {
+        return Collections.unmodifiableMap(this.backends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayFrontend> frontends() {
+        return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
     public ApplicationGatewaySku sku() {
         return this.inner().sku();
     }
@@ -404,6 +416,31 @@ class ApplicationGatewayImpl
                 .attach();
     }
 
+    private ApplicationGatewayImpl withoutFrontend(boolean isPublic) {
+        Set<String> frontendNamesToRemove = new HashSet<>();
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
+            if (frontend.isPublic() == isPublic) {
+                frontendNamesToRemove.add(frontend.name());
+            }
+        }
+
+        for (String frontendName : frontendNamesToRemove) {
+            this.frontends.remove(frontendName);
+        }
+
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutPrivateFrontend() {
+        return this.withoutFrontend(false);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutPublicFrontend() {
+        return this.withoutFrontend(true);
+    }
+
     @Override
     public ApplicationGatewayImpl withFrontendPort(int portNumber) {
         return withFrontendPort(portNumber, null);
@@ -444,10 +481,5 @@ class ApplicationGatewayImpl
         }
 
         return this;
-    }
-
-    @Override
-    public Map<String, ApplicationGatewayBackend> backends() {
-        return Collections.unmodifiableMap(this.backends);
     }
 }

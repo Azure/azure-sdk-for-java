@@ -21,11 +21,6 @@ public interface ApplicationGatewayPrivateFrontend extends
     HasSubnet {
 
     /**
-     * @return the private IP allocation method within the associated subnet for this private frontend
-     */
-    IPAllocationMethod privateIpAllocationMethod();
-
-    /**
      * Grouping of private frontend definition stages.
      */
     interface DefinitionStages {

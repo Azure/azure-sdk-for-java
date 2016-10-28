@@ -26,11 +26,11 @@ class ApplicationGatewayFrontendImpl
     implements
         ApplicationGatewayFrontend,
         ApplicationGatewayPrivateFrontend,
-        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithPrivateFrontendOrPort>,
+        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithFrontendPort>,
         ApplicationGatewayPrivateFrontend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayPrivateFrontend.Update,
         ApplicationGatewayPublicFrontend,
-        ApplicationGatewayPublicFrontend.Definition<ApplicationGateway.DefinitionStages.WithPublicFrontendOrPort>,
+        ApplicationGatewayPublicFrontend.Definition<ApplicationGateway.DefinitionStages.WithPrivateFrontendOptional>,
         ApplicationGatewayPublicFrontend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayPublicFrontend.Update {
 
