@@ -16,16 +16,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
- * Implementation of the LoadBalancer interface.
- */
-@LangDefinition
-/**
- * Base impl for some networking-related classes
+ * Base impl for some networking-related classes.
  * @param <FluentT> the wrapper interface
  * @param <InnerT> the wrapped inner type
  * @param <FluentImplT> the wrapper impl type
  * @param <InnerCollectionT> the inner collection (client) type
  */
+@LangDefinition
 abstract class NetworkGroupableParentResourceImpl<
         FluentT extends Resource,
         InnerT extends com.microsoft.azure.Resource,
@@ -37,9 +34,9 @@ abstract class NetworkGroupableParentResourceImpl<
         FluentImplT,
         NetworkManager> {
 
-    static protected final String DEFAULT = "default";
-    final protected Map<String, String> creatablePIPKeys = new HashMap<>();
-    final protected InnerCollectionT innerCollection;
+    protected static final String DEFAULT = "default";
+    protected final Map<String, String> creatablePIPKeys = new HashMap<>();
+    protected final InnerCollectionT innerCollection;
 
     NetworkGroupableParentResourceImpl(String name,
             final InnerT innerModel,
