@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
@@ -42,6 +44,11 @@ public interface ApplicationGateway extends
      * @return the SSL policy for the application gateway
      */
     ApplicationGatewaySslPolicy sslPolicy();
+
+    /**
+     * @return backend address pools of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayBackend> backends();
 
     /**
      * The entirety of the application gateway definition.

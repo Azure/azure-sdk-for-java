@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -443,5 +444,10 @@ class ApplicationGatewayImpl
         }
 
         return this;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackend> backends() {
+        return Collections.unmodifiableMap(this.backends);
     }
 }
