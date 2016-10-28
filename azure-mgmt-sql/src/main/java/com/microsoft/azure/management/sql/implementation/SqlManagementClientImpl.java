@@ -28,11 +28,11 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** The subscription credentials which uniquely identify Microsoft Azure subscription. */
+    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
     private String subscriptionId;
 
     /**
-     * Gets The subscription credentials which uniquely identify Microsoft Azure subscription.
+     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The subscription credentials which uniquely identify Microsoft Azure subscription.
+     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
@@ -225,32 +225,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The ServerUpgradesInner object to access its operations.
-     */
-    private ServerUpgradesInner serverUpgrades;
-
-    /**
-     * Gets the ServerUpgradesInner object to access its operations.
-     * @return the ServerUpgradesInner object.
-     */
-    public ServerUpgradesInner serverUpgrades() {
-        return this.serverUpgrades;
-    }
-
-    /**
-     * The ServerUsagesInner object to access its operations.
-     */
-    private ServerUsagesInner serverUsages;
-
-    /**
-     * Gets the ServerUsagesInner object to access its operations.
-     * @return the ServerUsagesInner object.
-     */
-    public ServerUsagesInner serverUsages() {
-        return this.serverUsages;
-    }
-
-    /**
      * The ElasticPoolsInner object to access its operations.
      */
     private ElasticPoolsInner elasticPools;
@@ -261,19 +235,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
      */
     public ElasticPoolsInner elasticPools() {
         return this.elasticPools;
-    }
-
-    /**
-     * The ElasticPoolsDatabaseActivitysInner object to access its operations.
-     */
-    private ElasticPoolsDatabaseActivitysInner elasticPoolsDatabaseActivitys;
-
-    /**
-     * Gets the ElasticPoolsDatabaseActivitysInner object to access its operations.
-     * @return the ElasticPoolsDatabaseActivitysInner object.
-     */
-    public ElasticPoolsDatabaseActivitysInner elasticPoolsDatabaseActivitys() {
-        return this.elasticPoolsDatabaseActivitys;
     }
 
     /**
@@ -372,10 +333,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.serverAdvisors = new ServerAdvisorsInner(restClient().retrofit(), this);
         this.serverRecommendedActions = new ServerRecommendedActionsInner(restClient().retrofit(), this);
         this.servers = new ServersInner(restClient().retrofit(), this);
-        this.serverUpgrades = new ServerUpgradesInner(restClient().retrofit(), this);
-        this.serverUsages = new ServerUsagesInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
-        this.elasticPoolsDatabaseActivitys = new ElasticPoolsDatabaseActivitysInner(restClient().retrofit(), this);
         this.recommendedElasticPools = new RecommendedElasticPoolsInner(restClient().retrofit(), this);
         this.auditingPolicies = new AuditingPoliciesInner(restClient().retrofit(), this);
         this.dataMaskings = new DataMaskingsInner(restClient().retrofit(), this);

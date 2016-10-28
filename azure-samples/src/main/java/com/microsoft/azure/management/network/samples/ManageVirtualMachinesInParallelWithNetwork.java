@@ -196,8 +196,8 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                             .withPrimaryPrivateIpAddressDynamic()
                             .withoutPrimaryPublicIpAddress()
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUserName(userName)
-                            .withPassword(password)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
                             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                             .withNewStorageAccount(creatableStorageAccount);
                     frontendCreatableVirtualMachines.add(creatableVirtualMachine);
@@ -215,8 +215,8 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                             .withPrimaryPrivateIpAddressDynamic()
                             .withoutPrimaryPublicIpAddress()
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUserName(userName)
-                            .withPassword(password)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
                             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                             .withNewStorageAccount(creatableStorageAccount);
                     backendCreatableVirtualMachines.add(creatableVirtualMachine);

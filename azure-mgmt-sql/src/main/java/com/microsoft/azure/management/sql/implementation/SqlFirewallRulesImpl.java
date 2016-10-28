@@ -23,20 +23,23 @@ import rx.Observable;
 public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlFirewallRule,
             SqlFirewallRuleImpl,
-            FirewallRuleInner,
+            ServerFirewallRuleInner,
             ServersInner,
             SqlServerManager>
         implements SqlFirewallRules,
         SupportsGettingByParent<SqlFirewallRule>,
-        SupportsListingByParent<SqlFirewallRule> {
+        SupportsListingByParent<SqlFirewallRule>,
+        SqlFirewallRules.SqlFirewallRulesCreatable,
+        SqlFirewallRules.SqlFirewallRulesParentable {
     protected SqlFirewallRulesImpl(ServersInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
 
     @Override
     protected SqlFirewallRuleImpl wrapModel(String name) {
-        FirewallRuleInner inner = new FirewallRuleInner();
-        return new SqlFirewallRuleImpl(
+        ServerFirewallRuleInner inner = new ServerFirewallRuleInner();
+
+        return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.Parentable>(
                 name,
                 inner,
                 this.innerCollection);
@@ -53,7 +56,10 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    protected SqlFirewallRuleImpl wrapModel(FirewallRuleInner inner) {
+    protected SqlFirewallRuleImpl wrapModel(ServerFirewallRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new SqlFirewallRuleImpl(inner.name(), inner, this.innerCollection);
     }
 
@@ -64,7 +70,7 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
 
     @Override
     public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteFirewallRulesAsync(groupName, parentName, name);
+        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name);
     }
 
     @Override
@@ -85,5 +91,15 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     @Override
     public PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
+    }
+
+    @Override
+    public SqlFirewallRuleImpl definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName) {
+        ServerFirewallRuleInner inner = new ServerFirewallRuleInner();
+
+        return new SqlFirewallRuleImpl<SqlFirewallRule.DefinitionStages.WithCreate>(
+                firewallRuleName,
+                inner,
+                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

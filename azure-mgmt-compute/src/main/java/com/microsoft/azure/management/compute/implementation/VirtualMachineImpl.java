@@ -421,13 +421,13 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withRootUserName(String rootUserName) {
+    public VirtualMachineImpl withRootUsername(String rootUserName) {
         this.inner().osProfile().withAdminUsername(rootUserName);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withAdminUserName(String adminUserName) {
+    public VirtualMachineImpl withAdminUsername(String adminUserName) {
         this.inner().osProfile().withAdminUsername(adminUserName);
         return this;
     }
@@ -451,13 +451,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl disableVmAgent() {
+    public VirtualMachineImpl withoutVmAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl disableAutoUpdate() {
+    public VirtualMachineImpl withoutAutoUpdate() {
         this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
@@ -484,8 +484,26 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withPassword(String password) {
+    public VirtualMachineImpl withRootPassword(String password) {
         this.inner().osProfile().withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withAdminPassword(String password) {
+        this.inner().osProfile().withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withCustomData(String base64EncodedCustomData) {
+        this.inner().osProfile().withCustomData(base64EncodedCustomData);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withComputerName(String computerName) {
+        this.inner().osProfile().withComputerName(computerName);
         return this;
     }
 
@@ -625,10 +643,17 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
-                .withRegion(this.regionName())
-                .withExistingResourceGroup(this.resourceGroupName())
-        );
+        AvailabilitySet.DefinitionStages.WithGroup definitionWithGroup = super.myManager
+                .availabilitySets()
+                .define(name)
+                .withRegion(this.regionName());
+        Creatable<AvailabilitySet> definitionAfterGroup;
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        return withNewAvailabilitySet(definitionAfterGroup);
     }
 
     @Override
@@ -732,6 +757,10 @@ class VirtualMachineImpl
 
     @Override
     public String computerName() {
+        if (inner().osProfile() == null) {
+            // VM created by attaching a specialized OS Disk VHD will not have the osProfile.
+            return null;
+        }
         return inner().osProfile().computerName();
     }
 

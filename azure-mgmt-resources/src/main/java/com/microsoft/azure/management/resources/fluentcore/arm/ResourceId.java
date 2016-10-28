@@ -18,6 +18,9 @@ public final class ResourceId {
     private String resourceGroupName;
     private String name;
     private ResourceId parent;
+    private String providerNamespace;
+    private String resourceType;
+    private String id;
 
     /**
      * Returns parsed ResourceId object for a given resource id.
@@ -28,13 +31,21 @@ public final class ResourceId {
         // Example of id is id=/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/ans/providers/Microsoft.Network/applicationGateways/something
         // Remove the first '/' and then split using '/'
         String[] splits = id.substring(1).split("/");
+
         if (splits.length % 2 == 1) {
             throw new InvalidParameterException();
         }
         ResourceId resourceId = new ResourceId();
+
+        resourceId.id = id;
         resourceId.subscriptionId = splits[1];
         resourceId.resourceGroupName = splits[3];
+        resourceId.providerNamespace = splits[5];
+
+
         resourceId.name = splits[splits.length - 1];
+        resourceId.resourceType = splits[splits.length - 2];
+
         int numberOfParents = splits.length / 2 - 4;
         if (numberOfParents == 0) {
             return resourceId;
@@ -72,5 +83,36 @@ public final class ResourceId {
      */
     public ResourceId parent() {
         return this.parent;
+    }
+
+    /**
+     * @return name of the provider.
+     */
+    public String providerNamespace() {
+        return this.providerNamespace;
+    }
+
+    /**
+     * @return type of the resource.
+     */
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * @return full type of the resource.
+     */
+    public String fullResourceType() {
+        if (this.parent == null) {
+            return this.providerNamespace + "/" + this.resourceType;
+        }
+        return this.parent.fullResourceType() + "/" + this.resourceType;
+    }
+
+    /**
+     * @return the id of the resource.
+     */
+    public String id() {
+        return id;
     }
 }

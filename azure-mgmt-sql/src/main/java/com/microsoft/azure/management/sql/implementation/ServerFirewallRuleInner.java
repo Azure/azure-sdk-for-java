@@ -16,20 +16,50 @@ import com.microsoft.azure.management.sql.SqlSubResource;
  * Represents an Azure SQL Server Firewall Rule.
  */
 @JsonFlatten
-public class FirewallRuleInner extends SqlSubResource {
+public class ServerFirewallRuleInner extends SqlSubResource {
     /**
-     * The start IP address of the Azure SQL Database Firewall Rule. Must be
-     * IPv4 format.
+     * Kind of server that contains this firewall rule.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String kind;
+
+    /**
+     * Location of the server that contains this firewall rule.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String location;
+
+    /**
+     * The start IP address of the Azure SQL Database Server Firewall Rule.
+     * Must be IPv4 format.
      */
     @JsonProperty(value = "properties.startIpAddress")
     private String startIpAddress;
 
     /**
-     * The end IP address of the Azure SQL Database Firewall Rule. Must be
-     * IPv4 format.
+     * The end IP address of the Azure SQL Database Server Firewall Rule. Must
+     * be IPv4 format.
      */
     @JsonProperty(value = "properties.endIpAddress")
     private String endIpAddress;
+
+    /**
+     * Get the kind value.
+     *
+     * @return the kind value
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the location value.
+     *
+     * @return the location value
+     */
+    public String location() {
+        return this.location;
+    }
 
     /**
      * Get the startIpAddress value.
@@ -44,9 +74,9 @@ public class FirewallRuleInner extends SqlSubResource {
      * Set the startIpAddress value.
      *
      * @param startIpAddress the startIpAddress value to set
-     * @return the FirewallRuleInner object itself.
+     * @return the ServerFirewallRuleInner object itself.
      */
-    public FirewallRuleInner withStartIpAddress(String startIpAddress) {
+    public ServerFirewallRuleInner withStartIpAddress(String startIpAddress) {
         this.startIpAddress = startIpAddress;
         return this;
     }
@@ -64,9 +94,9 @@ public class FirewallRuleInner extends SqlSubResource {
      * Set the endIpAddress value.
      *
      * @param endIpAddress the endIpAddress value to set
-     * @return the FirewallRuleInner object itself.
+     * @return the ServerFirewallRuleInner object itself.
      */
-    public FirewallRuleInner withEndIpAddress(String endIpAddress) {
+    public ServerFirewallRuleInner withEndIpAddress(String endIpAddress) {
         this.endIpAddress = endIpAddress;
         return this;
     }

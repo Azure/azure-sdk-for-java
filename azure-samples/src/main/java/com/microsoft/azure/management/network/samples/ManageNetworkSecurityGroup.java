@@ -225,7 +225,7 @@ public final class ManageNetworkSecurityGroup {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface1)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
@@ -251,7 +251,7 @@ public final class ManageNetworkSecurityGroup {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface2)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();

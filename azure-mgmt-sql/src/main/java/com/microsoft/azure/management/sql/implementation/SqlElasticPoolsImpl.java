@@ -54,6 +54,10 @@ public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
 
     @Override
     protected SqlElasticPoolImpl wrapModel(ElasticPoolInner inner) {
+        if (inner == null) {
+            return null;
+        }
+
         return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection);
     }
 

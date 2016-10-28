@@ -18,21 +18,22 @@ import rx.functions.Func1;
 
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
+ * @param <CreateStageT> The final stage for which return creatable for FirewallRule
  */
-public class SqlFirewallRuleImpl
+public class SqlFirewallRuleImpl<CreateStageT>
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,
-                                    FirewallRuleInner,
-                                    SqlFirewallRuleImpl>
+                                    ServerFirewallRuleInner,
+                                    SqlFirewallRuleImpl<CreateStageT>>
         implements SqlFirewallRule,
-            SqlFirewallRule.Definition,
+            SqlFirewallRule.Definition<CreateStageT>,
             SqlFirewallRule.Update,
             IndependentChild.DefinitionStages.WithParentResource<SqlFirewallRule, SqlServer> {
     private final ServersInner innerCollection;
 
     protected SqlFirewallRuleImpl(String name,
-                                  FirewallRuleInner innerObject,
+                                  ServerFirewallRuleInner innerObject,
                                   ServersInner innerCollection) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
@@ -61,7 +62,7 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    protected void setParentName(FirewallRuleInner inner) {
+    protected void setParentName(ServerFirewallRuleInner inner) {
         if (inner.id() != null) {
             this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
         }
@@ -72,9 +73,9 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRule self = this;
 
         return this.innerCollection.createOrUpdateFirewallRuleAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
-                .map(new Func1<FirewallRuleInner, SqlFirewallRule>() {
+                .map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
             @Override
-            public SqlFirewallRule call(FirewallRuleInner databaseInner) {
+            public SqlFirewallRule call(ServerFirewallRuleInner databaseInner) {
                 setInner(databaseInner);
 
                 return self;
@@ -99,15 +100,15 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.WithEndIpAddress withStartIpAddress(String startIpAddress) {
+    public SqlFirewallRuleImpl<CreateStageT> withStartIpAddress(String startIpAddress) {
         this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.WithCreate withEndIpAddress(String endIpAddress) {
+    public CreateStageT withEndIpAddress(String endIpAddress) {
         this.inner().withEndIpAddress(endIpAddress);
-        return this;
+        return (CreateStageT) this;
     }
 
     @Override

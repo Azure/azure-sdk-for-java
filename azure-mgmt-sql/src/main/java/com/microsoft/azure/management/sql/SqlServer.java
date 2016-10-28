@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -42,7 +43,45 @@ public interface SqlServer extends
      */
     String adminLogin();
 
+    /**
+     * @return returns entry point to manage FirewallRules in SqlServer.
+     */
+    FirewallRules firewallRules();
 
+    /**
+     * Entry point to access FirewallRules from the SQL Server.
+     */
+    interface FirewallRules {
+        /**
+         * Gets a particular firewall rule.
+         *
+         * @param firewallRuleName name of the firewall rule to get
+         * @return Returns the SqlFirewall rule with in the SQL Server
+         */
+        SqlFirewallRule get(String firewallRuleName);
+
+        /**
+         * Creates a new firewall rule in SQL Server.
+         *
+         * @param firewallRuleName name of the firewall rule to be created
+         * @return Returns a stage to specify arguments of the firewall rule
+         */
+        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.WithCreate> define(String firewallRuleName);
+
+        /**
+         * Returns all the firewall rules for the server.
+         *
+         * @return list of firewall rules for the server.
+         */
+        PagedList<SqlFirewallRule> list();
+
+        /**
+         * Delete specified firewall rule in the server.
+         *
+         * @param firewallRuleName name of the firewall rule to delete
+         */
+        void delete(String firewallRuleName);
+    }
     /**************************************************************
      * Fluent interfaces to provision a SqlServer
      **************************************************************/

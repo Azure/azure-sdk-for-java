@@ -15,7 +15,6 @@ import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.sql.ArmErrorResponseMessageException;
-import com.microsoft.azure.management.sql.ResourceMoveDefinition;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
@@ -66,10 +65,6 @@ public final class DatabasesInner {
      */
     interface DatabasesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move")
-        Observable<Response<ResponseBody>> rename(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceMoveDefinition definition, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditRecords")
         Observable<Response<ResponseBody>> listEngineAuditRecords(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -91,7 +86,7 @@ public final class DatabasesInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints")
-        Observable<Response<ResponseBody>> listRestorePointss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRestorePoints(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
@@ -127,11 +122,11 @@ public final class DatabasesInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryption(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current/operationResults")
@@ -213,176 +208,6 @@ public final class DatabasesInner {
         @GET("{nextLink}")
         Observable<Response<ResponseBody>> listEngineAuditRecordsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     */
-    public void rename(String resourceGroupName, String serverName, String databaseName) {
-        renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> renameAsync(String resourceGroupName, String serverName, String databaseName) {
-        return renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> renameWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        final String id = null;
-        ResourceMoveDefinition definition = new ResourceMoveDefinition();
-        definition.withId(null);
-        return service.rename(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), definition, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = renameDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     */
-    public void rename(String resourceGroupName, String serverName, String databaseName, String id) {
-        renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id).toBlocking().single().getBody();
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id), serviceCallback);
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id) {
-        return renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> renameWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String id) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        ResourceMoveDefinition definition = new ResourceMoveDefinition();
-        definition.withId(id);
-        return service.rename(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), definition, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = renameDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> renameDelegate(Response<ResponseBody> response) throws ArmErrorResponseMessageException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ArmErrorResponseMessageException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(ArmErrorResponseMessageException.class)
-                .build(response);
     }
 
     /**
@@ -938,8 +763,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the List&lt;RestorePointInner&gt; object if successful.
      */
-    public List<RestorePointInner> listRestorePointss(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    public List<RestorePointInner> listRestorePoints(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
@@ -951,8 +776,8 @@ public final class DatabasesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
-        return ServiceCall.create(listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceCall<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
+        return ServiceCall.create(listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -963,8 +788,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
-    public Observable<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
+    public Observable<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
             @Override
             public List<RestorePointInner> call(ServiceResponse<List<RestorePointInner>> response) {
                 return response.getBody();
@@ -980,7 +805,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
-    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointssWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointsWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -994,12 +819,12 @@ public final class DatabasesInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.listRestorePointss(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRestorePoints(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RestorePointInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RestorePointInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<RestorePointInner>> result = listRestorePointssDelegate(response);
+                        ServiceResponse<PageImpl1<RestorePointInner>> result = listRestorePointsDelegate(response);
                         ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -1009,7 +834,7 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<RestorePointInner>> listRestorePointssDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<PageImpl1<RestorePointInner>> listRestorePointsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<PageImpl1<RestorePointInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<PageImpl1<RestorePointInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -1017,7 +842,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1030,7 +855,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1044,7 +869,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1062,7 +887,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1093,7 +918,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1106,7 +931,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1120,7 +945,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1138,7 +963,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -1791,8 +1616,8 @@ public final class DatabasesInner {
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the TransparentDataEncryptionInner object if successful.
      */
-    public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
-        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+    public TransparentDataEncryptionInner createOrUpdateTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
     }
 
     /**
@@ -1805,8 +1630,8 @@ public final class DatabasesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.create(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    public ServiceCall<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
     }
 
     /**
@@ -1818,8 +1643,8 @@ public final class DatabasesInner {
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the observable to the TransparentDataEncryptionInner object
      */
-    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
-        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
+    public Observable<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
             @Override
             public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
                 return response.getBody();
@@ -1836,7 +1661,7 @@ public final class DatabasesInner {
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the observable to the TransparentDataEncryptionInner object
      */
-    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+    public Observable<ServiceResponse<TransparentDataEncryptionInner>> createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1854,12 +1679,12 @@ public final class DatabasesInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.getTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        return service.createOrUpdateTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionConfigurationDelegate(response);
+                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = createOrUpdateTransparentDataEncryptionConfigurationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1868,7 +1693,7 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
                 .register(201, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
@@ -1884,8 +1709,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
      * @return the TransparentDataEncryptionInner object if successful.
      */
-    public TransparentDataEncryptionInner getTransparentDataEncryption(String resourceGroupName, String serverName, String databaseName) {
-        return getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName) {
+        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
@@ -1897,8 +1722,8 @@ public final class DatabasesInner {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.create(getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceCall.create(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
@@ -1909,8 +1734,8 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
      * @return the observable to the TransparentDataEncryptionInner object
      */
-    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
+    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName) {
+        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
             @Override
             public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
                 return response.getBody();
@@ -1926,7 +1751,7 @@ public final class DatabasesInner {
      * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
      * @return the observable to the TransparentDataEncryptionInner object
      */
-    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1940,12 +1765,12 @@ public final class DatabasesInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getTransparentDataEncryption(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.getTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionDelegate(response);
+                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionConfigurationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1954,7 +1779,7 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
                 .registerError(CloudException.class)

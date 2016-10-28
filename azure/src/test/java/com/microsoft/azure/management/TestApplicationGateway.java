@@ -171,8 +171,8 @@ public class TestApplicationGateway {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                        .withRootUserName(userName)
-                        .withPassword("Abcdef.123456")
+                        .withRootUsername(userName)
+                        .withRootPassword("Abcdef.123456")
                         .withNewAvailabilitySet(availabilitySetName)
                         .withSize(VirtualMachineSizeTypes.STANDARD_A1)
                         .create();
