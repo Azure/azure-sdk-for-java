@@ -149,13 +149,18 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return this.retryPolicy;
 	}
 
-	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
-	{
-		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
+	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws IOException
+	{		
 		MessagingFactory messagingFactory = new MessagingFactory(builder);
 
 		messagingFactory.createConnection(builder);
 		return messagingFactory.open;
+	}
+	
+	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
+	{
+		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
+		return createFromConnectionStringBuilder(builder);
 	}
 
 	@Override

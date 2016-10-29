@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-public interface IMessageReceiver {
+public interface IMessageReceiver extends IMessageEntity{
 	ReceiveMode getMode();
 
     void Abandon(UUID lockToken);

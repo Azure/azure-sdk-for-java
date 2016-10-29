@@ -2,12 +2,14 @@ package com.microsoft.azure.servicebus.messaging;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface IMessageSender {
-	void Send(BrokeredMessage message);
+import com.microsoft.azure.servicebus.ServiceBusException;
 
-    void SendBatch(Iterable<BrokeredMessage> message);
+public interface IMessageSender extends IMessageEntity{
+	void send(BrokeredMessage message) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<Void> SendAsync(BrokeredMessage message);
+    void sendBatch(Iterable<BrokeredMessage> message) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<Void> SendBatchAsync(Iterable<BrokeredMessage> message);
+    CompletableFuture<Void> sendAsync(BrokeredMessage message);
+
+    CompletableFuture<Void> sendBatchAsync(Iterable<BrokeredMessage> message);
 }

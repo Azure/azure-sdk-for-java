@@ -2,7 +2,7 @@ package com.microsoft.azure.servicebus.messaging;
 
 import java.util.concurrent.CompletableFuture;
 
-public interface IMessageBrowser {
+public interface IMessageBrowser extends IMessageEntity {
 	
 	BrokeredMessage Peek();
 
