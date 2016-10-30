@@ -1,9 +1,11 @@
 
+com.microsoft.azure
 com.microsoft.azure.batch
 com.microsoft.azure.batch.auth
 com.microsoft.azure.batch.interceptor
 com.microsoft.azure.batch.protocol
 com.microsoft.azure.batch.protocol.models
+com.microsoft.azure.credentials
 com.microsoft.azure.documentdb
 com.microsoft.azure.documentdb.directconnectivity
 com.microsoft.azure.documentdb.internal
@@ -40,6 +42,7 @@ com.microsoft.azure.management.resources.fluentcore.model
 com.microsoft.azure.management.search
 com.microsoft.azure.management.storage
 com.microsoft.azure.management.website
+com.microsoft.azure.serializer
 com.microsoft.azure.storage
 com.microsoft.azure.storage.analytics
 com.microsoft.azure.storage.blob
@@ -47,6 +50,10 @@ com.microsoft.azure.storage.core
 com.microsoft.azure.storage.file
 com.microsoft.azure.storage.queue
 com.microsoft.azure.storage.table
+com.microsoft.rest
+com.microsoft.rest.credentials
+com.microsoft.rest.retry
+com.microsoft.rest.serializer
 com.microsoft.windowsazure
 com.microsoft.windowsazure.core
 com.microsoft.windowsazure.core.pipeline
