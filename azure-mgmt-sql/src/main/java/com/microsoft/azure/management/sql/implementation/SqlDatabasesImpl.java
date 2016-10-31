@@ -39,8 +39,7 @@ public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         return new SqlDatabaseImpl(
                 name,
                 inner,
-                this.innerCollection,
-                manager.sqlElasticPools());
+                this.innerCollection);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlDatabaseImpl(inner.name(), inner, this.innerCollection, manager.sqlElasticPools());
+        return new SqlDatabaseImpl(inner.name(), inner, this.innerCollection);
     }
 
     @Override

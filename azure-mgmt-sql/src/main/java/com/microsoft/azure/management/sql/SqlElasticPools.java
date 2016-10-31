@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -61,4 +62,11 @@ public interface SqlElasticPools extends
      * @return the list of SQLElasticPools in a SQLServer
      */
     PagedList<SqlElasticPool> listBySqlServer(GroupableResource sqlServer);
+
+    /**
+     * Entry point to SQL ElasticPool management API, which already have the SQLServer specified.
+     */
+    interface SqlElasticPoolsCreatable extends SqlElasticPools {
+        SqlElasticPool.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String elasticPoolName, Region region);
+    }
 }

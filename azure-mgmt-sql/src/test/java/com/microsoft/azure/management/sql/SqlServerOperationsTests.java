@@ -112,37 +112,27 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
+
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable = sqlServer.elasticPools()
+                .define(SQL_ELASTIC_POOL_NAME)
+                .withEdition(ElasticPoolEditions.STANDARD);
 
         SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
                 .define(SQL_DATABASE_NAME)
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withNewElasticPool(
-                        sqlServerManager.sqlElasticPools()
-                                .define(SQL_ELASTIC_POOL_NAME)
-                                .withEdition(ElasticPoolEditions.STANDARD))
-                .withNewSqlServer(sqlServerCreatable)
+                .withNewElasticPool(sqlElasticPoolCreatable)
+                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
 
         validateSqlDatabase(sqlDatabase);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Get Elastic pool
-        SqlElasticPool sqlElasticPool = sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_ELASTIC_POOL_NAME);
-        validateSqlElasticPool(sqlElasticPool);
-
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getById(sqlElasticPool.id()));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer, SQL_ELASTIC_POOL_NAME));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_ELASTIC_POOL_NAME));
+        validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
 
         // Get
         validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getById(sqlDatabase.id()));
@@ -156,12 +146,14 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
-        // Add another database to the server
+        SqlElasticPool sqlElasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
+
+        // Add another database to the server and pool.
         sqlDatabase = sqlServerManager.sqlDatabases()
                 .define("newDatabase")
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withExistingElasticPoolName(sqlElasticPool)
+                .withExistingElasticPool(sqlElasticPool)
                 .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
         sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
@@ -174,45 +166,42 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlElasticPool() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlElasticPool sqlElasticPool = sqlServerManager.sqlElasticPools()
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        validateSqlServer(sqlServer);
+
+        SqlElasticPool sqlElasticPool = sqlServer.elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
+
+        sqlElasticPool = sqlElasticPool.update()
+                .withDtu(100)
+                .withDatabaseDtuMax(20)
+                .withDatabaseDtuMin(10)
+                .withStorageCapacity(102400).apply();
 
         validateSqlElasticPool(sqlElasticPool);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
-        validateSqlServer(sqlServer);
-
         // Get
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getById(sqlElasticPool.id()));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer, SQL_ELASTIC_POOL_NAME));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_ELASTIC_POOL_NAME));
+        validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
 
         // List
-        validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer));
+        validateListSqlElasticPool(sqlServer.elasticPools().list());
 
-        sqlServerManager.sqlElasticPools().deleteById(sqlElasticPool.id());
-        validateSqlElasticPoolNotFound(SQL_ELASTIC_POOL_NAME);
+        // Delete
+        sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
+        validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
-        sqlElasticPool = sqlServerManager.sqlElasticPools()
+        sqlElasticPool = sqlServer.elasticPools()
                 .define("newElasticPool")
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlElasticPools().deleteByParent(sqlElasticPool.resourceGroupName(), sqlElasticPool.sqlServerName(), sqlElasticPool.name());
-        validateSqlElasticPoolNotFound("newElasticPool");
+
+        sqlServer.elasticPools().delete(sqlElasticPool.name());
+        validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
@@ -275,8 +264,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
 
-    private static void validateSqlElasticPoolNotFound(String elasticPoolName) {
-        Assert.assertNull(sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, elasticPoolName));
+    private static void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
+        Assert.assertNull(sqlServer.elasticPools().get(elasticPoolName));
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
