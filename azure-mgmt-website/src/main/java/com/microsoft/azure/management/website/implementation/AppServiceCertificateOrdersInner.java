@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -20,21 +19,23 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
 import rx.Observable;
+import rx.functions.Func1;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -229,7 +230,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -305,7 +306,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter appServiceCertificateOrder is required and cannot be null.");
         }
         Validator.validate(appServiceCertificateOrder);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.validatePurchaseInformation(this.client.subscriptionId(), appServiceCertificateOrder, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -416,7 +417,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>>>() {
                 @Override
@@ -535,7 +536,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.listCertificates(resourceGroupName, certificateOrderName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<AppServiceCertificateInner>>>>() {
                 @Override
@@ -624,7 +625,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.getCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateInner>>>() {
                 @Override
@@ -721,7 +722,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter keyVaultCertificate is required and cannot be null.");
         }
         Validator.validate(keyVaultCertificate);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdateCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), keyVaultCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateInner>() { }.getType());
     }
@@ -801,7 +802,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter keyVaultCertificate is required and cannot be null.");
         }
         Validator.validate(keyVaultCertificate);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.beginCreateOrUpdateCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), keyVaultCertificate, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateInner>>>() {
                 @Override
@@ -890,7 +891,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.deleteCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -972,7 +973,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.get(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
                 @Override
@@ -1062,7 +1063,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
         }
         Validator.validate(certificateDistinguishedName);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServiceCertificateOrderInner>() { }.getType());
     }
@@ -1135,7 +1136,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter certificateDistinguishedName is required and cannot be null.");
         }
         Validator.validate(certificateDistinguishedName);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), certificateDistinguishedName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServiceCertificateOrderInner>>>() {
                 @Override
@@ -1217,7 +1218,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.deleteCertificateOrder(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -1307,7 +1308,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter reissueCertificateOrderRequest is required and cannot be null.");
         }
         Validator.validate(reissueCertificateOrderRequest);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.reissue(resourceGroupName, name, this.client.subscriptionId(), reissueCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -1397,7 +1398,7 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter renewCertificateOrderRequest is required and cannot be null.");
         }
         Validator.validate(renewCertificateOrderRequest);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.renew(resourceGroupName, name, this.client.subscriptionId(), renewCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -1479,7 +1480,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.resendCertificateEmail(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -1561,7 +1562,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.retrieveCertificateActions(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CertificateOrderActionInner>>>>() {
                 @Override
@@ -1643,7 +1644,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.retrieveCertificateEmailHistory(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<CertificateEmailInner>>>>() {
                 @Override
@@ -1725,7 +1726,7 @@ public final class AppServiceCertificateOrdersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-08-01";
         return service.verifyDomainOwnership(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override

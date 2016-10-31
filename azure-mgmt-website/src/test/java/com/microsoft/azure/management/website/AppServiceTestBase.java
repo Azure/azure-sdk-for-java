@@ -31,7 +31,12 @@ public abstract class AppServiceTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String s) {
+                        System.out.println(s);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
                 .withReadTimeout(1, TimeUnit.MINUTES)
                 .build();
 

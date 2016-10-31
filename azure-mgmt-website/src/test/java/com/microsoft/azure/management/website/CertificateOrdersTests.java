@@ -6,9 +6,6 @@
 
 package com.microsoft.azure.management.website;
 
-import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -17,8 +14,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class CertificateOrdersTests extends AppServiceTestBase {
-    private static final String RG_NAME = "javacsmrg325";
-    private static final String CERTIFICATE_NAME = "javatestcert325";
+    private static final String RG_NAME = "javacsmrg319";
+    private static final String CERTIFICATE_NAME = "javatestcert319";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -27,21 +24,21 @@ public class CertificateOrdersTests extends AppServiceTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        //resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
-    public void canCRUBAppServicePlan() throws Exception {
+    public void canCRUDCertificateOrder() throws Exception {
+//        CertificateOrder existing = appServiceManager.certificateOrders()
+//                .getByGroup(RG_NAME, CERTIFICATE_NAME);
         // CREATE
-        Creatable<ResourceGroup> rgCreatable = resourceManager.resourceGroups()
-                .define(RG_NAME)
-                .withRegion(Region.US_WEST);
         CertificateOrder certificateOrder = appServiceManager.certificateOrders()
                 .define(CERTIFICATE_NAME)
-                .withNewResourceGroup(rgCreatable)
-                .withHostName("zhachuxiang.com")
+                .withExistingResourceGroup(RG_NAME)
+                .withHostName("javatest319.com")
                 .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
                 .withValidYears(1)
+                .withExistingKeyVault("/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg905/providers/Microsoft.KeyVault/vaults/java-keyvault-905")
                 .create();
         Assert.assertNotNull(certificateOrder);
         // GET
