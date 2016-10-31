@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -25,4 +26,11 @@ public interface Domains extends
         SupportsDeletingByGroup,
         SupportsGettingByGroup<Domain>,
         SupportsGettingById<Domain>{
+    /**
+     * List the agreements for purchasing a domain with a specific top level extension.
+     *
+     * @param topLevelExtension the top level extension of the domain, e.g., "com", "net", "org"
+     * @return the list of agreements required for the purchase
+     */
+    PagedList<DomainLegalAgreement> listAgreements(String topLevelExtension);
 }

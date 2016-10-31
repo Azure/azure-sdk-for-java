@@ -8,7 +8,9 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.website.Domain;
+import com.microsoft.azure.management.website.DomainLegalAgreement;
 import com.microsoft.azure.management.website.Domains;
 import rx.Observable;
 import rx.functions.Func1;
@@ -73,5 +75,15 @@ class DomainsImpl
     @Override
     public PagedList<Domain> listByGroup(String resourceGroupName) {
         return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
+    }
+
+    @Override
+    public PagedList<DomainLegalAgreement> listAgreements(String topLevelExtension) {
+        return new PagedListConverter<TldLegalAgreementInner, DomainLegalAgreement>() {
+            @Override
+            public DomainLegalAgreement typeConvert(TldLegalAgreementInner tldLegalAgreementInner) {
+                return new DomainLegalAgreementImpl(tldLegalAgreementInner);
+            }
+        }.convert(topLevelDomainsInner.listAgreements(topLevelExtension));
     }
 }
