@@ -29,13 +29,15 @@ public class SqlServerImpl
             SqlServer.Definition,
             SqlServer.Update {
     private final ServersInner innerCollection;
+    private final ElasticPoolsInner elasticPoolsInner;
 
     protected SqlServerImpl(String name,
                             ServerInner innerObject,
                             ServersInner innerCollection,
-                            SqlServerManager manager) {
+                            SqlServerManager manager, ElasticPoolsInner elasticPoolsInner) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
+        this.elasticPoolsInner = elasticPoolsInner;
     }
 
     @Override
@@ -79,6 +81,11 @@ public class SqlServerImpl
     @Override
     public FirewallRules firewallRules() {
         return new FirewallRulesImpl(this.innerCollection, this.myManager, this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public ElasticPools elasticPools() {
+        return new ElasticPoolsImpl(this.elasticPoolsInner, this.myManager, this.resourceGroupName(), this.name(), this.region());
     }
 
     @Override

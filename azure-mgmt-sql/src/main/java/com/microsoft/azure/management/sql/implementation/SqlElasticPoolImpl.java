@@ -8,7 +8,6 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.ElasticPoolState;
 import com.microsoft.azure.management.sql.SqlElasticPool;
@@ -106,17 +105,26 @@ public class SqlElasticPoolImpl
     }
 
     @Override
-    public Creatable<SqlElasticPool> withExistingSqlServer(String groupName, String sqlServerName) {
-        return this.withExistingParentResource(groupName, sqlServerName);
+    public SqlElasticPoolImpl withDatabaseDtuMin(int databaseDtuMin) {
+        this.inner().withDatabaseDtuMin(databaseDtuMin);
+        return this;
     }
 
     @Override
-    public Creatable<SqlElasticPool> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable) {
-        return this.withNewParentResource(sqlServerCreatable);
+    public SqlElasticPoolImpl withDatabaseDtuMax(int databaseDtuMax) {
+        this.inner().withDatabaseDtuMax(databaseDtuMax);
+        return this;
     }
 
     @Override
-    public Creatable<SqlElasticPool> withExistingSqlServer(SqlServer existingSqlServer) {
-        return this.withExistingParentResource(existingSqlServer);
+    public SqlElasticPoolImpl withDtu(int dtu) {
+        this.inner().withDtu(dtu);
+        return this;
+    }
+
+    @Override
+    public SqlElasticPoolImpl withStorageCapacity(int storageMB) {
+        this.inner().withStorageMB(storageMB);
+        return this;
     }
 }
