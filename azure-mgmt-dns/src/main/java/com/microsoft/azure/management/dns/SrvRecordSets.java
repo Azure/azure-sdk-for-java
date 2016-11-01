@@ -1,7 +1,19 @@
 package com.microsoft.azure.management.dns;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+
 /**
- * Created by anuthomaschandy on 10/31/16.
+ *  Entry point to Dns zone Srv record set management API.
  */
-public interface SrvRecordSets {
+@Fluent
+public interface SrvRecordSets extends
+        DnsRecordSets<SrvRecordSet>,
+        SupportsListing<SrvRecordSet>,
+        SupportsGettingById<SrvRecordSet>,
+        SupportsCreating<SrvRecordSet.DefinitionStages.Blank>,
+        SupportsDeletingById {
 }

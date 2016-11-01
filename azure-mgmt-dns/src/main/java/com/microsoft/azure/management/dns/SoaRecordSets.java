@@ -1,7 +1,16 @@
 package com.microsoft.azure.management.dns;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
+
 /**
- * Created by anuthomaschandy on 10/31/16.
+ *  Entry point to Dns zone Soa record set management API.
  */
-public class SoaRecordSets {
+@Fluent
+public interface SoaRecordSets extends
+        DnsRecordSets<SoaRecordSet>,
+        SupportsListing<SoaRecordSet>,
+        SupportsGettingById<SoaRecordSet> {
 }
+

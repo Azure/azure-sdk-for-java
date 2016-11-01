@@ -12,7 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.List;
 
-
 /**
  * An immutable client-side representation of an Azure DNS Zone.
  */
@@ -78,9 +77,9 @@ public interface DnsZone extends
     TxtRecordSets txtRecordSets();
 
     /**
-     * @return entry point to manage record sets in this zone containing Soa (start of authority) records
+     * @return the Soa (start of authority) record associated with this Dns zone
      */
-    SoaRecordSets soaRecordSets();
+    SoaRecord getSoaRecord();
 
     /**
      * The entirety of the Dns zone definition.
