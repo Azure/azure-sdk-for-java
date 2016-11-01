@@ -43,7 +43,7 @@ class TestUtilities
 	static void log(String message)
 	{
 		console(message);
-		TEST_LOGGER.log(Level.INFO, message);
+		TEST_LOGGER.log(Level.INFO, message.trim());
 	}
 	
 	static void logConditional(boolean doLog, String message)

@@ -53,7 +53,7 @@ public class PrefabEventProcessor implements IEventProcessor
 			}
 			if (this.logEveryMessage)
 			{
-				TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + "\n");
+				TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
 			}
 			if (Arrays.equals(event.getBody(), this.telltaleBytes))
 			{
@@ -65,6 +65,7 @@ public class PrefabEventProcessor implements IEventProcessor
 		if (doCheckpoint)
 		{
 			context.checkpoint(lastEvent);
+			TestUtilities.log("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset() + "\n");
 		}
 	}
 
