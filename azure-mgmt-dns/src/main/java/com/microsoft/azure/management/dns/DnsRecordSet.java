@@ -5,6 +5,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalCh
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+/**
+ * An immutable client-side representation of a record set in Azure Dns Zone.
+ */
 public interface DnsRecordSet<FluentModelT, ParentT> extends
     ExternalChildResource<FluentModelT, ParentT>,
     HasTags,

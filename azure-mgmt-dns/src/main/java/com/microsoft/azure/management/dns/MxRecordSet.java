@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Mx record set in Azure Dns Zone.
+ * An immutable client-side representation of a Mx (mail exchange) record set in Azure Dns Zone.
  */
 public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
     /**
@@ -20,6 +20,7 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithMailExchange,
             DefinitionStages.WithCreate {
     }
 
@@ -30,8 +31,21 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
         /**
          * The first stage of a Mx record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithMailExchange {
+        }
+
+        /**
+         * The stage of the Mx record set definition allowing to add a record.
+         */
+        interface WithMailExchange {
+            /**
+             * Creates and assigns priority to a Mx record with the provided mail exchange server in this record set.
+             *
+             * @param priority the priority for the mail exchange host, lower the value higher the priority
+             * @param mailExchangeHostName the host name of the mail exchange server
+             * @return the next stage of the record set definition
+             */
+            WithCreate withMailExchange(int priority, String mailExchangeHostName);
         }
 
         /**
@@ -55,6 +69,7 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<MxRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithMailExchange,
                 DefinitionStages.WithTtl {
         }
     }
@@ -63,6 +78,29 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
      * Grouping of Mx record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Mx record set definition allowing to add or remove a record.
+         */
+        interface WithMailExchange {
+            /**
+             * Creates and assigns priority to a Mx record with the provided mail exchange server in this record set.
+             *
+             * @param priority the priority for the mail exchange host, lower the value higher the priority
+             * @param mailExchangeHostName the host name of the mail exchange server
+             * @return the next stage of the record set update
+             */
+            Update withMailExchange(int priority, String mailExchangeHostName);
+
+            /**
+             * Removes a Mx record with the provided priority and mail exchange server from this record set.
+             *
+             * @param priority the priority for the mail exchange host
+             * @param mailExchangeHostName the host name of the mail exchange server
+             * @return the next stage of the record set update
+             */
+            Update withoutMailExchange(int priority, String mailExchangeHostName);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -86,6 +124,7 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
     interface Update extends
             Appliable<MxRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithMailExchange,
             UpdateStages.WithTtl {
     }
 }

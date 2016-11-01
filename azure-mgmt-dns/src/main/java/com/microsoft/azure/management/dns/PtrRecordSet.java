@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Ptr record set in Azure Dns Zone.
+ * An immutable client-side representation of a Ptr (pointer) record set in Azure Dns Zone.
  */
 public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
     /**
@@ -20,6 +20,7 @@ public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithTargetDomain,
             DefinitionStages.WithCreate {
     }
 
@@ -30,8 +31,20 @@ public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
         /**
          * The first stage of a Ptr record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithTargetDomain {
+        }
+
+        /**
+         * The stage of the Ptr record set definition allowing to add a record.
+         */
+        interface WithTargetDomain {
+            /**
+             * Creates a Ptr record with the provided target domain in this record set.
+             *
+             * @param targetDomainName the name of the target domain
+             * @return the next stage of the record set definition
+             */
+            WithCreate withTargetDomain(String targetDomainName);
         }
 
         /**
@@ -55,6 +68,7 @@ public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<PtrRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithTargetDomain,
                 DefinitionStages.WithTtl {
         }
     }
@@ -63,6 +77,27 @@ public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
      * Grouping of Ptr record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Ptr record set definition allowing to add or remove a record.
+         */
+        interface WithTargetDomain {
+            /**
+             * Creates a Ptr record with the provided target domain in this record set.
+             *
+             * @param targetDomainName the name of the target domain
+             * @return the next stage of the record set update
+             */
+            Update withTargetDomain(String targetDomainName);
+
+            /**
+             * Removes a Ptr record with the provided target domain from this record set.
+             *
+             * @param targetDomainName the name of the target domain
+             * @return the next stage of the record set update
+             */
+            Update withoutTargetDomain(String targetDomainName);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -86,6 +121,7 @@ public interface PtrRecordSet extends DnsRecordSet<PtrRecordSet, DnsZone> {
     interface Update extends
             Appliable<PtrRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithTargetDomain,
             UpdateStages.WithTtl {
     }
 }

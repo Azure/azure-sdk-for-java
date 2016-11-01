@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
     /**
-     * @return the name server names of Ns records in this record set
+     * @return the name server names of Ns (name server) records in this record set
      */
     List<String> nameServers();
 
@@ -17,6 +17,7 @@ public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithNameServer,
             DefinitionStages.WithCreate {
     }
 
@@ -27,8 +28,20 @@ public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
         /**
          * The first stage of a Ns record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithNameServer {
+        }
+
+        /**
+         * The stage of the Ns record set definition allowing to add a record.
+         */
+        interface WithNameServer {
+            /**
+             * Creates a Ns record with the provided name server in this record set.
+             *
+             * @param nameServerHostName the name server host name
+             * @return the next stage of the record set definition
+             */
+            WithCreate withNameServer(String nameServerHostName);
         }
 
         /**
@@ -52,6 +65,7 @@ public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<NsRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithNameServer,
                 DefinitionStages.WithTtl {
         }
     }
@@ -60,6 +74,27 @@ public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
      * Grouping of Ns record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Ns record set definition allowing to add or remove a record.
+         */
+        interface WithNameServer {
+            /**
+             * Creates a Ns record with the provided name server in this record set.
+             *
+             * @param nameServerHostName the name server host name
+             * @return the next stage of the record set definition
+             */
+            Update withNameServer(String nameServerHostName);
+
+            /**
+             * Removes a Ns record with the provided name server from this record set.
+             *
+             * @param nameServerHostName the name server host name
+             * @return the next stage of the record set definition
+             */
+            Update withoutNameServer(String nameServerHostName);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -83,6 +118,7 @@ public interface NsRecordSet extends DnsRecordSet<NsRecordSet, DnsZone> {
     interface Update extends
             Appliable<NsRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithNameServer,
             UpdateStages.WithTtl {
     }
 }

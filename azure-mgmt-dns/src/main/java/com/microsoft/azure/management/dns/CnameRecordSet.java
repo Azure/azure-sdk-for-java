@@ -7,11 +7,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a CName record set in Azure Dns Zone.
+ * An immutable client-side representation of a CName (canonical name) record set in Azure Dns Zone.
  */
 public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
     /**
-     * @return the canonical names (without a terminating dot) of CNAME records in this record set
+     * @return the canonical names (without a terminating dot) of CName records in this record set
      */
     List<String> canonicalNames();
 
@@ -20,6 +20,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithCanonicalName,
             DefinitionStages.WithCreate {
     }
 
@@ -30,8 +31,20 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
         /**
          * The first stage of a CName record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithCanonicalName {
+        }
+
+        /**
+         * The stage of the CName record set definition allowing to add a record.
+         */
+        interface WithCanonicalName {
+            /**
+             * Creates a CName record with the provided canonical name in this record set.
+             *
+             * @param canonicalName the canonical name
+             * @return the next stage of the record set definition
+             */
+            WithCreate withCanonicalName(String canonicalName);
         }
 
         /**
@@ -55,6 +68,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<AaaaRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithCanonicalName,
                 DefinitionStages.WithTtl {
         }
     }
@@ -63,6 +77,27 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
      * Grouping of CName record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the CName record set update allowing to add or remove a record.
+         */
+        interface WithCanonicalName {
+            /**
+             * Creates a CName record with the provided canonical name in this record set.
+             *
+             * @param canonicalName the canonical name
+             * @return the next stage of the record set update
+             */
+            Update withCanonicalName(String canonicalName);
+
+            /**
+             * Removes a CName record with the provided canonical name from this record set.
+             *
+             * @param canonicalName the canonical name
+             * @return the next stage of the record set update
+             */
+            Update withoutCanonicalName(String canonicalName);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -86,6 +121,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
     interface Update extends
             Appliable<AaaaRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithCanonicalName,
             UpdateStages.WithTtl {
     }
 }

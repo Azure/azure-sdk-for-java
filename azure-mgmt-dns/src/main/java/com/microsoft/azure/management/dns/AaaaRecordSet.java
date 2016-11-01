@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Aaaa record set in Azure Dns Zone.
+ * An immutable client-side representation of a Aaaa (Ipv6) record set in Azure Dns Zone.
  */
 public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
     /**
@@ -20,6 +20,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithIpv6Address,
             DefinitionStages.WithCreate {
     }
 
@@ -30,8 +31,20 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
         /**
          * The first stage of a Aaaa record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithIpv6Address {
+        }
+
+        /**
+         * The stage of the Aaaa record set definition allowing to add a record.
+         */
+        interface WithIpv6Address {
+            /**
+             * Creates an Aaaa record with the provided Ipv6 address in this record set.
+             *
+             * @param ipv6Address the Ipv6 address
+             * @return the next stage of the record set definition
+             */
+            WithCreate withIp6Address(String ipv6Address);
         }
 
         /**
@@ -55,6 +68,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<AaaaRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithIpv6Address,
                 DefinitionStages.WithTtl {
         }
     }
@@ -63,6 +77,27 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
      * Grouping of Aaaa record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the Aaaa record set update allowing to add or remove a record.
+         */
+        interface WithIpv6Address {
+            /**
+             * Creates an Aaaa record with the provided Ipv6 address in this record set.
+             *
+             * @param ipv6Address the Ipv6 address
+             * @return the next stage of the record set update
+             */
+            Update withIpv6Address(String ipv6Address);
+
+            /**
+             * Removes an Aaaa record with the provided Ipv6 address from this record set.
+             *
+             * @param ipv6Address the Ipv6 address
+             * @return the next stage of the record set update
+             */
+            Update withoutIpv6Address(String ipv6Address);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -86,6 +121,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
     interface Update extends
             Appliable<AaaaRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithIpv6Address,
             UpdateStages.WithTtl {
     }
 }
