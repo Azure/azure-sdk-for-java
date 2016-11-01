@@ -45,6 +45,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private final static int leaseDurationInSeconds = 30;
     private final static int leaseRenewIntervalInMilliseconds = 10 * 1000; // ten seconds
     private final BlobRequestOptions renewRequestOptions = new BlobRequestOptions();
+    
+    private enum UploadActivity { Create, Acquire, Release, Update };
 
     AzureStorageCheckpointLeaseManager(String storageConnectionString)
     {
@@ -331,7 +333,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		this.host.logWithHostAndPartition(Level.INFO, partitionId,
     				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
     				"storageBlobPrefix: " + this.storageBlobPrefix);
-    		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), "created");
+    		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), UploadActivity.Create);
     	}
     	catch (StorageException se)
     	{
@@ -402,7 +404,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	lease.setToken(newToken);
 	    	lease.setOwner(this.host.getHostName());
 	    	lease.incrementEpoch(); // Increment epoch each time lease is acquired or stolen by a new host
-	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), "acquire");
+	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), UploadActivity.Acquire);
     	}
     	catch (StorageException se)
     	{
@@ -469,7 +471,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		AzureBlobLease releasedCopy = new AzureBlobLease(lease);
     		releasedCopy.setToken("");
     		releasedCopy.setOwner("");
-    		uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), "release");
+    		uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), UploadActivity.Release);
     		leaseBlob.releaseLease(AccessCondition.generateLeaseCondition(leaseId));
     	}
     	catch (StorageException se)
@@ -517,7 +519,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	try
     	{
-    		uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), "update");
+    		uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), UploadActivity.Update);
     	}
     	catch (StorageException se)
     	{
@@ -543,8 +545,22 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	return blobLease;
     }
     
-    private void uploadLease(AzureBlobLease lease, CloudBlockBlob blob, AccessCondition condition, String activity) throws StorageException, IOException
+    private void uploadLease(AzureBlobLease lease, CloudBlockBlob blob, AccessCondition condition, UploadActivity activity) throws StorageException, IOException
     {
+    	if (activity != UploadActivity.Create)
+    	{
+	    	// Download the existing blob so we can merge any checkpoint changes. This has to be done here because
+	    	// we're trying to maintain the fiction that checkpoints and leases are separate, because they may be
+	    	// for other implementations. Therefore, higher-level EPH code shouldn't be doing weird things with leases,
+	    	// like calling getLease() all the time, just to cater to this implementation.
+	    	AzureBlobLease inStoreLease = downloadLease(blob);
+	    	if (inStoreLease.getSequenceNumber() > lease.getSequenceNumber())
+	    	{
+	    		lease.setOffset(inStoreLease.getOffset());
+	    		lease.setSequenceNumber(inStoreLease.getSequenceNumber());
+	    	}
+    	}
+    	
     	String jsonLease = this.gson.toJson(lease);
  		blob.uploadText(jsonLease, null, condition, null, null);
 		// During create, we blindly try upload and it may throw. Doing the logging after the upload
