@@ -14,7 +14,6 @@ import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.ProvisioningState;
 import org.joda.time.DateTime;
 import rx.Observable;
-import rx.functions.Func1;
 
 import java.util.Map;
 
@@ -34,7 +33,6 @@ class CertificateOrderImpl
         CertificateOrder.Update {
 
     private final AppServiceCertificateOrdersInner client;
-    String keyVaultId;
 
     CertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
@@ -149,28 +147,6 @@ class CertificateOrderImpl
     @Override
     public Observable<CertificateOrder> createResourceAsync() {
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .flatMap(new Func1<AppServiceCertificateOrderInner, Observable<AppServiceCertificateOrderInner>>() {
-                    @Override
-                    public Observable<AppServiceCertificateOrderInner> call(final AppServiceCertificateOrderInner appServiceCertificateOrderInner) {
-                        AppServiceCertificateInner certificateInner = new AppServiceCertificateInner()
-                                .withKeyVaultId(keyVaultId);
-                        certificateInner.withKeyVaultSecretName(name() + "secret");
-                        certificateInner.withLocation(regionName());
-                        return client.createOrUpdateCertificateAsync(resourceGroupName(), name(), name(), certificateInner)
-                                .map(new Func1<AppServiceCertificateInner, AppServiceCertificateOrderInner>() {
-                                    @Override
-                                    public AppServiceCertificateOrderInner call(AppServiceCertificateInner appServiceCertificateInner) {
-                                        return appServiceCertificateOrderInner;
-                                    }
-                                });
-                    }
-                })
                 .map(innerToFluentMap(this));
-    }
-
-    @Override
-    public CertificateOrderImpl withExistingKeyVault(String keyVaultId) {
-        this.keyVaultId = keyVaultId;
-        return this;
     }
 }

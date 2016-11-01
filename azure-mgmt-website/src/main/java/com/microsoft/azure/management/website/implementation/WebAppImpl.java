@@ -207,7 +207,7 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withNewAppServicePlan() {
+    public WebAppImpl withNewFreeAppServicePlan() {
         String appServicePlanName = ResourceNamer.randomResourceName(name(), 10);
         AppServicePlan.DefinitionStages.WithCreate creatable = myManager.appServicePlans().define(appServicePlanName)
                 .withRegion(region())
@@ -235,64 +235,62 @@ class WebAppImpl
         return this;
     }
 
-    private boolean isUpdateSsl(String hostName) {
-        boolean update = false;
-        if (hostNameSslStates() != null) {
-            for (HostNameSslState hostNameSslState : hostNameSslStates()) {
-                if (hostName.equals(hostNameSslState.name())) {
-                    update = true;
-                }
-            }
-        }
-        return update;
-    }
-
-    @Override
-    public WebAppImpl disableSsl(String hostName) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.DISABLED)
-                .withToUpdate(isUpdateSsl(hostName)));
-        return this;
-    }
-
-    @Override
-    public WebAppImpl enableSniSsl(String hostName, String thumbprint) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.SNI_ENABLED)
-                .withThumbprint(thumbprint)
-                .withToUpdate(isUpdateSsl(hostName)));
-        return this;
-    }
-
-    @Override
-    public WebAppImpl enableIpBasedSsl(String hostName, String thumbprint, String virtualIp) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.SNI_ENABLED)
-                .withThumbprint(thumbprint)
-                .withVirtualIP(virtualIp)
-                .withToUpdate(isUpdateSsl(hostName)));
-        return this;
-    }
+//    private boolean isUpdateSsl(String hostName) {
+//        boolean update = false;
+//        if (hostNameSslStates() != null) {
+//            for (HostNameSslState hostNameSslState : hostNameSslStates()) {
+//                if (hostName.equals(hostNameSslState.name())) {
+//                    update = true;
+//                }
+//            }
+//        }
+//        return update;
+//    }
+//
+//    @Override
+//    public WebAppImpl disableSsl(String hostName) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.DISABLED)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
+//
+//    @Override
+//    public WebAppImpl enableSniSsl(String hostName, String thumbprint) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.SNI_ENABLED)
+//                .withThumbprint(thumbprint)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
+//
+//    @Override
+//    public WebAppImpl enableIpBasedSsl(String hostName, String thumbprint, String virtualIp) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.SNI_ENABLED)
+//                .withThumbprint(thumbprint)
+//                .withVirtualIP(virtualIp)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
 
     @Override
     public HostNameBindingImpl defineHostNameBinding(String hostname) {
         Pattern pattern = Pattern.compile("([.\\w]+)\\.(\\w+\\.\\w+)");
         Matcher matcher = pattern.matcher(hostname);
         matcher.matches();
-        String subdomain =matcher.group(1);
-        String domain = matcher.group(2);
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());

@@ -181,6 +181,7 @@ public interface WebApp extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithAppServicePlan,
+            DefinitionStages.WithDomain,
             DefinitionStages.WithCreate {
     }
 
@@ -189,30 +190,39 @@ public interface WebApp extends
      */
     interface DefinitionStages {
         /**
-         * The first stage of the site definition.
+         * The first stage of the web app definition.
          */
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * A site definition allowing resource group to be set.
+         * A web app definition allowing resource group to be set.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAppServicePlan> {
         }
 
         /**
-         * A site definition allowing server farm to be set.
+         * A web app definition allowing app service plan to be set.
          */
         interface WithAppServicePlan {
-            WithCreate withNewAppServicePlan();
-            WithCreate withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
-            WithCreate withExistingAppServicePlan(String appServicePlanName);
+            WithCreate withNewFreeAppServicePlan();
+            WithDomain withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
+            WithDomain withExistingAppServicePlan(String appServicePlanName);
         }
 
-        interface WithHostNameSslStates {
-            WithCreate disableSsl(String hostName);
-            WithCreate enableSniSsl(String hostName, String thumbprint);
-            WithCreate enableIpBasedSsl(String hostName, String thumbprint, String virtualIp);
+        /**
+         * A web app definition allowing domain to be set.
+         */
+        interface WithDomain {
+            WithCreate withAzureDefaultDomain();
+            WithHostNameBinding withExistingAzureManagedDomain(Domain domain);
+            WithHostNameBinding withThirdPartyDomain(String domain);
+            WithHostNameBinding withNewDomain(Creatable<Domain> domainCreatable);
+        }
+
+        interface WithHostNameBinding {
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(String hostname);
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(Domain domain, String subDomain);
         }
 
         interface WithSiteEnabled {
@@ -231,11 +241,6 @@ public interface WebApp extends
             WithCreate withClientCertEnabled(boolean enabled);
         }
 
-        interface WithHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(String name);
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(Domain domain, String subDomain);
-        }
-
         /**
          * A site definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
@@ -243,7 +248,6 @@ public interface WebApp extends
          */
         interface WithCreate extends
                 Creatable<WebApp>,
-                WithHostNameSslStates,
                 WithSiteEnabled,
                 WithScmSiteAlsoStopped,
                 WithClientAffinityEnabled,
@@ -265,12 +269,6 @@ public interface WebApp extends
             Update withExistingAppServicePlan(String appServicePlanName);
         }
 
-        interface WithHostNameSslStates {
-            Update disableSsl(String hostName);
-            Update enableSniSsl(String hostName, String thumbprint);
-            Update enableIpBasedSsl(String hostName, String thumbprint, String virtualIp);
-        }
-
         interface WithHostNameBinding {
             HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(String name);
             HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(Domain domain, String subDomain);
@@ -283,7 +281,6 @@ public interface WebApp extends
     interface Update extends
             Appliable<WebApp>,
             UpdateStages.WithAppServicePlan,
-            UpdateStages.WithHostNameSslStates,
             UpdateStages.WithHostNameBinding {
     }
 }

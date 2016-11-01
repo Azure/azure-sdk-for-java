@@ -122,7 +122,6 @@ public interface CertificateOrder extends
             DefinitionStages.WithHostName,
             DefinitionStages.WithCertificateSku,
             DefinitionStages.WithValidYears,
-            DefinitionStages.WithKeyVault,
             DefinitionStages.WithCreate {
     }
 
@@ -148,11 +147,7 @@ public interface CertificateOrder extends
         }
 
         interface WithValidYears {
-            WithKeyVault withValidYears(int years);
-        }
-
-        interface WithKeyVault {
-            WithCreate withExistingKeyVault(String keyVaultId);
+            WithCreate withValidYears(int years);
         }
 
         /**

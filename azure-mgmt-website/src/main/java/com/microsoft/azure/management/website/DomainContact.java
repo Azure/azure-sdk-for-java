@@ -8,11 +8,10 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
- * A network security rule in a network security group.
+ * A domain contact definition.
  */
 @Fluent
 public interface DomainContact extends
@@ -65,7 +64,7 @@ public interface DomainContact extends
     String phone();
 
     /**
-     * The entirety of a network security rule definition.
+     * The entirety of a domain contact definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
     interface Definition<ParentT> extends
@@ -169,79 +168,4 @@ public interface DomainContact extends
             Contact build();
         }
     }
-
-    /** The entirety of a network security rule definition as part of a network security group update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
-     */
-    interface UpdateDefinition<ParentT> extends
-        UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
-    }
-
-    /**
-     * Grouping of security rule definition stages applicable as part of a network security group update.
-     */
-    interface UpdateDefinitionStages {
-        /**
-         * The first stage of a security rule description as part of an update of a networking security group.
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
-         */
-        interface Blank<ParentT> {
-        }
-
-
-        /** The final stage of the security rule definition.
-         * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
-         */
-        interface WithAttach<ParentT> extends Attachable.InUpdate<ParentT> {
-
-            /**
-             * Specifies the priority to assign to this rule.
-             * <p>
-             * Security rules are applied in the order of their assigned priority.
-             * @param priority the priority number in the range 100 to 4096
-             * @return the next stage of the update
-             */
-            WithAttach<ParentT> withPriority(int priority);
-
-            /**
-             * Specifies a description for this security rule.
-             * @param descrtiption a text description to associate with the security rule
-             * @return the next stage
-             */
-            WithAttach<ParentT> withDescription(String descrtiption);
-        }
-    }
-
-    /**
-     * The entirety of a security rule update as part of a network security group update.
-     */
-    interface Update extends
-        Settable<Domain.Update> {
-
-        /**
-         * Specifies the priority to assign to this security rule.
-         * <p>
-         * Security rules are applied in the order of their assigned priority.
-         * @param priority the priority number in the range 100 to 4096
-         * @return the next stage of the update
-         */
-        Update withPriority(int priority);
-
-        /** Specifies a description for this security rule.
-         * @param description a text description to associate with this security rule
-         * @return the next stage
-         */
-        Update withDescription(String description);
-    }
-
-    /**
-     * Grouping of security rule update stages.
-     */
-    interface UpdateStages {
-    }
-
  }

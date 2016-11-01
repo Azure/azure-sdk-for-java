@@ -29,8 +29,6 @@ public class CertificateOrdersTests extends AppServiceTestBase {
 
     @Test
     public void canCRUDCertificateOrder() throws Exception {
-//        CertificateOrder existing = appServiceManager.certificateOrders()
-//                .getByGroup(RG_NAME, CERTIFICATE_NAME);
         // CREATE
         CertificateOrder certificateOrder = appServiceManager.certificateOrders()
                 .define(CERTIFICATE_NAME)
