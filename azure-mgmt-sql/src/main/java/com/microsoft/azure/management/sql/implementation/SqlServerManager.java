@@ -12,8 +12,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.sql.SqlDatabases;
-import com.microsoft.azure.management.sql.SqlElasticPools;
-import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServers;
 
 /**
@@ -22,8 +20,6 @@ import com.microsoft.azure.management.sql.SqlServers;
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
     private SqlDatabases sqlDatabases;
-    private SqlElasticPools sqlElasticPools;
-    private SqlFirewallRules.SqlFirewallRulesParentable sqlFirewallRules;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
@@ -98,6 +94,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         if (sqlServers == null) {
             sqlServers = new SqlServersImpl(
                     super.innerManagementClient.servers(),
+                    super.innerManagementClient.elasticPools(),
                     this);
         }
 
@@ -115,30 +112,5 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
         }
 
         return sqlDatabases;
-    }
-
-    /**
-     * @return the SQL ElasticPool management API entry point
-     */
-    public SqlElasticPools sqlElasticPools() {
-        if (sqlElasticPools == null) {
-            sqlElasticPools = new SqlElasticPoolsImpl(
-                    super.innerManagementClient.elasticPools(),
-                    this);
-        }
-        return sqlElasticPools;
-    }
-
-    /**
-     * @return the SQL FirewallRules management API entry point
-     */
-    public SqlFirewallRules.SqlFirewallRulesParentable sqlFirewallRules() {
-        if (sqlFirewallRules == null) {
-            sqlFirewallRules = new SqlFirewallRulesImpl(
-                    super.innerManagementClient.servers(),
-                    this) {
-            };
-        }
-        return sqlFirewallRules;
     }
 }

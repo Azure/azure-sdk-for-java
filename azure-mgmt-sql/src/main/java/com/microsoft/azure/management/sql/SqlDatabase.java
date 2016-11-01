@@ -192,29 +192,21 @@ public interface SqlDatabase extends
              * @param elasticPoolName for the SQL Database.
              * @return The next stage of definition.
              */
-            WithCreate withExistingElasticPoolName(String elasticPoolName);
+            WithCreate withExistingElasticPool(String elasticPoolName);
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
              * @param sqlElasticPool for the SQL Database.
              * @return The next stage of definition.
              */
-            WithCreate withExistingElasticPoolName(SqlElasticPool sqlElasticPool);
-
-            /**
-             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
-             * @param elasticPoolName name for new elastic pool to be created for the SQL Database.
-             * @param elasticPoolEdition edition for new elastic pool to be created for the SQL Database.
-             * @return The next stage of definition.
-             */
-            WithCreate withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition);
+            WithCreate withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
             /**
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
              * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database.
              * @return The next stage of definition.
              */
-            WithCreate withNewElasticPool(SqlElasticPool.DefinitionStages.WithCreate sqlElasticPool);
+            WithCreate withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
         }
 
         /**

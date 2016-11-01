@@ -27,10 +27,6 @@ class TrafficManagerExternalEndpointImpl extends TrafficManagerEndpointImpl
 
     @Override
     public Region sourceTrafficLocation() {
-        Region location = Region.fromLabel((inner().endpointLocation()));
-        if (location == null) {
-            return Region.fromName((inner().endpointLocation()));
-        }
-        return location;
+        return Region.fromLabelOrName((inner().endpointLocation()));
     }
 }

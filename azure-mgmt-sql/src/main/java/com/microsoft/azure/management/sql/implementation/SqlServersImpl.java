@@ -15,10 +15,13 @@ public class SqlServersImpl
         extends GroupableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 
+    private final ElasticPoolsInner elasticPoolsInner;
+
     protected SqlServersImpl(
             ServersInner innerCollection,
-            SqlServerManager manager) {
+            ElasticPoolsInner elasticPoolsInner, SqlServerManager manager) {
         super(innerCollection, manager);
+        this.elasticPoolsInner = elasticPoolsInner;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class SqlServersImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager);
+                super.myManager, this.elasticPoolsInner);
     }
 
     @Override
@@ -58,7 +61,7 @@ public class SqlServersImpl
                 inner.name(),
                 inner,
                 this.innerCollection,
-                this.myManager);
+                this.myManager, this.elasticPoolsInner);
     }
 
     @Override
