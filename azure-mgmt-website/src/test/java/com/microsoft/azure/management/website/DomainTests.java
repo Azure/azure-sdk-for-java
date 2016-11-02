@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -38,9 +40,9 @@ public class DomainTests extends AppServiceTestBase {
                     .withAddressLine1("1 Microsoft Way")
                     .withCity("Seattle")
                     .withStateOrProvince("WA")
-                    .withCountry(CountryISOCode.United_States)
+                    .withCountry(CountryISOCode.UNITED_STATES)
                     .withPostalCode("98101")
-                    .withPhoneCountryCode(CountryPhoneCode.United_States)
+                    .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                     .withPhoneNumber("4258828080")
                     .attach()
                 .withDomainPrivacyEnabled(true)

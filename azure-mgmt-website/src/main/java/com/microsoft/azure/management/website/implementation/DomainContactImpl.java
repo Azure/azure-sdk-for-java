@@ -9,8 +9,8 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.website.Address;
 import com.microsoft.azure.management.website.Contact;
-import com.microsoft.azure.management.website.CountryISOCode;
-import com.microsoft.azure.management.website.CountryPhoneCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.DomainContact;
 
