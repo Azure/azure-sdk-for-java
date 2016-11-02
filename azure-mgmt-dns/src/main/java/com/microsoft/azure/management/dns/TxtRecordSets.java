@@ -2,8 +2,10 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -13,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface TxtRecordSets extends
         DnsRecordSets<TxtRecordSet>,
         SupportsListing<TxtRecordSet>,
+        SupportsGettingByName<TxtRecordSet>,
         SupportsGettingById<TxtRecordSet>,
         SupportsCreating<TxtRecordSet.DefinitionStages.Blank>,
         SupportsDeletingById {

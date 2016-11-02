@@ -123,17 +123,18 @@ public class DnsZoneImpl
     public DnsZone refresh() {
         ZoneInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(inner);
+        this.initRecordSets();
         return this;
     }
 
     private void initRecordSets() {
-        this.aRecordSets = null;
-        this.aaaaRecordSets  = null;
-        this.cnameRecordSets = null;
-        this.mxRecordSets = null;
-        this.nsRecordSets = null;
-        this.ptrRecordSets = null;
-        this.srvRecordSets = null;
-        this.txtRecordSets = null;
+        this.aRecordSets = new ARecordSetsImpl(this, this.recordSetsClient);
+        this.aaaaRecordSets  = new AaaaRecordSetsImpl(this, this.recordSetsClient);
+        this.cnameRecordSets = new CnameRecordSetsImpl(this, this.recordSetsClient);
+        this.mxRecordSets = new MxRecordSetsImpl(this, this.recordSetsClient);
+        this.nsRecordSets = new NsRecordSetsImpl(this, this.recordSetsClient);
+        this.ptrRecordSets = new PtrRecordSetsImpl(this, this.recordSetsClient);
+        this.srvRecordSets = new SrvRecordSetsImpl(this, this.recordSetsClient);
+        this.txtRecordSets = new TxtRecordSetsImpl(this, this.recordSetsClient);
     }
 }

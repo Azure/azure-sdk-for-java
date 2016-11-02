@@ -9,11 +9,4 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  */
 @Fluent
 public interface DnsRecordSets<FluentRecordSetModelT> {
-    /**
-     * Gets the information about a Dns record set from Azure based on name.
-     *
-     * @param name the name of the record set
-     * @return the record set
-     */
-    FluentRecordSetModelT getByName(String name);
 }
