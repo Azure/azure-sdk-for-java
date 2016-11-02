@@ -77,9 +77,9 @@ public interface DnsZone extends
     TxtRecordSets txtRecordSets();
 
     /**
-     * @return the Soa (start of authority) record associated with this Dns zone
+     * @return the record set containing Soa (start of authority) record associated with this Dns zone
      */
-    SoaRecord getSoaRecord();
+    SoaRecordSet getSoaRecordSet();
 
     /**
      * The entirety of the Dns zone definition.

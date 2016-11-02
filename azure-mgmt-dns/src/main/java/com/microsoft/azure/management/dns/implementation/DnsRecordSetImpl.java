@@ -20,7 +20,7 @@ abstract class DnsRecordSetImpl<FluentModelT,
     protected final DnsZoneImpl dnsZone;
     protected final RecordSetsInner client;
 
-    DnsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
+    protected DnsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(innerModel.name(), innerModel);
         this.dnsZone = parentDnsZone;
         this.client = client;
