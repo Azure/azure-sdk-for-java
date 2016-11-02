@@ -90,21 +90,38 @@ public class TestApplicationGateway {
                     .withExistingResourceGroup(GROUP_NAME)
                     .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                     .withContainingSubnet(vnet, "subnet1")
+
+                    // Frontends
                     .withoutPublicFrontend()
                     .definePrivateFrontend("frontend1")
                         .withExistingSubnet(vnet, "subnet1")
                         .attach()
+
+                    // Frontend ports
                     .withFrontendPort(80, "port1")
                     .withFrontendPort(8080, "port2")
+
+                    // Backends
                     .defineBackend("backend1")
+                        .withIpAddress("11.1.1.1")
                         .attach()
+
+                    .defineBackend("backend2")
+                        .withFqdn("www.microsoft.com")
+                        .attach()
+
+                    // HTTP configs
                     .defineHttpConfiguration("httpConfig1")
                         // .withBackendPort(80) // Optional, 80 default
                         .attach()
+
+                    // HTTP listeners
                     .defineHttpListener("listener1")
                         .withFrontend("frontend1")
                         .withPort("port1")
                         .attach()
+
+                    // Request routing rules
                     .defineRequestRoutingRule("rule1")
                         .withListener("listener1")
                         .withBackend("backend1")
@@ -239,9 +256,9 @@ public class TestApplicationGateway {
                 .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
 
             // Show addresses
-            Map<String, ApplicationGatewayBackendAddress> addresses = backend.addresses();
+            List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
             info.append("\n\t\t\tAddresses: ").append(addresses.size());
-            for (ApplicationGatewayBackendAddress address : addresses.values()) {
+            for (ApplicationGatewayBackendAddress address : addresses) {
                 info.append("\n\t\t\t\tFQDN: ").append(address.fqdn())
                     .append("\n\t\t\t\tIP: ").append(address.ipAddress());
             }

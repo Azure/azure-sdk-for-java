@@ -5,7 +5,9 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -34,6 +36,15 @@ class ApplicationGatewayBackendImpl
 
     // Helpers
 
+    private List<ApplicationGatewayBackendAddress> ensureAddresses() {
+        List<ApplicationGatewayBackendAddress> addresses = this.inner().backendAddresses();
+        if (addresses == null) {
+            addresses = new ArrayList<ApplicationGatewayBackendAddress>();
+            this.inner().withBackendAddresses(addresses);
+        }
+        return addresses;
+    }
+
     // Getters
 
     @Override
@@ -58,14 +69,14 @@ class ApplicationGatewayBackendImpl
     }
 
     @Override
-    public Map<String, ApplicationGatewayBackendAddress> addresses() {
-        Map<String, ApplicationGatewayBackendAddress> addresses = new TreeMap<>();
+    public List<ApplicationGatewayBackendAddress> addresses() {
+        List<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
         if (this.inner().backendAddresses() != null) {
             for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
-                addresses.put(address.fqdn(), address);
+                addresses.add(address);
             }
         }
-        return Collections.unmodifiableMap(addresses);
+        return Collections.unmodifiableList(addresses);
     }
 
     // Verbs
@@ -78,4 +89,19 @@ class ApplicationGatewayBackendImpl
 
     // Withers
 
+    @Override
+    public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
+        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
+                .withIpAddress(ipAddress);
+        ensureAddresses().add(address);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendImpl withFqdn(String fqdn) {
+        ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
+                .withFqdn(fqdn);
+        ensureAddresses().add(address);
+        return this;
+    }
 }

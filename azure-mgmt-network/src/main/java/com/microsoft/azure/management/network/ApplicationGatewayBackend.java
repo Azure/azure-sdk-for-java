@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.util.Map;
+import java.util.List;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendAddressPoolInner;
@@ -27,7 +27,7 @@ public interface ApplicationGatewayBackend extends
     /**
      * @return addresses on the backend of the application gateway, indexed by their FQDN
      */
-    Map<String, ApplicationGatewayBackendAddress> addresses();
+    List<ApplicationGatewayBackendAddress> addresses();
 
     /**
      * Grouping of appplication gateway backend definition stages.
@@ -40,6 +40,26 @@ public interface ApplicationGatewayBackend extends
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }
 
+        /**
+         * The stage of an application gateway backed definition allowing to add an address to the backend.
+         * @param <ParentT> the parent application gateway type
+         */
+        interface WithAddress<ParentT> {
+            /**
+             * Adds the specified existing IP address to the backend.
+             * @param ipAddress an IP address
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIpAddress(String ipAddress);
+
+            /**
+             * Adds the specified existing fully qualified domain name (FQDN) to the backend.
+             * @param fqdn a fully qualified domain name (FQDN)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFqdn(String fqdn);
+        }
+
         /** The final stage of an application gateway backend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
@@ -47,7 +67,8 @@ public interface ApplicationGatewayBackend extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithAddress<ParentT> {
         }
     }
 
