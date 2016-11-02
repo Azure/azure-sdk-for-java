@@ -89,7 +89,7 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, String action, String countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
@@ -154,7 +154,7 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, String action, String countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
@@ -188,7 +188,7 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
         UpdateStandardEndpoint withGeoFilters(List<GeoFilter> geoFilters);
         UpdateStandardEndpoint withoutGeoFilters();
-        UpdateStandardEndpoint withGeoFilter(String relativePath, String action, String countryCodes);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
         UpdateStandardEndpoint withoutGeoFilter(String relativePath);
         UpdateStandardEndpoint withCustomDomain(String hostName);
         UpdateStandardEndpoint withoutCustomDomain(String hostName);

@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Deep created origins within a CDN endpoint.
+ * Origins to be added when creating a CDN endpoint.
  */
 @JsonFlatten
 public class DeepCreatedOrigin {

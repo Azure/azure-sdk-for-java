@@ -10,7 +10,7 @@ package com.microsoft.azure.management.cdn;
 
 
 /**
- * The OperationDisplay model.
+ * The object that represents the operation.
  */
 public class OperationDisplay {
     /**

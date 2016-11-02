@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * CustomDomain properties required for custom domain creation or update.
+ * The customDomain JSON object required for custom domain creation or update.
  */
 @JsonFlatten
 public class CustomDomainParameters {

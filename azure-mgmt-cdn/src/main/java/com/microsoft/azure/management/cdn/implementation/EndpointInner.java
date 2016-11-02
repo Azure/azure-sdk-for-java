@@ -46,7 +46,7 @@ public class EndpointInner extends Resource {
     private List<String> contentTypesToCompress;
 
     /**
-     * Indicates whether content compression is enabled. Default value is
+     * Indicates whether content compression is enabled. The default value is
      * false. If compression is enabled, the content transferred from the CDN
      * endpoint to the end user will be compressed. The requested content
      * must be larger than 1 byte and smaller than 1 MB.

@@ -20,7 +20,7 @@ public class OperationInner {
     private String name;
 
     /**
-     * The display property.
+     * The object that represents the operation.
      */
     private OperationDisplay display;
 

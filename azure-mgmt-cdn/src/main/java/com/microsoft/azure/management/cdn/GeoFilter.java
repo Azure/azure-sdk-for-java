@@ -23,10 +23,10 @@ public class GeoFilter {
     private String relativePath;
 
     /**
-     * Action of the geo filter.
+     * Action of the geo filter. Possible values include: 'Block', 'Allow'.
      */
     @JsonProperty(required = true)
-    private String action;
+    private GeoFilterActions action;
 
     /**
      * Two letter country codes of the geo filter. (e.g. AU, MX, and etc.).
@@ -59,7 +59,7 @@ public class GeoFilter {
      *
      * @return the action value
      */
-    public String action() {
+    public GeoFilterActions action() {
         return this.action;
     }
 
@@ -69,7 +69,7 @@ public class GeoFilter {
      * @param action the action value to set
      * @return the GeoFilter object itself.
      */
-    public GeoFilter withAction(String action) {
+    public GeoFilter withAction(GeoFilterActions action) {
         this.action = action;
         return this;
     }

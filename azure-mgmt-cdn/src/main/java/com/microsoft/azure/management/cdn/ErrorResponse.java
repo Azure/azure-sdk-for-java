@@ -10,7 +10,8 @@ package com.microsoft.azure.management.cdn;
 
 
 /**
- * The ErrorResponse model.
+ * Error reponse indicates CDN service is not able to process the incoming
+ * request. The reason is provided in the error message.
  */
 public class ErrorResponse {
     /**

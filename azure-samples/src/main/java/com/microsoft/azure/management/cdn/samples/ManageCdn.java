@@ -3,8 +3,8 @@ package com.microsoft.azure.management.cdn.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -65,8 +65,8 @@ public class ManageCdn {
                             .withCompressionEnabled(true)
                             .withContentTypeToCompress("text/plain")
                             .withContentTypeToCompress("powershell/pain")
-                            .withGeoFilter("/path/videos", "Block", "AZ")
-                            .withGeoFilter("/path/images", "Block", "AZ")
+                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, "AZ")
+                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, "AZ")
                             .withCustomDomain("www.domainone.com")
                             .withCustomDomain("www.domaintwo.au")
                             .withCustomDomain("www.domainthree.fr")
@@ -91,15 +91,15 @@ public class ManageCdn {
                             .attach()
                         .create();
 
-                for (CdnEndpoint endpoin : standardProfile.endpoints().values()) {
-                    System.out.println("CDN Endpoint: " + endpoin.name());
+                for (CdnEndpoint endpoint : standardProfile.endpoints().values()) {
+                    System.out.println("CDN Endpoint: " + endpoint.name());
                 }
 
                 standardProfile.update()
                         .withTag("provider", "Akamai")
                         .defineNewEndpoint("AkamaiSomewhereelse")
                             .withOrigin("origin3", "https://www.vazgen.com")
-                            .withGeoFilter("/path/music", "Block", "AZ")
+                            .withGeoFilter("/path/music", GeoFilterActions.BLOCK, "AZ")
                         .attach()
                         .updateEndpoint("supermuperprofileAkamai")
                             .withOriginHttpAllowed(true)
@@ -119,6 +119,7 @@ public class ManageCdn {
                             .withPremiumOriginHttpsAllowed(true)
                             .withPremiumOriginHttpsPort(678)
                         .parent()
+                        .withoutEndpoint("supermuperep1")
                 .apply();
 
             } catch (Exception f) {
@@ -127,7 +128,7 @@ public class ManageCdn {
             } finally {
                 if (azure.resourceGroups().getByName(rgName) != null) {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } else {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

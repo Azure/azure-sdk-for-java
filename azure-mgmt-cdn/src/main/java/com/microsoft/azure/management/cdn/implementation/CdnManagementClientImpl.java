@@ -89,6 +89,29 @@ public final class CdnManagementClientImpl extends AzureServiceClient {
         return this.apiVersion;
     }
 
+    /** Name of the Resource group within the Azure subscription. */
+    private String resourceGroupName;
+
+    /**
+     * Gets Name of the Resource group within the Azure subscription.
+     *
+     * @return the resourceGroupName value.
+     */
+    public String resourceGroupName() {
+        return this.resourceGroupName;
+    }
+
+    /**
+     * Sets Name of the Resource group within the Azure subscription.
+     *
+     * @param resourceGroupName the resourceGroupName value.
+     * @return the service client itself
+     */
+    public CdnManagementClientImpl withResourceGroupName(String resourceGroupName) {
+        this.resourceGroupName = resourceGroupName;
+        return this;
+    }
+
     /** Gets or sets the preferred language for the response. */
     private String acceptLanguage;
 
