@@ -54,7 +54,7 @@ public abstract class ResourceImpl<
 
     @Override
     public Region region() {
-        return Region.fromName(this.regionName());
+        return Region.fromLabelOrName(this.regionName());
     }
 
     @Override

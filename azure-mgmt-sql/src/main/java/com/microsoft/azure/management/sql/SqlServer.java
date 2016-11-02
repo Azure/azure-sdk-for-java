@@ -48,6 +48,12 @@ public interface SqlServer extends
      */
     FirewallRules firewallRules();
 
+
+    /**
+     * @return returns entry point to manage ElasticPools in SqlServer.
+     */
+    ElasticPools elasticPools();
+
     /**
      * Entry point to access FirewallRules from the SQL Server.
      */
@@ -66,7 +72,7 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to be created
          * @return Returns a stage to specify arguments of the firewall rule
          */
-        SqlFirewallRule.DefinitionStages.Blank<SqlFirewallRule.DefinitionStages.WithCreate> define(String firewallRuleName);
+        SqlFirewallRule.DefinitionStages.Blank define(String firewallRuleName);
 
         /**
          * Returns all the firewall rules for the server.
@@ -82,6 +88,42 @@ public interface SqlServer extends
          */
         void delete(String firewallRuleName);
     }
+
+    /**
+     * Entry point to access FirewallRules from the SQL Server.
+     */
+    interface ElasticPools {
+        /**
+         * Gets a particular elastic pool.
+         *
+         * @param elasticPoolName name of the elastic pool to get
+         * @return Returns the elastic pool rule with in the SQL Server
+         */
+        SqlElasticPool get(String elasticPoolName);
+
+        /**
+         * Creates a new elastic pool in SQL Server.
+         *
+         * @param elasticPoolName name of the elastic pool to be created
+         * @return Returns a stage to specify arguments of the elastic pool
+         */
+        SqlElasticPool.DefinitionStages.Blank define(String elasticPoolName);
+
+        /**
+         * Returns all the elastic pools for the server.
+         *
+         * @return list of elastic pools for the server.
+         */
+        PagedList<SqlElasticPool> list();
+
+        /**
+         * Delete specified elastic pool in the server.
+         *
+         * @param elasticPoolName name of the elastic pool to delete
+         */
+        void delete(String elasticPoolName);
+    }
+
     /**************************************************************
      * Fluent interfaces to provision a SqlServer
      **************************************************************/

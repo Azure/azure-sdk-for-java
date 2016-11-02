@@ -93,8 +93,8 @@ public final class ManageIPAddress {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withExistingPrimaryPublicIpAddress(publicIpAddress)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(userName)
-                        .withPassword(password)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 

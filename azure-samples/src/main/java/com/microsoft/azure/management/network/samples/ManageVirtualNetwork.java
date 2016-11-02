@@ -191,7 +191,7 @@ public final class ManageVirtualNetwork {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(publicIpAddressLeafDnsForFrontEndVm)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
@@ -217,7 +217,7 @@ public final class ManageVirtualNetwork {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
