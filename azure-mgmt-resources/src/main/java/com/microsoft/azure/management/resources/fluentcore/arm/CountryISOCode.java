@@ -9,7 +9,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for VirtualMachineSizeTypes.
+ * Defines values for country codes in ISO standard.
+ * E.g. the country code for United Kingdom is 'GB'.
  */
 public final class CountryISOCode {
     // CHECKSTYLE IGNORE Javadoc FOR NEXT 237 LINES
@@ -254,7 +255,7 @@ public final class CountryISOCode {
     private String value;
 
     /**
-     * Creates a custom value for VirtualMachineSizeTypes.
+     * Creates a custom value for CountryISOCode.
      * @param value the custom value
      */
     public CountryISOCode(String value) {

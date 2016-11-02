@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -198,14 +200,18 @@ class WebAppImpl
     }
 
     @Override
-    public List<HostNameBinding> getHostNameBindings() {
-        //TODO: Use wrapList()
+    public Map<String, HostNameBinding> getHostNameBindings() {
         List<HostNameBindingInner> collectionInner = client.listHostNameBindings(resourceGroupName(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
         for (HostNameBindingInner inner : collectionInner) {
-//            hostNameBindings.add(new HostNameBindingImpl(inner.name(), inner, this, client));
+            hostNameBindings.add(new HostNameBindingImpl(inner.name(), inner, this, client));
         }
-        return hostNameBindings;
+        return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
+            @Override
+            public String apply(HostNameBinding input) {
+                return input.name().replaceAll("./", "");
+            }
+        });
     }
 
     @Override

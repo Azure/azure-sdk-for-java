@@ -18,6 +18,7 @@ import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure Web App.
@@ -168,7 +169,11 @@ public interface WebApp extends
      */
     String defaultHostName();
 
-    List<HostNameBinding> getHostNameBindings();
+    /**
+     *
+     * @return
+     */
+    Map<String, HostNameBinding> getHostNameBindings();
 
     /**************************************************************
      * Fluent interfaces to provision a Web App

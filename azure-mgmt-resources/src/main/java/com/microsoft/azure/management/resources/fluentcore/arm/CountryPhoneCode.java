@@ -9,7 +9,8 @@ package com.microsoft.azure.management.resources.fluentcore.arm;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for VirtualMachineSizeTypes.
+ * Defines values for country codes for phone number prefixes.
+ * E.g. the country code for +1 123 456 7890 is '+1'.
  */
 public final class CountryPhoneCode {
     // CHECKSTYLE IGNORE Javadoc FOR NEXT 236 LINES
@@ -253,7 +254,7 @@ public final class CountryPhoneCode {
     private String value;
 
     /**
-     * Creates a custom value for VirtualMachineSizeTypes.
+     * Creates a custom value for CountryPhoneCode.
      * @param value the custom value
      */
     public CountryPhoneCode(String value) {
