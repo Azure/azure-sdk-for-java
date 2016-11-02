@@ -66,7 +66,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<AaaaRecordSet>,
+                Creatable<CnameRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithTtl {
         }
@@ -97,7 +97,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<AaaaRecordSet>,
+            Appliable<CnameRecordSet>,
             HasTags.UpdateWithTags<Update>,
             UpdateStages.WithTtl {
     }

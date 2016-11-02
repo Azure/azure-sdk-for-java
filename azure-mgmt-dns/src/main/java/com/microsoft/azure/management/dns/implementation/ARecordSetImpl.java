@@ -13,7 +13,10 @@ import java.util.List;
  */
 class ARecordSetImpl
         extends DnsRecordSetImpl<ARecordSet, ARecordSetImpl>
-        implements ARecordSet {
+        implements
+            ARecordSet,
+            ARecordSet.Definition,
+            ARecordSet.Update {
     ARecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -31,7 +34,29 @@ class ARecordSetImpl
 
     @Override
     public ARecordSetImpl refresh() {
-        this.resetInner();
+        this.refreshInner();
+        return this;
+    }
+
+    @Override
+    public ARecordSetImpl withIpv4Address(String ipv4Address) {
+        if (this.inner().aRecords() == null) {
+            this.inner().withARecords(new ArrayList<ARecord>());
+        }
+        this.inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
+        return this;
+    }
+
+    @Override
+    public ARecordSetImpl withoutIpv4Address(String ipv4Address) {
+        if (this.inner().aRecords() != null) {
+            for (ARecord record : this.inner().aRecords()) {
+                if (record.ipv4Address().equalsIgnoreCase(ipv4Address)) {
+                    this.inner().aRecords().remove(record);
+                    break;
+                }
+            }
+        }
         return this;
     }
 

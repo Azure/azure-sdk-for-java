@@ -44,7 +44,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
              * @param ipv6Address the Ipv6 address
              * @return the next stage of the record set definition
              */
-            WithCreate withIp6Address(String ipv6Address);
+            WithCreate withIpv6Address(String ipv6Address);
         }
 
         /**

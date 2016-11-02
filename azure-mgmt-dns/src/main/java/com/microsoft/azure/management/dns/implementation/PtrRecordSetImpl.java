@@ -13,7 +13,10 @@ import java.util.List;
  */
 class PtrRecordSetImpl
         extends DnsRecordSetImpl<PtrRecordSet, PtrRecordSetImpl>
-        implements PtrRecordSet {
+        implements
+            PtrRecordSet,
+            PtrRecordSet.Definition,
+            PtrRecordSet.Update {
     PtrRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -31,7 +34,29 @@ class PtrRecordSetImpl
 
     @Override
     public PtrRecordSetImpl refresh() {
-        this.resetInner();
+        this.refreshInner();
+        return this;
+    }
+
+    @Override
+    public PtrRecordSetImpl withTargetDomain(String targetDomainName) {
+        if (this.inner().ptrRecords() == null) {
+            this.inner().withPtrRecords(new ArrayList<PtrRecord>());
+        }
+        this.inner().ptrRecords().add(new PtrRecord().withPtrdname(targetDomainName));
+        return this;
+    }
+
+    @Override
+    public PtrRecordSetImpl withoutTargetDomain(String targetDomainName) {
+        if (this.inner().nsRecords() != null) {
+            for (PtrRecord record : this.inner().ptrRecords()) {
+                if (record.ptrdname().equalsIgnoreCase(targetDomainName)) {
+                    this.inner().ptrRecords().remove(record);
+                    break;
+                }
+            }
+        }
         return this;
     }
 

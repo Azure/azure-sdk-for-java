@@ -94,7 +94,7 @@ abstract class DnsRecordSetImpl<FluentModelT,
                 .map(innerToFluentMap());
     }
 
-    protected void resetInner() {
+    protected void refreshInner() {
         this.setInner(this.client.get(this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),

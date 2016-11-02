@@ -13,7 +13,10 @@ import java.util.List;
  */
 class NsRecordSetImpl
         extends DnsRecordSetImpl<NsRecordSet, NsRecordSetImpl>
-        implements NsRecordSet {
+        implements
+            NsRecordSet,
+            NsRecordSet.Definition,
+            NsRecordSet.Update {
     NsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -31,7 +34,29 @@ class NsRecordSetImpl
 
     @Override
     public NsRecordSetImpl refresh() {
-        this.resetInner();
+        this.refreshInner();
+        return this;
+    }
+
+    @Override
+    public NsRecordSetImpl withNameServer(String nameServerHostName) {
+        if (this.inner().nsRecords() == null) {
+            this.inner().withNsRecords(new ArrayList<NsRecord>());
+        }
+        this.inner().nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
+        return this;
+    }
+
+    @Override
+    public NsRecordSetImpl withoutNameServer(String nameServerHostName) {
+        if (this.inner().nsRecords() != null) {
+            for (NsRecord record : this.inner().nsRecords()) {
+                if (record.nsdname().equalsIgnoreCase(nameServerHostName)) {
+                    this.inner().nsRecords().remove(record);
+                    break;
+                }
+            }
+        }
         return this;
     }
 

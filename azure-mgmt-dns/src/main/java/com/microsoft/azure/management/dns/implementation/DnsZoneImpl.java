@@ -1,13 +1,13 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.ARecordSets;
-import com.microsoft.azure.management.dns.AaaaRecord;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.CnameRecordSets;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.MxRecordSets;
 import com.microsoft.azure.management.dns.NsRecordSets;
 import com.microsoft.azure.management.dns.PtrRecordSets;
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecordSet;
 import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.dns.TxtRecordSets;
@@ -109,18 +109,21 @@ public class DnsZoneImpl
 
     @Override
     public SoaRecordSet getSoaRecordSet() {
-        // TODO: Do HTTP GET
-        return null;
+        RecordSetInner inner = this.recordSetsClient.get(this.resourceGroupName(), this.name(), "@", RecordType.SOA);
+        return new SoaRecordSetImpl(this, inner, this.recordSetsClient);
     }
 
     @Override
     public Observable<DnsZone> createResourceAsync() {
-        return null;
+        return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
+                .map(innerToFluentMap(this));
     }
 
     @Override
     public DnsZone refresh() {
-        return null;
+        ZoneInner inner = this.innerCollection.get(this.resourceGroupName(), this.name());
+        this.setInner(inner);
+        return this;
     }
 
     private void initRecordSets() {

@@ -66,7 +66,7 @@ public interface TxtRecordSet extends DnsRecordSet<TxtRecordSet, DnsZone> {
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<MxRecordSet>,
+                Creatable<TxtRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithText,
                 DefinitionStages.WithTtl {
@@ -119,7 +119,7 @@ public interface TxtRecordSet extends DnsRecordSet<TxtRecordSet, DnsZone> {
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<MxRecordSet>,
+            Appliable<TxtRecordSet>,
             HasTags.UpdateWithTags<Update>,
             UpdateStages.WithText,
             UpdateStages.WithTtl {

@@ -40,7 +40,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
              * @param refreshTimeInSeconds the refresh time in seconds
              * @return the next stage of the record set update
              */
-            Update withRefreshTimeInSeconds(int refreshTimeInSeconds);
+            Update withRefreshTimeInSeconds(long refreshTimeInSeconds);
         }
 
         /**
@@ -54,7 +54,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
              * @param refreshTimeInSeconds the retry time in seconds
              * @return the next stage of the record set update
              */
-            Update withRetryTimeInSeconds(int refreshTimeInSeconds);
+            Update withRetryTimeInSeconds(long refreshTimeInSeconds);
         }
 
         /**
@@ -68,7 +68,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
              * @param expireTimeInSeconds the expire time in seconds
              * @return the next stage of the record set update
              */
-            Update withExpireTimeInSeconds(int expireTimeInSeconds);
+            Update withExpireTimeInSeconds(long expireTimeInSeconds);
         }
 
         /**
@@ -81,7 +81,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
              * @param negativeCachingTimeToLive the Ttl for cached negative response
              * @return the next stage of the record set update
              */
-            Update withNegativeCachingTimeToLiveInSeconds(int negativeCachingTimeToLive);
+            Update withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive);
         }
 
         /**
@@ -94,7 +94,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
              * @param serialNumber the serial number
              * @return the next stage of the record set update
              */
-            Update withSerialNumber(int serialNumber);
+            Update withSerialNumber(long serialNumber);
         }
 
         /**

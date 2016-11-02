@@ -41,11 +41,11 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
             /**
              * Creates and assigns priority to a Mx record with the provided mail exchange server in this record set.
              *
-             * @param priority the priority for the mail exchange host, lower the value higher the priority
              * @param mailExchangeHostName the host name of the mail exchange server
+             * @param priority the priority for the mail exchange host, lower the value higher the priority
              * @return the next stage of the record set definition
              */
-            WithCreate withMailExchange(int priority, String mailExchangeHostName);
+            WithCreate withMailExchange(String mailExchangeHostName, int priority);
         }
 
         /**
@@ -85,20 +85,20 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
             /**
              * Creates and assigns priority to a Mx record with the provided mail exchange server in this record set.
              *
-             * @param priority the priority for the mail exchange host, lower the value higher the priority
              * @param mailExchangeHostName the host name of the mail exchange server
+             * @param priority the priority for the mail exchange host, lower the value higher the priority
              * @return the next stage of the record set update
              */
-            Update withMailExchange(int priority, String mailExchangeHostName);
+            Update withMailExchange(String mailExchangeHostName, int priority);
 
             /**
              * Removes a Mx record with the provided priority and mail exchange server from this record set.
              *
-             * @param priority the priority for the mail exchange host
              * @param mailExchangeHostName the host name of the mail exchange server
+             * @param priority the priority for the mail exchange host
              * @return the next stage of the record set update
              */
-            Update withoutMailExchange(int priority, String mailExchangeHostName);
+            Update withoutMailExchange(String mailExchangeHostName, int priority);
         }
 
         /**

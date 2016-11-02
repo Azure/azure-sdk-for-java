@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import java.util.List;
 
 /**
- * An immutable client-side representation of a Srv record set in Azure Dns Zone.
+ * An immutable client-side representation of a Srv (service) record set in Azure Dns Zone.
  */
 public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
     /**
@@ -20,6 +20,7 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
      */
     interface Definition extends
             DefinitionStages.Blank,
+            DefinitionStages.WithRecord,
             DefinitionStages.WithCreate {
     }
 
@@ -30,8 +31,23 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
         /**
          * The first stage of a Srv record set definition.
          */
-        interface Blank {
-            // TODO
+        interface Blank extends WithRecord {
+        }
+
+        /**
+         * The stage of the srv record set definition allowing to add a Srv record.
+         */
+        interface WithRecord {
+            /**
+             * Specifies a service record for a service.
+             *
+             * @param target the canonical name of the target host running the service
+             * @param port the port on which the service is bounded
+             * @param priority the priority of the target host, lower the value higher the priority
+             * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
+             * @return the next stage of the record set definition
+             */
+            WithCreate withRecord(String target, int port, int priority, int weight);
         }
 
         /**
@@ -53,8 +69,9 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
-                Creatable<MxRecordSet>,
+                Creatable<SrvRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithRecord,
                 DefinitionStages.WithTtl {
         }
     }
@@ -63,6 +80,33 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
      * Grouping of Srv record set update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the srv record set update allowing to add or remove a Srv record.
+         */
+        interface WithRecord {
+            /**
+             * Specifies a service record for a service.
+             *
+             * @param target the canonical name of the target host running the service
+             * @param port the port on which the service is bounded
+             * @param priority the priority of the target host, lower the value higher the priority
+             * @param weight the relative weight (preference) of the records with the same priority, higher the value more the preference
+             * @return the next stage of the record set update
+             */
+            Update withRecord(String target, int port, int priority, int weight);
+
+            /**
+             * Removes a service record.
+             *
+             * @param target the canonical name of the target host running the service
+             * @param port the port on which the service is bounded
+             * @param priority the priority of the record
+             * @param weight the weight of the record
+             * @return the next stage of the record set update
+             */
+            Update withoutRecord(String target, int port, int priority, int weight);
+        }
+
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -84,8 +128,9 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
      * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
-            Appliable<MxRecordSet>,
+            Appliable<SrvRecordSet>,
             HasTags.UpdateWithTags<Update>,
+            UpdateStages.WithRecord,
             UpdateStages.WithTtl {
     }
 }

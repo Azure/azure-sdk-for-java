@@ -13,7 +13,10 @@ import java.util.List;
  */
 class AaaaRecordSetImpl
         extends DnsRecordSetImpl<AaaaRecordSet, AaaaRecordSetImpl>
-        implements AaaaRecordSet {
+        implements
+            AaaaRecordSet,
+            AaaaRecordSet.Definition,
+            AaaaRecordSet.Update {
 
     AaaaRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
@@ -32,7 +35,29 @@ class AaaaRecordSetImpl
 
     @Override
     public AaaaRecordSetImpl refresh() {
-        this.resetInner();
+        this.refreshInner();
+        return this;
+    }
+
+    @Override
+    public AaaaRecordSetImpl withIpv6Address(String ipv6Address) {
+        if (this.inner().aaaaRecords() == null) {
+            this.inner().withAaaaRecords(new ArrayList<AaaaRecord>());
+        }
+        this.inner().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
+        return this;
+    }
+
+    @Override
+    public AaaaRecordSetImpl withoutIpv6Address(String ipv6Address) {
+        if (this.inner().aaaaRecords() != null) {
+            for (AaaaRecord record : this.inner().aaaaRecords()) {
+                if (record.ipv6Address().equalsIgnoreCase(ipv6Address)) {
+                    this.inner().aaaaRecords().remove(record);
+                    break;
+                }
+            }
+        }
         return this;
     }
 

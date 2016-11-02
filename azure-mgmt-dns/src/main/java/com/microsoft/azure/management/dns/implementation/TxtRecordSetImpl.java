@@ -13,7 +13,10 @@ import java.util.List;
  */
 class TxtRecordSetImpl
         extends DnsRecordSetImpl<TxtRecordSet, TxtRecordSetImpl>
-        implements TxtRecordSet {
+        implements
+            TxtRecordSet,
+            TxtRecordSet.Definition,
+            TxtRecordSet.Update {
     TxtRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -28,7 +31,33 @@ class TxtRecordSetImpl
 
     @Override
     public TxtRecordSetImpl refresh() {
-        this.resetInner();
+        this.refreshInner();
+        return this;
+    }
+
+    @Override
+    public TxtRecordSetImpl withText(String text) {
+        if (this.inner().txtRecords() == null) {
+            this.inner().withTxtRecords(new ArrayList<TxtRecord>());
+        }
+        List<String> value = new ArrayList<>();
+        value.add(text);
+        this.inner().txtRecords().add(new TxtRecord().withValue(value));
+        return this;
+    }
+
+    @Override
+    public TxtRecordSetImpl withoutText(String text) {
+        if (this.inner().txtRecords() != null) {
+            for (TxtRecord record : this.inner().txtRecords()) {
+                if (record.value() != null && record.value().size() != 0) {
+                    if (record.value().get(0).equalsIgnoreCase(text)) {
+                        this.inner().txtRecords().remove(record);
+                        break;
+                    }
+                }
+            }
+        }
         return this;
     }
 
