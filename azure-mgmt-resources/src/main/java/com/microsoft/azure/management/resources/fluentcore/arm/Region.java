@@ -8,15 +8,18 @@ package com.microsoft.azure.management.resources.fluentcore.arm;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Enumeration of the Azure datacenter regions. See https://azure.microsoft.com/regions/
  */
-public class Region {
+public final class Region {
+    // This needs to be at the beginning for the initialization to happen correctly
+    private static final Map<String, Region> VALUES_BY_LABEL = new HashMap<>();
+    private static final Map<String, Region> VALUES_BY_NAME = new HashMap<>();
+
     // CHECKSTYLE IGNORE Javadoc FOR NEXT 48 LINES
     /**************************************************
      * Azure Cloud - Americas
@@ -67,47 +70,39 @@ public class Region {
     public static final Region GOV_US_VIRGINIA = new Region("usgovvirginia", "US Gov Virginia");
     public static final Region GOV_US_IOWA = new Region("usgoviowa", "US Gov Iowa");
 
-    private static final Region[] VALUES;
-
     private final String name;
     private final String label;
 
-    static {
-        Field[] declaredFields = Region.class.getDeclaredFields();
-        List<Region> values = new ArrayList<>();
-        for (Field field : declaredFields) {
-            if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
-                field.setAccessible(true);
-                try {
-                    if(field.get(null) != null) {
-                        values.add((Region) field.get(null));
-                    }
-                } catch (IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-        VALUES = values.toArray(new Region[values.size()]);
-    }
-
     /**
      * Get an array of pre-defined regions.
-     * 
      * @return an array of pre-defined regions.
      */
     public static Region[] values() {
-        return VALUES;
+        Collection<Region> valuesCollection = VALUES_BY_NAME.values();
+        return valuesCollection.toArray(new Region[valuesCollection.size()]);
+    }
+
+    private Region(String name, String label) {
+        this.name = name;
+        this.label = label;
+        VALUES_BY_NAME.put(name.toLowerCase(), this);
+        VALUES_BY_LABEL.put(label.toLowerCase(), this);
     }
 
     /**
-     * Create a region from a name and a label.
+     * Creates a region from a name and a label.
      *
      * @param name the uniquely identifiable name of the region
      * @param label the label of the region
+     * @return the newly created region
      */
-    public Region(String name, String label) {
-        this.name = name;
-        this.label = label;
+    public static Region create(String name, String label) {
+        Region region = VALUES_BY_NAME.get(name.toLowerCase());
+        if (region != null) {
+            return region;
+        } else {
+            return new Region(name, label);
+        }
     }
 
     @JsonValue
@@ -131,46 +126,43 @@ public class Region {
     }
 
     /**
-     * Parses a label or name into a Region object.
+     * Finds a region based on a label or name.
      *
      * @param labelOrName the region name or label
-     * @return the parsed region or null if there's no such region
+     * @return the found region or null if there's no such region
      */
-    public static Region fromLabelOrName(String labelOrName) {
-        Region location = Region.fromLabel(labelOrName);
-        if (location == null) {
-            return Region.fromName(labelOrName);
+    public static Region findByLabelOrName(String labelOrName) {
+        Region region = Region.findByLabel(labelOrName);
+        if (region != null) {
+            return region;
+        } else {
+            return VALUES_BY_NAME.get(labelOrName.toLowerCase());
         }
-        return location;
-    }
-    /**
-     * Parses a name into a Region object.
-     *
-     * @param name the region name
-     * @return the parsed region or null if there's no such region
-     */
-    public static Region fromName(String name) {
-        for (Region region : Region.VALUES) {
-            if (region.name.equalsIgnoreCase(name)) {
-                return region;
-            }
-        }
-        return null;
     }
 
     /**
-     * Parses a label into a Region object.
+     * Parses a name into a Region object and creates a new Region instance if not found among the existing ones.
+     *
+     * @param name the region name
+     * @return the parsed or created region
+     */
+    public static Region fromName(String name) {
+        Region region = VALUES_BY_NAME.get(name.toLowerCase());
+        if (region != null) {
+            return region;
+        } else {
+            return Region.create(name, name);
+        }
+    }
+
+    /**
+     * Looks up a Region based on the provided label.
      *
      * @param label the region label
-     * @return the parsed region or null if there's no such region
+     * @return the found region or null if there's region with such a label
      */
-    private static Region fromLabel(String label) {
-        for (Region region : Region.VALUES) {
-            if (region.label.equalsIgnoreCase(label)) {
-                return region;
-            }
-        }
-        return null;
+    private static Region findByLabel(String label) {
+        return VALUES_BY_LABEL.get(label.toLowerCase());
     }
 
 
@@ -183,11 +175,11 @@ public class Region {
     public boolean equals(Object obj) {
         if (!(obj instanceof Region)) {
             return false;
-        }
-        if (obj == this) {
+        } else if (obj == this) {
             return true;
+        } else {
+            Region rhs = (Region) obj;
+            return name.equalsIgnoreCase(rhs.name);
         }
-        Region rhs = (Region) obj;
-        return name.equalsIgnoreCase(rhs.name);
     }
 }

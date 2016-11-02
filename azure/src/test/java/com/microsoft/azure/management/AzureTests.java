@@ -225,7 +225,7 @@ public class AzureTests {
      * @throws Exception
      */
     @Test
-    public void testAppGatewaysInternetMinimum() throws Exception {
+    public void testAppGatewaysInternalMinimum() throws Exception {
         new TestApplicationGateway.PrivateMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
@@ -265,6 +265,31 @@ public class AzureTests {
     @Test public void testRouteTables() throws Exception {
         new TestRouteTables.Minimal(azure.networks())
             .runTest(azure.routeTables(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the regions enum
+     */
+    @Test public void testRegions() {
+        // Show built-in regions
+        System.out.println("Built-in regions list:");
+        int regionsCount = Region.values().length;
+
+        for (Region region : Region.values()) {
+            System.out.println("Name: " + region.name() + ", Label: " + region.label());
+        }
+
+        // Look up built-in region
+        Region region = Region.fromName("westus");
+        Assert.assertTrue(region == Region.US_WEST);
+
+        // Add a region
+        Region region2 = Region.fromName("madeUpRegion");
+        Assert.assertTrue(region2 != null);
+        Assert.assertTrue(region2.name().equals("madeUpRegion"));
+        Region region3 = Region.fromName("madeupregion");
+        Assert.assertTrue(region3 == region2);
+        Assert.assertTrue(Region.values().length == regionsCount + 1);
     }
 
     /**

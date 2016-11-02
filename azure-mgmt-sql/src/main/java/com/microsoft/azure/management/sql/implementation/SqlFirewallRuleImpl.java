@@ -60,7 +60,7 @@ public class SqlFirewallRuleImpl
 
     @Override
     public Region region() {
-        return Region.fromLabelOrName(this.inner().location());
+        return Region.fromName(this.inner().location());
     }
     @Override
     public SqlFirewallRule refresh() {
