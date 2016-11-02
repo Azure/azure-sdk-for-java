@@ -36,7 +36,7 @@ public class CertificateOrdersTests extends AppServiceTestBase {
                 .withHostName("javatest319.com")
                 .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
                 .withValidYears(1)
-                .withExistingKeyVault("/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg905/providers/Microsoft.KeyVault/vaults/java-keyvault-905")
+//                .withExistingKeyVault("/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg905/providers/Microsoft.KeyVault/vaults/java-keyvault-905")
                 .create();
         Assert.assertNotNull(certificateOrder);
         // GET

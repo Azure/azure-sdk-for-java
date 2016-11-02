@@ -108,13 +108,7 @@ class HostNameBindingImpl
     }
 
     @Override
-    public HostNameBindingImpl withHostNameType(HostNameType hostNameType) {
-        inner().withHostNameType(hostNameType);
-        return this;
-    }
-
-    @Override
-    public HostNameBindingImpl withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
+    public HostNameBindingImpl withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
         inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
         return this;
     }

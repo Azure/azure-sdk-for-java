@@ -27,10 +27,12 @@ class DomainsImpl
         AppServiceManager>
         implements Domains {
     TopLevelDomainsInner topLevelDomainsInner;
+    WebAppsInner webAppsInner;
 
-    DomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
+    DomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, WebAppsInner webAppsInner, AppServiceManager manager) {
         super(innerCollection, manager);
         this.topLevelDomainsInner = topLevelDomainsInner;
+        this.webAppsInner = webAppsInner;
     }
 
     @Override
@@ -51,7 +53,7 @@ class DomainsImpl
 
     @Override
     protected DomainImpl wrapModel(String name) {
-        return new DomainImpl(name, new DomainInner(), innerCollection, topLevelDomainsInner, myManager);
+        return new DomainImpl(name, new DomainInner(), innerCollection, topLevelDomainsInner, webAppsInner, myManager);
     }
 
     @Override
@@ -59,7 +61,7 @@ class DomainsImpl
         if (inner == null) {
             return null;
         }
-        return new DomainImpl(inner.name(), inner, innerCollection, topLevelDomainsInner, myManager);
+        return new DomainImpl(inner.name(), inner, innerCollection, topLevelDomainsInner, webAppsInner, myManager);
     }
 
     @Override

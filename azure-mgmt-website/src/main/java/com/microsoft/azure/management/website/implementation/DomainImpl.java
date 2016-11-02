@@ -15,14 +15,18 @@ import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.DomainPurchaseConsent;
 import com.microsoft.azure.management.website.DomainStatus;
 import com.microsoft.azure.management.website.HostName;
+import com.microsoft.azure.management.website.HostNameBinding;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.FuncN;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The implementation for {@link Domain}.
@@ -40,15 +44,17 @@ class DomainImpl
         Domain.Update {
 
     private final DomainsInner client;
-    private final TopLevelDomainsInner topLevelClient;
+    private final TopLevelDomainsInner topLevelDomainsInner;
+    private final WebAppsInner webAppsInner;
 
-    private List<HostNameBindingImpl> hostNameBindings;
+    private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
 
-    DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelClient, AppServiceManager manager) {
+    DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, final WebAppsInner webAppsInner, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
-        this.topLevelClient = topLevelClient;
-        hostNameBindings = new ArrayList<>();
+        this.topLevelDomainsInner = topLevelDomainsInner;
+        this.webAppsInner = webAppsInner;
+        hostNameBindingsToCreate = new HashMap<>();
         inner().withLocation("global");
     }
 
@@ -56,7 +62,8 @@ class DomainImpl
     public Observable<Domain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
-        return topLevelClient.listAgreementsAsync(topLevel)
+        return topLevelDomainsInner.listAgreementsAsync(topLevel)
+                // Step 1: Consent to agreements
                 .flatMap(new Func1<Page<TldLegalAgreementInner>, Observable<List<String>>>() {
                     @Override
                     public Observable<List<String>> call(Page<TldLegalAgreementInner> tldLegalAgreementInnerPage) {
@@ -67,6 +74,7 @@ class DomainImpl
                         return Observable.just(agreementKeys);
                     }
                 })
+                // Step 2: Create domain
                 .flatMap(new Func1<List<String>, Observable<DomainInner>>() {
                     @Override
                     public Observable<DomainInner> call(List<String> keys) {
@@ -81,7 +89,25 @@ class DomainImpl
                         return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
                     }
                 })
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                // Step 3: Apply host name bindings
+                .flatMap(new Func1<Domain, Observable<Domain>>() {
+                    @Override
+                    public Observable<Domain> call(final Domain domain) {
+                        final List<Observable<HostNameBinding>> hnbObservables = new ArrayList<>();
+                        for (HostNameBindingImpl binding : hostNameBindingsToCreate.values()) {
+                            binding.inner().withLocation("global");
+                            hnbObservables.add(binding.createAsync());
+                        }
+                        return Observable.zip(hnbObservables, new FuncN<Domain>() {
+                            @Override
+                            public Domain call(Object... args) {
+                                hostNameBindingsToCreate.clear();
+                                return domain;
+                            }
+                        });
+                    }
+                });
     }
 
     @Override
@@ -89,7 +115,6 @@ class DomainImpl
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
     }
-
 
     @Override
     public Contact adminContact() {

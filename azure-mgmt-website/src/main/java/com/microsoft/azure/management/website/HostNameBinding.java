@@ -57,7 +57,6 @@ public interface HostNameBinding
 
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithHostNameType<ParentT>,
             DefinitionStages.WithHostNameDnsRecordType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
@@ -71,20 +70,11 @@ public interface HostNameBinding
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithHostNameType<ParentT> {
-        }
-
-        interface WithManagedDomain<Parent> {
-            WithHostNameType<Parent> withNewDomainPurchase(String domainName);
-            WithHostNameType<Parent> withDomainPurchasedFromAzure(String domainName);
-        }
-
-        interface WithHostNameType<ParentT> {
-            WithHostNameDnsRecordType<ParentT> withHostNameType(HostNameType hostNameType);
+        interface Blank<ParentT> extends WithHostNameDnsRecordType<ParentT> {
         }
 
         interface WithHostNameDnsRecordType<ParentT> {
-            WithAttach<ParentT> withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
 
         interface WithAttach<ParentT> extends
@@ -94,7 +84,6 @@ public interface HostNameBinding
 
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
-            UpdateDefinitionStages.WithHostNameType<ParentT>,
             UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
@@ -108,15 +97,11 @@ public interface HostNameBinding
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithHostNameType<ParentT> {
-        }
-
-        interface WithHostNameType<ParentT> {
-            WithHostNameDnsRecordType<ParentT> withHostNameType(HostNameType hostNameType);
+        interface Blank<ParentT> extends WithHostNameDnsRecordType<ParentT> {
         }
 
         interface WithHostNameDnsRecordType<ParentT> {
-            WithAttach<ParentT> withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
 
         interface WithAttach<ParentT> extends

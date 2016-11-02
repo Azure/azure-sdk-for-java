@@ -182,6 +182,8 @@ public interface WebApp extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithAppServicePlan,
             DefinitionStages.WithDomain,
+            DefinitionStages.WithManagedHostNameBinding,
+            DefinitionStages.WithExternalHostNameBinding,
             DefinitionStages.WithCreate {
     }
 
@@ -213,16 +215,21 @@ public interface WebApp extends
         /**
          * A web app definition allowing domain to be set.
          */
-        interface WithDomain {
+        interface WithDomain extends WithCreate {
             WithCreate withAzureDefaultDomain();
-            WithHostNameBinding withExistingAzureManagedDomain(Domain domain);
-            WithHostNameBinding withThirdPartyDomain(String domain);
-            WithHostNameBinding withNewDomain(Creatable<Domain> domainCreatable);
+            WithManagedHostNameBinding withExistingAzureManagedDomain(String domainId);
+            WithExternalHostNameBinding withThirdPartyDomain(String domain);
+            WithManagedHostNameBinding withNewAzureManagedDomain(Creatable<Domain> domainCreatable);
         }
 
-        interface WithHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(String hostname);
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineHostNameBinding(Domain domain, String subDomain);
+        interface WithManagedHostNameBinding {
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineManagedHostNameBinding(String hostname);
+            WithCreate withManagedHostNameBindings(String... hostnames);
+        }
+
+        interface WithExternalHostNameBinding {
+            HostNameBinding.DefinitionStages.Blank<WithCreate> defineExternalHostNameBinding(String hostname);
+            WithCreate withExternalHostNameBinding(String... hostnames);
         }
 
         interface WithSiteEnabled {
@@ -252,7 +259,7 @@ public interface WebApp extends
                 WithScmSiteAlsoStopped,
                 WithClientAffinityEnabled,
                 WithClientCertEnabled,
-                WithHostNameBinding {
+                WithManagedHostNameBinding {
         }
     }
 
@@ -264,14 +271,13 @@ public interface WebApp extends
          * A site definition allowing server farm to be set.
          */
         interface WithAppServicePlan {
-            Update withNewAppServicePlan();
+            Update withNewFreeAppServicePlan();
             Update withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
             Update withExistingAppServicePlan(String appServicePlanName);
         }
 
         interface WithHostNameBinding {
-            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(String name);
-            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineHostNameBinding(Domain domain, String subDomain);
+            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineManagedHostNameBinding(String name);
         }
     }
 

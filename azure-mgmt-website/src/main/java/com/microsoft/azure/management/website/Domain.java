@@ -228,6 +228,9 @@ public interface Domain extends
         interface WithCreate extends
                 WithDomainPrivacy,
                 WithAutoRenew,
+                WithAdminContact,
+                WithBillingContact,
+                WithTechContact,
                 Creatable<Domain>,
                 DefinitionWithTags<WithCreate> {
         }

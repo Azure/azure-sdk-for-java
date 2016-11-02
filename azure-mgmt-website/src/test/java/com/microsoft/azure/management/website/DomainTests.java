@@ -12,8 +12,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class DomainTests extends AppServiceTestBase {
-    private static final String RG_NAME = "javacsmrg319";
-    private static final String DOMAIN_NAME = "javatest319-3.com";
+    private static final String RG_NAME = "javacsmrg720";
+    private static final String DOMAIN_NAME = "javatest720.com";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -42,9 +42,8 @@ public class DomainTests extends AppServiceTestBase {
                     .withPostalCode("98101")
                     .withPhoneCountryCode(CountryPhoneCode.United_States)
                     .withPhoneNumber("4258828080")
-                    .withOrganziation("Microsoft")
                     .attach()
-                .withDomainPrivacyEnabled(false)
+                .withDomainPrivacyEnabled(true)
                 .withAutoRenewEnabled(true)
                 .create();
 //        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, DOMAIN_NAME);
