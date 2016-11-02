@@ -16,7 +16,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
     /**
      * @return the type of records in this record set
      */
-    String recordType();
+    RecordType recordType();
 
     /**
      * @return TTL of the records in this record set

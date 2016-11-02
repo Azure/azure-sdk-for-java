@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
     /**
-     * @return the canonical names (without a terminating dot) of CName records in this record set
+     * @return the canonical name (without a terminating dot) of CName record in this record set
      */
-    List<String> canonicalNames();
+    String canonicalName();
 
     /**
      * The entirety of the CName record set definition.
@@ -68,7 +68,6 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
         interface WithCreate extends
                 Creatable<AaaaRecordSet>,
                 HasTags.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithCanonicalName,
                 DefinitionStages.WithTtl {
         }
     }
@@ -77,27 +76,6 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
      * Grouping of CName record set update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the CName record set update allowing to add or remove a record.
-         */
-        interface WithCanonicalName {
-            /**
-             * Creates a CName record with the provided canonical name in this record set.
-             *
-             * @param canonicalName the canonical name
-             * @return the next stage of the record set update
-             */
-            Update withCanonicalName(String canonicalName);
-
-            /**
-             * Removes a CName record with the provided canonical name from this record set.
-             *
-             * @param canonicalName the canonical name
-             * @return the next stage of the record set update
-             */
-            Update withoutCanonicalName(String canonicalName);
-        }
-
         /**
          * The stage of the record set update allowing to specify Ttl for the records in this record set.
          */
@@ -121,7 +99,6 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
     interface Update extends
             Appliable<AaaaRecordSet>,
             HasTags.UpdateWithTags<Update>,
-            UpdateStages.WithCanonicalName,
             UpdateStages.WithTtl {
     }
 }

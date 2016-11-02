@@ -1,7 +1,12 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.DnsRecordSet;
+import com.microsoft.azure.management.dns.DnsZone;
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import rx.Observable;
+import rx.functions.Func1;
+
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -16,7 +21,7 @@ import java.util.Map;
 abstract class DnsRecordSetImpl<FluentModelT,
             FluentModelImplT extends DnsRecordSetImpl<FluentModelT, FluentModelImplT>>
         extends CreatableUpdatableImpl<FluentModelT, RecordSetInner, FluentModelImplT>
-        implements DnsRecordSet<FluentModelT, DnsZoneImpl> {
+        implements DnsRecordSet<FluentModelT, DnsZone> {
     protected final DnsZoneImpl dnsZone;
     protected final RecordSetsInner client;
 
@@ -32,13 +37,18 @@ abstract class DnsRecordSetImpl<FluentModelT,
     }
 
     @Override
-    public String recordType() {
-        return this.inner().type();
+    public RecordType recordType() {
+        return RecordType.fromString(this.inner().type());
     }
 
     @Override
     public long timeToLive() {
         return this.inner().tTL();
+    }
+
+    @Override
+    public DnsZoneImpl parent() {
+        return this.dnsZone;
     }
 
     @Override
@@ -68,4 +78,28 @@ abstract class DnsRecordSetImpl<FluentModelT,
         this.inner().withTTL(ttlInSeconds);
         return (FluentModelImplT) this;
     }
+
+    @Override
+    public boolean isInCreateMode() {
+        return this.inner().id() == null;
+    }
+
+    @Override
+    public Observable<FluentModelT> createResourceAsync() {
+        return client.createOrUpdateAsync(this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                this.recordType(),
+                this.inner())
+                .map(innerToFluentMap());
+    }
+
+    protected void resetInner() {
+        this.setInner(this.client.get(this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                this.recordType()));
+    }
+
+    protected abstract Func1<RecordSetInner, FluentModelT> innerToFluentMap();
 }
