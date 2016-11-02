@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
@@ -22,6 +24,10 @@ public interface ApplicationGatewayBackend extends
     ChildResource<ApplicationGateway>,
     HasBackendNics {
 
+    /**
+     * @return addresses on the backend of the application gateway, indexed by their FQDN
+     */
+    Map<String, ApplicationGatewayBackendAddress> addresses();
 
     /**
      * Grouping of appplication gateway backend definition stages.
@@ -29,7 +35,7 @@ public interface ApplicationGatewayBackend extends
     interface DefinitionStages {
         /**
          * The first stage of an application gateway backend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the parent application gateway type
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
         }

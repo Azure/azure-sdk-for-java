@@ -17,6 +17,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
@@ -214,7 +215,7 @@ public class TestApplicationGateway {
         info.append("\n\tFrontends: ").append(frontends.size());
         for (ApplicationGatewayFrontend frontend : frontends.values()) {
             info.append("\n\t\tName: ").append(frontend.name())
-                .append("\n\t\t\tIs public? ").append(frontend.isPublic());
+                .append("\n\t\t\tPublic? ").append(frontend.isPublic());
 
             if (frontend.isPublic()) {
                 // Show public frontend
@@ -236,6 +237,14 @@ public class TestApplicationGateway {
         for (ApplicationGatewayBackend backend : backends.values()) {
             info.append("\n\t\tName: ").append(backend.name())
                 .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+
+            // Show addresses
+            Map<String, ApplicationGatewayBackendAddress> addresses = backend.addresses();
+            info.append("\n\t\t\tAddresses: ").append(addresses.size());
+            for (ApplicationGatewayBackendAddress address : addresses.values()) {
+                info.append("\n\t\t\t\tFQDN: ").append(address.fqdn())
+                    .append("\n\t\t\t\tIP: ").append(address.ipAddress());
+            }
         }
 
         System.out.println(info.toString());

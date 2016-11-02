@@ -12,6 +12,7 @@ import java.util.TreeMap;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -31,19 +32,13 @@ class ApplicationGatewayBackendImpl
         super(inner, parent);
     }
 
+    // Helpers
+
     // Getters
 
     @Override
     public String name() {
         return this.inner().name();
-    }
-
-    // Verbs
-
-    @Override
-    public ApplicationGatewayImpl attach() {
-        this.parent().withBackend(this);
-        return this.parent();
     }
 
     @Override
@@ -61,4 +56,26 @@ class ApplicationGatewayBackendImpl
 
         return Collections.unmodifiableMap(ipConfigNames);
     }
+
+    @Override
+    public Map<String, ApplicationGatewayBackendAddress> addresses() {
+        Map<String, ApplicationGatewayBackendAddress> addresses = new TreeMap<>();
+        if (this.inner().backendAddresses() != null) {
+            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+                addresses.put(address.fqdn(), address);
+            }
+        }
+        return Collections.unmodifiableMap(addresses);
+    }
+
+    // Verbs
+
+    @Override
+    public ApplicationGatewayImpl attach() {
+        this.parent().withBackend(this);
+        return this.parent();
+    }
+
+    // Withers
+
 }
