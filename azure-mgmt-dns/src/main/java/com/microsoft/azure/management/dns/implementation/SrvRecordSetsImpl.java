@@ -8,7 +8,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import rx.Observable;
 
 /**
- * Implementation of {@link SrvRecordSets }
+ * Implementation of {@link SrvRecordSets}.
  */
 class SrvRecordSetsImpl
         extends CreatableWrappersImpl<SrvRecordSet, SrvRecordSetImpl, RecordSetInner>

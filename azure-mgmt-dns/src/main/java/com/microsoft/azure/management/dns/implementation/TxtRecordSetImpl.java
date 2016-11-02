@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link TxtRecordSet}
+ * Implementation of {@link TxtRecordSet}.
  */
 class TxtRecordSetImpl
         extends DnsRecordSetImpl<TxtRecordSet, TxtRecordSetImpl>

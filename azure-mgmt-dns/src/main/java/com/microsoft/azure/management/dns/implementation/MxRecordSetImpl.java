@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link MxRecordSet}
+ * Implementation of {@link MxRecordSet}.
  */
 class MxRecordSetImpl
         extends DnsRecordSetImpl<MxRecordSet, MxRecordSetImpl>

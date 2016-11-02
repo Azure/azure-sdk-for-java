@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link AaaaRecordSet}
+ * Implementation of {@link AaaaRecordSet}.
  */
 class AaaaRecordSetImpl
         extends DnsRecordSetImpl<AaaaRecordSet, AaaaRecordSetImpl>

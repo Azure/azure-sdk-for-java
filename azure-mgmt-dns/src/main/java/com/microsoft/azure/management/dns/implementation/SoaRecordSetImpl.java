@@ -5,7 +5,7 @@ import com.microsoft.azure.management.dns.SoaRecordSet;
 import rx.functions.Func1;
 
 /**
- * Implementation of {@link SoaRecordSet}
+ * Implementation of {@link SoaRecordSet}.
  */
 class SoaRecordSetImpl
         extends DnsRecordSetImpl<SoaRecordSet, SoaRecordSetImpl>

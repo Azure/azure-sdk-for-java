@@ -1,12 +1,11 @@
 package com.microsoft.azure.management.dns.implementation;
 
-import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.CnameRecord;
 import com.microsoft.azure.management.dns.CnameRecordSet;
 import rx.functions.Func1;
 
 /**
- * Implementation of {@link ARecordSet}
+ * Implementation of {@link CnameRecordSet}.
  */
 class CnameRecordSetImpl
         extends DnsRecordSetImpl<CnameRecordSet, CnameRecordSetImpl>

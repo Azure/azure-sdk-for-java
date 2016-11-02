@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Implementation of {@link PtrRecordSet}
+ * Implementation of {@link PtrRecordSet}.
  */
 class PtrRecordSetImpl
         extends DnsRecordSetImpl<PtrRecordSet, PtrRecordSetImpl>
