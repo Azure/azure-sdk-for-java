@@ -30,21 +30,12 @@ public class WebAppTests extends AppServiceTestBase {
 
     @Test
     public void canCRUDWebApp() throws Exception {
-        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, "javatest3319.com");
+        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, "javatestpr319.com");
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
                 .withExistingAppServicePlan("java-plan-323")
-                .withExistingAzureManagedDomain(domain.id())
-                .withManagedHostNameBindings("test1", "test2")
                 .create();
         Assert.assertNotNull(webApp);
-//        webApp.update()
-//                .defineHostNameBinding("javatest.quarterquota.net")
-//                .withHostNameType(HostNameType.VERIFIED)
-//                .withHostNameDnsRecordType(CustomHostNameDnsRecordType.A)
-//                .attach()
-//                .enableSniSsl("javatest.quarterquota.net", "56DD1FF5F5FD02D829B6BC47DC5B733CA93492CF")
-//                .apply();
     }
 }

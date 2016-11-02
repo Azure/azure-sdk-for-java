@@ -326,9 +326,15 @@ class WebAppImpl
     @Override
     public WebAppImpl withManagedHostNameBindings(String... hostnames) {
         for(String hostname : hostnames) {
-            defineManagedHostNameBinding(hostname)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
-                    .attach();
+            if (hostname.equals("@")) {
+                defineManagedHostNameBinding(hostname)
+                        .withDnsRecordType(CustomHostNameDnsRecordType.A)
+                        .attach();
+            } else {
+                defineManagedHostNameBinding(hostname)
+                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .attach();
+            }
         }
         return this;
     }
@@ -346,7 +352,7 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withExternalHostNameBinding(String... hostnames) {
+    public WebAppImpl withVerifiedHostNameBinding(String... hostnames) {
         for(String hostname : hostnames) {
             defineManagedHostNameBinding(hostname)
                     .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
@@ -400,21 +406,28 @@ class WebAppImpl
                     public Observable<WebApp> call(final WebApp webApp) {
                         List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
                         for (HostNameBindingImpl binding: hostNameBindingsToCreate.values()) {
-                            Pattern pattern = Pattern.compile("([.\\w]+)\\.(\\w+\\.\\w+)");
-                            Matcher matcher = pattern.matcher(binding.name());
-                            matcher.matches();
-                            DomainInfo domain = domainInfos.get(matcher.group(2));
+                            DomainInfo domain = domainInfos.get(binding.name());
+                            if (domain == null) {
+                                Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
+                                Matcher matcher = pattern.matcher(binding.name());
+                                matcher.matches();
+                                domain = domainInfos.get(matcher.group(2));
+                            }
                             if (domain.isAzureDomain()) {
                                 binding.inner().withDomainId(domain.domainId);
                             }
                             bindingObservables.add(binding.createAsync());
                         }
-                        return Observable.zip(bindingObservables, new FuncN<WebApp>() {
-                            @Override
-                            public WebApp call(Object... args) {
-                                return webApp;
-                            }
-                        });
+                        if (bindingObservables.isEmpty()) {
+                            return Observable.just(webApp);
+                        } else {
+                            return Observable.zip(bindingObservables, new FuncN<WebApp>() {
+                                @Override
+                                public WebApp call(Object... args) {
+                                    return webApp;
+                                }
+                            });
+                        }
                     }
                 });
     }
@@ -444,13 +457,8 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withAzureDefaultDomain() {
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withExistingAzureManagedDomain(String domainId) {
-        DomainInfo.existingDomain(domainId).addToMap(domainInfos);
+    public WebAppImpl withExistingAzureManagedDomain(Domain domain) {
+        DomainInfo.existingDomain(domain.id()).addToMap(domainInfos);
         return this;
     }
 

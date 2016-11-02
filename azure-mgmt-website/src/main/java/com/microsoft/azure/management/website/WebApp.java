@@ -221,20 +221,19 @@ public interface WebApp extends
          * A web app definition allowing domain to be set.
          */
         interface WithDomain extends WithCreate {
-            WithCreate withAzureDefaultDomain();
-            WithManagedHostNameBinding withExistingAzureManagedDomain(String domainId);
+            WithManagedHostNameBinding withExistingAzureManagedDomain(Domain domain);
             WithExternalHostNameBinding withThirdPartyDomain(String domain);
             WithManagedHostNameBinding withNewAzureManagedDomain(Creatable<Domain> domainCreatable);
         }
 
         interface WithManagedHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineManagedHostNameBinding(String hostname);
-            WithCreate withManagedHostNameBindings(String... hostnames);
+            HostNameBinding.DefinitionStages.Blank<WithDomain> defineManagedHostNameBinding(String hostname);
+            WithDomain withManagedHostNameBindings(String... hostnames);
         }
 
         interface WithExternalHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithCreate> defineExternalHostNameBinding(String hostname);
-            WithCreate withExternalHostNameBinding(String... hostnames);
+            HostNameBinding.DefinitionStages.Blank<WithDomain> defineExternalHostNameBinding(String hostname);
+            WithDomain withVerifiedHostNameBinding(String... hostnames);
         }
 
         interface WithSiteEnabled {
@@ -263,8 +262,7 @@ public interface WebApp extends
                 WithSiteEnabled,
                 WithScmSiteAlsoStopped,
                 WithClientAffinityEnabled,
-                WithClientCertEnabled,
-                WithManagedHostNameBinding {
+                WithClientCertEnabled{
         }
     }
 

@@ -21,6 +21,8 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A host name binding object.
@@ -33,7 +35,7 @@ class HostNameBindingImpl
         implements
         Creatable<HostNameBinding>,
         HostNameBinding,
-        HostNameBinding.Definition<WebApp.DefinitionStages.WithCreate>,
+        HostNameBinding.Definition<WebApp.DefinitionStages.WithDomain>,
         HostNameBinding.UpdateDefinition<WebApp.Update> {
     private WebAppsInner client;
     HostNameBindingImpl(String name, HostNameBindingInner innerObject, WebAppImpl parent, WebAppsInner client) {
@@ -109,6 +111,11 @@ class HostNameBindingImpl
 
     @Override
     public HostNameBindingImpl withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
+        Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
+        Matcher matcher = pattern.matcher(name());
+        if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
+            throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
+        }
         inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
         return this;
     }

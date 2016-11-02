@@ -138,7 +138,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public Domains domains() {
         if (domains == null) {
-            domains = new DomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), innerManagementClient.webApps(), this);
+            domains = new DomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
         }
         return domains;
     }

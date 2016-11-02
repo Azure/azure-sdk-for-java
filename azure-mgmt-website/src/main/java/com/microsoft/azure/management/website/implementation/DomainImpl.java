@@ -15,18 +15,14 @@ import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.DomainPurchaseConsent;
 import com.microsoft.azure.management.website.DomainStatus;
 import com.microsoft.azure.management.website.HostName;
-import com.microsoft.azure.management.website.HostNameBinding;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.functions.FuncN;
 
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * The implementation for {@link Domain}.
@@ -45,16 +41,11 @@ class DomainImpl
 
     private final DomainsInner client;
     private final TopLevelDomainsInner topLevelDomainsInner;
-    private final WebAppsInner webAppsInner;
 
-    private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
-
-    DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, final WebAppsInner webAppsInner, AppServiceManager manager) {
+    DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
         this.topLevelDomainsInner = topLevelDomainsInner;
-        this.webAppsInner = webAppsInner;
-        hostNameBindingsToCreate = new HashMap<>();
         inner().withLocation("global");
     }
 
@@ -89,25 +80,7 @@ class DomainImpl
                         return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
                     }
                 })
-                .map(innerToFluentMap(this))
-                // Step 3: Apply host name bindings
-                .flatMap(new Func1<Domain, Observable<Domain>>() {
-                    @Override
-                    public Observable<Domain> call(final Domain domain) {
-                        final List<Observable<HostNameBinding>> hnbObservables = new ArrayList<>();
-                        for (HostNameBindingImpl binding : hostNameBindingsToCreate.values()) {
-                            binding.inner().withLocation("global");
-                            hnbObservables.add(binding.createAsync());
-                        }
-                        return Observable.zip(hnbObservables, new FuncN<Domain>() {
-                            @Override
-                            public Domain call(Object... args) {
-                                hostNameBindingsToCreate.clear();
-                                return domain;
-                            }
-                        });
-                    }
-                });
+                .map(innerToFluentMap(this));
     }
 
     @Override
