@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
@@ -48,6 +49,9 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private enum UploadActivity { Create, Acquire, Release, Update };
 
+    private Hashtable<String, Checkpoint> latestCheckpoint = new Hashtable<String, Checkpoint>(); 
+
+    
     AzureStorageCheckpointLeaseManager(String storageConnectionString)
     {
         this(storageConnectionString, null);
@@ -348,8 +352,6 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		}
     		else
     		{
-    			System.out.println("errorCode " + extendedErrorInfo.getErrorCode());
-    			System.out.println("errorString " + extendedErrorInfo.getErrorMessage());
     			this.host.logWithHostAndPartition(Level.SEVERE, partitionId,
     				"CreateLeaseIfNotExist StorageException - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
     				"storageBlobPrefix: " + this.storageBlobPrefix,
@@ -542,6 +544,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	this.host.logWithHost(Level.FINEST, "Raw JSON downloaded: " + jsonLease);
     	AzureBlobLease rehydrated = this.gson.fromJson(jsonLease, AzureBlobLease.class);
     	AzureBlobLease blobLease = new AzureBlobLease(rehydrated, blob);
+    	
+    	if (blobLease.getOffset() != null)
+    	{
+    		this.latestCheckpoint.put(blobLease.getPartitionId(), blobLease.getCheckpoint());
+    	}
+    	
     	return blobLease;
     }
     
@@ -549,16 +557,23 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	if (activity != UploadActivity.Create)
     	{
-	    	// Download the existing blob so we can merge any checkpoint changes. This has to be done here because
-	    	// we're trying to maintain the fiction that checkpoints and leases are separate, because they may be
-	    	// for other implementations. Therefore, higher-level EPH code shouldn't be doing weird things with leases,
-	    	// like calling getLease() all the time, just to cater to this implementation.
-	    	AzureBlobLease inStoreLease = downloadLease(blob);
-	    	if (inStoreLease.getSequenceNumber() > lease.getSequenceNumber())
-	    	{
-	    		lease.setOffset(inStoreLease.getOffset());
-	    		lease.setSequenceNumber(inStoreLease.getSequenceNumber());
-	    	}
+    		// It is possible for AzureBlobLease objects in memory to have stale offset/sequence number fields if a
+    		// checkpoint was written but PartitionManager hasn't done its ten-second sweep which downloads new copies
+    		// of all the leases. This can happen because we're trying to maintain the fiction that checkpoints and leases
+    		// are separate -- which they can be in other implementations -- even though they are completely intertwined
+    		// in this implementation. To prevent writing stale checkpoint data to the store, merge the checkpoint data
+    		// from the most recently written checkpoint into this write, if needed.
+    		Checkpoint cached = this.latestCheckpoint.get(lease.getPartitionId());
+    		if ((cached != null) && ((cached.getSequenceNumber() > lease.getSequenceNumber()) || (lease.getOffset() == null)))
+    		{
+				lease.setOffset(cached.getOffset());
+				lease.setSequenceNumber(cached.getSequenceNumber());
+				this.host.logWithHostAndPartition(Level.FINEST, lease.getPartitionId(), "Replacing stale offset/seqno while uploading lease");
+			}
+			else if (lease.getOffset() != null)
+			{
+				this.latestCheckpoint.put(lease.getPartitionId(), lease.getCheckpoint());
+			}
     	}
     	
     	String jsonLease = this.gson.toJson(lease);

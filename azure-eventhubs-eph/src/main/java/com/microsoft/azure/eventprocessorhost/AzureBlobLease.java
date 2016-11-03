@@ -53,6 +53,11 @@ class AzureBlobLease extends Lease
 	void setSequenceNumber(long sequenceNumber) { this.sequenceNumber = sequenceNumber; }
 	
 	long getSequenceNumber() { return this.sequenceNumber; }
+	
+	Checkpoint getCheckpoint()
+	{
+		return new Checkpoint(this.getPartitionId(), this.offset, this.sequenceNumber);
+	}
 
 	@Override
 	public boolean isExpired() throws Exception
