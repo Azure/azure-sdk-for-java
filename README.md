@@ -4,8 +4,23 @@
 
 This README is based on the latest released preview version (1.0.0-beta3). If you are looking for other releases, see [More Information](#more-information)
 
-The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources.
+## Project Description
 
+Microsoft Azure is Microsoft's public cloud computing platform that includes several cloud services: compute, analytics, storage and networking. Users are able to pick these services and develop new applications (or run existing applications) in the public cloud [[1]](http://searchcloudcomputing.techtarget.com/definition/Windows-Azure
+).
+The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. It is possible to use these libraries to [[2]](https://azure.microsoft.com/pt-pt/blog/getting-started-with-the-azure-java-management-libraries/):
+- Create, delete, and update settings for resources like web sites, SQL databases, cloud services, scheduler job collections, virtual machines, and storage
+- Start and stop web sites, mobile apps and multi-platform apps
+- Developing and launching apps
+- Production Analyses Services: machine learning, Cortana Analytics, Stream Analytics, predictive analysis
+- Execute large scale computation tasks
+- Back up databases to storage accounts
+- Code, store and broadcast audio and video at scale flow
+- Automate the creation of virtual machines
+- Create intelligent products and services based on the concept of Internet of Things
+
+
+To see more about the project and the development processes used click [here](https://github.com/jalves94/azure-sdk-for-java/blob/master/ESOF-docs/assignment1).
 
 > **1.0.0-beta3** is a developer preview that supports major parts of Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, Key Vault and Batch. The next preview version of the Azure Management Libraries for Java is a work in-progress. We will be adding support for more Azure services and tweaking the API over the next few months.
 
