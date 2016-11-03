@@ -17,6 +17,7 @@ import com.microsoft.azure.management.website.implementation.DomainInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An immutable client-side representation of a domain.
@@ -97,7 +98,7 @@ public interface Domain extends
     /**
      * @return all hostnames derived from the domain and assigned to Azure resources
      */
-    List<HostName> managedHostNames();
+    Map<String, HostName> managedHostNames();
 
     /**
      * @return legal agreement consent.

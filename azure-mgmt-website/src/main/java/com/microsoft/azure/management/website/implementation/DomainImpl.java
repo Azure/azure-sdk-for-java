@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -22,7 +24,9 @@ import rx.functions.Func1;
 import java.net.Inet4Address;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * The implementation for {@link Domain}.
@@ -42,11 +46,21 @@ class DomainImpl
     private final DomainsInner client;
     private final TopLevelDomainsInner topLevelDomainsInner;
 
+    private Map<String, HostName> hostNameMap;
+
     DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
         this.topLevelDomainsInner = topLevelDomainsInner;
         inner().withLocation("global");
+        if (inner().managedHostNames() != null) {
+            this.hostNameMap = Maps.uniqueIndex(inner().managedHostNames(), new Function<HostName, String>() {
+                @Override
+                public String apply(HostName input) {
+                    return input.name();
+                }
+            });
+        }
     }
 
     @Override
@@ -150,8 +164,11 @@ class DomainImpl
     }
 
     @Override
-    public List<HostName> managedHostNames() {
-        return inner().managedHostNames();
+    public Map<String, HostName> managedHostNames() {
+        if (hostNameMap == null) {
+            return null;
+        }
+        return Collections.unmodifiableMap(hostNameMap);
     }
 
     @Override

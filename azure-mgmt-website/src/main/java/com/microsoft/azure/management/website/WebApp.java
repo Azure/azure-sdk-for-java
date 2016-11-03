@@ -19,6 +19,7 @@ import org.joda.time.DateTime;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure Web App.
@@ -58,7 +59,7 @@ public interface WebApp extends
     /**
      * @return host names for the web app that are enabled
      */
-    List<String> enabledHostNames();
+    Set<String> enabledHostNames();
 
     /**
      * @return management information availability state for the web app.

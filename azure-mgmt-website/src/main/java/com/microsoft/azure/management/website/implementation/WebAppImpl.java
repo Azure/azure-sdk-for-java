@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -31,10 +32,12 @@ import rx.functions.Func1;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,6 +59,7 @@ class WebAppImpl
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
     private LinkedHashMap<String, DomainInfo> domainInfos;
+    private Set<String> enabledHostNamesSet;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
@@ -63,6 +67,9 @@ class WebAppImpl
         this.hostNameSslStateMap = new HashMap<>();
         this.hostNameBindingsToCreate = new HashMap<>();
         this.domainInfos = new LinkedHashMap<>();
+        if (inner().enabledHostNames() != null) {
+            this.enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
+        }
         if (innerObject.hostNameSslStates() != null) {
             for (HostNameSslState hostNameSslState : innerObject.hostNameSslStates()) {
                 // Server returns null sometimes, invalid on update, so we set default
@@ -100,8 +107,11 @@ class WebAppImpl
     }
 
     @Override
-    public List<String> enabledHostNames() {
-        return inner().enabledHostNames();
+    public Set<String> enabledHostNames() {
+        if (enabledHostNamesSet == null) {
+            return null;
+        }
+        return Collections.unmodifiableSet(enabledHostNamesSet);
     }
 
     @Override
