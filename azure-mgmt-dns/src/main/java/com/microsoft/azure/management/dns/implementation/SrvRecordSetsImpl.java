@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.SrvRecordSets;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link SrvRecordSets}.
  */
 class SrvRecordSetsImpl
-        extends CreatableWrappersImpl<SrvRecordSet, SrvRecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<SrvRecordSet, SrvRecordSetImpl, RecordSetInner>
         implements SrvRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,8 @@ class SrvRecordSetsImpl
     }
 
     @Override
-    public SrvRecordSetImpl getById(String id) {
-        return null;
-    }
-
-    @Override
-    public SrvRecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<SrvRecordSet> list() {
         return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.SRV));
-    }
-
-    @Override
-    protected SrvRecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.SRV.toString());
-        return wrapModel(inner);
     }
 
     @Override

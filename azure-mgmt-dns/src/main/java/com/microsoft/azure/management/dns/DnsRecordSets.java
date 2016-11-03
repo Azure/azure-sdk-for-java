@@ -8,5 +8,5 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * @param <FluentRecordSetModelT> the type of the record set
  */
 @Fluent
-public interface DnsRecordSets<FluentRecordSetModelT> {
+public interface DnsRecordSets {
 }

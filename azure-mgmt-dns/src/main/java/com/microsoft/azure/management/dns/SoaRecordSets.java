@@ -5,11 +5,10 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
- *  Entry point to Dns zone Soa record set management API.
+ *  Entry point to Soa record sets in a Dns zone.
  */
 @Fluent
 public interface SoaRecordSets extends
-        DnsRecordSets<SoaRecordSet>,
         SupportsListing<SoaRecordSet>,
         SupportsGettingById<SoaRecordSet> {
 }

@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.CnameRecordSet;
 import com.microsoft.azure.management.dns.CnameRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link CnameRecordSets}.
  */
 class CnameRecordSetsImpl
-        extends CreatableWrappersImpl<CnameRecordSet, CnameRecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<CnameRecordSet, CnameRecordSetImpl, RecordSetInner>
         implements CnameRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,10 @@ class CnameRecordSetsImpl
     }
 
     @Override
-    public CnameRecordSet getById(String id) {
-        return null;
-    }
-
-    @Override
-    public CnameRecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<CnameRecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.CNAME));
-    }
-
-    @Override
-    protected CnameRecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.CNAME.toString());
-        return wrapModel(inner);
+        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.CNAME));
     }
 
     @Override

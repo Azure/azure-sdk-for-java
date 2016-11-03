@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.PtrRecordSet;
 import com.microsoft.azure.management.dns.PtrRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link PtrRecordSets}.
  */
 class PtrRecordSetsImpl
-        extends CreatableWrappersImpl<PtrRecordSet, PtrRecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<PtrRecordSet, PtrRecordSetImpl, RecordSetInner>
         implements PtrRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,8 @@ class PtrRecordSetsImpl
     }
 
     @Override
-    public PtrRecordSetImpl getById(String id) {
-        return null;
-    }
-
-    @Override
-    public PtrRecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<PtrRecordSet> list() {
         return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.PTR));
-    }
-
-    @Override
-    protected PtrRecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.PTR.toString());
-        return wrapModel(inner);
     }
 
     @Override

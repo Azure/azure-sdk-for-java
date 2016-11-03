@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link ARecordSets}.
  */
 class ARecordSetsImpl
-        extends CreatableWrappersImpl<ARecordSet, ARecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<ARecordSet, ARecordSetImpl, RecordSetInner>
         implements ARecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,10 @@ class ARecordSetsImpl
     }
 
     @Override
-    public ARecordSetImpl getById(String id) {
-        return null;
-    }
-
-    @Override
-    public ARecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<ARecordSet> list() {
-        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.A));
-    }
-
-    @Override
-    protected ARecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.A.toString());
-        return wrapModel(inner);
+        return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(),
+                this.dnsZone.name(),
+                RecordType.A));
     }
 
     @Override

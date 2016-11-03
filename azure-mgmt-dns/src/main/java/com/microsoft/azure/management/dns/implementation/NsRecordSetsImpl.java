@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.NsRecordSet;
 import com.microsoft.azure.management.dns.NsRecordSets;
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link NsRecordSets}.
  */
 class NsRecordSetsImpl
-        extends CreatableWrappersImpl<NsRecordSet, NsRecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<NsRecordSet, NsRecordSetImpl, RecordSetInner>
         implements NsRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,8 @@ class NsRecordSetsImpl
     }
 
     @Override
-    public NsRecordSetImpl getById(String id) {
-        return null;
-    }
-
-    @Override
-    public NsRecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<NsRecordSet> list() {
         return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.NS));
-    }
-
-    @Override
-    protected NsRecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.NS.toString());
-        return wrapModel(inner);
     }
 
     @Override

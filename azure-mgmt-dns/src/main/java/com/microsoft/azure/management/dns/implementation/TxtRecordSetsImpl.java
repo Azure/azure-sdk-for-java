@@ -4,14 +4,13 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.dns.TxtRecordSets;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableWrappersImpl;
-import rx.Observable;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 
 /**
  * Implementation of {@link TxtRecordSets}.
  */
 class TxtRecordSetsImpl
-        extends CreatableWrappersImpl<TxtRecordSet, TxtRecordSetImpl, RecordSetInner>
+        extends ReadableWrappersImpl<TxtRecordSet, TxtRecordSetImpl, RecordSetInner>
         implements TxtRecordSets {
 
     private final DnsZoneImpl dnsZone;
@@ -32,30 +31,8 @@ class TxtRecordSetsImpl
     }
 
     @Override
-    public TxtRecordSetImpl getById(String id) {
-        return null;
-    }
-
-    @Override
-    public TxtRecordSetImpl define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
-    public Observable<Void> deleteByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
     public PagedList<TxtRecordSet> list() {
         return super.wrapList(this.client.listByType(this.dnsZone.resourceGroupName(), this.dnsZone.name(), RecordType.TXT));
-    }
-
-    @Override
-    protected TxtRecordSetImpl wrapModel(String name) {
-        RecordSetInner inner = new RecordSetInner();
-        inner.withName(name).withType(RecordType.TXT.toString());
-        return wrapModel(inner);
     }
 
     @Override
