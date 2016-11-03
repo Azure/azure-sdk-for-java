@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class DomainTests extends AppServiceTestBase {
+public class DomainsTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg720";
     private static final String DOMAIN_NAME = "javatest720.com";
 
