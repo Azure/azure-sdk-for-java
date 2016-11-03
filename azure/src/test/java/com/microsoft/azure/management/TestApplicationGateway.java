@@ -48,7 +48,7 @@ public class TestApplicationGateway {
     /**
      * Internet-facing LB test with NAT pool test.
      */
-    public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+    public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
         private final Networks networks;
@@ -59,7 +59,7 @@ public class TestApplicationGateway {
          * @param vms virtual machines
          * @param networks networks
          */
-        public PrivateMinimal(
+        public PrivateComplex(
                 PublicIpAddresses pips,
                 VirtualMachines vms,
                 Networks networks) {
@@ -77,11 +77,12 @@ public class TestApplicationGateway {
         public ApplicationGateway createResource(ApplicationGateways resources) throws Exception {
             VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestApplicationGateway.VM_IDS);
             List<PublicIpAddress> existingPips = ensurePIPs(pips);
-
-            // Create a vnet
             Network vnet = this.networks.define("net" + this.testId)
                     .withRegion(REGION)
                     .withExistingResourceGroup(GROUP_NAME)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnet1", "10.0.0.0/29")
+                    .withSubnet("subnet2", "10.0.0.8/29")
                     .create();
 
             // Create an application gateway
@@ -91,24 +92,20 @@ public class TestApplicationGateway {
                     .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                     .withContainingSubnet(vnet, "subnet1")
 
-                    // Frontends
+                    // Public frontend
                     .withoutPublicFrontend()
-                    .definePrivateFrontend("frontend1")
-                        .withExistingSubnet(vnet, "subnet1")
-                        .attach()
+
+                    // Private frontend
+                    .withPrivateFrontend()
 
                     // Frontend ports
                     .withFrontendPort(80, "port1")
                     .withFrontendPort(8080, "port2")
 
                     // Backends
-                    .defineBackend("backend1")
-                        .withIpAddress("11.1.1.1")
-                        .attach()
-
-                    .defineBackend("backend2")
-                        .withFqdn("www.microsoft.com")
-                        .attach()
+                    .withBackendIpAddress("11.1.1.1")
+                    .withBackendIpAddress("11.1.1.2")
+                    .withBackendFqdn("www.microsoft.com", "backend2")
 
                     // HTTP configs
                     .defineHttpConfiguration("httpConfig1")
@@ -117,14 +114,14 @@ public class TestApplicationGateway {
 
                     // HTTP listeners
                     .defineHttpListener("listener1")
-                        .withFrontend("frontend1")
+                        .withFrontend("default")
                         .withPort("port1")
                         .attach()
 
                     // Request routing rules
                     .defineRequestRoutingRule("rule1")
                         .withListener("listener1")
-                        .withBackend("backend1")
+                        .withBackend("default")
                         .withBackendHttpConfiguration("httpConfig1")
                         .attach()
                     .create();
@@ -148,10 +145,11 @@ public class TestApplicationGateway {
     private static List<PublicIpAddress> ensurePIPs(PublicIpAddresses pips) throws Exception {
         List<Creatable<PublicIpAddress>> creatablePips = new ArrayList<>();
         for (int i = 0; i < PIP_NAMES.length; i++) {
-            creatablePips.add(pips.define(PIP_NAMES[i])
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withLeafDomainLabel(PIP_NAMES[i]));
+            creatablePips.add(
+                    pips.define(PIP_NAMES[i])
+                        .withRegion(REGION)
+                        .withNewResourceGroup(GROUP_NAME)
+                        .withLeafDomainLabel(PIP_NAMES[i]));
         }
 
         return pips.create(creatablePips);

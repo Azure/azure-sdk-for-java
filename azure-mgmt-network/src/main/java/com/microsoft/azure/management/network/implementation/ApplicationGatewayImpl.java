@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -289,33 +290,6 @@ class ApplicationGatewayImpl
         }
     }
 
-    // Getters
-
-    @Override
-    public Map<String, ApplicationGatewayBackend> backends() {
-        return Collections.unmodifiableMap(this.backends);
-    }
-
-    @Override
-    public Map<String, ApplicationGatewayFrontend> frontends() {
-        return Collections.unmodifiableMap(this.frontends);
-    }
-
-    @Override
-    public ApplicationGatewaySku sku() {
-        return this.inner().sku();
-    }
-
-    @Override
-    public ApplicationGatewayOperationalState operationalState() {
-        return this.inner().operationalState();
-    }
-
-    @Override
-    public ApplicationGatewaySslPolicy sslPolicy() {
-        return this.inner().sslPolicy();
-    }
-
     @Override
     public ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
         ApplicationGatewayIpConfiguration config = this.configs.get(name);
@@ -326,13 +300,6 @@ class ApplicationGatewayImpl
         } else {
             return (ApplicationGatewayIpConfigurationImpl) config;
         }
-    }
-
-    @Override
-    public ApplicationGatewayImpl withFrontendSubnet(Network network, String subnetName) {
-        return this.definePrivateFrontend(DEFAULT)
-                .withExistingSubnet(network, subnetName)
-                .attach();
     }
 
     @Override
@@ -481,5 +448,100 @@ class ApplicationGatewayImpl
         }
 
         return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withPrivateFrontend() {
+        return withPrivateFrontend(DEFAULT);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withPrivateFrontend(String frontendName) {
+        /* NOTE: This logic is a workaround for the unusual Azure API logic:
+         * - although app gateway API definition allows multiple IP configs, only one is allowed by the service currently;
+         * - although app gateway frontend API definition allows for multiple frontends, only one is allowed by the service today;
+         * - and although app gateway API definition allows different subnets to be specified between the IP configs and frontends, the service
+         * requires the frontend and the containing subnet to be one and the same currently.
+         *
+         * So the logic here attempts to figure out from the API what that containing subnet for the app gateway is so that the user wouldn't
+         * have to re-enter it redundantly when enabling a private frontend, since only that one subnet is supported anyway.
+         *
+         * TODO: When the underlying Azure API is reworked to make more sense, or the app gateway service starts supporting the functionality
+         * that the underlying API implies is supported, this model and implementation should be revisited.
+         */
+
+        // Attempt to get the default config first
+        ApplicationGatewayIpConfiguration ipConfig = this.configs.get("default");
+        if (ipConfig == null) {
+            // No default config, so get the first IP config tha exists
+            ApplicationGatewayIpConfiguration[] ipConfigArray = new ApplicationGatewayIpConfiguration[this.configs.values().size()];
+            ipConfigArray = this.configs.values().toArray(ipConfigArray);
+            if (ipConfigArray.length > 0) {
+                ipConfig = ipConfigArray[0];
+            } else {
+                // No IP config found, so fail fast, since there is nothing else that could be done here,
+                // the state is corrupt, this should not happen
+                return null;
+            }
+        }
+
+        // Get the needed subnet reference
+        String subnetId = ipConfig.inner().subnet().id();
+        String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
+        String subnetName = ResourceUtils.nameFromResourceId(subnetId);
+        return this.definePrivateFrontend(frontendName)
+            .withExistingSubnet(networkId, subnetName)
+            .attach();
+    }
+
+    @Override
+    public ApplicationGatewayImpl withBackendIpAddress(String ipAddress) {
+        return withBackendIpAddress(ipAddress, DEFAULT);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withBackendFqdn(String fqdn) {
+        return withBackendFqdn(fqdn, DEFAULT);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withBackendIpAddress(String ipAddress, String backendName) {
+        return this.defineBackend(backendName)
+            .withIpAddress(ipAddress)
+            .attach();
+    }
+
+    @Override
+    public ApplicationGatewayImpl withBackendFqdn(String fqdn, String backendName) {
+        return this.defineBackend(backendName)
+            .withFqdn(fqdn)
+            .attach();
+    }
+
+    // Getters
+
+    @Override
+    public Map<String, ApplicationGatewayBackend> backends() {
+        return Collections.unmodifiableMap(this.backends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayFrontend> frontends() {
+        return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public ApplicationGatewaySku sku() {
+        return this.inner().sku();
+    }
+
+    @Override
+    public ApplicationGatewayOperationalState operationalState() {
+        return this.inner().operationalState();
+    }
+
+    @Override
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.inner().sslPolicy();
     }
 }

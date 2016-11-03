@@ -65,7 +65,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithCreate,
         DefinitionStages.WithSku,
         DefinitionStages.WithContainingSubnet,
-        DefinitionStages.WithFrontendSubnet,
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
@@ -107,29 +106,30 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition allowing to specify an existing subnet as the private frontend.
-         */
-        interface WithFrontendSubnet {
-            /**
-             * Assigns the specified subnet from the selected network as the default private frontend of this application gateway,
-             * thereby making the application gateway internal.
-             * @param network an existing virtual network
-             * @param subnetName the name of an existing subnet on the specified network
-             * @return the next stage of the definition
-             */
-            WithFrontendPort withFrontendSubnet(Network network, String subnetName);
-        }
-
-        /**
          * The stage of an internal application gateway definition allowing to define a private frontend.
          */
-        interface WithPrivateFrontend extends WithFrontendSubnet {
+        interface WithPrivateFrontend {
             /**
              * Begins the definition of a private, or internal, application gateway frontend IP configuration.
              * @param name the name for the frontend
              * @return the first stage of a private frontend IP configuration definition
              */
             ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithFrontendPort> definePrivateFrontend(String name);
+
+            /**
+             * Enables a private default frontend in the subnet containing the application gateway.
+             * <p>
+             * A frontend with the name "default" will be created if needed.
+             * @return the next stage of the definition
+             */
+            WithFrontendPort withPrivateFrontend();
+
+            /**
+             * Enables a private frontend in the subnet containing the application gateway.
+             * @param frontendName the name for the frontend to create
+             * @return the next stage of the definition
+             */
+            WithFrontendPort withPrivateFrontend(String frontendName);
         }
 
         /**
@@ -200,6 +200,40 @@ public interface ApplicationGateway extends
              * @return the first stage of the backend definition
              */
             ApplicationGatewayBackend.DefinitionStages.Blank<WithBackendOrHttpConfig> defineBackend(String name);
+
+            /**
+             * Adds an IP address to the default backend.
+             * <p>
+             * A backend with the name "default" will be created if needed.
+             * @param ipAddress an IP address
+             * @return the next stage of the definition
+             */
+            WithBackendOrHttpConfig withBackendIpAddress(String ipAddress);
+
+            /**
+             * Adds an FQDN (fully qualified domain name) to the default backend.
+             * <p>
+             * A backend with the name "default" will be created if needed.
+             * @param fqdn a fully qualified domain name
+             * @return the next stage of the definition
+             */
+            WithBackendOrHttpConfig withBackendFqdn(String fqdn);
+
+            /**
+             * Adds an IP address to a backend.
+             * @param ipAddress an IP address
+             * @param backendName the name for the backend to add the address to
+             * @return the next stage of the definition
+             */
+            WithBackendOrHttpConfig withBackendIpAddress(String ipAddress, String backendName);
+
+            /**
+             * Adds an FQDN (fully qualified domain name) to a backend.
+             * @param fqdn a fully qualified domain name
+             * @param backendName the name for the backend to add the FQDN to
+             * @return the next stage of the definition
+             */
+            WithBackendOrHttpConfig withBackendFqdn(String fqdn, String backendName);
         }
 
         /**
