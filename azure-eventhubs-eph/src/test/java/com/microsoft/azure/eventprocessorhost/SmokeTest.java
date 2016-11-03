@@ -22,7 +22,7 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 
 public class SmokeTest extends TestBase
 {
-	//@Test
+	@Test
 	public void SendRecv1MsgTest() throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("SendRecv1Msg");
@@ -34,7 +34,7 @@ public class SmokeTest extends TestBase
 		testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
 	
-	//@Test
+	@Test
 	public void receiveFromNowTest() throws Exception
 	{
 		// Doing two iterations with the same "now" requires storing the "now" value instead of
@@ -56,7 +56,10 @@ public class SmokeTest extends TestBase
 	private PerTestSettings receiveFromNowIteration(final Instant storedNow, int iteration, int expectedMessages, String containerName) throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("receiveFromNow-iter-" + iteration);
-		settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
+		if (containerName != null)
+		{
+			settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
+		}
 		settings.inOptions.setInitialOffsetProvider((partitionId) -> { return storedNow; });
 		settings = testSetup(settings);
 
@@ -72,16 +75,17 @@ public class SmokeTest extends TestBase
 	public void receiveFromCheckpoint() throws Exception
 	{
 		PerTestSettings firstSettings = receiveFromCheckpointIteration(1, SmokeTest.ANY_NONZERO_COUNT, null);
-		System.out.println("Waiting five minutes");
-		Thread.sleep(1000*60*5);
-		System.out.println("Continuing");
+		
 		receiveFromCheckpointIteration(2, firstSettings.outPartitionIds.size(), firstSettings.inoutEPHConstructorArgs.getStorageContainerName());
 	}
 
 	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedMessages, String containerName) throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("receiveFromCkpt-iter-" + iteration);
-		settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
+		if (containerName != null)
+		{
+			settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
+		}
 		settings.inDoCheckpoint = true;
 		settings = testSetup(settings);
 
@@ -96,7 +100,7 @@ public class SmokeTest extends TestBase
 		return settings;
 	}
 	
-	//@Test
+	@Test
 	public void receiveAllPartitionsTest() throws Exception
 	{
 		// Save "now" to avoid race with sender startup.
@@ -128,7 +132,7 @@ public class SmokeTest extends TestBase
 		testFinish(settings, (settings.outPartitionIds.size() * (maxGeneration + 1))); // +1 for the telltales
 	}
 	
-	//@Test
+	@Test
 	public void receiveAllPartitionsWithUserExecutorTest() throws Exception
 	{
 		// Save "now" to avoid race with sender startup.
