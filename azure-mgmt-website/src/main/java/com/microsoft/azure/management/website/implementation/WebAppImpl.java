@@ -9,9 +9,7 @@ package com.microsoft.azure.management.website.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
@@ -34,12 +32,9 @@ import rx.functions.FuncN;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * The implementation for {@link WebApp}.
@@ -58,7 +53,6 @@ class WebAppImpl
     private final WebAppsInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
-    private LinkedHashMap<String, DomainInfo> domainInfos;
     private Set<String> enabledHostNamesSet;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
@@ -66,7 +60,6 @@ class WebAppImpl
         this.client = client;
         this.hostNameSslStateMap = new HashMap<>();
         this.hostNameBindingsToCreate = new HashMap<>();
-        this.domainInfos = new LinkedHashMap<>();
         if (inner().enabledHostNames() != null) {
             this.enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
         }
@@ -310,38 +303,27 @@ class WebAppImpl
 //        return this;
 //    }
 
-    private String normalizeHostNameBindingName(String hostname) {
-        String domainName = new ArrayList<>(domainInfos.entrySet()).get(domainInfos.size() - 1).getValue().name();
-        if (!hostname.endsWith(domainName)) {
-            hostname = hostname + "." + domainName;
-        }
-        if (hostname.startsWith("@")) {
-            hostname = hostname.replace("@.", "");
-        }
-        return hostname;
-    }
+//    private String normalizeHostNameBindingName(String hostname, String domainName) {
+//        if (!hostname.endsWith(domainName)) {
+//            hostname = hostname + "." + domainName;
+//        }
+//        if (hostname.startsWith("@")) {
+//            hostname = hostname.replace("@.", "");
+//        }
+//        return hostname;
+//    }
 
     @Override
-    public HostNameBindingImpl defineManagedHostNameBinding(String hostname) {
-        hostname = normalizeHostNameBindingName(hostname);
-        HostNameBindingInner inner = new HostNameBindingInner();
-        inner.withSiteName(name());
-        inner.withLocation(regionName());
-        inner.withAzureResourceType(AzureResourceType.WEBSITE);
-        inner.withAzureResourceName(name());
-        inner.withHostNameType(HostNameType.MANAGED);
-        return new HostNameBindingImpl(hostname, inner, this, client);
-    }
-
-    @Override
-    public WebAppImpl withManagedHostNameBindings(String... hostnames) {
+    public WebAppImpl withManagedHostNameBindings(Domain domain, String... hostnames) {
         for(String hostname : hostnames) {
-            if (hostname.equals("@")) {
-                defineManagedHostNameBinding(hostname)
+            if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
+                defineNewHostNameBinding(hostname)
+                        .withAzureManagedDomain(domain)
                         .withDnsRecordType(CustomHostNameDnsRecordType.A)
                         .attach();
             } else {
-                defineManagedHostNameBinding(hostname)
+                defineNewHostNameBinding(hostname)
+                        .withAzureManagedDomain(domain)
                         .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                         .attach();
             }
@@ -350,8 +332,7 @@ class WebAppImpl
     }
 
     @Override
-    public HostNameBindingImpl defineExternalHostNameBinding(String hostname) {
-        hostname = normalizeHostNameBindingName(hostname);
+    public HostNameBindingImpl defineNewHostNameBinding(String hostname) {
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());
@@ -362,9 +343,10 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withVerifiedHostNameBinding(String... hostnames) {
+    public WebAppImpl withVerifiedHostNameBinding(String domain, String... hostnames) {
         for(String hostname : hostnames) {
-            defineManagedHostNameBinding(hostname)
+            defineNewHostNameBinding(hostname)
+                    .withThirdPartyDomain(domain)
                     .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                     .attach();
         }
@@ -384,62 +366,34 @@ class WebAppImpl
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         // Construct web app observable
-        Observable<WebApp> webAppObservable = client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
-        List<Observable<Domain>> domainObservables = new ArrayList<>();
-        // Construct domain observables
-        for (final Map.Entry<String, DomainInfo> info : domainInfos.entrySet()) {
-            if (info.getValue().isNewDomain()) {
-                domainObservables.add(info.getValue().domainCreatable.createAsync().map(new Func1<Domain, Domain>() {
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
-                    public Domain call(Domain domain) {
-                        info.getValue().domainId = domain.id();
-                        return domain;
-                    }
-                }));
-            }
-        }
-        // Create domains in parallel
-        return Observable.zip(domainObservables, new FuncN<WebApp>() {
-                    @Override
-                    public WebApp call(Object... args) {
-                        return null;
-                    }
-                })
-                // Concat with web app observable
-                .concatWith(webAppObservable)
-                // Just need the web app observable
-                .last()
-                // Host name bindings
-                .flatMap(new Func1<WebApp, Observable<WebApp>>() {
-                    @Override
-                    public Observable<WebApp> call(final WebApp webApp) {
+                    public Observable<SiteInner> call(final SiteInner site) {
                         List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
                         for (HostNameBindingImpl binding: hostNameBindingsToCreate.values()) {
-                            DomainInfo domain = domainInfos.get(binding.name());
-                            if (domain == null) {
-                                Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
-                                Matcher matcher = pattern.matcher(binding.name());
-                                matcher.matches();
-                                domain = domainInfos.get(matcher.group(2));
-                            }
-                            if (domain.isAzureDomain()) {
-                                binding.inner().withDomainId(domain.domainId);
-                            }
                             bindingObservables.add(binding.createAsync());
                         }
+                        hostNameBindingsToCreate.clear();
                         if (bindingObservables.isEmpty()) {
-                            return Observable.just(webApp);
+                            return Observable.just(site);
                         } else {
-                            return Observable.zip(bindingObservables, new FuncN<WebApp>() {
+                            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
                                 @Override
-                                public WebApp call(Object... args) {
-                                    return webApp;
+                                public SiteInner call(Object... args) {
+                                    return site;
                                 }
                             });
                         }
                     }
-                });
+                })
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(SiteInner site) {
+                        return client.getAsync(resourceGroupName(), site.name());
+                    }
+                })
+                .map(innerToFluentMap(this));
     }
 
     @Override
@@ -466,70 +420,52 @@ class WebAppImpl
         return this;
     }
 
-    @Override
-    public WebAppImpl withExistingAzureManagedDomain(Domain domain) {
-        DomainInfo.existingDomain(domain.id()).addToMap(domainInfos);
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withThirdPartyDomain(String domain) {
-        DomainInfo.thirdPartyDomain(domain).addToMap(domainInfos);;
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withNewAzureManagedDomain(Creatable<Domain> domainCreatable) {
-        DomainInfo.newDomain(domainCreatable).addToMap(domainInfos);;
-        return this;
-    }
-
-    private static class DomainInfo {
-        private String externalDomain;
-        private String domainId;
-        private Creatable<Domain> domainCreatable;
-
-        private DomainInfo() {
-        }
-
-        static DomainInfo existingDomain(String domainId) {
-            DomainInfo info = new DomainInfo();
-            info.domainId = domainId;
-            return info;
-        }
-
-        static DomainInfo newDomain(Creatable<Domain> domainCreatable) {
-            DomainInfo info = new DomainInfo();
-            info.domainCreatable = domainCreatable;
-            return info;
-        }
-
-        static DomainInfo thirdPartyDomain(String externalDomain) {
-            DomainInfo info = new DomainInfo();
-            info.externalDomain = externalDomain;
-            return info;
-        }
-
-        boolean isNewDomain() {
-            return domainCreatable != null;
-        }
-
-        boolean isAzureDomain() {
-            return externalDomain == null;
-        }
-
-        String name() {
-            if (isNewDomain()) {
-                return domainCreatable.name();
-            } else if (isAzureDomain()) {
-                return ResourceUtils.nameFromResourceId(domainId);
-            } else {
-                return externalDomain;
-            }
-        }
-
-        void addToMap(final Map<String, DomainInfo> domainMap) {
-            domainMap.put(name(), this);
-        }
-    }
+//    private static class DomainInfo {
+//        private String externalDomain;
+//        private String domainId;
+//        private Creatable<Domain> domainCreatable;
+//
+//        private DomainInfo() {
+//        }
+//
+//        static DomainInfo existingDomain(String domainId) {
+//            DomainInfo info = new DomainInfo();
+//            info.domainId = domainId;
+//            return info;
+//        }
+//
+//        static DomainInfo newDomain(Creatable<Domain> domainCreatable) {
+//            DomainInfo info = new DomainInfo();
+//            info.domainCreatable = domainCreatable;
+//            return info;
+//        }
+//
+//        static DomainInfo thirdPartyDomain(String externalDomain) {
+//            DomainInfo info = new DomainInfo();
+//            info.externalDomain = externalDomain;
+//            return info;
+//        }
+//
+//        boolean isNewDomain() {
+//            return domainCreatable != null;
+//        }
+//
+//        boolean isAzureDomain() {
+//            return externalDomain == null;
+//        }
+//
+//        String name() {
+//            if (isNewDomain()) {
+//                return domainCreatable.name();
+//            } else if (isAzureDomain()) {
+//                return ResourceUtils.nameFromResourceId(domainId);
+//            } else {
+//                return externalDomain;
+//            }
+//        }
+//
+//        void addToMap(final Map<String, DomainInfo> domainMap) {
+//            domainMap.put(name(), this);
+//        }
+//    }
 }

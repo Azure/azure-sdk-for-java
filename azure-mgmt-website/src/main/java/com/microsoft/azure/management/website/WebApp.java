@@ -187,9 +187,7 @@ public interface WebApp extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithAppServicePlan,
-            DefinitionStages.WithDomain,
-            DefinitionStages.WithManagedHostNameBinding,
-            DefinitionStages.WithExternalHostNameBinding,
+            DefinitionStages.WithHostNameBinding,
             DefinitionStages.WithCreate {
     }
 
@@ -214,27 +212,14 @@ public interface WebApp extends
          */
         interface WithAppServicePlan {
             WithCreate withNewFreeAppServicePlan();
-            WithDomain withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
-            WithDomain withExistingAppServicePlan(String appServicePlanName);
+            WithHostNameBinding withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
+            WithHostNameBinding withExistingAppServicePlan(String appServicePlanName);
         }
 
-        /**
-         * A web app definition allowing domain to be set.
-         */
-        interface WithDomain extends WithCreate {
-            WithManagedHostNameBinding withExistingAzureManagedDomain(Domain domain);
-            WithExternalHostNameBinding withThirdPartyDomain(String domain);
-            WithManagedHostNameBinding withNewAzureManagedDomain(Creatable<Domain> domainCreatable);
-        }
-
-        interface WithManagedHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithDomain> defineManagedHostNameBinding(String hostname);
-            WithDomain withManagedHostNameBindings(String... hostnames);
-        }
-
-        interface WithExternalHostNameBinding {
-            HostNameBinding.DefinitionStages.Blank<WithDomain> defineExternalHostNameBinding(String hostname);
-            WithDomain withVerifiedHostNameBinding(String... hostnames);
+        interface WithHostNameBinding extends WithCreate {
+            HostNameBinding.DefinitionStages.Blank<WithHostNameBinding> defineNewHostNameBinding(String hostname);
+            WithHostNameBinding withManagedHostNameBindings(Domain domain, String... hostnames);
+            WithHostNameBinding withVerifiedHostNameBinding(String domain, String... hostnames);
         }
 
         interface WithSiteEnabled {
@@ -281,7 +266,9 @@ public interface WebApp extends
         }
 
         interface WithHostNameBinding {
-            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineManagedHostNameBinding(String name);
+            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineNewHostNameBinding(String hostname);
+            Update withManagedHostNameBindings(Domain domain, String... hostnames);
+            Update withVerifiedHostNameBinding(String domain, String... hostnames);
         }
     }
 

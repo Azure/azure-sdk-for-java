@@ -35,7 +35,20 @@ public class WebAppsTests extends AppServiceTestBase {
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
                 .withExistingAppServicePlan("java-plan-323")
+                .defineNewHostNameBinding("shortname")
+                    .withAzureManagedDomain(domain)
+                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                    .attach()
+
+//                // Bindings
+//                .defineManagedHostNameBinding("@")
+//                    .withExistingDomain("")
+//                    .withRecordType(CustomHostNameDnsRecordType.A)
+//
+//                .withManagedHostNameBindings(domainA , "dd", "ddd")
+//                .with
                 .create();
+
         Assert.assertNotNull(webApp);
     }
 }

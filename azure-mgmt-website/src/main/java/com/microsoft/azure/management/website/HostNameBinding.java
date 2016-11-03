@@ -57,6 +57,7 @@ public interface HostNameBinding
 
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithDomain<ParentT>,
             DefinitionStages.WithHostNameDnsRecordType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
@@ -70,7 +71,12 @@ public interface HostNameBinding
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithHostNameDnsRecordType<ParentT> {
+        interface Blank<ParentT> extends WithDomain<ParentT> {
+        }
+
+        interface WithDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
         }
 
         interface WithHostNameDnsRecordType<ParentT> {
@@ -84,6 +90,7 @@ public interface HostNameBinding
 
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithDomain<ParentT>,
             UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
@@ -97,7 +104,12 @@ public interface HostNameBinding
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithHostNameDnsRecordType<ParentT> {
+        interface Blank<ParentT> extends WithDomain<ParentT> {
+        }
+
+        interface WithDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
         }
 
         interface WithHostNameDnsRecordType<ParentT> {

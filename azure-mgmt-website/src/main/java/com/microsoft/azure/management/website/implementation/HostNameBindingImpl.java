@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
+import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameType;
 import com.microsoft.azure.management.website.WebApp;
@@ -35,12 +36,15 @@ class HostNameBindingImpl
         implements
         Creatable<HostNameBinding>,
         HostNameBinding,
-        HostNameBinding.Definition<WebApp.DefinitionStages.WithDomain>,
+        HostNameBinding.Definition<WebApp.DefinitionStages.WithHostNameBinding>,
         HostNameBinding.UpdateDefinition<WebApp.Update> {
     private WebAppsInner client;
+    private String fqdn;
+
     HostNameBindingImpl(String name, HostNameBindingInner innerObject, WebAppImpl parent, WebAppsInner client) {
         super(name, parent, innerObject);
         this.client = client;
+        this.fqdn = name;
     }
 
     @Override
@@ -112,7 +116,7 @@ class HostNameBindingImpl
     @Override
     public HostNameBindingImpl withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
         Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
-        Matcher matcher = pattern.matcher(name());
+        Matcher matcher = pattern.matcher(fqdn);
         if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
             throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
         }
@@ -145,7 +149,7 @@ class HostNameBindingImpl
     @Override
     public Observable<HostNameBinding> createAsync() {
         final HostNameBinding self = this;
-        return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name(), inner())
+        return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), fqdn, inner())
                 .map(new Func1<HostNameBindingInner, HostNameBinding>() {
                     @Override
                     public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
@@ -163,5 +167,30 @@ class HostNameBindingImpl
     @Override
     public Observable<Void> deleteAsync() {
         return null;
+    }
+
+    private String normalizeHostNameBindingName(String hostname, String domainName) {
+        if (!hostname.endsWith(domainName)) {
+            hostname = hostname + "." + domainName;
+        }
+        if (hostname.startsWith("@")) {
+            hostname = hostname.replace("@.", "");
+        }
+        return hostname;
+    }
+
+    @Override
+    public HostNameBindingImpl withAzureManagedDomain(Domain domain) {
+        inner().withDomainId(domain.id());
+        inner().withHostNameType(HostNameType.MANAGED);
+        this.fqdn = normalizeHostNameBindingName(name(), domain.name());
+        return this;
+    }
+
+    @Override
+    public HostNameBindingImpl withThirdPartyDomain(String domain) {
+        inner().withHostNameType(HostNameType.VERIFIED);
+        this.fqdn = normalizeHostNameBindingName(name(), domain);
+        return this;
     }
 }
