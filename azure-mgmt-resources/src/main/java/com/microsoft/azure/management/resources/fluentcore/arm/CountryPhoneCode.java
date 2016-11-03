@@ -194,7 +194,7 @@ public final class CountryPhoneCode {
     public static final CountryPhoneCode SAINT_HELENA_ASCENSION_AND_TRISTAN_DA_CUNHA = new CountryPhoneCode("+290");
     public static final CountryPhoneCode SAMOA = new CountryPhoneCode("+685");
     public static final CountryPhoneCode SAN_MARINO = new CountryPhoneCode("+378");
-    public static final CountryPhoneCode SÃO_TOMÉ_AND_PRÍNCIPE = new CountryPhoneCode("+239");
+    public static final CountryPhoneCode SAO_TOME_AND_PRINCIPE = new CountryPhoneCode("+239");
     public static final CountryPhoneCode SAUDI_ARABIA = new CountryPhoneCode("+966");
     public static final CountryPhoneCode SENEGAL = new CountryPhoneCode("+221");
     public static final CountryPhoneCode SERBIA = new CountryPhoneCode("+381");
