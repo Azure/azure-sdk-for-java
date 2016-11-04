@@ -35,6 +35,7 @@ class TxtRecordSetImpl
             for (TxtRecord recordToAdd : this.inner().txtRecords()) {
                 resource.txtRecords().add(recordToAdd);
             }
+            this.inner().txtRecords().clear();
         }
 
         if (recordSetRemoveInfo.txtRecords().size() > 0) {
@@ -48,6 +49,7 @@ class TxtRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.txtRecords().clear();
         }
         return resource;
     }

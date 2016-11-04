@@ -287,7 +287,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
                 .map(new Func1<RecordSetInner, DnsRecordSet>() {
                     @Override
                     public DnsRecordSet call(RecordSetInner inner) {
-                        self.setInner(inner);
+                        setInner(inner);
                         return self;
                     }
                 });

@@ -39,6 +39,7 @@ class AaaaRecordSetImpl
             for (AaaaRecord recordToAdd : this.inner().aaaaRecords()) {
                 resource.aaaaRecords().add(recordToAdd);
             }
+            this.inner().aaaaRecords().clear();
         }
 
         if (recordSetRemoveInfo.aaaaRecords().size() > 0) {
@@ -52,6 +53,7 @@ class AaaaRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.aaaaRecords().clear();
         }
         return resource;
     }

@@ -38,6 +38,7 @@ class PtrRecordSetImpl
             for (PtrRecord recordToAdd : this.inner().ptrRecords()) {
                 resource.ptrRecords().add(recordToAdd);
             }
+            this.inner().ptrRecords().clear();
         }
 
         if (recordSetRemoveInfo.ptrRecords().size() > 0) {
@@ -51,6 +52,7 @@ class PtrRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.ptrRecords().clear();
         }
         return resource;
     }

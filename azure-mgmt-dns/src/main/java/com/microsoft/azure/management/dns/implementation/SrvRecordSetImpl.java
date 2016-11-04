@@ -35,6 +35,7 @@ class SrvRecordSetImpl
             for (SrvRecord recordToAdd : this.inner().srvRecords()) {
                 resource.srvRecords().add(recordToAdd);
             }
+            this.inner().srvRecords().clear();
         }
 
         if (recordSetRemoveInfo.srvRecords().size() > 0) {
@@ -51,6 +52,7 @@ class SrvRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.srvRecords().clear();
         }
         return resource;
     }

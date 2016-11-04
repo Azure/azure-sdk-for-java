@@ -35,6 +35,7 @@ class MxRecordSetImpl
             for (MxRecord recordToAdd : this.inner().mxRecords()) {
                 resource.mxRecords().add(recordToAdd);
             }
+            this.inner().mxRecords().clear();
         }
 
         if (recordSetRemoveInfo.mxRecords().size() > 0) {
@@ -48,6 +49,7 @@ class MxRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.mxRecords().clear();
         }
         return resource;
     }

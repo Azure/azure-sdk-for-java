@@ -38,6 +38,7 @@ class NsRecordSetImpl
             for (NsRecord recordToAdd : this.inner().nsRecords()) {
                 resource.nsRecords().add(recordToAdd);
             }
+            this.inner().nsRecords().clear();
         }
 
         if (recordSetRemoveInfo.nsRecords().size() > 0) {
@@ -51,6 +52,7 @@ class NsRecordSetImpl
                     }
                 }
             }
+            recordSetRemoveInfo.nsRecords().clear();
         }
         return resource;
     }
