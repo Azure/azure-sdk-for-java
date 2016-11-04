@@ -191,6 +191,11 @@ public class DnsZoneImpl
     }
 
     @Override
+    public SoaRecordSetImpl updateSoaRecord() {
+        return null;
+    }
+
+    @Override
     public DnsZoneImpl withoutARecordSet(String name) {
         return null;
     }

@@ -310,6 +310,13 @@ public interface DnsZone extends
             DnsRecordSet.UpdateTxtRecordSet updateTxtRecordSet(String name);
 
             /**
+             * Begins the description of an update of the Soa record in this Dns zone.
+             *
+             * @return the stage representing configuration for the Txt record set
+             */
+            DnsRecordSet.UpdateSoaRecord updateSoaRecord();
+
+            /**
              * Removes a A record set in the Dns zone.
              *
              * @param name name of the A record set

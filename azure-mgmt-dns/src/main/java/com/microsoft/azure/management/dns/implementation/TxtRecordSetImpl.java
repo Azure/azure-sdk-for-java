@@ -26,7 +26,7 @@ class TxtRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().txtRecords() != null && this.inner().txtRecords().size() > 0) {
             if (resource.txtRecords() == null) {
                 resource.withTxtRecords(new ArrayList<TxtRecord>());
@@ -38,9 +38,9 @@ class TxtRecordSetImpl
             this.inner().txtRecords().clear();
         }
 
-        if (recordSetRemoveInfo.txtRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.txtRecords().size() > 0) {
             if (resource.txtRecords() != null) {
-                for (TxtRecord recordToRemove : recordSetRemoveInfo.txtRecords()) {
+                for (TxtRecord recordToRemove : this.recordSetRemoveInfo.txtRecords()) {
                     for (TxtRecord record : resource.txtRecords()) {
                         if (record.value().size() != 0 && record.value().get(0).equalsIgnoreCase(recordToRemove.value().get(0))) {
                             resource.txtRecords().remove(record);
@@ -49,7 +49,7 @@ class TxtRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.txtRecords().clear();
+            this.recordSetRemoveInfo.txtRecords().clear();
         }
         return resource;
     }

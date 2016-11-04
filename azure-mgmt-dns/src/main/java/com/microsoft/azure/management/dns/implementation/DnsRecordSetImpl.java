@@ -33,7 +33,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
         DnsRecordSet.UpdateDefinition<DnsZone.Update>,
         DnsRecordSet.UpdateCombined {
     protected final RecordSetsInner client;
-    private RecordSetInner recordSetRemoveInfo;
+    protected final RecordSetInner recordSetRemoveInfo;
 
     protected DnsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(innerModel.name(), parent, innerModel);
@@ -209,6 +209,42 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
+    public DnsRecordSetImpl withEmailServer(String emailServerHostName) {
+        this.inner().soaRecord().withEmail(emailServerHostName);
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withRefreshTimeInSeconds(long refreshTimeInSeconds) {
+        this.inner().soaRecord().withRefreshTime(refreshTimeInSeconds);
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withRetryTimeInSeconds(long retryTimeInSeconds) {
+        this.inner().soaRecord().withRetryTime(retryTimeInSeconds);
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withExpireTimeInSeconds(long expireTimeInSeconds) {
+        this.inner().soaRecord().withExpireTime(expireTimeInSeconds);
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive) {
+        this.inner().soaRecord().withMinimumTtl(negativeCachingTimeToLive);
+        return this;
+    }
+
+    @Override
+    public DnsRecordSetImpl withSerialNumber(long serialNumber) {
+        this.inner().soaRecord().withSerialNumber(serialNumber);
+        return this;
+    }
+
+    @Override
     public DnsRecordSetImpl withTimeToLive(long ttlInSeconds) {
         this.inner().withTTL(ttlInSeconds);
         return this;
@@ -246,7 +282,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
                 this.parent().name(), this.name(), this.recordType())
                 .map(new Func1<RecordSetInner, RecordSetInner>() {
                     public RecordSetInner call(RecordSetInner resource) {
-                        return merge(resource, recordSetRemoveInfo);
+                        return prepare(resource);
                     }
                 }).flatMap(new Func1<RecordSetInner, Observable<DnsRecordSet>>() {
                     @Override
@@ -293,5 +329,26 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
                 });
     }
 
-    protected abstract RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo);
+    private RecordSetInner prepare(RecordSetInner resource) {
+        if (this.recordSetRemoveInfo.metadata().size() > 0) {
+            if (resource.metadata() != null) {
+                for(String key : this.recordSetRemoveInfo.metadata().keySet()) {
+                    resource.metadata().remove(key);
+                }
+            }
+            this.recordSetRemoveInfo.metadata().clear();
+        }
+        if (this.inner().metadata().size() > 0) {
+            if (resource.metadata() == null) {
+                resource.withMetadata(new LinkedHashMap<String, String>());
+            }
+            for(Map.Entry<String, String> keyVal : this.inner().metadata().entrySet()) {
+                resource.metadata().put(keyVal.getKey(), keyVal.getValue());
+            }
+            this.inner().metadata().clear();
+        }
+        return prepareForUpdate(resource);
+    }
+
+    protected abstract RecordSetInner prepareForUpdate(RecordSetInner resource);
 }

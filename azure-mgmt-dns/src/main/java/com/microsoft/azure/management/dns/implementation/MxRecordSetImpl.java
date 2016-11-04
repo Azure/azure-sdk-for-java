@@ -26,7 +26,7 @@ class MxRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().mxRecords() != null && this.inner().mxRecords().size() > 0) {
             if (resource.mxRecords() == null) {
                 resource.withMxRecords(new ArrayList<MxRecord>());
@@ -38,9 +38,9 @@ class MxRecordSetImpl
             this.inner().mxRecords().clear();
         }
 
-        if (recordSetRemoveInfo.mxRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.mxRecords().size() > 0) {
             if (resource.mxRecords() != null) {
-                for (MxRecord recordToRemove : recordSetRemoveInfo.mxRecords()) {
+                for (MxRecord recordToRemove : this.recordSetRemoveInfo.mxRecords()) {
                     for (MxRecord record : resource.mxRecords()) {
                         if (record.exchange().equalsIgnoreCase(recordToRemove.exchange()) && record.preference() == recordToRemove.preference()) {
                             resource.mxRecords().remove(record);
@@ -49,7 +49,7 @@ class MxRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.mxRecords().clear();
+            this.recordSetRemoveInfo.mxRecords().clear();
         }
         return resource;
     }

@@ -29,7 +29,7 @@ class NsRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().nsRecords() != null && this.inner().nsRecords().size() > 0) {
             if (resource.nsRecords() == null) {
                 resource.withNsRecords(new ArrayList<NsRecord>());
@@ -41,9 +41,9 @@ class NsRecordSetImpl
             this.inner().nsRecords().clear();
         }
 
-        if (recordSetRemoveInfo.nsRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.nsRecords().size() > 0) {
             if (resource.nsRecords() != null) {
-                for (NsRecord recordToRemove : recordSetRemoveInfo.nsRecords()) {
+                for (NsRecord recordToRemove : this.recordSetRemoveInfo.nsRecords()) {
                     for (NsRecord record : resource.nsRecords()) {
                         if (record.nsdname().equalsIgnoreCase(recordToRemove.nsdname())) {
                             resource.nsRecords().remove(record);
@@ -52,7 +52,7 @@ class NsRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.nsRecords().clear();
+            this.recordSetRemoveInfo.nsRecords().clear();
         }
         return resource;
     }

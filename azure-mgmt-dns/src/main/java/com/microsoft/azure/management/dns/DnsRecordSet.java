@@ -675,6 +675,7 @@ public interface DnsRecordSet extends
             UpdateNsRecordSet,
             UpdateSrvRecordSet,
             UpdateTxtRecordSet,
+            UpdateSoaRecord,
             Update {
     }
 
@@ -731,6 +732,14 @@ public interface DnsRecordSet extends
      */
     interface UpdateTxtRecordSet extends
             UpdateStages.WithTxtRecordTextValue,
+            Update {
+    }
+
+    /**
+     * The entirety of a Soa record update as a part of parent Dns zone update.
+     */
+    interface UpdateSoaRecord extends
+            UpdateStages.WithSoaRecordAttributes,
             Update {
     }
 
@@ -900,6 +909,62 @@ public interface DnsRecordSet extends
              * @return the next stage of the record set update
              */
             UpdateTxtRecordSet withoutText(String text);
+        }
+
+        /**
+         * The stage of the Soa record definition allowing to update its attributes.
+         */
+        interface WithSoaRecordAttributes {
+            /**
+             * Specifies the email server associated with the Soa record.
+             *
+             * @param emailServerHostName the email server
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withEmailServer(String emailServerHostName);
+
+            /**
+             * Specifies time in seconds that a secondary name server should wait before trying to contact the
+             * the primary name server for a zone file update.
+             *
+             * @param refreshTimeInSeconds the refresh time in seconds
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withRefreshTimeInSeconds(long refreshTimeInSeconds);
+
+            /**
+             * Specifies the time in seconds that a secondary name server should wait before trying to contact
+             * the primary name server again after a failed attempt to check for a zone file update.
+             *
+             * @param refreshTimeInSeconds the retry time in seconds
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withRetryTimeInSeconds(long refreshTimeInSeconds);
+
+            /**
+             * Specifies the time in seconds that a secondary name server will treat its cached zone file as valid
+             * when the primary name server cannot be contacted.
+             *
+             * @param expireTimeInSeconds the expire time in seconds
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withExpireTimeInSeconds(long expireTimeInSeconds);
+
+            /**
+             * Specifies the time in seconds that any name server or resolver should cache a negative response.
+             *
+             * @param negativeCachingTimeToLive the Ttl for cached negative response
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withNegativeResponseCachingTimeToLiveInSeconds(long negativeCachingTimeToLive);
+
+            /**
+             * Specifies the serial number for the zone file.
+             *
+             * @param serialNumber the serial number
+             * @return the next stage of the record set update
+             */
+            UpdateSoaRecord withSerialNumber(long serialNumber);
         }
 
         /**

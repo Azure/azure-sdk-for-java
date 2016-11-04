@@ -21,7 +21,7 @@ class CnameRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         return resource;
     }
 }

@@ -29,7 +29,7 @@ class PtrRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().ptrRecords() != null && this.inner().ptrRecords().size() > 0) {
             if (resource.ptrRecords() == null) {
                 resource.withPtrRecords(new ArrayList<PtrRecord>());
@@ -41,9 +41,9 @@ class PtrRecordSetImpl
             this.inner().ptrRecords().clear();
         }
 
-        if (recordSetRemoveInfo.ptrRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.ptrRecords().size() > 0) {
             if (resource.ptrRecords() != null) {
-                for (PtrRecord recordToRemove : recordSetRemoveInfo.ptrRecords()) {
+                for (PtrRecord recordToRemove : this.recordSetRemoveInfo.ptrRecords()) {
                     for (PtrRecord record : resource.ptrRecords()) {
                         if (record.ptrdname().equalsIgnoreCase(recordToRemove.ptrdname())) {
                             resource.ptrRecords().remove(record);
@@ -52,7 +52,7 @@ class PtrRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.ptrRecords().clear();
+            this.recordSetRemoveInfo.ptrRecords().clear();
         }
         return resource;
     }

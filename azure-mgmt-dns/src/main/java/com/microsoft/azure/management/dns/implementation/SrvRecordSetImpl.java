@@ -26,7 +26,7 @@ class SrvRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().srvRecords() != null && this.inner().srvRecords().size() > 0) {
             if (resource.srvRecords() == null) {
                 resource.withSrvRecords(new ArrayList<SrvRecord>());
@@ -38,9 +38,9 @@ class SrvRecordSetImpl
             this.inner().srvRecords().clear();
         }
 
-        if (recordSetRemoveInfo.srvRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.srvRecords().size() > 0) {
             if (resource.srvRecords() != null) {
-                for (SrvRecord recordToRemove : recordSetRemoveInfo.srvRecords()) {
+                for (SrvRecord recordToRemove : this.recordSetRemoveInfo.srvRecords()) {
                     for (SrvRecord record : resource.srvRecords()) {
                         if (record.target().equalsIgnoreCase(recordToRemove.target())
                                 && record.port() == recordToRemove.port()
@@ -52,7 +52,7 @@ class SrvRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.srvRecords().clear();
+            this.recordSetRemoveInfo.srvRecords().clear();
         }
         return resource;
     }

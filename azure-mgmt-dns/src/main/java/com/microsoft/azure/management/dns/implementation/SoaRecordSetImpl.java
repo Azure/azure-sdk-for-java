@@ -19,7 +19,7 @@ class SoaRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (resource.soaRecord() == null) {
             resource.withSoaRecord(new SoaRecord());
         }

@@ -30,7 +30,7 @@ class AaaaRecordSetImpl
     }
 
     @Override
-    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+    protected RecordSetInner prepareForUpdate(RecordSetInner resource) {
         if (this.inner().aaaaRecords() != null && this.inner().aaaaRecords().size() > 0) {
             if (resource.aaaaRecords() == null) {
                 resource.withAaaaRecords(new ArrayList<AaaaRecord>());
@@ -42,9 +42,9 @@ class AaaaRecordSetImpl
             this.inner().aaaaRecords().clear();
         }
 
-        if (recordSetRemoveInfo.aaaaRecords().size() > 0) {
+        if (this.recordSetRemoveInfo.aaaaRecords().size() > 0) {
             if (resource.aaaaRecords() != null) {
-                for (AaaaRecord recordToRemove : recordSetRemoveInfo.aaaaRecords()) {
+                for (AaaaRecord recordToRemove : this.recordSetRemoveInfo.aaaaRecords()) {
                     for (AaaaRecord record : resource.aaaaRecords()) {
                         if (record.ipv6Address().equalsIgnoreCase(recordToRemove.ipv6Address())) {
                             resource.aaaaRecords().remove(record);
@@ -53,7 +53,7 @@ class AaaaRecordSetImpl
                     }
                 }
             }
-            recordSetRemoveInfo.aaaaRecords().clear();
+            this.recordSetRemoveInfo.aaaaRecords().clear();
         }
         return resource;
     }
