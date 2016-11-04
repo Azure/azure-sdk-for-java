@@ -20,70 +20,37 @@ public interface CdnEndpoint extends
     // Actions
     // TODO: DODO
 
-    /**************************************************************
-     * Fluent interfaces to provision a CDN.
-     **************************************************************/
-    /**
-     * The entirety of the CDN profile.
-     */
-    interface Definition<ParentT> extends
-            DefinitionStages.Blank.StandardEndpoint<ParentT>,
-            DefinitionStages.Blank.PremiumEndpoint<ParentT>,
-            DefinitionStages.WithStandardOrigin<ParentT>,
-            DefinitionStages.WithPremiumOrigin<ParentT>,
-            DefinitionStages.WithStandardAttach<ParentT>,
-            DefinitionStages.WithPremiumAttach<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
-    }
 
-    /**
-     * Grouping of CDN profile definition stages.
-     */
+    List<String> customDomains();
+
+    void purgeContent(List<String> contentPaths);
+    void loadContent(List<String> contentPaths);
+    CustomDomainValidationResult validateCustomDomain(String hostName);
+
     interface DefinitionStages {
-
         interface Blank {
-
-            interface StandardEndpoint<ParentT> extends WithStandardOrigin<ParentT>{
+            interface StandardEndpoint<ParentT> {
+                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
+                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String hostname);
             }
 
-            interface PremiumEndpoint<ParentT> extends WithPremiumOrigin<ParentT>{
+            interface PremiumEndpoint<ParentT> {
+                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
+                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String hostname);
             }
         }
 
-        /**
-         * A CDN profile definition allowing the sku to be set.
-         */
-        interface WithStandardOrigin<ParentT> {
-            /**
-             * Specifies the sku of the CDN profile.
-             *
-             * @return the next stage of CDN profile definition.
-             */
-            WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
-        }
-
-        /**
-         * A CDN profile definition allowing the sku to be set.
-         */
-        interface WithPremiumOrigin<ParentT> {
-            /**
-             * Specifies the sku of the CDN profile.
-             *
-             * @return the next stage of CDN profile definition.
-             */
-            WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
-        }
-
-        interface WithAttach<ParentT> extends Attachable.InDefinition<ParentT> {
-        }
-
-        interface WithStandardAttach<ParentT> extends WithAttach<ParentT> {
-            WithStandardAttach<ParentT> withOriginHttpAllowed(boolean httpAllowed);
-            WithStandardAttach<ParentT> withOriginHttpsAllowed(boolean httpsAllowed);
-            WithStandardAttach<ParentT> withOriginHttpPort(int httpPort);
-            WithStandardAttach<ParentT> withOriginHttpsPort(int httpsPort);
-            WithStandardAttach<ParentT> withOriginHostHeader(String hostHeader);
+        interface WithStandardAttach<ParentT>
+                extends
+                // Attachable.InDefinition<ParentT>
+                AttachableStandard<ParentT>
+        {
             WithStandardAttach<ParentT> withOriginPath(String originPath);
+            WithStandardAttach<ParentT> withHostHeader(String hostHeader);
+            WithStandardAttach<ParentT> withHttpAllowed(boolean httpAllowed);
+            WithStandardAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
+            WithStandardAttach<ParentT> withHttpPort(int httpPort);
+            WithStandardAttach<ParentT> withHttpsPort(int httpsPort);
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
@@ -93,62 +60,55 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
-        interface WithPremiumAttach<ParentT> extends WithAttach<ParentT> {
-            WithPremiumAttach<ParentT> withPremiumOriginHttpAllowed(boolean httpAllowed);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpsAllowed(boolean httpsAllowed);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpPort(int httpPort);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpsPort(int httpsPort);
-            WithPremiumAttach<ParentT> withPremiumOriginHostHeader(String hostHeader);
-            WithPremiumAttach<ParentT> withPremiumOriginPath(String originPath);
-            WithPremiumAttach<ParentT> withPremiumCustomDomain(String hostName);
+        interface WithPremiumAttach<ParentT>
+                extends
+                // Attachable.InDefinition<ParentT>
+                AttachablePremium<ParentT>
+        {
+            WithPremiumAttach<ParentT> withOriginPath(String originPath);
+            WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
+            WithPremiumAttach<ParentT> withHttpAllowed(boolean httpAllowed);
+            WithPremiumAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
+            WithPremiumAttach<ParentT> withHttpPort(int httpPort);
+            WithPremiumAttach<ParentT> withHttpsPort(int httpsPort);
+            WithPremiumAttach<ParentT> withCustomDomain(String hostName);
         }
-    }
 
-    interface UpdateDefinition<ParentT> extends
-            UpdateDefinitionStages.Blank,
-            UpdateDefinitionStages.WithStandardOrigin<ParentT>,
-            UpdateDefinitionStages.WithPremiumOrigin<ParentT>,
-            UpdateDefinitionStages.WithAttach<ParentT> {
+        interface AttachableStandard<ParentT> {
+            ParentT attach();
+        }
+
+        interface AttachablePremium<ParentT> {
+            ParentT attach();
+        }
     }
 
     interface UpdateDefinitionStages {
 
         interface Blank {
 
-            interface StandardEndpoint<ParentT> extends WithStandardOrigin<ParentT> {
+            interface StandardEndpoint<ParentT> {
+                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
+                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String hostname);
             }
 
-            interface PremiumEndpoint<ParentT> extends UpdateDefinitionStages.WithPremiumOrigin<ParentT> {
+            interface PremiumEndpoint<ParentT> {
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String hostname);
             }
         }
-        interface WithStandardOrigin<ParentT> {
-            /**
-             * Specifies the sku of the CDN profile.
-             *
-             * @return the next stage of CDN profile definition.
-             */
-            WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
-        }
 
-        /**
-         * A CDN profile definition allowing the sku to be set.
-         */
-        interface WithPremiumOrigin<ParentT> {
-            /**
-             * Specifies the sku of the CDN profile.
-             *
-             * @return the next stage of CDN profile definition.
-             */
-            WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
-        }
-
-        interface WithStandardAttach<ParentT> extends WithAttach<ParentT> {
-            WithStandardAttach<ParentT> withOriginHttpAllowed(boolean httpAllowed);
-            WithStandardAttach<ParentT> withOriginHttpsAllowed(boolean httpsAllowed);
-            WithStandardAttach<ParentT> withOriginHttpPort(int httpPort);
-            WithStandardAttach<ParentT> withOriginHttpsPort(int httpsPort);
-            WithStandardAttach<ParentT> withOriginHostHeader(String hostHeader);
+        interface WithStandardAttach<ParentT>
+                extends
+                /// Attachable.InUpdate<ParentT>
+                AttachableStandard<ParentT>
+        {
             WithStandardAttach<ParentT> withOriginPath(String originPath);
+            WithStandardAttach<ParentT> withHostHeader(String hostHeader);
+            WithStandardAttach<ParentT> withHttpAllowed(boolean httpAllowed);
+            WithStandardAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
+            WithStandardAttach<ParentT> withHttpPort(int httpPort);
+            WithStandardAttach<ParentT> withHttpsPort(int httpsPort);
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
@@ -158,28 +118,36 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
-        interface WithPremiumAttach<ParentT>  extends WithAttach<ParentT> {
-            WithPremiumAttach<ParentT> withPremiumOriginHttpAllowed(boolean httpAllowed);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpsAllowed(boolean httpsAllowed);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpPort(int httpPort);
-            WithPremiumAttach<ParentT> withPremiumOriginHttpsPort(int httpsPort);
-            WithPremiumAttach<ParentT> withPremiumOriginHostHeader(String hostHeader);
-            WithPremiumAttach<ParentT> withPremiumOriginPath(String originPath);
-            WithPremiumAttach<ParentT> withPremiumCustomDomain(String hostName);
+        interface WithPremiumAttach<ParentT>
+                extends
+                // Attachable.InUpdate<ParentT>
+                AttachablePremium<ParentT>
+        {
+            WithPremiumAttach<ParentT> withOriginPath(String originPath);
+            WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
+            WithPremiumAttach<ParentT> withHttpAllowed(boolean httpAllowed);
+            WithPremiumAttach<ParentT> withHttpsAllowed(boolean httpsAllowed);
+            WithPremiumAttach<ParentT> withHttpPort(int httpPort);
+            WithPremiumAttach<ParentT> withHttpsPort(int httpsPort);
+            WithPremiumAttach<ParentT> withCustomDomain(String hostName);
         }
 
-        interface WithAttach<ParentT> extends
-                Attachable.InUpdate<ParentT> {
+        interface AttachableStandard<ParentT> {
+            ParentT attach();
+        }
+
+        interface AttachablePremium<ParentT> {
+            ParentT attach();
         }
     }
 
     interface UpdateStandardEndpoint extends Update {
-        UpdateStandardEndpoint withOriginHttpAllowed(boolean httpAllowed);
-        UpdateStandardEndpoint withOriginHttpsAllowed(boolean httpsAllowed);
-        UpdateStandardEndpoint withOriginHttpPort(int httpPort);
-        UpdateStandardEndpoint withOriginHttpsPort(int httpsPort);
-        UpdateStandardEndpoint withOriginHostHeader(String hostHeader);
         UpdateStandardEndpoint withOriginPath(String originPath);
+        UpdateStandardEndpoint withHttpAllowed(boolean httpAllowed);
+        UpdateStandardEndpoint withHttpsAllowed(boolean httpsAllowed);
+        UpdateStandardEndpoint withHttpPort(int httpPort);
+        UpdateStandardEndpoint withHttpsPort(int httpsPort);
+        UpdateStandardEndpoint withHostHeader(String hostHeader);
         UpdateStandardEndpoint withContentTypesToCompress(List<String> contentTypesToCompress);
         UpdateStandardEndpoint withoutContentTypesToCompress();
         UpdateStandardEndpoint withContentTypeToCompress(String contentTypeToCompress);
@@ -195,20 +163,17 @@ public interface CdnEndpoint extends
     }
 
     interface UpdatePremiumEndpoint extends Update {
-        UpdatePremiumEndpoint withPremiumOriginHttpAllowed(boolean httpAllowed);
-        UpdatePremiumEndpoint withPremiumOriginHttpsAllowed(boolean httpsAllowed);
-        UpdatePremiumEndpoint withPremiumOriginHttpPort(int httpPort);
-        UpdatePremiumEndpoint withPremiumOriginHttpsPort(int httpsPort);
-        UpdatePremiumEndpoint withPremiumOriginHostHeader(String hostHeader);
-        UpdatePremiumEndpoint withPremiumOriginPath(String originPath);
-        UpdatePremiumEndpoint withPremiumCustomDomain(String hostName);
+        UpdatePremiumEndpoint withOriginPath(String originPath);
+        UpdatePremiumEndpoint withHostHeader(String hostHeader);
+        UpdatePremiumEndpoint withHttpAllowed(boolean httpAllowed);
+        UpdatePremiumEndpoint withHttpsAllowed(boolean httpsAllowed);
+        UpdatePremiumEndpoint withHttpPort(int httpPort);
+        UpdatePremiumEndpoint withHttpsPort(int httpsPort);
+        UpdatePremiumEndpoint withCustomDomain(String hostName);
+        UpdatePremiumEndpoint withoutCustomDomain(String hostName);
     }
 
     interface Update extends
             Settable<CdnProfile.Update> {
-    }
-
-    interface UpdateStages {
-
     }
 }

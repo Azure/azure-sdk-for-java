@@ -34,6 +34,14 @@ public class CustomDomainInner extends Resource {
     private CustomDomainResourceState resourceState;
 
     /**
+     * Special validation or data may be required when delivering CDN to some
+     * regions due to local compliance reasons. (e.g. ICP license number of a
+     * custom domain is required to deliver content in China.).
+     */
+    @JsonProperty(value = "properties.validationData")
+    private String validationData;
+
+    /**
      * Provisioning status of the custom domain.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -66,6 +74,26 @@ public class CustomDomainInner extends Resource {
      */
     public CustomDomainResourceState resourceState() {
         return this.resourceState;
+    }
+
+    /**
+     * Get the validationData value.
+     *
+     * @return the validationData value
+     */
+    public String validationData() {
+        return this.validationData;
+    }
+
+    /**
+     * Set the validationData value.
+     *
+     * @param validationData the validationData value to set
+     * @return the CustomDomainInner object itself.
+     */
+    public CustomDomainInner withValidationData(String validationData) {
+        this.validationData = validationData;
+        return this;
     }
 
     /**

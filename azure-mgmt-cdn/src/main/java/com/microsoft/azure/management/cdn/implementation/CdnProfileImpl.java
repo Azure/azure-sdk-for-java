@@ -9,9 +9,9 @@ package com.microsoft.azure.management.cdn.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.management.cdn.Sku;
-import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Action1;
@@ -61,8 +61,10 @@ class CdnProfileImpl
     }
 
     @Override
-    public String generateSsoUri(String resourceGroupName, String profileName) {
-        SsoUriInner ssoUri = this.innerCollection.generateSsoUri(resourceGroupName, profileName);
+    public String generateSsoUri() {
+        SsoUriInner ssoUri = this.innerCollection.generateSsoUri(
+                this.resourceGroupName(),
+                this.name());
         if(ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
@@ -70,13 +72,38 @@ class CdnProfileImpl
     }
 
     @Override
-    public String regionName() {
-        return this.inner().location();
+    public CdnEndpoint endpointStart(String endpointName) {
+        return null;
     }
 
     @Override
-    public String generateSsoUri() {
-        return generateSsoUri(resourceGroupName(), name());
+    public CdnEndpoint endpointStop(String endpointName) {
+        return null;
+    }
+
+    @Override
+    public void endpointPurgeContent(String endpointName, List<String> contentPaths) {
+
+    }
+
+    @Override
+    public void endpointLoadContent(String endpointName, List<String> contentPaths) {
+
+    }
+
+    @Override
+    public CustomDomainValidationResult endpointValidateCustomDomain(String endpointName, String hostName) {
+        return null;
+    }
+
+    @Override
+    public boolean isPremiumSku() {
+        return false;
+    }
+
+    @Override
+    public String regionName() {
+        return this.inner().location();
     }
 
     @Override
@@ -94,12 +121,6 @@ class CdnProfileImpl
         ProfileInner cdnProfileInner =
                 this.innerCollection.get(this.resourceGroupName(), this.name());
         this.setInner(cdnProfileInner);
-        return this;
-    }
-
-    @Override
-    public CdnProfileImpl withSku(SkuName skuName) {
-        this.inner().withSku(new Sku().withName(skuName));
         return this;
     }
 
@@ -145,12 +166,63 @@ class CdnProfileImpl
     }
 
     @Override
+    public CdnProfileImpl withStandardAkamaiSku() {
+        return this;
+    }
+
+    @Override
+    public CdnProfileImpl withStandardVerizonSku() {
+        return this;
+    }
+
+    @Override
+    public CdnProfileImpl withPremiumVerizonSku() {
+        return this;
+    }
+
+    @Override
+    public CdnProfileImpl withNewEndpoint(String endpointOriginHostname) {
+        return this;
+    }
+
+    @Override
+    public CdnProfileImpl withNewPremiumEndpoint(String endpointOriginHostname) {
+        return this;
+    }
+
+    @Override
+    public CdnEndpointImpl defineNewEndpoint() {
+        return null;
+    }
+
+    @Override
     public CdnEndpointImpl defineNewEndpoint(String name) {
         return null;
     }
 
-    CdnProfileImpl withEndpoint(CdnEndpointImpl endpoint) {
-        //this.endpoints.addEndpoint(endpoint);
+
+    @Override
+    public CdnEndpointImpl defineNewPremiumEndpoint() {
+        return null;
+    }
+
+    @Override
+    public CdnEndpointImpl defineNewPremiumEndpoint(String name) {
+        return null;
+    }
+
+    @Override
+    public CdnEndpointImpl updateEndpoint(String name) {
+        return null;
+    }
+
+    @Override
+    public CdnEndpointImpl updatePremiumEndpoint(String name) {
+        return null;
+    }
+
+    @Override
+    public Update withoutEndpoint(String name) {
         return this;
     }
 }

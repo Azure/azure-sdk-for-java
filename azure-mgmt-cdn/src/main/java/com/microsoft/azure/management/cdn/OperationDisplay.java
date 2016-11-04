@@ -30,8 +30,8 @@ public class OperationDisplay {
 
     /**
      * Get the provider value.
-     *
-     * @return the provider value
+            *
+            * @return the provider value
      */
     public String provider() {
         return this.provider;

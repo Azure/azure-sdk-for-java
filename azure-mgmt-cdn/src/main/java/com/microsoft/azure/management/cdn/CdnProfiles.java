@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
+import java.util.List;
+
 /**
  * Entry point for CDN profile management API.
  */
@@ -29,4 +31,15 @@ public interface CdnProfiles extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<CdnProfile> {
+
+    /**
+     * Generates a dynamic SSO URI used to sign in to the CDN Supplemental Portal used for advanced management tasks.
+     *
+     * @return The URI used to login to third party web portal.
+     */
+    String generateSsoUri(String resourceGroupName, String profileName);
+
+    CheckNameAvailabilityResult checkEndpointNameAvailability(String name);
+
+    List<Operation> listOperations();
 }

@@ -76,6 +76,14 @@ public class EndpointUpdateParametersInner {
     private QueryStringCachingBehavior queryStringCachingBehavior;
 
     /**
+     * Customer can specify what scenario they want this CDN endpoint to
+     * optimize. (e.g. Download, Media services, and etc.) With this
+     * information we can apply scenario driven optimization.
+     */
+    @JsonProperty(value = "properties.optimizationType")
+    private String optimizationType;
+
+    /**
      * The list of geo filters for the CDN endpoint.
      */
     @JsonProperty(value = "properties.geoFilters")
@@ -238,6 +246,26 @@ public class EndpointUpdateParametersInner {
      */
     public EndpointUpdateParametersInner withQueryStringCachingBehavior(QueryStringCachingBehavior queryStringCachingBehavior) {
         this.queryStringCachingBehavior = queryStringCachingBehavior;
+        return this;
+    }
+
+    /**
+     * Get the optimizationType value.
+     *
+     * @return the optimizationType value
+     */
+    public String optimizationType() {
+        return this.optimizationType;
+    }
+
+    /**
+     * Set the optimizationType value.
+     *
+     * @param optimizationType the optimizationType value to set
+     * @return the EndpointUpdateParametersInner object itself.
+     */
+    public EndpointUpdateParametersInner withOptimizationType(String optimizationType) {
+        this.optimizationType = optimizationType;
         return this;
     }
 
