@@ -113,6 +113,123 @@ public class DnsZoneImpl
         return new SoaRecordSetImpl(this, inner, this.recordSetsClient);
     }
 
+    // Setters
+
+    @Override
+    public ARecordSetImpl defineARecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public AaaaRecordSetImpl defineAaaaRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withCnameRecordSet(String name, String alias) {
+        return null;
+    }
+
+    @Override
+    public MxRecordSetImpl defineMxRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public NsRecordSetImpl defineNsRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public PtrRecordSetImpl definePtrRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public SrvRecordSetImpl defineSrvRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public TxtRecordSetImpl defineTxtRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public ARecordSetImpl updateARecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public AaaaRecordSetImpl updateAaaaRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public MxRecordSetImpl updateMxRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public NsRecordSetImpl updateNsRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public PtrRecordSetImpl updatePtrRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public SrvRecordSetImpl updateSrvRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public TxtRecordSetImpl updateTxtRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutARecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutAaaaRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutCnameRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutMxRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutNsRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutPtrRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutSrvRecordSet(String name) {
+        return null;
+    }
+
+    @Override
+    public DnsZoneImpl withoutTxtRecordSet(String name) {
+        return null;
+    }
+
     @Override
     public Observable<DnsZone> createResourceAsync() {
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())

@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -68,7 +68,7 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<MxRecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithMailExchange,
                 DefinitionStages.WithTtl {
         }
@@ -123,7 +123,7 @@ public interface MxRecordSet extends DnsRecordSet<MxRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<MxRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithMailExchange,
             UpdateStages.WithTtl {
     }

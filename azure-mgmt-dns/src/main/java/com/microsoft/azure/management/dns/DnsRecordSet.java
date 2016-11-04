@@ -2,17 +2,17 @@ package com.microsoft.azure.management.dns;
 
 import com.microsoft.azure.management.dns.implementation.RecordSetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of a record set in Azure Dns Zone.
  */
-public interface DnsRecordSet<FluentModelT, ParentT> extends
-    ExternalChildResource<FluentModelT, ParentT>,
-    HasTags,
+public interface DnsRecordSet extends
+    ExternalChildResource<DnsRecordSet, DnsZone>,
     Wrapper<RecordSetInner> {
 
     /**
@@ -42,6 +42,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
             DefinitionStages.WithMxRecordMailExchangeOrAttachable<ParentT>,
             DefinitionStages.NsRecordSetBlank<ParentT>,
             DefinitionStages.WithNsRecordNameServer<ParentT>,
+            DefinitionStages.WithNsRecordNameServerOrAttachable<ParentT>,
             DefinitionStages.PtrRecordSetBlank<ParentT>,
             DefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
             DefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
@@ -88,7 +89,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithARecordIpv4AddressOrAttachable<ParentT>
-                extends WithARecordIpv4Address<ParentT>, Attachable<ParentT> {
+                extends WithARecordIpv4Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -121,7 +122,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAaaaRecordIpv6AddressOrAttachable<ParentT>
-                extends WithAaaaRecordIpv6Address<ParentT>, Attachable<ParentT> {
+                extends WithAaaaRecordIpv6Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -155,7 +156,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithMxRecordMailExchangeOrAttachable<ParentT>
-                extends WithMxRecordMailExchange<ParentT>, Attachable<ParentT> {
+                extends WithMxRecordMailExchange<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -178,7 +179,17 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
              * @param nameServerHostName the name server host name
              * @return the next stage of the record set definition
              */
-            Attachable<ParentT> withNameServer(String nameServerHostName);
+            WithNsRecordNameServerOrAttachable<ParentT> withNameServer(String nameServerHostName);
+        }
+
+        /**
+         * The stage of the Ns record set definition allowing to add additional Ns records or
+         * attach the record set to the parent.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithNsRecordNameServerOrAttachable<ParentT>
+                extends WithNsRecordNameServer<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -211,7 +222,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
-                extends WithPtrRecordTargetDomainName<ParentT>, Attachable<ParentT> {
+                extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -247,7 +258,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithSrvRecordEntryOrAttachable<ParentT>
-            extends WithSrvRecordEntry<ParentT>, Attachable<ParentT> {
+            extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -280,7 +291,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface  WithTxtRecordTextValueOrAttachable<ParentT>
-            extends WithTxtRecordTextValue<ParentT>, Attachable<ParentT> {
+            extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -298,6 +309,28 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
             WithAttach<ParentT> withTimeToLive(long ttlInSeconds);
         }
 
+        /**
+         * The stage of the record set definition allowing to specify tags.
+         *
+         * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
+         */
+        interface WithTags<ParentT> {
+            /**
+             * Specifies tags for the resource as a {@link Map}.
+             * @param tags a {@link Map} of tags
+             * @return the next stage of the record set definition
+             */
+            WithAttach<ParentT> withTags(Map<String, String> tags);
+
+            /**
+             * Adds a tag to the resource.
+             * @param key the key for the tag
+             * @param value the value for the tag
+             * @return the next stage of the record set definition
+             */
+            WithAttach<ParentT> withTag(String key, String value);
+        }
+
         /** The final stage of the Dns zone record set definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the Dns zone record set
@@ -306,6 +339,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
+                DefinitionStages.WithTags<ParentT>,
                 DefinitionStages.WithTtl<ParentT> {
         }
     }
@@ -327,6 +361,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
             UpdateDefinitionStages.WithMxRecordMailExchangeOrAttachable<ParentT>,
             UpdateDefinitionStages.NsRecordSetBlank<ParentT>,
             UpdateDefinitionStages.WithNsRecordNameServer<ParentT>,
+            UpdateDefinitionStages.WithNsRecordNameServerOrAttachable<ParentT>,
             UpdateDefinitionStages.PtrRecordSetBlank<ParentT>,
             UpdateDefinitionStages.WithPtrRecordTargetDomainName<ParentT>,
             UpdateDefinitionStages.WithPtrRecordTargetDomainNameOrAttachable<ParentT>,
@@ -373,7 +408,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithARecordIpv4AddressOrAttachable<ParentT>
-                extends WithARecordIpv4Address<ParentT>, Attachable<ParentT> {
+                extends WithARecordIpv4Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -406,7 +441,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAaaaRecordIpv6AddressOrAttachable<ParentT>
-                extends WithAaaaRecordIpv6Address<ParentT>, Attachable<ParentT> {
+                extends WithAaaaRecordIpv6Address<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -440,7 +475,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithMxRecordMailExchangeOrAttachable<ParentT>
-                extends WithMxRecordMailExchange<ParentT>, Attachable<ParentT> {
+                extends WithMxRecordMailExchange<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -463,7 +498,17 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
              * @param nameServerHostName the name server host name
              * @return the next stage of the record set definition
              */
-            Attachable<ParentT> withNameServer(String nameServerHostName);
+            WithNsRecordNameServerOrAttachable<ParentT> withNameServer(String nameServerHostName);
+        }
+
+        /**
+         * The stage of the Ns record set definition allowing to add additional Ns records or
+         * attach the record set to the parent.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithNsRecordNameServerOrAttachable<ParentT>
+                extends WithNsRecordNameServer<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -496,7 +541,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithPtrRecordTargetDomainNameOrAttachable<ParentT>
-                extends WithPtrRecordTargetDomainName<ParentT>, Attachable<ParentT> {
+                extends WithPtrRecordTargetDomainName<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -532,7 +577,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithSrvRecordEntryOrAttachable<ParentT>
-                extends WithSrvRecordEntry<ParentT>, Attachable<ParentT> {
+                extends WithSrvRecordEntry<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -565,7 +610,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface  WithTxtRecordTextValueOrAttachable<ParentT>
-                extends WithTxtRecordTextValue<ParentT>, Attachable<ParentT> {
+                extends WithTxtRecordTextValue<ParentT>, WithAttach<ParentT> {
         }
 
         /**
@@ -583,6 +628,28 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
             WithAttach<ParentT> withTimeToLive(long ttlInSeconds);
         }
 
+        /**
+         * The stage of the record set definition allowing to specify tags.
+         *
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
+        interface WithTags<ParentT> {
+            /**
+             * Specifies tags for the resource as a {@link Map}.
+             * @param tags a {@link Map} of tags
+             * @return the next stage of the record set update
+             */
+            WithAttach<ParentT> withTags(Map<String, String> tags);
+
+            /**
+             * Adds a tag to the resource.
+             * @param key the key for the tag
+             * @param value the value for the tag
+             * @return the next stage of the record set definition
+             */
+            WithAttach<ParentT> withTag(String key, String value);
+        }
+
         /** The final stage of the Dns zone record set definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the Dns zone record set
@@ -592,6 +659,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
+                UpdateDefinitionStages.WithTags<ParentT>,
                 UpdateDefinitionStages.WithTtl<ParentT> {
         }
     }
@@ -604,6 +672,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
             UpdateAaaaRecordSet,
             UpdatePtrRecordSet,
             UpdateMxRecordSet,
+            UpdateNsRecordSet,
             UpdateSrvRecordSet,
             UpdateTxtRecordSet,
             Update {
@@ -670,6 +739,7 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
      */
     interface Update extends
             Settable<DnsZone.Update>,
+            UpdateStages.UpdateWithTags,
             UpdateStages.WithTtl {
     }
 
@@ -843,6 +913,33 @@ public interface DnsRecordSet<FluentModelT, ParentT> extends
              * @return the next stage of the record set update
              */
             Update withTimeToLive(long ttlInSeconds);
+        }
+
+        /**
+         * An update allowing tags to be modified for the resource.
+         */
+        interface UpdateWithTags {
+            /**
+             * Specifies tags for the record set as a {@link Map}.
+             * @param tags a {@link Map} of tags
+             * @return the next stage of the record set update
+             */
+            Update withTags(Map<String, String> tags);
+
+            /**
+             * Adds a tag to the record set.
+             * @param key the key for the tag
+             * @param value the value for the tag
+             * @return the next stage of the record set update
+             */
+            Update withTag(String key, String value);
+
+            /**
+             * Removes a tag from the record set.
+             * @param key the key of the tag to remove
+             * @return the next stage of the record set update
+             */
+            Update withoutTag(String key);
         }
     }
 }

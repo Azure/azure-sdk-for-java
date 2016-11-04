@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -70,7 +70,7 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<SrvRecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithRecord,
                 DefinitionStages.WithTtl {
         }
@@ -129,7 +129,7 @@ public interface SrvRecordSet extends DnsRecordSet<SrvRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<SrvRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithRecord,
             UpdateStages.WithTtl {
     }

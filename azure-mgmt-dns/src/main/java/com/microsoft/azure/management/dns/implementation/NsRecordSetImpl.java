@@ -2,7 +2,6 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.NsRecord;
 import com.microsoft.azure.management.dns.NsRecordSet;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +11,8 @@ import java.util.List;
  * Implementation of {@link NsRecordSet}.
  */
 class NsRecordSetImpl
-        extends DnsRecordSetImpl<NsRecordSet, NsRecordSetImpl>
-        implements
-            NsRecordSet,
-            NsRecordSet.Definition,
-            NsRecordSet.Update {
+        extends DnsRecordSetImpl
+        implements NsRecordSet {
     NsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -33,36 +29,30 @@ class NsRecordSetImpl
     }
 
     @Override
-    public NsRecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        if (this.inner().nsRecords() != null && this.inner().nsRecords().size() > 0) {
+            if (resource.nsRecords() == null) {
+                resource.withNsRecords(new ArrayList<NsRecord>());
+            }
 
-    @Override
-    public NsRecordSetImpl withNameServer(String nameServerHostName) {
-        if (this.inner().nsRecords() == null) {
-            this.inner().withNsRecords(new ArrayList<NsRecord>());
+            for (NsRecord recordToAdd : this.inner().nsRecords()) {
+                resource.nsRecords().add(recordToAdd);
+            }
         }
-        this.inner().nsRecords().add(new NsRecord().withNsdname(nameServerHostName));
-        return this;
-    }
 
-    @Override
-    public NsRecordSetImpl withoutNameServer(String nameServerHostName) {
-        if (this.inner().nsRecords() != null) {
-            for (NsRecord record : this.inner().nsRecords()) {
-                if (record.nsdname().equalsIgnoreCase(nameServerHostName)) {
-                    this.inner().nsRecords().remove(record);
-                    break;
+        if (recordSetRemoveInfo.nsRecords().size() > 0) {
+            if (resource.nsRecords() != null) {
+                for (NsRecord recordToRemove : recordSetRemoveInfo.nsRecords()) {
+                    for (NsRecord record : resource.nsRecords()) {
+                        if (record.nsdname().equalsIgnoreCase(recordToRemove.nsdname())) {
+                            resource.nsRecords().remove(record);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, NsRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+        return resource;
     }
 }
 

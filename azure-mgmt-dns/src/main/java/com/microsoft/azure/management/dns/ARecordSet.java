@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -66,7 +66,7 @@ public interface ARecordSet extends DnsRecordSet<ARecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<ARecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithTtl {
         }
     }
@@ -118,7 +118,7 @@ public interface ARecordSet extends DnsRecordSet<ARecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<ARecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithIpv4Address,
             UpdateStages.WithTtl {
     }

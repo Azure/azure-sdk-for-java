@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of a Aaaa (Ipv6) record set in Azure Dns Zone.
  */
-public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
+public interface AaaaRecordSet extends DnsRecordSet {
     /**
      * @return the IPv6 addresses of Aaaa records in this record set
      */
@@ -67,7 +67,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<AaaaRecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithIpv6Address,
                 DefinitionStages.WithTtl {
         }
@@ -120,7 +120,7 @@ public interface AaaaRecordSet extends DnsRecordSet<AaaaRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<AaaaRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithIpv6Address,
             UpdateStages.WithTtl {
     }

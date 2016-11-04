@@ -2,7 +2,6 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +11,8 @@ import java.util.List;
  * Implementation of {@link SrvRecordSet}.
  */
 class SrvRecordSetImpl
-        extends DnsRecordSetImpl<SrvRecordSet, SrvRecordSetImpl>
-        implements
-            SrvRecordSet,
-            SrvRecordSet.Definition,
-            SrvRecordSet.Update {
+        extends DnsRecordSetImpl
+        implements SrvRecordSet {
     SrvRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -30,42 +26,32 @@ class SrvRecordSetImpl
     }
 
     @Override
-    public SrvRecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        if (this.inner().srvRecords() != null && this.inner().srvRecords().size() > 0) {
+            if (resource.srvRecords() == null) {
+                resource.withSrvRecords(new ArrayList<SrvRecord>());
+            }
 
-    @Override
-    public SrvRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        if (this.inner().srvRecords() == null) {
-            this.inner().withSrvRecords(new ArrayList<SrvRecord>());
+            for (SrvRecord recordToAdd : this.inner().srvRecords()) {
+                resource.srvRecords().add(recordToAdd);
+            }
         }
-        this.inner().srvRecords().add(new SrvRecord()
-                .withTarget(target)
-                .withPort(port)
-                .withPriority(priority)
-                .withWeight(weight));
-        return this;
-    }
 
-    @Override
-    public SrvRecordSetImpl withoutRecord(String target, int port, int priority, int weight) {
-        if (this.inner().srvRecords() != null) {
-            for (SrvRecord record : this.inner().srvRecords()) {
-                if (record.target().equalsIgnoreCase(target) &&
-                        record.port() == port &&
-                        record.priority() == priority &&
-                        record.weight() == weight) {
-                    this.inner().srvRecords().remove(record);
-                    break;
+        if (recordSetRemoveInfo.srvRecords().size() > 0) {
+            if (resource.srvRecords() != null) {
+                for (SrvRecord recordToRemove : recordSetRemoveInfo.srvRecords()) {
+                    for (SrvRecord record : resource.srvRecords()) {
+                        if (record.target().equalsIgnoreCase(recordToRemove.target())
+                                && record.port() == recordToRemove.port()
+                                && record.weight() == recordToRemove.weight()
+                                && record.priority() == recordToRemove.priority()) {
+                            resource.srvRecords().remove(record);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, SrvRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+        return resource;
     }
 }

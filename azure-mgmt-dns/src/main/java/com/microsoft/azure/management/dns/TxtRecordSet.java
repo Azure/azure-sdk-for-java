@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -67,7 +67,7 @@ public interface TxtRecordSet extends DnsRecordSet<TxtRecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<TxtRecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithText,
                 DefinitionStages.WithTtl {
         }
@@ -120,7 +120,7 @@ public interface TxtRecordSet extends DnsRecordSet<TxtRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<TxtRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithText,
             UpdateStages.WithTtl {
     }

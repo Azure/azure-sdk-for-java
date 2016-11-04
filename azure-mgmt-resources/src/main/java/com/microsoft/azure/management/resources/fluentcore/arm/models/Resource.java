@@ -10,8 +10,6 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
-import java.util.Map;
-
 /**
 * Base interfaces for fluent resources.
 */
@@ -20,7 +18,7 @@ public interface Resource extends
     Indexable,
     HasId,
     HasName,
-    HasTags {
+        Taggable {
 
     /**
      * @return the type of the resource
@@ -65,7 +63,7 @@ public interface Resource extends
      * @param <T> the type of the next stage resource definition
      */
     @LangDefinition(ContainerName = "Resource.Definition", ContainerFileName = "IDefinition")
-    interface DefinitionWithTags<T> extends HasTags.DefinitionWithTags<T> {
+    interface DefinitionWithTags<T> extends Taggable.DefinitionWithTags<T> {
     }
 
     /**
@@ -74,6 +72,6 @@ public interface Resource extends
      * @param <T> the type of the next stage resource update
      */
     @LangDefinition(ContainerName = "Resource.Update", ContainerFileName = "IUpdate")
-    interface UpdateWithTags<T> extends HasTags.UpdateWithTags<T> {
+    interface UpdateWithTags<T> extends Taggable.UpdateWithTags<T> {
     }
 }

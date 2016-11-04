@@ -2,7 +2,6 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.ARecord;
 import com.microsoft.azure.management.dns.ARecordSet;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +11,8 @@ import java.util.List;
  * Implementation of {@link ARecordSet}.
  */
 class ARecordSetImpl
-        extends DnsRecordSetImpl<ARecordSet, ARecordSetImpl>
-        implements
-            ARecordSet,
-            ARecordSet.Definition,
-            ARecordSet.Update {
+        extends DnsRecordSetImpl
+        implements ARecordSet {
     ARecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -33,35 +29,29 @@ class ARecordSetImpl
     }
 
     @Override
-    public ARecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        if (this.inner().aRecords() != null && this.inner().aRecords().size() > 0) {
+            if (resource.aRecords() == null) {
+                resource.withARecords(new ArrayList<ARecord>());
+            }
 
-    @Override
-    public ARecordSetImpl withIpv4Address(String ipv4Address) {
-        if (this.inner().aRecords() == null) {
-            this.inner().withARecords(new ArrayList<ARecord>());
+            for (ARecord recordToAdd : this.inner().aRecords()) {
+                resource.aRecords().add(recordToAdd);
+            }
         }
-        this.inner().aRecords().add(new ARecord().withIpv4Address(ipv4Address));
-        return this;
-    }
 
-    @Override
-    public ARecordSetImpl withoutIpv4Address(String ipv4Address) {
-        if (this.inner().aRecords() != null) {
-            for (ARecord record : this.inner().aRecords()) {
-                if (record.ipv4Address().equalsIgnoreCase(ipv4Address)) {
-                    this.inner().aRecords().remove(record);
-                    break;
+        if (recordSetRemoveInfo.aRecords().size() > 0) {
+            if (resource.aRecords() != null) {
+                for (ARecord recordToRemove : recordSetRemoveInfo.aRecords()) {
+                    for (ARecord record : resource.aRecords()) {
+                        if (record.ipv4Address().equalsIgnoreCase(recordToRemove.ipv4Address())) {
+                            resource.aRecords().remove(record);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, ARecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+        return resource;
     }
 }

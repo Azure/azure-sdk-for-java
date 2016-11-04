@@ -2,7 +2,6 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.AaaaRecord;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +11,8 @@ import java.util.List;
  * Implementation of {@link AaaaRecordSet}.
  */
 class AaaaRecordSetImpl
-        extends DnsRecordSetImpl<AaaaRecordSet, AaaaRecordSetImpl>
-        implements
-            AaaaRecordSet,
-            AaaaRecordSet.Definition,
-            AaaaRecordSet.Update {
+        extends DnsRecordSetImpl
+        implements AaaaRecordSet {
 
     AaaaRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
@@ -34,35 +30,29 @@ class AaaaRecordSetImpl
     }
 
     @Override
-    public AaaaRecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        if (this.inner().aaaaRecords() != null && this.inner().aaaaRecords().size() > 0) {
+            if (resource.aaaaRecords() == null) {
+                resource.withAaaaRecords(new ArrayList<AaaaRecord>());
+            }
 
-    @Override
-    public AaaaRecordSetImpl withIpv6Address(String ipv6Address) {
-        if (this.inner().aaaaRecords() == null) {
-            this.inner().withAaaaRecords(new ArrayList<AaaaRecord>());
+            for (AaaaRecord recordToAdd : this.inner().aaaaRecords()) {
+                resource.aaaaRecords().add(recordToAdd);
+            }
         }
-        this.inner().aaaaRecords().add(new AaaaRecord().withIpv6Address(ipv6Address));
-        return this;
-    }
 
-    @Override
-    public AaaaRecordSetImpl withoutIpv6Address(String ipv6Address) {
-        if (this.inner().aaaaRecords() != null) {
-            for (AaaaRecord record : this.inner().aaaaRecords()) {
-                if (record.ipv6Address().equalsIgnoreCase(ipv6Address)) {
-                    this.inner().aaaaRecords().remove(record);
-                    break;
+        if (recordSetRemoveInfo.aaaaRecords().size() > 0) {
+            if (resource.aaaaRecords() != null) {
+                for (AaaaRecord recordToRemove : recordSetRemoveInfo.aaaaRecords()) {
+                    for (AaaaRecord record : resource.aaaaRecords()) {
+                        if (record.ipv6Address().equalsIgnoreCase(recordToRemove.ipv6Address())) {
+                            resource.aaaaRecords().remove(record);
+                            break;
+                        }
+                    }
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, AaaaRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+        return resource;
     }
 }

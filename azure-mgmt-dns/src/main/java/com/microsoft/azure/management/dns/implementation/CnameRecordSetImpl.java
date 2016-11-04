@@ -1,18 +1,13 @@
 package com.microsoft.azure.management.dns.implementation;
 
-import com.microsoft.azure.management.dns.CnameRecord;
 import com.microsoft.azure.management.dns.CnameRecordSet;
-import rx.functions.Func1;
 
 /**
  * Implementation of {@link CnameRecordSet}.
  */
 class CnameRecordSetImpl
-        extends DnsRecordSetImpl<CnameRecordSet, CnameRecordSetImpl>
-        implements
-            CnameRecordSet,
-            CnameRecordSet.Definition,
-            CnameRecordSet.Update {
+        extends DnsRecordSetImpl
+        implements CnameRecordSet {
     CnameRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -26,19 +21,7 @@ class CnameRecordSetImpl
     }
 
     @Override
-    public CnameRecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
-
-    @Override
-    public CnameRecordSetImpl withCanonicalName(String canonicalName) {
-        this.inner().withCnameRecord(new CnameRecord().withCname(canonicalName));
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, CnameRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        return resource;
     }
 }

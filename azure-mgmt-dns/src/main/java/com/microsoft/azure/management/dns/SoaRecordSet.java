@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 
 /**
@@ -119,7 +119,7 @@ public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<SoaRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithEmailServer,
             UpdateStages.WithRefreshTime,
             UpdateStages.WithRetryTime,

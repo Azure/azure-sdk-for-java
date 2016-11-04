@@ -2,7 +2,6 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
-import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,11 +11,8 @@ import java.util.List;
  * Implementation of {@link TxtRecordSet}.
  */
 class TxtRecordSetImpl
-        extends DnsRecordSetImpl<TxtRecordSet, TxtRecordSetImpl>
-        implements
-            TxtRecordSet,
-            TxtRecordSet.Definition,
-            TxtRecordSet.Update {
+        extends DnsRecordSetImpl
+        implements TxtRecordSet {
     TxtRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
     }
@@ -30,40 +26,30 @@ class TxtRecordSetImpl
     }
 
     @Override
-    public TxtRecordSetImpl refresh() {
-        this.refreshInner();
-        return this;
-    }
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        if (this.inner().txtRecords() != null && this.inner().txtRecords().size() > 0) {
+            if (resource.txtRecords() == null) {
+                resource.withTxtRecords(new ArrayList<TxtRecord>());
+            }
 
-    @Override
-    public TxtRecordSetImpl withText(String text) {
-        if (this.inner().txtRecords() == null) {
-            this.inner().withTxtRecords(new ArrayList<TxtRecord>());
+            for (TxtRecord recordToAdd : this.inner().txtRecords()) {
+                resource.txtRecords().add(recordToAdd);
+            }
         }
-        List<String> value = new ArrayList<>();
-        value.add(text);
-        this.inner().txtRecords().add(new TxtRecord().withValue(value));
-        return this;
-    }
 
-    @Override
-    public TxtRecordSetImpl withoutText(String text) {
-        if (this.inner().txtRecords() != null) {
-            for (TxtRecord record : this.inner().txtRecords()) {
-                if (record.value() != null && record.value().size() != 0) {
-                    if (record.value().get(0).equalsIgnoreCase(text)) {
-                        this.inner().txtRecords().remove(record);
-                        break;
+        if (recordSetRemoveInfo.txtRecords().size() > 0) {
+            if (resource.txtRecords() != null) {
+                for (TxtRecord recordToRemove : recordSetRemoveInfo.txtRecords()) {
+                    for (TxtRecord record : resource.txtRecords()) {
+                        if (record.value().size() != 0 && record.value().get(0).equalsIgnoreCase(recordToRemove.value().get(0))) {
+                            resource.txtRecords().remove(record);
+                            break;
+                        }
                     }
                 }
             }
         }
-        return this;
-    }
-
-    @Override
-    protected Func1<RecordSetInner, TxtRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+        return resource;
     }
 }
 

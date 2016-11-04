@@ -8,7 +8,7 @@ import java.util.Map;
  * An interface representing a resource that has tags.
  */
 @Fluent
-public interface HasTags {
+public interface Taggable {
     /**
      * @return the tags associated with the resource
      */

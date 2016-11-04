@@ -1,10 +1,8 @@
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasTags;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.Taggable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-
-import java.util.List;
 
 /**
  * An immutable client-side representation of a CName (canonical name) record set in Azure Dns Zone.
@@ -67,7 +65,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
          */
         interface WithCreate extends
                 Creatable<CnameRecordSet>,
-                HasTags.DefinitionWithTags<WithCreate>,
+                Taggable.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithTtl {
         }
     }
@@ -98,7 +96,7 @@ public interface CnameRecordSet extends DnsRecordSet<CnameRecordSet, DnsZone> {
      */
     interface Update extends
             Appliable<CnameRecordSet>,
-            HasTags.UpdateWithTags<Update>,
+            Taggable.UpdateWithTags<Update>,
             UpdateStages.WithTtl {
     }
 }
