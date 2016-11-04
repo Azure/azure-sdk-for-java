@@ -10,10 +10,12 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.AzureResourceType;
+import com.microsoft.azure.management.website.Certificate;
 import com.microsoft.azure.management.website.CloningInfo;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.website.Domain;
@@ -303,15 +305,38 @@ class WebAppImpl
 //        return this;
 //    }
 
-//    private String normalizeHostNameBindingName(String hostname, String domainName) {
-//        if (!hostname.endsWith(domainName)) {
-//            hostname = hostname + "." + domainName;
-//        }
-//        if (hostname.startsWith("@")) {
-//            hostname = hostname.replace("@.", "");
-//        }
-//        return hostname;
-//    }
+    WebAppImpl withNewHostNameSslBinding(final HostNameSslBindingImpl hostNameSslBinding) {
+        this.hostNameSslStateMap.put(hostNameSslBinding.name(), hostNameSslBinding.inner().withToUpdate(true));
+        if (hostNameSslBinding.newCertificate() != null) {
+            final CertificateImpl certificateImpl = (CertificateImpl) hostNameSslBinding.newCertificate();
+            // Convert creatable to apply thumbprint after creation
+            addCreatableDependency(new CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl>(
+                    certificateImpl.name(),
+                    certificateImpl.inner()) {
+                @Override
+                public Observable<Certificate> createResourceAsync() {
+                    return hostNameSslBinding.newCertificate().createAsync().map(new Func1<Certificate, Certificate>() {
+                        @Override
+                        public Certificate call(Certificate certificate) {
+                            hostNameSslBinding.withCertificateThumbprint(certificate.thumbprint());
+                            return certificate;
+                        }
+                    });
+                }
+
+                @Override
+                public boolean isInCreateMode() {
+                    return certificateImpl.isInCreateMode();
+                }
+
+                @Override
+                public Certificate refresh() {
+                    return certificateImpl.refresh();
+                }
+            });
+        }
+        return this;
+    }
 
     @Override
     public WebAppImpl withManagedHostNameBindings(Domain domain, String... hostnames) {
@@ -367,6 +392,7 @@ class WebAppImpl
         }
         // Construct web app observable
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                // Submit hostname bindings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(final SiteInner site) {
@@ -420,52 +446,8 @@ class WebAppImpl
         return this;
     }
 
-//    private static class DomainInfo {
-//        private String externalDomain;
-//        private String domainId;
-//        private Creatable<Domain> domainCreatable;
-//
-//        private DomainInfo() {
-//        }
-//
-//        static DomainInfo existingDomain(String domainId) {
-//            DomainInfo info = new DomainInfo();
-//            info.domainId = domainId;
-//            return info;
-//        }
-//
-//        static DomainInfo newDomain(Creatable<Domain> domainCreatable) {
-//            DomainInfo info = new DomainInfo();
-//            info.domainCreatable = domainCreatable;
-//            return info;
-//        }
-//
-//        static DomainInfo thirdPartyDomain(String externalDomain) {
-//            DomainInfo info = new DomainInfo();
-//            info.externalDomain = externalDomain;
-//            return info;
-//        }
-//
-//        boolean isNewDomain() {
-//            return domainCreatable != null;
-//        }
-//
-//        boolean isAzureDomain() {
-//            return externalDomain == null;
-//        }
-//
-//        String name() {
-//            if (isNewDomain()) {
-//                return domainCreatable.name();
-//            } else if (isAzureDomain()) {
-//                return ResourceUtils.nameFromResourceId(domainId);
-//            } else {
-//                return externalDomain;
-//            }
-//        }
-//
-//        void addToMap(final Map<String, DomainInfo> domainMap) {
-//            domainMap.put(name(), this);
-//        }
-//    }
+    @Override
+    public HostNameSslBindingImpl defineNewSSLBindingForHostName(String hostname) {
+        return new HostNameSslBindingImpl(new HostNameSslState().withName(hostname), this, myManager);
+    }
 }

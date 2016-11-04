@@ -36,7 +36,7 @@ class HostNameBindingImpl
         implements
         Creatable<HostNameBinding>,
         HostNameBinding,
-        HostNameBinding.Definition<WebApp.DefinitionStages.WithHostNameBinding>,
+        HostNameBinding.Definition<WebApp.DefinitionStages.WithHostNameSslBinding>,
         HostNameBinding.UpdateDefinition<WebApp.Update> {
     private WebAppsInner client;
     private String fqdn;

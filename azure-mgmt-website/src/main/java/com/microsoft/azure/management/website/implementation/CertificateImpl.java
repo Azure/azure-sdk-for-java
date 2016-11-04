@@ -35,8 +35,8 @@ class CertificateImpl
 
     private final CertificatesInner client;
 
-    CertificateImpl(String key, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
-        super(key, innerObject, manager);
+    CertificateImpl(String name, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
+        super(name, innerObject, manager);
         this.client = client;
     }
 

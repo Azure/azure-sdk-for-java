@@ -13,6 +13,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+
 public class WebAppsTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
     private static final String WEBAPP_NAME = "java-webapp-319";
@@ -35,18 +37,11 @@ public class WebAppsTests extends AppServiceTestBase {
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
                 .withExistingAppServicePlan("java-plan-323")
-                .defineNewHostNameBinding("shortname")
-                    .withAzureManagedDomain(domain)
-                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                .withManagedHostNameBindings(domain, "@")
+                .defineNewSSLBindingForHostName("javatestpr319.com")
+                    .withPfxCertificateToUpload(new File("/Users/jianghlu/Documents/code/certs/javatestpr319_com.pfx"), "StrongPass!123")
+                    .withSniSSL()
                     .attach()
-
-//                // Bindings
-//                .defineManagedHostNameBinding("@")
-//                    .withExistingDomain("")
-//                    .withRecordType(CustomHostNameDnsRecordType.A)
-//
-//                .withManagedHostNameBindings(domainA , "dd", "ddd")
-//                .with
                 .create();
 
         Assert.assertNotNull(webApp);

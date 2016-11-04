@@ -188,6 +188,7 @@ public interface WebApp extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithAppServicePlan,
             DefinitionStages.WithHostNameBinding,
+            DefinitionStages.WithHostNameSslBinding,
             DefinitionStages.WithCreate {
     }
 
@@ -217,9 +218,13 @@ public interface WebApp extends
         }
 
         interface WithHostNameBinding extends WithCreate {
-            HostNameBinding.DefinitionStages.Blank<WithHostNameBinding> defineNewHostNameBinding(String hostname);
-            WithHostNameBinding withManagedHostNameBindings(Domain domain, String... hostnames);
-            WithHostNameBinding withVerifiedHostNameBinding(String domain, String... hostnames);
+            HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding> defineNewHostNameBinding(String hostname);
+            WithHostNameSslBinding withManagedHostNameBindings(Domain domain, String... hostnames);
+            WithHostNameSslBinding withVerifiedHostNameBinding(String domain, String... hostnames);
+        }
+
+        interface WithHostNameSslBinding extends WithHostNameBinding {
+            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding> defineNewSSLBindingForHostName(String hostname);
         }
 
         interface WithSiteEnabled {
@@ -270,6 +275,10 @@ public interface WebApp extends
             Update withManagedHostNameBindings(Domain domain, String... hostnames);
             Update withVerifiedHostNameBinding(String domain, String... hostnames);
         }
+
+        interface WithHostNameSslBinding {
+            HostNameSslBinding.UpdateDefinitionStages.Blank<Update> defineNewSSLBindingForHostName(String hostname);
+        }
     }
 
     /**
@@ -278,6 +287,7 @@ public interface WebApp extends
     interface Update extends
             Appliable<WebApp>,
             UpdateStages.WithAppServicePlan,
-            UpdateStages.WithHostNameBinding {
+            UpdateStages.WithHostNameBinding,
+            UpdateStages.WithHostNameSslBinding {
     }
 }
