@@ -6,7 +6,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 /**
  * An immutable client-side representation of a Soa (start of authority) record set in Azure Dns Zone.
  */
-public interface SoaRecordSet extends DnsRecordSet<SoaRecordSet, DnsZone> {
+public interface SoaRecordSet extends DnsRecordSet {
     /**
      * @return the Soa record in this record set
      */

@@ -2,13 +2,16 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
+import com.microsoft.rest.ServiceCall;
+import com.microsoft.rest.ServiceCallback;
+import rx.Observable;
 import rx.functions.Func1;
 
 /**
  * Implementation of {@link SoaRecordSet}.
  */
 class SoaRecordSetImpl
-        extends DnsRecordSetImpl<SoaRecordSet, SoaRecordSetImpl>
+        extends DnsRecordSetImpl
         implements
             SoaRecordSet,
             SoaRecordSet.Update {
@@ -23,8 +26,12 @@ class SoaRecordSetImpl
 
     @Override
     public SoaRecordSetImpl refresh() {
-        this.refreshInner();
         return this;
+    }
+
+    @Override
+    protected RecordSetInner merge(RecordSetInner resource, RecordSetInner recordSetRemoveInfo) {
+        return null;
     }
 
     @Override
@@ -64,7 +71,17 @@ class SoaRecordSetImpl
     }
 
     @Override
-    protected Func1<RecordSetInner, SoaRecordSet> innerToFluentMap() {
-        return super.innerToFluentMap(this);
+    public SoaRecordSet apply() {
+        return null;
+    }
+
+    @Override
+    public Observable<SoaRecordSet> applyAsync() {
+        return null;
+    }
+
+    @Override
+    public ServiceCall<SoaRecordSet> applyAsync(ServiceCallback<SoaRecordSet> callback) {
+        return null;
     }
 }
