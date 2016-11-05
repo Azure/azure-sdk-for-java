@@ -10,15 +10,16 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 
+import java.util.Map;
+
 /**
-* Base interfaces for fluent resources.
-*/
+ * Base interfaces for fluent resources.
+ */
 @LangDefinition()
 public interface Resource extends
-    Indexable,
-    HasId,
-    HasName,
-        Taggable {
+        Indexable,
+        HasId,
+        HasName {
 
     /**
      * @return the type of the resource
@@ -34,6 +35,11 @@ public interface Resource extends
      * @return the region the resource is in
      */
     Region region();
+
+    /**
+     * @return the tags for the resource
+     */
+    Map<String, String> tags();
 
     /**
      * A resource definition allowing a location be selected for the resource.
@@ -63,7 +69,21 @@ public interface Resource extends
      * @param <T> the type of the next stage resource definition
      */
     @LangDefinition(ContainerName = "Resource.Definition", ContainerFileName = "IDefinition")
-    interface DefinitionWithTags<T> extends Taggable.DefinitionWithTags<T> {
+    interface DefinitionWithTags<T> {
+        /**
+         * Specifies tags for the resource as a {@link Map}.
+         * @param tags a {@link Map} of tags
+         * @return the next stage of the resource definition
+         */
+        T withTags(Map<String, String> tags);
+
+        /**
+         * Adds a tag to the resource.
+         * @param key the key for the tag
+         * @param value the value for the tag
+         * @return the next stage of the resource definition
+         */
+        T withTag(String key, String value);
     }
 
     /**
@@ -72,6 +92,27 @@ public interface Resource extends
      * @param <T> the type of the next stage resource update
      */
     @LangDefinition(ContainerName = "Resource.Update", ContainerFileName = "IUpdate")
-    interface UpdateWithTags<T> extends Taggable.UpdateWithTags<T> {
+    interface UpdateWithTags<T> {
+        /**
+         * Specifies tags for the resource as a {@link Map}.
+         * @param tags a {@link Map} of tags
+         * @return the next stage of the resource update
+         */
+        T withTags(Map<String, String> tags);
+
+        /**
+         * Adds a tag to the resource.
+         * @param key the key for the tag
+         * @param value the value for the tag
+         * @return the next stage of the resource update
+         */
+        T withTag(String key, String value);
+
+        /**
+         * Removes a tag from the resource.
+         * @param key the key of the tag to remove
+         * @return the next stage of the resource update
+         */
+        T withoutTag(String key);
     }
 }
