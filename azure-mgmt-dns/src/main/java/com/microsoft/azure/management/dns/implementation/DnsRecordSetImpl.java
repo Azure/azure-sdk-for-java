@@ -16,7 +16,6 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -71,9 +70,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withIpv4Address(String ipv4Address) {
-        if (this.inner().aRecords() == null) {
-            this.inner().withARecords(new ArrayList<ARecord>());
-        }
         this.inner()
                 .aRecords()
                 .add(new ARecord().withIpv4Address(ipv4Address));
@@ -90,9 +86,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withIpv6Address(String ipv6Address) {
-        if (this.inner().aaaaRecords() == null) {
-            this.inner().withAaaaRecords(new ArrayList<AaaaRecord>());
-        }
         this.inner()
                 .aaaaRecords()
                 .add(new AaaaRecord().withIpv6Address(ipv6Address));
@@ -109,9 +102,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withMailExchange(String mailExchangeHostName, int priority) {
-        if (this.inner().mxRecords() == null) {
-            this.inner().withMxRecords(new ArrayList<MxRecord>());
-        }
         this.inner()
                 .mxRecords()
                 .add(new MxRecord().withExchange(mailExchangeHostName).withPreference(priority));
@@ -128,9 +118,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withNameServer(String nameServerHostName) {
-        if (this.inner().nsRecords() == null) {
-            this.inner().withNsRecords(new ArrayList<NsRecord>());
-        }
         this.inner()
                 .nsRecords()
                 .add(new NsRecord().withNsdname(nameServerHostName));
@@ -147,9 +134,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withTargetDomainName(String targetDomainName) {
-        if (this.inner().ptrRecords() == null) {
-            this.inner().withPtrRecords(new ArrayList<PtrRecord>());
-        }
         this.inner()
                 .ptrRecords()
                 .add(new PtrRecord().withPtrdname(targetDomainName));
@@ -166,9 +150,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withRecord(String target, int port, int priority, int weight) {
-        if (this.inner().srvRecords() == null) {
-            this.inner().withSrvRecords(new ArrayList<SrvRecord>());
-        }
         this.inner().srvRecords().add(new SrvRecord()
                 .withTarget(target)
                 .withPort(port)
@@ -190,9 +171,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withText(String text) {
-        if (this.inner().txtRecords() == null) {
-            this.inner().withTxtRecords(new ArrayList<TxtRecord>());
-        }
         List<String> value = new ArrayList<>();
         value.add(text);
         this.inner().txtRecords().add(new TxtRecord().withValue(value));
@@ -247,12 +225,6 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     @Override
     public DnsRecordSetImpl withTimeToLive(long ttlInSeconds) {
         this.inner().withTTL(ttlInSeconds);
-        return this;
-    }
-
-    @Override
-    public DnsRecordSetImpl withTags(Map<String, String> tags) {
-        this.inner().withMetadata(new HashMap<>(tags));
         return this;
     }
 

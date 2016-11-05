@@ -89,7 +89,7 @@ class DnsRecordSetsImpl extends
     }
 
     DnsRecordSetImpl updateSoaRecordSet() {
-        return prepareUpdate(TxtRecordSetImpl.newRecordSet("@", this.parent(), this.client));
+        return prepareUpdate(SoaRecordSetImpl.newRecordSet(this.parent(), this.client));
     }
 
     void withoutARecordSet(String name) {

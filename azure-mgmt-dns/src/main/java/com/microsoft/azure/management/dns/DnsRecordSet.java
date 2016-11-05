@@ -6,8 +6,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
-import java.util.Map;
-
 /**
  * An immutable client-side representation of a record set in Azure Dns Zone.
  */
@@ -316,14 +314,8 @@ public interface DnsRecordSet extends
          */
         interface WithTags<ParentT> {
             /**
-             * Specifies tags for the resource as a {@link Map}.
-             * @param tags a {@link Map} of tags
-             * @return the next stage of the record set definition
-             */
-            WithAttach<ParentT> withTags(Map<String, String> tags);
-
-            /**
              * Adds a tag to the resource.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the record set definition
@@ -635,14 +627,8 @@ public interface DnsRecordSet extends
          */
         interface WithTags<ParentT> {
             /**
-             * Specifies tags for the resource as a {@link Map}.
-             * @param tags a {@link Map} of tags
-             * @return the next stage of the record set update
-             */
-            WithAttach<ParentT> withTags(Map<String, String> tags);
-
-            /**
              * Adds a tag to the resource.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the record set definition
@@ -985,14 +971,8 @@ public interface DnsRecordSet extends
          */
         interface UpdateWithTags {
             /**
-             * Specifies tags for the record set as a {@link Map}.
-             * @param tags a {@link Map} of tags
-             * @return the next stage of the record set update
-             */
-            Update withTags(Map<String, String> tags);
-
-            /**
              * Adds a tag to the record set.
+             *
              * @param key the key for the tag
              * @param value the value for the tag
              * @return the next stage of the record set update
@@ -1001,6 +981,7 @@ public interface DnsRecordSet extends
 
             /**
              * Removes a tag from the record set.
+             *
              * @param key the key of the tag to remove
              * @return the next stage of the record set update
              */

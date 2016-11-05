@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
 
@@ -11,6 +12,15 @@ class SoaRecordSetImpl
         implements SoaRecordSet {
     SoaRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new SoaRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName("@")
+                        .withType(RecordType.SOA.toString())
+                        .withSoaRecord(new SoaRecord()),
+                    client);
     }
 
     @Override
