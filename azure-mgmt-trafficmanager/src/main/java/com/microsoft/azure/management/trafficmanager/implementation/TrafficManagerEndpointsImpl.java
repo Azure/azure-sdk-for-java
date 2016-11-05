@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
 import com.microsoft.azure.management.trafficmanager.EndpointType;
@@ -23,11 +23,11 @@ import java.util.Map;
  * Represents an endpoint collection associated with a traffic manager profile.
  */
 class TrafficManagerEndpointsImpl extends
-        ExternalChildResourcesImpl<TrafficManagerEndpointImpl,
-                                TrafficManagerEndpoint,
-                                EndpointInner,
-                                TrafficManagerProfileImpl,
-                                TrafficManagerProfile> {
+        ExternalChildResourcesCachedImpl<TrafficManagerEndpointImpl,
+                TrafficManagerEndpoint,
+                EndpointInner,
+                TrafficManagerProfileImpl,
+                TrafficManagerProfile> {
     private final EndpointsInner client;
 
     /**
@@ -39,7 +39,7 @@ class TrafficManagerEndpointsImpl extends
     TrafficManagerEndpointsImpl(EndpointsInner client, TrafficManagerProfileImpl parent) {
         super(parent, "Endpoint");
         this.client = client;
-        this.initializeCollection();
+        this.cacheCollection();
     }
 
     /**

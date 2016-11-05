@@ -10,12 +10,12 @@ import com.microsoft.azure.management.dns.SoaRecordSet;
 class SoaRecordSetImpl
         extends DnsRecordSetImpl
         implements SoaRecordSet {
-    SoaRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    SoaRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new SoaRecordSetImpl(parentDnsZone,
+    static SoaRecordSetImpl newRecordSet(final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new SoaRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName("@")
                         .withType(RecordType.SOA.toString())
@@ -51,7 +51,7 @@ class SoaRecordSetImpl
         }
 
         if (this.inner().soaRecord().retryTime() != null) {
-            resource.soaRecord().withRefreshTime(this.inner().soaRecord().retryTime());
+            resource.soaRecord().withRetryTime(this.inner().soaRecord().retryTime());
         }
 
         if (this.inner().soaRecord().serialNumber() != null) {

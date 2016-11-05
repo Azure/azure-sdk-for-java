@@ -14,12 +14,12 @@ import java.util.List;
 class PtrRecordSetImpl
         extends DnsRecordSetImpl
         implements PtrRecordSet {
-    PtrRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    PtrRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static PtrRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new PtrRecordSetImpl(parentDnsZone,
+    static PtrRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new PtrRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.PTR.toString())
@@ -30,7 +30,7 @@ class PtrRecordSetImpl
     @Override
     public List<String> targetDomainNames() {
         List<String> targetDomainNames = new ArrayList<>();
-        if (this.inner().aaaaRecords() != null) {
+        if (this.inner().ptrRecords() != null) {
             for (PtrRecord ptrRecord : this.inner().ptrRecords()) {
                 targetDomainNames.add(ptrRecord.ptrdname());
             }
@@ -45,9 +45,7 @@ class PtrRecordSetImpl
                 resource.withPtrRecords(new ArrayList<PtrRecord>());
             }
 
-            for (PtrRecord recordToAdd : this.inner().ptrRecords()) {
-                resource.ptrRecords().add(recordToAdd);
-            }
+            resource.ptrRecords().addAll(this.inner().ptrRecords());
             this.inner().ptrRecords().clear();
         }
 

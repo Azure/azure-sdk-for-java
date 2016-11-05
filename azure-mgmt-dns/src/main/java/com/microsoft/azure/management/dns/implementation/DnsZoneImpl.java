@@ -13,6 +13,7 @@ import com.microsoft.azure.management.dns.SrvRecordSets;
 import com.microsoft.azure.management.dns.TxtRecordSets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -248,8 +249,21 @@ public class DnsZoneImpl
 
     @Override
     public Observable<DnsZone> createResourceAsync() {
+        final DnsZoneImpl self = this;
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .flatMap(new Func1<DnsZone, Observable<? extends DnsZone>>() {
+                    @Override
+                    public Observable<? extends DnsZone> call(DnsZone dnsZone) {
+                        return self.recordSetsImpl.commitAndGetAllAsync()
+                            .map(new Func1<List<DnsRecordSetImpl>, DnsZone>() {
+                                @Override
+                                public DnsZone call(List<DnsRecordSetImpl> recordSets) {
+                                    return self;
+                                }
+                            });
+                    }
+                });
     }
 
     @Override
@@ -262,12 +276,13 @@ public class DnsZoneImpl
 
     private void initRecordSets() {
         this.aRecordSets = new ARecordSetsImpl(this, this.recordSetsClient);
-        this.aaaaRecordSets  = new AaaaRecordSetsImpl(this, this.recordSetsClient);
+        this.aaaaRecordSets = new AaaaRecordSetsImpl(this, this.recordSetsClient);
         this.cnameRecordSets = new CnameRecordSetsImpl(this, this.recordSetsClient);
         this.mxRecordSets = new MxRecordSetsImpl(this, this.recordSetsClient);
         this.nsRecordSets = new NsRecordSetsImpl(this, this.recordSetsClient);
         this.ptrRecordSets = new PtrRecordSetsImpl(this, this.recordSetsClient);
         this.srvRecordSets = new SrvRecordSetsImpl(this, this.recordSetsClient);
         this.txtRecordSets = new TxtRecordSetsImpl(this, this.recordSetsClient);
+        this.recordSetsImpl.clearPendingOperations();
     }
 }

@@ -6,8 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Externalized child resource collection abstract implementation.
+ * Externalized cache-able child resource collection abstract implementation.
  * (Internal use only)
+ * <p>
+ * An external child resource collection is considered as cache-able when it is present as an inline
+ * property of it's parent resource.
+ * Consider using non-cached version {@link ExternalChildResourcesNonCachedImpl} if the child resources
+ * are not present in the parent payload, using cached version in this case requires fetching the child resource
+ * using separate GET call, that can be expensive if the child resources are pagable.
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
  * @param <FluentModelT> the fluent model type of the child resource
@@ -15,7 +21,7 @@ import java.util.Map;
  * @param <ParentImplT> <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
  * @param <ParentT> the parent interface
  */
-public abstract class ExternalChildResourcesImpl<
+public abstract class ExternalChildResourcesCachedImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
         FluentModelT extends ExternalChildResource<FluentModelT, ParentT>,
         InnerModelT,
@@ -28,15 +34,15 @@ public abstract class ExternalChildResourcesImpl<
      * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourcesImpl(ParentImplT parent, String childResourceName) {
+    protected ExternalChildResourcesCachedImpl(ParentImplT parent, String childResourceName) {
         super(parent, childResourceName);
     }
 
     /**
-     * Refresh the childCollection.
+     * Refresh the child resource collection.
      */
     public void refresh() {
-        initializeCollection();
+        cacheCollection();
     }
 
     /**
@@ -63,7 +69,7 @@ public abstract class ExternalChildResourcesImpl<
      * @param key the key
      * @return the child resource
      */
-    protected FluentModelTImpl prepareDefine(String name, String key) {
+    protected final FluentModelTImpl prepareDefine(String name, String key) {
         if (find(key) != null) {
             throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name (key) '" + name + " (" + key + ")' already exists");
         }
@@ -78,7 +84,7 @@ public abstract class ExternalChildResourcesImpl<
      * @param name the name of the external child resource
      * @return the external child resource to be updated
      */
-    protected FluentModelTImpl prepareUpdate(String name) {
+    protected final FluentModelTImpl prepareUpdate(String name) {
         return prepareUpdate(name, name);
     }
 
@@ -89,7 +95,7 @@ public abstract class ExternalChildResourcesImpl<
      * @param key the key
      * @return the external child resource to be updated
      */
-    protected FluentModelTImpl prepareUpdate(String name, String key) {
+    protected final FluentModelTImpl prepareUpdate(String name, String key) {
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
@@ -107,7 +113,7 @@ public abstract class ExternalChildResourcesImpl<
      *
      * @param name the name of the external child resource
      */
-    protected void prepareRemove(String name) {
+    protected final void prepareRemove(String name) {
         prepareRemove(name, name);
     }
 
@@ -117,7 +123,7 @@ public abstract class ExternalChildResourcesImpl<
      * @param name the name of the external child resource
      * @param key the key
      */
-    protected void prepareRemove(String name, String key) {
+    protected final void prepareRemove(String name, String key) {
         FluentModelTImpl childResource = find(key);
         if (childResource == null
                 || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
@@ -146,13 +152,18 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * Initializes the external child resource childCollection.
+     * Initializes the external child resource collection.
      */
-    protected void initializeCollection() {
+    protected void cacheCollection() {
         this.childCollection.clear();
         for (FluentModelTImpl childResource : this.listChildResources()) {
             this.childCollection.put(childResource.childResourceKey(), childResource);
         }
+    }
+
+    @Override
+    protected final boolean clearAfterCommit() {
+        return false;
     }
 
     /**

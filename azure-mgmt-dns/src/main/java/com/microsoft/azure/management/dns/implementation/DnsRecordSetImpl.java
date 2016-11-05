@@ -277,7 +277,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public String childResourceKey() {
-        return this.name() + "_" + this.recordType();
+        return this.name() + "_" + this.recordType().toString();
     }
 
     @Override

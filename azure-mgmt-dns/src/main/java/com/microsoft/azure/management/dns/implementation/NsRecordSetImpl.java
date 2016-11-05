@@ -14,12 +14,12 @@ import java.util.List;
 class NsRecordSetImpl
         extends DnsRecordSetImpl
         implements NsRecordSet {
-    NsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    NsRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static NsRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new NsRecordSetImpl(parentDnsZone,
+    static NsRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new NsRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.NS.toString())
@@ -45,8 +45,8 @@ class NsRecordSetImpl
                 resource.withNsRecords(new ArrayList<NsRecord>());
             }
 
-            for (NsRecord recordToAdd : this.inner().nsRecords()) {
-                resource.nsRecords().add(recordToAdd);
+            for (NsRecord record : this.inner().nsRecords()) {
+                resource.nsRecords().add(record);
             }
             this.inner().nsRecords().clear();
         }

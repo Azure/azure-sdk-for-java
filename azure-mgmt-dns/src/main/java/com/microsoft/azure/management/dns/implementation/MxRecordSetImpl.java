@@ -14,12 +14,12 @@ import java.util.List;
 class MxRecordSetImpl
         extends DnsRecordSetImpl
         implements MxRecordSet {
-    MxRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    MxRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static MxRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new MxRecordSetImpl(parentDnsZone,
+    static MxRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new MxRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.MX.toString())
@@ -42,9 +42,7 @@ class MxRecordSetImpl
                 resource.withMxRecords(new ArrayList<MxRecord>());
             }
 
-            for (MxRecord recordToAdd : this.inner().mxRecords()) {
-                resource.mxRecords().add(recordToAdd);
-            }
+            resource.mxRecords().addAll(this.inner().mxRecords());
             this.inner().mxRecords().clear();
         }
 

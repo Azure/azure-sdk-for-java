@@ -14,12 +14,12 @@ import java.util.List;
 class ARecordSetImpl
         extends DnsRecordSetImpl
         implements ARecordSet {
-    ARecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    ARecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static ARecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new ARecordSetImpl(parentDnsZone,
+    static ARecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new ARecordSetImpl(parent,
                 new RecordSetInner()
                     .withName(name)
                     .withType(RecordType.A.toString())
@@ -29,13 +29,13 @@ class ARecordSetImpl
 
     @Override
     public List<String> ipv4Addresses() {
-        List<String> ipv6Addresses = new ArrayList<>();
-        if (this.inner().aaaaRecords() != null) {
+        List<String> ipv4Addresses = new ArrayList<>();
+        if (this.inner().aRecords() != null) {
             for (ARecord aRecord : this.inner().aRecords()) {
-                ipv6Addresses.add(aRecord.ipv4Address());
+                ipv4Addresses.add(aRecord.ipv4Address());
             }
         }
-        return Collections.unmodifiableList(ipv6Addresses);
+        return Collections.unmodifiableList(ipv4Addresses);
     }
 
     @Override
@@ -45,9 +45,7 @@ class ARecordSetImpl
                 resource.withARecords(new ArrayList<ARecord>());
             }
 
-            for (ARecord recordToAdd : this.inner().aRecords()) {
-                resource.aRecords().add(recordToAdd);
-            }
+            resource.aRecords().addAll(this.inner().aRecords());
             this.inner().aRecords().clear();
         }
 

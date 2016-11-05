@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Base class for externalized child resource collection abstract implementation.
+ * Base class for cached {@link ExternalChildResourcesCachedImpl} and non-cached {@link ExternalChildResourcesNonCachedImpl}
+ * externalized child resource collection.
  * (Internal use only)
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
@@ -64,7 +65,7 @@ public abstract class ExternalChildResourceCollectionImpl<
      * Commits the changes in the external child resource childCollection.
      * <p/>
      * This method returns an observable stream, its observer's onNext will be called for each successfully
-     * committed resource followed by 'one call to onCompleted' or one call to onError with a
+     * committed resource followed by one call to 'onCompleted' or one call to 'onError' with a
      * {@link CompositeException } containing the list of exceptions where each exception describes the reason
      * for failure of a resource commit.
      *
@@ -181,6 +182,9 @@ public abstract class ExternalChildResourceCollectionImpl<
                 updateStream).doOnTerminate(new Action0() {
             @Override
             public void call() {
+                if (clearAfterCommit()) {
+                    self.childCollection.clear();
+                }
                 if (exceptionsList.isEmpty()) {
                     aggregatedErrorStream.onCompleted();
                 } else {
@@ -238,4 +242,9 @@ public abstract class ExternalChildResourceCollectionImpl<
     protected ParentImplT parent() {
         return parent;
     }
+
+    /**
+     * @return true if the child resource collection needs to be cleared after the commit.
+     */
+    protected abstract boolean clearAfterCommit();
 }

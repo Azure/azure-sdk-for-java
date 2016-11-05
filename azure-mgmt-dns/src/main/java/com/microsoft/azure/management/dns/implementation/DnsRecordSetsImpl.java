@@ -2,17 +2,17 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.DnsRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalNonInlineChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesNonCachedImpl;
 
 /**
  * Represents an record set collection associated with a Dns zone.
  */
 class DnsRecordSetsImpl extends
-        ExternalNonInlineChildResourcesImpl<DnsRecordSetImpl,
-                                DnsRecordSet,
-                                RecordSetInner,
-                                DnsZoneImpl,
-                                DnsZone> {
+        ExternalChildResourcesNonCachedImpl<DnsRecordSetImpl,
+                                        DnsRecordSet,
+                                        RecordSetInner,
+                                        DnsZoneImpl,
+                                        DnsZone> {
     private final RecordSetsInner client;
 
     /**
@@ -122,5 +122,9 @@ class DnsRecordSetsImpl extends
 
     void withoutTxtRecordSet(String name) {
         prepareRemove(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+    }
+
+    final void clearPendingOperations() {
+        this.childCollection.clear();
     }
 }

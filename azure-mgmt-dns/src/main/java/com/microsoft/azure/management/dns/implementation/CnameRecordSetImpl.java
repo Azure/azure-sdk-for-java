@@ -10,12 +10,12 @@ import com.microsoft.azure.management.dns.RecordType;
 class CnameRecordSetImpl
         extends DnsRecordSetImpl
         implements CnameRecordSet {
-    CnameRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    CnameRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static CnameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new CnameRecordSetImpl(parentDnsZone,
+    static CnameRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new CnameRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.CNAME.toString())

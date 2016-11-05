@@ -15,12 +15,12 @@ import java.util.List;
 class TxtRecordSetImpl
         extends DnsRecordSetImpl
         implements TxtRecordSet {
-    TxtRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    TxtRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static TxtRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new TxtRecordSetImpl(parentDnsZone,
+    static TxtRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new TxtRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.TXT.toString())
@@ -43,9 +43,7 @@ class TxtRecordSetImpl
                 resource.withTxtRecords(new ArrayList<TxtRecord>());
             }
 
-            for (TxtRecord recordToAdd : this.inner().txtRecords()) {
-                resource.txtRecords().add(recordToAdd);
-            }
+            resource.txtRecords().addAll(this.inner().txtRecords());
             this.inner().txtRecords().clear();
         }
 

@@ -14,12 +14,12 @@ import java.util.List;
 class SrvRecordSetImpl
         extends DnsRecordSetImpl
         implements SrvRecordSet {
-    SrvRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
-        super(parentDnsZone, innerModel, client);
+    SrvRecordSetImpl(final DnsZoneImpl parent, final RecordSetInner innerModel, final RecordSetsInner client) {
+        super(parent, innerModel, client);
     }
 
-    static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
-        return new SrvRecordSetImpl(parentDnsZone,
+    static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parent, final RecordSetsInner client) {
+        return new SrvRecordSetImpl(parent,
                 new RecordSetInner()
                         .withName(name)
                         .withType(RecordType.SRV.toString())
@@ -42,9 +42,7 @@ class SrvRecordSetImpl
                 resource.withSrvRecords(new ArrayList<SrvRecord>());
             }
 
-            for (SrvRecord recordToAdd : this.inner().srvRecords()) {
-                resource.srvRecords().add(recordToAdd);
-            }
+            resource.srvRecords().addAll(this.inner().srvRecords());
             this.inner().srvRecords().clear();
         }
 
