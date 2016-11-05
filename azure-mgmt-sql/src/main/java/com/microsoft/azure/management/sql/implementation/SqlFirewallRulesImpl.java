@@ -21,7 +21,7 @@ import rx.Observable;
  * Implementation for SQLElasticPools and its parent interfaces.
  */
 @LangDefinition
-public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
+class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlFirewallRule,
             SqlFirewallRuleImpl,
             ServerFirewallRuleInner,
