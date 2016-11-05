@@ -13,7 +13,7 @@ import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
 
 /**
- * Implementation of SqlServer.FirewallRules, which enables the creating the firewall rules from the SQLServer directly.
+ * Implementation of SqlServer.ElasticPools, which enables the creating the elastic pools from the SQLServer directly.
  */
 public class ElasticPoolsImpl implements SqlServer.ElasticPools {
 

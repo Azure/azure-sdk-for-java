@@ -48,11 +48,15 @@ public interface SqlServer extends
      */
     FirewallRules firewallRules();
 
-
     /**
      * @return returns entry point to manage ElasticPools in SqlServer.
      */
     ElasticPools elasticPools();
+
+    /**
+     * @return entry point to manage Databases in SqlServer.
+     */
+    Databases databases();
 
     /**
      * Entry point to access FirewallRules from the SQL Server.
@@ -90,14 +94,14 @@ public interface SqlServer extends
     }
 
     /**
-     * Entry point to access FirewallRules from the SQL Server.
+     * Entry point to access ElasticPools from the SQL Server.
      */
     interface ElasticPools {
         /**
          * Gets a particular elastic pool.
          *
          * @param elasticPoolName name of the elastic pool to get
-         * @return Returns the elastic pool rule with in the SQL Server
+         * @return Returns the elastic pool with in the SQL Server
          */
         SqlElasticPool get(String elasticPoolName);
 
@@ -122,6 +126,41 @@ public interface SqlServer extends
          * @param elasticPoolName name of the elastic pool to delete
          */
         void delete(String elasticPoolName);
+    }
+
+    /**
+     * Entry point to access ElasticPools from the SQL Server.
+     */
+    interface Databases {
+        /**
+         * Gets a particular sql database.
+         *
+         * @param databaseName name of the sql database to get
+         * @return Returns the database with in the SQL Server
+         */
+        SqlDatabase get(String databaseName);
+
+        /**
+         * Creates a new database in SQL Server.
+         *
+         * @param databaseName name of the database to be created
+         * @return Returns a stage to specify arguments of the database
+         */
+        SqlDatabase.DefinitionStages.Blank define(String databaseName);
+
+        /**
+         * Returns all the databases for the server.
+         *
+         * @return list of databases for the server.
+         */
+        PagedList<SqlDatabase> list();
+
+        /**
+         * Delete specified database in the server.
+         *
+         * @param databaseName name of the database to delete
+         */
+        void delete(String databaseName);
     }
 
     /**************************************************************

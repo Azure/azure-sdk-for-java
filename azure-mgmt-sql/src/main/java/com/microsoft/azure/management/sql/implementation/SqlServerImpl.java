@@ -17,7 +17,7 @@ import rx.functions.Func1;
  * Implementation for SqlServer and its parent interfaces.
  */
 @LangDefinition
-public class SqlServerImpl
+class SqlServerImpl
         extends
             GroupableResourceImpl<
                     SqlServer,
@@ -30,14 +30,18 @@ public class SqlServerImpl
             SqlServer.Update {
     private final ServersInner innerCollection;
     private final ElasticPoolsInner elasticPoolsInner;
+    private final DatabasesInner databasesInner;
 
     protected SqlServerImpl(String name,
                             ServerInner innerObject,
                             ServersInner innerCollection,
-                            SqlServerManager manager, ElasticPoolsInner elasticPoolsInner) {
+                            SqlServerManager manager,
+                            ElasticPoolsInner elasticPoolsInner,
+                            DatabasesInner databasesInner) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.elasticPoolsInner = elasticPoolsInner;
+        this.databasesInner = databasesInner;
     }
 
     @Override
@@ -86,6 +90,11 @@ public class SqlServerImpl
     @Override
     public ElasticPools elasticPools() {
         return new ElasticPoolsImpl(this.elasticPoolsInner, this.myManager, this.resourceGroupName(), this.name(), this.region());
+    }
+
+    @Override
+    public Databases databases() {
+        return new DatabasesImpl(this.databasesInner, myManager, this.resourceGroupName(), this.name(), this.region());
     }
 
     @Override
