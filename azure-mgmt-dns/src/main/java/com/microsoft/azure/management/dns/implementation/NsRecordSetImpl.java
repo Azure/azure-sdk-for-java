@@ -2,6 +2,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.NsRecord;
 import com.microsoft.azure.management.dns.NsRecordSet;
+import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,15 @@ class NsRecordSetImpl
         implements NsRecordSet {
     NsRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static NsRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new NsRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName(name)
+                        .withType(RecordType.NS.toString())
+                        .withNsRecords(new ArrayList<NsRecord>()),
+                client);
     }
 
     @Override

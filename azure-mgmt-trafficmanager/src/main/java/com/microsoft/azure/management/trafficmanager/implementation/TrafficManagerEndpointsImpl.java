@@ -24,10 +24,10 @@ import java.util.Map;
  */
 class TrafficManagerEndpointsImpl extends
         ExternalChildResourcesImpl<TrafficManagerEndpointImpl,
-                TrafficManagerEndpoint,
-                EndpointInner,
-                TrafficManagerProfileImpl,
-                TrafficManagerProfile> {
+                                TrafficManagerEndpoint,
+                                EndpointInner,
+                                TrafficManagerProfileImpl,
+                                TrafficManagerProfile> {
     private final EndpointsInner client;
 
     /**

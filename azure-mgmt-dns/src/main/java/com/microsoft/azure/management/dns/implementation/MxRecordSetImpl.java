@@ -2,6 +2,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.MxRecord;
 import com.microsoft.azure.management.dns.MxRecordSet;
+import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,15 @@ class MxRecordSetImpl
         implements MxRecordSet {
     MxRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static MxRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new MxRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName(name)
+                        .withType(RecordType.MX.toString())
+                        .withMxRecords(new ArrayList<MxRecord>()),
+                client);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.AaaaRecord;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
+import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,15 @@ class AaaaRecordSetImpl
 
     AaaaRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static AaaaRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new AaaaRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName(name)
+                        .withType(RecordType.AAAA.toString())
+                        .withAaaaRecords(new ArrayList<AaaaRecord>()),
+                client);
     }
 
     @Override

@@ -93,6 +93,13 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     public abstract Observable<Void> deleteAsync();
 
     /**
+     * @return the key of this child resource in the collection maintained by ExternalChildResourcesImpl
+     */
+    public String childResourceKey() {
+        return name();
+    }
+
+    /**
      * The possible operation pending on a child resource in-memory.
      */
     public enum PendingOperation {

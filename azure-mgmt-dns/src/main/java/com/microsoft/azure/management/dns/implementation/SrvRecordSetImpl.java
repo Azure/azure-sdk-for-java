@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.SrvRecordSet;
 
@@ -15,6 +16,15 @@ class SrvRecordSetImpl
         implements SrvRecordSet {
     SrvRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static SrvRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new SrvRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName(name)
+                        .withType(RecordType.SRV.toString())
+                        .withSrvRecords(new ArrayList<SrvRecord>()),
+                client);
     }
 
     @Override

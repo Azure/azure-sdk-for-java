@@ -2,6 +2,7 @@ package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.PtrRecord;
 import com.microsoft.azure.management.dns.PtrRecordSet;
+import com.microsoft.azure.management.dns.RecordType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,15 @@ class PtrRecordSetImpl
         implements PtrRecordSet {
     PtrRecordSetImpl(final DnsZoneImpl parentDnsZone, final RecordSetInner innerModel, final RecordSetsInner client) {
         super(parentDnsZone, innerModel, client);
+    }
+
+    static PtrRecordSetImpl newRecordSet(final String name, final DnsZoneImpl parentDnsZone, final RecordSetsInner client) {
+        return new PtrRecordSetImpl(parentDnsZone,
+                new RecordSetInner()
+                        .withName(name)
+                        .withType(RecordType.PTR.toString())
+                        .withPtrRecords(new ArrayList<PtrRecord>()),
+                client);
     }
 
     @Override
