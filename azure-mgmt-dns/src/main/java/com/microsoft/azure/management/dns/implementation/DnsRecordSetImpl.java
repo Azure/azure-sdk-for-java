@@ -300,8 +300,12 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsZoneImpl attach() {
-        // TODO add record
         return this.parent();
+    }
+
+    @Override
+    public String childResourceKey() {
+        return this.name() + "_" + this.recordType();
     }
 
     @Override

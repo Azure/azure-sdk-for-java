@@ -93,7 +93,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
     public abstract Observable<Void> deleteAsync();
 
     /**
-     * @return the key of this child resource in the collection maintained by ExternalChildResourcesImpl
+     * @return the key of this child resource in the collection maintained by ExternalChildResourceCollectionImpl
      */
     public String childResourceKey() {
         return name();
