@@ -18,7 +18,7 @@ import org.junit.Assert;
 import java.util.Map;
 
 /**
- * Test of virtual network management.
+ * Test of traffic manager management.
  */
 public class TestTrafficManager extends TestTemplate<TrafficManagerProfile, TrafficManagerProfiles> {
 

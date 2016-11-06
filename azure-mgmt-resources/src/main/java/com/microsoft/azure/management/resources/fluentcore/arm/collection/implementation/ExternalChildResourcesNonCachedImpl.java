@@ -47,9 +47,9 @@ public abstract class ExternalChildResourcesNonCachedImpl<
         if (childResource != null) {
             throw new IllegalArgumentException(pendingOperationMessage(model.name(), model.childResourceKey()));
         }
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
-        this.childCollection.put(model.childResourceKey(), childResource);
-        return childResource;
+        model.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        this.childCollection.put(model.childResourceKey(), model);
+        return model;
     }
 
     /**
@@ -63,9 +63,9 @@ public abstract class ExternalChildResourcesNonCachedImpl<
         if (childResource != null) {
             throw new IllegalArgumentException(pendingOperationMessage(model.name(), model.childResourceKey()));
         }
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
-        this.childCollection.put(model.childResourceKey(), childResource);
-        return childResource;
+        model.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
+        this.childCollection.put(model.childResourceKey(), model);
+        return model;
     }
 
     /**
@@ -78,8 +78,8 @@ public abstract class ExternalChildResourcesNonCachedImpl<
         if (childResource != null) {
             throw new IllegalArgumentException(pendingOperationMessage(model.name(), model.childResourceKey()));
         }
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
-        this.childCollection.put(model.childResourceKey(), childResource);
+        model.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
+        this.childCollection.put(model.childResourceKey(), model);
     }
 
     @Override

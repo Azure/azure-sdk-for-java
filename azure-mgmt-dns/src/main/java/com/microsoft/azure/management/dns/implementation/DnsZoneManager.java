@@ -53,7 +53,7 @@ public class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientI
      */
     public interface Configurable extends AzureConfigurable<Configurable> {
         /**
-         * Creates an instance of DnsZoneManager that exposes traffic manager management API entry points.
+         * Creates an instance of DnsZoneManager that exposes Dns zone API entry points.
          *
          * @param credentials the credentials to use
          * @param subscriptionId the subscription UUID
@@ -81,7 +81,7 @@ public class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientI
     }
 
     /**
-     * @return entry point to Dns zone manager profile management
+     * @return entry point to Dns zone manager zone management
      */
     public DnsZones zones() {
         if (this.zones == null) {

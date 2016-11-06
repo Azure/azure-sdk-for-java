@@ -5,6 +5,7 @@ import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.dns.DnsZones;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
+import rx.functions.Func1;
 
 /**
  * Implementation of {@link DnsZones}.
@@ -42,13 +43,18 @@ class DnsZonesImpl extends GroupableResourcesImpl<
 
     @Override
     public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        this.innerCollection.deleteAsync(groupName, name);
-        return Observable.just(null);
+        return this.innerCollection.deleteAsync(groupName, name)
+            .map(new Func1<ZoneDeleteResultInner, Void>() {
+                @Override
+                public Void call(ZoneDeleteResultInner zoneDeleteResultInner) {
+                    return null;
+                }
+            });
     }
 
     @Override
     public DnsZoneImpl define(String name) {
-        return wrapModel(name);
+        return setDefaults(wrapModel(name));
     }
 
     @Override
@@ -67,5 +73,11 @@ class DnsZonesImpl extends GroupableResourcesImpl<
                 this.innerCollection,
                 this.recordSetsClient,
                 this.myManager);
+    }
+
+    private DnsZoneImpl setDefaults(DnsZoneImpl dnsZone) {
+        // Zone location must be 'global' irrespective of region of the resource group it resides.
+        dnsZone.inner().withLocation("global");
+        return dnsZone;
     }
 }

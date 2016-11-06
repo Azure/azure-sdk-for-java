@@ -14,6 +14,10 @@ class DnsRecordSetsImpl extends
                                         DnsZoneImpl,
                                         DnsZone> {
     private final RecordSetsInner client;
+    /**
+     * The default record set ttl in seconds.
+     */
+    private final long defaultTtlInSeconds = 3600;
 
     /**
      * Creates new DnsRecordSetsImpl.
@@ -27,37 +31,37 @@ class DnsRecordSetsImpl extends
     }
 
     DnsRecordSetImpl defineARecordSet(String name) {
-        return prepareDefine(ARecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(ARecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl defineAaaaRecordSet(String name) {
-        return prepareDefine(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(AaaaRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     void withCnameRecordSet(String name, String alias) {
         CnameRecordSetImpl recordSet = CnameRecordSetImpl.newRecordSet(name, this.parent(), this.client);
         recordSet.inner().cnameRecord().withCname(alias);
-        prepareDefine(recordSet);
+        setDefaults(prepareDefine(recordSet.withTimeToLive(defaultTtlInSeconds)));
     }
 
     DnsRecordSetImpl defineMxRecordSet(String name) {
-        return prepareDefine(MxRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(MxRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl defineNsRecordSet(String name) {
-        return prepareDefine(NsRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(NsRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl definePtrRecordSet(String name) {
-        return prepareDefine(PtrRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(PtrRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl defineSrvRecordSet(String name) {
-        return prepareDefine(SrvRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(SrvRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl defineTxtRecordSet(String name) {
-        return prepareDefine(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client));
+        return setDefaults(prepareDefine(TxtRecordSetImpl.newRecordSet(name, this.parent(), this.client)));
     }
 
     DnsRecordSetImpl updateARecordSet(String name) {
@@ -126,5 +130,9 @@ class DnsRecordSetsImpl extends
 
     final void clearPendingOperations() {
         this.childCollection.clear();
+    }
+
+    private DnsRecordSetImpl setDefaults(DnsRecordSetImpl recordSet) {
+        return recordSet.withTimeToLive(defaultTtlInSeconds);
     }
 }
