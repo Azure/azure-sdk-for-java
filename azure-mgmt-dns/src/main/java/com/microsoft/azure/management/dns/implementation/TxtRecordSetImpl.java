@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.dns.implementation;
 
 import com.microsoft.azure.management.dns.RecordType;
-import com.microsoft.azure.management.dns.SrvRecord;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 

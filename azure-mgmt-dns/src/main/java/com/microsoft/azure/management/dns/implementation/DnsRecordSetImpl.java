@@ -308,7 +308,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     private RecordSetInner prepare(RecordSetInner resource) {
         if (this.recordSetRemoveInfo.metadata().size() > 0) {
             if (resource.metadata() != null) {
-                for(String key : this.recordSetRemoveInfo.metadata().keySet()) {
+                for (String key : this.recordSetRemoveInfo.metadata().keySet()) {
                     resource.metadata().remove(key);
                 }
             }
@@ -318,7 +318,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             if (resource.metadata() == null) {
                 resource.withMetadata(new LinkedHashMap<String, String>());
             }
-            for(Map.Entry<String, String> keyVal : this.inner().metadata().entrySet()) {
+            for (Map.Entry<String, String> keyVal : this.inner().metadata().entrySet()) {
                 resource.metadata().put(keyVal.getKey(), keyVal.getValue());
             }
             this.inner().metadata().clear();

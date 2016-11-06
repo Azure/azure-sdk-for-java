@@ -25,7 +25,7 @@ class CnameRecordSetImpl
 
     @Override
     public String canonicalName() {
-        if ( this.inner().cnameRecord() != null) {
+        if (this.inner().cnameRecord() != null) {
             return this.inner().cnameRecord().cname();
         }
         return null;

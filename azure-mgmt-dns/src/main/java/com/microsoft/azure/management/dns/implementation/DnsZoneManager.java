@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Ma
 /**
  * Entry point to Azure Dns zone manager management.
  */
-public class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientImpl> {
+public final class DnsZoneManager extends Manager<DnsZoneManager, DnsManagementClientImpl> {
     // Collections
     private DnsZones zones;
 
