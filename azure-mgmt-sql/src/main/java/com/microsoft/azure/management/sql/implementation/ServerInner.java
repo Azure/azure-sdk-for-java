@@ -32,13 +32,13 @@ public class ServerInner extends Resource {
 
     /**
      * Administrator username for the server. Can only be specified when the
-     * server is being created.
+     * server is being created (and is required for creation).
      */
     @JsonProperty(value = "properties.administratorLogin")
     private String administratorLogin;
 
     /**
-     * The administrator login password.
+     * The administrator login password (required for server creation).
      */
     @JsonProperty(value = "properties.administratorLoginPassword")
     private String administratorLoginPassword;

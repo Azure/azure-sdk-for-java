@@ -64,7 +64,7 @@ public class ReplicationLinkInner extends SqlSubResource {
      * The percentage of seeding complete for the replication link.
      */
     @JsonProperty(value = "properties.percentComplete", access = JsonProperty.Access.WRITE_ONLY)
-    private String percentComplete;
+    private Integer percentComplete;
 
     /**
      * The replication state for the replication link. Possible values
@@ -132,7 +132,7 @@ public class ReplicationLinkInner extends SqlSubResource {
      *
      * @return the percentComplete value
      */
-    public String percentComplete() {
+    public Integer percentComplete() {
         return this.percentComplete;
     }
 
