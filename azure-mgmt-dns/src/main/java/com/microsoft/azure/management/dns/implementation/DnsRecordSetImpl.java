@@ -16,6 +16,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,14 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     @Override
     public long timeToLive() {
         return this.inner().tTL();
+    }
+
+    @Override
+    public Map<String, String> tags() {
+        if (this.inner().metadata() == null) {
+            return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
+        }
+        return Collections.unmodifiableMap(this.inner().metadata());
     }
 
     // Setters

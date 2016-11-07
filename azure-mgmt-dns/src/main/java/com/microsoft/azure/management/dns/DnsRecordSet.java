@@ -6,6 +6,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
+import java.util.Map;
+
 /**
  * An immutable client-side representation of a record set in Azure Dns Zone.
  */
@@ -22,6 +24,11 @@ public interface DnsRecordSet extends
      * @return TTL of the records in this record set
      */
     long timeToLive();
+
+    /**
+     * @return the tags associated with this record set.
+     */
+    Map<String, String> tags();
 
     /**
      * The entirety of a Dns zone record set definition as a part of parent definition.
