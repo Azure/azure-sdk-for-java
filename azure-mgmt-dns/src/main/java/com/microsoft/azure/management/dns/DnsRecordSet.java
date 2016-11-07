@@ -457,7 +457,7 @@ public interface DnsRecordSet extends
              * @param priority the priority for the mail exchange host, lower the value higher the priority
              * @return the next stage of the record set definition
              */
-            WithMxRecordMailExchangeOrAttachable withMailExchange(String mailExchangeHostName, int priority);
+            WithMxRecordMailExchangeOrAttachable<ParentT> withMailExchange(String mailExchangeHostName, int priority);
         }
 
         /**

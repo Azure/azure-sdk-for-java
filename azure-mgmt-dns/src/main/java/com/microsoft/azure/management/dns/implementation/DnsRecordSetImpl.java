@@ -230,6 +230,9 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
 
     @Override
     public DnsRecordSetImpl withTag(String key, String value) {
+        if (this.inner().metadata() == null) {
+            this.inner().withMetadata(new LinkedHashMap<String, String>());
+        }
         this.inner().metadata().put(key, value);
         return this;
     }
@@ -314,7 +317,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             }
             this.recordSetRemoveInfo.metadata().clear();
         }
-        if (this.inner().metadata().size() > 0) {
+        if (this.inner().metadata() != null && this.inner().metadata().size() > 0) {
             if (resource.metadata() == null) {
                 resource.withMetadata(new LinkedHashMap<String, String>());
             }
@@ -323,6 +326,12 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
             }
             this.inner().metadata().clear();
         }
+
+        if (this.inner().tTL() != null) {
+            resource.withTTL(this.inner().tTL());
+            this.inner().withTTL(null);
+        }
+
         return prepareForUpdate(resource);
     }
 

@@ -30,7 +30,7 @@ class NsRecordSetImpl
     @Override
     public List<String> nameServers() {
         List<String> nameServers = new ArrayList<>();
-        if (this.inner().aaaaRecords() != null) {
+        if (this.inner().nsRecords() != null) {
             for (NsRecord nsRecord : this.inner().nsRecords()) {
                 nameServers.add(nsRecord.nsdname());
             }

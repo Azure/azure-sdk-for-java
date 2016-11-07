@@ -17,6 +17,7 @@ import com.microsoft.azure.management.dns.SrvRecordSet;
 import com.microsoft.azure.management.dns.TxtRecord;
 import com.microsoft.azure.management.dns.TxtRecordSet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import org.junit.Assert;
 
 /**
  * Test of Dns management.
@@ -32,6 +33,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                 .defineARecordSet("www")
                     .withIpv4Address("23.96.104.40")
                     .withIpv4Address("24.97.105.41")
+                    .withTimeToLive(7200) // Overwrite default 3600 seconds
                     .attach()
                 .defineAaaaRecordSet("www")
                     .withIpv6Address("2001:0db8:85a3:0000:0000:8a2e:0370:7334")
@@ -72,11 +74,151 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                 .withTag("a", "aa")
                 .withTag("b", "bb")
                 .create();
+
+        // Check Dns zone properties
+        Assert.assertTrue(dnsZone.name().startsWith("www.contoso.com"));
+        Assert.assertTrue(dnsZone.nameServers().size() > 0); // Default '@' name servers
+        Assert.assertTrue(dnsZone.tags().size() == 2);
+
+        // Check SOA record - external child resource (created by default)
+        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
+        Assert.assertTrue(soaRecordSet.name().startsWith("@"));
+        SoaRecord soaRecord = soaRecordSet.record();
+        Assert.assertNotNull(soaRecord);
+
+        // Check explicitly created external child resources [A, AAAA, MX, NS, TXT, SRV, PTR, CNAME]
+        //
+
+        // Check A records
+        PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
+        Assert.assertTrue(aRecordSets.size() == 1);
+        Assert.assertTrue(aRecordSets.get(0).timeToLive() == 7200);
+
+        // Check AAAA records
+        PagedList<AaaaRecordSet> aaaaRecordSets = dnsZone.aaaaRecordSets().list();
+        Assert.assertTrue(aaaaRecordSets.size() == 1);
+        Assert.assertTrue(aaaaRecordSets.get(0).name().startsWith("www"));
+        Assert.assertTrue(aaaaRecordSets.get(0).ipv6Addresses().size() == 2);
+
+        // Check MX records
+        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        Assert.assertTrue(mxRecordSets.size() == 1);
+        MxRecordSet mxRecordSet = mxRecordSets.get(0);
+        Assert.assertNotNull(mxRecordSet);
+        Assert.assertTrue(mxRecordSet.name().startsWith("email"));
+        Assert.assertTrue(mxRecordSet.records().size() == 2);
+        for (MxRecord mxRecord : mxRecordSet.records()) {
+            Assert.assertTrue(mxRecord.exchange().startsWith("mail.contoso-mail-exchange1.com")
+                    || mxRecord.exchange().startsWith("mail.contoso-mail-exchange2.com"));
+            Assert.assertTrue(mxRecord.preference() == 1
+                    || mxRecord.preference() == 2);
+        }
+
+        // Check NS records
+        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        Assert.assertTrue(nsRecordSets.size() == 2); // One created above with name 'partners' + the default '@'
+
+        // Check TXT records
+        PagedList<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
+        Assert.assertTrue(txtRecordSets.size() == 2);
+
+        // Check SRV records
+        PagedList<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
+        Assert.assertTrue(srvRecordSets.size() == 1);
+
+        // Check PTR records
+        PagedList<PtrRecordSet> ptrRecordSets = dnsZone.ptrRecordSets().list();
+        Assert.assertTrue(ptrRecordSets.size() == 2);
+
+        // Check CNAME records
+        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        Assert.assertTrue(cnameRecordSets.size() == 2);
         return dnsZone;
     }
 
     @Override
     public DnsZone updateResource(DnsZone dnsZone) throws Exception {
+        dnsZone.update()
+                .withoutTxtRecordSet("www")
+                .withoutCnameRecordSet("userguide")
+                .withCnameRecordSet("help", "doc.contoso.com")
+                .updateNsRecordSet("partners")
+                    .withoutNameServer("ns4-05.azure-dns.info")
+                    .withNameServer("ns4-06.azure-dns.info")
+                    .parent()
+                .updateARecordSet("www")
+                    .withoutIpv4Address("23.96.104.40")
+                    .withIpv4Address("23.96.104.42")
+                    .parent()
+                .updateSrvRecordSet("_sip._tcp")
+                    .withoutRecord("bigbox.contoso-service.com", 5060, 10, 60)
+                    .withRecord("mainbox.contoso-service.com", 5060, 10, 60)
+                    .parent()
+                .updateSoaRecord()
+                    .withNegativeResponseCachingTimeToLiveInSeconds(600)
+                    .withTimeToLive(7200)
+                    .parent()
+                .defineMxRecordSet("email-internal")
+                    .withMailExchange("mail.contoso-mail-exchange1.com", 1)
+                    .withMailExchange("mail.contoso-mail-exchange2.com", 2)
+                    .attach()
+                .apply();
+
+        // Check TXT records
+        PagedList<TxtRecordSet> txtRecordSets = dnsZone.txtRecordSets().list();
+        Assert.assertEquals(txtRecordSets.size(), 1);
+
+        // Check CNAME records
+        PagedList<CnameRecordSet> cnameRecordSets = dnsZone.cnameRecordSets().list();
+        Assert.assertEquals(cnameRecordSets.size(), 2);
+        for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
+            Assert.assertTrue(cnameRecordSet.canonicalName().startsWith("doc.contoso.com"));
+            Assert.assertTrue(cnameRecordSet.name().startsWith("documents") || cnameRecordSet.name().startsWith("help"));
+        }
+
+        // Check NS records
+        PagedList<NsRecordSet> nsRecordSets = dnsZone.nsRecordSets().list();
+        Assert.assertTrue(nsRecordSets.size() == 2); // One created above with name 'partners' + the default '@'
+        for (NsRecordSet nsRecordSet : nsRecordSets) {
+            Assert.assertTrue(nsRecordSet.name().startsWith("partners") || nsRecordSet.name().startsWith("@"));
+            if (nsRecordSet.name().startsWith("partners")) {
+                Assert.assertEquals(nsRecordSet.nameServers().size(), 4);
+                for (String nameServer : nsRecordSet.nameServers()) {
+                    Assert.assertFalse(nameServer.startsWith("ns4-05.azure-dns.info"));
+                }
+            }
+        }
+
+        // Check A records
+        PagedList<ARecordSet> aRecordSets = dnsZone.aRecordSets().list();
+        Assert.assertEquals(aRecordSets.size(), 1);
+        ARecordSet aRecordSet = aRecordSets.get(0);
+        Assert.assertEquals(aRecordSet.ipv4Addresses().size(), 2);
+        for (String ipV4Address : aRecordSet.ipv4Addresses()) {
+            Assert.assertFalse(ipV4Address.startsWith("23.96.104.40"));
+        }
+
+        // Check SRV records
+        PagedList<SrvRecordSet> srvRecordSets = dnsZone.srvRecordSets().list();
+        Assert.assertTrue(srvRecordSets.size() == 1);
+        SrvRecordSet srvRecordSet = srvRecordSets.get(0);
+        Assert.assertTrue(srvRecordSet.records().size() == 4);
+        for (SrvRecord srvRecord : srvRecordSet.records()) {
+            Assert.assertFalse(srvRecord.target().startsWith("bigbox.contoso-service.com"));
+        }
+
+        // Check SOA Records
+        SoaRecordSet soaRecordSet = dnsZone.getSoaRecordSet();
+        Assert.assertTrue(soaRecordSet.name().startsWith("@"));
+        SoaRecord soaRecord = soaRecordSet.record();
+        Assert.assertNotNull(soaRecord);
+        Assert.assertEquals(soaRecord.minimumTtl(), Long.valueOf(600));
+        Assert.assertTrue(soaRecordSet.timeToLive() == 7200);
+
+        // Check MX records
+        PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
+        Assert.assertTrue(mxRecordSets.size() == 2);
+
         return dnsZone;
     }
 
