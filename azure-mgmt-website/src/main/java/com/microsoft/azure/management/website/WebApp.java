@@ -17,7 +17,6 @@ import com.microsoft.azure.management.website.implementation.SiteConfigInner;
 import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,7 +38,7 @@ public interface WebApp extends
     /**
      * @return hostnames associated with web app
      */
-    List<String> hostNames();
+    Set<String> hostNames();
 
     /**
      * @return name of repository site
@@ -76,12 +75,12 @@ public interface WebApp extends
     /**
      * @return list of SSL states used to manage the SSL bindings for site's hostnames
      */
-    List<HostNameSslState> hostNameSslStates();
+    Map<String, HostNameSslState> hostNameSslStates();
 
     /**
-     * @return The serverFarmId property
+     * @return The resource ID of the app service plan
      */
-    String serverFarmId();
+    String appServicePlanId();
 
     /**
      * @return Last time web app was modified in UTC
@@ -97,12 +96,12 @@ public interface WebApp extends
      * @return list of Azure Traffic manager host names associated with web
      * app
      */
-    List<String> trafficManagerHostNames();
+    Set<String> trafficManagerHostNames();
 
     /**
      * @return whether web app is deployed as a premium app
      */
-    boolean premiumAppDeployed();
+    boolean isPremiumApp();
 
     /**
      * @return whether to stop SCM (KUDU) site when the web app is
@@ -144,11 +143,11 @@ public interface WebApp extends
     boolean hostNamesDisabled();
 
     /**
-     * @return list of comma separated IP addresses that this web app uses for
+     * @return list of IP addresses that this web app uses for
      * outbound connections. Those can be used when configuring firewall
      * rules for databases accessed by this web app.
      */
-    String outboundIpAddresses();
+    Set<String> outboundIpAddresses();
 
     /**
      * @return size of a function container

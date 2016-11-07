@@ -53,20 +53,36 @@ class WebAppImpl
             WebApp.Update {
 
     private final WebAppsInner client;
+    private Set<String> hostNamesSet;
+    private Set<String> enabledHostNamesSet;
+    private Set<String> trafficManagerHostNamesSet;
+    private Set<String> outboundIpAddressesSet;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
-    private Set<String> enabledHostNamesSet;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
-        this.hostNameSslStateMap = new HashMap<>();
+        normalizeProperties();
+    }
+
+    private WebAppImpl normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
+        if (inner().hostNames() != null) {
+            this.hostNamesSet = Sets.newHashSet(inner().hostNames());
+        }
         if (inner().enabledHostNames() != null) {
             this.enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
         }
-        if (innerObject.hostNameSslStates() != null) {
-            for (HostNameSslState hostNameSslState : innerObject.hostNameSslStates()) {
+        if (inner().trafficManagerHostNames() != null) {
+            this.trafficManagerHostNamesSet = Sets.newHashSet(inner().trafficManagerHostNames());
+        }
+        if (inner().outboundIpAddresses() != null) {
+            this.outboundIpAddressesSet = Sets.newHashSet(inner().outboundIpAddresses().split(",[ ]*"));
+        }
+        this.hostNameSslStateMap = new HashMap<>();
+        if (inner().hostNameSslStates() != null) {
+            for (HostNameSslState hostNameSslState : inner().hostNameSslStates()) {
                 // Server returns null sometimes, invalid on update, so we set default
                 if (hostNameSslState.sslState() == null) {
                     hostNameSslState.withSslState(SslState.DISABLED);
@@ -74,6 +90,7 @@ class WebAppImpl
                 hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
             }
         }
+        return this;
     }
 
     @Override
@@ -82,8 +99,8 @@ class WebAppImpl
     }
 
     @Override
-    public List<String> hostNames() {
-        return inner().hostNames();
+    public Set<String> hostNames() {
+        return hostNamesSet;
     }
 
     @Override
@@ -115,12 +132,12 @@ class WebAppImpl
     }
 
     @Override
-    public List<HostNameSslState> hostNameSslStates() {
-        return inner().hostNameSslStates();
+    public Map<String, HostNameSslState> hostNameSslStates() {
+        return hostNameSslStateMap;
     }
 
     @Override
-    public String serverFarmId() {
+    public String appServicePlanId() {
         return inner().serverFarmId();
     }
 
@@ -135,12 +152,12 @@ class WebAppImpl
     }
 
     @Override
-    public List<String> trafficManagerHostNames() {
-        return inner().trafficManagerHostNames();
+    public Set<String> trafficManagerHostNames() {
+        return trafficManagerHostNamesSet;
     }
 
     @Override
-    public boolean premiumAppDeployed() {
+    public boolean isPremiumApp() {
         return inner().premiumAppDeployed();
     }
 
@@ -180,8 +197,8 @@ class WebAppImpl
     }
 
     @Override
-    public String outboundIpAddresses() {
-        return inner().outboundIpAddresses();
+    public Set<String> outboundIpAddresses() {
+        return outboundIpAddressesSet;
     }
 
     @Override
@@ -392,7 +409,6 @@ class WebAppImpl
 
     @Override
     public Observable<WebApp> createResourceAsync() {
-        final WebAppImpl self = this;
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
@@ -429,19 +445,7 @@ class WebAppImpl
                     @Override
                     public WebApp call(SiteInner siteInner) {
                         setInner(siteInner);
-                        if (inner().enabledHostNames() != null) {
-                            enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
-                        }
-                        if (siteInner.hostNameSslStates() != null) {
-                            for (HostNameSslState hostNameSslState : siteInner.hostNameSslStates()) {
-                                // Server returns null sometimes, invalid on update, so we set default
-                                if (hostNameSslState.sslState() == null) {
-                                    hostNameSslState.withSslState(SslState.DISABLED);
-                                }
-                                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
-                            }
-                        }
-                        return self;
+                        return normalizeProperties();
                     }
                 });
     }
