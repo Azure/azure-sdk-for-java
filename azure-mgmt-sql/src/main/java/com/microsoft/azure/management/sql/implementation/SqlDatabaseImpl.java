@@ -35,7 +35,6 @@ public class SqlDatabaseImpl
             SqlDatabase.Update,
         IndependentChild.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
     private final DatabasesInner innerCollection;
-    private Creatable<SqlElasticPool> sqlElasticPoolCreatable;
     private String elasticPoolCreatableKey;
 
     protected SqlDatabaseImpl(String name,
@@ -86,8 +85,8 @@ public class SqlDatabaseImpl
     }
 
     @Override
-    public String maxSizeBytes() {
-        return this.inner().maxSizeBytes();
+    public long maxSizeBytes() {
+        return Long.parseLong(this.inner().maxSizeBytes());
     }
 
     @Override
@@ -148,17 +147,23 @@ public class SqlDatabaseImpl
 
     @Override
     protected Observable<SqlDatabase> createChildResourceAsync() {
-        final SqlDatabase self = this;
+        final SqlDatabaseImpl self = this;
         if (this.elasticPoolCreatableKey != null) {
             SqlElasticPool sqlElasticPool = (SqlElasticPool) this.createdResource(this.elasticPoolCreatableKey);
             withExistingElasticPool(sqlElasticPool);
         }
+        if (this.inner().elasticPoolName() != null && !this.inner().elasticPoolName().isEmpty()) {
+            this.inner().withEdition(new DatabaseEditions(""));
+            this.inner().withRequestedServiceObjectiveName(new ServiceObjectiveName(""));
+            this.inner().withRequestedServiceObjectiveId(null);
+        }
+
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<DatabaseInner, SqlDatabase>() {
             @Override
             public SqlDatabase call(DatabaseInner databaseInner) {
                 setInner(databaseInner);
-
+                self.elasticPoolCreatableKey = null;
                 return self;
             }
         });
@@ -177,6 +182,12 @@ public class SqlDatabaseImpl
     }
 
     @Override
+    public SqlDatabaseImpl withoutExistingElasticPool() {
+        this.inner().withElasticPoolName("");
+        return this;
+    }
+
+    @Override
     public SqlDatabaseImpl withExistingElasticPool(String elasticPoolName) {
         this.inner().withElasticPoolName(elasticPoolName);
         return this;
@@ -189,40 +200,61 @@ public class SqlDatabaseImpl
 
     @Override
     public SqlDatabaseImpl withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool) {
-        sqlElasticPoolCreatable = sqlElasticPool;
+        if (this.elasticPoolCreatableKey == null) {
+            this.elasticPoolCreatableKey = sqlElasticPool.key();
+            this.addCreatableDependency(sqlElasticPool);
+        }
         return this;
     }
 
     @Override
-    public Creatable<SqlDatabase> withExistingSqlServer(String groupName, String sqlServerName) {
-        if (sqlElasticPoolCreatable != null) {
-            handleElasticPoolCreatable(sqlElasticPoolCreatable);
-        }
-        return withExistingParentResource(groupName, sqlServerName);
+    public SqlDatabaseImpl withMaxSizeBytes(long maxSizeBytes) {
+        this.inner().withMaxSizeBytes(Long.toString(maxSizeBytes));
+        return this;
     }
 
     @Override
-    public Creatable<SqlDatabase> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable) {
-        if (sqlElasticPoolCreatable != null) {
-            handleElasticPoolCreatable(sqlElasticPoolCreatable);
-        }
-        return withNewParentResource(sqlServerCreatable);
+    public SqlDatabaseImpl withServiceObjective(ServiceObjectiveName serviceLevelObjective) {
+        this.inner().withRequestedServiceObjectiveName(serviceLevelObjective);
+        this.inner().withRequestedServiceObjectiveId(null);
+        return this;
     }
-
-    @Override
-    public Creatable<SqlDatabase> withExistingSqlServer(SqlServer existingSqlServer) {
-        if (sqlElasticPoolCreatable != null) {
-            handleElasticPoolCreatable(sqlElasticPoolCreatable);
+/*
+    private UUID getServiceLevelObjectiveId(ServiceObjectiveName serviceObjectiveName)
+    {
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S0.toString()))
+        {
+            return UUID.fromString("dd6d99bb-f193-4ec1-86f2-43d3bccbc49c");
         }
-        return withExistingParentResource(existingSqlServer);
-    }
-
-
-    void handleElasticPoolCreatable(Creatable<SqlElasticPool> sqlElasticPoolCreatable) {
-        if (this.elasticPoolCreatableKey == null) {
-            this.elasticPoolCreatableKey = sqlElasticPoolCreatable.key();
-            this.addCreatableDependency(sqlElasticPoolCreatable);
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S1.toString()))
+        {
+            return UUID.fromString("f1173c43-91bd-4aaa-973c-54e79e15235b");
         }
-        this.sqlElasticPoolCreatable = null;
-    }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S2.toString()))
+        {
+            return UUID.fromString("1b1ebd4d-d903-4baa-97f9-4ea675f5e928");
+        }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S3.toString()))
+        {
+            return UUID.fromString("455330e1-00cd-488b-b5fa-177c226f28b7");
+        }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P1.toString()))
+        {
+            return UUID.fromString("7203483a-c4fb-4304-9e9f-17c71c904f5d");
+        }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P2.toString()))
+        {
+            return UUID.fromString("789681b8-ca10-4eb0-bdf2-e0b050601b40");
+        }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P3.toString()))
+        {
+            return UUID.fromString("a7d1b92d-c987-4375-b54d-2b1d0e0f5bb0");
+        }
+        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P3.toString()))
+        {
+            return UUID.fromString("a7c4c615-cfb1-464b-b252-925be0a19446");
+        }
+
+        return null;
+    }*/
 }

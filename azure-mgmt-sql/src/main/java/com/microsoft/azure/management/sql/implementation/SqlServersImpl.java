@@ -16,12 +16,16 @@ public class SqlServersImpl
         implements SqlServers {
 
     private final ElasticPoolsInner elasticPoolsInner;
+    private DatabasesInner databasesInner;
 
     protected SqlServersImpl(
             ServersInner innerCollection,
-            ElasticPoolsInner elasticPoolsInner, SqlServerManager manager) {
+            ElasticPoolsInner elasticPoolsInner,
+            DatabasesInner databasesInner,
+            SqlServerManager manager) {
         super(innerCollection, manager);
         this.elasticPoolsInner = elasticPoolsInner;
+        this.databasesInner = databasesInner;
     }
 
     @Override
@@ -37,7 +41,7 @@ public class SqlServersImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager, this.elasticPoolsInner);
+                super.myManager, this.elasticPoolsInner, this.databasesInner);
     }
 
     @Override
@@ -61,7 +65,7 @@ public class SqlServersImpl
                 inner.name(),
                 inner,
                 this.innerCollection,
-                this.myManager, this.elasticPoolsInner);
+                this.myManager, this.elasticPoolsInner, this.databasesInner);
     }
 
     @Override
