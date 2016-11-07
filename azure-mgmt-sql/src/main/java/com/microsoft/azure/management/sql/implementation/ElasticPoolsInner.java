@@ -351,7 +351,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL elastic pool.
+     * Gets information about an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -363,7 +363,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL elastic pool.
+     * Gets information about an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -376,7 +376,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL elastic pool.
+     * Gets information about an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -393,7 +393,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL elastic pool.
+     * Gets information about an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -497,7 +497,7 @@ public final class ElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<ElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ElasticPoolInner>> result = listByServerDelegate(response);
+                        ServiceResponse<PageImpl<ElasticPoolInner>> result = listByServerDelegate(response);
                         ServiceResponse<List<ElasticPoolInner>> clientResponse = new ServiceResponse<List<ElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -507,9 +507,9 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ElasticPoolInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ElasticPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ElasticPoolInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ElasticPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -583,7 +583,7 @@ public final class ElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<ElasticPoolActivityInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ElasticPoolActivityInner>> result = listActivityDelegate(response);
+                        ServiceResponse<PageImpl<ElasticPoolActivityInner>> result = listActivityDelegate(response);
                         ServiceResponse<List<ElasticPoolActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolActivityInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -593,9 +593,9 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ElasticPoolActivityInner>> listActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolActivityInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ElasticPoolActivityInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ElasticPoolActivityInner>> listActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolActivityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ElasticPoolActivityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -669,7 +669,7 @@ public final class ElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
+                        ServiceResponse<PageImpl<ElasticPoolDatabaseActivityInner>> result = listDatabaseActivityDelegate(response);
                         ServiceResponse<List<ElasticPoolDatabaseActivityInner>> clientResponse = new ServiceResponse<List<ElasticPoolDatabaseActivityInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -679,15 +679,15 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ElasticPoolDatabaseActivityInner>> listDatabaseActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ElasticPoolDatabaseActivityInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ElasticPoolDatabaseActivityInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ElasticPoolDatabaseActivityInner>> listDatabaseActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ElasticPoolDatabaseActivityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ElasticPoolDatabaseActivityInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -700,7 +700,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -714,7 +714,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -732,7 +732,7 @@ public final class ElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
+     * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -847,7 +847,7 @@ public final class ElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<DatabaseInner>> result = listDatabasesDelegate(response);
+                        ServiceResponse<PageImpl<DatabaseInner>> result = listDatabasesDelegate(response);
                         ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -857,9 +857,9 @@ public final class ElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<DatabaseInner>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<DatabaseInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<DatabaseInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DatabaseInner>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DatabaseInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DatabaseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

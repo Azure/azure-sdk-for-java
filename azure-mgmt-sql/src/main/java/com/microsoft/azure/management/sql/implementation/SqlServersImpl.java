@@ -11,7 +11,7 @@ import rx.Observable;
  * Implementation for SqlServers and its parent interfaces.
  */
 @LangDefinition
-public class SqlServersImpl
+class SqlServersImpl
         extends GroupableResourcesImpl<SqlServer, SqlServerImpl, ServerInner, ServersInner, SqlServerManager>
         implements SqlServers {
 

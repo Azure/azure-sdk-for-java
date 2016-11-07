@@ -76,7 +76,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -88,7 +88,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -101,7 +101,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -118,7 +118,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -161,7 +161,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -174,7 +174,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -188,7 +188,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -206,7 +206,7 @@ public final class RecommendedElasticPoolsInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
+     * Gets information about an Azure SQL Database inside of an Azure SQL Recommended Elastic Pool.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -314,7 +314,7 @@ public final class RecommendedElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<RecommendedElasticPoolInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<RecommendedElasticPoolInner>> result = listDelegate(response);
+                        ServiceResponse<PageImpl<RecommendedElasticPoolInner>> result = listDelegate(response);
                         ServiceResponse<List<RecommendedElasticPoolInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -324,9 +324,9 @@ public final class RecommendedElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<RecommendedElasticPoolInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<RecommendedElasticPoolInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<RecommendedElasticPoolInner>>() { }.getType())
+    private ServiceResponse<PageImpl<RecommendedElasticPoolInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RecommendedElasticPoolInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendedElasticPoolInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -400,7 +400,7 @@ public final class RecommendedElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<DatabaseInner>> result = listDatabasesDelegate(response);
+                        ServiceResponse<PageImpl<DatabaseInner>> result = listDatabasesDelegate(response);
                         ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -410,9 +410,9 @@ public final class RecommendedElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<DatabaseInner>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<DatabaseInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<DatabaseInner>>() { }.getType())
+    private ServiceResponse<PageImpl<DatabaseInner>> listDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DatabaseInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DatabaseInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -486,7 +486,7 @@ public final class RecommendedElasticPoolsInner {
                 @Override
                 public Observable<ServiceResponse<List<RecommendedElasticPoolMetricInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<RecommendedElasticPoolMetricInner>> result = listMetricsDelegate(response);
+                        ServiceResponse<PageImpl<RecommendedElasticPoolMetricInner>> result = listMetricsDelegate(response);
                         ServiceResponse<List<RecommendedElasticPoolMetricInner>> clientResponse = new ServiceResponse<List<RecommendedElasticPoolMetricInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -496,9 +496,9 @@ public final class RecommendedElasticPoolsInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<RecommendedElasticPoolMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<RecommendedElasticPoolMetricInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<RecommendedElasticPoolMetricInner>>() { }.getType())
+    private ServiceResponse<PageImpl<RecommendedElasticPoolMetricInner>> listMetricsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RecommendedElasticPoolMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<RecommendedElasticPoolMetricInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

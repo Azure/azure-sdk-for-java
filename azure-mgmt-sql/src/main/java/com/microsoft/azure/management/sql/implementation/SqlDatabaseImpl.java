@@ -24,7 +24,7 @@ import java.util.UUID;
 /**
  * Implementation for SqlDatabase and its parent interfaces.
  */
-public class SqlDatabaseImpl
+class SqlDatabaseImpl
         extends IndependentChildResourceImpl<
                             SqlDatabase,
                             SqlServer,
