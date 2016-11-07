@@ -371,7 +371,81 @@ public interface ApplicationGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of an application gateway definition allowing to modify the SKU.
+         * The stage of an application gateway definition allowing to add a backend.
+         */
+        interface WithBackend {
+            /**
+             * Begins the definition of a new application gateway backend to be attached to the gateway.
+             * @param name a unique name for the backend
+             * @return the first stage of the backend definition
+             */
+            ApplicationGatewayBackend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
+
+            /**
+             * Adds an IP address to the default backend.
+             * <p>
+             * A backend with the name "default" will be created if needed.
+             * @param ipAddress an IP address
+             * @return the next stage of the update
+             */
+            Update withBackendIpAddress(String ipAddress);
+
+            /**
+             * Adds an FQDN (fully qualified domain name) to the default backend.
+             * <p>
+             * A backend with the name "default" will be created if needed.
+             * @param fqdn a fully qualified domain name
+             * @return the next stage of the update
+             */
+            Update withBackendFqdn(String fqdn);
+
+            /**
+             * Adds an IP address to a backend.
+             * @param ipAddress an IP address
+             * @param backendName the name for the backend to add the address to
+             * @return the next stage of the update
+             */
+            Update withBackendIpAddress(String ipAddress, String backendName);
+
+            /**
+             * Adds an FQDN (fully qualified domain name) to a backend.
+             * @param fqdn a fully qualified domain name
+             * @param backendName the name for the backend to add the FQDN to
+             * @return the next stage of the update
+             */
+            Update withBackendFqdn(String fqdn, String backendName);
+
+            /**
+             * Ensures the specified fully qualified domain name (FQDN) is not associated with any backend.
+             * @param fqdn a fully qualified domain name (FQDN)
+             * @return the next stage of the update
+             */
+            Update withoutBackendFqdn(String fqdn);
+
+            /**
+             * Ensures the specified IP address is not associated with any backend.
+             * @param ipAddress an IP address
+             * @return the next stage of the update
+             */
+            Update withoutBackendIpAddress(String ipAddress);
+
+            /**
+             * Removes the specified backend from this application gateway.
+             * @param backendName the name of an existing backend on this application gateway
+             * @return the next stage of the update
+             */
+            Update withoutBackend(String backendName);
+
+            /**
+             * Begins the update of an existing backend on this application gateway.
+             * @param name the name of the backend
+             * @return the first stage of an update of the backend
+             */
+            ApplicationGatewayBackend.Update updateBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify the SKU.
          */
         interface WithSku {
             /**
@@ -392,6 +466,8 @@ public interface ApplicationGateway extends
      */
     interface Update extends
         Appliable<ApplicationGateway>,
-        Resource.UpdateWithTags<Update> {
+        Resource.UpdateWithTags<Update>,
+        UpdateStages.WithSku,
+        UpdateStages.WithBackend {
     }
 }

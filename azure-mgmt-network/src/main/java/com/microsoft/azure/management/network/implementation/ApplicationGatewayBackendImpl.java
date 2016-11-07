@@ -104,4 +104,36 @@ class ApplicationGatewayBackendImpl
         ensureAddresses().add(address);
         return this;
     }
+
+    @Override
+    public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+        final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
+        for (int i = 0; i < addresses.size(); i++) {
+            String curIpAddress = addresses.get(i).ipAddress();
+            if (curIpAddress != null && curIpAddress.equalsIgnoreCase(ipAddress)) {
+                addresses.remove(i);
+                break;
+            }
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendImpl withoutAddress(ApplicationGatewayBackendAddress address) {
+        ensureAddresses().remove(address);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendImpl withoutFqdn(String fqdn) {
+        final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
+        for (int i = 0; i < addresses.size(); i++) {
+            String curFqdn = addresses.get(i).fqdn();
+            if (curFqdn != null && curFqdn.equalsIgnoreCase(fqdn)) {
+                addresses.remove(i);
+                break;
+            }
+        }
+        return this;
+    }
 }

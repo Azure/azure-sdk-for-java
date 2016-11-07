@@ -544,4 +544,33 @@ class ApplicationGatewayImpl
     public ApplicationGatewaySslPolicy sslPolicy() {
         return this.inner().sslPolicy();
     }
+
+    @Override
+    public ApplicationGatewayImpl withoutBackendFqdn(String fqdn) {
+        for (ApplicationGatewayBackend backend : this.backends.values()) {
+            ApplicationGatewayBackendImpl backendImpl = (ApplicationGatewayBackendImpl) backend;
+            backendImpl.withoutFqdn(fqdn);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutBackendIpAddress(String ipAddress) {
+        for (ApplicationGatewayBackend backend : this.backends.values()) {
+            ApplicationGatewayBackendImpl backendImpl = (ApplicationGatewayBackendImpl) backend;
+            backendImpl.withoutIpAddress(ipAddress);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutBackend(String backendName) {
+        this.backends.remove(backendName);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendImpl updateBackend(String name) {
+        return (ApplicationGatewayBackendImpl) this.backends.get(name);
+    }
 }

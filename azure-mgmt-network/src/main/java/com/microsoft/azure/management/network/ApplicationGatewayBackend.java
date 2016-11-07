@@ -84,13 +84,53 @@ public interface ApplicationGatewayBackend extends
      * Grouping of application gateway backend update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an application gateway backed definition allowing to add an address to the backend.
+         */
+        interface WithAddress {
+            /**
+             * Adds the specified existing IP address to the backend.
+             * @param ipAddress an IP address
+             * @return the next stage of the update
+             */
+            Update withIpAddress(String ipAddress);
+
+            /**
+             * Adds the specified existing fully qualified domain name (FQDN) to the backend.
+             * @param fqdn a fully qualified domain name (FQDN)
+             * @return the next stage of the update
+             */
+            Update withFqdn(String fqdn);
+
+            /**
+             * Ensures the specified IP address is not associated with this backend.
+             * @param ipAddress an IP address
+             * @return the next stage of the update
+             */
+            Update withoutIpAddress(String ipAddress);
+
+            /**
+             * Ensure the specified address is not associated with this backend.
+             * @param address an existing address currently associated with the backend
+             * @return the next stage of the update
+             */
+            Update withoutAddress(ApplicationGatewayBackendAddress address);
+
+            /**
+             * Ensures the specified fully qualified domain name (FQDN) is not associated with this backend.
+             * @param fqdn a fully qualified domain name
+             * @return the next stage of the update
+             */
+            Update withoutFqdn(String fqdn);
+        }
     }
 
     /**
      * The entirety of an application gateway backend update as part of an application gateway update.
      */
     interface Update extends
-        Settable<ApplicationGateway.Update> {
+        Settable<ApplicationGateway.Update>,
+        UpdateStages.WithAddress {
     }
 
     /**
@@ -99,9 +139,29 @@ public interface ApplicationGatewayBackend extends
     interface UpdateDefinitionStages {
         /**
          * The first stage of an application gateway backend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the parent application gateway type
          */
         interface Blank<ParentT> extends WithAttach<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway backed definition allowing to add an address to the backend.
+         * @param <ParentT> the parent application gateway type
+         */
+        interface WithAddress<ParentT> {
+            /**
+             * Adds the specified existing IP address to the backend.
+             * @param ipAddress an IP address
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withIpAddress(String ipAddress);
+
+            /**
+             * Adds the specified existing fully qualified domain name (FQDN) to the backend.
+             * @param fqdn a fully qualified domain name (FQDN)
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFqdn(String fqdn);
         }
 
         /** The final stage of an application gateway backend definition.
@@ -111,7 +171,8 @@ public interface ApplicationGatewayBackend extends
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT> {
+            Attachable.InUpdate<ParentT>,
+            WithAddress<ParentT> {
         }
     }
 

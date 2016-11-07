@@ -132,11 +132,20 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway updateResource(ApplicationGateway resource) throws Exception {
             resource =  resource.update()
+                    .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                    .withoutBackendFqdn("www.microsoft.com")
+                    .withoutBackendIpAddress("11.1.1.1")
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .apply();
-            Assert.assertTrue(resource.tags().containsKey("tag1"));
 
+            Assert.assertTrue(resource.tags().containsKey("tag1"));
+            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
+            Assert.assertTrue(resource.sku().capacity() == 2);
+            Assert.assertTrue(resource.backends().get("backend2").addresses().size() == 0);
+            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
+            Assert.assertTrue(defaultBackend.addresses().size() == 1);
+            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
             return resource;
         }
     }
