@@ -162,7 +162,7 @@ var isMac = (process.platform.lastIndexOf('darwin') === 0);
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.17.0-Nightly20161010'; // default
+var autoRestVersion = '0.17.3-Nightly20161101'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

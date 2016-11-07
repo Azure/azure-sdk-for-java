@@ -6,6 +6,6 @@
 
 /**
  * This package contains the implementation classes for SqlManagementClient.
- * Composite Swagger for Azure Sql Database Client.
+ * The Azure SQL Database management API provides a RESTful set of web services that interact with Azure SQL Database services to manage your databases. The API enables users to create, retrieve, update, and delete databases.
  */
 package com.microsoft.azure.management.sql.implementation;

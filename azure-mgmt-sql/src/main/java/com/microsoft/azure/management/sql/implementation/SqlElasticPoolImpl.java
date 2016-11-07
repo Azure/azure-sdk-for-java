@@ -19,7 +19,7 @@ import rx.functions.Func1;
 /**
  * Implementation for SqlElasticPool and its parent interfaces.
  */
-public class SqlElasticPoolImpl
+class SqlElasticPoolImpl
         extends IndependentChildResourceImpl<
                             SqlElasticPool,
                             SqlServer,

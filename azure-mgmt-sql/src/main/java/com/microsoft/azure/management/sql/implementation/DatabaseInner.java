@@ -10,6 +10,7 @@ package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
 import java.util.UUID;
+import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import java.util.List;
@@ -60,6 +61,24 @@ public class DatabaseInner extends Resource {
      */
     @JsonProperty(value = "properties.earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime earliestRestoreDate;
+
+    /**
+     * Specifies the type of database to create. Possible values include:
+     * 'Copy', 'Default', 'NonReadableSecondary', 'OnlineSecondary',
+     * 'PointInTimeRestore', 'Recovery', 'Restore'.
+     */
+    @JsonProperty(value = "properties.createMode")
+    private CreateMode createMode;
+
+    /**
+     * Conditional.  Specifies the resource Id of the source database.  If
+     * createMode is not set to Default, then this value must be specified.
+     * The name of the source database must be the same.  NOTE: Collation,
+     * Edition, and MaxSizeBytes must remain the same while the link is
+     * active.  Values specified for these parameters will be ignored.
+     */
+    @JsonProperty(value = "properties.sourceDatabaseId")
+    private String sourceDatabaseId;
 
     /**
      * The edition of the Azure SQL Database.  The DatabaseEditions
@@ -217,6 +236,46 @@ public class DatabaseInner extends Resource {
      */
     public DateTime earliestRestoreDate() {
         return this.earliestRestoreDate;
+    }
+
+    /**
+     * Get the createMode value.
+     *
+     * @return the createMode value
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode value.
+     *
+     * @param createMode the createMode value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
+     * Get the sourceDatabaseId value.
+     *
+     * @return the sourceDatabaseId value
+     */
+    public String sourceDatabaseId() {
+        return this.sourceDatabaseId;
+    }
+
+    /**
+     * Set the sourceDatabaseId value.
+     *
+     * @param sourceDatabaseId the sourceDatabaseId value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSourceDatabaseId(String sourceDatabaseId) {
+        this.sourceDatabaseId = sourceDatabaseId;
+        return this;
     }
 
     /**

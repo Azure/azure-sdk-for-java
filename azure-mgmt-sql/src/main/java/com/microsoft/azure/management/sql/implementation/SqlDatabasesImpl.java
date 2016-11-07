@@ -21,7 +21,7 @@ import rx.Observable;
  * Implementation for SQLDatabases and its parent interfaces.
  */
 @LangDefinition
-public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
+class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             SqlDatabase,
             SqlDatabaseImpl,
             DatabaseInner,

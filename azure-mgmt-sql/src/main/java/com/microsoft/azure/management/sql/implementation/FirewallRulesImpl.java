@@ -14,7 +14,7 @@ import com.microsoft.azure.management.sql.SqlServer;
 /**
  * Implementation of SqlServer.FirewallRules, which enables the creating the firewall rules from the SQLServer directly.
  */
-public class FirewallRulesImpl implements SqlServer.FirewallRules {
+class FirewallRulesImpl implements SqlServer.FirewallRules {
 
     private final String resourceGroupName;
     private final String sqlServerName;
