@@ -27,8 +27,9 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
     public DnsZone createResource(DnsZones dnsZones) throws Exception {
         final Region region = Region.US_EAST;
         final String groupName = "rg" + this.testId;
+        final String topLevelDomain = "www.contoso" + this.testId + ".com";
 
-        DnsZone dnsZone = dnsZones.define("www.contoso.com")
+        DnsZone dnsZone = dnsZones.define(topLevelDomain)
                 .withNewResourceGroup(groupName, region)
                 .defineARecordSet("www")
                     .withIpv4Address("23.96.104.40")
@@ -76,7 +77,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                 .create();
 
         // Check Dns zone properties
-        Assert.assertTrue(dnsZone.name().startsWith("www.contoso.com"));
+        Assert.assertTrue(dnsZone.name().startsWith(topLevelDomain));
         Assert.assertTrue(dnsZone.nameServers().size() > 0); // Default '@' name servers
         Assert.assertTrue(dnsZone.tags().size() == 2);
 
@@ -218,6 +219,20 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         // Check MX records
         PagedList<MxRecordSet> mxRecordSets = dnsZone.mxRecordSets().list();
         Assert.assertTrue(mxRecordSets.size() == 2);
+
+        dnsZone.update()
+                .updateMxRecordSet("email")
+                    .withoutMailExchange("mail.contoso-mail-exchange2.com", 2)
+                    .withTag("c", "cc")
+                    .parent()
+                .withTag("d", "dd")
+                .apply();
+
+        Assert.assertTrue(dnsZone.tags().size() == 3);
+        // Check "mail" MX record
+        MxRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
+        Assert.assertTrue(mxRecordSet.records().size() == 1);
+        Assert.assertTrue(mxRecordSet.records().get(0).exchange().startsWith("mail.contoso-mail-exchange1.com"));
 
         return dnsZone;
     }

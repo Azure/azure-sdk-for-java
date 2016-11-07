@@ -51,9 +51,9 @@ class SrvRecordSetImpl
                 for (SrvRecord recordToRemove : this.recordSetRemoveInfo.srvRecords()) {
                     for (SrvRecord record : resource.srvRecords()) {
                         if (record.target().equalsIgnoreCase(recordToRemove.target())
-                                && (record.port() == recordToRemove.port())
-                                && (record.weight() == recordToRemove.weight())
-                                && (record.priority() == recordToRemove.priority())) {
+                                && (record.port().intValue() == recordToRemove.port().intValue())
+                                && (record.weight().intValue() == recordToRemove.weight().intValue())
+                                && (record.priority().intValue() == recordToRemove.priority().intValue())) {
                             resource.srvRecords().remove(record);
                             break;
                         }
