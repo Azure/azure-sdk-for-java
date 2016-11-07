@@ -9,7 +9,7 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.website.AppServicePlans;
-import com.microsoft.azure.management.website.CertificateOrder;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
 import com.microsoft.azure.management.website.CertificateOrders;
 import rx.Observable;
 import rx.functions.Func1;
@@ -19,8 +19,8 @@ import rx.functions.Func1;
  */
 class CertificateOrdersImpl
         extends GroupableResourcesImpl<
-        CertificateOrder,
-        CertificateOrderImpl,
+        AppServiceCertificateOrder,
+        AppServiceCertificateOrderImpl,
         AppServiceCertificateOrderInner,
         AppServiceCertificateOrdersInner,
         AppServiceManager>
@@ -31,7 +31,7 @@ class CertificateOrdersImpl
     }
 
     @Override
-    public CertificateOrder getByGroup(String groupName, String name) {
+    public AppServiceCertificateOrder getByGroup(String groupName, String name) {
         return wrapModel(innerCollection.get(groupName, name));
     }
 
@@ -47,25 +47,25 @@ class CertificateOrdersImpl
     }
 
     @Override
-    public PagedList<CertificateOrder> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceCertificateOrder> listByGroup(String resourceGroupName) {
         return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
     }
 
     @Override
-    protected CertificateOrderImpl wrapModel(String name) {
-        return new CertificateOrderImpl(name, new AppServiceCertificateOrderInner(), innerCollection, myManager);
+    protected AppServiceCertificateOrderImpl wrapModel(String name) {
+        return new AppServiceCertificateOrderImpl(name, new AppServiceCertificateOrderInner(), innerCollection, myManager);
     }
 
     @Override
-    protected CertificateOrderImpl wrapModel(AppServiceCertificateOrderInner inner) {
+    protected AppServiceCertificateOrderImpl wrapModel(AppServiceCertificateOrderInner inner) {
         if (inner == null) {
             return null;
         }
-        return new CertificateOrderImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServiceCertificateOrderImpl(inner.name(), inner, innerCollection, myManager);
     }
 
     @Override
-    public CertificateOrderImpl define(String name) {
+    public AppServiceCertificateOrderImpl define(String name) {
         return wrapModel(name);
     }
 }

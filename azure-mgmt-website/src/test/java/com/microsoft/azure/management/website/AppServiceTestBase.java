@@ -45,6 +45,6 @@ public abstract class AppServiceTestBase {
                 .withSubscription(System.getenv("subscription-id"));
 
         appServiceManager = AppServiceManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));
     }
 }

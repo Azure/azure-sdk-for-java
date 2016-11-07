@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.Certificate;
 import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.HostNameSslBinding;
@@ -29,6 +30,7 @@ class HostNameSslBindingImpl
         HostNameSslBinding.UpdateDefinition<WebApp.Update> {
 
     private Creatable<Certificate> newCertificate;
+    private Creatable<AppServiceCertificate> newCertificateOrder;
     private final AppServiceManager manager;
 
     HostNameSslBindingImpl(HostNameSslState inner, WebAppImpl parent, AppServiceManager manager) {
@@ -72,6 +74,30 @@ class HostNameSslBindingImpl
         return this;
     }
 
+//    @Override
+//    public HostNameSslBindingImpl withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears) {
+//        final String certificateName = name().replaceAll("[-.]", "");
+//        Observable<AppServiceCertificateOrder> orderObservable = manager.certificateOrders().define(certificateName)
+//                .withExistingResourceGroup(parent().resourceGroupName())
+//                .withHostName(name())
+//                .withSku(productType)
+//                .withValidYears(1)
+//                .createAsync();
+//        Observable<Vault> vaultObservable = manager.keyVaultManager().vaults().define(certificateName + "vault")
+//                .withRegion(parent().region())
+//                .withNewResourceGroup(parent().resourceGroupName())
+//                .defineAccessPolicy()
+//                    .forServicePrincipal("Microsoft.Azure.CertificateRegistration")
+//                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
+//                    .attach()
+//                .defineAccessPolicy()
+//                    .forServicePrincipal("Microsoft.Azure.WebSites")
+//                    .allowSecretPermissions(SecretPermissions.GET)
+//                    .attach()
+//                .createAsync();
+//        return this;
+//    }
+
     HostNameSslBindingImpl withCertificateThumbprint(String thumbprint) {
         inner().withThumbprint(thumbprint);
         return this;
@@ -91,5 +117,9 @@ class HostNameSslBindingImpl
 
     Creatable<Certificate> newCertificate() {
         return newCertificate;
+    }
+
+    Creatable<AppServiceCertificate> newCertificateOrder() {
+        return newCertificateOrder;
     }
 }

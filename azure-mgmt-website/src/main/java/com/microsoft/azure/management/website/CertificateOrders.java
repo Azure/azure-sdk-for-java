@@ -17,10 +17,10 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
  * Entry point for storage accounts management API.
  */
 public interface CertificateOrders extends
-        SupportsCreating<CertificateOrder.DefinitionStages.Blank>,
+        SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroup<CertificateOrder>,
-        SupportsGettingByGroup<CertificateOrder>,
-        SupportsGettingById<CertificateOrder>,
+        SupportsListingByGroup<AppServiceCertificateOrder>,
+        SupportsGettingByGroup<AppServiceCertificateOrder>,
+        SupportsGettingById<AppServiceCertificateOrder>,
         SupportsDeletingByGroup {
 }

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -14,16 +15,17 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.website.implementation.AppServiceCertificateInner;
 import com.microsoft.azure.management.website.implementation.AppServiceCertificateOrderInner;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.Map;
 
 /**
  * An immutable client-side representation of an Azure Web App.
  */
-public interface CertificateOrder extends
+public interface AppServiceCertificateOrder extends
         GroupableResource,
-        Refreshable<CertificateOrder>,
-        Updatable<CertificateOrder.Update>,
+        Refreshable<AppServiceCertificateOrder>,
+        Updatable<AppServiceCertificateOrder.Update>,
         Wrapper<AppServiceCertificateOrderInner> {
 
     /**
@@ -110,6 +112,10 @@ public interface CertificateOrder extends
      */
     DateTime expirationTime();
 
+    AppServiceCertificate createCertificate(String certificateName, Vault vault);
+
+    Observable<AppServiceCertificate> createCertificateAsync(String certificateName, Vault vault);
+
     /**************************************************************
      * Fluent interfaces to provision a App service plan
      **************************************************************/
@@ -155,7 +161,7 @@ public interface CertificateOrder extends
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends Creatable<CertificateOrder> {
+        interface WithCreate extends Creatable<AppServiceCertificateOrder> {
         }
     }
 

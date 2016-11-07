@@ -45,6 +45,9 @@ class HostNameBindingImpl
         super(name, parent, innerObject);
         this.client = client;
         this.fqdn = name;
+        if (name.contains("/")) {
+            this.fqdn = name.replace(parent.name() + "/", "");
+        }
     }
 
     @Override
@@ -98,7 +101,7 @@ class HostNameBindingImpl
     }
 
     @Override
-    public CustomHostNameDnsRecordType customHostNameDnsRecordType() {
+    public CustomHostNameDnsRecordType DnsRecordType() {
         return inner().customHostNameDnsRecordType();
     }
 
@@ -192,5 +195,16 @@ class HostNameBindingImpl
         inner().withHostNameType(HostNameType.VERIFIED);
         this.fqdn = normalizeHostNameBindingName(name(), domain);
         return this;
+    }
+
+    @Override
+    public String toString() {
+        String suffix;
+        if (azureResourceType() == AzureResourceType.TRAFFIC_MANAGER) {
+            suffix = ".trafficmanager.net";
+        } else {
+            suffix = ".azurewebsites.net";
+        }
+        return fqdn + ": " + DnsRecordType() + " " + azureResourceName() + suffix;
     }
 }

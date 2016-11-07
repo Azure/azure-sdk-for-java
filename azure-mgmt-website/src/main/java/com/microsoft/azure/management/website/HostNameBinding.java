@@ -48,7 +48,7 @@ public interface HostNameBinding
     /**
      * @return Custom DNS record type. Possible values include: 'CName', 'A'.
      */
-    CustomHostNameDnsRecordType customHostNameDnsRecordType();
+    CustomHostNameDnsRecordType DnsRecordType();
 
     /**
      * @return Host name type. Possible values include: 'Verified', 'Managed'.

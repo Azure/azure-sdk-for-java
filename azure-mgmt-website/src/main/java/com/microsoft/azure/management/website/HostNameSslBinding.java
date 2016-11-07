@@ -57,6 +57,8 @@ public interface HostNameSslBinding extends
 
         interface WithCertificate<ParentT> {
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
+//            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
+//            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
         }
 
         interface WithSslType<ParentT> {

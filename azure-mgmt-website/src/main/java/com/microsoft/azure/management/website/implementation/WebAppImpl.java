@@ -214,7 +214,7 @@ class WebAppImpl
         return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
             @Override
             public String apply(HostNameBinding input) {
-                return input.name().replaceAll("./", "");
+                return input.name().replace(name() + "/", "");
             }
         });
     }
@@ -310,7 +310,7 @@ class WebAppImpl
         if (hostNameSslBinding.newCertificate() != null) {
             final CertificateImpl certificateImpl = (CertificateImpl) hostNameSslBinding.newCertificate();
             // Convert creatable to apply thumbprint after creation
-            addCreatableDependency(new CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl>(
+            CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl> postCert = new CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl>(
                     certificateImpl.name(),
                     certificateImpl.inner()) {
                 @Override
@@ -333,7 +333,12 @@ class WebAppImpl
                 public Certificate refresh() {
                     return certificateImpl.refresh();
                 }
-            });
+            };
+            ((CertificateImpl) hostNameSslBinding.newCertificate()).creatorUpdatorTaskGroup().merge(postCert.creatorUpdatorTaskGroup());
+            addCreatableDependency(postCert);
+        }
+        if (hostNameSslBinding.newCertificateOrder() != null) {
+            addCreatableDependency(hostNameSslBinding.newCertificateOrder());
         }
         return this;
     }
@@ -387,6 +392,7 @@ class WebAppImpl
 
     @Override
     public Observable<WebApp> createResourceAsync() {
+        final WebAppImpl self = this;
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
@@ -419,7 +425,25 @@ class WebAppImpl
                         return client.getAsync(resourceGroupName(), site.name());
                     }
                 })
-                .map(innerToFluentMap(this));
+                .map(new Func1<SiteInner, WebApp>() {
+                    @Override
+                    public WebApp call(SiteInner siteInner) {
+                        setInner(siteInner);
+                        if (inner().enabledHostNames() != null) {
+                            enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
+                        }
+                        if (siteInner.hostNameSslStates() != null) {
+                            for (HostNameSslState hostNameSslState : siteInner.hostNameSslStates()) {
+                                // Server returns null sometimes, invalid on update, so we set default
+                                if (hostNameSslState.sslState() == null) {
+                                    hostNameSslState.withSslState(SslState.DISABLED);
+                                }
+                                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
+                            }
+                        }
+                        return self;
+                    }
+                });
     }
 
     @Override

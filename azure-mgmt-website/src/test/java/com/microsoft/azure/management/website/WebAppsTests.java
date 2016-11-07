@@ -40,7 +40,7 @@ public class WebAppsTests extends AppServiceTestBase {
                 .withManagedHostNameBindings(domain, "@")
                 .defineNewSSLBindingForHostName("javatestpr319.com")
                     .withPfxCertificateToUpload(new File("/Users/jianghlu/Documents/code/certs/javatestpr319_com.pfx"), "StrongPass!123")
-                    .withSniSSL()
+                    .withIpBasedSSL()
                     .attach()
                 .create();
 

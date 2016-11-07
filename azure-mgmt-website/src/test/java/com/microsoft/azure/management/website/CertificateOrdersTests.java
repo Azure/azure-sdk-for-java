@@ -30,21 +30,20 @@ public class CertificateOrdersTests extends AppServiceTestBase {
     @Test
     public void canCRUDCertificateOrder() throws Exception {
         // CREATE
-        CertificateOrder certificateOrder = appServiceManager.certificateOrders()
+        AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders()
                 .define(CERTIFICATE_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .withHostName("javatest319.com")
                 .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
                 .withValidYears(1)
-//                .withExistingKeyVault("/subscriptions/0b1f6471-1bf0-4dda-aec3-cb9272f09590/resourceGroups/javacsmrg905/providers/Microsoft.KeyVault/vaults/java-keyvault-905")
                 .create();
         Assert.assertNotNull(certificateOrder);
         // GET
         Assert.assertNotNull(appServiceManager.certificateOrders().getByGroup(RG_NAME, CERTIFICATE_NAME));
         // LIST
-        List<CertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByGroup(RG_NAME);
+        List<AppServiceCertificateOrder> certificateOrders = appServiceManager.certificateOrders().listByGroup(RG_NAME);
         boolean found = false;
-        for (CertificateOrder co : certificateOrders) {
+        for (AppServiceCertificateOrder co : certificateOrders) {
             if (CERTIFICATE_NAME.equals(co.name())) {
                 found = true;
                 break;
