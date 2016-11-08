@@ -6,42 +6,45 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.AppServicePlan;
-import com.microsoft.azure.management.website.CertificateOrder;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
 import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.ProvisioningState;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.Map;
 
 /**
  * The implementation for {@link AppServicePlan}.
  */
-class CertificateOrderImpl
+class AppServiceCertificateOrderImpl
         extends
         GroupableResourceImpl<
-                CertificateOrder,
+                AppServiceCertificateOrder,
                 AppServiceCertificateOrderInner,
-                CertificateOrderImpl,
+                AppServiceCertificateOrderImpl,
                 AppServiceManager>
         implements
-        CertificateOrder,
-        CertificateOrder.Definition,
-        CertificateOrder.Update {
+        AppServiceCertificateOrder,
+        AppServiceCertificateOrder.Definition,
+        AppServiceCertificateOrder.Update {
 
-    private final AppServiceCertificateOrdersInner client;
+    final AppServiceCertificateOrdersInner client;
 
-    CertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
+    AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
         this.withRegion("global");
     }
 
     @Override
-    public CertificateOrder refresh() {
+    public AppServiceCertificateOrder refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
     }
@@ -127,25 +130,46 @@ class CertificateOrderImpl
     }
 
     @Override
-    public CertificateOrderImpl withHostName(String hostName) {
+    public AppServiceCertificate createCertificate(String certificateName, Vault vault) {
+        return createCertificateAsync(certificateName, vault).toBlocking().single();
+    }
+
+    @Override
+    public Observable<AppServiceCertificate> createCertificateAsync(String certificateName, Vault vault) {
+        AppServiceCertificateInner certInner = new AppServiceCertificateInner();
+        certInner.withLocation(vault.regionName());
+        certInner.withKeyVaultId(vault.id());
+        certInner.withKeyVaultSecretName(certificateName.replace("_", ""));
+        final AppServiceCertificateOrderImpl self = this;
+        return client.beginCreateOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
+                .map(new Func1<AppServiceCertificateInner, AppServiceCertificate>() {
+                    @Override
+                    public AppServiceCertificate call(AppServiceCertificateInner appServiceCertificateInner) {
+                        return new AppServiceCertificateImpl(appServiceCertificateInner, self);
+                    }
+                });
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withHostName(String hostName) {
         inner().withDistinguishedName("CN=" + hostName);
         return this;
     }
 
     @Override
-    public CertificateOrderImpl withSku(CertificateProductType sku) {
+    public AppServiceCertificateOrderImpl withSku(CertificateProductType sku) {
         inner().withProductType(sku);
         return this;
     }
 
     @Override
-    public CertificateOrderImpl withValidYears(int years) {
+    public AppServiceCertificateOrderImpl withValidYears(int years) {
         inner().withValidityInYears(years);
         return this;
     }
 
     @Override
-    public Observable<CertificateOrder> createResourceAsync() {
+    public Observable<AppServiceCertificateOrder> createResourceAsync() {
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
     }

@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
+import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameType;
 import com.microsoft.azure.management.website.WebApp;
@@ -21,20 +22,32 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * A host name binding object.
  */
 class HostNameBindingImpl
-        extends ExternalChildResourceImpl<HostNameBinding, HostNameBindingInner, WebAppImpl, WebApp>
+        extends ExternalChildResourceImpl<HostNameBinding,
+                HostNameBindingInner,
+                WebAppImpl,
+                WebApp>
         implements
         Creatable<HostNameBinding>,
         HostNameBinding,
-        HostNameBinding.Definition<WebApp.Update> {
+        HostNameBinding.Definition<WebApp.DefinitionStages.WithHostNameSslBinding>,
+        HostNameBinding.UpdateDefinition<WebApp.Update> {
     private WebAppsInner client;
+    private String fqdn;
+
     HostNameBindingImpl(String name, HostNameBindingInner innerObject, WebAppImpl parent, WebAppsInner client) {
         super(name, parent, innerObject);
         this.client = client;
+        this.fqdn = name;
+        if (name.contains("/")) {
+            this.fqdn = name.replace(parent.name() + "/", "");
+        }
     }
 
     @Override
@@ -63,7 +76,7 @@ class HostNameBindingImpl
     }
 
     @Override
-    public String hostNameBindingName() {
+    public String hostName() {
         return inner().hostNameBindingName();
     }
 
@@ -88,7 +101,7 @@ class HostNameBindingImpl
     }
 
     @Override
-    public CustomHostNameDnsRecordType customHostNameDnsRecordType() {
+    public CustomHostNameDnsRecordType DnsRecordType() {
         return inner().customHostNameDnsRecordType();
     }
 
@@ -104,13 +117,12 @@ class HostNameBindingImpl
     }
 
     @Override
-    public HostNameBindingImpl withHostNameType(HostNameType hostNameType) {
-        inner().withHostNameType(hostNameType);
-        return this;
-    }
-
-    @Override
-    public HostNameBindingImpl withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
+    public HostNameBindingImpl withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
+        Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
+        Matcher matcher = pattern.matcher(fqdn);
+        if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
+            throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
+        }
         inner().withCustomHostNameDnsRecordType(hostNameDnsRecordType);
         return this;
     }
@@ -140,7 +152,7 @@ class HostNameBindingImpl
     @Override
     public Observable<HostNameBinding> createAsync() {
         final HostNameBinding self = this;
-        return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name(), inner())
+        return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), fqdn, inner())
                 .map(new Func1<HostNameBindingInner, HostNameBinding>() {
                     @Override
                     public HostNameBinding call(HostNameBindingInner hostNameBindingInner) {
@@ -158,5 +170,41 @@ class HostNameBindingImpl
     @Override
     public Observable<Void> deleteAsync() {
         return null;
+    }
+
+    private String normalizeHostNameBindingName(String hostname, String domainName) {
+        if (!hostname.endsWith(domainName)) {
+            hostname = hostname + "." + domainName;
+        }
+        if (hostname.startsWith("@")) {
+            hostname = hostname.replace("@.", "");
+        }
+        return hostname;
+    }
+
+    @Override
+    public HostNameBindingImpl withAzureManagedDomain(Domain domain) {
+        inner().withDomainId(domain.id());
+        inner().withHostNameType(HostNameType.MANAGED);
+        this.fqdn = normalizeHostNameBindingName(name(), domain.name());
+        return this;
+    }
+
+    @Override
+    public HostNameBindingImpl withThirdPartyDomain(String domain) {
+        inner().withHostNameType(HostNameType.VERIFIED);
+        this.fqdn = normalizeHostNameBindingName(name(), domain);
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        String suffix;
+        if (azureResourceType() == AzureResourceType.TRAFFIC_MANAGER) {
+            suffix = ".trafficmanager.net";
+        } else {
+            suffix = ".azurewebsites.net";
+        }
+        return fqdn + ": " + DnsRecordType() + " " + azureResourceName() + suffix;
     }
 }

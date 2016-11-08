@@ -38,10 +38,9 @@ public interface SqlServer extends
     ServerVersion version();
 
     /**
-     *
      * @return the administrator login user name for the SQL Server
      */
-    String adminLogin();
+    String administratorLogin();
 
     /**
      * @return returns entry point to manage FirewallRules in SqlServer.
@@ -173,8 +172,8 @@ public interface SqlServer extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithAdminUserName,
-        DefinitionStages.WithPassword,
+        DefinitionStages.WithAdministratorLogin,
+        DefinitionStages.WithAdministratorPassword,
         DefinitionStages.WithVersion,
         DefinitionStages.WithCreate {
     }
@@ -192,27 +191,45 @@ public interface SqlServer extends
         /**
          * A SQL Server definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAdminUserName> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAdministratorLogin> {
         }
 
         /**
-         * A SQL Server definition setting admin user name.
+         * A SQL Server definition setting administrator user name.
          */
-        interface WithAdminUserName {
-            WithPassword withAdminUserName(String adminUserName);
+        interface WithAdministratorLogin {
+            /**
+             * Sets the administrator login user name.
+             *
+             * @param administratorLogin administrator login user name
+             * @return Next stage of the SQL Server creation
+             */
+            WithAdministratorPassword withAdministratorLogin(String administratorLogin);
         }
 
         /**
          * A SQL Server definition setting admin user password.
          */
-        interface WithPassword {
-            WithCreate withPassword(String password);
+        interface WithAdministratorPassword {
+            /**
+             * Sets the administrator login password.
+             *
+             * @param administratorLoginPassword password for administrator login
+             * @return Next stage of the SQL Server creation
+             */
+            WithCreate withAdministratorPassword(String administratorLoginPassword);
         }
 
         /**
          * A SQL Server definition setting version.
          */
         interface WithVersion {
+            /**
+             * Sets the version of SQL Server to be created.
+             *
+             * @param version Version of SQL server to be created
+             * @return Next stage of the SQL Server creation
+             */
             WithCreate withVersion(ServerVersion version);
         }
 
@@ -232,7 +249,7 @@ public interface SqlServer extends
      */
     interface Update extends
             Appliable<SqlServer>,
-            UpdateStages.WithAdminPassword {
+            UpdateStages.WithAdministratorPassword {
     }
 
     /**
@@ -241,10 +258,16 @@ public interface SqlServer extends
     interface UpdateStages {
 
         /**
-         * A SQL Server definition setting administrator user password.
+         * A SQL Server definition setting admin user password.
          */
-        interface WithAdminPassword {
-            Update withPassword(String administratorPassword);
+        interface WithAdministratorPassword {
+            /**
+             * Sets the administrator login password.
+             *
+             * @param administratorLoginPassword password for administrator login
+             * @return Next stage of the SQL Server creation.
+             */
+            Update withAdministratorPassword(String administratorLoginPassword);
         }
     }
 }

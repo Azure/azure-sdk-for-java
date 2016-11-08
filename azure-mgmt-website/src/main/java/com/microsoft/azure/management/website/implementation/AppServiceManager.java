@@ -9,24 +9,28 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.website.AppServicePlans;
 import com.microsoft.azure.management.website.CertificateOrders;
 import com.microsoft.azure.management.website.Certificates;
+import com.microsoft.azure.management.website.Domains;
 import com.microsoft.azure.management.website.WebApps;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
  * Entry point to Azure storage resource management.
  */
 public final class AppServiceManager extends Manager<AppServiceManager, WebSiteManagementClientImpl> {
+    // Managers
+    private KeyVaultManager keyVaultManager;
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
     private CertificateOrders certificateOrders;
     private Certificates certificates;
+    private Domains domains;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -44,21 +48,22 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
-    public static AppServiceManager authenticate(ServiceClientCredentials credentials, String subscriptionId) {
+    public static AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
         return new AppServiceManager(AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .build(), subscriptionId);
+                .build(), credentials.getDomain(), subscriptionId);
     }
 
     /**
      * Creates an instance of StorageManager that exposes storage resource management API entry points.
      *
      * @param restClient the RestClient to be used for API calls.
+     * @param tenantId the tenant UUID
      * @param subscriptionId the subscription UUID
      * @return the StorageManager
      */
-    public static AppServiceManager authenticate(RestClient restClient, String subscriptionId) {
-        return new AppServiceManager(restClient, subscriptionId);
+    public static AppServiceManager authenticate(RestClient restClient, String tenantId, String subscriptionId) {
+        return new AppServiceManager(restClient, tenantId, subscriptionId);
     }
 
     /**
@@ -80,21 +85,29 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public AppServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-            return AppServiceManager.authenticate(buildRestClient(credentials), subscriptionId);
+            return AppServiceManager.authenticate(buildRestClient(credentials), credentials.getDomain(), subscriptionId);
         }
     }
 
-    private AppServiceManager(RestClient restClient, String subscriptionId) {
+    private AppServiceManager(RestClient restClient, String tenantId, String subscriptionId) {
         super(
                 restClient,
                 subscriptionId,
                 new WebSiteManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
+        keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
+    }
+
+    /**
+     * @return the key vault manager instance.
+     */
+    KeyVaultManager keyVaultManager() {
+        return keyVaultManager;
     }
 
     /**
      * @return the web app management API entry point
      */
-    public WebApps sites() {
+    public WebApps webApps() {
         if (webApps == null) {
             webApps = new WebAppsImpl(innerManagementClient.webApps(), this);
         }
@@ -129,5 +142,15 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
             certificates = new CertificatesImpl(innerManagementClient.certificates(), this);
         }
         return certificates;
+    }
+
+    /**
+     * @return the app service plan management API entry point
+     */
+    public Domains domains() {
+        if (domains == null) {
+            domains = new DomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
+        }
+        return domains;
     }
 }

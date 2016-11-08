@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.SqlDatabase;
@@ -219,42 +220,21 @@ class SqlDatabaseImpl
         this.inner().withRequestedServiceObjectiveId(null);
         return this;
     }
-/*
-    private UUID getServiceLevelObjectiveId(ServiceObjectiveName serviceObjectiveName)
-    {
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S0.toString()))
-        {
-            return UUID.fromString("dd6d99bb-f193-4ec1-86f2-43d3bccbc49c");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S1.toString()))
-        {
-            return UUID.fromString("f1173c43-91bd-4aaa-973c-54e79e15235b");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S2.toString()))
-        {
-            return UUID.fromString("1b1ebd4d-d903-4baa-97f9-4ea675f5e928");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.S3.toString()))
-        {
-            return UUID.fromString("455330e1-00cd-488b-b5fa-177c226f28b7");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P1.toString()))
-        {
-            return UUID.fromString("7203483a-c4fb-4304-9e9f-17c71c904f5d");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P2.toString()))
-        {
-            return UUID.fromString("789681b8-ca10-4eb0-bdf2-e0b050601b40");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P3.toString()))
-        {
-            return UUID.fromString("a7d1b92d-c987-4375-b54d-2b1d0e0f5bb0");
-        }
-        if (serviceObjectiveName.toString().equalsIgnoreCase(ServiceObjectiveName.P3.toString()))
-        {
-            return UUID.fromString("a7c4c615-cfb1-464b-b252-925be0a19446");
-        }
 
-        return null;
-    }*/
+    @Override
+    public SqlDatabaseImpl withSourceDatabaseId(String sourceDatabaseId) {
+        this.inner().withSourceDatabaseId(sourceDatabaseId);
+        return this;
+    }
+
+    @Override
+    public SqlDatabaseImpl withCreateMode(CreateMode createMode) {
+        this.inner().withCreateMode(createMode);
+        return this;
+    }
+
+    @Override
+    public SqlDatabaseImpl withoutSourceDatabaseId() {
+        return this;
+    }
 }

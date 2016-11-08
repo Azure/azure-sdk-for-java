@@ -151,7 +151,11 @@ public interface SqlDatabase extends
         DefinitionStages.WithCreate,
         DefinitionStages.WithCollation,
         DefinitionStages.WithEdition,
-        DefinitionStages.WithElasticPoolName {
+        DefinitionStages.WithElasticPoolName,
+        DefinitionStages.WithSourceDatabaseId,
+        DefinitionStages.WithCreateMode,
+        DefinitionStages.WithCreateWithLessOptions,
+        DefinitionStages.WithExistingDatabase {
     }
 
     /**
@@ -161,13 +165,95 @@ public interface SqlDatabase extends
         /**
          * The first stage of the SQL Server definition.
          */
-        interface Blank extends WithCreate {
+        interface Blank extends WithElasticPoolName {
+        }
+
+        /**
+         * The SQL Database definition to set the elastic pool for database.
+         */
+        interface WithElasticPoolName {
+            /**
+             * Specifies database to be created without elastic pool.
+             *
+             * @return The next stage of definition.
+             */
+            WithExistingDatabase withoutExistingElasticPool();
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             *
+             * @param elasticPoolName for the SQL Database
+             * @return The next stage of definition.
+             */
+            WithExistingDatabase withExistingElasticPool(String elasticPoolName);
+
+            /**
+             * Sets the existing elastic pool for the SQLDatabase.
+             *
+             * @param sqlElasticPool for the SQL Database
+             * @return The next stage of definition.
+             */
+            WithExistingDatabase withExistingElasticPool(SqlElasticPool sqlElasticPool);
+
+            /**
+             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
+             *
+             * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
+             * @return The next stage of definition.
+             */
+            WithExistingDatabase withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
+        }
+
+        /**
+         * The stage to decide whether using existing database or not.
+         */
+        interface WithExistingDatabase extends WithSourceDatabaseId {
+            /**
+             * Sets the creation flow to ask relevant question when source database is not specified.
+             *
+             * @return The next stage of definition.
+             */
+            WithCreate withoutSourceDatabaseId();
+        }
+
+        /**
+         * The SQL Database definition to set the source database id for database.
+         */
+        interface WithSourceDatabaseId {
+            /**
+             * Sets the resource if of source database for the SQL Database.
+             * Collation, Edition, and MaxSizeBytes must remain the same while the link is
+             * active. Values specified for these parameters will be ignored.
+             *
+             * @param sourceDatabaseId id of the source database
+             * @return The next stage of definition.
+             */
+            WithCreateMode withSourceDatabaseId(String sourceDatabaseId);
+        }
+
+        /**
+         * The SQL Database definition to set the create mode for database.
+         */
+        interface WithCreateMode {
+            /**
+             * Sets the create mode for the SQL Database.
+             *
+             * @param createMode create mode for the database, should not be default in this flow
+             * @return The next stage of definition.
+             */
+            WithCreateWithLessOptions withCreateMode(CreateMode createMode);
         }
 
         /**
          * The SQL Database definition to set the collation for database.
          */
         interface WithCollation {
+            /**
+             * Sets the collation for the SQL Database.
+             *
+             * @param collation collation to be set for database
+             * @return The next stage of definition
+             */
             WithCreate withCollation(String collation);
         }
 
@@ -177,8 +263,9 @@ public interface SqlDatabase extends
         interface WithEdition {
             /**
              * Sets the edition for the SQL Database.
-             * @param edition edition to be set for database.
-             * @return The next stage of definition.
+             *
+             * @param edition edition to be set for database
+             * @return The next stage of definition
              */
             WithCreate withEdition(DatabaseEditions edition);
         }
@@ -189,6 +276,7 @@ public interface SqlDatabase extends
         interface WithMaxSizeBytes {
             /**
              * Sets the max size in bytes for SQL Database.
+             *
              * @param maxSizeBytes max size of the Azure SQL Database expressed in bytes. Note: Only
              * the following sizes are supported (in addition to limitations being
              * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
@@ -204,36 +292,11 @@ public interface SqlDatabase extends
         interface WithServiceObjective {
             /**
              * Sets the service level objective for the SQL Database.
+             *
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the definition.
              */
             WithCreate withServiceObjective(ServiceObjectiveName serviceLevelObjective);
-        }
-
-        /**
-         * The SQL Database definition to set the elastic pool for database.
-         */
-        interface WithElasticPoolName {
-            /**
-             * Sets the existing elastic pool for the SQLDatabase.
-             * @param elasticPoolName for the SQL Database.
-             * @return The next stage of definition.
-             */
-            WithCreate withExistingElasticPool(String elasticPoolName);
-
-            /**
-             * Sets the existing elastic pool for the SQLDatabase.
-             * @param sqlElasticPool for the SQL Database.
-             * @return The next stage of definition.
-             */
-            WithCreate withExistingElasticPool(SqlElasticPool sqlElasticPool);
-
-            /**
-             * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
-             * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database.
-             * @return The next stage of definition.
-             */
-            WithCreate withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
         }
 
         /**
@@ -242,13 +305,21 @@ public interface SqlDatabase extends
          * specify.
          */
         interface WithCreate extends
+                WithMaxSizeBytes,
+                WithServiceObjective,
+                WithCollation,
+                WithEdition,
+                WithCreateWithLessOptions {
+        }
+
+        /**
+         * A SQL Database definition with sufficient inputs to create a new
+         * SQL Server in the cloud, but exposing additional optional inputs to
+         * specify.
+         */
+        interface WithCreateWithLessOptions extends
             Creatable<SqlDatabase>,
-            DefinitionWithTags<WithCreate>,
-            WithMaxSizeBytes,
-            WithServiceObjective,
-            WithElasticPoolName,
-            WithCollation,
-            WithEdition {
+            DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -273,10 +344,11 @@ public interface SqlDatabase extends
         interface WithEdition {
             /**
              * Sets the edition for the SQL Database.
-             * @param edition edition to be set for database.
+             *
+             * @param edition edition to be set for database
              * @return The next stage of definition.
              */
-            WithServiceObjective withEdition(DatabaseEditions edition);
+            Update withEdition(DatabaseEditions edition);
         }
 
         /**
@@ -300,6 +372,7 @@ public interface SqlDatabase extends
         interface WithServiceObjective {
             /**
              * Sets the service level objective for the SQL Database.
+             *
              * @param serviceLevelObjective service level objected for the SQL Database
              * @return The next stage of the definition.
              */
@@ -312,27 +385,31 @@ public interface SqlDatabase extends
         interface WithElasticPoolName {
             /**
              * Removes database from it's elastic pool.
+             *
              * @return The next stage of definition.
              */
             WithEdition withoutExistingElasticPool();
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
-             * @param elasticPoolName for the SQL Database.
+             *
+             * @param elasticPoolName for the SQL Database
              * @return The next stage of definition.
              */
             Update withExistingElasticPool(String elasticPoolName);
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
-             * @param sqlElasticPool for the SQL Database.
+             *
+             * @param sqlElasticPool for the SQL Database
              * @return The next stage of definition.
              */
             Update withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
             /**
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
-             * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database.
+             *
+             * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
              * @return The next stage of definition.
              */
             Update withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
