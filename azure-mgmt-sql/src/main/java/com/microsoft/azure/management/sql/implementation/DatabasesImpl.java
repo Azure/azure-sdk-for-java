@@ -32,7 +32,7 @@ public class DatabasesImpl implements SqlServer.Databases {
     @Override
     public SqlDatabase get(String databaseName) {
         return this.databases.getBySqlServer(this.resourceGroupName, this.sqlServerName, databaseName);
-    }
+}
 
     @Override
     public SqlDatabase.DefinitionStages.Blank define(String databaseName) {

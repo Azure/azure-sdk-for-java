@@ -78,7 +78,7 @@ class SqlServerImpl
     }
 
     @Override
-    public String adminLogin() {
+    public String administratorLogin() {
         return this.inner().administratorLogin();
     }
 
@@ -98,13 +98,13 @@ class SqlServerImpl
     }
 
     @Override
-    public SqlServerImpl withAdminUserName(String administratorUserName) {
-        this.inner().withAdministratorLogin(administratorUserName);
+    public SqlServerImpl withAdministratorLogin(String administratorLogin) {
+        this.inner().withAdministratorLogin(administratorLogin);
         return this;
     }
 
     @Override
-    public SqlServerImpl withPassword(String administratorLoginPassword) {
+    public SqlServerImpl withAdministratorPassword(String administratorLoginPassword) {
         this.inner().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
