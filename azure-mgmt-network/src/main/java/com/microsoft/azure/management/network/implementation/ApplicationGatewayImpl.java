@@ -417,12 +417,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withFrontendPort(int portNumber, String name) {
         if (name == null) {
-            // Auto-name the port if no name provided
-            if (this.inner().frontendPorts() != null) {
-                name = "port" + (this.inner().frontendPorts().size() + 1); // TODO: better uniqueness would be nice
-            } else {
-                name = "port1";
-            }
+            name = DEFAULT;
         }
 
         List<ApplicationGatewayFrontendPortInner> frontendPorts = this.inner().frontendPorts();
