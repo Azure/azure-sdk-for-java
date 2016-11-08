@@ -52,20 +52,20 @@ public interface ApplicationGatewayHttpListener extends
              * @param name the name of an existing frontend
              * @return the next stage of the definition
              */
-            WithPort<ParentT> withFrontend(String name);
+            WithFrontendPort<ParentT> withFrontend(String name);
         }
 
         /**
          * The stage of an application gateway HTTP listener definition allowing to specify the frontend port to associate the listener with.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithPort<ParentT> {
+        interface WithFrontendPort<ParentT> {
             /**
              * Associates the listener with an existing frontend port.
              * @param name the name of an existing frontend port
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPort(String name);
+            WithAttach<ParentT> withFrontendPort(String name);
         }
     }
 
@@ -76,7 +76,7 @@ public interface ApplicationGatewayHttpListener extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithFrontend<ParentT>,
-        DefinitionStages.WithPort<ParentT> {
+        DefinitionStages.WithFrontendPort<ParentT> {
     }
 
     /**

@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
+import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -221,16 +222,36 @@ public class AzureTests {
     }
 
     /**
-     * Tests the minimum Internet facing application gateway
+     * Tests a complex internal application gateway
      * @throws Exception
      */
     @Test
-    public void testAppGatewaysInternalMinimum() throws Exception {
+    public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway.PrivateComplex(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a minimal internal application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternalMinimal() throws Exception {
+        new TestApplicationGateway.PrivateMinimal(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testAppGatewaysExisting() {
+        String appGatewayId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/rg1478645787244/providers/Microsoft.Network/applicationGateways/ag1478645787244";
+        ApplicationGateway ag  = azure.applicationGateways().getById(appGatewayId);
+        TestApplicationGateway.printAppGateway(ag);
     }
 
     /**

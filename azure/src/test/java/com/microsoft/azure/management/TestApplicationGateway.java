@@ -50,6 +50,150 @@ public class TestApplicationGateway {
     /**
      * Internet-facing LB test with NAT pool test.
      */
+    public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+        private final PublicIpAddresses pips;
+        private final VirtualMachines vms;
+        private final Networks networks;
+
+        /**
+         * Tests minimal internal app gateways.
+         * @param pips public IPs
+         * @param vms virtual machines
+         * @param networks networks
+         */
+        public PrivateMinimal(
+                PublicIpAddresses pips,
+                VirtualMachines vms,
+                Networks networks) {
+            this.pips = pips;
+            this.vms = vms;
+            this.networks = networks;
+        }
+
+        @Override
+        public void print(ApplicationGateway resource) {
+            TestApplicationGateway.printAppGateway(resource);
+        }
+
+        @Override
+        public ApplicationGateway createResource(ApplicationGateways resources) throws Exception {
+            Network vnet = this.networks.define("net" + this.testId)
+                    .withRegion(REGION)
+                    .withNewResourceGroup(GROUP_NAME)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnet1", "10.0.0.0/29")
+                    .withSubnet("subnet2", "10.0.0.8/29")
+                    .create();
+
+            // Create an application gateway
+            ApplicationGateway appGateway = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                    .withRegion(REGION)
+                    .withExistingResourceGroup(GROUP_NAME)
+                    .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                    .withContainingSubnet(vnet, "subnet1")
+                    .withoutPublicFrontend()            // No public frontend
+                    .withPrivateFrontend()              // Private frontend
+                    .withFrontendPort(80)               // Frontend port
+                    .withBackendIpAddress("11.1.1.1")   // Backends
+                    .withBackendIpAddress("11.1.1.2")
+                    //TODO .withBackendPort(8080)
+                    .defineHttpConfiguration("default") // Backend HTTP config
+                        .withPort(8080)
+                        .attach()
+
+                    // HTTP listeners
+                    .defineHttpListener("default")
+                        .withFrontend("default")
+                        .withFrontendPort("default")
+                        .attach()
+
+                    // Request routing rules
+                    .defineRequestRoutingRule("rule1")
+                        .withListener("default")
+                        .withBackend("default")
+                        .withBackendHttpConfiguration("default")
+                        .attach()
+                    .create();
+
+
+            // Verify frontends
+            Assert.assertTrue(appGateway.frontends().size() == 1);
+            Assert.assertTrue(appGateway.frontends().containsKey("default"));
+
+            // Verify frontend ports
+            // TODO
+
+            // Verify backends
+            Assert.assertTrue(appGateway.backends().size() == 1);
+            Assert.assertTrue(appGateway.backends().containsKey("default"));
+            ApplicationGatewayBackend backend = appGateway.backends().get("default");
+            Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertTrue("11.1.1.1".equalsIgnoreCase(backend.addresses().get(0).ipAddress()));
+
+            // Verify HTTP configs
+            Assert.assertTrue(appGateway.httpConfigurations().size() == 1);
+            Assert.assertTrue(appGateway.httpConfigurations().containsKey("default"));
+            ApplicationGatewayBackendHttpConfiguration httpConfig = appGateway.httpConfigurations().get("default");
+            Assert.assertTrue(httpConfig.port() == 8080);
+
+            // Verify listeners
+            // TODO
+
+            // Verify rules
+            // TODO
+
+            return appGateway;
+        }
+
+        @Override
+        public ApplicationGateway updateResource(ApplicationGateway resource) throws Exception {
+            resource =  resource.update()
+                    //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                    .withoutBackendFqdn("www.microsoft.com")
+                    .withoutBackendIpAddress("11.1.1.1")
+                    .withBackendIpAddress("11.1.1.3", "backend2")
+                    .withoutHttpConfiguration("httpConfig2")
+                    .updateHttpConfiguration("httpConfig1")
+                        .withPort(83)
+                        //.withProtocol(ApplicationGatewayProtocol.HTTPS)
+                        .withoutCookieBasedAffinity()
+                        .withRequestTimeout(20)
+                        .parent()
+                    .withoutBackend("backend3")
+                    .withTag("tag1", "value1")
+                    .withTag("tag2", "value2")
+                    .apply();
+
+            Assert.assertTrue(resource.tags().containsKey("tag1"));
+            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
+            Assert.assertTrue(resource.sku().capacity() == 2);
+
+            // Verify backends
+            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
+            Assert.assertTrue(defaultBackend.addresses().size() == 1);
+            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
+
+            ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
+            Assert.assertTrue(backend2.addresses().size() == 1);
+            Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
+            Assert.assertTrue(!resource.backends().containsKey("backend3"));
+
+            // Verify HTTP configs
+            Assert.assertTrue(resource.httpConfigurations().size() == 1);
+            Assert.assertTrue(resource.httpConfigurations().containsKey("httpConfig1"));
+            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.httpConfigurations().get("httpConfig1");
+            Assert.assertTrue(httpConfig1.port() == 83);
+            Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
+            Assert.assertTrue(httpConfig1.requestTimeout() == 20);
+
+            Assert.assertTrue(!resource.httpConfigurations().containsKey("httpConfig2"));
+            return resource;
+        }
+    }
+
+    /**
+     * Internet-facing LB test with NAT pool test.
+     */
     public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         private final PublicIpAddresses pips;
         private final VirtualMachines vms;
@@ -115,19 +259,19 @@ public class TestApplicationGateway {
                     .defineHttpConfiguration("httpConfig1")
                         .withPort(81) // Optional, 80 default
                         .withCookieBasedAffinity()
-                        .withProtocol(ApplicationGatewayProtocol.HTTP)
+                        //.withProtocol(ApplicationGatewayProtocol.HTTP)
                         .withRequestTimeout(10)
                         .attach()
                     .defineHttpConfiguration("httpConfig2")
                         .withPort(82)
-                        .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                        //.withProtocol(ApplicationGatewayProtocol.HTTPS)
                         .withRequestTimeout(15)
                         .attach()
 
                     // HTTP listeners
                     .defineHttpListener("listener1")
                         .withFrontend("default")
-                        .withPort("port1")
+                        .withFrontendPort("port1")
                         .attach()
 
                     // Request routing rules
@@ -172,7 +316,7 @@ public class TestApplicationGateway {
                     .withoutHttpConfiguration("httpConfig2")
                     .updateHttpConfiguration("httpConfig1")
                         .withPort(83)
-                        .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                        //.withProtocol(ApplicationGatewayProtocol.HTTPS)
                         .withoutCookieBasedAffinity()
                         .withRequestTimeout(20)
                         .parent()

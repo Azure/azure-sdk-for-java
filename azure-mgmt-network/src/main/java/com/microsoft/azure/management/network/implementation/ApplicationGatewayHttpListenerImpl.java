@@ -53,7 +53,7 @@ class ApplicationGatewayHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withPort(String name) {
+    public ApplicationGatewayHttpListenerImpl withFrontendPort(String name) {
         SubResource portRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
