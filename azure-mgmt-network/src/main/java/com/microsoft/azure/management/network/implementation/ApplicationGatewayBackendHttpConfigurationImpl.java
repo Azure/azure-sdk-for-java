@@ -8,6 +8,8 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
+import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -43,8 +45,54 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withBackendPort(int port) {
+    public ApplicationGatewayBackendHttpConfigurationImpl withPort(int port) {
         this.inner().withPort(port);
+        return this;
+    }
+
+    @Override
+    public int port() {
+        return this.inner().port() != null ? this.inner().port().intValue() : 0;
+    }
+
+    @Override
+    public ApplicationGatewayProtocol protocol() {
+        return this.inner().protocol();
+    }
+
+    @Override
+    public boolean cookieBasedAffinity() {
+        return this.inner().cookieBasedAffinity().equals(ApplicationGatewayCookieBasedAffinity.ENABLED);
+    }
+
+    @Override
+    public int requestTimeout() {
+        return this.inner().requestTimeout() != null ? this.inner().requestTimeout().intValue() : 0;
+    }
+
+    // Withers
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withCookieBasedAffinity() {
+        this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.ENABLED);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withoutCookieBasedAffinity() {
+        this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
+        this.inner().withProtocol(protocol);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withRequestTimeout(int seconds) {
+        this.inner().withRequestTimeout(seconds);
         return this;
     }
 }

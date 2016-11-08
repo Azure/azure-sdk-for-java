@@ -57,6 +57,11 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayFrontend> frontends();
 
     /**
+     * @return backed HTTP configurations of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigurations();
+
+    /**
      * The entirety of the application gateway definition.
      */
     interface Definition extends
@@ -371,7 +376,7 @@ public interface ApplicationGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of an application gateway definition allowing to add a backend.
+         * The stage of an application gateway update allowing to add a backend.
          */
         interface WithBackend {
             /**
@@ -456,6 +461,32 @@ public interface ApplicationGateway extends
              */
             Update withSku(ApplicationGatewaySkuName skuName, int capacity);
         }
+
+        /**
+         * The stage of an application gateway update allowing to add a backend HTTP configuration.
+         */
+        interface WithBackendHttpConfig {
+            /**
+             * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
+             * @param name a unique name for the backend HTTP configuration
+             * @return the first stage of the backend HTTP configuration definition
+             */
+            ApplicationGatewayBackendHttpConfiguration.UpdateDefinitionStages.Blank<Update> defineHttpConfiguration(String name);
+
+            /**
+             * Removes the specified backend HTTP configuration from this application gateway.
+             * @param name the name of an existing HTTP configuration on this application gateway
+             * @return the next stage of the update
+             */
+            Update withoutHttpConfiguration(String name);
+
+            /**
+             * Begins the update of a backend HTTP configuration.
+             * @param name the name of an existing backend HTTP configuration on this application gateway
+             * @return the next stage of the update
+             */
+            ApplicationGatewayBackendHttpConfiguration.Update updateHttpConfiguration(String name);
+        }
     }
 
     /**
@@ -468,6 +499,7 @@ public interface ApplicationGateway extends
         Appliable<ApplicationGateway>,
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithSku,
-        UpdateStages.WithBackend {
+        UpdateStages.WithBackend,
+        UpdateStages.WithBackendHttpConfig {
     }
 }

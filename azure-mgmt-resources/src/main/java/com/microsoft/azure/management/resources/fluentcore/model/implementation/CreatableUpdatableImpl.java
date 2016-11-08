@@ -177,6 +177,7 @@ public abstract class CreatableUpdatableImpl<
     public FluentModelT apply() {
         return applyAsync().toBlocking().last();
     }
+
     /**
      * This is the default implementation of 'updateResourceAsync', it simply calls createResourceAsync()
      * since for most of the resource both create and update are handled by the same API call
@@ -209,8 +210,9 @@ public abstract class CreatableUpdatableImpl<
         };
     }
 
-    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable,
-                                                           final ServiceCallback<FluentModelT> callback) {
+    protected ServiceCall<FluentModelT> observableToFuture(
+            Observable<FluentModelT> observable,
+            final ServiceCallback<FluentModelT> callback) {
         return ServiceCall.create(
                 observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
                     @Override

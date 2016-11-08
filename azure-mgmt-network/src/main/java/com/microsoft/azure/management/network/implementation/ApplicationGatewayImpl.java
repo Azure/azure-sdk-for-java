@@ -518,33 +518,6 @@ class ApplicationGatewayImpl
             .attach();
     }
 
-    // Getters
-
-    @Override
-    public Map<String, ApplicationGatewayBackend> backends() {
-        return Collections.unmodifiableMap(this.backends);
-    }
-
-    @Override
-    public Map<String, ApplicationGatewayFrontend> frontends() {
-        return Collections.unmodifiableMap(this.frontends);
-    }
-
-    @Override
-    public ApplicationGatewaySku sku() {
-        return this.inner().sku();
-    }
-
-    @Override
-    public ApplicationGatewayOperationalState operationalState() {
-        return this.inner().operationalState();
-    }
-
-    @Override
-    public ApplicationGatewaySslPolicy sslPolicy() {
-        return this.inner().sslPolicy();
-    }
-
     @Override
     public ApplicationGatewayImpl withoutBackendFqdn(String fqdn) {
         for (ApplicationGatewayBackend backend : this.backends.values()) {
@@ -572,5 +545,48 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayBackendImpl updateBackend(String name) {
         return (ApplicationGatewayBackendImpl) this.backends.get(name);
+    }
+
+    // Getters
+
+    @Override
+    public Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigurations() {
+        return Collections.unmodifiableMap(this.httpConfigs);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackend> backends() {
+        return Collections.unmodifiableMap(this.backends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayFrontend> frontends() {
+        return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public ApplicationGatewaySku sku() {
+        return this.inner().sku();
+    }
+
+    @Override
+    public ApplicationGatewayOperationalState operationalState() {
+        return this.inner().operationalState();
+    }
+
+    @Override
+    public ApplicationGatewaySslPolicy sslPolicy() {
+        return this.inner().sslPolicy();
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutHttpConfiguration(String name) {
+        this.httpConfigs.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl updateHttpConfiguration(String name) {
+        return (ApplicationGatewayBackendHttpConfigurationImpl) this.httpConfigs.get(name);
     }
 }
