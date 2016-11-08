@@ -22,7 +22,7 @@ public interface HostNameBinding
     /**
      * @return Hostname.
      */
-    String hostNameBindingName();
+    String hostName();
 
     /**
      * @return Web app name.
@@ -48,7 +48,7 @@ public interface HostNameBinding
     /**
      * @return Custom DNS record type. Possible values include: 'CName', 'A'.
      */
-    CustomHostNameDnsRecordType customHostNameDnsRecordType();
+    CustomHostNameDnsRecordType DnsRecordType();
 
     /**
      * @return Host name type. Possible values include: 'Verified', 'Managed'.
@@ -57,7 +57,7 @@ public interface HostNameBinding
 
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithHostNameType<ParentT>,
+            DefinitionStages.WithDomain<ParentT>,
             DefinitionStages.WithHostNameDnsRecordType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
@@ -71,19 +71,53 @@ public interface HostNameBinding
          *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithHostNameType<ParentT> {
+        interface Blank<ParentT> extends WithDomain<ParentT> {
         }
 
-        interface WithHostNameType<ParentT> {
-            WithHostNameDnsRecordType<ParentT> withHostNameType(HostNameType hostNameType);
+        interface WithDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
         }
 
         interface WithHostNameDnsRecordType<ParentT> {
-            WithAttach<ParentT> withHostNameDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
 
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT> {
+        }
+    }
+
+    interface UpdateDefinition<ParentT> extends
+            UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithDomain<ParentT>,
+            UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
+            UpdateDefinitionStages.WithAttach<ParentT> {
+    }
+
+    /**
+     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     */
+    interface UpdateDefinitionStages {
+        /**
+         * The first stage of a host name binding definition.
+         *
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
+        interface Blank<ParentT> extends WithDomain<ParentT> {
+        }
+
+        interface WithDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
+        }
+
+        interface WithHostNameDnsRecordType<ParentT> {
+            WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
+        }
+
+        interface WithAttach<ParentT> extends
+                Attachable.InUpdate<ParentT> {
         }
     }
 }

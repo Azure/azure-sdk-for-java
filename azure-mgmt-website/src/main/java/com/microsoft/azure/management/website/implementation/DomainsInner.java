@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -20,21 +19,23 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
-import retrofit2.Response;
-import rx.functions.Func1;
 import rx.Observable;
+import rx.functions.Func1;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -166,7 +167,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         final String name = null;
         NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(null);
@@ -234,7 +235,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         NameIdentifierInner identifier = new NameIdentifierInner();
         identifier.withName(name);
         return service.checkAvailability(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), identifier, this.client.userAgent())
@@ -339,7 +340,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -407,7 +408,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.getControlCenterSsoRequest(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainControlCenterSsoRequestInner>>>() {
                 @Override
@@ -519,7 +520,7 @@ public final class DomainsInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.listRecommendations(this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NameIdentifierInner>>>>() {
                 @Override
@@ -595,7 +596,7 @@ public final class DomainsInner {
             throw new IllegalArgumentException("Parameter domainRegistrationInput is required and cannot be null.");
         }
         Validator.validate(domainRegistrationInput);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.validatePurchaseInformation(this.client.subscriptionId(), domainRegistrationInput, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -706,7 +707,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DomainInner>>>>() {
                 @Override
@@ -788,7 +789,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.get(resourceGroupName, domainName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
                 @Override
@@ -878,7 +879,7 @@ public final class DomainsInner {
             throw new IllegalArgumentException("Parameter domain is required and cannot be null.");
         }
         Validator.validate(domain);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, domainName, this.client.subscriptionId(), domain, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DomainInner>() { }.getType());
     }
@@ -951,7 +952,7 @@ public final class DomainsInner {
             throw new IllegalArgumentException("Parameter domain is required and cannot be null.");
         }
         Validator.validate(domain);
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.beginCreateOrUpdate(resourceGroupName, domainName, this.client.subscriptionId(), domain, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
                 @Override
@@ -1034,7 +1035,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         final Boolean forceHardDeleteDomain = null;
         return service.delete(resourceGroupName, domainName, this.client.subscriptionId(), forceHardDeleteDomain, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
@@ -1114,7 +1115,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.delete(resourceGroupName, domainName, this.client.subscriptionId(), forceHardDeleteDomain, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
                 @Override
@@ -1203,7 +1204,7 @@ public final class DomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.getOperation(resourceGroupName, domainName, operationId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainInner>>>() {
                 @Override

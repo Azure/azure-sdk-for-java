@@ -9,11 +9,11 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
-import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.website.implementation.CertificateInner;
 import org.joda.time.DateTime;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -22,7 +22,6 @@ import java.util.List;
 public interface Certificate extends
         GroupableResource,
         Refreshable<Certificate>,
-        Updatable<Certificate.Update>,
         Wrapper<CertificateInner> {
     /**
      * @return Friendly name of the certificate.
@@ -111,7 +110,8 @@ public interface Certificate extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithHostName,
+            DefinitionStages.WithPfxFile,
+            DefinitionStages.WithPfxFilePassword,
             DefinitionStages.WithCreate {
     }
 
@@ -125,14 +125,15 @@ public interface Certificate extends
         interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
         }
 
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithHostName> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithPfxFile> {
         }
 
-        /**
-         * An app service plan definition allowing pricing tier to be set.
-         */
-        interface WithHostName {
-            WithCreate withHostName(String hostName);
+        interface WithPfxFile {
+            WithPfxFilePassword withPfxFile(File file);
+        }
+
+        interface WithPfxFilePassword {
+            WithCreate withPfxFilePassword(String password);
         }
 
         /**
@@ -140,20 +141,8 @@ public interface Certificate extends
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends Creatable<Certificate>, WithHostName {
+        interface WithCreate extends
+                Creatable<Certificate> {
         }
-    }
-
-    /**
-     * Grouping of all the site update stages.
-     */
-    interface UpdateStages {
-
-    }
-
-    /**
-     * The template for a site update operation, containing all the settings that can be modified.
-     */
-    interface Update {
     }
 }
