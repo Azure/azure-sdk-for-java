@@ -43,8 +43,8 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
                 .defineMxRecordSet("email")
                     .withMailExchange("mail.contoso-mail-exchange1.com", 1)
                     .withMailExchange("mail.contoso-mail-exchange2.com", 2)
-                    .withTag("mxa", "mxaa")
-                    .withTag("mxb", "mxbb")
+                    .withMetadata("mxa", "mxaa")
+                    .withMetadata("mxb", "mxbb")
                     .attach()
                 .defineNsRecordSet("partners")
                     .withNameServer("ns1-05.azure-dns.com")
@@ -109,7 +109,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         MxRecordSet mxRecordSet = mxRecordSets.get(0);
         Assert.assertNotNull(mxRecordSet);
         Assert.assertTrue(mxRecordSet.name().startsWith("email"));
-        Assert.assertTrue(mxRecordSet.tags().size() == 2);
+        Assert.assertTrue(mxRecordSet.metadata().size() == 2);
         Assert.assertTrue(mxRecordSet.records().size() == 2);
         for (MxRecord mxRecord : mxRecordSet.records()) {
             Assert.assertTrue(mxRecord.exchange().startsWith("mail.contoso-mail-exchange1.com")
@@ -226,9 +226,9 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         dnsZone.update()
                 .updateMxRecordSet("email")
                     .withoutMailExchange("mail.contoso-mail-exchange2.com", 2)
-                    .withoutTag("mxa")
-                    .withTag("mxc", "mxcc")
-                    .withTag("mxd", "mxdd")
+                    .withoutMetadata("mxa")
+                    .withMetadata("mxc", "mxcc")
+                    .withMetadata("mxd", "mxdd")
                     .parent()
                 .withTag("d", "dd")
                 .apply();
@@ -237,7 +237,7 @@ public class TestDns extends TestTemplate<DnsZone, DnsZones> {
         // Check "mail" MX record
         MxRecordSet mxRecordSet = dnsZone.mxRecordSets().getByName("email");
         Assert.assertTrue(mxRecordSet.records().size() == 1);
-        Assert.assertTrue(mxRecordSet.tags().size() == 3);
+        Assert.assertTrue(mxRecordSet.metadata().size() == 3);
         Assert.assertTrue(mxRecordSet.records().get(0).exchange().startsWith("mail.contoso-mail-exchange1.com"));
 
         return dnsZone;

@@ -26,9 +26,9 @@ public interface DnsRecordSet extends
     long timeToLive();
 
     /**
-     * @return the tags associated with this record set.
+     * @return the metadata associated with this record set.
      */
-    Map<String, String> tags();
+    Map<String, String> metadata();
 
     /**
      * The entirety of a Dns zone record set definition as a part of parent definition.
@@ -315,19 +315,19 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the record set definition allowing to specify tags.
+         * The stage of the record set definition allowing to specify metadata.
          *
          * @param <ParentT> the return type of {@link UpdateDefinitionStages.WithAttach#attach()}
          */
-        interface WithTags<ParentT> {
+        interface WithMetadata<ParentT> {
             /**
-             * Adds a tag to the resource.
+             * Adds a metadata to the resource.
              *
-             * @param key the key for the tag
-             * @param value the value for the tag
+             * @param key the key for the metadata
+             * @param value the value for the metadata
              * @return the next stage of the record set definition
              */
-            WithAttach<ParentT> withTag(String key, String value);
+            WithAttach<ParentT> withMetadata(String key, String value);
         }
 
         /** The final stage of the Dns zone record set definition.
@@ -338,7 +338,7 @@ public interface DnsRecordSet extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT>,
-                DefinitionStages.WithTags<ParentT>,
+                WithMetadata<ParentT>,
                 DefinitionStages.WithTtl<ParentT> {
         }
     }
@@ -628,19 +628,19 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * The stage of the record set definition allowing to specify tags.
+         * The stage of the record set definition allowing to specify metadata.
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        interface WithTags<ParentT> {
+        interface WithMetadata<ParentT> {
             /**
              * Adds a tag to the resource.
              *
-             * @param key the key for the tag
-             * @param value the value for the tag
+             * @param key the key for the metadata
+             * @param value the value for the metadata
              * @return the next stage of the record set definition
              */
-            WithAttach<ParentT> withTag(String key, String value);
+            WithAttach<ParentT> withMetadata(String key, String value);
         }
 
         /** The final stage of the Dns zone record set definition.
@@ -652,7 +652,7 @@ public interface DnsRecordSet extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
-                UpdateDefinitionStages.WithTags<ParentT>,
+                WithMetadata<ParentT>,
                 UpdateDefinitionStages.WithTtl<ParentT> {
         }
     }
@@ -741,7 +741,7 @@ public interface DnsRecordSet extends
      */
     interface Update extends
             Settable<DnsZone.Update>,
-            UpdateStages.UpdateWithTags,
+            UpdateStages.WithMetadata,
             UpdateStages.WithTtl {
     }
 
@@ -974,25 +974,25 @@ public interface DnsRecordSet extends
         }
 
         /**
-         * An update allowing tags to be modified for the resource.
+         * An update allowing metadata to be modified for the resource.
          */
-        interface UpdateWithTags {
+        interface WithMetadata {
             /**
-             * Adds a tag to the record set.
+             * Adds a metadata to the record set.
              *
-             * @param key the key for the tag
-             * @param value the value for the tag
+             * @param key the key for the metadata
+             * @param value the value for the metadata
              * @return the next stage of the record set update
              */
-            Update withTag(String key, String value);
+            Update withMetadata(String key, String value);
 
             /**
-             * Removes a tag from the record set.
+             * Removes a metadata from the record set.
              *
-             * @param key the key of the tag to remove
+             * @param key the key of the metadata to remove
              * @return the next stage of the record set update
              */
-            Update withoutTag(String key);
+            Update withoutMetadata(String key);
         }
     }
 }

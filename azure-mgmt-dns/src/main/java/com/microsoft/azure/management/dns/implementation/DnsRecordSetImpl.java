@@ -68,7 +68,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public Map<String, String> tags() {
+    public Map<String, String> metadata() {
         if (this.inner().metadata() == null) {
             return Collections.unmodifiableMap(new LinkedHashMap<String, String>());
         }
@@ -238,7 +238,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withTag(String key, String value) {
+    public DnsRecordSetImpl withMetadata(String key, String value) {
         if (this.inner().metadata() == null) {
             this.inner().withMetadata(new LinkedHashMap<String, String>());
         }
@@ -247,7 +247,7 @@ abstract class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet,
     }
 
     @Override
-    public DnsRecordSetImpl withoutTag(String key) {
+    public DnsRecordSetImpl withoutMetadata(String key) {
         this.recordSetRemoveInfo
                 .metadata().put(key, null);
         return this;
