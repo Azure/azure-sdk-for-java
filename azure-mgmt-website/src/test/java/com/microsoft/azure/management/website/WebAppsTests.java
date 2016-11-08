@@ -42,6 +42,7 @@ public class WebAppsTests extends AppServiceTestBase {
                     .withPfxCertificateToUpload(new File("/Users/jianghlu/Documents/code/certs/javatestpr319_com.pfx"), "StrongPass!123")
                     .withIpBasedSSL()
                     .attach()
+                .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
                 .create();
 
         Assert.assertNotNull(webApp);

@@ -13,10 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.website.implementation.SiteConfigInner;
 import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -86,11 +86,6 @@ public interface WebApp extends
      * @return Last time web app was modified in UTC
      */
     DateTime lastModifiedTime();
-
-    /**
-     * @return configuration of web app
-     */
-    SiteConfigInner siteConfig();
 
     /**
      * @return list of Azure Traffic manager host names associated with web
@@ -170,10 +165,80 @@ public interface WebApp extends
     String defaultHostName();
 
     /**
-     *
-     * @return
+     * @return the mapping from host names and the host name bindings
      */
     Map<String, HostNameBinding> getHostNameBindings();
+
+    /**
+     * @return the default documents
+     */
+    List<String> defaultDocuments();
+
+    /**
+     * @return the .NET Framework version
+     */
+    NetFrameworkVersion netFrameworkVersion();
+
+    /**
+     * @return the version of PHP
+     */
+    PhpVersion phpVersion();
+
+    /**
+     * @return the version of Python
+     */
+    PythonVersion pythonVersion();
+
+    /**
+     * @return the version of Node.JS
+     */
+    String nodeVersion();
+
+    /**
+     * @return if the remote eebugging is enabled
+     */
+    boolean remoteDebuggingEnabled();
+
+    /**
+     * @return the remote debugging version
+     */
+    RemoteVisualStudioVersion remoteDebuggingVersion();
+
+    /**
+     * @return if web socket is enabled
+     */
+    boolean webSocketsEnabled();
+
+    /**
+     * @return if the web app is always on
+     */
+    boolean alwaysOn();
+
+    /**
+     * @return Java version
+     */
+    JavaVersion javaVersion();
+
+    /**
+     * @return Java container
+     */
+    String javaContainer();
+
+    /**
+     * @return Java container version
+     */
+    String javaContainerVersion();
+
+    /**
+     * @return managed pipeline mode
+     */
+    ManagedPipelineMode managedPipelineMode();
+
+    /**
+     * @return the auto swap slot name
+     */
+    String autoSwapSlotName();
+
 
     /**************************************************************
      * Fluent interfaces to provision a Web App
@@ -242,6 +307,57 @@ public interface WebApp extends
             WithCreate withClientCertEnabled(boolean enabled);
         }
 
+        interface WithNetFrameworkVersion {
+            WithCreate withNetFrameworkVersion(NetFrameworkVersion version);
+        }
+
+        interface WithPhpVersion {
+            WithCreate withPhpVersion(PhpVersion version);
+        }
+
+        interface WithJavaVersion {
+            WithCreate withJavaVersion(JavaVersion version);
+        }
+
+        interface WithWebContainer {
+            WithCreate withWebContainer(WebContainer webContainer);
+        }
+
+        interface WithPythonVersion {
+            WithCreate withPythonVersion(PythonVersion version);
+        }
+
+        interface WithPlatformArchitecture {
+            WithCreate withPlatformArchitecture(PlatformArchitecture platform);
+        }
+
+        interface WithWebSockets {
+            WithCreate withWebSocketsEnabled(boolean enabled);
+        }
+
+        interface WithAlwaysOn {
+            WithCreate withWebAppAlwaysOn(boolean alwaysOn);
+        }
+
+        interface WithManagedPipelineMode {
+            WithCreate withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
+        }
+
+        interface WithAutoSwap {
+            WithCreate withAutoSwapSlotName(String slotName);
+        }
+
+        interface WithRemoteDebugging {
+            WithCreate withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
+            WithCreate withReoteDebuggingDisabled();
+        }
+
+        interface WithDefaultDocuments {
+            WithCreate withDefaultDocument(String document);
+            WithCreate withDefaultDocuments(List<String> documents);
+            WithCreate withoutDefaultDocument(String document);
+        }
+
         /**
          * A site definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
@@ -252,7 +368,19 @@ public interface WebApp extends
                 WithSiteEnabled,
                 WithScmSiteAlsoStopped,
                 WithClientAffinityEnabled,
-                WithClientCertEnabled{
+                WithClientCertEnabled,
+                WithNetFrameworkVersion,
+                WithPhpVersion,
+                WithJavaVersion,
+                WithWebContainer,
+                WithPythonVersion,
+                WithPlatformArchitecture,
+                WithWebSockets,
+                WithAlwaysOn,
+                WithManagedPipelineMode,
+                WithAutoSwap,
+                WithRemoteDebugging,
+                WithDefaultDocuments{
         }
     }
 

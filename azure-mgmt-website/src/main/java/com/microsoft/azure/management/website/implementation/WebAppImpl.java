@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.AzureResourceType;
@@ -22,10 +23,18 @@ import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.HostNameType;
+import com.microsoft.azure.management.website.JavaVersion;
+import com.microsoft.azure.management.website.ManagedPipelineMode;
+import com.microsoft.azure.management.website.NetFrameworkVersion;
+import com.microsoft.azure.management.website.PhpVersion;
+import com.microsoft.azure.management.website.PlatformArchitecture;
+import com.microsoft.azure.management.website.PythonVersion;
+import com.microsoft.azure.management.website.RemoteVisualStudioVersion;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.SslState;
 import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.azure.management.website.WebApp;
+import com.microsoft.azure.management.website.WebContainer;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -53,6 +62,7 @@ class WebAppImpl
             WebApp.Update {
 
     private final WebAppsInner client;
+
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
     private Set<String> trafficManagerHostNamesSet;
@@ -60,9 +70,10 @@ class WebAppImpl
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
 
-    WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
+    WebAppImpl(String key, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
+        this.inner().withSiteConfig(configObject);
         normalizeProperties();
     }
 
@@ -144,11 +155,6 @@ class WebAppImpl
     @Override
     public DateTime lastModifiedTime() {
         return inner().lastModifiedTimeUtc();
-    }
-
-    @Override
-    public SiteConfigInner siteConfig() {
-        return inner().siteConfig();
     }
 
     @Override
@@ -234,6 +240,76 @@ class WebAppImpl
                 return input.name().replace(name() + "/", "");
             }
         });
+    }
+
+    @Override
+    public List<String> defaultDocuments() {
+        return inner().siteConfig().defaultDocuments();
+    }
+
+    @Override
+    public NetFrameworkVersion netFrameworkVersion() {
+        return new NetFrameworkVersion(inner().siteConfig().netFrameworkVersion());
+    }
+
+    @Override
+    public PhpVersion phpVersion() {
+        return new PhpVersion(inner().siteConfig().phpVersion());
+    }
+
+    @Override
+    public PythonVersion pythonVersion() {
+        return new PythonVersion(inner().siteConfig().pythonVersion());
+    }
+
+    @Override
+    public String nodeVersion() {
+        return inner().siteConfig().nodeVersion();
+    }
+
+    @Override
+    public boolean remoteDebuggingEnabled() {
+        return Utils.toPrimitiveBoolean(inner().siteConfig().remoteDebuggingEnabled());
+    }
+
+    @Override
+    public RemoteVisualStudioVersion remoteDebuggingVersion() {
+        return new RemoteVisualStudioVersion(inner().siteConfig().remoteDebuggingVersion());
+    }
+
+    @Override
+    public boolean webSocketsEnabled() {
+        return Utils.toPrimitiveBoolean(inner().siteConfig().webSocketsEnabled());
+    }
+
+    @Override
+    public boolean alwaysOn() {
+        return Utils.toPrimitiveBoolean(inner().siteConfig().alwaysOn());
+    }
+
+    @Override
+    public JavaVersion javaVersion() {
+        return new JavaVersion(inner().siteConfig().javaVersion());
+    }
+
+    @Override
+    public String javaContainer() {
+        return inner().siteConfig().javaContainer();
+    }
+
+    @Override
+    public String javaContainerVersion() {
+        return inner().siteConfig().javaContainerVersion();
+    }
+
+    @Override
+    public ManagedPipelineMode managedPipelineMode() {
+        return inner().siteConfig().managedPipelineMode();
+    }
+
+    @Override
+    public String autoSwapSlotName() {
+        return inner().siteConfig().autoSwapSlotName();
     }
 
     @Override
@@ -413,6 +489,7 @@ class WebAppImpl
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
         // Construct web app observable
+        inner().siteConfig().withLocation(inner().location());
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 // Submit hostname bindings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
@@ -439,6 +516,20 @@ class WebAppImpl
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
                         return client.getAsync(resourceGroupName(), site.name());
+                    }
+                })
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner siteInner) {
+                        inner().siteConfig().withLocation(inner().location());
+                        return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), inner().siteConfig())
+                                .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                                    @Override
+                                    public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
+                                        siteInner.withSiteConfig(siteConfigInner);
+                                        return Observable.just(siteInner);
+                                    }
+                                });
                     }
                 })
                 .map(new Func1<SiteInner, WebApp>() {
@@ -477,5 +568,106 @@ class WebAppImpl
     @Override
     public HostNameSslBindingImpl defineNewSSLBindingForHostName(String hostname) {
         return new HostNameSslBindingImpl(new HostNameSslState().withName(hostname), this, myManager);
+    }
+
+    @Override
+    public WebAppImpl withNetFrameworkVersion(NetFrameworkVersion version) {
+        inner().siteConfig().withNetFrameworkVersion(version.toString());
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withPhpVersion(PhpVersion version) {
+        inner().siteConfig().withPhpVersion(version.toString());
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withJavaVersion(JavaVersion version) {
+        inner().siteConfig().withJavaVersion(version.toString());
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withWebContainer(WebContainer webContainer) {
+        String[] containerInfo = webContainer.toString().split(" ");
+        inner().siteConfig().withJavaContainer(containerInfo[0]);
+        inner().siteConfig().withJavaContainerVersion(containerInfo[1]);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withPythonVersion(PythonVersion version) {
+        inner().siteConfig().withPythonVersion(version.toString());
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withPlatformArchitecture(PlatformArchitecture platform) {
+        inner().siteConfig().withUse32BitWorkerProcess(platform.equals(PlatformArchitecture.X86));
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withWebSocketsEnabled(boolean enabled) {
+        inner().siteConfig().withWebSocketsEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withWebAppAlwaysOn(boolean alwaysOn) {
+        inner().siteConfig().withAlwaysOn(alwaysOn);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withManagedPipelineMode(ManagedPipelineMode managedPipelineMode) {
+        inner().siteConfig().withManagedPipelineMode(managedPipelineMode);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withAutoSwapSlotName(String slotName) {
+        inner().siteConfig().withAutoSwapSlotName(slotName);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion) {
+        inner().siteConfig().withRemoteDebuggingEnabled(true);
+        inner().siteConfig().withRemoteDebuggingVersion(remoteVisualStudioVersion.toString());
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withReoteDebuggingDisabled() {
+        inner().siteConfig().withRemoteDebuggingEnabled(false);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withDefaultDocument(String document) {
+        if (inner().siteConfig().defaultDocuments() == null) {
+            inner().siteConfig().withDefaultDocuments(new ArrayList<String>());
+        }
+        inner().siteConfig().defaultDocuments().add(document);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withDefaultDocuments(List<String> documents) {
+        if (inner().siteConfig().defaultDocuments() == null) {
+            inner().siteConfig().withDefaultDocuments(new ArrayList<String>());
+        }
+        inner().siteConfig().defaultDocuments().addAll(documents);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withoutDefaultDocument(String document) {
+        if (inner().siteConfig().defaultDocuments() != null) {
+            inner().siteConfig().defaultDocuments().remove(document);
+        }
+        return this;
     }
 }
