@@ -652,7 +652,7 @@ public interface DnsRecordSet extends
          */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT>,
-                WithMetadata<ParentT>,
+                UpdateDefinitionStages.WithMetadata<ParentT>,
                 UpdateDefinitionStages.WithTtl<ParentT> {
         }
     }
