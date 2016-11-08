@@ -229,8 +229,10 @@ public interface VirtualMachineScaleSet extends
             DefinitionStages.WithPrimaryInternetFacingLoadBalancerNatPool,
             DefinitionStages.WithInternalInternalLoadBalancerNatPool,
             DefinitionStages.WithOS,
-            DefinitionStages.WithAdminUserName,
-            DefinitionStages.WithRootUserName,
+            DefinitionStages.WithLinuxRootUsername,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKey,
+            DefinitionStages.WithWindowsAdminUsername,
+            DefinitionStages.WithWindowsAdminPassword,
             DefinitionStages.WithLinuxCreate,
             DefinitionStages.WithWindowsCreate,
             DefinitionStages.WithCreate {
@@ -306,7 +308,7 @@ public interface VirtualMachineScaleSet extends
              * @param loadBalancer an existing Internet-facing load balancer
              * @return the next stage of the definition
              */
-            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
+            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
 
             /**
              * Specifies that no public load balancer should be associated with the virtual machine scale set.
@@ -331,7 +333,7 @@ public interface VirtualMachineScaleSet extends
              * @param loadBalancer an existing internal load balancer
              * @return the next stage of the definition
              */
-            WithInternalLoadBalancerBackendOrNatPool withPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
+            WithInternalLoadBalancerBackendOrNatPool withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
 
             /**
              * Specifies that no internal load balancer should be associated with the primary network interfaces of the
@@ -376,7 +378,7 @@ public interface VirtualMachineScaleSet extends
          * The stage of a virtual machine scale set definition allowing to associate backend pools and/or inbound NAT pools
          * of the selected internal load balancer with the primary network interface of the virtual machines in the scale set.
          */
-        interface WithInternalLoadBalancerBackendOrNatPool extends WithCreate {
+        interface WithInternalLoadBalancerBackendOrNatPool extends WithInternalInternalLoadBalancerNatPool {
             /**
              * Associates the specified backends of the selected load balancer with the primary network interface of the
              * virtual machines in the scale set.
@@ -413,7 +415,7 @@ public interface VirtualMachineScaleSet extends
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithAdminUserName withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsername withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of the specified marketplace Windows image should be used.
@@ -423,7 +425,7 @@ public interface VirtualMachineScaleSet extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the definition
              */
-            WithAdminUserName withLatestWindowsImage(String publisher, String offer, String sku);
+            WithWindowsAdminUsername withLatestWindowsImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the specific version of a marketplace Windows image needs to be used.
@@ -431,7 +433,7 @@ public interface VirtualMachineScaleSet extends
              * @param imageReference describes publisher, offer, SKU and version of the marketplace image
              * @return the next stage of the definition
              */
-            WithAdminUserName withSpecificWindowsImageVersion(ImageReference imageReference);
+            WithWindowsAdminUsername withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the user (custom) Windows image to be used as the operating system for the virtual machines in the
@@ -440,7 +442,7 @@ public interface VirtualMachineScaleSet extends
              * @param imageUrl the URL of the VHD
              * @return the next stage of the virtual machine scale set definition
              */
-            WithAdminUserName withStoredWindowsImage(String imageUrl);
+            WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
 
             /**
              * Specifies a known marketplace Linux image used as the virtual machine's operating system.
@@ -448,7 +450,7 @@ public interface VirtualMachineScaleSet extends
              * @param knownImage a known market-place image
              * @return the next stage of the definition
              */
-            WithRootUserName withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+            WithLinuxRootUsername withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Linux image should be used.
@@ -458,7 +460,7 @@ public interface VirtualMachineScaleSet extends
              * @param sku the SKU of the image
              * @return the next stage of the definition
              */
-            WithRootUserName withLatestLinuxImage(String publisher, String offer, String sku);
+            WithLinuxRootUsername withLatestLinuxImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the specific version of a market-place Linux image that should be used.
@@ -466,7 +468,7 @@ public interface VirtualMachineScaleSet extends
              * @param imageReference describes the publisher, offer, SKU and version of the market-place image
              * @return the next stage of the definition
              */
-            WithRootUserName withSpecificLinuxImageVersion(ImageReference imageReference);
+            WithLinuxRootUsername withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the user (custom) Linux image used as the virtual machine's operating system.
@@ -474,33 +476,69 @@ public interface VirtualMachineScaleSet extends
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine scale set definition
              */
-            WithRootUserName withStoredLinuxImage(String imageUrl);
+            WithLinuxRootUsername withStoredLinuxImage(String imageUrl);
         }
 
         /**
-         * The stage of a Linux virtual machine scale set definition allowing to specify the root user name.
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root user name.
          */
-        interface WithRootUserName {
+        interface WithLinuxRootUsername {
             /**
-             * Specifies the root user name for the Linux virtual machines in the scale set.
+             * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName a Linux root user name, following the required naming convention for Linux user names
-             * @return the next stage of the definition
+             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
+             * @return the next stage of the Linux virtual machine definition
              */
-            WithLinuxCreate withRootUserName(String rootUserName);
+            WithLinuxRootPasswordOrPublicKey withRootUsername(String rootUserName);
         }
 
         /**
-         * The stage of a Windows virtual machine scale set definition allowing to specify the administrator user name.
+         * The stage of the Linux virtual machine scale set definition allowing to specify SSH root password or public key.
          */
-        interface WithAdminUserName {
+        interface WithLinuxRootPasswordOrPublicKey {
             /**
-             * Specifies the administrator user name for the Windows virtual machines in the scale set.
+             * Specifies the SSH root password for the Linux virtual machine.
              *
-             * @param adminUserName a Windows administrator user name, following the required naming convention for Windows user names
-             * @return the next stage of the definition
+             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
+             * @return the next stage of the Linux virtual machine definition
              */
-            WithWindowsCreate withAdminUserName(String adminUserName);
+            WithLinuxCreate withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreate withSsh(String publicKey);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminUsername {
+            /**
+             * Specifies the administrator user name for the Windows virtual machine.
+             *
+             * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
+             * @return the stage representing creatable Linux VM definition
+             */
+            WithWindowsAdminPassword withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine scale set definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPassword {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreate withAdminPassword(String adminPassword);
         }
 
         /**
@@ -573,19 +611,6 @@ public interface VirtualMachineScaleSet extends
              * @return the next stage of the definition
              */
             WithWindowsCreate withWinRm(WinRMListener listener);
-        }
-
-        /**
-         * The stage of a virtual machine scale set definition allowing to specify the password.
-         */
-        interface WithPassword {
-            /**
-             * Specifies the password for the virtual machines in the scale set.
-             *
-             * @param password a password following the requirements for Azure virtual machine passwords
-             * @return the next stage of the definition
-             */
-            WithCreate withPassword(String password);
         }
 
         /**
@@ -711,6 +736,19 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to specify the custom data.
+         */
+        interface WithCustomData {
+            /**
+             * Specifies the custom data for the virtual machine scale set.
+             *
+             * @param base64EncodedCustomData the base64 encoded custom data
+             * @return the next stage in the definition
+             */
+            WithCreate withCustomData(String base64EncodedCustomData);
+        }
+
+        /**
          * The stage of a virtual machine definition allowing to specify extensions.
          */
         interface WithExtension {
@@ -730,13 +768,13 @@ public interface VirtualMachineScaleSet extends
          */
         interface WithCreate extends
                 Creatable<VirtualMachineScaleSet>,
-                DefinitionStages.WithPassword,
                 DefinitionStages.WithOsDiskSettings,
                 DefinitionStages.WithComputerNamePrefix,
                 DefinitionStages.WithCapacity,
                 DefinitionStages.WithUpgradePolicy,
                 DefinitionStages.WithOverProvision,
                 DefinitionStages.WithStorageAccount,
+                DefinitionStages.WithCustomData,
                 DefinitionStages.WithExtension,
                 Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
@@ -762,7 +800,7 @@ public interface VirtualMachineScaleSet extends
              * @param loadBalancer the primary Internet-facing load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
+            WithPrimaryInternetFacingLoadBalancerBackendOrNatPool withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer);
         }
 
         /**
@@ -813,7 +851,7 @@ public interface VirtualMachineScaleSet extends
              * @param loadBalancer the primary Internet-facing load balancer
              * @return the next stage of the update
              */
-            WithPrimaryInternalLoadBalancerBackendOrNatPool withPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
+            WithPrimaryInternalLoadBalancerBackendOrNatPool withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer);
         }
 
         /**

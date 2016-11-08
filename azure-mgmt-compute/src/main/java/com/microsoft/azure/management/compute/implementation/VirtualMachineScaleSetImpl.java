@@ -322,7 +322,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
+    public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
         if (loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
         }
@@ -367,7 +367,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
+    public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
         if (!loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
@@ -594,7 +594,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withAdminUserName(String adminUserName) {
+    public VirtualMachineScaleSetImpl withAdminUsername(String adminUserName) {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile()
@@ -603,12 +603,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withRootUserName(String rootUserName) {
-        return this.withAdminUserName(rootUserName);
+    public VirtualMachineScaleSetImpl withRootUsername(String adminUserName) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withAdminUsername(adminUserName);
+        return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPassword(String password) {
+    public VirtualMachineScaleSetImpl withAdminPassword(String password) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withRootPassword(String password) {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile()
@@ -773,6 +786,15 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.existingStorageAccountsToAssociate.add(storageAccount);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withCustomData(String base64EncodedCustomData) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withCustomData(base64EncodedCustomData);
         return this;
     }
 

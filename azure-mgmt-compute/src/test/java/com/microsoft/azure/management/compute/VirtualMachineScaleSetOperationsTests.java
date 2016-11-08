@@ -61,11 +61,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUserName("jvuser")
-                .withPassword("123OData!@#123")
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .defineNewExtension("CustomScriptForLinux")
@@ -143,12 +143,12 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withExistingResourceGroup(resourceGroup)
                 .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
-                .withPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
+                .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withPrimaryInternetFacingLoadBalancerBackends(backends.get(0), backends.get(1))
                 .withoutPrimaryInternalLoadBalancer()
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                .withRootUserName("jvuser")
-                .withPassword("123OData!@#123")
+                .withRootUsername("jvuser")
+                .withRootPassword("123OData!@#123")
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .create();
@@ -184,7 +184,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         virtualMachineScaleSet
                 .update()
-                .withPrimaryInternalLoadBalancer(internalLoadBalancer)
+                .withExistingPrimaryInternalLoadBalancer(internalLoadBalancer)
                 .withoutPrimaryInternalLoadBalancerNatPools(inboundNatPoolToRemove)
                 .apply();
 

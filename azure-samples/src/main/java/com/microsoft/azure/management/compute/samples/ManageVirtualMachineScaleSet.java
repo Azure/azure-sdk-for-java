@@ -220,7 +220,7 @@ public final class ManageVirtualMachineScaleSet {
                         .withExistingResourceGroup(rgName)
                         .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                         .withExistingPrimaryNetworkSubnet(network, "Front-end")
-                        .withPrimaryInternetFacingLoadBalancer(loadBalancer1)
+                        .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer1)
                         .withPrimaryInternetFacingLoadBalancerBackends(backendPoolName1, backendPoolName2)
                         .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
                         .withoutPrimaryInternalLoadBalancer()
