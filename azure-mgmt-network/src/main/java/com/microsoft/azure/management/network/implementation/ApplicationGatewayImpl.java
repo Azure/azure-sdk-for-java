@@ -365,7 +365,8 @@ class ApplicationGatewayImpl
         ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
-                    .withName(name);
+                    .withName(name)
+                    .withPort(80);
             return new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
         } else {
             return (ApplicationGatewayBackendHttpConfigurationImpl) httpConfig;

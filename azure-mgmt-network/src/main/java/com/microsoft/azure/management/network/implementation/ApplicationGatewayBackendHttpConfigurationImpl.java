@@ -26,7 +26,6 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     ApplicationGatewayBackendHttpConfigurationImpl(ApplicationGatewayBackendHttpSettingsInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
-        this.inner().withPort(80);
     }
 
     // Getters
