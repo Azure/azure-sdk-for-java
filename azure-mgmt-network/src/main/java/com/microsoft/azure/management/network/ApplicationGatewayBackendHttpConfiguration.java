@@ -97,7 +97,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
             Attachable.InDefinition<ParentT>,
             WithPort<ParentT>,
             WithAffinity<ParentT>,
-            WithProtocol<ParentT>,
+            //TODO WithProtocol<ParentT>, - HTTPS not officially supported by Azure yet
             WithRequestTimeout<ParentT> {
         }
     }
@@ -163,7 +163,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         Settable<ApplicationGateway.Update>,
         UpdateStages.WithPort,
         UpdateStages.WithAffinity,
-        UpdateStages.WithProtocol,
+        // TODO UpdateStages.WithProtocol, - based on Azure docs, HTTPS not supported in the API yet
         UpdateStages.WithRequestTimeout {
     }
 
@@ -242,7 +242,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         UpdateDefinitionStages.WithAttach<ParentT>,
         UpdateDefinitionStages.WithPort<ParentT>,
         UpdateDefinitionStages.WithAffinity<ParentT>,
-        UpdateDefinitionStages.WithProtocol<ParentT>,
+        //TODO UpdateDefinitionStages.WithProtocol<ParentT>, -- not yet officially supported by Azure
         UpdateDefinitionStages.WithRequestTimeout<ParentT> {
     }
 }
