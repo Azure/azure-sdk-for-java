@@ -30,7 +30,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         implements SqlDatabases.SqlDatabaseCreatable,
         SupportsGettingByParent<SqlDatabase>,
         SupportsListingByParent<SqlDatabase> {
-    protected SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
+    protected   SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
 
