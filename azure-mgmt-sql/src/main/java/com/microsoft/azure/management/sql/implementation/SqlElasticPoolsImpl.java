@@ -21,7 +21,7 @@ import rx.Observable;
  * Implementation for SQLElasticPools and its parent interfaces.
  */
 @LangDefinition
-public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
+class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             SqlElasticPool,
             SqlElasticPoolImpl,
             ElasticPoolInner,

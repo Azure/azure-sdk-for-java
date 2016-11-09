@@ -11,7 +11,6 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
-import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServers;
 
 /**
@@ -19,7 +18,6 @@ import com.microsoft.azure.management.sql.SqlServers;
  */
 public class SqlServerManager extends Manager<SqlServerManager, SqlManagementClientImpl> {
     private SqlServers sqlServers;
-    private SqlDatabases sqlDatabases;
 
     protected SqlServerManager(RestClient restClient, String subscriptionId) {
         super(
@@ -95,22 +93,10 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
             sqlServers = new SqlServersImpl(
                     super.innerManagementClient.servers(),
                     super.innerManagementClient.elasticPools(),
-                    this);
-        }
-
-        return sqlServers;
-    }
-
-    /**
-     * @return the SQL Database management API entry point
-     */
-    public SqlDatabases sqlDatabases() {
-        if (sqlDatabases == null) {
-            sqlDatabases = new SqlDatabasesImpl(
                     super.innerManagementClient.databases(),
                     this);
         }
 
-        return sqlDatabases;
+        return sqlServers;
     }
 }

@@ -19,7 +19,7 @@ import rx.functions.Func1;
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
  */
-public class SqlFirewallRuleImpl
+class SqlFirewallRuleImpl
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,

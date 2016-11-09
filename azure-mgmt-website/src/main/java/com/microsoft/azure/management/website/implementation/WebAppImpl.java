@@ -6,60 +6,74 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import com.microsoft.azure.CloudException;
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.AzureResourceType;
+import com.microsoft.azure.management.website.Certificate;
 import com.microsoft.azure.management.website.CloningInfo;
+import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
+import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
-import com.microsoft.azure.management.website.HostingEnvironmentProfile;
+import com.microsoft.azure.management.website.HostNameType;
 import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.SslState;
 import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.azure.management.website.WebApp;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Func1;
+import rx.functions.FuncN;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * The implementation for {@link WebApp}.
  */
 class WebAppImpl
         extends GroupableResourceImpl<
-        WebApp,
-        SiteInner,
-        WebAppImpl,
-        AppServiceManager>
+            WebApp,
+            SiteInner,
+            WebAppImpl,
+            AppServiceManager>
         implements
-        WebApp,
-        WebApp.Definition,
-        WebApp.Update {
+            WebApp,
+            WebApp.Definition,
+            WebApp.Update {
 
     private final WebAppsInner client;
     private Map<String, HostNameSslState> hostNameSslStateMap;
+    private Map<String, HostNameBindingImpl> hostNameBindingsToCreate;
+    private Set<String> enabledHostNamesSet;
 
     WebAppImpl(String key, SiteInner innerObject, final WebAppsInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
         this.hostNameSslStateMap = new HashMap<>();
+        this.hostNameBindingsToCreate = new HashMap<>();
+        if (inner().enabledHostNames() != null) {
+            this.enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
+        }
         if (innerObject.hostNameSslStates() != null) {
             for (HostNameSslState hostNameSslState : innerObject.hostNameSslStates()) {
+                // Server returns null sometimes, invalid on update, so we set default
+                if (hostNameSslState.sslState() == null) {
+                    hostNameSslState.withSslState(SslState.DISABLED);
+                }
                 hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
             }
         }
-    }
-
-    @Override
-    public String siteName() {
-        return inner().name();
     }
 
     @Override
@@ -88,8 +102,11 @@ class WebAppImpl
     }
 
     @Override
-    public List<String> enabledHostNames() {
-        return inner().enabledHostNames();
+    public Set<String> enabledHostNames() {
+        if (enabledHostNamesSet == null) {
+            return null;
+        }
+        return Collections.unmodifiableSet(enabledHostNamesSet);
     }
 
     @Override
@@ -108,7 +125,7 @@ class WebAppImpl
     }
 
     @Override
-    public DateTime lastModifiedTimeUtc() {
+    public DateTime lastModifiedTime() {
         return inner().lastModifiedTimeUtc();
     }
 
@@ -135,11 +152,6 @@ class WebAppImpl
     @Override
     public String targetSwapSlot() {
         return inner().targetSwapSlot();
-    }
-
-    @Override
-    public HostingEnvironmentProfile hostingEnvironmentProfile() {
-        return inner().hostingEnvironmentProfile();
     }
 
     @Override
@@ -178,18 +190,8 @@ class WebAppImpl
     }
 
     @Override
-    public int maxNumberOfWorkers() {
-        return inner().maxNumberOfWorkers();
-    }
-
-    @Override
     public CloningInfo cloningInfo() {
         return inner().cloningInfo();
-    }
-
-    @Override
-    public String resourceGroup() {
-        return inner().resourceGroup();
     }
 
     @Override
@@ -203,14 +205,18 @@ class WebAppImpl
     }
 
     @Override
-    public List<HostNameBinding> hostNameBindings() throws CloudException, IOException {
-        //TODO: Use wrapList()
+    public Map<String, HostNameBinding> getHostNameBindings() {
         List<HostNameBindingInner> collectionInner = client.listHostNameBindings(resourceGroupName(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
         for (HostNameBindingInner inner : collectionInner) {
             hostNameBindings.add(new HostNameBindingImpl(inner.name(), inner, this, client));
         }
-        return hostNameBindings;
+        return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
+            @Override
+            public String apply(HostNameBinding input) {
+                return input.name().replace(name() + "/", "");
+            }
+        });
     }
 
     @Override
@@ -220,7 +226,7 @@ class WebAppImpl
     }
 
     @Override
-    public WebAppImpl withNewAppServicePlan() {
+    public WebAppImpl withNewFreeAppServicePlan() {
         String appServicePlanName = ResourceNamer.randomResourceName(name(), 10);
         AppServicePlan.DefinitionStages.WithCreate creatable = myManager.appServicePlans().define(appServicePlanName)
                 .withRegion(region())
@@ -248,81 +254,224 @@ class WebAppImpl
         return this;
     }
 
-    private boolean isUpdateSsl(String hostName) {
-        boolean update = false;
-        if (hostNameSslStates() != null) {
-            for (HostNameSslState hostNameSslState : hostNameSslStates()) {
-                if (hostName.equals(hostNameSslState.name())) {
-                    update = true;
+//    private boolean isUpdateSsl(String hostName) {
+//        boolean update = false;
+//        if (hostNameSslStates() != null) {
+//            for (HostNameSslState hostNameSslState : hostNameSslStates()) {
+//                if (hostName.equals(hostNameSslState.name())) {
+//                    update = true;
+//                }
+//            }
+//        }
+//        return update;
+//    }
+//
+//    @Override
+//    public WebAppImpl disableSsl(String hostName) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.DISABLED)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
+//
+//    @Override
+//    public WebAppImpl enableSniSsl(String hostName, String thumbprint) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.SNI_ENABLED)
+//                .withThumbprint(thumbprint)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
+//
+//    @Override
+//    public WebAppImpl enableIpBasedSsl(String hostName, String thumbprint, String virtualIp) {
+//        if (hostName == null) {
+//            throw new IllegalArgumentException("Null host name");
+//        }
+//        hostNameSslStateMap.put(hostName, new HostNameSslState()
+//                .withName(hostName)
+//                .withSslState(SslState.SNI_ENABLED)
+//                .withThumbprint(thumbprint)
+//                .withVirtualIP(virtualIp)
+//                .withToUpdate(isUpdateSsl(hostName)));
+//        return this;
+//    }
+
+    WebAppImpl withNewHostNameSslBinding(final HostNameSslBindingImpl hostNameSslBinding) {
+        this.hostNameSslStateMap.put(hostNameSslBinding.name(), hostNameSslBinding.inner().withToUpdate(true));
+        if (hostNameSslBinding.newCertificate() != null) {
+            final CertificateImpl certificateImpl = (CertificateImpl) hostNameSslBinding.newCertificate();
+            // Convert creatable to apply thumbprint after creation
+            CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl> postCert = new CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl>(
+                    certificateImpl.name(),
+                    certificateImpl.inner()) {
+                @Override
+                public Observable<Certificate> createResourceAsync() {
+                    return hostNameSslBinding.newCertificate().createAsync().map(new Func1<Certificate, Certificate>() {
+                        @Override
+                        public Certificate call(Certificate certificate) {
+                            hostNameSslBinding.withCertificateThumbprint(certificate.thumbprint());
+                            return certificate;
+                        }
+                    });
                 }
+
+                @Override
+                public boolean isInCreateMode() {
+                    return certificateImpl.isInCreateMode();
+                }
+
+                @Override
+                public Certificate refresh() {
+                    return certificateImpl.refresh();
+                }
+            };
+            ((CertificateImpl) hostNameSslBinding.newCertificate()).creatorUpdatorTaskGroup().merge(postCert.creatorUpdatorTaskGroup());
+            addCreatableDependency(postCert);
+        }
+        if (hostNameSslBinding.newCertificateOrder() != null) {
+            addCreatableDependency(hostNameSslBinding.newCertificateOrder());
+        }
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withManagedHostNameBindings(Domain domain, String... hostnames) {
+        for(String hostname : hostnames) {
+            if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
+                defineNewHostNameBinding(hostname)
+                        .withAzureManagedDomain(domain)
+                        .withDnsRecordType(CustomHostNameDnsRecordType.A)
+                        .attach();
+            } else {
+                defineNewHostNameBinding(hostname)
+                        .withAzureManagedDomain(domain)
+                        .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                        .attach();
             }
         }
-        return update;
-    }
-
-    @Override
-    public WebAppImpl disableSsl(String hostName) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.DISABLED)
-                .withToUpdate(isUpdateSsl(hostName)));
         return this;
     }
 
     @Override
-    public WebAppImpl enableSniSsl(String hostName, String thumbprint) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.SNI_ENABLED)
-                .withThumbprint(thumbprint)
-                .withToUpdate(isUpdateSsl(hostName)));
-        return this;
-    }
-
-    @Override
-    public WebAppImpl enableIpBasedSsl(String hostName, String thumbprint, String virtualIp) {
-        if (hostName == null) {
-            throw new IllegalArgumentException("Null host name");
-        }
-        hostNameSslStateMap.put(hostName, new HostNameSslState()
-                .withName(hostName)
-                .withSslState(SslState.SNI_ENABLED)
-                .withThumbprint(thumbprint)
-                .withVirtualIP(virtualIp)
-                .withToUpdate(isUpdateSsl(hostName)));
-        return this;
-    }
-
-    @Override
-    public HostNameBinding.DefinitionStages.Blank<WebApp.Update> defineHostNameBinding(String name) {
+    public HostNameBindingImpl defineNewHostNameBinding(String hostname) {
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
-        return new HostNameBindingImpl(name, inner, this, client);
+        inner.withAzureResourceName(name());
+        inner.withHostNameType(HostNameType.VERIFIED);
+        return new HostNameBindingImpl(hostname, inner, this, client);
     }
 
-    WebAppImpl withHostNameBinding(HostNameBindingImpl hostNameBinding) {
-        addCreatableDependency(hostNameBinding);
+    @Override
+    public WebAppImpl withVerifiedHostNameBinding(String domain, String... hostnames) {
+        for(String hostname : hostnames) {
+            defineNewHostNameBinding(hostname)
+                    .withThirdPartyDomain(domain)
+                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                    .attach();
+        }
         return this;
     }
 
-    AppServiceManager myManager() {
-        return super.myManager;
+    WebAppImpl withHostNameBinding(final HostNameBindingImpl hostNameBinding) {
+        this.hostNameBindingsToCreate.put(
+                hostNameBinding.name(),
+                hostNameBinding);
+        return this;
     }
 
     @Override
     public Observable<WebApp> createResourceAsync() {
+        final WebAppImpl self = this;
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
+        // Construct web app observable
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+                // Submit hostname bindings
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner site) {
+                        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
+                        for (HostNameBindingImpl binding: hostNameBindingsToCreate.values()) {
+                            bindingObservables.add(binding.createAsync());
+                        }
+                        hostNameBindingsToCreate.clear();
+                        if (bindingObservables.isEmpty()) {
+                            return Observable.just(site);
+                        } else {
+                            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
+                                @Override
+                                public SiteInner call(Object... args) {
+                                    return site;
+                                }
+                            });
+                        }
+                    }
+                })
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(SiteInner site) {
+                        return client.getAsync(resourceGroupName(), site.name());
+                    }
+                })
+                .map(new Func1<SiteInner, WebApp>() {
+                    @Override
+                    public WebApp call(SiteInner siteInner) {
+                        setInner(siteInner);
+                        if (inner().enabledHostNames() != null) {
+                            enabledHostNamesSet = Sets.newHashSet(inner().enabledHostNames());
+                        }
+                        if (siteInner.hostNameSslStates() != null) {
+                            for (HostNameSslState hostNameSslState : siteInner.hostNameSslStates()) {
+                                // Server returns null sometimes, invalid on update, so we set default
+                                if (hostNameSslState.sslState() == null) {
+                                    hostNameSslState.withSslState(SslState.DISABLED);
+                                }
+                                hostNameSslStateMap.put(hostNameSslState.name(), hostNameSslState);
+                            }
+                        }
+                        return self;
+                    }
+                });
+    }
+
+    @Override
+    public WebAppImpl withAppDisabledOnCreation() {
+        inner().withEnabled(false);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withScmSiteAlsoStopped(boolean scmSiteAlsoStopped) {
+        inner().withScmSiteAlsoStopped(scmSiteAlsoStopped);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withClientAffinityEnabled(boolean enabled) {
+        inner().withClientAffinityEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withClientCertEnabled(boolean enabled) {
+        inner().withClientCertEnabled(enabled);
+        return this;
+    }
+
+    @Override
+    public HostNameSslBindingImpl defineNewSSLBindingForHostName(String hostname) {
+        return new HostNameSslBindingImpl(new HostNameSslState().withName(hostname), this, myManager);
     }
 }

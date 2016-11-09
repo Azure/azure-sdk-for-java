@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.Certificate;
@@ -13,7 +14,9 @@ import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import org.joda.time.DateTime;
 import rx.Observable;
 
-import java.util.ArrayList;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 /**
@@ -28,13 +31,12 @@ class CertificateImpl
                 AppServiceManager>
         implements
         Certificate,
-        Certificate.Definition,
-        Certificate.Update {
+        Certificate.Definition {
 
     private final CertificatesInner client;
 
-    CertificateImpl(String key, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
-        super(key, innerObject, manager);
+    CertificateImpl(String name, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
+        super(name, innerObject, manager);
         this.client = client;
     }
 
@@ -120,17 +122,26 @@ class CertificateImpl
     }
 
     @Override
-    public CertificateImpl withHostName(String hostName) {
-        if (inner().hostNames() == null) {
-            inner().withHostNames(new ArrayList<String>());
+    public Observable<Certificate> createResourceAsync() {
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public CertificateImpl withPfxFile(File file) {
+        try {
+            byte[] fileContent = Files.readAllBytes(file.toPath());
+            String base64String = BaseEncoding.base64().encode(fileContent);
+            inner().withPfxBlob(base64String);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        inner().hostNames().add(hostName);
         return this;
     }
 
     @Override
-    public Observable<Certificate> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+    public Certificate.DefinitionStages.WithCreate withPfxFilePassword(String password) {
+        inner().withPassword(password);
+        return this;
     }
 }

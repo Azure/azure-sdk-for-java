@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
@@ -20,16 +21,16 @@ import rx.Observable;
  * Implementation for SQLDatabases and its parent interfaces.
  */
 @LangDefinition
-public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
+class SqlDatabasesImpl extends IndependentChildResourcesImpl<
             SqlDatabase,
             SqlDatabaseImpl,
             DatabaseInner,
             DatabasesInner,
             SqlServerManager>
-        implements SqlDatabases,
+        implements SqlDatabases.SqlDatabaseCreatable,
         SupportsGettingByParent<SqlDatabase>,
         SupportsListingByParent<SqlDatabase> {
-    protected SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
+    protected   SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
 
@@ -89,5 +90,16 @@ public class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     @Override
     public PagedList<SqlDatabase> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
+    }
+
+    @Override
+    public SqlDatabase.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String databaseName, Region region) {
+        DatabaseInner inner = new DatabaseInner();
+        inner.withLocation(region.name());
+
+        return new SqlDatabaseImpl(
+                databaseName,
+                inner,
+                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

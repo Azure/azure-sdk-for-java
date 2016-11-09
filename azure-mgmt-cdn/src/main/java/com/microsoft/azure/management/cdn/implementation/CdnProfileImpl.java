@@ -12,6 +12,7 @@ import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.management.cdn.Sku;
+import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
 import rx.functions.Action1;
@@ -34,15 +35,11 @@ class CdnProfileImpl
         CdnProfile,
         CdnProfile.Definition,
         CdnProfile.Update {
-    /*private final PatchSchedulesInner patchSchedulesInner;
-    private RedisAccessKeys cachedAccessKeys;
-    private RedisCreateParametersInner createParameters;
-    private RedisUpdateParametersInner updateParameters;
-    private Map<DayOfWeek, ScheduleEntry> scheduleEntries;*/
+
     private final EndpointsInner endpointsClient;
     private ProfileUpdateParameters updateParameters;
     private final ProfilesInner innerCollection;
-    private CdnEndpointsImpl endpoints;
+    private CdnEndpointsImpl endpointsImpl;
 
     CdnProfileImpl(String name,
                    final ProfileInner innerModel,
@@ -52,12 +49,12 @@ class CdnProfileImpl
         super(name, innerModel, cdnManager);
         this.innerCollection = innerCollection;
         this.endpointsClient = endpointsClient;
-        this.endpoints = new CdnEndpointsImpl(endpointsClient, this);
+        this.endpointsImpl = new CdnEndpointsImpl(endpointsClient, this);
     }
 
     @Override
     public Map<String, CdnEndpoint> endpoints() {
-        return this.endpoints.endpointsAsMap();
+        return this.endpointsImpl.endpointsAsMap();
     }
 
     @Override
@@ -154,7 +151,7 @@ class CdnProfileImpl
                 }).flatMap(new Func1<CdnProfile, Observable<? extends CdnProfile>>() {
                     @Override
                     public Observable<? extends CdnProfile> call(CdnProfile profile) {
-                        return self.endpoints.commitAndGetAllAsync()
+                        return self.endpointsImpl.commitAndGetAllAsync()
                                 .map(new Func1<List<CdnEndpointImpl>, CdnProfile>() {
                                     @Override
                                     public CdnProfile call(List<CdnEndpointImpl> endpoints) {
@@ -167,21 +164,32 @@ class CdnProfileImpl
 
     @Override
     public CdnProfileImpl withStandardAkamaiSku() {
+        this.inner()
+                .withSku(new Sku()
+                            .withName(SkuName.STANDARD_AKAMAI));
         return this;
     }
 
     @Override
     public CdnProfileImpl withStandardVerizonSku() {
+        this.inner()
+                .withSku(new Sku()
+                        .withName(SkuName.STANDARD_VERIZON));
         return this;
     }
 
     @Override
     public CdnProfileImpl withPremiumVerizonSku() {
+        this.inner()
+                .withSku(new Sku()
+                        .withName(SkuName.PREMIUM_VERIZON));
         return this;
     }
 
     @Override
     public CdnProfileImpl withNewEndpoint(String endpointOriginHostname) {
+        CdnEndpoint endpoint = this.endpointsImpl.defineNewEndpoint(endpointOriginHostname);
+        this.endpoints().put(endpoint.name(), endpoint);
         return this;
     }
 

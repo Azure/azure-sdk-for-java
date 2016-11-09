@@ -13,6 +13,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.website.implementation.AppServiceManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * The base for storage manager tests.
  */
@@ -29,7 +31,13 @@ public abstract class AppServiceTestBase {
 
         RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .withNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                    @Override
+                    public void log(String s) {
+                        System.out.println(s);
+                    }
+                }).setLevel(HttpLoggingInterceptor.Level.BODY))
+                .withReadTimeout(1, TimeUnit.MINUTES)
                 .build();
 
         resourceManager = ResourceManager
@@ -37,6 +45,6 @@ public abstract class AppServiceTestBase {
                 .withSubscription(System.getenv("subscription-id"));
 
         appServiceManager = AppServiceManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));
     }
 }

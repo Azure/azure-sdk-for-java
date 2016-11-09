@@ -7,6 +7,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
 
 public abstract class SqlServerTestBase {

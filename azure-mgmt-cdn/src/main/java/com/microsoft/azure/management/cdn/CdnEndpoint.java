@@ -2,6 +2,7 @@ package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.cdn.implementation.EndpointInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -19,7 +20,6 @@ public interface CdnEndpoint extends
 
     // Actions
     // TODO: DODO
-
 
     List<String> customDomains();
 
@@ -41,9 +41,7 @@ public interface CdnEndpoint extends
         }
 
         interface WithStandardAttach<ParentT>
-                extends
-                // Attachable.InDefinition<ParentT>
-                AttachableStandard<ParentT>
+                extends AttachableStandard<ParentT>
         {
             WithStandardAttach<ParentT> withOriginPath(String originPath);
             WithStandardAttach<ParentT> withHostHeader(String hostHeader);
@@ -56,14 +54,12 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
         interface WithPremiumAttach<ParentT>
-                extends
-                // Attachable.InDefinition<ParentT>
-                AttachablePremium<ParentT>
+                extends AttachablePremium<ParentT>
         {
             WithPremiumAttach<ParentT> withOriginPath(String originPath);
             WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
@@ -86,7 +82,6 @@ public interface CdnEndpoint extends
     interface UpdateDefinitionStages {
 
         interface Blank {
-
             interface StandardEndpoint<ParentT> {
                 UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
                 UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String hostname);
@@ -99,9 +94,7 @@ public interface CdnEndpoint extends
         }
 
         interface WithStandardAttach<ParentT>
-                extends
-                /// Attachable.InUpdate<ParentT>
-                AttachableStandard<ParentT>
+                extends AttachableStandard<ParentT>
         {
             WithStandardAttach<ParentT> withOriginPath(String originPath);
             WithStandardAttach<ParentT> withHostHeader(String hostHeader);
@@ -114,14 +107,12 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
         interface WithPremiumAttach<ParentT>
-                extends
-                // Attachable.InUpdate<ParentT>
-                AttachablePremium<ParentT>
+                extends AttachablePremium<ParentT>
         {
             WithPremiumAttach<ParentT> withOriginPath(String originPath);
             WithPremiumAttach<ParentT> withHostHeader(String hostHeader);
@@ -156,7 +147,7 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
         UpdateStandardEndpoint withGeoFilters(List<GeoFilter> geoFilters);
         UpdateStandardEndpoint withoutGeoFilters();
-        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
         UpdateStandardEndpoint withoutGeoFilter(String relativePath);
         UpdateStandardEndpoint withCustomDomain(String hostName);
         UpdateStandardEndpoint withoutCustomDomain(String hostName);

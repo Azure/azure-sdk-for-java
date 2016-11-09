@@ -5,6 +5,7 @@ import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -58,8 +59,8 @@ public class ManageCdn {
                         .defineNewEndpoint()
                             .withOrigin("mylinuxapp.azurewebsites.net")
                             .withContentTypeToCompress("powershell/pain")
-                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, "AZ")
-                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, "AZ")
+                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
+                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryISOCode.BELGIUM)
                             .withContentTypeToCompress("text/plain")
                             .withCompressionEnabled(true)
                             .withCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
@@ -103,7 +104,7 @@ public class ManageCdn {
                             .withNewEndpoint("https://www.vazgen.com")
                             .defineNewEndpoint()
                                 .withOrigin("https://www.vazgen.com")
-                                .withGeoFilter("/path/music", GeoFilterActions.BLOCK, "AZ")
+                                .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.ESTONIA)
                                 .attach()
                             .updateEndpoint("supermuperprofileAkamai")
                                 .withoutContentTypesToCompress()

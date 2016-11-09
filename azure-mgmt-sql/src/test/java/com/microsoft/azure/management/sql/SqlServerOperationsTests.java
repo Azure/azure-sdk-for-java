@@ -17,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1236";
-    private static final String SQL_SERVER_NAME = "javasqlserver1236";
+    private static final String RG_NAME = "javasqlserver1238";
+    private static final String SQL_SERVER_NAME = "javasqlserver1238";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -43,7 +43,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlServer sqlServer = createSqlServer();
 
         validateSqlServer(sqlServer);
-        sqlServer.update().withPassword("P@ssword~2").apply();
+        sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
         // List
         List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
@@ -65,45 +65,55 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlDatabase() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
+        SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
+                .withoutExistingElasticPool()
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
 
-        validateSqlDatabase(sqlDatabase);
+        validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
+        // Create another database with above created database as source database.
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable = sqlServer.elasticPools()
+                .define(SQL_ELASTIC_POOL_NAME)
+                .withEdition(ElasticPoolEditions.STANDARD);
+        String anotherDatabaseName = "anotherDatabase";
+        SqlDatabase anotherDatabase = sqlServer.databases()
+                .define(anotherDatabaseName)
+                .withNewElasticPool(sqlElasticPoolCreatable)
+                .withSourceDatabaseId(sqlDatabase.id())
+                .withCreateMode(CreateMode.COPY)
+                .create();
+
+        validateSqlDatabaseWithElasticPool(anotherDatabase, anotherDatabaseName);
+        sqlServer.databases().delete(anotherDatabase.name());
+
         // Get
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getById(sqlDatabase.id()));
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer, SQL_DATABASE_NAME));
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_DATABASE_NAME));
+        validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
 
         // List
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
+        validateListSqlDatabase(sqlServer.databases().list());
 
-        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
+        // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
+        validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
-        sqlDatabase = sqlServerManager.sqlDatabases()
+        sqlDatabase = sqlServer.databases()
                 .define("newDatabase")
+                .withoutExistingElasticPool()
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServer.databases().delete(sqlDatabase.name());
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
@@ -118,15 +128,16 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD);
 
-        SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
+        SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
+                .withNewElasticPool(sqlElasticPoolCreatable)
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withNewElasticPool(sqlElasticPoolCreatable)
-                .withExistingSqlServer(sqlServer)
+                .withServiceObjective(ServiceObjectiveName.S1)
                 .createAsync().toBlocking().first();
 
-        validateSqlDatabase(sqlDatabase);
+        validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
         sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
@@ -135,28 +146,66 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
 
         // Get
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getById(sqlDatabase.id()));
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer, SQL_DATABASE_NAME));
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_DATABASE_NAME));
+        validateSqlDatabaseWithElasticPool(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
 
         // List
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
+        validateListSqlDatabase(sqlServer.databases().list());
 
-        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
+        // Remove database from elastic pools.
+        sqlDatabase.update()
+                .withoutExistingElasticPool()
+                .withEdition(DatabaseEditions.STANDARD)
+                .withServiceObjective(ServiceObjectiveName.S3)
+            .apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertNull(sqlDatabase.elasticPoolName());
+
+        // Update edition of the SQL database
+        sqlDatabase.update()
+                .withEdition(DatabaseEditions.PREMIUM)
+                .withServiceObjective(ServiceObjectiveName.P1)
+                .apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.edition(), DatabaseEditions.PREMIUM);
+        Assert.assertEquals(sqlDatabase.serviceLevelObjective(), ServiceObjectiveName.P1);
+
+        // Update just the service level objective for database.
+        sqlDatabase.update().withServiceObjective(ServiceObjectiveName.P2).apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.serviceLevelObjective(), ServiceObjectiveName.P2);
+        Assert.assertEquals(sqlDatabase.requestedServiceObjectiveName(), ServiceObjectiveName.P2);
+
+        // Update max size bytes of the database.
+        sqlDatabase.update()
+                .withMaxSizeBytes(268435456000L)
+                .apply();
+
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.maxSizeBytes(), 268435456000L);
+
+        // Put the database back in elastic pool.
+        sqlDatabase.update()
+                .withExistingElasticPool(SQL_ELASTIC_POOL_NAME)
+                .apply();
+
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.elasticPoolName(), SQL_ELASTIC_POOL_NAME);
+
+        // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         SqlElasticPool sqlElasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server and pool.
-        sqlDatabase = sqlServerManager.sqlDatabases()
+        sqlDatabase = sqlServer.databases()
                 .define("newDatabase")
+                .withExistingElasticPool(sqlElasticPool)
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withExistingElasticPool(sqlElasticPool)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServer.databases().delete(sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
@@ -269,7 +318,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
-        Assert.assertNull(sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase));
+        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
     }
 
 
@@ -282,8 +331,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .define(SQL_SERVER_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
+                .withAdministratorLogin("userName")
+                .withAdministratorPassword("P@ssword~1")
                 .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
                 .create();
     }
@@ -344,20 +393,20 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(RG_NAME, sqlServer.resourceGroupName());
         Assert.assertNotNull(sqlServer.fullyQualifiedDomainName());
         Assert.assertEquals(ServerVersion.ONE_TWO_FULL_STOP_ZERO, sqlServer.version());
-        Assert.assertEquals("userName", sqlServer.adminLogin());
+        Assert.assertEquals("userName", sqlServer.administratorLogin());
     }
 
-    private static void validateSqlDatabase(SqlDatabase sqlDatabase) {
+    private static void validateSqlDatabase(SqlDatabase sqlDatabase, String databaseName) {
         Assert.assertNotNull(sqlDatabase);
-        Assert.assertEquals(sqlDatabase.name(), SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.name(), databaseName);
         Assert.assertEquals(SQL_SERVER_NAME, sqlDatabase.sqlServerName());
         Assert.assertEquals(sqlDatabase.collation(), COLLATION);
         Assert.assertEquals(sqlDatabase.edition(), DatabaseEditions.STANDARD);
     }
 
 
-    private static void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase) {
-        validateSqlDatabase(sqlDatabase);
+    private static void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase, String databaseName) {
+        validateSqlDatabase(sqlDatabase, databaseName);
         Assert.assertEquals(SQL_ELASTIC_POOL_NAME, sqlDatabase.elasticPoolName());
     }
 }

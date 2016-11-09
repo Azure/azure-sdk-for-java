@@ -7,6 +7,7 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.DeepCreatedOrigin;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
 
 import java.util.ArrayList;
@@ -89,6 +90,16 @@ class CdnEndpointsImpl extends
                 new EndpointInner(),
                 this.client);
 
+        return endpoint;
+    }
+
+    public CdnEndpointImpl defineNewEndpoint(String endpointOriginHostname) {
+        CdnEndpointImpl endpoint = this.prepareDefine("someEndpointNameGenerator");
+        endpoint.inner().withOrigins( new ArrayList<DeepCreatedOrigin>());
+        endpoint.inner().origins().add(
+                new DeepCreatedOrigin()
+                    .withName("someOriginNameGenerator")
+                    .withHostName(endpointOriginHostname));
         return endpoint;
     }
 }

@@ -11,6 +11,7 @@ import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.GeoFilter;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
+import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Observable;
 import rx.functions.Func1;
@@ -213,7 +214,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
     }
 
     @Override
-    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, String countryCodes) {
+    public CdnEndpointImpl withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes) {
         return this;
     }
 
