@@ -6,6 +6,12 @@
 
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.implementation.PageImpl;
+
+import java.util.List;
+
 /**
  * Defines a few utilities.
  */
@@ -40,6 +46,23 @@ public final class Utils {
         }
     }
 
+    /**
+     * Converts the List to PagedList.
+     * @param list list to be converted in to paged list
+     * @param <InnerT> the wrapper inner type
+     * @return the Paged list for the inner type.
+     */
+    public static <InnerT> PagedList<InnerT> convertToPagedList(List<InnerT> list) {
+        PageImpl<InnerT> page = new PageImpl<>();
+        page.setItems(list);
+        page.setNextPageLink(null);
+        return new PagedList<InnerT>(page) {
+            @Override
+            public Page<InnerT> nextPage(String nextPageLink) {
+                return null;
+            }
+        };
+    }
     private Utils() {
     }
 }

@@ -6,11 +6,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
+import com.microsoft.azure.management.sql.DatabaseMetric;
+import com.microsoft.azure.management.sql.RestorePoint;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
@@ -141,6 +146,54 @@ class SqlDatabaseImpl
     }
 
     @Override
+    public ReplicationLinks replicationLinks() {
+        return new ReplicationLinksImpl(this.innerCollection, this.resourceGroupName(), this.sqlServerName(), this.name());
+    }
+
+    @Override
+    public void pauseDataWarehouse() {
+        this.innerCollection.pauseDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
+    }
+
+    @Override
+    public void resumeDataWarehouse() {
+        this.innerCollection.resumeDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
+    }
+
+
+    @Override
+    public PagedList<RestorePoint> listRestorePoints() {
+        PagedListConverter<RestorePointInner, RestorePoint> converter = new PagedListConverter<RestorePointInner, RestorePoint>() {
+            @Override
+            public RestorePoint typeConvert(RestorePointInner restorePointInner) {
+
+                return new RestorePointImpl(restorePointInner);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listRestorePoints(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public PagedList<DatabaseMetric> listUsages() {
+        PagedListConverter<DatabaseMetricInner, DatabaseMetric> converter = new PagedListConverter<DatabaseMetricInner, DatabaseMetric>() {
+            @Override
+            public DatabaseMetric typeConvert(DatabaseMetricInner databaseMetricInner) {
+
+                return new DatabaseMetricImpl(databaseMetricInner);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listUsages(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
     public SqlDatabase refresh() {
         this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name());
         return this;
@@ -183,7 +236,7 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withoutExistingElasticPool() {
+    public SqlDatabaseImpl withoutElasticPool() {
         this.inner().withElasticPoolName("");
         return this;
     }

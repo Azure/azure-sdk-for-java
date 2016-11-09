@@ -27,7 +27,7 @@ public interface SqlElasticPool extends
         Wrapper<ElasticPoolInner> {
 
     /**
-     * @return the SQL Server name to which this elastic pool belongs
+     * @return name of the SQL Server to which this elastic pool belongs
      */
     String sqlServerName();
 

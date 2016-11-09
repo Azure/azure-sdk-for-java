@@ -17,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1238";
-    private static final String SQL_SERVER_NAME = "javasqlserver1238";
+    private static final String RG_NAME = "javasqlserver1237";
+    private static final String SQL_SERVER_NAME = "javasqlserver1237";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -69,7 +69,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutExistingElasticPool()
+                .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
@@ -108,7 +108,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Add another database to the server
         sqlDatabase = sqlServer.databases()
                 .define("newDatabase")
-                .withoutExistingElasticPool()
+                .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
@@ -118,6 +118,104 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
+
+    @Test
+    public void canManageReplicationLinks() throws Exception {
+        // Create
+        String anotherSqlServerName = SQL_SERVER_NAME + "another";
+        SqlServer sqlServer1 = createSqlServer();
+        SqlServer sqlServer2 = createSqlServer(anotherSqlServerName);
+
+        SqlDatabase databaseInServer1 = sqlServer1.databases()
+                .define(SQL_DATABASE_NAME)
+                .withoutElasticPool()
+                .withoutSourceDatabaseId()
+                .withCollation(COLLATION)
+                .withEdition(DatabaseEditions.STANDARD)
+                .createAsync().toBlocking().first();
+
+        validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
+        SqlDatabase databaseInServer2 = sqlServer2.databases()
+                .define(SQL_DATABASE_NAME)
+                .withoutElasticPool()
+                .withSourceDatabaseId(databaseInServer1.id())
+                .withCreateMode(CreateMode.ONLINE_SECONDARY)
+                .create();
+        Thread.sleep(2000);
+        PagedList<ReplicationLink> replicationLinksInDb1 = databaseInServer1.replicationLinks().list();
+
+        Assert.assertEquals(replicationLinksInDb1.size() , 1);
+        Assert.assertEquals(replicationLinksInDb1.get(0).partnerDatabase(), databaseInServer2.name());
+        Assert.assertEquals(replicationLinksInDb1.get(0).partnerServer(), databaseInServer2.sqlServerName());
+
+        PagedList<ReplicationLink> replicationLinksInDb2 = databaseInServer2.replicationLinks().list();
+
+        Assert.assertEquals(replicationLinksInDb2.size() , 1);
+        Assert.assertEquals(replicationLinksInDb2.get(0).partnerDatabase(), databaseInServer1.name());
+        Assert.assertEquals(replicationLinksInDb2.get(0).partnerServer(), databaseInServer1.sqlServerName());
+
+        Assert.assertNotNull(replicationLinksInDb1.get(0).refresh());
+        Assert.assertNotNull(databaseInServer1.replicationLinks().get(replicationLinksInDb1.get(0).name()));
+
+        databaseInServer2.replicationLinks().delete(replicationLinksInDb2.get(0).name());
+
+
+        Assert.assertEquals(databaseInServer2.replicationLinks().list().size(), 0);
+
+        Thread.sleep(5000);
+        Assert.assertEquals(databaseInServer1.replicationLinks().list().size(), 0);
+
+        sqlServer1.databases().delete(databaseInServer1.name());
+        sqlServer2.databases().delete(databaseInServer2.name());
+
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer2.resourceGroupName(), sqlServer2.name());
+        validateSqlServerNotFound(sqlServer2);
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer1.resourceGroupName(), sqlServer1.name());
+        validateSqlServerNotFound(sqlServer1);
+    }
+
+    @Test
+    public void canDoOperationsOnDataWarehouse() throws Exception {
+        // Create
+        SqlServer sqlServer = createSqlServer();
+
+        validateSqlServer(sqlServer);
+
+        // List usages for the server.
+        Assert.assertNotNull(sqlServer.listUsages());
+
+        SqlDatabase dataWarehouse = sqlServer.databases()
+                .define(SQL_DATABASE_NAME)
+                .withoutElasticPool()
+                .withoutSourceDatabaseId()
+                .withCollation(COLLATION)
+                .withEdition(DatabaseEditions.DATA_WAREHOUSE)
+                .createAsync().toBlocking().first();
+
+        // Get
+        dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME);
+
+        Assert.assertNotNull(dataWarehouse);
+        Assert.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
+        Assert.assertEquals(dataWarehouse.edition(), DatabaseEditions.DATA_WAREHOUSE);
+
+        // TODO - ans - Get Restore points.
+        // Assert.assertNotNull(dataWarehouse.listRestorePoints());
+        // Get usages.
+        Assert.assertNotNull(dataWarehouse.listUsages());
+
+        // Pause warehouse
+        dataWarehouse.pauseDataWarehouse();
+
+        // Resume warehouse
+        dataWarehouse.resumeDataWarehouse();
+
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
+
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        validateSqlServerNotFound(sqlServer);
+    }
+
 
     @Test
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
@@ -153,7 +251,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         // Remove database from elastic pools.
         sqlDatabase.update()
-                .withoutExistingElasticPool()
+                .withoutElasticPool()
                 .withEdition(DatabaseEditions.STANDARD)
                 .withServiceObjective(ServiceObjectiveName.S3)
             .apply();
@@ -327,6 +425,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     private static SqlServer createSqlServer() {
+        return createSqlServer(SQL_SERVER_NAME);
+    }
+    private static SqlServer createSqlServer(String SQL_SERVER_NAME) {
         return sqlServerManager.sqlServers()
                 .define(SQL_SERVER_NAME)
                 .withRegion(Region.US_CENTRAL)

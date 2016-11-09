@@ -5,10 +5,9 @@
  */
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.implementation.PageImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 import java.util.List;
 
@@ -42,16 +41,8 @@ public abstract class ReadableWrappersImpl<
     }
 
     protected PagedList<T> wrapList(List<InnerT> list) {
-        PageImpl<InnerT> page = new PageImpl<>();
-        page.setItems(list);
-        page.setNextPageLink(null);
-        PagedList<InnerT> pagedList = new PagedList<InnerT>(page) {
-            @Override
-            public Page<InnerT> nextPage(String nextPageLink) {
-                return null;
-            }
-        };
-
-        return converter.convert(pagedList);
+        return converter.convert(Utils.convertToPagedList(list));
     }
+
+
 }

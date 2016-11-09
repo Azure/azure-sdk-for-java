@@ -26,7 +26,7 @@ public interface SqlFirewallRule extends
         Wrapper<ServerFirewallRuleInner> {
 
     /**
-     * @return the SQL Server name to which this firewall rule belongs
+     * @return name of the SQL Server to which this firewall rule belongs
      */
     String sqlServerName();
 
