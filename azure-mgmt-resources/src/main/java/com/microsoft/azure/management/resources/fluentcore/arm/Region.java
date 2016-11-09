@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,7 +67,7 @@ public class Region {
     public static final Region GOV_US_VIRGINIA = new Region("usgovvirginia", "US Gov Virginia");
     public static final Region GOV_US_IOWA = new Region("usgoviowa", "US Gov Iowa");
 
-    private static final List<Region> VALUES;
+    private static final Region[] VALUES;
 
     private final String name;
     private final String label;
@@ -86,7 +85,16 @@ public class Region {
                 }
             }
         }
-        VALUES = Collections.unmodifiableList(values);
+        VALUES = values.toArray(new Region[values.size()]);
+    }
+
+    /**
+     * Get an array of pre-defined regions.
+     * 
+     * @return an array of pre-defined regions.
+     */
+    public static Region[] values() {
+        return VALUES;
     }
 
     /**
@@ -121,20 +129,18 @@ public class Region {
     }
 
     /**
-     * Parses a label into a Region object.
+     * Parses a label or name into a Region object.
      *
-     * @param label the region label
+     * @param labelOrName the region name or label
      * @return the parsed region or null if there's no such region
      */
-    public static Region fromLabel(String label) {
-        for (Region region : Region.VALUES) {
-            if (region.label.equalsIgnoreCase(label)) {
-                return region;
-            }
+    public static Region fromLabelOrName(String labelOrName) {
+        Region location = Region.fromLabel(labelOrName);
+        if (location == null) {
+            return Region.fromName(labelOrName);
         }
-        return null;
+        return location;
     }
-
     /**
      * Parses a name into a Region object.
      *
@@ -149,6 +155,22 @@ public class Region {
         }
         return null;
     }
+
+    /**
+     * Parses a label into a Region object.
+     *
+     * @param label the region label
+     * @return the parsed region or null if there's no such region
+     */
+    private static Region fromLabel(String label) {
+        for (Region region : Region.VALUES) {
+            if (region.label.equalsIgnoreCase(label)) {
+                return region;
+            }
+        }
+        return null;
+    }
+
 
     @Override
     public int hashCode() {

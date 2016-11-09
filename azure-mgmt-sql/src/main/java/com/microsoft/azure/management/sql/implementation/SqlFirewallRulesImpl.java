@@ -14,32 +14,31 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
+import org.apache.commons.lang3.NotImplementedException;
 import rx.Observable;
 
 /**
  * Implementation for SQLElasticPools and its parent interfaces.
  */
 @LangDefinition
-public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
+class SqlFirewallRulesImpl extends IndependentChildrenImpl<
             SqlFirewallRule,
             SqlFirewallRuleImpl,
-            FirewallRuleInner,
+            ServerFirewallRuleInner,
             ServersInner,
             SqlServerManager>
         implements SqlFirewallRules,
         SupportsGettingByParent<SqlFirewallRule>,
-        SupportsListingByParent<SqlFirewallRule> {
+        SupportsListingByParent<SqlFirewallRule>,
+        SqlFirewallRules.SqlFirewallRulesCreatable {
     protected SqlFirewallRulesImpl(ServersInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
 
+    // TODO - ans - Check if we can get rid of this and create another interface where this is not required.
     @Override
     protected SqlFirewallRuleImpl wrapModel(String name) {
-        FirewallRuleInner inner = new FirewallRuleInner();
-        return new SqlFirewallRuleImpl(
-                name,
-                inner,
-                this.innerCollection);
+        throw new NotImplementedException("Should never hit this code, currently not exposed");
     }
 
     @Override
@@ -53,18 +52,16 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    protected SqlFirewallRuleImpl wrapModel(FirewallRuleInner inner) {
+    protected SqlFirewallRuleImpl wrapModel(ServerFirewallRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new SqlFirewallRuleImpl(inner.name(), inner, this.innerCollection);
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.Blank define(String name) {
-        return wrapModel(name);
-    }
-
-    @Override
     public Observable<Void> deleteByParentAsync(String groupName, String parentName, String name) {
-        return this.innerCollection.deleteFirewallRulesAsync(groupName, parentName, name);
+        return this.innerCollection.deleteFirewallRuleAsync(groupName, parentName, name);
     }
 
     @Override
@@ -85,5 +82,15 @@ public class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     @Override
     public PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
+    }
+
+    @Override
+    public SqlFirewallRuleImpl definedWithSqlServer(String resourceGroupName, String sqlServerName, String firewallRuleName) {
+        ServerFirewallRuleInner inner = new ServerFirewallRuleInner();
+
+        return new SqlFirewallRuleImpl(
+                firewallRuleName,
+                inner,
+                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

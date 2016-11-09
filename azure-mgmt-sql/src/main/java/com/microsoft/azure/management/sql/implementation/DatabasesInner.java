@@ -10,21 +10,14 @@ package com.microsoft.azure.management.sql.implementation;
 
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.ListOperationCallback;
-import com.microsoft.azure.management.sql.ArmErrorResponseMessageException;
-import com.microsoft.azure.management.sql.ResourceMoveDefinition;
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import java.util.UUID;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -66,12 +59,32 @@ public final class DatabasesInner {
      */
     interface DatabasesService {
         @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/move")
-        Observable<Response<ResponseBody>> rename(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body ResourceMoveDefinition definition, @Header("User-Agent") String userAgent);
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/auditRecords")
-        Observable<Response<ResponseBody>> listEngineAuditRecords(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Query("$filter") String filter, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
+        Observable<Response<ResponseBody>> getReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
+        Observable<Response<ResponseBody>> failoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
+        Observable<Response<ResponseBody>> beginFailoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
+        Observable<Response<ResponseBody>> failoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
+        Observable<Response<ResponseBody>> beginFailoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
+        Observable<Response<ResponseBody>> listReplicationLinks(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/pause")
@@ -91,7 +104,7 @@ public final class DatabasesInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/restorePoints")
-        Observable<Response<ResponseBody>> listRestorePointss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRestorePoints(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}")
@@ -127,2692 +140,20 @@ public final class DatabasesInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdateTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body TransparentDataEncryptionInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current")
-        Observable<Response<ResponseBody>> getTransparentDataEncryption(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getTransparentDataEncryptionConfiguration(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/transparentDataEncryption/current/operationResults")
         Observable<Response<ResponseBody>> listTransparentDataEncryptionActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/import")
-        Observable<Response<ResponseBody>> importMethod(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/extensions/import")
-        Observable<Response<ResponseBody>> beginImport(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ImportExtensionRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
-        Observable<Response<ResponseBody>> export(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/export")
-        Observable<Response<ResponseBody>> beginExport(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body ExportRequestParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/importExportOperationResults/{operationId}")
-        Observable<Response<ResponseBody>> getImportExportStatus(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("operationId") UUID operationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases")
-        Observable<Response<ResponseBody>> listGeoBackups(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/recoverableDatabases/{databaseName}")
-        Observable<Response<ResponseBody>> getGeoBackup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/restorableDroppedDatabases")
-        Observable<Response<ResponseBody>> listBackupsForDeletedDatabases(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/restorableDroppedDatabases/{databaseName}")
-        Observable<Response<ResponseBody>> getBackupForDeletedDatabase(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}")
-        Observable<Response<ResponseBody>> getReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
-        Observable<Response<ResponseBody>> failoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/failover")
-        Observable<Response<ResponseBody>> beginFailoverReplicationLink(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
-        Observable<Response<ResponseBody>> failoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks/{linkId}/forceFailoverAllowDataLoss")
-        Observable<Response<ResponseBody>> beginFailoverReplicationLinkAllowDataLoss(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Path("linkId") String linkId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/replicationLinks")
-        Observable<Response<ResponseBody>> listReplicationLinks(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/connectionPolicies/Default")
-        Observable<Response<ResponseBody>> setSecureConnectionPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Body DatabaseSecureConnectionPolicyInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/connectionPolicies/Default")
-        Observable<Response<ResponseBody>> getSecureConnectionPolicy(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("databaseName") String databaseName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listEngineAuditRecordsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     */
-    public void rename(String resourceGroupName, String serverName, String databaseName) {
-        renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> renameAsync(String resourceGroupName, String serverName, String databaseName) {
-        return renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> renameWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        final String id = null;
-        ResourceMoveDefinition definition = new ResourceMoveDefinition();
-        definition.withId(null);
-        return service.rename(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), definition, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = renameDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     */
-    public void rename(String resourceGroupName, String serverName, String databaseName, String id) {
-        renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id).toBlocking().single().getBody();
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id), serviceCallback);
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> renameAsync(String resourceGroupName, String serverName, String databaseName, String id) {
-        return renameWithServiceResponseAsync(resourceGroupName, serverName, databaseName, id).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Renames an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database to rename.
-     * @param id The target ID for the resource
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> renameWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String id) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        ResourceMoveDefinition definition = new ResourceMoveDefinition();
-        definition.withId(id);
-        return service.rename(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), definition, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = renameDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> renameDelegate(Response<ResponseBody> response) throws ArmErrorResponseMessageException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, ArmErrorResponseMessageException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(ArmErrorResponseMessageException.class)
-                .build(response);
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object if successful.
-     */
-    public PagedList<EngineAuditRecordResourceInner> listEngineAuditRecords(final String resourceGroupName, final String serverName, final String databaseName) {
-        ServiceResponse<Page<EngineAuditRecordResourceInner>> response = listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName).toBlocking().single();
-        return new PagedList<EngineAuditRecordResourceInner>(response.getBody()) {
-            @Override
-            public Page<EngineAuditRecordResourceInner> nextPage(String nextPageLink) {
-                return listEngineAuditRecordsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<EngineAuditRecordResourceInner>> listEngineAuditRecordsAsync(final String resourceGroupName, final String serverName, final String databaseName, final ListOperationCallback<EngineAuditRecordResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName),
-            new Func1<String, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(String nextPageLink) {
-                    return listEngineAuditRecordsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
-     */
-    public Observable<Page<EngineAuditRecordResourceInner>> listEngineAuditRecordsAsync(final String resourceGroupName, final String serverName, final String databaseName) {
-        return listEngineAuditRecordsWithServiceResponseAsync(resourceGroupName, serverName, databaseName)
-            .map(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Page<EngineAuditRecordResourceInner>>() {
-                @Override
-                public Page<EngineAuditRecordResourceInner> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName) {
-        return listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName)
-            .concatMap(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listEngineAuditRecordsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        final String filter = null;
-        return service.listEngineAuditRecords(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> result = listEngineAuditRecordsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EngineAuditRecordResourceInner>>(result.getBody(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @param filter The filter to apply on the operation
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object if successful.
-     */
-    public PagedList<EngineAuditRecordResourceInner> listEngineAuditRecords(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        ServiceResponse<Page<EngineAuditRecordResourceInner>> response = listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName, filter).toBlocking().single();
-        return new PagedList<EngineAuditRecordResourceInner>(response.getBody()) {
-            @Override
-            public Page<EngineAuditRecordResourceInner> nextPage(String nextPageLink) {
-                return listEngineAuditRecordsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @param filter The filter to apply on the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<EngineAuditRecordResourceInner>> listEngineAuditRecordsAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter, final ListOperationCallback<EngineAuditRecordResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName, filter),
-            new Func1<String, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(String nextPageLink) {
-                    return listEngineAuditRecordsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @param filter The filter to apply on the operation
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
-     */
-    public Observable<Page<EngineAuditRecordResourceInner>> listEngineAuditRecordsAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        return listEngineAuditRecordsWithServiceResponseAsync(resourceGroupName, serverName, databaseName, filter)
-            .map(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Page<EngineAuditRecordResourceInner>>() {
-                @Override
-                public Page<EngineAuditRecordResourceInner> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-     * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-     * @param filter The filter to apply on the operation
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsWithServiceResponseAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        return listEngineAuditRecordsSinglePageAsync(resourceGroupName, serverName, databaseName, filter)
-            .concatMap(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listEngineAuditRecordsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-    ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-    ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> * @param serverName The name of the Azure SQL Database Server on which the Azure SQL Database is hosted.
-    ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> * @param databaseName The name of the Azure SQL Database for which database engine audit records are retrieved.
-    ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> * @param filter The filter to apply on the operation
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsSinglePageAsync(final String resourceGroupName, final String serverName, final String databaseName, final String filter) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2015-05-01-preview";
-        return service.listEngineAuditRecords(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, filter, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> result = listEngineAuditRecordsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EngineAuditRecordResourceInner>>(result.getBody(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> listEngineAuditRecordsDelegate(Response<ResponseBody> response) throws ArmErrorResponseMessageException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<EngineAuditRecordResourceInner>, ArmErrorResponseMessageException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<EngineAuditRecordResourceInner>>() { }.getType())
-                .registerError(ArmErrorResponseMessageException.class)
-                .build(response);
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     */
-    public void pauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @return the observable for the request
-     */
-    public Observable<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<Void>> pauseDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.pauseDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     */
-    public void beginPauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginPauseDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.beginPauseDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginPauseDataWarehouseDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> beginPauseDataWarehouseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     */
-    public void resumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @return the observable for the request
-     */
-    public Observable<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<Void>> resumeDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.resumeDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     */
-    public void beginResumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
-        beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginResumeDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.beginResumeDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginResumeDataWarehouseDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> beginResumeDataWarehouseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Returns a list of Azure SQL database restore points.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
-     * @return the List&lt;RestorePointInner&gt; object if successful.
-     */
-    public List<RestorePointInner> listRestorePointss(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns a list of Azure SQL database restore points.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
-        return ServiceCall.create(listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns a list of Azure SQL database restore points.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
-     * @return the observable to the List&lt;RestorePointInner&gt; object
-     */
-    public Observable<List<RestorePointInner>> listRestorePointssAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listRestorePointssWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
-            @Override
-            public List<RestorePointInner> call(ServiceResponse<List<RestorePointInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns a list of Azure SQL database restore points.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
-     * @return the observable to the List&lt;RestorePointInner&gt; object
-     */
-    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointssWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listRestorePointss(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RestorePointInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<RestorePointInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<RestorePointInner>> result = listRestorePointssDelegate(response);
-                        ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<RestorePointInner>> listRestorePointssDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<RestorePointInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<RestorePointInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the DatabaseInner object if successful.
-     */
-    public DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().getBody();
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the observable for the request
-     */
-    public Observable<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
-            @Override
-            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<DatabaseInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DatabaseInner>() { }.getType());
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the DatabaseInner object if successful.
-     */
-    public DatabaseInner beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
-            @Override
-            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
-     * @param parameters The required parameters for creating or updating a database.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<ServiceResponse<DatabaseInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<DatabaseInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DatabaseInner>() { }.getType())
-                .register(201, new TypeToken<DatabaseInner>() { }.getType())
-                .register(202, new TypeToken<DatabaseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Deletes an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
-     */
-    public void delete(String resourceGroupName, String serverName, String databaseName) {
-        deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Deletes an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Deletes an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.delete(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @return the DatabaseInner object if successful.
-     */
-    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
-            @Override
-            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        final String expand = null;
-        return service.get(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
-     * @return the DatabaseInner object if successful.
-     */
-    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand, final ServiceCallback<DatabaseInner> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand), serviceCallback);
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
-        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
-            @Override
-            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about an Azure SQL database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
-     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
-     * @return the observable to the DatabaseInner object
-     */
-    public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.get(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DatabaseInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<DatabaseInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DatabaseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns information about an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the List&lt;DatabaseInner&gt; object if successful.
-     */
-    public List<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
-        return ServiceCall.create(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Returns information about an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;DatabaseInner&gt; object
-     */
-    public Observable<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName) {
-        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
-            @Override
-            public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about an Azure SQL Database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;DatabaseInner&gt; object
-     */
-    public Observable<ServiceResponse<List<DatabaseInner>>> listByServerWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listByServer(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<DatabaseInner>> result = listByServerDelegate(response);
-                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<DatabaseInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<DatabaseInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<DatabaseInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns information about Azure SQL Database usages.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
-     * @return the List&lt;DatabaseMetricInner&gt; object if successful.
-     */
-    public List<DatabaseMetricInner> listUsages(String resourceGroupName, String serverName, String databaseName) {
-        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about Azure SQL Database usages.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
-        return ServiceCall.create(listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns information about Azure SQL Database usages.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
-     * @return the observable to the List&lt;DatabaseMetricInner&gt; object
-     */
-    public Observable<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DatabaseMetricInner>>, List<DatabaseMetricInner>>() {
-            @Override
-            public List<DatabaseMetricInner> call(ServiceResponse<List<DatabaseMetricInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about Azure SQL Database usages.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
-     * @return the observable to the List&lt;DatabaseMetricInner&gt; object
-     */
-    public Observable<ServiceResponse<List<DatabaseMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listUsages(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseMetricInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DatabaseMetricInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<DatabaseMetricInner>> result = listUsagesDelegate(response);
-                        ServiceResponse<List<DatabaseMetricInner>> clientResponse = new ServiceResponse<List<DatabaseMetricInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<DatabaseMetricInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<DatabaseMetricInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<DatabaseMetricInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns information about a service tier advisor.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @param serviceTierAdvisorName The name of service tier advisor.
-     * @return the ServiceTierAdvisorInner object if successful.
-     */
-    public ServiceTierAdvisorInner getServiceTierAdvisor(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
-        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about a service tier advisor.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @param serviceTierAdvisorName The name of service tier advisor.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName, final ServiceCallback<ServiceTierAdvisorInner> serviceCallback) {
-        return ServiceCall.create(getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName), serviceCallback);
-    }
-
-    /**
-     * Returns information about a service tier advisor.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @param serviceTierAdvisorName The name of service tier advisor.
-     * @return the observable to the ServiceTierAdvisorInner object
-     */
-    public Observable<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
-        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).map(new Func1<ServiceResponse<ServiceTierAdvisorInner>, ServiceTierAdvisorInner>() {
-            @Override
-            public ServiceTierAdvisorInner call(ServiceResponse<ServiceTierAdvisorInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about a service tier advisor.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @param serviceTierAdvisorName The name of service tier advisor.
-     * @return the observable to the ServiceTierAdvisorInner object
-     */
-    public Observable<ServiceResponse<ServiceTierAdvisorInner>> getServiceTierAdvisorWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (serviceTierAdvisorName == null) {
-            throw new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getServiceTierAdvisor(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, serviceTierAdvisorName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceTierAdvisorInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServiceTierAdvisorInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServiceTierAdvisorInner> clientResponse = getServiceTierAdvisorDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServiceTierAdvisorInner> getServiceTierAdvisorDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServiceTierAdvisorInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServiceTierAdvisorInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns information about service tier advisors for specified database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @return the List&lt;ServiceTierAdvisorInner&gt; object if successful.
-     */
-    public List<ServiceTierAdvisorInner> listServiceTierAdvisors(String resourceGroupName, String serverName, String databaseName) {
-        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns information about service tier advisors for specified database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ServiceTierAdvisorInner>> serviceCallback) {
-        return ServiceCall.create(listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns information about service tier advisors for specified database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
-     */
-    public Observable<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<ServiceTierAdvisorInner>>, List<ServiceTierAdvisorInner>>() {
-            @Override
-            public List<ServiceTierAdvisorInner> call(ServiceResponse<List<ServiceTierAdvisorInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns information about service tier advisors for specified database.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of database.
-     * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
-     */
-    public Observable<ServiceResponse<List<ServiceTierAdvisorInner>>> listServiceTierAdvisorsWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listServiceTierAdvisors(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServiceTierAdvisorInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<ServiceTierAdvisorInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<ServiceTierAdvisorInner>> result = listServiceTierAdvisorsDelegate(response);
-                        ServiceResponse<List<ServiceTierAdvisorInner>> clientResponse = new ServiceResponse<List<ServiceTierAdvisorInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<ServiceTierAdvisorInner>> listServiceTierAdvisorsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ServiceTierAdvisorInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ServiceTierAdvisorInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
-     * @param parameters The required parameters for creating or updating transparent data encryption.
-     * @return the TransparentDataEncryptionInner object if successful.
-     */
-    public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
-        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
-     * @param parameters The required parameters for creating or updating transparent data encryption.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.create(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
-     * @param parameters The required parameters for creating or updating transparent data encryption.
-     * @return the observable to the TransparentDataEncryptionInner object
-     */
-    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
-        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
-            @Override
-            public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
-     * @param parameters The required parameters for creating or updating transparent data encryption.
-     * @return the observable to the TransparentDataEncryptionInner object
-     */
-    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.getTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionConfigurationDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
-                .register(201, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the TransparentDataEncryptionInner object if successful.
-     */
-    public TransparentDataEncryptionInner getTransparentDataEncryption(String resourceGroupName, String serverName, String databaseName) {
-        return getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
-        return ServiceCall.create(getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the observable to the TransparentDataEncryptionInner object
-     */
-    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getTransparentDataEncryptionWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
-            @Override
-            public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the observable to the TransparentDataEncryptionInner object
-     */
-    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getTransparentDataEncryption(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the List&lt;TransparentDataEncryptionActivityInner&gt; object if successful.
-     */
-    public List<TransparentDataEncryptionActivityInner> listTransparentDataEncryptionActivity(String resourceGroupName, String serverName, String databaseName) {
-        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<TransparentDataEncryptionActivityInner>> serviceCallback) {
-        return ServiceCall.create(listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
-     */
-    public Observable<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName) {
-        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<TransparentDataEncryptionActivityInner>>, List<TransparentDataEncryptionActivityInner>>() {
-            @Override
-            public List<TransparentDataEncryptionActivityInner> call(ServiceResponse<List<TransparentDataEncryptionActivityInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
-     * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
-     */
-    public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> listTransparentDataEncryptionActivityWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listTransparentDataEncryptionActivity(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<TransparentDataEncryptionActivityInner>> result = listTransparentDataEncryptionActivityDelegate(response);
-                        ServiceResponse<List<TransparentDataEncryptionActivityInner>> clientResponse = new ServiceResponse<List<TransparentDataEncryptionActivityInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<TransparentDataEncryptionActivityInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<TransparentDataEncryptionActivityInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the ImportExportOperationStatusResponseInner object if successful.
-     */
-    public ImportExportOperationStatusResponseInner importMethod(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().getBody();
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ImportExportOperationStatusResponseInner> importMethodAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters, final ServiceCallback<ImportExportOperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.create(importMethodWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the observable for the request
-     */
-    public Observable<ImportExportOperationStatusResponseInner> importMethodAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        return importMethodWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<ImportExportOperationStatusResponseInner>, ImportExportOperationStatusResponseInner>() {
-            @Override
-            public ImportExportOperationStatusResponseInner call(ServiceResponse<ImportExportOperationStatusResponseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> importMethodWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.importMethod(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType());
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the ImportExportOperationStatusResponseInner object if successful.
-     */
-    public ImportExportOperationStatusResponseInner beginImport(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        return beginImportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ImportExportOperationStatusResponseInner> beginImportAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters, final ServiceCallback<ImportExportOperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.create(beginImportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ImportExportOperationStatusResponseInner> beginImportAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        return beginImportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<ImportExportOperationStatusResponseInner>, ImportExportOperationStatusResponseInner>() {
-            @Override
-            public ImportExportOperationStatusResponseInner call(ServiceResponse<ImportExportOperationStatusResponseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Imports a bacpac into an existing Azure SQL database. The existing database must be empty.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to import into
-     * @param parameters The required parameters for importing a Bacpac into a database.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> beginImportWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, ImportExtensionRequestParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.beginImport(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImportExportOperationStatusResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImportExportOperationStatusResponseInner> clientResponse = beginImportDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImportExportOperationStatusResponseInner> beginImportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the ImportExportOperationStatusResponseInner object if successful.
-     */
-    public ImportExportOperationStatusResponseInner export(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        return exportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().getBody();
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ImportExportOperationStatusResponseInner> exportAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters, final ServiceCallback<ImportExportOperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.create(exportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the observable for the request
-     */
-    public Observable<ImportExportOperationStatusResponseInner> exportAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        return exportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<ImportExportOperationStatusResponseInner>, ImportExportOperationStatusResponseInner>() {
-            @Override
-            public ImportExportOperationStatusResponseInner call(ServiceResponse<ImportExportOperationStatusResponseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> exportWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.export(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType());
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the ImportExportOperationStatusResponseInner object if successful.
-     */
-    public ImportExportOperationStatusResponseInner beginExport(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        return beginExportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ImportExportOperationStatusResponseInner> beginExportAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters, final ServiceCallback<ImportExportOperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.create(beginExportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ImportExportOperationStatusResponseInner> beginExportAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        return beginExportWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<ImportExportOperationStatusResponseInner>, ImportExportOperationStatusResponseInner>() {
-            @Override
-            public ImportExportOperationStatusResponseInner call(ServiceResponse<ImportExportOperationStatusResponseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Exports a Azure SQL Database to a bacpac.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database to be exported.
-     * @param parameters The required parameters for exporting a database.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> beginExportWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, ExportRequestParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.beginExport(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImportExportOperationStatusResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImportExportOperationStatusResponseInner> clientResponse = beginExportDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImportExportOperationStatusResponseInner> beginExportDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * The status of an import or export operation on an Azure SQL database given the operation ID.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database
-     * @param operationId The operation ID associated with the operation.
-     * @return the ImportExportOperationStatusResponseInner object if successful.
-     */
-    public ImportExportOperationStatusResponseInner getImportExportStatus(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
-        return getImportExportStatusWithServiceResponseAsync(resourceGroupName, serverName, databaseName, operationId).toBlocking().single().getBody();
-    }
-
-    /**
-     * The status of an import or export operation on an Azure SQL database given the operation ID.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database
-     * @param operationId The operation ID associated with the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ImportExportOperationStatusResponseInner> getImportExportStatusAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId, final ServiceCallback<ImportExportOperationStatusResponseInner> serviceCallback) {
-        return ServiceCall.create(getImportExportStatusWithServiceResponseAsync(resourceGroupName, serverName, databaseName, operationId), serviceCallback);
-    }
-
-    /**
-     * The status of an import or export operation on an Azure SQL database given the operation ID.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database
-     * @param operationId The operation ID associated with the operation.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ImportExportOperationStatusResponseInner> getImportExportStatusAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
-        return getImportExportStatusWithServiceResponseAsync(resourceGroupName, serverName, databaseName, operationId).map(new Func1<ServiceResponse<ImportExportOperationStatusResponseInner>, ImportExportOperationStatusResponseInner>() {
-            @Override
-            public ImportExportOperationStatusResponseInner call(ServiceResponse<ImportExportOperationStatusResponseInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * The status of an import or export operation on an Azure SQL database given the operation ID.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL database
-     * @param operationId The operation ID associated with the operation.
-     * @return the observable to the ImportExportOperationStatusResponseInner object
-     */
-    public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> getImportExportStatusWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, UUID operationId) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        if (operationId == null) {
-            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getImportExportStatus(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, operationId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImportExportOperationStatusResponseInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ImportExportOperationStatusResponseInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ImportExportOperationStatusResponseInner> clientResponse = getImportExportStatusDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ImportExportOperationStatusResponseInner> getImportExportStatusDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ImportExportOperationStatusResponseInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(201, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .register(202, new TypeToken<ImportExportOperationStatusResponseInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns a list of Azure SQL database geo backups.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the List&lt;GeoBackupInner&gt; object if successful.
-     */
-    public List<GeoBackupInner> listGeoBackups(String resourceGroupName, String serverName) {
-        return listGeoBackupsWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns a list of Azure SQL database geo backups.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<GeoBackupInner>> listGeoBackupsAsync(String resourceGroupName, String serverName, final ServiceCallback<List<GeoBackupInner>> serviceCallback) {
-        return ServiceCall.create(listGeoBackupsWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Returns a list of Azure SQL database geo backups.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;GeoBackupInner&gt; object
-     */
-    public Observable<List<GeoBackupInner>> listGeoBackupsAsync(String resourceGroupName, String serverName) {
-        return listGeoBackupsWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<GeoBackupInner>>, List<GeoBackupInner>>() {
-            @Override
-            public List<GeoBackupInner> call(ServiceResponse<List<GeoBackupInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns a list of Azure SQL database geo backups.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;GeoBackupInner&gt; object
-     */
-    public Observable<ServiceResponse<List<GeoBackupInner>>> listGeoBackupsWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listGeoBackups(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<GeoBackupInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<GeoBackupInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<GeoBackupInner>> result = listGeoBackupsDelegate(response);
-                        ServiceResponse<List<GeoBackupInner>> clientResponse = new ServiceResponse<List<GeoBackupInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<GeoBackupInner>> listGeoBackupsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<GeoBackupInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<GeoBackupInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns an Azure SQL Database geo backup.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve geo backups for.
-     * @return the GeoBackupInner object if successful.
-     */
-    public GeoBackupInner getGeoBackup(String resourceGroupName, String serverName, String databaseName) {
-        return getGeoBackupWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns an Azure SQL Database geo backup.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve geo backups for.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<GeoBackupInner> getGeoBackupAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<GeoBackupInner> serviceCallback) {
-        return ServiceCall.create(getGeoBackupWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns an Azure SQL Database geo backup.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve geo backups for.
-     * @return the observable to the GeoBackupInner object
-     */
-    public Observable<GeoBackupInner> getGeoBackupAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getGeoBackupWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<GeoBackupInner>, GeoBackupInner>() {
-            @Override
-            public GeoBackupInner call(ServiceResponse<GeoBackupInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns an Azure SQL Database geo backup.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve geo backups for.
-     * @return the observable to the GeoBackupInner object
-     */
-    public Observable<ServiceResponse<GeoBackupInner>> getGeoBackupWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getGeoBackup(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GeoBackupInner>>>() {
-                @Override
-                public Observable<ServiceResponse<GeoBackupInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<GeoBackupInner> clientResponse = getGeoBackupDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<GeoBackupInner> getGeoBackupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<GeoBackupInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<GeoBackupInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns a list of backups for deleted Azure SQL databases (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the List&lt;DeletedDatabaseBackupInner&gt; object if successful.
-     */
-    public List<DeletedDatabaseBackupInner> listBackupsForDeletedDatabases(String resourceGroupName, String serverName) {
-        return listBackupsForDeletedDatabasesWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns a list of backups for deleted Azure SQL databases (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<DeletedDatabaseBackupInner>> listBackupsForDeletedDatabasesAsync(String resourceGroupName, String serverName, final ServiceCallback<List<DeletedDatabaseBackupInner>> serviceCallback) {
-        return ServiceCall.create(listBackupsForDeletedDatabasesWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Returns a list of backups for deleted Azure SQL databases (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;DeletedDatabaseBackupInner&gt; object
-     */
-    public Observable<List<DeletedDatabaseBackupInner>> listBackupsForDeletedDatabasesAsync(String resourceGroupName, String serverName) {
-        return listBackupsForDeletedDatabasesWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<DeletedDatabaseBackupInner>>, List<DeletedDatabaseBackupInner>>() {
-            @Override
-            public List<DeletedDatabaseBackupInner> call(ServiceResponse<List<DeletedDatabaseBackupInner>> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns a list of backups for deleted Azure SQL databases (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the List&lt;DeletedDatabaseBackupInner&gt; object
-     */
-    public Observable<ServiceResponse<List<DeletedDatabaseBackupInner>>> listBackupsForDeletedDatabasesWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.listBackupsForDeletedDatabases(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DeletedDatabaseBackupInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<DeletedDatabaseBackupInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl1<DeletedDatabaseBackupInner>> result = listBackupsForDeletedDatabasesDelegate(response);
-                        ServiceResponse<List<DeletedDatabaseBackupInner>> clientResponse = new ServiceResponse<List<DeletedDatabaseBackupInner>>(result.getBody().getItems(), result.getResponse());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl1<DeletedDatabaseBackupInner>> listBackupsForDeletedDatabasesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<DeletedDatabaseBackupInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<DeletedDatabaseBackupInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Returns backup information for a deleted Azure SQL database  (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the restorable dropped Azure SQL Database to be retrieved.
-     * @return the DeletedDatabaseBackupInner object if successful.
-     */
-    public DeletedDatabaseBackupInner getBackupForDeletedDatabase(String resourceGroupName, String serverName, String databaseName) {
-        return getBackupForDeletedDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns backup information for a deleted Azure SQL database  (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the restorable dropped Azure SQL Database to be retrieved.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<DeletedDatabaseBackupInner> getBackupForDeletedDatabaseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DeletedDatabaseBackupInner> serviceCallback) {
-        return ServiceCall.create(getBackupForDeletedDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
-    }
-
-    /**
-     * Returns backup information for a deleted Azure SQL database  (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the restorable dropped Azure SQL Database to be retrieved.
-     * @return the observable to the DeletedDatabaseBackupInner object
-     */
-    public Observable<DeletedDatabaseBackupInner> getBackupForDeletedDatabaseAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getBackupForDeletedDatabaseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DeletedDatabaseBackupInner>, DeletedDatabaseBackupInner>() {
-            @Override
-            public DeletedDatabaseBackupInner call(ServiceResponse<DeletedDatabaseBackupInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns backup information for a deleted Azure SQL database  (a resource representing a deleted database that can be restored).
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the restorable dropped Azure SQL Database to be retrieved.
-     * @return the observable to the DeletedDatabaseBackupInner object
-     */
-    public Observable<ServiceResponse<DeletedDatabaseBackupInner>> getBackupForDeletedDatabaseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (databaseName == null) {
-            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getBackupForDeletedDatabase(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DeletedDatabaseBackupInner>>>() {
-                @Override
-                public Observable<ServiceResponse<DeletedDatabaseBackupInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DeletedDatabaseBackupInner> clientResponse = getBackupForDeletedDatabaseDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<DeletedDatabaseBackupInner> getBackupForDeletedDatabaseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DeletedDatabaseBackupInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DeletedDatabaseBackupInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.
+     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2824,7 +165,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.
+     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2838,7 +179,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.
+     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2856,7 +197,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.
+     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2903,7 +244,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL Database Replication Link.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2916,7 +257,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL Database Replication Link.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2930,7 +271,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL Database Replication Link.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -2948,7 +289,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL Database Replication Link.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -3325,7 +666,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL Database Replication Links.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -3337,7 +678,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL Database Replication Links.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -3350,7 +691,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL Database Replication Links.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -3367,7 +708,7 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL Database Replication Links.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
@@ -3393,7 +734,7 @@ public final class DatabasesInner {
                 @Override
                 public Observable<ServiceResponse<List<ReplicationLinkInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl1<ReplicationLinkInner>> result = listReplicationLinksDelegate(response);
+                        ServiceResponse<PageImpl<ReplicationLinkInner>> result = listReplicationLinksDelegate(response);
                         ServiceResponse<List<ReplicationLinkInner>> clientResponse = new ServiceResponse<List<ReplicationLinkInner>>(result.getBody().getItems(), result.getResponse());
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
@@ -3403,68 +744,456 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<PageImpl1<ReplicationLinkInner>> listReplicationLinksDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl1<ReplicationLinkInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl1<ReplicationLinkInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ReplicationLinkInner>> listReplicationLinksDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ReplicationLinkInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ReplicationLinkInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Pause an Azure SQL Data Warehouse database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the policy applies.
-     * @param parameters The required parameters for createing or updating a secure connection policy.
-     * @return the DatabaseSecureConnectionPolicyInner object if successful.
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      */
-    public DatabaseSecureConnectionPolicyInner setSecureConnectionPolicy(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyInner parameters) {
-        return setSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+    public void pauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
+        pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Pause an Azure SQL Data Warehouse database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the policy applies.
-     * @param parameters The required parameters for createing or updating a secure connection policy.
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseSecureConnectionPolicyInner> setSecureConnectionPolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyInner parameters, final ServiceCallback<DatabaseSecureConnectionPolicyInner> serviceCallback) {
-        return ServiceCall.create(setSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    public ServiceCall<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Pause an Azure SQL Data Warehouse database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the policy applies.
-     * @param parameters The required parameters for createing or updating a secure connection policy.
-     * @return the observable to the DatabaseSecureConnectionPolicyInner object
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     * @return the observable for the request
      */
-    public Observable<DatabaseSecureConnectionPolicyInner> setSecureConnectionPolicyAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyInner parameters) {
-        return setSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseSecureConnectionPolicyInner>, DatabaseSecureConnectionPolicyInner>() {
+    public Observable<Void> pauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
+        return pauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public DatabaseSecureConnectionPolicyInner call(ServiceResponse<DatabaseSecureConnectionPolicyInner> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Creates or updates an Azure SQL Server Firewall rule.
+     * Pause an Azure SQL Data Warehouse database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the policy applies.
-     * @param parameters The required parameters for createing or updating a secure connection policy.
-     * @return the observable to the DatabaseSecureConnectionPolicyInner object
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     * @return the observable for the request
      */
-    public Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>> setSecureConnectionPolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseSecureConnectionPolicyInner parameters) {
+    public Observable<ServiceResponse<Void>> pauseDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        Observable<Response<ResponseBody>> observable = service.pauseDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     */
+    public void beginPauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
+        beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginPauseDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
+        return beginPauseDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginPauseDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.beginPauseDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginPauseDataWarehouseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginPauseDataWarehouseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     */
+    public void resumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
+        resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().last().getBody();
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @return the observable for the request
+     */
+    public Observable<Void> resumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
+        return resumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> resumeDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        Observable<Response<ResponseBody>> observable = service.resumeDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     */
+    public void beginResumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
+        beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginResumeDataWarehouseAsync(String resourceGroupName, String serverName, String databaseName) {
+        return beginResumeDataWarehouseWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginResumeDataWarehouseWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.beginResumeDataWarehouse(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginResumeDataWarehouseDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginResumeDataWarehouseDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Returns a list of Azure SQL database restore points.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @return the List&lt;RestorePointInner&gt; object if successful.
+     */
+    public List<RestorePointInner> listRestorePoints(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns a list of Azure SQL database restore points.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<RestorePointInner>> serviceCallback) {
+        return ServiceCall.create(listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Returns a list of Azure SQL database restore points.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @return the observable to the List&lt;RestorePointInner&gt; object
+     */
+    public Observable<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listRestorePointsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<RestorePointInner>>, List<RestorePointInner>>() {
+            @Override
+            public List<RestorePointInner> call(ServiceResponse<List<RestorePointInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns a list of Azure SQL database restore points.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @return the observable to the List&lt;RestorePointInner&gt; object
+     */
+    public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointsWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listRestorePoints(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RestorePointInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<RestorePointInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RestorePointInner>> result = listRestorePointsDelegate(response);
+                        ServiceResponse<List<RestorePointInner>> clientResponse = new ServiceResponse<List<RestorePointInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RestorePointInner>> listRestorePointsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<RestorePointInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<RestorePointInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the DatabaseInner object if successful.
+     */
+    public DatabaseInner createOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().last().getBody();
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the observable for the request
+     */
+    public Observable<DatabaseInner> createOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
+            @Override
+            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<DatabaseInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3482,12 +1211,88 @@ public final class DatabasesInner {
         }
         Validator.validate(parameters);
         final String apiVersion = "2014-04-01";
-        return service.setSecureConnectionPolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>>>() {
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<DatabaseInner>() { }.getType());
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the DatabaseInner object if successful.
+     */
+    public DatabaseInner beginCreateOrUpdate(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the observable to the DatabaseInner object
+     */
+    public Observable<DatabaseInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
+            @Override
+            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param parameters The required parameters for creating or updating a database.
+     * @return the observable to the DatabaseInner object
+     */
+    public Observable<ServiceResponse<DatabaseInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, DatabaseInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2014-04-01";
+        return service.beginCreateOrUpdate(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DatabaseSecureConnectionPolicyInner> clientResponse = setSecureConnectionPolicyDelegate(response);
+                        ServiceResponse<DatabaseInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3496,65 +1301,65 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<DatabaseSecureConnectionPolicyInner> setSecureConnectionPolicyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DatabaseSecureConnectionPolicyInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DatabaseSecureConnectionPolicyInner>() { }.getType())
-                .register(201, new TypeToken<DatabaseSecureConnectionPolicyInner>() { }.getType())
+    private ServiceResponse<DatabaseInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<DatabaseInner>() { }.getType())
+                .register(201, new TypeToken<DatabaseInner>() { }.getType())
+                .register(202, new TypeToken<DatabaseInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Returns an Azure SQL Database secure connection policy.
+     * Deletes an Azure SQL database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the secure connection policy applies.
-     * @return the DatabaseSecureConnectionPolicyInner object if successful.
+     * @param databaseName The name of the Azure SQL Database to be deleted.
      */
-    public DatabaseSecureConnectionPolicyInner getSecureConnectionPolicy(String resourceGroupName, String serverName, String databaseName) {
-        return getSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    public void delete(String resourceGroupName, String serverName, String databaseName) {
+        deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
-     * Returns an Azure SQL Database secure connection policy.
+     * Deletes an Azure SQL database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the secure connection policy applies.
+     * @param databaseName The name of the Azure SQL Database to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<DatabaseSecureConnectionPolicyInner> getSecureConnectionPolicyAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseSecureConnectionPolicyInner> serviceCallback) {
-        return ServiceCall.create(getSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
-     * Returns an Azure SQL Database secure connection policy.
+     * Deletes an Azure SQL database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the secure connection policy applies.
-     * @return the observable to the DatabaseSecureConnectionPolicyInner object
+     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<DatabaseSecureConnectionPolicyInner> getSecureConnectionPolicyAsync(String resourceGroupName, String serverName, String databaseName) {
-        return getSecureConnectionPolicyWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DatabaseSecureConnectionPolicyInner>, DatabaseSecureConnectionPolicyInner>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public DatabaseSecureConnectionPolicyInner call(ServiceResponse<DatabaseSecureConnectionPolicyInner> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Returns an Azure SQL Database secure connection policy.
+     * Deletes an Azure SQL database.
      *
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the secure connection policy applies.
-     * @return the observable to the DatabaseSecureConnectionPolicyInner object
+     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>> getSecureConnectionPolicyWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -3568,12 +1373,12 @@ public final class DatabasesInner {
             throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
         }
         final String apiVersion = "2014-04-01";
-        return service.getSecureConnectionPolicy(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>>>() {
+        return service.delete(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<DatabaseSecureConnectionPolicyInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DatabaseSecureConnectionPolicyInner> clientResponse = getSecureConnectionPolicyDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3582,102 +1387,85 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<DatabaseSecureConnectionPolicyInner> getSecureConnectionPolicyDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<DatabaseSecureConnectionPolicyInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<DatabaseSecureConnectionPolicyInner>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Get a list of database engine audit records.
+     * Gets information about an Azure SQL database.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object if successful.
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @return the DatabaseInner object if successful.
      */
-    public PagedList<EngineAuditRecordResourceInner> listEngineAuditRecordsNext(final String nextPageLink) {
-        ServiceResponse<Page<EngineAuditRecordResourceInner>> response = listEngineAuditRecordsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<EngineAuditRecordResourceInner>(response.getBody()) {
-            @Override
-            public Page<EngineAuditRecordResourceInner> nextPage(String nextPageLink) {
-                return listEngineAuditRecordsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
-            }
-        };
+    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
     }
 
     /**
-     * Get a list of database engine audit records.
+     * Gets information about an Azure SQL database.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<EngineAuditRecordResourceInner>> listEngineAuditRecordsNextAsync(final String nextPageLink, final ServiceCall<List<EngineAuditRecordResourceInner>> serviceCall, final ListOperationCallback<EngineAuditRecordResourceInner> serviceCallback) {
-        return AzureServiceCall.create(
-            listEngineAuditRecordsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(String nextPageLink) {
-                    return listEngineAuditRecordsNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
+    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
     }
 
     /**
-     * Get a list of database engine audit records.
+     * Gets information about an Azure SQL database.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @return the observable to the DatabaseInner object
      */
-    public Observable<Page<EngineAuditRecordResourceInner>> listEngineAuditRecordsNextAsync(final String nextPageLink) {
-        return listEngineAuditRecordsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Page<EngineAuditRecordResourceInner>>() {
-                @Override
-                public Page<EngineAuditRecordResourceInner> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> response) {
-                    return response.getBody();
-                }
-            });
+    public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
+            @Override
+            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
+                return response.getBody();
+            }
+        });
     }
 
     /**
-     * Get a list of database engine audit records.
+     * Gets information about an Azure SQL database.
      *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;EngineAuditRecordResourceInner&gt; object
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @return the observable to the DatabaseInner object
      */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsNextWithServiceResponseAsync(final String nextPageLink) {
-        return listEngineAuditRecordsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<EngineAuditRecordResourceInner>>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(ServiceResponse<Page<EngineAuditRecordResourceInner>> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listEngineAuditRecordsNextWithServiceResponseAsync(nextPageLink));
-                }
-            });
-    }
-
-    /**
-     * Get a list of database engine audit records.
-     *
-    ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;EngineAuditRecordResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
-     */
-    public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> listEngineAuditRecordsNextSinglePageAsync(final String nextPageLink) {
-        if (nextPageLink == null) {
-            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+    public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        return service.listEngineAuditRecordsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>>>() {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        final String expand = null;
+        return service.get(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<EngineAuditRecordResourceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> result = listEngineAuditRecordsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<EngineAuditRecordResourceInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<DatabaseInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3685,10 +1473,700 @@ public final class DatabasesInner {
             });
     }
 
-    private ServiceResponse<PageImpl<EngineAuditRecordResourceInner>> listEngineAuditRecordsNextDelegate(Response<ResponseBody> response) throws ArmErrorResponseMessageException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<EngineAuditRecordResourceInner>, ArmErrorResponseMessageException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<EngineAuditRecordResourceInner>>() { }.getType())
-                .registerError(ArmErrorResponseMessageException.class)
+    /**
+     * Gets information about an Azure SQL database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
+     * @return the DatabaseInner object if successful.
+     */
+    public DatabaseInner get(String resourceGroupName, String serverName, String databaseName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets information about an Azure SQL database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand, final ServiceCallback<DatabaseInner> serviceCallback) {
+        return ServiceCall.create(getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand), serviceCallback);
+    }
+
+    /**
+     * Gets information about an Azure SQL database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
+     * @return the observable to the DatabaseInner object
+     */
+    public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
+        return getWithServiceResponseAsync(resourceGroupName, serverName, databaseName, expand).map(new Func1<ServiceResponse<DatabaseInner>, DatabaseInner>() {
+            @Override
+            public DatabaseInner call(ServiceResponse<DatabaseInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets information about an Azure SQL database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
+     * @return the observable to the DatabaseInner object
+     */
+    public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String expand) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.get(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DatabaseInner>>>() {
+                @Override
+                public Observable<ServiceResponse<DatabaseInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DatabaseInner> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<DatabaseInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<DatabaseInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<DatabaseInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns information about an Azure SQL Database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the List&lt;DatabaseInner&gt; object if successful.
+     */
+    public List<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about an Azure SQL Database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName, final ServiceCallback<List<DatabaseInner>> serviceCallback) {
+        return ServiceCall.create(listByServerWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
+    }
+
+    /**
+     * Returns information about an Azure SQL Database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;DatabaseInner&gt; object
+     */
+    public Observable<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName) {
+        return listByServerWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<List<DatabaseInner>>, List<DatabaseInner>>() {
+            @Override
+            public List<DatabaseInner> call(ServiceResponse<List<DatabaseInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about an Azure SQL Database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @return the observable to the List&lt;DatabaseInner&gt; object
+     */
+    public Observable<ServiceResponse<List<DatabaseInner>>> listByServerWithServiceResponseAsync(String resourceGroupName, String serverName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listByServer(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<DatabaseInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DatabaseInner>> result = listByServerDelegate(response);
+                        ServiceResponse<List<DatabaseInner>> clientResponse = new ServiceResponse<List<DatabaseInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DatabaseInner>> listByServerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DatabaseInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DatabaseInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns information about Azure SQL Database usages.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database.
+     * @return the List&lt;DatabaseMetricInner&gt; object if successful.
+     */
+    public List<DatabaseMetricInner> listUsages(String resourceGroupName, String serverName, String databaseName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about Azure SQL Database usages.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<DatabaseMetricInner>> serviceCallback) {
+        return ServiceCall.create(listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Returns information about Azure SQL Database usages.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database.
+     * @return the observable to the List&lt;DatabaseMetricInner&gt; object
+     */
+    public Observable<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<DatabaseMetricInner>>, List<DatabaseMetricInner>>() {
+            @Override
+            public List<DatabaseMetricInner> call(ServiceResponse<List<DatabaseMetricInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about Azure SQL Database usages.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database.
+     * @return the observable to the List&lt;DatabaseMetricInner&gt; object
+     */
+    public Observable<ServiceResponse<List<DatabaseMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listUsages(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<DatabaseMetricInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<DatabaseMetricInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<DatabaseMetricInner>> result = listUsagesDelegate(response);
+                        ServiceResponse<List<DatabaseMetricInner>> clientResponse = new ServiceResponse<List<DatabaseMetricInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<DatabaseMetricInner>> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<DatabaseMetricInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<DatabaseMetricInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about a service tier advisor.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @param serviceTierAdvisorName The name of service tier advisor.
+     * @return the ServiceTierAdvisorInner object if successful.
+     */
+    public ServiceTierAdvisorInner getServiceTierAdvisor(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
+        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets information about a service tier advisor.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @param serviceTierAdvisorName The name of service tier advisor.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName, final ServiceCallback<ServiceTierAdvisorInner> serviceCallback) {
+        return ServiceCall.create(getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName), serviceCallback);
+    }
+
+    /**
+     * Gets information about a service tier advisor.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @param serviceTierAdvisorName The name of service tier advisor.
+     * @return the observable to the ServiceTierAdvisorInner object
+     */
+    public Observable<ServiceTierAdvisorInner> getServiceTierAdvisorAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
+        return getServiceTierAdvisorWithServiceResponseAsync(resourceGroupName, serverName, databaseName, serviceTierAdvisorName).map(new Func1<ServiceResponse<ServiceTierAdvisorInner>, ServiceTierAdvisorInner>() {
+            @Override
+            public ServiceTierAdvisorInner call(ServiceResponse<ServiceTierAdvisorInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets information about a service tier advisor.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @param serviceTierAdvisorName The name of service tier advisor.
+     * @return the observable to the ServiceTierAdvisorInner object
+     */
+    public Observable<ServiceResponse<ServiceTierAdvisorInner>> getServiceTierAdvisorWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String serviceTierAdvisorName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (serviceTierAdvisorName == null) {
+            throw new IllegalArgumentException("Parameter serviceTierAdvisorName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.getServiceTierAdvisor(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, serviceTierAdvisorName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServiceTierAdvisorInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ServiceTierAdvisorInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ServiceTierAdvisorInner> clientResponse = getServiceTierAdvisorDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ServiceTierAdvisorInner> getServiceTierAdvisorDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ServiceTierAdvisorInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ServiceTierAdvisorInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns information about service tier advisors for specified database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @return the List&lt;ServiceTierAdvisorInner&gt; object if successful.
+     */
+    public List<ServiceTierAdvisorInner> listServiceTierAdvisors(String resourceGroupName, String serverName, String databaseName) {
+        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns information about service tier advisors for specified database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<ServiceTierAdvisorInner>> serviceCallback) {
+        return ServiceCall.create(listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Returns information about service tier advisors for specified database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
+     */
+    public Observable<List<ServiceTierAdvisorInner>> listServiceTierAdvisorsAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listServiceTierAdvisorsWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<ServiceTierAdvisorInner>>, List<ServiceTierAdvisorInner>>() {
+            @Override
+            public List<ServiceTierAdvisorInner> call(ServiceResponse<List<ServiceTierAdvisorInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns information about service tier advisors for specified database.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of database.
+     * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
+     */
+    public Observable<ServiceResponse<List<ServiceTierAdvisorInner>>> listServiceTierAdvisorsWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listServiceTierAdvisors(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ServiceTierAdvisorInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<ServiceTierAdvisorInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<ServiceTierAdvisorInner>> result = listServiceTierAdvisorsDelegate(response);
+                        ServiceResponse<List<ServiceTierAdvisorInner>> clientResponse = new ServiceResponse<List<ServiceTierAdvisorInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<ServiceTierAdvisorInner>> listServiceTierAdvisorsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ServiceTierAdvisorInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ServiceTierAdvisorInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
+     * @return the TransparentDataEncryptionInner object if successful.
+     */
+    public TransparentDataEncryptionInner createOrUpdateTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters), serviceCallback);
+    }
+
+    /**
+     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
+     * @return the observable to the TransparentDataEncryptionInner object
+     */
+    public Observable<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+        return createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName, parameters).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
+            @Override
+            public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param parameters The required parameters for creating or updating transparent data encryption.
+     * @return the observable to the TransparentDataEncryptionInner object
+     */
+    public Observable<ServiceResponse<TransparentDataEncryptionInner>> createOrUpdateTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, TransparentDataEncryptionInner parameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        final String apiVersion = "2014-04-01";
+        return service.createOrUpdateTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = createOrUpdateTransparentDataEncryptionConfigurationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TransparentDataEncryptionInner> createOrUpdateTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
+                .register(201, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets an Azure SQL Database Transparent Data Encryption Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the TransparentDataEncryptionInner object if successful.
+     */
+    public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName) {
+        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets an Azure SQL Database Transparent Data Encryption Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<TransparentDataEncryptionInner> serviceCallback) {
+        return ServiceCall.create(getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Gets an Azure SQL Database Transparent Data Encryption Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the observable to the TransparentDataEncryptionInner object
+     */
+    public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName) {
+        return getTransparentDataEncryptionConfigurationWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<TransparentDataEncryptionInner>, TransparentDataEncryptionInner>() {
+            @Override
+            public TransparentDataEncryptionInner call(ServiceResponse<TransparentDataEncryptionInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets an Azure SQL Database Transparent Data Encryption Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the observable to the TransparentDataEncryptionInner object
+     */
+    public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.getTransparentDataEncryptionConfiguration(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TransparentDataEncryptionInner>>>() {
+                @Override
+                public Observable<ServiceResponse<TransparentDataEncryptionInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<TransparentDataEncryptionInner> clientResponse = getTransparentDataEncryptionConfigurationDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<TransparentDataEncryptionInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<TransparentDataEncryptionInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the List&lt;TransparentDataEncryptionActivityInner&gt; object if successful.
+     */
+    public List<TransparentDataEncryptionActivityInner> listTransparentDataEncryptionActivity(String resourceGroupName, String serverName, String databaseName) {
+        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName, final ServiceCallback<List<TransparentDataEncryptionActivityInner>> serviceCallback) {
+        return ServiceCall.create(listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName), serviceCallback);
+    }
+
+    /**
+     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
+     */
+    public Observable<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName) {
+        return listTransparentDataEncryptionActivityWithServiceResponseAsync(resourceGroupName, serverName, databaseName).map(new Func1<ServiceResponse<List<TransparentDataEncryptionActivityInner>>, List<TransparentDataEncryptionActivityInner>>() {
+            @Override
+            public List<TransparentDataEncryptionActivityInner> call(ServiceResponse<List<TransparentDataEncryptionActivityInner>> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
+     *
+     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param serverName The name of the Azure SQL Server
+     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
+     */
+    public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> listTransparentDataEncryptionActivityWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (serverName == null) {
+            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
+        }
+        if (databaseName == null) {
+            throw new IllegalArgumentException("Parameter databaseName is required and cannot be null.");
+        }
+        final String apiVersion = "2014-04-01";
+        return service.listTransparentDataEncryptionActivity(this.client.subscriptionId(), resourceGroupName, serverName, databaseName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<TransparentDataEncryptionActivityInner>> result = listTransparentDataEncryptionActivityDelegate(response);
+                        ServiceResponse<List<TransparentDataEncryptionActivityInner>> clientResponse = new ServiceResponse<List<TransparentDataEncryptionActivityInner>>(result.getBody().getItems(), result.getResponse());
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<TransparentDataEncryptionActivityInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<TransparentDataEncryptionActivityInner>>() { }.getType())
+                .registerError(CloudException.class)
                 .build(response);
     }
 

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import java.util.UUID;
 import com.microsoft.azure.Resource;
 
@@ -16,12 +17,13 @@ import com.microsoft.azure.Resource;
  */
 public class SloUsageMetricInner extends Resource {
     /**
-     * Gets or sets serviceLevelObjective for SLO usage metric.
+     * The serviceLevelObjective for SLO usage metric. Possible values
+     * include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
-    private String serviceLevelObjective;
+    private ServiceObjectiveName serviceLevelObjective;
 
     /**
-     * Gets or sets serviceLevelObjectiveId for SLO usage metric.
+     * The serviceLevelObjectiveId for SLO usage metric.
      */
     private UUID serviceLevelObjectiveId;
 
@@ -35,7 +37,7 @@ public class SloUsageMetricInner extends Resource {
      *
      * @return the serviceLevelObjective value
      */
-    public String serviceLevelObjective() {
+    public ServiceObjectiveName serviceLevelObjective() {
         return this.serviceLevelObjective;
     }
 
@@ -45,7 +47,7 @@ public class SloUsageMetricInner extends Resource {
      * @param serviceLevelObjective the serviceLevelObjective value to set
      * @return the SloUsageMetricInner object itself.
      */
-    public SloUsageMetricInner withServiceLevelObjective(String serviceLevelObjective) {
+    public SloUsageMetricInner withServiceLevelObjective(ServiceObjectiveName serviceLevelObjective) {
         this.serviceLevelObjective = serviceLevelObjective;
         return this;
     }

@@ -39,7 +39,7 @@ public interface SqlElasticPool extends
     /**
      * @return the state of the Azure SQL Elastic Pool
      */
-    String state();
+    ElasticPoolState state();
 
     /**
      * @return the edition of Azure SQL Elastic Pool
@@ -74,7 +74,6 @@ public interface SqlElasticPool extends
             DefinitionStages.Blank,
             DefinitionStages.WithEdition,
             DefinitionStages.WithCreate {
-
     }
 
     /**
@@ -101,42 +100,69 @@ public interface SqlElasticPool extends
         }
 
         /**
-         * A resource definition allowing SQLServer to be attached with SQLDatabase.
+         * The SQL Elastic Pool definition to set the minimum DTU for database.
          */
-        interface WithSqlServer {
+        interface WithDatabaseDtuMin {
             /**
-             * Creates a new SqlElasticPool resource under SQLServer.
+             * Sets the minimum DTU all SQL Azure Databases are guaranteed.
              *
-             * @param groupName the name of the resource group for SQLServer.
-             * @param sqlServerName the name of the sQLServer.
-             * @return the creatable for the child resource
+             * @param databaseDtuMin minimum DTU for all SQL Azure databases
+             * @return The next stage of definition.
              */
-            Creatable<SqlElasticPool> withExistingSqlServer(String groupName, String sqlServerName);
-
-            /**
-             * Creates a new SqlElasticPool resource under SQLServer.
-             *
-             * @param sqlServerCreatable a creatable definition for the SQLServer
-             * @return the creatable for the SQLDatabase
-             */
-            Creatable<SqlElasticPool> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable);
-
-            /**
-             * Creates a new SqlElasticPool resource under SQLServer.
-             *
-             * @param existingSqlServer the SQLServer under which this SqlElasticPool to be created.
-             * @return the creatable for the SQLDatabase
-             */
-            Creatable<SqlElasticPool> withExistingSqlServer(SqlServer existingSqlServer);
+            SqlElasticPool.DefinitionStages.WithCreate withDatabaseDtuMin(int databaseDtuMin);
         }
+
+        /**
+         * The SQL Elastic Pool definition to set the maximum DTU for one database.
+         */
+        interface WithDatabaseDtuMax {
+            /**
+             * Sets the maximum DTU any one SQL Azure Database can consume.
+             *
+             * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
+             * @return The next stage of definition.
+             */
+            SqlElasticPool.DefinitionStages.WithCreate withDatabaseDtuMax(int databaseDtuMax);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to set the number of shared DTU for elastic pool.
+         */
+        interface WithDtu {
+            /**
+             * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
+             *
+             * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
+             * @return The next stage of definition.
+             */
+            SqlElasticPool.DefinitionStages.WithCreate withDtu(int dtu);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to set the storage limit for the SQL Azure Database Elastic Pool in MB.
+         */
+        interface WithStorageCapacity {
+            /**
+             * Sets the storage limit for the SQL Azure Database Elastic Pool in MB.
+             *
+             * @param storageMB storage limit for the SQL Azure Database Elastic Pool in MB
+             * @return The next stage of definition.
+             */
+            SqlElasticPool.DefinitionStages.WithCreate withStorageCapacity(int storageMB);
+        }
+
         /**
          * A SQL Server definition with sufficient inputs to create a new
          * SQL Server in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends
-                WithSqlServer,
-                DefinitionWithTags<SqlElasticPool.DefinitionStages.WithCreate> {
+                Creatable<SqlElasticPool>,
+                DefinitionWithTags<WithCreate>,
+                WithDatabaseDtuMin,
+                WithDatabaseDtuMax,
+                WithDtu,
+                WithStorageCapacity {
         }
     }
 
@@ -144,6 +170,10 @@ public interface SqlElasticPool extends
      * The template for a SQLElasticPool update operation, containing all the settings that can be modified.
      */
     interface Update extends
+            UpdateStages.WithDatabaseDtuMax,
+            UpdateStages.WithDatabaseDtuMin,
+            UpdateStages.WithDtu,
+            UpdateStages.WithStorageCapacity,
             Appliable<SqlElasticPool> {
     }
 
@@ -151,5 +181,57 @@ public interface SqlElasticPool extends
      * Grouping of all the SQLElasticPool update stages.
      */
     interface UpdateStages {
+
+        /**
+         * The SQL Elastic Pool definition to set the minimum DTU for database.
+         */
+        interface WithDatabaseDtuMin {
+            /**
+             * Sets the minimum DTU all SQL Azure Databases are guaranteed.
+             *
+             * @param databaseDtuMin minimum DTU for all SQL Azure databases
+             * @return The next stage of definition.
+             */
+            Update withDatabaseDtuMin(int databaseDtuMin);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to set the maximum DTU for one database.
+         */
+        interface WithDatabaseDtuMax {
+            /**
+             * Sets the maximum DTU any one SQL Azure Database can consume.
+             *
+             * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
+             * @return The next stage of definition.
+             */
+            Update withDatabaseDtuMax(int databaseDtuMax);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to set the number of shared DTU for elastic pool.
+         */
+        interface WithDtu {
+            /**
+             * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
+             *
+             * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
+             * @return The next stage of definition.
+             */
+            Update withDtu(int dtu);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to set the storage limit for the SQL Azure Database Elastic Pool in MB.
+         */
+        interface WithStorageCapacity {
+            /**
+             * Sets the storage limit for the SQL Azure Database Elastic Pool in MB.
+             *
+             * @param storageMB storage limit for the SQL Azure Database Elastic Pool in MB
+             * @return The next stage of definition.
+             */
+            Update withStorageCapacity(int storageMB);
+        }
     }
 }

@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Observable;
@@ -19,11 +19,11 @@ import rx.functions.Func1;
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
  */
-public class SqlFirewallRuleImpl
+class SqlFirewallRuleImpl
         extends IndependentChildImpl<
                                     SqlFirewallRule,
                                     SqlServer,
-                                    FirewallRuleInner,
+                                    ServerFirewallRuleInner,
                                     SqlFirewallRuleImpl>
         implements SqlFirewallRule,
             SqlFirewallRule.Definition,
@@ -32,7 +32,7 @@ public class SqlFirewallRuleImpl
     private final ServersInner innerCollection;
 
     protected SqlFirewallRuleImpl(String name,
-                                  FirewallRuleInner innerObject,
+                                  ServerFirewallRuleInner innerObject,
                                   ServersInner innerCollection) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
@@ -53,7 +53,15 @@ public class SqlFirewallRuleImpl
         return this.inner().endIpAddress();
     }
 
+    @Override
+    public String kind() {
+        return this.inner().kind();
+    }
 
+    @Override
+    public Region region() {
+        return Region.fromLabelOrName(this.inner().location());
+    }
     @Override
     public SqlFirewallRule refresh() {
         this.innerCollection.getFirewallRule(this.resourceGroupName(), this.sqlServerName(), this.name());
@@ -61,7 +69,7 @@ public class SqlFirewallRuleImpl
     }
 
     @Override
-    protected void setParentName(FirewallRuleInner inner) {
+    protected void setParentName(ServerFirewallRuleInner inner) {
         if (inner.id() != null) {
             this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
         }
@@ -72,9 +80,9 @@ public class SqlFirewallRuleImpl
         final SqlFirewallRule self = this;
 
         return this.innerCollection.createOrUpdateFirewallRuleAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
-                .map(new Func1<FirewallRuleInner, SqlFirewallRule>() {
+                .map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
             @Override
-            public SqlFirewallRule call(FirewallRuleInner databaseInner) {
+            public SqlFirewallRule call(ServerFirewallRuleInner databaseInner) {
                 setInner(databaseInner);
 
                 return self;
@@ -82,30 +90,14 @@ public class SqlFirewallRuleImpl
         });
     }
 
-
     @Override
-    public Creatable<SqlFirewallRule> withExistingSqlServer(String groupName, String sqlServerName) {
-        return withExistingParentResource(groupName, sqlServerName);
-    }
-
-    @Override
-    public Creatable<SqlFirewallRule> withNewSqlServer(Creatable<SqlServer> sqlServerCreatable) {
-        return withNewParentResource(sqlServerCreatable);
-    }
-
-    @Override
-    public Creatable<SqlFirewallRule> withExistingSqlServer(SqlServer existingSqlServer) {
-        return withExistingParentResource(existingSqlServer);
-    }
-
-    @Override
-    public SqlFirewallRule.DefinitionStages.WithEndIpAddress withStartIpAddress(String startIpAddress) {
+    public SqlFirewallRuleImpl withStartIpAddress(String startIpAddress) {
         this.inner().withStartIpAddress(startIpAddress);
         return this;
     }
 
     @Override
-    public SqlFirewallRule.DefinitionStages.WithCreate withEndIpAddress(String endIpAddress) {
+    public SqlFirewallRuleImpl withEndIpAddress(String endIpAddress) {
         this.inner().withEndIpAddress(endIpAddress);
         return this;
     }

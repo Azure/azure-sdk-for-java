@@ -34,7 +34,7 @@ import java.util.List;
  * High-level ...
  *
  * - Create an Internet facing load balancer that receives network traffic on
- *   port 80 & 443 and sends load-balanced traffic to two virtual machines
+ *   port 80 &amp; 443 and sends load-balanced traffic to two virtual machines
  *
  * - Create NAT rules for SSH and TELNET access to virtual
  *   machines behind the load balancer
@@ -333,7 +333,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces1.get(0))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1);
@@ -346,7 +346,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces1.get(1))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1);

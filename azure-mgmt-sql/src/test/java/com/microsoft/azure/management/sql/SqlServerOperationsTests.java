@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -18,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1239";
-    private static final String SQL_SERVER_NAME = "javasqlserver1239";
+    private static final String RG_NAME = "javasqlserver1238";
+    private static final String SQL_SERVER_NAME = "javasqlserver1238";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -41,17 +40,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlServer() throws Exception {
         // Create
-        SqlServer sqlServer = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
-                .createAsync()
-                .toBlocking().last();
+        SqlServer sqlServer = createSqlServer();
+
         validateSqlServer(sqlServer);
-        sqlServer.update().withPassword("P@ssword~2").apply();
+        sqlServer.update().withAdministratorPassword("P@ssword~2").apply();
 
         // List
         List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
@@ -73,45 +65,55 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlDatabase() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
+        SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
+                .withoutExistingElasticPool()
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
 
-        validateSqlDatabase(sqlDatabase);
+        validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
+        // Create another database with above created database as source database.
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable = sqlServer.elasticPools()
+                .define(SQL_ELASTIC_POOL_NAME)
+                .withEdition(ElasticPoolEditions.STANDARD);
+        String anotherDatabaseName = "anotherDatabase";
+        SqlDatabase anotherDatabase = sqlServer.databases()
+                .define(anotherDatabaseName)
+                .withNewElasticPool(sqlElasticPoolCreatable)
+                .withSourceDatabaseId(sqlDatabase.id())
+                .withCreateMode(CreateMode.COPY)
+                .create();
+
+        validateSqlDatabaseWithElasticPool(anotherDatabase, anotherDatabaseName);
+        sqlServer.databases().delete(anotherDatabase.name());
+
         // Get
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getById(sqlDatabase.id()));
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer, SQL_DATABASE_NAME));
-        validateSqlDatabase(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_DATABASE_NAME));
+        validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
 
         // List
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
+        validateListSqlDatabase(sqlServer.databases().list());
 
-        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
+        // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
+        validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
-        sqlDatabase = sqlServerManager.sqlDatabases()
+        sqlDatabase = sqlServer.databases()
                 .define("newDatabase")
+                .withoutExistingElasticPool()
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServer.databases().delete(sqlDatabase.name());
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
@@ -120,59 +122,90 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlDatabase sqlDatabase = sqlServerManager.sqlDatabases()
+        Creatable<SqlElasticPool> sqlElasticPoolCreatable = sqlServer.elasticPools()
+                .define(SQL_ELASTIC_POOL_NAME)
+                .withEdition(ElasticPoolEditions.STANDARD);
+
+        SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
+                .withNewElasticPool(sqlElasticPoolCreatable)
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withNewElasticPool(
-                        sqlServerManager.sqlElasticPools()
-                                .define(SQL_ELASTIC_POOL_NAME)
-                                .withEdition(ElasticPoolEditions.STANDARD))
-                .withNewSqlServer(sqlServerCreatable)
+                .withServiceObjective(ServiceObjectiveName.S1)
                 .createAsync().toBlocking().first();
 
-        validateSqlDatabase(sqlDatabase);
+        validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
         // Get Elastic pool
-        SqlElasticPool sqlElasticPool = sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_ELASTIC_POOL_NAME);
-        validateSqlElasticPool(sqlElasticPool);
-
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getById(sqlElasticPool.id()));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer, SQL_ELASTIC_POOL_NAME));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_ELASTIC_POOL_NAME));
+        validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
 
         // Get
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getById(sqlDatabase.id()));
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer, SQL_DATABASE_NAME));
-        validateSqlDatabaseWithElasticPool(sqlServerManager.sqlDatabases().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_DATABASE_NAME));
+        validateSqlDatabaseWithElasticPool(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
 
         // List
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlDatabase(sqlServerManager.sqlDatabases().listBySqlServer(sqlServer));
+        validateListSqlDatabase(sqlServer.databases().list());
 
-        sqlServerManager.sqlDatabases().deleteById(sqlDatabase.id());
+        // Remove database from elastic pools.
+        sqlDatabase.update()
+                .withoutExistingElasticPool()
+                .withEdition(DatabaseEditions.STANDARD)
+                .withServiceObjective(ServiceObjectiveName.S3)
+            .apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertNull(sqlDatabase.elasticPoolName());
+
+        // Update edition of the SQL database
+        sqlDatabase.update()
+                .withEdition(DatabaseEditions.PREMIUM)
+                .withServiceObjective(ServiceObjectiveName.P1)
+                .apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.edition(), DatabaseEditions.PREMIUM);
+        Assert.assertEquals(sqlDatabase.serviceLevelObjective(), ServiceObjectiveName.P1);
+
+        // Update just the service level objective for database.
+        sqlDatabase.update().withServiceObjective(ServiceObjectiveName.P2).apply();
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.serviceLevelObjective(), ServiceObjectiveName.P2);
+        Assert.assertEquals(sqlDatabase.requestedServiceObjectiveName(), ServiceObjectiveName.P2);
+
+        // Update max size bytes of the database.
+        sqlDatabase.update()
+                .withMaxSizeBytes(268435456000L)
+                .apply();
+
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.maxSizeBytes(), 268435456000L);
+
+        // Put the database back in elastic pool.
+        sqlDatabase.update()
+                .withExistingElasticPool(SQL_ELASTIC_POOL_NAME)
+                .apply();
+
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.elasticPoolName(), SQL_ELASTIC_POOL_NAME);
+
+        // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
-        // Add another database to the server
-        sqlDatabase = sqlServerManager.sqlDatabases()
+        SqlElasticPool sqlElasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
+
+        // Add another database to the server and pool.
+        sqlDatabase = sqlServer.databases()
                 .define("newDatabase")
+                .withExistingElasticPool(sqlElasticPool)
+                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .withExistingElasticPoolName(sqlElasticPool)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlDatabases().deleteByParent(sqlDatabase.resourceGroupName(), sqlDatabase.sqlServerName(), sqlDatabase.name());
+        sqlServer.databases().delete(sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
@@ -182,152 +215,127 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canCRUDSqlElasticPool() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlElasticPool sqlElasticPool = sqlServerManager.sqlElasticPools()
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        validateSqlServer(sqlServer);
+
+        SqlElasticPool sqlElasticPool = sqlServer.elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .withNewSqlServer(sqlServerCreatable)
                 .createAsync().toBlocking().first();
+
+        sqlElasticPool = sqlElasticPool.update()
+                .withDtu(100)
+                .withDatabaseDtuMax(20)
+                .withDatabaseDtuMin(10)
+                .withStorageCapacity(102400).apply();
 
         validateSqlElasticPool(sqlElasticPool);
 
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
-        validateSqlServer(sqlServer);
-
         // Get
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getById(sqlElasticPool.id()));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer, SQL_ELASTIC_POOL_NAME));
-        validateSqlElasticPool(sqlServerManager.sqlElasticPools().getBySqlServer(sqlServer.resourceGroupName(), sqlServer.name(), SQL_ELASTIC_POOL_NAME));
+        validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
 
         // List
-        validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlElasticPool(sqlServerManager.sqlElasticPools().listBySqlServer(sqlServer));
+        validateListSqlElasticPool(sqlServer.elasticPools().list());
 
-        sqlServerManager.sqlElasticPools().deleteById(sqlElasticPool.id());
-        validateSqlElasticPoolNotFound(SQL_ELASTIC_POOL_NAME);
+        // Delete
+        sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
+        validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
-        sqlElasticPool = sqlServerManager.sqlElasticPools()
+        sqlElasticPool = sqlServer.elasticPools()
                 .define("newElasticPool")
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .withExistingSqlServer(sqlServer)
                 .createAsync().toBlocking().first();
-        sqlServerManager.sqlElasticPools().deleteByParent(sqlElasticPool.resourceGroupName(), sqlElasticPool.sqlServerName(), sqlElasticPool.name());
-        validateSqlElasticPoolNotFound("newElasticPool");
+
+        sqlServer.elasticPools().delete(sqlElasticPool.name());
+        validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
-
     @Test
     public void canCRUDSqlFirewallRule() throws Exception {
         // Create
-        Creatable<SqlServer> sqlServerCreatable = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdminUserName("userName")
-                .withPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
+        SqlServer sqlServer = createSqlServer();
 
-        SqlFirewallRule sqlFirewallRule = sqlServerManager.sqlFirewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
-                .withNewSqlServer(sqlServerCreatable)
-                .createAsync().toBlocking().first();
-
-        validateSqlFirewallRule(sqlFirewallRule);
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME));
-
-        SqlServer sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
+        SqlFirewallRule sqlFirewallRule = sqlServer.firewallRules()
+                .define(SQL_FIREWALLRULE_NAME)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .createAsync().toBlocking().first();
+
+        validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
+
+
+        String secondFirewallRuleName = "secondFireWallRule";
+        SqlFirewallRule secondFirewallRule = sqlServer.firewallRules()
+                .define(secondFirewallRuleName)
+                .withStartIpAddress(START_IPADDRESS)
+                .withEndIpAddress(END_IPADDRESS)
+                .create();
+
+        Assert.assertNotNull(sqlServer.firewallRules().get(secondFirewallRuleName));
+        validateSqlFirewallRule(secondFirewallRule, secondFirewallRuleName);
+        sqlServer.firewallRules().delete(secondFirewallRuleName);
+        Assert.assertNull(sqlServer.firewallRules().get(secondFirewallRuleName));
 
         // Get
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getBySqlServer(sqlServer, SQL_FIREWALLRULE_NAME));
-        validateSqlFirewallRule(sqlServerManager.sqlFirewallRules().getById(sqlFirewallRule.id()));
+        sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
+        validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
+
+        // Update
+        // Making start and end IP address same.
+        sqlFirewallRule.update().withEndIpAddress(START_IPADDRESS).apply();
+        sqlFirewallRule = sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME);
+        Assert.assertEquals(sqlFirewallRule.endIpAddress(), START_IPADDRESS);
 
         // List
-        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer.resourceGroupName(), sqlServer.name()));
-        validateListSqlFirewallRule(sqlServerManager.sqlFirewallRules().listBySqlServer(sqlServer));
+        validateListSqlFirewallRule(sqlServer.firewallRules().list());
 
-        sqlServerManager.sqlFirewallRules().deleteById(sqlFirewallRule.id());
+        // Delete
+        sqlServer.firewallRules().delete(sqlFirewallRule.name());
         validateSqlFirewallRuleNotFound();
 
-        // Add firewall rule again with existing server.
-        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
-                .withExistingSqlServer(sqlServer)
-                .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
-        validateSqlFirewallRuleNotFound();
-
-        // Add firewall rule again with existing server.
-        sqlFirewallRule = sqlServerManager.sqlFirewallRules()
-                .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
-                .withExistingSqlServer(sqlServer.resourceGroupName(), sqlServer.name())
-                .createAsync().toBlocking().first();
-        sqlServerManager.sqlFirewallRules().deleteByParent(sqlFirewallRule.resourceGroupName(), sqlFirewallRule.sqlServerName(), sqlFirewallRule.name());
-        validateSqlFirewallRuleNotFound();
-
+        // Delete server
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
 
     private static void validateSqlFirewallRuleNotFound() {
-        try {
-            sqlServerManager.sqlFirewallRules().getBySqlServer(RG_NAME, SQL_SERVER_NAME, SQL_FIREWALLRULE_NAME);
-            Assert.assertTrue(false);
-        } catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
     }
 
 
-    private static void validateSqlElasticPoolNotFound(String elasticPoolName) {
-        try {
-            sqlServerManager.sqlElasticPools().getBySqlServer(RG_NAME, SQL_SERVER_NAME, elasticPoolName);
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+    private static void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
+        Assert.assertNull(sqlServer.elasticPools().get(elasticPoolName));
     }
 
     private static void validateSqlDatabaseNotFound(String newDatabase) {
-        try {
-            sqlServerManager.sqlDatabases().getBySqlServer(RG_NAME, SQL_SERVER_NAME, newDatabase);
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).databases().get(newDatabase));
     }
 
 
     private static void validateSqlServerNotFound(SqlServer sqlServer) {
-        try {
-            sqlServerManager.sqlServers().getById(sqlServer.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        Assert.assertNull(sqlServerManager.sqlServers().getById(sqlServer.id()));
     }
 
+    private static SqlServer createSqlServer() {
+        return sqlServerManager.sqlServers()
+                .define(SQL_SERVER_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withAdministratorLogin("userName")
+                .withAdministratorPassword("P@ssword~1")
+                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
+                .create();
+    }
     private static void validateListSqlFirewallRule(PagedList<SqlFirewallRule> sqlFirewallRules) {
         boolean found = false;
         for (SqlFirewallRule firewallRule: sqlFirewallRules) {
@@ -338,12 +346,15 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertTrue(found);
     }
 
-    private static void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule) {
+    private static void validateSqlFirewallRule(SqlFirewallRule sqlFirewallRule, String firewallName) {
         Assert.assertNotNull(sqlFirewallRule);
-        Assert.assertEquals(SQL_FIREWALLRULE_NAME, sqlFirewallRule.name());
+        Assert.assertEquals(firewallName, sqlFirewallRule.name());
         Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
         Assert.assertEquals(START_IPADDRESS, sqlFirewallRule.startIpAddress());
         Assert.assertEquals(END_IPADDRESS, sqlFirewallRule.endIpAddress());
+        Assert.assertEquals(RG_NAME, sqlFirewallRule.resourceGroupName());
+        Assert.assertEquals(SQL_SERVER_NAME, sqlFirewallRule.sqlServerName());
+        Assert.assertEquals(Region.US_CENTRAL, sqlFirewallRule.region());
     }
 
     private static void validateListSqlElasticPool(PagedList<SqlElasticPool> sqlElasticPools) {
@@ -382,20 +393,20 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(RG_NAME, sqlServer.resourceGroupName());
         Assert.assertNotNull(sqlServer.fullyQualifiedDomainName());
         Assert.assertEquals(ServerVersion.ONE_TWO_FULL_STOP_ZERO, sqlServer.version());
-        Assert.assertEquals("userName", sqlServer.adminLogin());
+        Assert.assertEquals("userName", sqlServer.administratorLogin());
     }
 
-    private static void validateSqlDatabase(SqlDatabase sqlDatabase) {
+    private static void validateSqlDatabase(SqlDatabase sqlDatabase, String databaseName) {
         Assert.assertNotNull(sqlDatabase);
-        Assert.assertEquals(sqlDatabase.name(), SQL_DATABASE_NAME);
+        Assert.assertEquals(sqlDatabase.name(), databaseName);
         Assert.assertEquals(SQL_SERVER_NAME, sqlDatabase.sqlServerName());
         Assert.assertEquals(sqlDatabase.collation(), COLLATION);
         Assert.assertEquals(sqlDatabase.edition(), DatabaseEditions.STANDARD);
     }
 
 
-    private static void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase) {
-        validateSqlDatabase(sqlDatabase);
+    private static void validateSqlDatabaseWithElasticPool(SqlDatabase sqlDatabase, String databaseName) {
+        validateSqlDatabase(sqlDatabase, databaseName);
         Assert.assertEquals(SQL_ELASTIC_POOL_NAME, sqlDatabase.elasticPoolName());
     }
 }

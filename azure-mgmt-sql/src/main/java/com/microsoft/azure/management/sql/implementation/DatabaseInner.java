@@ -10,7 +10,9 @@ package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
 import java.util.UUID;
+import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
+import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -61,6 +63,24 @@ public class DatabaseInner extends Resource {
     private DateTime earliestRestoreDate;
 
     /**
+     * Specifies the type of database to create. Possible values include:
+     * 'Copy', 'Default', 'NonReadableSecondary', 'OnlineSecondary',
+     * 'PointInTimeRestore', 'Recovery', 'Restore'.
+     */
+    @JsonProperty(value = "properties.createMode")
+    private CreateMode createMode;
+
+    /**
+     * Conditional.  Specifies the resource Id of the source database.  If
+     * createMode is not set to Default, then this value must be specified.
+     * The name of the source database must be the same.  NOTE: Collation,
+     * Edition, and MaxSizeBytes must remain the same while the link is
+     * active.  Values specified for these parameters will be ignored.
+     */
+    @JsonProperty(value = "properties.sourceDatabaseId")
+    private String sourceDatabaseId;
+
+    /**
      * The edition of the Azure SQL Database.  The DatabaseEditions
      * enumeration contains all the valid editions. Possible values include:
      * 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
@@ -80,25 +100,30 @@ public class DatabaseInner extends Resource {
 
     /**
      * The configured Service Level Objective Id of the Azure SQL Database.
-     * This is the Service Level Objective that is being applied to the Azure
-     * SQL Database.
+     * This is the Service Level Objective that is in the process of being
+     * applied to the Azure SQL Database.  Once successfully updated, it will
+     * match the value of currentServiceObjectiveId property.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveId")
     private UUID requestedServiceObjectiveId;
 
     /**
      * The name of the configured Service Level Objective of the Azure SQL
-     * Database. This is the Service Level Objective that is being applied to
-     * the Azure SQL Database.
+     * Database. This is the Service Level Objective that is in the process
+     * of being applied to the Azure SQL Database.  Once successfully
+     * updated, it will match the value of serviceLevelObjective property.
+     * Possible values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2',
+     * 'P3'.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveName")
-    private String requestedServiceObjectiveName;
+    private ServiceObjectiveName requestedServiceObjectiveName;
 
     /**
-     * The Service Level Objective of the Azure SQL Database.
+     * The current Service Level Objective of the Azure SQL Database. Possible
+     * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
+    private ServiceObjectiveName serviceLevelObjective;
 
     /**
      * The status of the Azure SQL Database.
@@ -214,6 +239,46 @@ public class DatabaseInner extends Resource {
     }
 
     /**
+     * Get the createMode value.
+     *
+     * @return the createMode value
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode value.
+     *
+     * @param createMode the createMode value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
+     * Get the sourceDatabaseId value.
+     *
+     * @return the sourceDatabaseId value
+     */
+    public String sourceDatabaseId() {
+        return this.sourceDatabaseId;
+    }
+
+    /**
+     * Set the sourceDatabaseId value.
+     *
+     * @param sourceDatabaseId the sourceDatabaseId value to set
+     * @return the DatabaseInner object itself.
+     */
+    public DatabaseInner withSourceDatabaseId(String sourceDatabaseId) {
+        this.sourceDatabaseId = sourceDatabaseId;
+        return this;
+    }
+
+    /**
      * Get the edition value.
      *
      * @return the edition value
@@ -278,7 +343,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the requestedServiceObjectiveName value
      */
-    public String requestedServiceObjectiveName() {
+    public ServiceObjectiveName requestedServiceObjectiveName() {
         return this.requestedServiceObjectiveName;
     }
 
@@ -288,7 +353,7 @@ public class DatabaseInner extends Resource {
      * @param requestedServiceObjectiveName the requestedServiceObjectiveName value to set
      * @return the DatabaseInner object itself.
      */
-    public DatabaseInner withRequestedServiceObjectiveName(String requestedServiceObjectiveName) {
+    public DatabaseInner withRequestedServiceObjectiveName(ServiceObjectiveName requestedServiceObjectiveName) {
         this.requestedServiceObjectiveName = requestedServiceObjectiveName;
         return this;
     }
@@ -298,7 +363,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the serviceLevelObjective value
      */
-    public String serviceLevelObjective() {
+    public ServiceObjectiveName serviceLevelObjective() {
         return this.serviceLevelObjective;
     }
 

@@ -281,6 +281,15 @@ public class AzureTests {
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    @Test public void testVirtualMachineCustomData() throws Exception {
+        new TestVirtualMachineCustomData(azure.publicIpAddresses())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test public void testVirtualMachineInAvailabilitySet() throws Exception {
+        new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());

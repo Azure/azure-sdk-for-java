@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -37,11 +38,129 @@ public interface SqlServer extends
     ServerVersion version();
 
     /**
-     *
      * @return the administrator login user name for the SQL Server
      */
-    String adminLogin();
+    String administratorLogin();
 
+    /**
+     * @return returns entry point to manage FirewallRules in SqlServer.
+     */
+    FirewallRules firewallRules();
+
+    /**
+     * @return returns entry point to manage ElasticPools in SqlServer.
+     */
+    ElasticPools elasticPools();
+
+    /**
+     * @return entry point to manage Databases in SqlServer.
+     */
+    Databases databases();
+
+    /**
+     * Entry point to access FirewallRules from the SQL Server.
+     */
+    interface FirewallRules {
+        /**
+         * Gets a particular firewall rule.
+         *
+         * @param firewallRuleName name of the firewall rule to get
+         * @return Returns the SqlFirewall rule with in the SQL Server
+         */
+        SqlFirewallRule get(String firewallRuleName);
+
+        /**
+         * Creates a new firewall rule in SQL Server.
+         *
+         * @param firewallRuleName name of the firewall rule to be created
+         * @return Returns a stage to specify arguments of the firewall rule
+         */
+        SqlFirewallRule.DefinitionStages.Blank define(String firewallRuleName);
+
+        /**
+         * Returns all the firewall rules for the server.
+         *
+         * @return list of firewall rules for the server.
+         */
+        PagedList<SqlFirewallRule> list();
+
+        /**
+         * Delete specified firewall rule in the server.
+         *
+         * @param firewallRuleName name of the firewall rule to delete
+         */
+        void delete(String firewallRuleName);
+    }
+
+    /**
+     * Entry point to access ElasticPools from the SQL Server.
+     */
+    interface ElasticPools {
+        /**
+         * Gets a particular elastic pool.
+         *
+         * @param elasticPoolName name of the elastic pool to get
+         * @return Returns the elastic pool with in the SQL Server
+         */
+        SqlElasticPool get(String elasticPoolName);
+
+        /**
+         * Creates a new elastic pool in SQL Server.
+         *
+         * @param elasticPoolName name of the elastic pool to be created
+         * @return Returns a stage to specify arguments of the elastic pool
+         */
+        SqlElasticPool.DefinitionStages.Blank define(String elasticPoolName);
+
+        /**
+         * Returns all the elastic pools for the server.
+         *
+         * @return list of elastic pools for the server.
+         */
+        PagedList<SqlElasticPool> list();
+
+        /**
+         * Delete specified elastic pool in the server.
+         *
+         * @param elasticPoolName name of the elastic pool to delete
+         */
+        void delete(String elasticPoolName);
+    }
+
+    /**
+     * Entry point to access ElasticPools from the SQL Server.
+     */
+    interface Databases {
+        /**
+         * Gets a particular sql database.
+         *
+         * @param databaseName name of the sql database to get
+         * @return Returns the database with in the SQL Server
+         */
+        SqlDatabase get(String databaseName);
+
+        /**
+         * Creates a new database in SQL Server.
+         *
+         * @param databaseName name of the database to be created
+         * @return Returns a stage to specify arguments of the database
+         */
+        SqlDatabase.DefinitionStages.Blank define(String databaseName);
+
+        /**
+         * Returns all the databases for the server.
+         *
+         * @return list of databases for the server.
+         */
+        PagedList<SqlDatabase> list();
+
+        /**
+         * Delete specified database in the server.
+         *
+         * @param databaseName name of the database to delete
+         */
+        void delete(String databaseName);
+    }
 
     /**************************************************************
      * Fluent interfaces to provision a SqlServer
@@ -53,8 +172,8 @@ public interface SqlServer extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
-        DefinitionStages.WithAdminUserName,
-        DefinitionStages.WithPassword,
+        DefinitionStages.WithAdministratorLogin,
+        DefinitionStages.WithAdministratorPassword,
         DefinitionStages.WithVersion,
         DefinitionStages.WithCreate {
     }
@@ -72,27 +191,45 @@ public interface SqlServer extends
         /**
          * A SQL Server definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAdminUserName> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithAdministratorLogin> {
         }
 
         /**
-         * A SQL Server definition setting admin user name.
+         * A SQL Server definition setting administrator user name.
          */
-        interface WithAdminUserName {
-            WithPassword withAdminUserName(String adminUserName);
+        interface WithAdministratorLogin {
+            /**
+             * Sets the administrator login user name.
+             *
+             * @param administratorLogin administrator login user name
+             * @return Next stage of the SQL Server creation
+             */
+            WithAdministratorPassword withAdministratorLogin(String administratorLogin);
         }
 
         /**
          * A SQL Server definition setting admin user password.
          */
-        interface WithPassword {
-            WithCreate withPassword(String password);
+        interface WithAdministratorPassword {
+            /**
+             * Sets the administrator login password.
+             *
+             * @param administratorLoginPassword password for administrator login
+             * @return Next stage of the SQL Server creation
+             */
+            WithCreate withAdministratorPassword(String administratorLoginPassword);
         }
 
         /**
          * A SQL Server definition setting version.
          */
         interface WithVersion {
+            /**
+             * Sets the version of SQL Server to be created.
+             *
+             * @param version Version of SQL server to be created
+             * @return Next stage of the SQL Server creation
+             */
             WithCreate withVersion(ServerVersion version);
         }
 
@@ -112,7 +249,7 @@ public interface SqlServer extends
      */
     interface Update extends
             Appliable<SqlServer>,
-            UpdateStages.WithAdminPassword {
+            UpdateStages.WithAdministratorPassword {
     }
 
     /**
@@ -121,10 +258,16 @@ public interface SqlServer extends
     interface UpdateStages {
 
         /**
-         * A SQL Server definition setting administrator user password.
+         * A SQL Server definition setting admin user password.
          */
-        interface WithAdminPassword {
-            Update withPassword(String administratorPassword);
+        interface WithAdministratorPassword {
+            /**
+             * Sets the administrator login password.
+             *
+             * @param administratorLoginPassword password for administrator login
+             * @return Next stage of the SQL Server creation.
+             */
+            Update withAdministratorPassword(String administratorLoginPassword);
         }
     }
 }

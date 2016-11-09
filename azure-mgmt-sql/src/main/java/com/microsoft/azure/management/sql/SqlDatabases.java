@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -24,7 +25,7 @@ public interface SqlDatabases extends
         SupportsDeletingById,
         SupportsGettingById<SqlDatabase>,
         SupportsBatchCreation<SqlDatabase>,
-        SupportsDeletingByParent<SqlDatabase> {
+        SupportsDeletingByParent {
 
     /**
      * Gets the SQLDatabase based on the resource group name, SQLServer name and SQLDatabase name.
@@ -61,4 +62,11 @@ public interface SqlDatabases extends
      * @return the list of SQLDatabases in a SQLServer
      */
     PagedList<SqlDatabase> listBySqlServer(GroupableResource sqlServer);
+
+    /**
+     * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.
+     */
+    interface SqlDatabaseCreatable extends SqlDatabases {
+        SqlDatabase.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String databaseName, Region region);
+    }
 }

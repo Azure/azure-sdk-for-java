@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildResourcesImpl;
@@ -20,13 +21,13 @@ import rx.Observable;
  * Implementation for SQLElasticPools and its parent interfaces.
  */
 @LangDefinition
-public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
+class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             SqlElasticPool,
             SqlElasticPoolImpl,
             ElasticPoolInner,
             ElasticPoolsInner,
             SqlServerManager>
-        implements SqlElasticPools,
+        implements SqlElasticPools.SqlElasticPoolsCreatable,
         SupportsGettingByParent<SqlElasticPool>,
         SupportsListingByParent<SqlElasticPool> {
     protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager) {
@@ -54,6 +55,10 @@ public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
 
     @Override
     protected SqlElasticPoolImpl wrapModel(ElasticPoolInner inner) {
+        if (inner == null) {
+            return null;
+        }
+
         return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection);
     }
 
@@ -85,5 +90,16 @@ public class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     @Override
     public PagedList<SqlElasticPool> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
+    }
+
+    @Override
+    public SqlElasticPool.DefinitionStages.Blank definedWithSqlServer(String resourceGroupName, String sqlServerName, String elasticPoolName, Region region) {
+        ElasticPoolInner inner = new ElasticPoolInner();
+        inner.withLocation(region.name());
+
+        return new SqlElasticPoolImpl(
+                elasticPoolName,
+                inner,
+                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

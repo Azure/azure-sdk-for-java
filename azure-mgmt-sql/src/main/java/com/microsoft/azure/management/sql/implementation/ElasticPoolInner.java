@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.ElasticPoolState;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -26,10 +27,11 @@ public class ElasticPoolInner extends Resource {
     private DateTime creationDate;
 
     /**
-     * The state of the Azure SQL Elastic Pool.
+     * The state of the Azure SQL Elastic Pool. Possible values include:
+     * 'Creating', 'Ready', 'Disabled'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
+    private ElasticPoolState state;
 
     /**
      * The edition of the Azure SQL Elastic Pool. Possible values include:
@@ -41,25 +43,25 @@ public class ElasticPoolInner extends Resource {
     /**
      * The total shared DTU for the SQL Azure Database Elastic Pool.
      */
-    @JsonProperty(value = "properties.dtu", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.dtu")
     private Integer dtu;
 
     /**
      * The maximum DTU any one SQL Azure Database can consume.
      */
-    @JsonProperty(value = "properties.databaseDtuMax", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.databaseDtuMax")
     private Integer databaseDtuMax;
 
     /**
      * The minimum DTU all SQL Azure Databases are guaranteed.
      */
-    @JsonProperty(value = "properties.databaseDtuMin", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.databaseDtuMin")
     private Integer databaseDtuMin;
 
     /**
      * Gets storage limit for the SQL Azure Database Elastic Pool in MB.
      */
-    @JsonProperty(value = "properties.storageMB", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.storageMB")
     private Integer storageMB;
 
     /**
@@ -76,7 +78,7 @@ public class ElasticPoolInner extends Resource {
      *
      * @return the state value
      */
-    public String state() {
+    public ElasticPoolState state() {
         return this.state;
     }
 
@@ -110,12 +112,34 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
+     * Set the dtu value.
+     *
+     * @param dtu the dtu value to set
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withDtu(Integer dtu) {
+        this.dtu = dtu;
+        return this;
+    }
+
+    /**
      * Get the databaseDtuMax value.
      *
      * @return the databaseDtuMax value
      */
     public Integer databaseDtuMax() {
         return this.databaseDtuMax;
+    }
+
+    /**
+     * Set the databaseDtuMax value.
+     *
+     * @param databaseDtuMax the databaseDtuMax value to set
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withDatabaseDtuMax(Integer databaseDtuMax) {
+        this.databaseDtuMax = databaseDtuMax;
+        return this;
     }
 
     /**
@@ -128,12 +152,34 @@ public class ElasticPoolInner extends Resource {
     }
 
     /**
+     * Set the databaseDtuMin value.
+     *
+     * @param databaseDtuMin the databaseDtuMin value to set
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withDatabaseDtuMin(Integer databaseDtuMin) {
+        this.databaseDtuMin = databaseDtuMin;
+        return this;
+    }
+
+    /**
      * Get the storageMB value.
      *
      * @return the storageMB value
      */
     public Integer storageMB() {
         return this.storageMB;
+    }
+
+    /**
+     * Set the storageMB value.
+     *
+     * @param storageMB the storageMB value to set
+     * @return the ElasticPoolInner object itself.
+     */
+    public ElasticPoolInner withStorageMB(Integer storageMB) {
+        this.storageMB = storageMB;
+        return this;
     }
 
 }
