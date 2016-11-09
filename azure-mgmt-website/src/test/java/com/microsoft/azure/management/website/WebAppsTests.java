@@ -46,5 +46,16 @@ public class WebAppsTests extends AppServiceTestBase {
                 .create();
 
         Assert.assertNotNull(webApp);
+
+        DeploymentSlot slot = webApp.deploymentSlots().define("newslot")
+                .withConfigurationFromParent()
+                .defineNewHostNameBinding("newslot")
+                    .withAzureManagedDomain(domain)
+                    .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
+                    .attach()
+                .withPythonVersion(PythonVersion.PYTHON_27)
+                .create();
+
+        Assert.assertNotNull(slot);
     }
 }

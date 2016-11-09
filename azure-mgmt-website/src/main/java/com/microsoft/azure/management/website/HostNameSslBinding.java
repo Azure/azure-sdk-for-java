@@ -18,7 +18,7 @@ import java.io.File;
 @Fluent
 public interface HostNameSslBinding extends
     Wrapper<HostNameSslState>,
-    ChildResource<WebApp> {
+    ChildResource<WebAppBase<?>> {
     /**
      * @return the SSL type
      */

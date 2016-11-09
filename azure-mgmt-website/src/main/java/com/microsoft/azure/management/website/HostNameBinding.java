@@ -18,7 +18,7 @@ import com.microsoft.azure.management.website.implementation.HostNameBindingInne
 public interface HostNameBinding
         extends
         Wrapper<HostNameBindingInner>,
-        ExternalChildResource<HostNameBinding, WebApp>, Resource {
+        ExternalChildResource<HostNameBinding, WebAppBase<?>>, Resource {
     /**
      * @return Hostname.
      */

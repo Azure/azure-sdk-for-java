@@ -6,16 +6,18 @@
 
 package com.microsoft.azure.management.website;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
  * An immutable client-side representation of an Azure Web App.
  */
-public interface WebApp extends
-        WebAppBase<WebApp>,
-        Updatable<WebApp.Update> {
-    DeploymentSlots deploymentSlots();
+public interface DeploymentSlot extends
+        IndependentChildResource,
+        WebAppBase<DeploymentSlot>,
+        Updatable<DeploymentSlot.Update> {
+
+    WebApp parent();
 
     /**************************************************************
      * Fluent interfaces to provision a Web App
@@ -26,8 +28,8 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            WebAppBase.Definition<WebApp> {
+            DefinitionStages.WithConfiguration,
+            WebAppBase.Definition<DeploymentSlot> {
     }
 
     /**
@@ -37,29 +39,28 @@ public interface WebApp extends
         /**
          * The first stage of the web app definition.
          */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        interface Blank extends WithConfiguration {
         }
 
-        /**
-         * A web app definition allowing resource group to be set.
-         */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<
-                WebAppBase.DefinitionStages.WithAppServicePlan<WebApp>> {
+        interface WithConfiguration {
+            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withBrandNewConfiguration();
+            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromParent();
+            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromWebApp(WebApp webApp);
+            WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
         }
-
 
         /**
          * A site definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends WebAppBase.DefinitionStages.WithCreate<WebApp> {
+        interface WithCreate extends WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
         }
     }
 
     /**
      * The template for a site update operation, containing all the settings that can be modified.
      */
-    interface Update extends WebAppBase.Update<WebApp> {
+    interface Update extends WebAppBase.Update<DeploymentSlot> {
     }
 }

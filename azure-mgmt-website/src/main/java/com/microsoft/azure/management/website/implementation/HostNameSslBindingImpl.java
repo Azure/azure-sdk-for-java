@@ -6,15 +6,15 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.Certificate;
 import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.HostNameSslBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.SslState;
-import com.microsoft.azure.management.website.WebApp;
+import com.microsoft.azure.management.website.WebAppBase;
 
 import java.io.File;
 
@@ -22,19 +22,23 @@ import java.io.File;
  *  Implementation for {@link DomainContact} and its create and update interfaces.
  */
 @LangDefinition
-class HostNameSslBindingImpl
-    extends ChildResourceImpl<HostNameSslState, WebAppImpl, WebApp>
+class HostNameSslBindingImpl<
+        FluentT extends WebAppBase<FluentT>,
+        FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
+    extends IndexableWrapperImpl<HostNameSslState>
     implements
         HostNameSslBinding,
-        HostNameSslBinding.Definition<WebApp.DefinitionStages.WithHostNameSslBinding>,
-        HostNameSslBinding.UpdateDefinition<WebApp.Update> {
+        HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
+        HostNameSslBinding.UpdateDefinition<WebAppBase.Update> {
 
     private Creatable<Certificate> newCertificate;
     private Creatable<AppServiceCertificate> newCertificateOrder;
     private final AppServiceManager manager;
+    private final FluentImplT parent;
 
-    HostNameSslBindingImpl(HostNameSslState inner, WebAppImpl parent, AppServiceManager manager) {
-        super(inner, parent);
+    HostNameSslBindingImpl(HostNameSslState inner, FluentImplT parent, AppServiceManager manager) {
+        super(inner);
+        this.parent = parent;
         this.manager = manager;
     }
 
@@ -59,13 +63,13 @@ class HostNameSslBindingImpl
     }
 
     @Override
-    public WebAppImpl attach() {
-        parent().withNewHostNameSslBinding(this);
-        return parent();
+    public FluentImplT attach() {
+        parent.withNewHostNameSslBinding(this);
+        return parent;
     }
 
     @Override
-    public HostNameSslBindingImpl withPfxCertificateToUpload(File pfxFile, String password) {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(File pfxFile, String password) {
         newCertificate = manager.certificates().define(name() + "cert")
                 .withRegion(parent().region())
                 .withNewResourceGroup(parent().resourceGroupName())
@@ -104,13 +108,13 @@ class HostNameSslBindingImpl
     }
 
     @Override
-    public HostNameSslBindingImpl withSniSSL() {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withSniSSL() {
         inner().withSslState(SslState.SNI_ENABLED);
         return this;
     }
 
     @Override
-    public HostNameSslBindingImpl withIpBasedSSL() {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withIpBasedSSL() {
         inner().withSslState(SslState.IP_BASED_ENABLED);
         return this;
     }
@@ -121,5 +125,10 @@ class HostNameSslBindingImpl
 
     Creatable<AppServiceCertificate> newCertificateOrder() {
         return newCertificateOrder;
+    }
+
+    @Override
+    public WebAppBase<FluentT> parent() {
+        return parent;
     }
 }
