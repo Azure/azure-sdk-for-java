@@ -94,6 +94,7 @@ public class SqlServerManager extends Manager<SqlServerManager, SqlManagementCli
                     super.innerManagementClient.servers(),
                     super.innerManagementClient.elasticPools(),
                     super.innerManagementClient.databases(),
+                    super.innerManagementClient.recommendedElasticPools(),
                     this);
         }
 

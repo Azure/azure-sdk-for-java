@@ -17,6 +17,7 @@ import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.DatabaseMetric;
 import com.microsoft.azure.management.sql.RestorePoint;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
+import com.microsoft.azure.management.sql.ServiceTierAdvisor;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
@@ -182,7 +183,6 @@ class SqlDatabaseImpl
         PagedListConverter<DatabaseMetricInner, DatabaseMetric> converter = new PagedListConverter<DatabaseMetricInner, DatabaseMetric>() {
             @Override
             public DatabaseMetric typeConvert(DatabaseMetricInner databaseMetricInner) {
-
                 return new DatabaseMetricImpl(databaseMetricInner);
             }
         };
@@ -191,6 +191,39 @@ class SqlDatabaseImpl
                         this.resourceGroupName(),
                         this.sqlServerName(),
                         this.name())));
+    }
+
+    @Override
+    public TransparentDataEncryptions transparentDataEncryptions() {
+        return new TransparentDataEncryptionsImpl(this.resourceGroupName(), this.sqlServerName(), this.name(), this.innerCollection);
+    }
+
+    @Override
+    public PagedList<ServiceTierAdvisor> listServiceTierAdvisor() {
+        final SqlDatabaseImpl self = this;
+        PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor> converter
+                    = new PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor>() {
+            @Override
+            public ServiceTierAdvisor typeConvert(ServiceTierAdvisorInner serviceTierAdvisorInner) {
+                return new ServiceTierAdvisorImpl(serviceTierAdvisorInner, self.innerCollection);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listServiceTierAdvisors(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public ServiceTierAdvisor getServiceTierAdvisor(String serviceTierAdvisorName) {
+        return new ServiceTierAdvisorImpl(
+                this.innerCollection.getServiceTierAdvisor(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name(),
+                        serviceTierAdvisorName),
+                this.innerCollection);
     }
 
     @Override

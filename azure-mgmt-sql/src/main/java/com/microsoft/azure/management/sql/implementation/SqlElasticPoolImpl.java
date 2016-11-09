@@ -6,10 +6,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.sql.ElasticPoolActivity;
+import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.ElasticPoolState;
+import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
 import org.joda.time.DateTime;
@@ -30,12 +36,15 @@ class SqlElasticPoolImpl
             SqlElasticPool.Update,
         IndependentChild.DefinitionStages.WithParentResource<SqlElasticPool, SqlServer> {
     private final ElasticPoolsInner innerCollection;
+    private final DatabasesInner databasesInner;
 
     protected SqlElasticPoolImpl(String name,
                                  ElasticPoolInner innerObject,
-                                 ElasticPoolsInner innerCollection) {
+                                 ElasticPoolsInner innerCollection,
+                                 DatabasesInner databasesInner) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
+        this.databasesInner = databasesInner;
     }
 
     @Override
@@ -76,6 +85,67 @@ class SqlElasticPoolImpl
     @Override
     public int storageMB() {
         return this.inner().storageMB();
+    }
+
+    @Override
+    public PagedList<ElasticPoolActivity> listActivity() {
+        PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity> converter = new PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity>() {
+            @Override
+            public ElasticPoolActivity typeConvert(ElasticPoolActivityInner elasticPoolActivityInner) {
+
+                return new ElasticPoolActivityImpl(elasticPoolActivityInner);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listActivity(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public PagedList<ElasticPoolDatabaseActivity> listDatabaseActivity() {
+        PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity> converter
+                = new PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity>() {
+            @Override
+            public ElasticPoolDatabaseActivity typeConvert(ElasticPoolDatabaseActivityInner elasticPoolDatabaseActivityInner) {
+
+                return new ElasticPoolDatabaseActivityImpl(elasticPoolDatabaseActivityInner);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listDatabaseActivity(
+                        this.name(),
+                        this.resourceGroupName(),
+                        this.sqlServerName())));
+    }
+
+    @Override
+    public PagedList<SqlDatabase> listDatabases() {
+        final DatabasesInner databasesInner = this.databasesInner;
+        PagedListConverter<DatabaseInner, SqlDatabase> converter
+                = new PagedListConverter<DatabaseInner, SqlDatabase>() {
+            @Override
+            public SqlDatabase typeConvert(DatabaseInner databaseInner) {
+
+                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, databasesInner);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                this.innerCollection.listDatabases(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public SqlDatabase getDatabase(String databaseName) {
+        DatabaseInner database = this.innerCollection.getDatabase(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.name(),
+                databaseName);
+        return new SqlDatabaseImpl(database.name(), database, this.databasesInner);
     }
 
     @Override

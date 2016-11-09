@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ServerMetric;
 import com.microsoft.azure.management.sql.ServerUpgradeResult;
 import com.microsoft.azure.management.sql.ServerVersion;
+import com.microsoft.azure.management.sql.ServiceObjective;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Observable;
 import rx.functions.Func1;
@@ -36,17 +37,20 @@ public class SqlServerImpl
     private final ServersInner innerCollection;
     private final ElasticPoolsInner elasticPoolsInner;
     private final DatabasesInner databasesInner;
+    private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
 
     protected SqlServerImpl(String name,
                             ServerInner innerObject,
                             ServersInner innerCollection,
                             SqlServerManager manager,
                             ElasticPoolsInner elasticPoolsInner,
-                            DatabasesInner databasesInner) {
+                            DatabasesInner databasesInner,
+                            RecommendedElasticPoolsInner recommendedElasticPoolsInner) {
         super(name, innerObject, manager);
         this.innerCollection = innerCollection;
         this.elasticPoolsInner = elasticPoolsInner;
         this.databasesInner = databasesInner;
+        this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
     }
 
     @Override
@@ -94,7 +98,7 @@ public class SqlServerImpl
 
     @Override
     public ElasticPools elasticPools() {
-        return new ElasticPoolsImpl(this.elasticPoolsInner, this.myManager, this.resourceGroupName(), this.name(), this.region());
+        return new ElasticPoolsImpl(this.elasticPoolsInner, this.myManager, this.databasesInner, this.resourceGroupName(), this.name(), this.region());
     }
 
     @Override
@@ -125,6 +129,34 @@ public class SqlServerImpl
                 this.innerCollection.listUsages(
                         this.resourceGroupName(),
                         this.name())));
+    }
+
+    @Override
+    public PagedList<ServiceObjective> listServiceObjectives() {
+        final ServersInner innerCollection = this.innerCollection;
+        PagedListConverter<ServiceObjectiveInner, ServiceObjective> converter = new PagedListConverter<ServiceObjectiveInner, ServiceObjective>() {
+            @Override
+            public ServiceObjective typeConvert(ServiceObjectiveInner serviceObjectiveInner) {
+
+                return new ServiceObjectiveImpl(serviceObjectiveInner, innerCollection);
+            }
+        };
+        return converter.convert(Utils.convertToPagedList(
+                        this.innerCollection.listServiceObjectives(
+                        this.resourceGroupName(),
+                        this.name())));
+    }
+
+    @Override
+    public ServiceObjective getServiceObjective(String serviceObjectiveName) {
+        return new ServiceObjectiveImpl(
+                this.innerCollection.getServiceObjective(this.resourceGroupName(), this.name(), serviceObjectiveName),
+                this.innerCollection);
+    }
+
+    @Override
+    public RecommendedElasticPools recommendedElasticPools() {
+        return new RecommendedElasticPoolsImpl(this.recommendedElasticPoolsInner, this.databasesInner, this.resourceGroupName(), this.name());
     }
 
     @Override
