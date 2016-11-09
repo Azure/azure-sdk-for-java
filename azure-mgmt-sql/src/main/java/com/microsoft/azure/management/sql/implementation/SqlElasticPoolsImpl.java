@@ -30,8 +30,11 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         implements SqlElasticPools.SqlElasticPoolsCreatable,
         SupportsGettingByParent<SqlElasticPool>,
         SupportsListingByParent<SqlElasticPool> {
-    protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager) {
+    private final DatabasesInner databasesInner;
+
+    protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager, DatabasesInner databasesInner) {
         super(innerCollection, manager);
+        this.databasesInner = databasesInner;
     }
 
     @Override
@@ -40,7 +43,8 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         return new SqlElasticPoolImpl(
                 name,
                 inner,
-                this.innerCollection);
+                this.innerCollection,
+                this.databasesInner);
     }
 
     @Override
@@ -59,7 +63,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection);
+        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection, this.databasesInner);
     }
 
     @Override
@@ -100,6 +104,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         return new SqlElasticPoolImpl(
                 elasticPoolName,
                 inner,
-                this.innerCollection).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.innerCollection,
+                this.databasesInner).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

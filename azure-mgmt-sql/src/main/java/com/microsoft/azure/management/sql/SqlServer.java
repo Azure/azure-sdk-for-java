@@ -69,11 +69,27 @@ public interface SqlServer extends
      */
     ServerUpgradeResult getUpgrade();
 
-
     /**
      * @return returns the list of usages (ServerMetric) of Azure SQL Server
      */
     PagedList<ServerMetric> listUsages();
+
+    /**
+     * @return the list of information on all service objectives
+     */
+    PagedList<ServiceObjective> listServiceObjectives();
+
+    /**
+     * Gets the information on a particular Sql Server Service Objective.
+     * @param serviceObjectiveName name of the service objective to be fetched
+     * @return information of the service objective
+     */
+    ServiceObjective getServiceObjective(String serviceObjectiveName);
+
+    /**
+     * @return the entry point to RecommendedElasticPools.
+     */
+    RecommendedElasticPools recommendedElasticPools();
 
     /**
      * Entry point to access FirewallRules from the SQL Server.
@@ -108,6 +124,26 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to delete
          */
         void delete(String firewallRuleName);
+    }
+
+    /**
+     * Entry point to access RecommendedElasticPool from the SQL Server.
+     */
+    interface RecommendedElasticPools {
+        /**
+         * Gets a particular recommended elastic pool.
+         *
+         * @param recommendedElasticPoolName name of the elastic pool to get
+         * @return Returns the elastic pool with in the SQL Server
+         */
+        RecommendedElasticPool get(String recommendedElasticPoolName);
+
+        /**
+         * Returns all the recommended elastic pools for the server.
+         *
+         * @return list of recommended elastic pools for the server.
+         */
+        PagedList<RecommendedElasticPool> list();
     }
 
     /**
