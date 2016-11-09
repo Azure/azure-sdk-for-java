@@ -84,8 +84,8 @@ public class TestApplicationGateway {
         }
 
         @Override
-        public ApplicationGateway createResource(ApplicationGateways resources) throws Exception {
-            Network vnet = this.networks.define("net" + this.testId)
+        public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
+            final Network vnet = this.networks.define("net" + this.testId)
                     .withRegion(REGION)
                     .withNewResourceGroup(GROUP_NAME)
                     .withAddressSpace("10.0.0.0/28")
@@ -93,36 +93,53 @@ public class TestApplicationGateway {
                     .withSubnet("subnet2", "10.0.0.8/29")
                     .create();
 
-            // Create an application gateway
-            ApplicationGateway appGateway = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                    .withRegion(REGION)
-                    .withExistingResourceGroup(GROUP_NAME)
-                    .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                    .withContainingSubnet(vnet, "subnet1")
-                    .withoutPublicFrontend()            // No public frontend
-                    .withPrivateFrontend()              // Private frontend
-                    .withFrontendPort(80)               // Frontend port
-                    .withBackendIpAddress("11.1.1.1")   // Backends
-                    .withBackendIpAddress("11.1.1.2")
-                    //TODO .withBackendPort(8080)
-                    .defineHttpConfiguration("default") // Backend HTTP config
-                        .withPort(8080)
-                        .attach()
+            // Prepare a separate thread for resource creation
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    // Create an application gateway
+                    ApplicationGateway appGateway = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(GROUP_NAME)
+                            .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                            .withContainingSubnet(vnet, "subnet1")
+                            .withoutPublicFrontend()            // No public frontend
+                            .withPrivateFrontend()              // Private frontend
+                            .withFrontendPort(80)               // Frontend port
+                            .withBackendIpAddress("11.1.1.1")   // Backends
+                            .withBackendIpAddress("11.1.1.2")
+                            //TODO .withBackendPort(8080)
+                            .defineHttpConfiguration("default") // Backend HTTP config
+                                .withPort(8080)
+                                .attach()
 
-                    // HTTP listeners
-                    .defineHttpListener("default")
-                        .withFrontend("default")
-                        .withFrontendPort("default")
-                        .attach()
+                            // HTTP listeners
+                            .defineHttpListener("default")
+                                .withFrontend("default")
+                                .withFrontendPort("default")
+                                .attach()
 
-                    // Request routing rules
-                    .defineRequestRoutingRule("rule1")
-                        .withListener("default")
-                        .withBackend("default")
-                        .withBackendHttpConfiguration("default")
-                        .attach()
-                    .create();
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule1")
+                                .withListener("default")
+                                .withBackend("default")
+                                .withBackendHttpConfiguration("default")
+                                .attach()
+                            .create();
+                }
 
+            });
+
+            // Start the creation...
+            creationThread.start();
+
+            //...But bail out after 30 sec, as it is enough to test the results
+            creationThread.join(30 * 1000);
+
+            // Get the resource as created so far
+            String resourceId = createResourceId(resources.manager().subscriptionId());
+            ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
 
             // Verify frontends
             Assert.assertTrue(appGateway.frontends().size() == 1);
@@ -135,8 +152,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.backends().size() == 1);
             Assert.assertTrue(appGateway.backends().containsKey("default"));
             ApplicationGatewayBackend backend = appGateway.backends().get("default");
-            Assert.assertTrue(backend.addresses().size() == 1);
-            Assert.assertTrue("11.1.1.1".equalsIgnoreCase(backend.addresses().get(0).ipAddress()));
+            Assert.assertTrue(backend.addresses().size() == 2);
 
             // Verify HTTP configs
             Assert.assertTrue(appGateway.httpConfigurations().size() == 1);
@@ -154,23 +170,36 @@ public class TestApplicationGateway {
         }
 
         @Override
-        public ApplicationGateway updateResource(ApplicationGateway resource) throws Exception {
-            resource =  resource.update()
-                    //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
-                    .withoutBackendFqdn("www.microsoft.com")
-                    .withoutBackendIpAddress("11.1.1.1")
-                    .withBackendIpAddress("11.1.1.3", "backend2")
-                    .withoutHttpConfiguration("httpConfig2")
-                    .updateHttpConfiguration("httpConfig1")
-                        .withPort(83)
-                        //.withProtocol(ApplicationGatewayProtocol.HTTPS)
-                        .withoutCookieBasedAffinity()
-                        .withRequestTimeout(20)
-                        .parent()
-                    .withoutBackend("backend3")
-                    .withTag("tag1", "value1")
-                    .withTag("tag2", "value2")
-                    .apply();
+        public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
+            Thread updateThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    resource.update()
+                            //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                            .withoutBackendFqdn("www.microsoft.com")
+                            .withoutBackendIpAddress("11.1.1.1")
+                            .withBackendIpAddress("11.1.1.3", "backend2")
+                            .withoutHttpConfiguration("httpConfig2")
+                            .updateHttpConfiguration("httpConfig1")
+                                .withPort(83)
+                                //.withProtocol(ApplicationGatewayProtocol.HTTPS)
+                                .withoutCookieBasedAffinity()
+                                .withRequestTimeout(20)
+                                .parent()
+                            .withoutBackend("backend3")
+                            .withTag("tag1", "value1")
+                            .withTag("tag2", "value2")
+                            .apply();
+                }
+            });
+
+            // Start the update thread...
+            updateThread.start();
+
+            // ...But bail out after 30 sec as it should be enough to test the results
+            updateThread.join(1000 * 30);
+
+            resource.refresh();
 
             Assert.assertTrue(resource.tags().containsKey("tag1"));
             Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
