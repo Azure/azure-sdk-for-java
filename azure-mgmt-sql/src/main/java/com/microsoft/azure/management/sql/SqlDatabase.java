@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -36,7 +37,7 @@ public interface SqlDatabase extends
         Wrapper<DatabaseInner> {
 
     /**
-     * @return the SQL Server name to which this database belongs
+     * @return name of the SQL Server to which this database belongs
      */
     String sqlServerName();
 
@@ -139,6 +140,59 @@ public interface SqlDatabase extends
      */
     List<RecommendedIndexInner> recommendedIndex();
 
+    /**
+     * @return the handler to replication links
+     */
+    ReplicationLinks replicationLinks();
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     */
+    void pauseDataWarehouse();
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     */
+    void resumeDataWarehouse();
+
+    /**
+     * @return returns the list of all restore points on the database
+     */
+    PagedList<RestorePoint> listRestorePoints();
+
+    /**
+     * @return returns the list of usages (DatabaseMetrics) of the database
+     */
+    PagedList<DatabaseMetric> listUsages();
+
+    /**
+     * Entry point to access replication links from SQL Database.
+     */
+    interface ReplicationLinks {
+        /**
+         * Gets a particular replication link.
+         *
+         * @param linkId name of the replication to get
+         * @return Returns the replication link id with in the SQL Database
+         */
+        ReplicationLink get(String linkId);
+
+        /**
+         * Returns all the replication links for the database.
+         *
+         * @return list of replication links for the database
+         */
+        PagedList<ReplicationLink> list();
+
+        /**
+         * Delete specified replication link in the database.
+         *
+         * @param linkId name of the replication link to delete
+         */
+        void delete(String linkId);
+    }
+
+
     /**************************************************************
      * Fluent interfaces to provision a SqlServer
      **************************************************************/
@@ -177,7 +231,7 @@ public interface SqlDatabase extends
              *
              * @return The next stage of definition.
              */
-            WithExistingDatabase withoutExistingElasticPool();
+            WithExistingDatabase withoutElasticPool();
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
@@ -388,7 +442,7 @@ public interface SqlDatabase extends
              *
              * @return The next stage of definition.
              */
-            WithEdition withoutExistingElasticPool();
+            WithEdition withoutElasticPool();
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
