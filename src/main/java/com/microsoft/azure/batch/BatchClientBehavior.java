@@ -6,5 +6,8 @@
 
 package com.microsoft.azure.batch;
 
+/**
+ * Derived classes modify operational behaviors of a Azure Batch Service client.
+ */
 public abstract class BatchClientBehavior {
 }
