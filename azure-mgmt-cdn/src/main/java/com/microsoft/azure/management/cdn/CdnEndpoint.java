@@ -18,11 +18,114 @@ public interface CdnEndpoint extends
         ExternalChildResource<CdnEndpoint, CdnProfile>,
         Wrapper<EndpointInner> {
 
-    // Actions
-    // TODO: DODO
+    /**
+     * Get the originHostHeader value.
+     *
+     * @return the originHostHeader value
+     */
+    String originHostHeader();
+
+    /**
+     * Get the originPath value.
+     *
+     * @return the originPath value
+     */
+    String originPath();
+
+    /**
+     * Get the contentTypesToCompress value.
+     *
+     * @return the contentTypesToCompress value
+     */
+    List<String> contentTypesToCompress();
+
+    /**
+     * Get the isCompressionEnabled value.
+     *
+     * @return the isCompressionEnabled value
+     */
+    boolean isCompressionEnabled();
+
+    /**
+     * Get the isHttpAllowed value.
+     *
+     * @return the isHttpAllowed value
+     */
+    boolean isHttpAllowed();
+
+    /**
+     * Get the isHttpsAllowed value.
+     *
+     * @return the isHttpsAllowed value
+     */
+    boolean isHttpsAllowed();
+
+    /**
+     * Get the queryStringCachingBehavior value.
+     *
+     * @return the queryStringCachingBehavior value
+     */
+    QueryStringCachingBehavior queryStringCachingBehavior();
+
+    /**
+     * Get the optimizationType value.
+     *
+     * @return the optimizationType value
+     */
+    String optimizationType();
+
+    /**
+     * Get the geoFilters value.
+     *
+     * @return the geoFilters value
+     */
+    List<GeoFilter> geoFilters();
+
+    /**
+     * Get the hostName value.
+     *
+     * @return the hostName value
+     */
+    String hostName();
+
+    /**
+     * Get the resourceState value.
+     *
+     * @return the resourceState value
+     */
+    EndpointResourceState resourceState();
+
+    /**
+     * Get the provisioningState value.
+     *
+     * @return the provisioningState value
+     */
+    String provisioningState();
+
+    /**
+     * Get the hostName value.
+     *
+     * @return the hostName value
+     */
+    String originHostName();
+
+    /**
+     * Get the httpPort value.
+     *
+     * @return the httpPort value
+     */
+    int httpPort();
+
+    /**
+     * Get the httpsPort value.
+     *
+     * @return the httpsPort value
+     */
+    int httpsPort();
 
     List<String> customDomains();
 
+    // Actions
     void purgeContent(List<String> contentPaths);
     void loadContent(List<String> contentPaths);
     CustomDomainValidationResult validateCustomDomain(String hostName);
@@ -30,13 +133,13 @@ public interface CdnEndpoint extends
     interface DefinitionStages {
         interface Blank {
             interface StandardEndpoint<ParentT> {
-                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
-                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String hostname);
+                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String originHostName);
+                DefinitionStages.WithStandardAttach<ParentT> withOrigin(String originHostName);
             }
 
             interface PremiumEndpoint<ParentT> {
-                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
-                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String hostname);
+                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String originHostName);
+                DefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originHostName);
             }
         }
 
@@ -54,7 +157,8 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryISOCode> countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
@@ -83,13 +187,13 @@ public interface CdnEndpoint extends
 
         interface Blank {
             interface StandardEndpoint<ParentT> {
-                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String hostname);
-                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String hostname);
+                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String originName, String originHostName);
+                UpdateDefinitionStages.WithStandardAttach<ParentT> withOrigin(String originHostName);
             }
 
             interface PremiumEndpoint<ParentT> {
-                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String hostname);
-                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String hostname);
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originName, String originHostName);
+                UpdateDefinitionStages.WithPremiumAttach<ParentT> withPremiumOrigin(String originHostName);
             }
         }
 
@@ -107,7 +211,8 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
             WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
-            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);
+            WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryISOCode> countryCodes);
             WithStandardAttach<ParentT> withCustomDomain(String hostName);
         }
 
@@ -147,7 +252,8 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
         UpdateStandardEndpoint withGeoFilters(List<GeoFilter> geoFilters);
         UpdateStandardEndpoint withoutGeoFilters();
-        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCodes);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);
+        UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, List<CountryISOCode> countryCodes);
         UpdateStandardEndpoint withoutGeoFilter(String relativePath);
         UpdateStandardEndpoint withCustomDomain(String hostName);
         UpdateStandardEndpoint withoutCustomDomain(String hostName);

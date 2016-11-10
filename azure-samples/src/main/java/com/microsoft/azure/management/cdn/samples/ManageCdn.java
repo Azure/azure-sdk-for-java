@@ -11,6 +11,8 @@ import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 
 /**
  * Created by hovsepm on 10/26/2016.
@@ -35,6 +37,7 @@ public class ManageCdn {
             Azure azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -52,11 +55,11 @@ public class ManageCdn {
                         .withNewResourceGroup(rgName)
 
                         .withStandardAkamaiSku()
-                        .withNewEndpoint("https://someweirdnam.blob.core.windows.net")
+                        .withNewEndpoint("abdulraxmanibnxatab","https://someweirdnam.blob.core.windows.net")
                         .defineNewEndpoint("supermuperprofileAkamai")
                             .withOrigin("origin1","https://someweirdnam.blob.core.windows.net")
                             .attach()
-                        .defineNewEndpoint()
+                        .defineNewEndpoint("abdulraxmedibnaxmed")
                             .withOrigin("mylinuxapp.azurewebsites.net")
                             .withContentTypeToCompress("powershell/pain")
                             .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
@@ -79,11 +82,11 @@ public class ManageCdn {
                         .withRegion(Region.US_CENTRAL)
                         .withNewResourceGroup(rgName)
                         .withPremiumVerizonSku()
-                        .withNewPremiumEndpoint("https://someweirdnam.blob.core.windows.net")
+                        .withNewPremiumEndpoint("abdulatraxtenberg","https://someweirdnam.blob.core.windows.net")
                         .defineNewPremiumEndpoint("supermuperep1")
                             .withPremiumOrigin("origin1", "https://xplattestvmss1sto0575014.blob.core.windows.net")
                             .attach()
-                        .defineNewPremiumEndpoint()
+                        .defineNewPremiumEndpoint("abdulmabdulqerugagul")
                             .withPremiumOrigin("https://supername.cloudapp.net")
                             .withHttpAllowed(true)
                             .withHttpsAllowed(true)
@@ -98,11 +101,11 @@ public class ManageCdn {
                     System.out.println("CDN Endpoint: " + endpoint.name());
                 }
 
-                if(standardProfile.isPremiumSku() == false){
+                if(standardProfile.isPremiumVerizon() == false){
                     standardProfile.update()
                             .withTag("provider", "Akamai")
-                            .withNewEndpoint("https://www.vazgen.com")
-                            .defineNewEndpoint()
+                            .withNewEndpoint("axlkalakichampeqin", "https://www.vazgen.com")
+                            .defineNewEndpoint("vorteges.obijnik.vorteges")
                                 .withOrigin("https://www.vazgen.com")
                                 .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.ESTONIA)
                                 .attach()
@@ -117,7 +120,7 @@ public class ManageCdn {
 
                 premiumProfile.update()
                         .withTag("provider", "Verizon")
-                        .withNewPremiumEndpoint("https://xplattestvmss1sto0575014.blob.core.windows.net")
+                        .withNewPremiumEndpoint("chlini.mezanic.heraceles","https://xplattestvmss1sto0575014.blob.core.windows.net")
                         .defineNewPremiumEndpoint("supermuperep3")
                             .withPremiumOrigin("https://xplattestvmss1sto0575014.blob.core.windows.net")
                             .withCustomDomain("www.northamerica.com")

@@ -28,12 +28,14 @@ class CdnProfilesImpl
             CdnManager>
         implements CdnProfiles {
     private final EndpointsInner endpointsClient;
+    private final CdnManagementClientImpl cdnManagementClient;
 
     CdnProfilesImpl(
             final CdnManagementClientImpl cdnManagementClient,
             final CdnManager cdnManager) {
         super(cdnManagementClient.profiles(), cdnManager);
         this.endpointsClient = cdnManagementClient.endpoints();
+        this.cdnManagementClient = cdnManagementClient;
     }
 
     @Override
@@ -81,7 +83,7 @@ class CdnProfilesImpl
 
     @Override
     public CheckNameAvailabilityResult checkEndpointNameAvailability(String name) {
-        return null;
+        return new CheckNameAvailabilityResult(this.cdnManagementClient.checkNameAvailability(name));
     }
 
     @Override

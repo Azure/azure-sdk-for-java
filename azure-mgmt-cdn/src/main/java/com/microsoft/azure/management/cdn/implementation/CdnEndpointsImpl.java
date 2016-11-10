@@ -7,8 +7,10 @@ package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.DeepCreatedOrigin;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,13 +95,42 @@ class CdnEndpointsImpl extends
         return endpoint;
     }
 
-    public CdnEndpointImpl defineNewEndpoint(String endpointOriginHostname) {
-        CdnEndpointImpl endpoint = this.prepareDefine("someEndpointNameGenerator");
+    public CdnEndpointImpl defineNewEndpoint(String endpointName, String endpointHostname) {
+        CdnEndpointImpl endpoint = this.prepareDefine(endpointName);
         endpoint.inner().withOrigins( new ArrayList<DeepCreatedOrigin>());
+        return endpoint;
+    }
+
+    public CdnEndpointImpl defineNewEndpoint(String endpointHostname) {
+        String endpointName = this.generateUniqueEndpointName("Endpoint");
+        return this.defineNewEndpoint(endpointName, endpointHostname);
+    }
+
+    public CdnEndpointImpl defineNewEndpointWithOrigin(String endpointHostname, String endpointOriginHostname) {
+        CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointHostname);
         endpoint.inner().origins().add(
                 new DeepCreatedOrigin()
-                    .withName("someOriginNameGenerator")
-                    .withHostName(endpointOriginHostname));
+                        .withName("origin")
+                        .withHostName(endpointOriginHostname));
         return endpoint;
+    }
+
+    public CdnEndpointImpl updateEndpoint(String name) {
+        CdnEndpointImpl endpoint = this.prepareUpdate(name);
+        return endpoint;
+    }
+
+    private String generateUniqueEndpointName(String endpointNamePrefix) {
+        String endpointName;
+        CheckNameAvailabilityResult result;
+
+        do {
+            endpointName = ResourceNamer.randomResourceName(endpointNamePrefix, 50);
+
+            result = this.parent().checkEndpointNameAvailability(endpointName);
+
+        } while(!result.nameAvailable());
+
+        return endpointName;
     }
 }

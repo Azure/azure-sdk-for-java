@@ -9,6 +9,7 @@ package com.microsoft.azure.management.cdn.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.management.cdn.Sku;
@@ -94,7 +95,17 @@ class CdnProfileImpl
     }
 
     @Override
-    public boolean isPremiumSku() {
+    public CheckNameAvailabilityResult checkEndpointNameAvailability(String name) {
+        return this.myManager.profiles().checkEndpointNameAvailability(name);
+    }
+
+    @Override
+    public boolean isPremiumVerizon() {
+        if( this.sku() != null &&
+                this.sku().name() != null &&
+                this.sku().name().equals(SkuName.PREMIUM_VERIZON)) {
+            return true;
+        }
         return false;
     }
 
@@ -110,7 +121,7 @@ class CdnProfileImpl
 
     @Override
     public String resourceState() {
-        return null;
+        return this.inner().resourceState().toString();
     }
 
     @Override
@@ -187,50 +198,55 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnProfileImpl withNewEndpoint(String endpointOriginHostname) {
-        CdnEndpoint endpoint = this.endpointsImpl.defineNewEndpoint(endpointOriginHostname);
-        this.endpoints().put(endpoint.name(), endpoint);
+    public CdnProfileImpl withNewEndpoint(String endpointHostname, String endpointOriginHostname) {
+        CdnEndpointImpl endpoint = this.endpointsImpl.defineNewEndpointWithOrigin(endpointHostname, endpointOriginHostname);
+        this.endpointsImpl.addEndpoint(endpoint);
         return this;
     }
 
     @Override
-    public CdnProfileImpl withNewPremiumEndpoint(String endpointOriginHostname) {
-        return this;
+    public CdnEndpointImpl defineNewEndpoint(String endpointHostname) {
+        return this.endpointsImpl.defineNewEndpoint(endpointHostname);
     }
 
     @Override
-    public CdnEndpointImpl defineNewEndpoint() {
-        return null;
+    public CdnEndpointImpl defineNewEndpoint(String name, String endpointHostname) {
+        return this.endpointsImpl.defineNewEndpoint(name, endpointHostname);
     }
 
     @Override
-    public CdnEndpointImpl defineNewEndpoint(String name) {
-        return null;
-    }
-
-
-    @Override
-    public CdnEndpointImpl defineNewPremiumEndpoint() {
-        return null;
+    public CdnProfileImpl withNewPremiumEndpoint(String endpointHostname, String endpointOriginHostname) {
+        return this.withNewEndpoint(endpointHostname, endpointOriginHostname);
     }
 
     @Override
-    public CdnEndpointImpl defineNewPremiumEndpoint(String name) {
-        return null;
+    public CdnEndpointImpl defineNewPremiumEndpoint(String endpointHostname) {
+        return this.defineNewEndpoint(endpointHostname);
+    }
+
+    @Override
+    public CdnEndpointImpl defineNewPremiumEndpoint(String name, String endpointHostname) {
+        return this.defineNewEndpoint(name, endpointHostname);
     }
 
     @Override
     public CdnEndpointImpl updateEndpoint(String name) {
-        return null;
+        return this.endpointsImpl.updateEndpoint(name);
     }
 
     @Override
     public CdnEndpointImpl updatePremiumEndpoint(String name) {
-        return null;
+        return this.endpointsImpl.updateEndpoint(name);
     }
 
     @Override
     public Update withoutEndpoint(String name) {
+        this.endpointsImpl.remove(name);
+        return this;
+    }
+
+    CdnProfileImpl withEndpoint(CdnEndpointImpl endpoint) {
+        this.endpointsImpl.addEndpoint(endpoint);
         return this;
     }
 }
