@@ -219,7 +219,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-06-01";
+        this.apiVersion = "2016-10-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -236,7 +236,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "KeyVaultClient, 2015-06-01");
+                "KeyVaultClient, 2016-10-01");
     }
 
     private void initializeService() {
