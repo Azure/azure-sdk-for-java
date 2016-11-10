@@ -300,12 +300,12 @@ public class TestApplicationGateway {
                             .defineHttpConfiguration("httpConfig1")
                                 .withPort(81) // Optional, 80 default
                                 .withCookieBasedAffinity()
-                                //.withProtocol(ApplicationGatewayProtocol.HTTP)
+                                .withProtocol(ApplicationGatewayProtocol.HTTP)
                                 .withRequestTimeout(10)
                                 .attach()
                             .defineHttpConfiguration("httpConfig2")
                                 .withPort(82)
-                                //.withProtocol(ApplicationGatewayProtocol.HTTPS)
+                                .withProtocol(ApplicationGatewayProtocol.HTTPS)
                                 .withRequestTimeout(15)
                                 .attach()
 
@@ -354,7 +354,7 @@ public class TestApplicationGateway {
             ApplicationGatewayBackendHttpConfiguration httpConfig2 = appGateway.httpConfigurations().get("httpConfig2");
             Assert.assertTrue(httpConfig2.port() == 82);
             Assert.assertTrue(!httpConfig2.cookieBasedAffinity());
-            //TODO Assert.assertTrue(httpConfig2.protocol().equals(ApplicationGatewayProtocol.HTTPS));
+            Assert.assertTrue(httpConfig2.protocol().equals(ApplicationGatewayProtocol.HTTPS));
             Assert.assertTrue(httpConfig2.requestTimeout() == 15);
             return appGateway;
         }
@@ -373,7 +373,7 @@ public class TestApplicationGateway {
                         .withoutHttpConfiguration("httpConfig2")
                         .updateHttpConfiguration("httpConfig1")
                             .withPort(83)
-                                //.withProtocol(ApplicationGatewayProtocol.HTTPS)
+                                .withProtocol(ApplicationGatewayProtocol.HTTPS)
                                 .withoutCookieBasedAffinity()
                                 .withRequestTimeout(20)
                                 .parent()

@@ -83,7 +83,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         return this;
     }
 
-    //TODO @Override
+    @Override
     public ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
