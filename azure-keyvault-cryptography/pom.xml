@@ -9,12 +9,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.0.0-beta4-SNAPSHOT</version>
+    <version>1.0.0-beta3</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-keyvault-cryptography</artifactId>
   <packaging>jar</packaging>
+  <version>1.0.0-beta3.1</version>
 
   <name>Microsoft Azure SDK for Key Vault Cryptography</name>
   <description>This package contains Microsoft Azure SDK for Key Vault Cryptography.</description>
@@ -57,12 +58,12 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault-core</artifactId>
-            <version>1.0.0-beta4-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault-webkey</artifactId>
-            <version>1.0.0-beta4-SNAPSHOT</version>
+            <version>1.0.0-beta3</version>
         </dependency>
     </dependencies>
 </project>
