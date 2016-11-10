@@ -79,7 +79,9 @@ public class Region {
             if (Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers())) {
                 field.setAccessible(true);
                 try {
-                    values.add((Region) field.get(null));
+                    if (field.get(null) != null) {
+                        values.add((Region) field.get(null));
+                    }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }

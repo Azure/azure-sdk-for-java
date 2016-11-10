@@ -29,10 +29,17 @@ class DeploymentSlotImpl
             DeploymentSlot.Definition,
             DeploymentSlot.Update {
     private final WebAppImpl parent;
+    private final String name;
 
     DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent, final WebAppsInner client, AppServiceManager manager) {
         super(name.replaceAll(".*/", ""), innerObject, configObject, client, manager);
+        this.name = name.replaceAll(".*/", "");
         this.parent = parent;
+    }
+
+    @Override
+    public String name() {
+        return name;
     }
 
     @Override
@@ -115,6 +122,21 @@ class DeploymentSlotImpl
                 return input.name().replace(name() + "/", "");
             }
         });
+    }
+
+    @Override
+    public void start() {
+        client.startSlot(resourceGroupName(), parent.name(), name());
+    }
+
+    @Override
+    public void stop() {
+        client.stopSlot(resourceGroupName(), parent.name(), name());
+    }
+
+    @Override
+    public void restart() {
+        client.restartSlot(resourceGroupName(), parent.name(), name());
     }
 
     @Override

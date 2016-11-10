@@ -58,6 +58,20 @@ class WebAppImpl
         });
     }
 
+    @Override
+    public void start() {
+        client.start(resourceGroupName(), name());
+    }
+
+    @Override
+    public void stop() {
+        client.stop(resourceGroupName(), name());
+    }
+
+    @Override
+    public void restart() {
+        client.restart(resourceGroupName(), name());
+    }
 
     @Override
     public WebAppImpl refresh() {

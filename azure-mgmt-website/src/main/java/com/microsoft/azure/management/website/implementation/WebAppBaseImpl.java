@@ -296,7 +296,6 @@ abstract class WebAppBaseImpl<
         return inner().siteConfig().autoSwapSlotName();
     }
 
-
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNewFreeAppServicePlan() {

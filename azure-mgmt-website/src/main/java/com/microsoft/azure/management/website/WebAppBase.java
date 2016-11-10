@@ -237,9 +237,23 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     String autoSwapSlotName();
 
+    /**
+     * Start the web app or deployment slot.
+     */
+    void start();
+
+    /**
+     * Stop the web app or deployment slot.
+     */
+    void stop();
+
+    /**
+     * Restart the web app or deployment slot.
+     */
+    void restart();
 
     /**************************************************************
-     * Fluent interfaces to provision a Web App
+     * Fluent interfaces to provision a Web App or deployment slot
      **************************************************************/
 
     /**
