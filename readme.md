@@ -1,4 +1,14 @@
+<p align="center">
+  <img src="event-hubs.png" alt="Microsoft Azure Event Hubs" width="100"/>
+</p>
+
 # Microsoft Azure Event Hubs Client for Java
+
+|Build/Package|Status|
+|------|-------------|
+|master|[![Build status](https://ci.appveyor.com/api/projects/status/3prh8sm3stn4o5vj/branch/master?svg=true)](https://ci.appveyor.com/project/jtaubensee/azure-event-hubs-java/branch/master)|
+|azure-eventhubs|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs)
+|azure-eventhubs-eph|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs-eph/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-eventhubs-eph)
 
 Azure Event Hubs is a highly scalable publish-subscribe service that can ingest millions of events per second and stream them into multiple applications. 
 This lets you process and analyze the massive amounts of data produced by your connected devices and applications. Once Event Hubs has collected the data, 
@@ -6,7 +16,7 @@ you can retrieve, transform and store it by using any real-time analytics provid
 
 Refer to the [online documentation](https://azure.microsoft.com/services/event-hubs/) to learn more about Event Hubs in general.
 
-##Overview
+## Overview
 
 This Java client library for Azure Event Hubs allows for both sending events to and receiving events from an Azure Event Hub. 
 
@@ -26,7 +36,7 @@ and (re-)publisher is Azure Stream Analytics.
 We'll therefore only give a glimpse at publishing and receiving here in this overview and provide further detail in 
 the [Publishing Events](PublishingEvents.md) and [Consuming Events](ConsumingEvents.md) guides. 
 
-###Publishing Events
+### Publishing Events
 
 The vast majority of Event Hub applications using this and other client libraries are and will be event publishers. 
 And for most of these publishers, publishing events is extremely simple. 
@@ -67,7 +77,7 @@ The entire client API is built for Java 8's concurrent task model, generally ret
 Learn more about publishing events, including advanced options, and when you should and shouldn't use those options, 
 [in the event publisher guide](PublishingEvents.md).
 
-###Consuming Events
+### Consuming Events
 
 Consuming events from Azure Event Hubs is a bit more complex than sending events, because the receivers need to be
 aware of Event Hub's partitioning model, while senders can most often ignore it. 
@@ -121,7 +131,7 @@ fast data streams across several receiver machines, and about managing offsets i
 data is not repeatedly read or, worse, skipped. You can find this and other details discussed in 
 the [Consuming Events](ConsumingEvents.md) guide.           
 
-##Using the library 
+## Using the library 
 
 You will generally not have to build this client library yourself. The build model and options are documented in the 
 [Contributor's Guide](developer.md), which also explains how to create and submit proposed patches and extensions, and how to 
@@ -143,7 +153,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
  For different types of build environments, the latest released JAR files can also be [explicitly obtained from the 
  Maven Central Repository]() or from [the Release distribution point on GitHub]().  
 
-###Explore the client library with the Eclipse IDE 
+### Explore the client library with the Eclipse IDE 
 
 1. Maven is expected to be installed and configured - version > 3.3.9
 2. After git-clone'ing to the project, open the shell and navigate to the location where the 'pom.xml' is present
@@ -158,7 +168,7 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   * PARTITION_COUNT
   * EPHTESTSTORAGE
 
-##How to provide feedback
+## How to provide feedback
 
 First, if you experience any issues with the runtime behavior of the Azure Event Hubs service, please consider filing a support request
 right away. Your options for [getting support are enumerated here](https://azure.microsoft.com/support/options/). In the Azure portal, 

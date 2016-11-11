@@ -1,0 +1,12 @@
+version: 1.0.{build}
+environment:
+  EVENT_HUB_CONNECTION_STRING:
+    secure: L/U95vJyFLZEq0MQ5nu/Ff0iZxtQ5G7LcJ7Bii9lY+EhZNKLjSma2IJMmVE/SBhgbsJJM4tCnwtC63mBrKyTfhy3nVA5lZBfFIei9OJtINHf1c94rH20VNRzkQS0wbWtjJn+UxpUnVv+F2CIfbFiA+Bkcr+ISvyy0Dv4YNLEq3zeBzr5tmJjUX/mLYS/Ghin0DRCYYhBlDRiCVy9m/aZPuS241R9pOwLjZSrBM2J5flrt+DVf+eu7uNH0pHa6SZy
+  EPHTESTSTORAGE:
+    secure: 6fF17Wv8GKmLry9g039iI987R7ULu3z5XWdo2Q0ygOFjknDe92bWtadMS/kO5cjis7MMOCly4f2nImZfOIbusBSJimRfDPBj5RvwH5s4aOlsq716A8apRjZDyi4VJ237OGLExgrFwEzg/5bc3uYKLYIhU7IcdMO/Aejaj2UYgHcpuFVh48oFJkQYKd0NIZpGBHUQx3Nh7X4m6QpEwjEtZg==
+  PARTITION_COUNT:
+    secure: a0s2Uet3mJtb87BAPGjqMw==
+build_script:
+- cmd: >-
+    mvn package
+test: off
