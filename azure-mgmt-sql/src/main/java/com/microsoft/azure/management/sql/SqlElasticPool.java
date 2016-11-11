@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -16,6 +15,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ElasticPoolInner;
 import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * An immutable client-side representation of an Azure SQL ElasticPool.
@@ -70,17 +71,17 @@ public interface SqlElasticPool extends
     /**
      * @return the information about elastic pool activities
      */
-    PagedList<ElasticPoolActivity> listActivity();
+    List<ElasticPoolActivity> listActivity();
 
     /**
      * @return the information about elastic pool database activities
      */
-    PagedList<ElasticPoolDatabaseActivity> listDatabaseActivity();
+    List<ElasticPoolDatabaseActivity> listDatabaseActivity();
 
     /**
      * @return the information about databases in elastic pool
      */
-    PagedList<SqlDatabase> listDatabases();
+    List<SqlDatabase> listDatabases();
 
     /**
      * Gets the specific database in the elastic pool.

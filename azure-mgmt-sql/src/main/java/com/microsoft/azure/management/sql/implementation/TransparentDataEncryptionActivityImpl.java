@@ -58,7 +58,7 @@ class TransparentDataEncryptionActivityImpl
     }
 
     @Override
-    public Double percentComplete() {
+    public double percentComplete() {
         return this.inner().percentComplete();
     }
 }

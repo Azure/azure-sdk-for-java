@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -15,11 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.DatabaseInner;
-import com.microsoft.azure.management.sql.implementation.RecommendedIndexInner;
-import com.microsoft.azure.management.sql.implementation.SchemaInner;
-import com.microsoft.azure.management.sql.implementation.ServiceTierAdvisorInner;
-import com.microsoft.azure.management.sql.implementation.TransparentDataEncryptionInner;
-import com.microsoft.azure.management.sql.implementation.UpgradeHintInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -116,29 +110,10 @@ public interface SqlDatabase extends
     String defaultSecondaryLocation();
 
     /**
-     * @return the serviceTierAdvisors value
-     */
-    List<ServiceTierAdvisorInner> serviceTierAdvisors();
-
-    /**
      * @return the upgradeHint value
      */
-    UpgradeHintInner upgradeHint();
+    UpgradeHint getUpgradeHint();
 
-    /**
-     * @return the schemas value
-     */
-    List<SchemaInner> schemas();
-
-    /**
-     * @return the transparentDataEncryption value
-     */
-    List<TransparentDataEncryptionInner> transparentDataEncryption();
-
-    /**
-     * @return the recommendedIndex value
-     */
-    List<RecommendedIndexInner> recommendedIndex();
 
     /**
      * @return the handler to replication links
@@ -158,54 +133,25 @@ public interface SqlDatabase extends
     /**
      * @return returns the list of all restore points on the database
      */
-    PagedList<RestorePoint> listRestorePoints();
+    List<RestorePoint> listRestorePoints();
 
     /**
      * @return returns the list of usages (DatabaseMetrics) of the database
      */
-    PagedList<DatabaseMetric> listUsages();
+    List<DatabaseMetric> listUsages();
 
     /**
-     * @return entry point to manage and get transparentDataEncryption
+     * Gets an Azure SQL Database Transparent Data Encryption for the database.
+     *
+     * @return an Azure SQL Database Transparent Data Encryption for the database.
      */
-    TransparentDataEncryptions transparentDataEncryptions();
+    TransparentDataEncryption getTransparentDataEncryption();
 
     /**
      * @return the list of all service tier advisor in the database
      */
-    PagedList<ServiceTierAdvisor> listServiceTierAdvisor();
-
-    /**
-     * Get information about a service tier advisor.
-     * @param serviceTierAdvisorName name of the service tier advisor
-     * @return information about specific service tier advisor
-     */
-    ServiceTierAdvisor getServiceTierAdvisor(String serviceTierAdvisorName);
-
-    /**
-     * Entry point to access TransparentDataEncryption from SQL Database.
-     */
-    interface TransparentDataEncryptions {
-        /**
-         * Gets an Azure SQL Database Transparent Data Encryption for the database.
-         *
-         * @return an Azure SQL Database Transparent Data Encryption for the database.
-         */
-        TransparentDataEncryption get();
-
-        /**
-         * Updates the state of the transparent data encryption status.
-         *
-         * @param transparentDataEncryptionState state of the data encryption to set
-         * @return the new encryption settings after update
-         */
-        TransparentDataEncryption update(TransparentDataEncryptionStates transparentDataEncryptionState);
-
-        /**
-         * @return an Azure SQL Database Transparent Data Encryption Activity
-         */
-        PagedList<TransparentDataEncryptionActivity> listActivity();
-    }
+    // TODO - ans - Tried converting this to map, but that does not give good experience.
+    List<ServiceTierAdvisor> listServiceTierAdvisors();
 
     /**
      * Entry point to access replication links from SQL Database.
@@ -224,7 +170,7 @@ public interface SqlDatabase extends
          *
          * @return list of replication links for the database
          */
-        PagedList<ReplicationLink> list();
+        List<ReplicationLink> list();
 
         /**
          * Delete specified replication link in the database.
@@ -420,7 +366,7 @@ public interface SqlDatabase extends
     }
 
     /**
-     * The template for a SQLDatabase update operation, containing all the settings that can be modified.
+     * The template for a SQLDatabase modifyState operation, containing all the settings that can be modified.
      */
     interface Update extends
             UpdateStages.WithEdition,
@@ -431,7 +377,7 @@ public interface SqlDatabase extends
     }
 
     /**
-     * Grouping of all the SQLDatabase update stages.
+     * Grouping of all the SQLDatabase modifyState stages.
      */
     interface UpdateStages {
         /**

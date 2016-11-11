@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -21,6 +20,8 @@ import com.microsoft.azure.management.sql.ServiceTierAdvisor;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
+import com.microsoft.azure.management.sql.TransparentDataEncryption;
+import com.microsoft.azure.management.sql.UpgradeHint;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -122,28 +123,14 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public List<ServiceTierAdvisorInner> serviceTierAdvisors() {
-        return this.inner().serviceTierAdvisors();
-    }
-
-    @Override
-    public UpgradeHintInner upgradeHint() {
-        return this.inner().upgradeHint();
-    }
-
-    @Override
-    public List<SchemaInner> schemas() {
-        return this.inner().schemas();
-    }
-
-    @Override
-    public List<TransparentDataEncryptionInner> transparentDataEncryption() {
-        return this.inner().transparentDataEncryption();
-    }
-
-    @Override
-    public List<RecommendedIndexInner> recommendedIndex() {
-        return this.inner().recommendedIndex();
+    public UpgradeHint getUpgradeHint() {
+        if (this.inner().upgradeHint() == null) {
+            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
+        }
+        if (this.inner().upgradeHint() != null) {
+            return new UpgradeHintImpl(this.inner().upgradeHint());
+        }
+        return null;
     }
 
     @Override
@@ -163,7 +150,7 @@ class SqlDatabaseImpl
 
 
     @Override
-    public PagedList<RestorePoint> listRestorePoints() {
+    public List<RestorePoint> listRestorePoints() {
         PagedListConverter<RestorePointInner, RestorePoint> converter = new PagedListConverter<RestorePointInner, RestorePoint>() {
             @Override
             public RestorePoint typeConvert(RestorePointInner restorePointInner) {
@@ -179,7 +166,7 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public PagedList<DatabaseMetric> listUsages() {
+    public List<DatabaseMetric> listUsages() {
         PagedListConverter<DatabaseMetricInner, DatabaseMetric> converter = new PagedListConverter<DatabaseMetricInner, DatabaseMetric>() {
             @Override
             public DatabaseMetric typeConvert(DatabaseMetricInner databaseMetricInner) {
@@ -194,15 +181,19 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public TransparentDataEncryptions transparentDataEncryptions() {
-        return new TransparentDataEncryptionsImpl(this.resourceGroupName(), this.sqlServerName(), this.name(), this.innerCollection);
+    public TransparentDataEncryption getTransparentDataEncryption() {
+        return new TransparentDataEncryptionImpl(
+                this.innerCollection.getTransparentDataEncryptionConfiguration(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name()), this.innerCollection);
     }
 
     @Override
-    public PagedList<ServiceTierAdvisor> listServiceTierAdvisor() {
+    public List<ServiceTierAdvisor> listServiceTierAdvisors() {
         final SqlDatabaseImpl self = this;
         PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor> converter
-                    = new PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor>() {
+                = new PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor>() {
             @Override
             public ServiceTierAdvisor typeConvert(ServiceTierAdvisorInner serviceTierAdvisorInner) {
                 return new ServiceTierAdvisorImpl(serviceTierAdvisorInner, self.innerCollection);
@@ -216,19 +207,14 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public ServiceTierAdvisor getServiceTierAdvisor(String serviceTierAdvisorName) {
-        return new ServiceTierAdvisorImpl(
-                this.innerCollection.getServiceTierAdvisor(
-                        this.resourceGroupName(),
-                        this.sqlServerName(),
-                        this.name(),
-                        serviceTierAdvisorName),
-                this.innerCollection);
-    }
-
-    @Override
     public SqlDatabase refresh() {
-        this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name());
+        if (this.inner().upgradeHint() != null) {
+            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name()));
+        }
+        else {
+            this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
+        }
+
         return this;
     }
 

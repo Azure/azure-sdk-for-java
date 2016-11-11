@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -21,6 +20,8 @@ import com.microsoft.azure.management.sql.SqlServer;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * Implementation for SqlElasticPool and its parent interfaces.
@@ -88,7 +89,7 @@ class SqlElasticPoolImpl
     }
 
     @Override
-    public PagedList<ElasticPoolActivity> listActivity() {
+    public List<ElasticPoolActivity> listActivity() {
         PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity> converter = new PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity>() {
             @Override
             public ElasticPoolActivity typeConvert(ElasticPoolActivityInner elasticPoolActivityInner) {
@@ -104,7 +105,7 @@ class SqlElasticPoolImpl
     }
 
     @Override
-    public PagedList<ElasticPoolDatabaseActivity> listDatabaseActivity() {
+    public List<ElasticPoolDatabaseActivity> listDatabaseActivity() {
         PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity> converter
                 = new PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity>() {
             @Override
@@ -121,7 +122,7 @@ class SqlElasticPoolImpl
     }
 
     @Override
-    public PagedList<SqlDatabase> listDatabases() {
+    public List<SqlDatabase> listDatabases() {
         final DatabasesInner databasesInner = this.databasesInner;
         PagedListConverter<DatabaseInner, SqlDatabase> converter
                 = new PagedListConverter<DatabaseInner, SqlDatabase>() {
