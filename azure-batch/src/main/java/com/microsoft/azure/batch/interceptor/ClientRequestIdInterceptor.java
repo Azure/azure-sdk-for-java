@@ -10,7 +10,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
+/**
+ * Interceptor which contains a function used to generate a client request ID.
+ * If there are multiple instances of this then the last set wins.
+ */
 public class ClientRequestIdInterceptor extends RequestInterceptor {
+    /**
+     * Initializes a new {@link ClientRequestIdInterceptor} for use in setting the client request ID of a request.
+     */
     public ClientRequestIdInterceptor() {
         this.withHandler(new BatchRequestInterceptHandler() {
             @Override

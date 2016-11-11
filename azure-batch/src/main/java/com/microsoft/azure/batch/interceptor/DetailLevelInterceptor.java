@@ -10,10 +10,19 @@ import com.microsoft.azure.batch.DetailLevel;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+/**
+ * Interceptor which contains a function used to apply the {@link DetailLevel}.
+ * If there are multiple instances of this then the last set wins.
+ */
 public class DetailLevelInterceptor extends RequestInterceptor {
 
     private final DetailLevel detailLevel;
 
+    /**
+     * Initializes a new {@link DetailLevelInterceptor} for applying DetailLevel in a request.
+     *
+     * @param detailLevel the DetailLevel
+     */
     public DetailLevelInterceptor(final DetailLevel detailLevel) {
         this.detailLevel = detailLevel;
         this.withHandler(new BatchRequestInterceptHandler() {
