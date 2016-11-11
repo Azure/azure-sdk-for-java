@@ -9,7 +9,7 @@ package com.microsoft.azure.management.batch.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +22,7 @@ import java.util.Collections;
  */
 @LangDefinition
 class ApplicationPackagesImpl extends
-        ExternalChildResourcesImpl<ApplicationPackageImpl,
+        ExternalChildResourcesCachedImpl<ApplicationPackageImpl,
                 ApplicationPackage,
                 ApplicationPackageInner,
                 ApplicationImpl,
@@ -34,7 +34,7 @@ class ApplicationPackagesImpl extends
         super(parent, "ApplicationPackage");
         this.client = client;
         this.parent = parent;
-        this.initializeCollection();
+        this.cacheCollection();
     }
 
     public ApplicationPackageImpl define(String name) {

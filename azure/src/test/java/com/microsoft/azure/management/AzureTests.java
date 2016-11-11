@@ -428,4 +428,10 @@ public class AzureTests {
         new TestTrafficManager(azure.resourceGroups(), azure.publicIpAddresses())
                 .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
     }
+
+    @Test
+    public void testDnsZones() throws Exception {
+        new TestDns()
+                .runTest(azure.dnsZones(), azure.resourceGroups());
+    }
 }
