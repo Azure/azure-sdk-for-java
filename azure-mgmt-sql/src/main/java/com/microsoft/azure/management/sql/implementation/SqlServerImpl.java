@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
@@ -18,6 +17,8 @@ import com.microsoft.azure.management.sql.ServiceObjective;
 import com.microsoft.azure.management.sql.SqlServer;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.List;
 
 /**
  * Implementation for SqlServer and its parent interfaces.
@@ -117,7 +118,7 @@ public class SqlServerImpl
     }
 
     @Override
-    public PagedList<ServerMetric> listUsages() {
+    public List<ServerMetric> listUsages() {
         PagedListConverter<ServerMetricInner, ServerMetric> converter = new PagedListConverter<ServerMetricInner, ServerMetric>() {
             @Override
             public ServerMetric typeConvert(ServerMetricInner serverMetricInner) {
@@ -132,7 +133,7 @@ public class SqlServerImpl
     }
 
     @Override
-    public PagedList<ServiceObjective> listServiceObjectives() {
+    public List<ServiceObjective> listServiceObjectives() {
         final ServersInner innerCollection = this.innerCollection;
         PagedListConverter<ServiceObjectiveInner, ServiceObjective> converter = new PagedListConverter<ServiceObjectiveInner, ServiceObjective>() {
             @Override
