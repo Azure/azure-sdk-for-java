@@ -1,13 +1,13 @@
 package com.microsoft.azure.management.resources.childresource;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import java.util.ArrayList;
 import java.util.List;
 
-class PulletsImpl extends ExternalChildResourcesImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
+class PulletsImpl extends ExternalChildResourcesCachedImpl<PulletImpl, Pullet, Object, ChickenImpl, Object> {
     PulletsImpl(ChickenImpl parent) {
         super(parent, "Pullet");
-        initializeCollection();
+        cacheCollection();
     }
 
     public PulletImpl define(String name) {
