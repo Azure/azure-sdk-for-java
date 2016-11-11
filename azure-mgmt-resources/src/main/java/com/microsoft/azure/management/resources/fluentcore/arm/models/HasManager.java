@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * An interface representing a model that exposes a management client.
+ * @param <ManagerT> the manager client type
  */
 @Fluent
 public interface HasManager<ManagerT> {
