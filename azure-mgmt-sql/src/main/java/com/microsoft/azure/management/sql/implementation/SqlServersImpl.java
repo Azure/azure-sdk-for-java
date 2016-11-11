@@ -16,16 +16,19 @@ class SqlServersImpl
         implements SqlServers {
 
     private final ElasticPoolsInner elasticPoolsInner;
-    private DatabasesInner databasesInner;
+    private final DatabasesInner databasesInner;
+    private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
 
     protected SqlServersImpl(
             ServersInner innerCollection,
             ElasticPoolsInner elasticPoolsInner,
             DatabasesInner databasesInner,
+            RecommendedElasticPoolsInner recommendedElasticPoolsInner,
             SqlServerManager manager) {
         super(innerCollection, manager);
         this.elasticPoolsInner = elasticPoolsInner;
         this.databasesInner = databasesInner;
+        this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
     }
 
     @Override
@@ -41,13 +44,15 @@ class SqlServersImpl
                 name,
                 inner,
                 this.innerCollection,
-                super.myManager, this.elasticPoolsInner, this.databasesInner);
+                super.myManager,
+                this.elasticPoolsInner,
+                this.databasesInner,
+                this.recommendedElasticPoolsInner);
     }
 
     @Override
     public PagedList<SqlServer> list() {
-        // TODO - ans - Implement this once Swagger has this method.
-        return null;
+        return wrapList(this.innerCollection.list());
     }
 
     @Override
@@ -65,7 +70,10 @@ class SqlServersImpl
                 inner.name(),
                 inner,
                 this.innerCollection,
-                this.myManager, this.elasticPoolsInner, this.databasesInner);
+                this.myManager,
+                this.elasticPoolsInner,
+                this.databasesInner,
+                this.recommendedElasticPoolsInner);
     }
 
     @Override

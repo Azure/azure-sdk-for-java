@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 /**
  * Defines values for DatabaseEditions.
  */
-public  class DatabaseEditions {
+public final class DatabaseEditions {
     /** Static value Web for DatabaseEditions. */
     public static final DatabaseEditions WEB = new DatabaseEditions("Web");
 

@@ -29,6 +29,12 @@ public class Error {
     private String message;
 
     /**
+     * The innerError property.
+     */
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    private Error innerError;
+
+    /**
      * Get the code value.
      *
      * @return the code value
@@ -44,6 +50,15 @@ public class Error {
      */
     public String message() {
         return this.message;
+    }
+
+    /**
+     * Get the innerError value.
+     *
+     * @return the innerError value
+     */
+    public Error innerError() {
+        return this.innerError;
     }
 
 }

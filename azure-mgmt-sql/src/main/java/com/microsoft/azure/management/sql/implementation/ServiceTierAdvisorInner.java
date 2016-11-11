@@ -73,7 +73,7 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
      * Gets or sets currentServiceLevelObjective for service tier advisor.
      */
     @JsonProperty(value = "properties.currentServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID currentServiceLevelObjective;
+    private String currentServiceLevelObjective;
 
     /**
      * Gets or sets currentServiceLevelObjectiveId for service tier advisor.
@@ -220,7 +220,7 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
      *
      * @return the currentServiceLevelObjective value
      */
-    public UUID currentServiceLevelObjective() {
+    public String currentServiceLevelObjective() {
         return this.currentServiceLevelObjective;
     }
 

@@ -22,11 +22,16 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
     private final SqlElasticPools.SqlElasticPoolsCreatable elasticPools;
     private final Region region;
 
-    ElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager, String resourceGroupName, String sqlServerName, Region region) {
+    ElasticPoolsImpl(ElasticPoolsInner innerCollection,
+                     SqlServerManager manager,
+                     DatabasesInner databasesInner,
+                     String resourceGroupName,
+                     String sqlServerName,
+                     Region region) {
         this.resourceGroupName = resourceGroupName;
         this.sqlServerName = sqlServerName;
         this.region = region;
-        this.elasticPools = new SqlElasticPoolsImpl(innerCollection, manager);
+        this.elasticPools = new SqlElasticPoolsImpl(innerCollection, manager, databasesInner);
     }
 
     @Override

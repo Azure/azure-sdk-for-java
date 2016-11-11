@@ -166,6 +166,48 @@ public interface SqlDatabase extends
     PagedList<DatabaseMetric> listUsages();
 
     /**
+     * @return entry point to manage and get transparentDataEncryption
+     */
+    TransparentDataEncryptions transparentDataEncryptions();
+
+    /**
+     * @return the list of all service tier advisor in the database
+     */
+    PagedList<ServiceTierAdvisor> listServiceTierAdvisor();
+
+    /**
+     * Get information about a service tier advisor.
+     * @param serviceTierAdvisorName name of the service tier advisor
+     * @return information about specific service tier advisor
+     */
+    ServiceTierAdvisor getServiceTierAdvisor(String serviceTierAdvisorName);
+
+    /**
+     * Entry point to access TransparentDataEncryption from SQL Database.
+     */
+    interface TransparentDataEncryptions {
+        /**
+         * Gets an Azure SQL Database Transparent Data Encryption for the database.
+         *
+         * @return an Azure SQL Database Transparent Data Encryption for the database.
+         */
+        TransparentDataEncryption get();
+
+        /**
+         * Updates the state of the transparent data encryption status.
+         *
+         * @param transparentDataEncryptionState state of the data encryption to set
+         * @return the new encryption settings after update
+         */
+        TransparentDataEncryption update(TransparentDataEncryptionStates transparentDataEncryptionState);
+
+        /**
+         * @return an Azure SQL Database Transparent Data Encryption Activity
+         */
+        PagedList<TransparentDataEncryptionActivity> listActivity();
+    }
+
+    /**
      * Entry point to access replication links from SQL Database.
      */
     interface ReplicationLinks {
@@ -173,7 +215,7 @@ public interface SqlDatabase extends
          * Gets a particular replication link.
          *
          * @param linkId name of the replication to get
-         * @return Returns the replication link id with in the SQL Database
+         * @return Returns the replication link with in the SQL Database
          */
         ReplicationLink get(String linkId);
 
@@ -194,7 +236,7 @@ public interface SqlDatabase extends
 
 
     /**************************************************************
-     * Fluent interfaces to provision a SqlServer
+     * Fluent interfaces to provision a Sql Database
      **************************************************************/
 
     /**
