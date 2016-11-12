@@ -8,6 +8,7 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -16,8 +17,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1230";
-    private static final String SQL_SERVER_NAME = "javasqlserver1230";
+    private static final String RG_NAME = "javasqlserver1237";
+    private static final String SQL_SERVER_NAME = "javasqlserver1237";
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -39,6 +40,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canListRecommendedElasticPools() throws Exception {
         SqlServer sqlServer = sqlServerManager.sqlServers().getByGroup("ans", "ans-secondary");
+        sqlServer.databases().list().get(0).listServiceTierAdvisors().get(0).serviceLevelObjectiveUsageMetrics();
         List<RecommendedElasticPool> recommendedElasticPools = sqlServer.recommendedElasticPools().list();
         Assert.assertNotNull(recommendedElasticPools);
         Assert.assertNotNull(sqlServer.databases().list().get(0).getUpgradeHint());
@@ -121,9 +123,11 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Test Service tier advisors.
         List<ServiceTierAdvisor> serviceTierAdvisors = sqlDatabase.listServiceTierAdvisors();
         Assert.assertNotNull(serviceTierAdvisors);
+        Assert.assertNotNull(serviceTierAdvisors.get(0).serviceLevelObjectiveUsageMetrics());
         Assert.assertNotEquals(serviceTierAdvisors.size(), 0);
 
         Assert.assertNotNull(serviceTierAdvisors.get(0).refresh());
+        Assert.assertNotNull(serviceTierAdvisors.get(0).serviceLevelObjectiveUsageMetrics());
         // End of testing service tier advisors.
 
         sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
@@ -381,9 +385,75 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer.databases().delete(sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
+        sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
+
+    @Test
+    public void canUpgradeSqlServer() throws Exception {
+        // Create
+        SqlServer sqlServer = sqlServerManager.sqlServers()
+                .define(SQL_SERVER_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withAdministratorLogin("userName")
+                .withAdministratorPassword("P@ssword~1")
+                .withVersion(ServerVersion.TWO_FULL_STOP_ZERO)
+                .create();
+        sqlServer.refresh();
+
+        SqlElasticPool elasticPool = sqlServer.elasticPools()
+                .define(SQL_ELASTIC_POOL_NAME)
+                .withEdition(ElasticPoolEditions.STANDARD).create();
+        sqlServer.refresh();
+        SqlDatabase sqlDatabase = sqlServer.databases()
+                .define(SQL_DATABASE_NAME)
+                .withExistingElasticPool(elasticPool)
+                .withoutSourceDatabaseId()
+                .withCollation(COLLATION)
+                .withEdition(DatabaseEditions.STANDARD)
+                .withServiceObjective(ServiceObjectiveName.S1)
+                .createAsync().toBlocking().first();
+        sqlServer.refresh();
+
+        validateSqlDatabaseWithElasticPool(sqlDatabase, SQL_DATABASE_NAME);
+        validateSqlDatabaseWithElasticPool(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
+
+        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        validateSqlServer(sqlServer);
+
+        // Get Elastic pool
+        elasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
+        validateSqlElasticPool(elasticPool);
+
+        // Upgrade
+        sqlServer.scheduledUpgrade()
+                .withScheduleUpgradeAfterUtcDateTime(DateTime.now().minusMinutes(-10))
+                .updateDatabase(SQL_DATABASE_NAME)
+                    .withTargetEdition(TargetDatabaseEditions.PREMIUM)
+                    .withTargetServiceLevelObjective(ServiceObjectiveName.P3.toString())
+                    .attach()
+                .updateElasticPool(SQL_ELASTIC_POOL_NAME)
+                    .withEdition(TargetElasticPoolEditions.PREMIUM)
+                    .withDtu(100)
+                    .withDatabaseDtuMax(20)
+                    .withDatabaseDtuMin(10)
+                    .attach()
+                .schedule();
+        Assert.assertNotNull(sqlServer.getUpgrade());
+        sqlServer.cancelUpgrade();
+
+         // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
+        validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
+        sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
+        validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
+
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        validateSqlServerNotFound(sqlServer);
+    }
+
 
     @Test
     public void canCRUDSqlElasticPool() throws Exception {

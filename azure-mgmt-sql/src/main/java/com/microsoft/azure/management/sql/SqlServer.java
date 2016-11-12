@@ -71,6 +71,11 @@ public interface SqlServer extends
     ServerUpgradeResult getUpgrade();
 
     /**
+     * @return the definition stage for specifying the arguments for upgrade.
+     */
+    ServerUpgrade.UpgradeDefinitions.Blank scheduledUpgrade();
+
+    /**
      * @return returns the list of usages (ServerMetric) of Azure SQL Server
      */
     List<ServerMetric> listUsages();
