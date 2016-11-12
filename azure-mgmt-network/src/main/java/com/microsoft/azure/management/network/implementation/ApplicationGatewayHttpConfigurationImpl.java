@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -16,15 +16,15 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
  *  Implementation for ApplicationGatewayBackendHttpConfiguration.
  */
 @LangDefinition
-class ApplicationGatewayBackendHttpConfigurationImpl
+class ApplicationGatewayHttpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayBackendHttpSettingsInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
-        ApplicationGatewayBackendHttpConfiguration,
-        ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithBackendHttpConfigOrListener>,
-        ApplicationGatewayBackendHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayBackendHttpConfiguration.Update {
+        ApplicationGatewayHttpConfiguration,
+        ApplicationGatewayHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithBackendHttpConfigOrListener>,
+        ApplicationGatewayHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayHttpConfiguration.Update {
 
-    ApplicationGatewayBackendHttpConfigurationImpl(ApplicationGatewayBackendHttpSettingsInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayHttpConfigurationImpl(ApplicationGatewayBackendHttpSettingsInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -44,7 +44,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withPort(int port) {
+    public ApplicationGatewayHttpConfigurationImpl withPort(int port) {
         this.inner().withPort(port);
         return this;
     }
@@ -72,25 +72,25 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     // Withers
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withCookieBasedAffinity() {
+    public ApplicationGatewayHttpConfigurationImpl withCookieBasedAffinity() {
         this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.ENABLED);
         return this;
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withoutCookieBasedAffinity() {
+    public ApplicationGatewayHttpConfigurationImpl withoutCookieBasedAffinity() {
         this.inner().withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity.DISABLED);
         return this;
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
+    public ApplicationGatewayHttpConfigurationImpl withProtocol(ApplicationGatewayProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withRequestTimeout(int seconds) {
+    public ApplicationGatewayHttpConfigurationImpl withRequestTimeout(int seconds) {
         this.inner().withRequestTimeout(seconds);
         return this;
     }

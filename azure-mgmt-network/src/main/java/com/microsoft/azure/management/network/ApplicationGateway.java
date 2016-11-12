@@ -59,7 +59,7 @@ public interface ApplicationGateway extends
     /**
      * @return backend HTTP configurations of this application gateway, indexed by name
      */
-    Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigurations();
+    Map<String, ApplicationGatewayHttpConfiguration> httpConfigurations();
 
     /**
      * @return SSL certificates, indexed by name
@@ -274,7 +274,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrListener> defineHttpConfiguration(String name);
+            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrListener> defineHttpConfiguration(String name);
         }
 
         /**
@@ -489,7 +489,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.UpdateDefinitionStages.Blank<Update> defineHttpConfiguration(String name);
+            ApplicationGatewayHttpConfiguration.UpdateDefinitionStages.Blank<Update> defineHttpConfiguration(String name);
 
             /**
              * Removes the specified backend HTTP configuration from this application gateway.
@@ -503,7 +503,7 @@ public interface ApplicationGateway extends
              * @param name the name of an existing backend HTTP configuration on this application gateway
              * @return the next stage of the update
              */
-            ApplicationGatewayBackendHttpConfiguration.Update updateHttpConfiguration(String name);
+            ApplicationGatewayHttpConfiguration.Update updateHttpConfiguration(String name);
         }
     }
 

@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
@@ -53,7 +53,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayIpConfiguration> configs;
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
-    private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
+    private Map<String, ApplicationGatewayHttpConfiguration> httpConfigs;
     private Map<String, ApplicationGatewayHttpListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
@@ -126,7 +126,7 @@ class ApplicationGatewayImpl
         List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
-                ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
+                ApplicationGatewayHttpConfigurationImpl httpConfig = new ApplicationGatewayHttpConfigurationImpl(inner, this);
                 this.httpConfigs.put(inner.name(), httpConfig);
             }
         }
@@ -267,7 +267,7 @@ class ApplicationGatewayImpl
         }
     }
 
-    ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
+    ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayHttpConfigurationImpl httpConfig) {
         if (httpConfig == null) {
             return null;
         } else {
@@ -400,15 +400,15 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl defineHttpConfiguration(String name) {
-        ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
+    public ApplicationGatewayHttpConfigurationImpl defineHttpConfiguration(String name) {
+        ApplicationGatewayHttpConfiguration httpConfig = this.httpConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
                     .withPort(80);
-            return new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
+            return new ApplicationGatewayHttpConfigurationImpl(inner, this);
         } else {
-            return (ApplicationGatewayBackendHttpConfigurationImpl) httpConfig;
+            return (ApplicationGatewayHttpConfigurationImpl) httpConfig;
         }
     }
 
@@ -585,7 +585,7 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
-    public Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigurations() {
+    public Map<String, ApplicationGatewayHttpConfiguration> httpConfigurations() {
         return Collections.unmodifiableMap(this.httpConfigs);
     }
 
@@ -626,7 +626,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl updateHttpConfiguration(String name) {
-        return (ApplicationGatewayBackendHttpConfigurationImpl) this.httpConfigs.get(name);
+    public ApplicationGatewayHttpConfigurationImpl updateHttpConfiguration(String name) {
+        return (ApplicationGatewayHttpConfigurationImpl) this.httpConfigs.get(name);
     }
 }

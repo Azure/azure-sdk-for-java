@@ -19,7 +19,7 @@ import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -155,7 +155,7 @@ public class TestApplicationGateway {
             // Verify HTTP configs
             Assert.assertTrue(appGateway.httpConfigurations().size() == 1);
             Assert.assertTrue(appGateway.httpConfigurations().containsKey("default"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig = appGateway.httpConfigurations().get("default");
+            ApplicationGatewayHttpConfiguration httpConfig = appGateway.httpConfigurations().get("default");
             Assert.assertTrue(httpConfig.port() == 8080);
 
             // Verify listeners
@@ -216,7 +216,7 @@ public class TestApplicationGateway {
             // Verify HTTP configs
             Assert.assertTrue(resource.httpConfigurations().size() == 1);
             Assert.assertTrue(resource.httpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.httpConfigurations().get("httpConfig1");
+            ApplicationGatewayHttpConfiguration httpConfig1 = resource.httpConfigurations().get("httpConfig1");
             Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
@@ -355,14 +355,14 @@ public class TestApplicationGateway {
             // Verify HTTP configs
             Assert.assertTrue(appGateway.httpConfigurations().size() == 2);
             Assert.assertTrue(appGateway.httpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = appGateway.httpConfigurations().get("httpConfig1");
+            ApplicationGatewayHttpConfiguration httpConfig1 = appGateway.httpConfigurations().get("httpConfig1");
             Assert.assertTrue(httpConfig1.port() == 81);
             Assert.assertTrue(httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.protocol().equals(ApplicationGatewayProtocol.HTTP));
             Assert.assertTrue(httpConfig1.requestTimeout() == 10);
 
             Assert.assertTrue(appGateway.httpConfigurations().containsKey("httpConfig2"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig2 = appGateway.httpConfigurations().get("httpConfig2");
+            ApplicationGatewayHttpConfiguration httpConfig2 = appGateway.httpConfigurations().get("httpConfig2");
             Assert.assertTrue(httpConfig2.port() == 82);
             Assert.assertTrue(!httpConfig2.cookieBasedAffinity());
             Assert.assertTrue(httpConfig2.protocol().equals(ApplicationGatewayProtocol.HTTPS));
@@ -425,7 +425,7 @@ public class TestApplicationGateway {
             // Verify HTTP configs
             Assert.assertTrue(resource.httpConfigurations().size() == 1);
             Assert.assertTrue(resource.httpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.httpConfigurations().get("httpConfig1");
+            ApplicationGatewayHttpConfiguration httpConfig1 = resource.httpConfigurations().get("httpConfig1");
             Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
@@ -557,9 +557,9 @@ public class TestApplicationGateway {
         }
 
         // Show backend HTTP configurations
-        Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs = resource.httpConfigurations();
+        Map<String, ApplicationGatewayHttpConfiguration> httpConfigs = resource.httpConfigurations();
         info.append("\n\tHTTP Configurations: ").append(httpConfigs.size());
-        for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
+        for (ApplicationGatewayHttpConfiguration httpConfig : httpConfigs.values()) {
             info.append("\n\t\tName: ").append(httpConfig.name())
                 .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
                 .append("\n\t\t\tPort: ").append(httpConfig.port())
