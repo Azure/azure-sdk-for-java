@@ -9,21 +9,25 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Azure Storage account properties information.
+ * Storage account parameters for a storage account being updated in a Data
+ * Lake Analytics account.
  */
-public class StorageAccountProperties {
+@JsonFlatten
+public class UpdateStorageAccountParameters {
     /**
-     * the access key associated with this Azure Storage account that will be
-     * used to connect to it.
+     * the updated access key associated with this Azure Storage account that
+     * will be used to connect to it.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(value = "properties.accessKey")
     private String accessKey;
 
     /**
-     * the optional suffix for the Data Lake account.
+     * the optional suffix for the storage account.
      */
+    @JsonProperty(value = "properties.suffix")
     private String suffix;
 
     /**
@@ -39,9 +43,9 @@ public class StorageAccountProperties {
      * Set the accessKey value.
      *
      * @param accessKey the accessKey value to set
-     * @return the StorageAccountProperties object itself.
+     * @return the UpdateStorageAccountParameters object itself.
      */
-    public StorageAccountProperties withAccessKey(String accessKey) {
+    public UpdateStorageAccountParameters withAccessKey(String accessKey) {
         this.accessKey = accessKey;
         return this;
     }
@@ -59,9 +63,9 @@ public class StorageAccountProperties {
      * Set the suffix value.
      *
      * @param suffix the suffix value to set
-     * @return the StorageAccountProperties object itself.
+     * @return the UpdateStorageAccountParameters object itself.
      */
-    public StorageAccountProperties withSuffix(String suffix) {
+    public UpdateStorageAccountParameters withSuffix(String suffix) {
         this.suffix = suffix;
         return this;
     }

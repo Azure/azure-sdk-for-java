@@ -8,12 +8,15 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Azure Storage blob container information.
  */
-public class BlobContainer {
+@JsonFlatten
+public class StorageContainer {
     /**
      * the name of the blob container.
      */
@@ -33,10 +36,10 @@ public class BlobContainer {
     private String type;
 
     /**
-     * the properties of the blob container.
+     * the last modified time of the blob container.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private BlobContainerProperties properties;
+    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastModifiedTime;
 
     /**
      * Get the name value.
@@ -66,12 +69,12 @@ public class BlobContainer {
     }
 
     /**
-     * Get the properties value.
+     * Get the lastModifiedTime value.
      *
-     * @return the properties value
+     * @return the lastModifiedTime value
      */
-    public BlobContainerProperties properties() {
-        return this.properties;
+    public DateTime lastModifiedTime() {
+        return this.lastModifiedTime;
     }
 
 }

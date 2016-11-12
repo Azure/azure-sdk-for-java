@@ -180,7 +180,7 @@ public final class DataLakeAnalyticsCatalogManagementClientImpl extends AzureSer
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-10-01-preview";
+        this.apiVersion = "2016-11-01";
         this.adlaCatalogDnsSuffix = "azuredatalakeanalytics.net";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
@@ -198,6 +198,6 @@ public final class DataLakeAnalyticsCatalogManagementClientImpl extends AzureSer
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "DataLakeAnalyticsCatalogManagementClient, 2015-10-01-preview");
+                "DataLakeAnalyticsCatalogManagementClient, 2016-11-01");
     }
 }
