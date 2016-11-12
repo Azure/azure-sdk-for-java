@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
+import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
@@ -59,8 +61,6 @@ public class TestApplicationGateway {
      * Internet-facing LB test with NAT pool test.
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final PublicIpAddresses pips;
-        private final VirtualMachines vms;
         private final Networks networks;
 
         /**
@@ -73,8 +73,6 @@ public class TestApplicationGateway {
                 PublicIpAddresses pips,
                 VirtualMachines vms,
                 Networks networks) {
-            this.pips = pips;
-            this.vms = vms;
             this.networks = networks;
         }
 
@@ -268,6 +266,12 @@ public class TestApplicationGateway {
                     .withSubnet("subnet2", "10.0.0.8/29")
                     .create();
 
+            Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread th, Throwable ex) {
+                    System.out.println("Uncaught exception: " + ex);
+                }
+            };
+
             // Prepare for execution in a separate thread to shorten the test
             Thread creationThread = new Thread(new Runnable() {
                 @Override
@@ -321,11 +325,17 @@ public class TestApplicationGateway {
                                 .withBackend("default")
                                 .withBackendHttpConfiguration("httpConfig1")
                                 .attach()
+
+                            .defineSslCertificate("mycert")
+                                .withPfxFile(new File("myTest.pfx"))
+                                .withPassword("Abc123")
+                                .attach()
                             .create();
                     }
                 });
 
             // Start creating in a separate thread...
+            creationThread.setUncaughtExceptionHandler(threadException);
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
@@ -334,6 +344,7 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
+            Assert.assertTrue(appGateway != null);
 
             // Verify backends
             Assert.assertTrue(appGateway.backends().size() == 3);
@@ -356,6 +367,10 @@ public class TestApplicationGateway {
             Assert.assertTrue(!httpConfig2.cookieBasedAffinity());
             Assert.assertTrue(httpConfig2.protocol().equals(ApplicationGatewayProtocol.HTTPS));
             Assert.assertTrue(httpConfig2.requestTimeout() == 15);
+
+            // Verify auth certs
+            //Assert.assertTrue(appGateway.authneticationCertificates().size() == 1);
+
             return appGateway;
         }
 
@@ -550,6 +565,14 @@ public class TestApplicationGateway {
                 .append("\n\t\t\tPort: ").append(httpConfig.port())
                 .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
                 .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+        }
+
+        // Show SSL certificates
+        Map<String, ApplicationGatewaySslCertificate> sslCerts = resource.sslCertificates();
+        info.append("\n\tSSL certificates: ").append(sslCerts.size());
+        for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
+            info.append("\n\t\tName: ").append(cert.name())
+                .append("\n\t\t\tCert data: ").append(cert.publicData());
         }
 
         System.out.println(info.toString());

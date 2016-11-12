@@ -30,7 +30,7 @@ public interface ApplicationGatewayBackend extends
     List<ApplicationGatewayBackendAddress> addresses();
 
     /**
-     * Grouping of appplication gateway backend definition stages.
+     * Grouping of application gateway backend definition stages.
      */
     interface DefinitionStages {
         /**
@@ -41,7 +41,7 @@ public interface ApplicationGatewayBackend extends
         }
 
         /**
-         * The stage of an application gateway backed definition allowing to add an address to the backend.
+         * The stage of an application gateway backend definition allowing to add an address to the backend.
          * @param <ParentT> the parent application gateway type
          */
         interface WithAddress<ParentT> {

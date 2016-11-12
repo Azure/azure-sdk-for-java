@@ -57,9 +57,14 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayFrontend> frontends();
 
     /**
-     * @return backed HTTP configurations of this application gateway, indexed by name
+     * @return backend HTTP configurations of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigurations();
+
+    /**
+     * @return SSL certificates, indexed by name
+     */
+    Map<String, ApplicationGatewaySslCertificate> sslCertificates();
 
     /**
      * The entirety of the application gateway definition.
@@ -193,6 +198,18 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to add a backend or continue adding frontend ports.
          */
         interface WithFrontendPortOrBackend extends WithFrontendPort, WithBackend {
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add an SSL certificate.
+         */
+        interface WithSslCert {
+            /**
+             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway.
+             * @param name a unique name for the certificate
+             * @return the first stage of the certificate definition
+             */
+            ApplicationGatewaySslCertificate.DefinitionStages.Blank<WithCreate> defineSslCertificate(String name);
         }
 
         /**
@@ -367,7 +384,8 @@ public interface ApplicationGateway extends
          */
         interface WithCreate extends
             Creatable<ApplicationGateway>,
-            Resource.DefinitionWithTags<WithCreate> {
+            Resource.DefinitionWithTags<WithCreate>,
+            WithSslCert {
         }
     }
 

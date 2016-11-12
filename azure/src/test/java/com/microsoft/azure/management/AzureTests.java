@@ -115,7 +115,6 @@ public class AzureTests {
         azure.resourceGroups().deleteByName("rg" + testId);
     }
 
-
     /**
      * Tests basic generic resources retrieval.
      * @throws Exception

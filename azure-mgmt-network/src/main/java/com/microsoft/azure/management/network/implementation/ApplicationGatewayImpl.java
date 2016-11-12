@@ -15,6 +15,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayOperationalState
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
+import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -55,6 +56,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
     private Map<String, ApplicationGatewayHttpListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
+    private Map<String, ApplicationGatewaySslCertificate> sslCerts;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -83,6 +85,18 @@ class ApplicationGatewayImpl
         initializeBackendHttpConfigsFromInner();
         initializeHttpListenersFromInner();
         initializeRequestRoutingRulesFromInner();
+        initializeSslCertificatesFromInner();
+    }
+
+    private void initializeSslCertificatesFromInner() {
+        this.sslCerts = new TreeMap<>();
+        List<ApplicationGatewaySslCertificateInner> inners = this.inner().sslCertificates();
+        if (inners != null) {
+            for (ApplicationGatewaySslCertificateInner inner : inners) {
+                ApplicationGatewaySslCertificateImpl cert = new ApplicationGatewaySslCertificateImpl(inner, this);
+                this.sslCerts.put(inner.name(), cert);
+            }
+        }
     }
 
     private void initializeFrontendsFromInner() {
@@ -179,6 +193,11 @@ class ApplicationGatewayImpl
 
         // Reset and update request routing rules
         this.inner().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
+
+        // Reset and update SSL certs
+        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
+
+        // TODO: Clean up invalid orphaned references between children
     }
 
     @Override
@@ -217,6 +236,15 @@ class ApplicationGatewayImpl
             return null;
         } else {
             this.backends.put(backend.name(), backend);
+            return this;
+        }
+    }
+
+    ApplicationGatewayImpl withSslCertificate(ApplicationGatewaySslCertificateImpl cert) {
+        if (cert == null) {
+            return null;
+        } else {
+            this.sslCerts.put(cert.name(), cert);
             return this;
         }
     }
@@ -291,6 +319,18 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewaySslCertificateImpl defineSslCertificate(String name) {
+        ApplicationGatewaySslCertificate cert = this.sslCerts.get(name);
+        if (cert == null) {
+            ApplicationGatewaySslCertificateInner inner = new ApplicationGatewaySslCertificateInner()
+                    .withName(name);
+            return new ApplicationGatewaySslCertificateImpl(inner, this);
+        } else {
+            return (ApplicationGatewaySslCertificateImpl) cert;
+        }
+    }
+
+    @Override
     public ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
         ApplicationGatewayIpConfiguration config = this.configs.get(name);
         if (config == null) {
@@ -334,7 +374,6 @@ class ApplicationGatewayImpl
             return (ApplicationGatewayBackendImpl) backend;
         }
     }
-
 
     @Override
     public ApplicationGatewayHttpListenerImpl defineHttpListener(String name) {
@@ -558,6 +597,11 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayFrontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewaySslCertificate> sslCertificates() {
+        return Collections.unmodifiableMap(this.sslCerts);
     }
 
     @Override
