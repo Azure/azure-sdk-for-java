@@ -9,6 +9,8 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -34,6 +36,17 @@ class ApplicationGatewayHttpListenerImpl
         return this.inner().name();
     }
 
+    @Override
+    public ApplicationGatewaySslCertificate sslCertificate() {
+        SubResource certRef = this.inner().sslCertificate();
+        if (certRef == null) {
+            return null;
+        }
+
+        String name = ResourceUtils.nameFromResourceId(certRef.id());
+        return this.parent().sslCertificates().get(name);
+    }
+
     // Verbs
 
     @Override
@@ -57,6 +70,14 @@ class ApplicationGatewayHttpListenerImpl
         SubResource portRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayHttpListenerImpl withSslCertificate(String name) {
+        SubResource certRef = new SubResource()
+                .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
+        this.inner().withSslCertificate(certRef);
         return this;
     }
 }

@@ -20,6 +20,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -317,6 +318,8 @@ public class TestApplicationGateway {
                             .defineHttpListener("listener1")
                                 .withFrontend("default")
                                 .withFrontendPort("port1")
+                                .withSslCertificate("cert1")
+                                // TODO withProtocol
                                 .attach()
 
                             // Request routing rules
@@ -326,7 +329,7 @@ public class TestApplicationGateway {
                                 .withBackendHttpConfiguration("httpConfig1")
                                 .attach()
 
-                            .defineSslCertificate("mycert")
+                            .defineSslCertificate("cert1")
                                 .withPfxFile(new File("myTest.pfx"))
                                 .withPassword("Abc123")
                                 .attach()
@@ -339,7 +342,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            creationThread.join(30 * 1000);
+            Thread.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -368,9 +371,18 @@ public class TestApplicationGateway {
             Assert.assertTrue(httpConfig2.protocol().equals(ApplicationGatewayProtocol.HTTPS));
             Assert.assertTrue(httpConfig2.requestTimeout() == 15);
 
-            // Verify auth certs
-            //Assert.assertTrue(appGateway.authneticationCertificates().size() == 1);
+            // Verify listeners
+            Assert.assertTrue(appGateway.httpListeners().size() == 1);
+            ApplicationGatewayHttpListener listener = appGateway.httpListeners().get("listener1");
+            Assert.assertTrue(listener != null);
+            Assert.assertTrue(listener.sslCertificate() != null);
+            Assert.assertTrue(listener.sslCertificate().name().equalsIgnoreCase("cert1"));
 
+            // Verify SSL certs
+            Assert.assertTrue(appGateway.sslCertificates().size() == 1);
+            Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
+
+            creationThread.join(30 * 1000);
             return appGateway;
         }
 
@@ -573,6 +585,16 @@ public class TestApplicationGateway {
         for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
             info.append("\n\t\tName: ").append(cert.name())
                 .append("\n\t\t\tCert data: ").append(cert.publicData());
+        }
+
+        // Show HTTP listeners
+        Map<String, ApplicationGatewayHttpListener> listeners = resource.httpListeners();
+        info.append("\n\tHTTP listeners: ").append(listeners.size());
+        for (ApplicationGatewayHttpListener listener : listeners.values()) {
+            info.append("\n\t\tName: ").append(listener.name());
+                if (listener.sslCertificate() != null) {
+                    info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
+                }
         }
 
         System.out.println(info.toString());

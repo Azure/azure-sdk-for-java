@@ -21,6 +21,11 @@ public interface ApplicationGatewayHttpListener extends
     ChildResource<ApplicationGateway> {
 
     /**
+     * @return the associated SSL certificate, if any
+     */
+    ApplicationGatewaySslCertificate sslCertificate();
+
+    /**
      * Grouping of application gateway HTTP listener configuration stages.
      */
     interface DefinitionStages {
@@ -36,15 +41,17 @@ public interface ApplicationGatewayHttpListener extends
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithSslCertificate<ParentT> {
+            // TODO: put the SSL cert association in the right order
         }
 
         /**
          * The stage of an application gateway HTTP listener definition allowing to specify the frontend IP configuration to associate the listener with.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithFrontend<ParentT> {
             /**
@@ -57,7 +64,7 @@ public interface ApplicationGatewayHttpListener extends
 
         /**
          * The stage of an application gateway HTTP listener definition allowing to specify the frontend port to associate the listener with.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithFrontendPort<ParentT> {
             /**
@@ -66,6 +73,19 @@ public interface ApplicationGatewayHttpListener extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withFrontendPort(String name);
+        }
+
+        /**
+         * The stage of an application gateway HTTP listener definition allowing to specify the SSL certificate to associate with the listener.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
+         */
+        interface WithSslCertificate<ParentT> {
+            /**
+             * Specifies an SSL certificate to associate with this listener, if its protocol is HTTPS.
+             * @param name the name of an existing SSL certificate associated with this application gateway
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withSslCertificate(String name);
         }
     }
 
