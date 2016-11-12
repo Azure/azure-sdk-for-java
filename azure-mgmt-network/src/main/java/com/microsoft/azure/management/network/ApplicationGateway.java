@@ -67,6 +67,11 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewaySslCertificate> sslCertificates();
 
     /**
+     * @return HTTP listeners, indexed by name
+     */
+    Map<String, ApplicationGatewayHttpListener> httpListeners();
+
+    /**
      * The entirety of the application gateway definition.
      */
     interface Definition extends

@@ -605,6 +605,11 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public Map<String, ApplicationGatewayHttpListener> httpListeners() {
+        return Collections.unmodifiableMap(this.httpListeners);
+    }
+
+    @Override
     public ApplicationGatewaySku sku() {
         return this.inner().sku();
     }
