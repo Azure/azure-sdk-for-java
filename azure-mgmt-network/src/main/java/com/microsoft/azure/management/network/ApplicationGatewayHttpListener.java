@@ -26,6 +26,11 @@ public interface ApplicationGatewayHttpListener extends
     ApplicationGatewaySslCertificate sslCertificate();
 
     /**
+     * @return the protocol the listener listens to
+     */
+    ApplicationGatewayProtocol protocol();
+
+    /**
      * Grouping of application gateway HTTP listener configuration stages.
      */
     interface DefinitionStages {
@@ -45,8 +50,7 @@ public interface ApplicationGatewayHttpListener extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            WithSslCertificate<ParentT> {
-            // TODO: put the SSL cert association in the right order
+            WithProtocol<ParentT> {
         }
 
         /**
@@ -87,6 +91,24 @@ public interface ApplicationGatewayHttpListener extends
              */
             WithAttach<ParentT> withSslCertificate(String name);
         }
+
+        /**
+         * The stage of an application gateway HTTP listener definition allowing to specify the protocol.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
+         */
+        interface WithProtocol<ParentT> {
+            /**
+             * Specifies that the listener is for the HTTP protocol.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withHttp();
+
+            /**
+             * Specifies that the listener is for the HTTPS protocol.
+             * @return the next stage of the definition
+             */
+            WithSslCertificate<ParentT> withHttps();
+        }
     }
 
     /** The entirety of an application gateway HTTP listener definition.
@@ -96,7 +118,8 @@ public interface ApplicationGatewayHttpListener extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithFrontend<ParentT>,
-        DefinitionStages.WithFrontendPort<ParentT> {
+        DefinitionStages.WithFrontendPort<ParentT>,
+        DefinitionStages.WithSslCertificate<ParentT> {
     }
 
     /**

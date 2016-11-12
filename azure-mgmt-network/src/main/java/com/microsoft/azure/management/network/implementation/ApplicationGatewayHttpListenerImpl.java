@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -79,5 +80,22 @@ class ApplicationGatewayHttpListenerImpl
                 .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
         this.inner().withSslCertificate(certRef);
         return this;
+    }
+
+    @Override
+    public ApplicationGatewayHttpListenerImpl withHttp() {
+        this.inner().withProtocol(ApplicationGatewayProtocol.HTTP);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayHttpListenerImpl withHttps() {
+        this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProtocol protocol() {
+        return this.inner().protocol();
     }
 }

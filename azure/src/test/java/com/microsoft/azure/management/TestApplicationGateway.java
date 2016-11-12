@@ -318,8 +318,13 @@ public class TestApplicationGateway {
                             .defineHttpListener("listener1")
                                 .withFrontend("default")
                                 .withFrontendPort("port1")
+                                .withHttps()
                                 .withSslCertificate("cert1")
-                                // TODO withProtocol
+                                .attach()
+
+                            .defineHttpListener("listener2")
+                                .withFrontend("default")
+                                .withFrontendPort("port2")
                                 .attach()
 
                             // Request routing rules
@@ -372,11 +377,17 @@ public class TestApplicationGateway {
             Assert.assertTrue(httpConfig2.requestTimeout() == 15);
 
             // Verify listeners
-            Assert.assertTrue(appGateway.httpListeners().size() == 1);
+            Assert.assertTrue(appGateway.httpListeners().size() == 2);
             ApplicationGatewayHttpListener listener = appGateway.httpListeners().get("listener1");
             Assert.assertTrue(listener != null);
             Assert.assertTrue(listener.sslCertificate() != null);
             Assert.assertTrue(listener.sslCertificate().name().equalsIgnoreCase("cert1"));
+            Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTPS));
+
+            Assert.assertTrue(appGateway.httpListeners().containsKey("listener2"));
+            listener = appGateway.httpListeners().get("listener2");
+            Assert.assertTrue(listener != null);
+            Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTP));
 
             // Verify SSL certs
             Assert.assertTrue(appGateway.sslCertificates().size() == 1);
@@ -591,7 +602,8 @@ public class TestApplicationGateway {
         Map<String, ApplicationGatewayHttpListener> listeners = resource.httpListeners();
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayHttpListener listener : listeners.values()) {
-            info.append("\n\t\tName: ").append(listener.name());
+            info.append("\n\t\tName: ").append(listener.name())
+                .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
                 if (listener.sslCertificate() != null) {
                     info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
                 }
