@@ -118,6 +118,11 @@ public class SqlServerImpl
     }
 
     @Override
+    public ServerUpgradeImpl scheduledUpgrade() {
+        return new ServerUpgradeImpl(this.resourceGroupName(), this.name(), this.innerCollection);
+    }
+
+    @Override
     public List<ServerMetric> listUsages() {
         PagedListConverter<ServerMetricInner, ServerMetric> converter = new PagedListConverter<ServerMetricInner, ServerMetric>() {
             @Override
