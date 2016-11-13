@@ -158,7 +158,8 @@ public interface ApplicationGateway extends
              * @param name the name for the frontend
              * @return the first stage of a private frontend IP configuration definition
              */
-            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name);
+            //TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
+            //TODO ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name);
 
             /**
              * Enables a private default frontend in the subnet containing the application gateway.
@@ -173,7 +174,8 @@ public interface ApplicationGateway extends
              * @param frontendName the name for the frontend to create
              * @return the next stage of the definition
              */
-            WithHttpListener withPrivateFrontend(String frontendName);
+            //TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
+            //TODO WithHttpListener withPrivateFrontend(String frontendName);
         }
 
         /**
@@ -198,9 +200,8 @@ public interface ApplicationGateway extends
              * @param name a unique name for the HTTP listener
              * @return the first stage of the HTTP listener definition
              */
-            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineHttpListener(String name);
+            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineFrontendHttpListener(String name);
         }
-
 
         /**
          * The stage of an application gateway definition allowing to add a frontend port.

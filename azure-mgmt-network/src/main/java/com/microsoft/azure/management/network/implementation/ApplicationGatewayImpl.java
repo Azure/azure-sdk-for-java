@@ -342,7 +342,10 @@ class ApplicationGatewayImpl
         }
     }
 
-    @Override
+    /* TODO Since multiple frontends are not yet supported by Azure, this shoudl be revisited when they are.
+     * For now, the assumption is there is only one frontend.
+     */
+    //TODO @Override
     public ApplicationGatewayFrontendImpl definePrivateFrontend(String name) {
         return defineFrontend(name);
     }
@@ -376,7 +379,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl defineHttpListener(String name) {
+    public ApplicationGatewayHttpListenerImpl defineFrontendHttpListener(String name) {
         ApplicationGatewayHttpListener httpListener = this.httpListeners.get(name);
         if (httpListener == null) {
             ApplicationGatewayHttpListenerInner inner = new ApplicationGatewayHttpListenerInner()
@@ -490,7 +493,10 @@ class ApplicationGatewayImpl
         return withPrivateFrontend(DEFAULT);
     }
 
-    @Override
+    /* TODO Since Azure does not currently support multiple frontends, despite what the auto-gen'd API says, this needs to be
+     * revisited when support is added.
+     */
+    //TODO @Override
     public ApplicationGatewayImpl withPrivateFrontend(String frontendName) {
         /* NOTE: This logic is a workaround for the unusual Azure API logic:
          * - although app gateway API definition allows multiple IP configs, only one is allowed by the service currently;
@@ -506,9 +512,9 @@ class ApplicationGatewayImpl
          */
 
         // Attempt to get the default config first
-        ApplicationGatewayIpConfiguration ipConfig = this.configs.get("default");
+        ApplicationGatewayIpConfiguration ipConfig = this.configs.get(DEFAULT);
         if (ipConfig == null) {
-            // No default config, so get the first IP config tha exists
+            // No default config, so get the first IP config that exists
             ApplicationGatewayIpConfiguration[] ipConfigArray = new ApplicationGatewayIpConfiguration[this.configs.values().size()];
             ipConfigArray = this.configs.values().toArray(ipConfigArray);
             if (ipConfigArray.length > 0) {

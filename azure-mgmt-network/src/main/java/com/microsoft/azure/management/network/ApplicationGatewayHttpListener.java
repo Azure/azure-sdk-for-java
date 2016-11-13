@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.io.File;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -53,7 +55,7 @@ public interface ApplicationGatewayHttpListener extends
          * The first stage of an application gateway HTTP listener.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithFrontend<ParentT> {
+        interface Blank<ParentT> extends WithFrontendPort<ParentT> {
         }
 
         /**
@@ -72,6 +74,7 @@ public interface ApplicationGatewayHttpListener extends
          * The stage of an application gateway HTTP listener definition allowing to specify the frontend IP configuration to associate the listener with.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
+        // TODO Since Azure does not yet support multiple frontends, this needs to be revisited when it does
         interface WithFrontend<ParentT> {
             /**
              * Associates the HTTP listener with a frontend existing on this application gateway.
@@ -114,6 +117,36 @@ public interface ApplicationGatewayHttpListener extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withSslCertificate(String name);
+
+            /**
+             * Specifies the PFX file to import the SSL certificate from to associate with this listener to enable HTTPS.
+             * <p>
+             * The certificate will be named using an auto-generated name.
+             * @param pfxFile an existing PFX file
+             * @return the next stage of the definition
+             */
+            WithSslPassword<ParentT> withSslCertificateFromPfxFile(File pfxFile);
+
+            /**
+             * Specifies the PFX file to import the SSL certificate from to associate with this listener to enable HTTPS.
+             * @param pfxFile an existing PFX file
+             * @param name a new name for the certificate that will be used to reference this certificate
+             * @return the next stage of the definition
+             */
+            WithSslPassword<ParentT> withSslCertificateFromPfxFile(File pfxFile, String name);
+        }
+
+        /**
+         * The stage of an application gateway HTTP listener definition allowing to specify the password for the private key of the imported SSL certificate.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
+         */
+        interface WithSslPassword<ParentT> {
+            /**
+             * Specifies the password for the specified PFX file containing the private key of the imported SSL certificate.
+             * @param password the password of the imported PFX file
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withSslCertificatePassword(String password);
         }
 
         /**
@@ -143,7 +176,8 @@ public interface ApplicationGatewayHttpListener extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithFrontend<ParentT>,
         DefinitionStages.WithFrontendPort<ParentT>,
-        DefinitionStages.WithSslCertificate<ParentT> {
+        DefinitionStages.WithSslCertificate<ParentT>,
+        DefinitionStages.WithSslPassword<ParentT> {
     }
 
     /**

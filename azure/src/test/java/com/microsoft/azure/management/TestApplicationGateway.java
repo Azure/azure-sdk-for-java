@@ -107,8 +107,7 @@ public class TestApplicationGateway {
                             .withPrivateFrontend()              // Private frontend
 
                             // HTTP listeners
-                            .defineHttpListener("default")
-                                .withFrontend("default")
+                            .defineFrontendHttpListener("default")
                                 .withFrontendPort(80)
                                 .attach()
 
@@ -290,14 +289,13 @@ public class TestApplicationGateway {
                             .withPrivateFrontend()
 
                             // HTTP listeners
-                            .defineHttpListener("listener1")
-                                .withFrontend("default")
+                            .defineFrontendHttpListener("listener1")
                                 .withFrontendPort(443)
                                 .withHttps()
-                                .withSslCertificate("cert1")
+                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificatePassword("Abc123")
                                 .attach()
-                            .defineHttpListener("listener2")
-                                .withFrontend("default")
+                            .defineFrontendHttpListener("listener2")
                                 .withFrontendPort(80)
                                 .attach()
 
@@ -330,7 +328,7 @@ public class TestApplicationGateway {
 
                             // SSL certificates
                             .defineSslCertificate("cert1")
-                                .withPfxFile(new File("myTest.pfx"))
+                                .withPfxFile(new File("myTest2.pfx"))
                                 .withPassword("Abc123")
                                 .attach()
 
@@ -345,8 +343,8 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            Thread.sleep(30 * 1000);
-            //creationThread.join(0);
+            //Thread.sleep(30 * 1000);
+            creationThread.join(0);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
