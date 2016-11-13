@@ -20,7 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an inbound NAT rule.
  */
 @Fluent()
-public interface InboundNatRule extends
+public interface LoadBalancerInboundNatRule extends
     HasFrontend,
     HasBackendPort,
     HasProtocol<TransportProtocol>,

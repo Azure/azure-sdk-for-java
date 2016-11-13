@@ -8,25 +8,25 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link InboundNatRule}.
+ *  Implementation for {@link LoadBalancerInboundNatRule}.
  */
 @LangDefinition
-class InboundNatPoolImpl
+class LoadBalancerInboundNatPoolImpl
     extends ChildResourceImpl<InboundNatPoolInner, LoadBalancerImpl, LoadBalancer>
     implements
-        InboundNatPool,
-        InboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
-        InboundNatPool.UpdateDefinition<LoadBalancer.Update>,
-        InboundNatPool.Update {
+        LoadBalancerInboundNatPool,
+        LoadBalancerInboundNatPool.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatPool>,
+        LoadBalancerInboundNatPool.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerInboundNatPool.Update {
 
-    InboundNatPoolImpl(InboundNatPoolInner inner, LoadBalancerImpl parent) {
+    LoadBalancerInboundNatPoolImpl(InboundNatPoolInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -67,19 +67,19 @@ class InboundNatPoolImpl
     // Fluent setters
 
     @Override
-    public InboundNatPoolImpl withBackendPort(int port) {
+    public LoadBalancerInboundNatPoolImpl withBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }
 
     @Override
-    public InboundNatPoolImpl withProtocol(TransportProtocol protocol) {
+    public LoadBalancerInboundNatPoolImpl withProtocol(TransportProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
     }
 
     @Override
-    public InboundNatPoolImpl withFrontend(String frontendName) {
+    public LoadBalancerInboundNatPoolImpl withFrontend(String frontendName) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
         this.inner().withFrontendIPConfiguration(frontendRef);
@@ -87,7 +87,7 @@ class InboundNatPoolImpl
     }
 
     @Override
-    public InboundNatPoolImpl withFrontendPortRange(int from, int to) {
+    public LoadBalancerInboundNatPoolImpl withFrontendPortRange(int from, int to) {
         this.inner().withFrontendPortRangeStart(from);
         this.inner().withFrontendPortRangeEnd(to);
         return this;

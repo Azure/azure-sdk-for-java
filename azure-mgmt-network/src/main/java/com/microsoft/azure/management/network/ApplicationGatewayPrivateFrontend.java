@@ -12,18 +12,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
- * An immutable client-side representation of a private frontend of an internal load balancer.
+ * An immutable client-side representation of a private frontend of an internal application gateway.
  */
 @Fluent()
-public interface PrivateFrontend extends
-    LoadBalancerFrontend,
+public interface ApplicationGatewayPrivateFrontend extends
+    ApplicationGatewayFrontend,
     HasPrivateIpAddress,
     HasSubnet {
-
-    /**
-     * @return the private IP allocation method within the associated subnet for this private frontend
-     */
-    IPAllocationMethod privateIpAllocationMethod();
 
     /**
      * Grouping of private frontend definition stages.
@@ -42,7 +37,7 @@ public interface PrivateFrontend extends
          */
         interface WithSubnet<ParentT> extends HasSubnet.DefinitionStages.WithSubnet<WithAttach<ParentT>> {
             /**
-             * Assigns the specified subnet to this private frontend of an internal load balancer.
+             * Assigns the specified subnet to this private frontend.
              * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
@@ -54,7 +49,7 @@ public interface PrivateFrontend extends
          * The final stage of a private frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
@@ -81,7 +76,7 @@ public interface PrivateFrontend extends
          */
         interface WithSubnet {
             /**
-             * Assigns the specified subnet to this private frontend of the internal load balancer.
+             * Assigns the specified subnet to this private frontend.
              * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
@@ -94,13 +89,13 @@ public interface PrivateFrontend extends
      * The entirety of a private frontend update as part of a load balancer update.
      */
     interface Update extends
-        Settable<LoadBalancer.Update>,
+        Settable<ApplicationGateway.Update>,
         UpdateStages.WithSubnet,
         HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
     }
 
     /**
-     * Grouping of private frontend definition stages applicable as part of a load balancer update.
+     * Grouping of private frontend definition stages applicable as part of an application gateway update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -116,7 +111,7 @@ public interface PrivateFrontend extends
          */
         interface WithSubnet<ParentT> {
             /**
-             * Assigns the specified subnet to this private frontend of the internal load balancer.
+             * Assigns the specified subnet to this private frontend.
              * @param network the virtual network the subnet exists in
              * @param subnetName the name of a subnet
              * @return the next stage of the definition
@@ -127,7 +122,7 @@ public interface PrivateFrontend extends
         /** The final stage of an internal frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway  definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
@@ -136,7 +131,7 @@ public interface PrivateFrontend extends
         }
     }
 
-    /** The entirety of a private frontend definition as part of a load balancer update.
+    /** The entirety of a private frontend definition as part of an application gateway update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends

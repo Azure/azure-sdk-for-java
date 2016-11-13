@@ -8,7 +8,7 @@ package com.microsoft.azure.management.network.model;
 import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
- * An interface representing a model's ability to reference a load balancer backend port.
+ * An interface representing a model's ability to reference a backend port.
  */
 @Fluent
 public interface HasBackendPort  {

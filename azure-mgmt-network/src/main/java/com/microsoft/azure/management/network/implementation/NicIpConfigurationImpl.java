@@ -5,7 +5,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
-import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -386,10 +386,10 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
+    public List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
         final List<InboundNatRuleInner> refs = this.inner().loadBalancerInboundNatRules();
         final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
-        final List<InboundNatRule> rules = new ArrayList<>();
+        final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
 
         if (refs != null) {
             for (InboundNatRuleInner ref : refs) {

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -37,7 +38,8 @@ public abstract class GroupableResourcesImpl<
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T>,
-        SupportsDeletingByGroup {
+        SupportsDeletingByGroup,
+        HasManager<ManagerT> {
 
     protected final InnerCollectionT innerCollection;
     protected final ManagerT myManager;
@@ -46,6 +48,11 @@ public abstract class GroupableResourcesImpl<
             ManagerT manager) {
         this.innerCollection = innerCollection;
         this.myManager = manager;
+    }
+
+    @Override
+    public ManagerT manager() {
+        return this.myManager;
     }
 
     @Override

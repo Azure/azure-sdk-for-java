@@ -19,17 +19,17 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 
 
 /**
- * Entry point to virtual network management API in Azure.
+ * Entry point to application gateway management API in Azure.
  */
 @Fluent()
-public interface Networks extends
-    SupportsCreating<Network.DefinitionStages.Blank>,
-    SupportsListing<Network>,
-    SupportsListingByGroup<Network>,
-    SupportsGettingByGroup<Network>,
-    SupportsGettingById<Network>,
-        SupportsDeletingById,
+public interface ApplicationGateways extends
+    SupportsCreating<ApplicationGateway.DefinitionStages.Blank>,
+    SupportsListing<ApplicationGateway>,
+    SupportsListingByGroup<ApplicationGateway>,
+    SupportsGettingByGroup<ApplicationGateway>,
+    SupportsGettingById<ApplicationGateway>,
+    SupportsDeletingById,
     SupportsDeletingByGroup,
-    SupportsBatchCreation<Network>,
+    SupportsBatchCreation<ApplicationGateway>,
     HasManager<NetworkManager> {
 }

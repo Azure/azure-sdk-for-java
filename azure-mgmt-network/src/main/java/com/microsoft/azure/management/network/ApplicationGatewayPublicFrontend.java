@@ -14,8 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * An immutable client-side representation of a public frontend of an Internet-facing load balancer.
  */
 @Fluent()
-public interface PublicFrontend extends
-    LoadBalancerFrontend,
+public interface ApplicationGatewayPublicFrontend extends
+    ApplicationGatewayFrontend,
     HasPublicIpAddress {
 
     /**
@@ -40,7 +40,7 @@ public interface PublicFrontend extends
          * The final stage of a public frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
@@ -69,15 +69,15 @@ public interface PublicFrontend extends
     }
 
     /**
-     * The entirety of a public frontend update as part of an Internet-facing load balancer update.
+     * The entirety of a public frontend update as part of an Internet-facing application gateway update.
      */
     interface Update extends
-        Settable<LoadBalancer.Update>,
+        Settable<ApplicationGateway.Update>,
         UpdateStages.WithPublicIpAddress {
     }
 
     /**
-     * Grouping of public frontend definition stages applicable as part of an Internet-facing load balancer update.
+     * Grouping of public frontend definition stages applicable as part of an Internet-facing application gateway update.
      */
     interface UpdateDefinitionStages {
         /**
@@ -97,7 +97,7 @@ public interface PublicFrontend extends
         /** The final stage of the public frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent load balancer definition using {@link WithAttach#attach()}.
+         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
@@ -105,7 +105,7 @@ public interface PublicFrontend extends
         }
     }
 
-    /** The entirety of a public frontend definition as part of an Internet-facing load balancer update.
+    /** The entirety of a public frontend definition as part of an Internet-facing application gateway update.
      * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
      */
     interface UpdateDefinition<ParentT> extends

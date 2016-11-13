@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ProbeInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
+import com.microsoft.azure.management.network.model.HasPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -20,12 +21,8 @@ public interface LoadBalancerProbe extends
     Wrapper<ProbeInner>,
     ChildResource<LoadBalancer>,
     HasLoadBalancingRules,
-    HasProtocol<ProbeProtocol> {
-
-    /**
-     * @return the port number the probe is monitoring
-     */
-    int port();
+    HasProtocol<ProbeProtocol>,
+    HasPort {
 
     /**
      * @return number of seconds between probes
