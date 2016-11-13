@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network;
 
 import java.io.File;
-import java.io.IOException;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaySslCertificateInner;
