@@ -20,7 +20,7 @@ class ApplicationGatewayHttpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayBackendHttpSettingsInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayHttpConfiguration,
-        ApplicationGatewayHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithBackendHttpConfigOrListener>,
+        ApplicationGatewayHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithHttpConfigOrListener>,
         ApplicationGatewayHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayHttpConfiguration.Update {
 
@@ -44,13 +44,13 @@ class ApplicationGatewayHttpConfigurationImpl
     }
 
     @Override
-    public ApplicationGatewayHttpConfigurationImpl withPort(int port) {
+    public ApplicationGatewayHttpConfigurationImpl withBackendPort(int port) {
         this.inner().withPort(port);
         return this;
     }
 
     @Override
-    public int port() {
+    public int backendPort() {
         return this.inner().port() != null ? this.inner().port().intValue() : 0;
     }
 

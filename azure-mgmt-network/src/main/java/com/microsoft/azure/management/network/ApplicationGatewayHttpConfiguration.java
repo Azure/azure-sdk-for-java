@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
-import com.microsoft.azure.management.network.model.HasPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -21,8 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface ApplicationGatewayHttpConfiguration extends
     Wrapper<ApplicationGatewayBackendHttpSettingsInner>,
     ChildResource<ApplicationGateway>,
-    HasProtocol<ApplicationGatewayProtocol>,
-    HasPort {
+    HasProtocol<ApplicationGatewayProtocol> {
 
     /**
      * @return true if cookie based affinity (sticky sessions) is enabled, else false
@@ -33,6 +31,11 @@ public interface ApplicationGatewayHttpConfiguration extends
      * @return HTTP request timeout in seconds. Requests will fail if no response is received within the specified time.
      */
     int requestTimeout();
+
+    /**
+     * @return the port the backend is to be listening on
+     */
+    int backendPort();
 
     //TODO ApplicationGatewayProbe probe();
     //TODO Map<String, ApplicationGatewayCertificate> authenticationCertificates()
@@ -52,7 +55,13 @@ public interface ApplicationGatewayHttpConfiguration extends
          * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
          * @param <ParentT> the parent application gateway stage to return to
          */
-        interface WithPort<ParentT> extends HasPort.DefinitionStages.WithPort<WithAttach<ParentT>> {
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number for this configuration that the backend is listening on.
+             * @param portNumber a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withBackendPort(int portNumber);
         }
 
         /**
@@ -117,7 +126,13 @@ public interface ApplicationGatewayHttpConfiguration extends
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
          */
-        interface WithPort extends HasPort.UpdateStages.WithPort<Update> {
+        interface WithPort {
+            /**
+             * Specifies the port number for this configuration that the backend is listening on.
+             * @param portNumber a port number
+             * @return the next stage of the update
+             */
+            Update withBackendPort(int portNumber);
         }
 
         /**
@@ -190,9 +205,15 @@ public interface ApplicationGatewayHttpConfiguration extends
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
-         * @param <ParentT> the parent application gateway type
+         * @param <ParentT> the parent application gateway stage to return to
          */
-        interface WithPort<ParentT> extends HasPort.UpdateDefinitionStages.WithPort<WithAttach<ParentT>> {
+        interface WithPort<ParentT> {
+            /**
+             * Specifies the port number for this configuration that the backend is listening on.
+             * @param portNumber a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withBackendPort(int portNumber);
         }
 
         /**
