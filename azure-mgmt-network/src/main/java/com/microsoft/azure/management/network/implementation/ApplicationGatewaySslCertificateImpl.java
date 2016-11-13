@@ -9,8 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-import org.apache.commons.codec.binary.Base64;
-
+import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -59,7 +58,7 @@ class ApplicationGatewaySslCertificateImpl
 
     @Override
     public ApplicationGatewaySslCertificateImpl withPfxContent(byte[] pfxData) {
-        String encoded = new String(Base64.encodeBase64(pfxData));
+        String encoded = new String(BaseEncoding.base64().encode(pfxData));
         this.inner().withData(encoded);
         return this;
     }

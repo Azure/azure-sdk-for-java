@@ -343,8 +343,8 @@ public class TestApplicationGateway {
             creationThread.start();
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
-            //Thread.sleep(30 * 1000);
-            creationThread.join(0);
+            Thread.sleep(30 * 1000);
+            //creationThread.join(0);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -378,7 +378,6 @@ public class TestApplicationGateway {
             ApplicationGatewayFrontendHttpListener listener = appGateway.frontendHttpListeners().get("listener1");
             Assert.assertTrue(listener != null);
             Assert.assertTrue(listener.sslCertificate() != null);
-            Assert.assertTrue(listener.sslCertificate().name().equalsIgnoreCase("cert1"));
             Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTPS));
             Assert.assertTrue(listener.frontendPortNumber() == 443);
 
@@ -389,7 +388,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(listener.frontendPortNumber() == 80);
 
             // Verify SSL certs
-            Assert.assertTrue(appGateway.sslCertificates().size() == 1);
+            Assert.assertTrue(appGateway.sslCertificates().size() == 2);
             Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
 
             // Verify frontend ports
