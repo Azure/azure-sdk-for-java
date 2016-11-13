@@ -19,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 /**
- * Externalized child resource collection abstract implementation.
+ * Base class for cached {@link ExternalChildResourcesCachedImpl} and non-cached {@link ExternalChildResourcesNonCachedImpl}
+ * externalized child resource collection.
  * (Internal use only)
  *
  * @param <FluentModelTImpl> the implementation of {@param FluentModelT}
@@ -28,7 +29,7 @@ import java.util.concurrent.ConcurrentMap;
  * @param <ParentImplT> <ParentImplT> the parent Azure resource impl class type that implements {@link ParentT}
  * @param <ParentT> the parent interface
  */
-public abstract class ExternalChildResourcesImpl<
+public abstract class ExternalChildResourceCollectionImpl<
         FluentModelTImpl extends ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT>,
         FluentModelT extends ExternalChildResource<FluentModelT, ParentT>,
         InnerModelT,
@@ -38,14 +39,16 @@ public abstract class ExternalChildResourcesImpl<
      * The parent resource of this collection of child resources.
      */
     private final ParentImplT parent;
-    /**
-     * Used to construct error string, this is user friendly name of the child resource (e.g. Subnet, Extension).
-     */
-    private final String childResourceName;
+    
     /**
      * The child resource instances that this collection contains.
      */
-    private ConcurrentMap<String, FluentModelTImpl> collection = new ConcurrentHashMap<>();
+    protected ConcurrentMap<String, FluentModelTImpl> childCollection = new ConcurrentHashMap<>();
+
+    /**
+     * Used to construct error string, this is user friendly name of the child resource (e.g. Subnet, Extension).
+     */
+    protected final String childResourceName;
 
     /**
      * Creates a new ExternalChildResourcesImpl.
@@ -53,32 +56,25 @@ public abstract class ExternalChildResourcesImpl<
      * @param parent the parent Azure resource
      * @param childResourceName the child resource name
      */
-    protected ExternalChildResourcesImpl(ParentImplT parent, String childResourceName) {
+    protected ExternalChildResourceCollectionImpl(ParentImplT parent, String childResourceName) {
         this.parent = parent;
         this.childResourceName = childResourceName;
     }
 
     /**
-     * Refresh the collection.
-     */
-    public void refresh() {
-        initializeCollection();
-    }
-
-    /**
-     * Commits the changes in the external child resource collection.
+     * Commits the changes in the external child resource childCollection.
      * <p/>
      * This method returns an observable stream, its observer's onNext will be called for each successfully
-     * committed resource followed by 'one call to onCompleted' or one call to onError with a
+     * committed resource followed by one call to 'onCompleted' or one call to 'onError' with a
      * {@link CompositeException } containing the list of exceptions where each exception describes the reason
      * for failure of a resource commit.
      *
      * @return the observable stream
      */
     public Observable<FluentModelTImpl> commitAsync() {
-        final ExternalChildResourcesImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
+        final ExternalChildResourceCollectionImpl<FluentModelTImpl, FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
         List<FluentModelTImpl> items = new ArrayList<>();
-        for (FluentModelTImpl item : this.collection.values()) {
+        for (FluentModelTImpl item : this.childCollection.values()) {
             items.add(item);
         }
 
@@ -102,7 +98,7 @@ public abstract class ExternalChildResourcesImpl<
                                     @Override
                                     public void call(FluentModelTImpl childResource) {
                                         childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.None);
-                                        self.collection.remove(childResource.name());
+                                        self.childCollection.remove(childResource.name());
                                     }
                                 })
                                 .onErrorResumeNext(new Func1<Throwable, Observable<FluentModelTImpl>>() {
@@ -140,7 +136,7 @@ public abstract class ExternalChildResourcesImpl<
                                 .onErrorResumeNext(new Func1<Throwable, Observable<? extends FluentModelTImpl>>() {
                                     @Override
                                     public Observable<FluentModelTImpl> call(Throwable throwable) {
-                                        self.collection.remove(childResource.name());
+                                        self.childCollection.remove(childResource.name());
                                         exceptionsList.add(throwable);
                                         return Observable.empty();
                                     }
@@ -184,22 +180,25 @@ public abstract class ExternalChildResourcesImpl<
         Observable<FluentModelTImpl> operationsStream = Observable.merge(deleteStream,
                 createStream,
                 updateStream).doOnTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                    if (exceptionsList.isEmpty()) {
-                        aggregatedErrorStream.onCompleted();
-                    } else {
-                        aggregatedErrorStream.onError(new CompositeException(exceptionsList));
-                    }
+            @Override
+            public void call() {
+                if (clearAfterCommit()) {
+                    self.childCollection.clear();
                 }
-            });
+                if (exceptionsList.isEmpty()) {
+                    aggregatedErrorStream.onCompleted();
+                } else {
+                    aggregatedErrorStream.onError(new CompositeException(exceptionsList));
+                }
+            }
+        });
 
         Observable<FluentModelTImpl> stream = Observable.concat(operationsStream, aggregatedErrorStream);
         return stream;
     }
 
     /**
-     * Commits the changes in the external child resource collection.
+     * Commits the changes in the external child resource childCollection.
      * <p/>
      * This method returns a observable stream, either its observer's onError will be called with
      * {@link CompositeException} if some resources failed to commit or onNext will be called if all resources
@@ -210,15 +209,31 @@ public abstract class ExternalChildResourcesImpl<
     public Observable<List<FluentModelTImpl>> commitAndGetAllAsync() {
         return commitAsync().collect(
                 new Func0<List<FluentModelTImpl>>() {
-                        public List<FluentModelTImpl> call() {
-                            return new ArrayList<>();
-                        }
+                    public List<FluentModelTImpl> call() {
+                        return new ArrayList<>();
+                    }
                 },
                 new Action2<List<FluentModelTImpl>, FluentModelTImpl>() {
                     public void call(List<FluentModelTImpl> state, FluentModelTImpl item) {
                         state.add(item);
                     }
                 });
+    }
+
+
+    /**
+     * Finds a child resource with the given key.
+     *
+     * @param key the child resource key
+     * @return null if no child resource exists with the given name else the child resource
+     */
+    protected FluentModelTImpl find(String key) {
+        for (Map.Entry<String, FluentModelTImpl> entry : this.childCollection.entrySet()) {
+            if (entry.getKey().equalsIgnoreCase(key)) {
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 
     /**
@@ -229,106 +244,7 @@ public abstract class ExternalChildResourcesImpl<
     }
 
     /**
-     * @return the collection of external child resources.
+     * @return true if the child resource collection needs to be cleared after the commit.
      */
-    protected Map<String, FluentModelTImpl> collection() {
-        return this.collection;
-    }
-
-    /**
-     * Prepare for definition of a new external child resource.
-     *
-     * @param name the name for the new external child resource
-     * @return the child resource
-     */
-    protected FluentModelTImpl prepareDefine(String name) {
-        if (find(name) != null) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' already exists");
-        }
-        FluentModelTImpl childResource = newChildResource(name);
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
-        return childResource;
-    }
-
-    /**
-     * Prepare for an external child resource update.
-     *
-     * @param name the name of the external child resource
-     * @return the external child resource to be updated
-     */
-    protected FluentModelTImpl prepareUpdate(String name) {
-        FluentModelTImpl childResource = find(name);
-        if (childResource == null
-                || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
-        }
-        if (childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' is marked for deletion");
-        }
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeUpdated);
-        return childResource;
-    }
-
-    /**
-     * Mark an external child resource with given name as to be removed.
-     *
-     * @param name the name of the external child resource
-     */
-    protected void prepareRemove(String name) {
-        FluentModelTImpl childResource = find(name);
-        if (childResource == null
-                || childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeCreated) {
-            throw new IllegalArgumentException("A child resource ('" + childResourceName + "') with name  '" + name + "' not found");
-        }
-        childResource.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeRemoved);
-    }
-
-    /**
-     * Adds an external child resource to the collection.
-     *
-     * @param childResource the external child resource
-     */
-    protected void addChildResource(FluentModelTImpl childResource) {
-        this.collection.put(childResource.name(), childResource);
-    }
-
-    /**
-     * Initializes the external child resource collection.
-     */
-    protected void initializeCollection() {
-        this.collection.clear();
-        for (FluentModelTImpl childResource : this.listChildResources()) {
-            this.collection.put(childResource.name(), childResource);
-        }
-    }
-
-    /**
-     * Gets the list of external child resources.
-     *
-     * @return the list of external child resources
-     */
-    protected abstract List<FluentModelTImpl> listChildResources();
-
-    /**
-     * Gets a new external child resource model instance.
-     *
-     * @param name the name for the new child resource
-     * @return the new child resource
-     */
-    protected abstract FluentModelTImpl newChildResource(String name);
-
-    /**
-     * Finds a child resource with the given name.
-     *
-     * @param name the child resource name
-     * @return null if no child resource exists with the given name else the child resource
-     */
-    private FluentModelTImpl find(String name) {
-        for (Map.Entry<String, FluentModelTImpl> entry : this.collection.entrySet()) {
-            if (entry.getKey().equalsIgnoreCase(name)) {
-                return entry.getValue();
-            }
-        }
-        return null;
-    }
+    protected abstract boolean clearAfterCommit();
 }

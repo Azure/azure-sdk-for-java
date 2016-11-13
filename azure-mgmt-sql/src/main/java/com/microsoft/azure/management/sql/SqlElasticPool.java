@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -27,7 +28,7 @@ public interface SqlElasticPool extends
         Wrapper<ElasticPoolInner> {
 
     /**
-     * @return the SQL Server name to which this elastic pool belongs
+     * @return name of the SQL Server to which this elastic pool belongs
      */
     String sqlServerName();
 
@@ -51,7 +52,6 @@ public interface SqlElasticPool extends
      */
     int dtu();
 
-
     /**
      * @return the maximum DTU any one SQL Azure database can consume.
      */
@@ -66,6 +66,33 @@ public interface SqlElasticPool extends
      * @return the storage limit for the SQL Azure Database Elastic Pool in MB
      */
     int storageMB();
+
+    /**
+     * @return the information about elastic pool activities
+     */
+    PagedList<ElasticPoolActivity> listActivity();
+
+    /**
+     * @return the information about elastic pool database activities
+     */
+    PagedList<ElasticPoolDatabaseActivity> listDatabaseActivity();
+
+    /**
+     * @return the information about databases in elastic pool
+     */
+    PagedList<SqlDatabase> listDatabases();
+
+    /**
+     * Gets the specific database in the elastic pool.
+     *
+     * @param databaseName name of the database to look into
+     * @return the information about specific database in elastic pool
+     */
+    SqlDatabase getDatabase(String databaseName);
+
+    /**************************************************************
+     * Fluent interfaces to provision a Sql Elastic pool
+     **************************************************************/
 
     /**
      * Container interface for all the definitions that need to be implemented.

@@ -8,25 +8,25 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link InboundNatRule}.
+ *  Implementation for {@link LoadBalancerInboundNatRule}.
  */
 @LangDefinition
-class InboundNatRuleImpl
+class LoadBalancerInboundNatRuleImpl
     extends ChildResourceImpl<InboundNatRuleInner, LoadBalancerImpl, LoadBalancer>
     implements
-        InboundNatRule,
-        InboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatRule>,
-        InboundNatRule.UpdateDefinition<LoadBalancer.Update>,
-        InboundNatRule.Update {
+        LoadBalancerInboundNatRule,
+        LoadBalancerInboundNatRule.Definition<LoadBalancer.DefinitionStages.WithCreateAndInboundNatRule>,
+        LoadBalancerInboundNatRule.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerInboundNatRule.Update {
 
-    InboundNatRuleImpl(InboundNatRuleInner inner, LoadBalancerImpl parent) {
+    LoadBalancerInboundNatRuleImpl(InboundNatRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
     }
 
@@ -98,29 +98,29 @@ class InboundNatRuleImpl
     // Fluent setters
 
     @Override
-    public InboundNatRuleImpl withBackendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl withBackendPort(int port) {
         this.inner().withBackendPort(port);
         return this;
     }
 
     @Override
-    public InboundNatRuleImpl withFloatingIpEnabled() {
+    public LoadBalancerInboundNatRuleImpl withFloatingIpEnabled() {
         return withFloatingIp(true);
     }
 
     @Override
-    public InboundNatRuleImpl withFloatingIpDisabled() {
+    public LoadBalancerInboundNatRuleImpl withFloatingIpDisabled() {
         return withFloatingIp(false);
     }
 
     @Override
-    public InboundNatRuleImpl withFloatingIp(boolean enabled) {
+    public LoadBalancerInboundNatRuleImpl withFloatingIp(boolean enabled) {
         this.inner().withEnableFloatingIP(enabled);
         return this;
     }
 
     @Override
-    public InboundNatRuleImpl withFrontendPort(int port) {
+    public LoadBalancerInboundNatRuleImpl withFrontendPort(int port) {
         this.inner().withFrontendPort(port);
         if (this.backendPort() == 0) {
             // By default, assume the same backend port
@@ -131,19 +131,19 @@ class InboundNatRuleImpl
     }
 
     @Override
-    public InboundNatRuleImpl withIdleTimeoutInMinutes(int minutes) {
+    public LoadBalancerInboundNatRuleImpl withIdleTimeoutInMinutes(int minutes) {
         this.inner().withIdleTimeoutInMinutes(minutes);
         return this;
     }
 
     @Override
-    public InboundNatRuleImpl withProtocol(TransportProtocol protocol) {
+    public LoadBalancerInboundNatRuleImpl withProtocol(TransportProtocol protocol) {
         this.inner().withProtocol(protocol);
         return this;
     }
 
     @Override
-    public InboundNatRuleImpl withFrontend(String frontendName) {
+    public LoadBalancerInboundNatRuleImpl withFrontend(String frontendName) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + frontendName);
         this.inner().withFrontendIPConfiguration(frontendRef);

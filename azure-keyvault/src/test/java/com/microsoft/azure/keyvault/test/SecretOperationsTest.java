@@ -76,6 +76,32 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
+    // verifies the inner error on disabled secret
+    public void disabledSecretGet() throws Exception {
+
+        String secretName = "disabledsecret";
+        SecretBundle secret = keyVaultClient.setSecret(
+                new SetSecretRequest
+                    .Builder(getVaultUri(), secretName, SECRET_VALUE)
+                    .withAttributes(new SecretAttributes().withEnabled(false))
+                    .build());
+        try {
+            keyVaultClient.getSecret(secret.id());
+            Assert.fail("Should throw exception for disabled secret.");
+        }
+        catch (KeyVaultErrorException e) {
+            Assert.assertEquals(e.getBody().error().code(), "Forbidden");
+            Assert.assertNotNull(e.getBody().error().message());
+            Assert.assertNotNull(e.getBody().error().innerError());
+            Assert.assertEquals(e.getBody().error().innerError().code(), "SecretDisabled");
+        }
+        catch (Exception e) {
+            Assert.fail("Should throw KeyVaultErrorException for disabled secret.");
+        }
+        keyVaultClient.deleteSecret(getVaultUri(), secretName);
+    }
+    
+    @Test
     public void crudOperations() throws Exception {
 
         SecretBundle secret;

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -36,7 +37,7 @@ public interface SqlDatabase extends
         Wrapper<DatabaseInner> {
 
     /**
-     * @return the SQL Server name to which this database belongs
+     * @return name of the SQL Server to which this database belongs
      */
     String sqlServerName();
 
@@ -139,8 +140,103 @@ public interface SqlDatabase extends
      */
     List<RecommendedIndexInner> recommendedIndex();
 
+    /**
+     * @return the handler to replication links
+     */
+    ReplicationLinks replicationLinks();
+
+    /**
+     * Pause an Azure SQL Data Warehouse database.
+     */
+    void pauseDataWarehouse();
+
+    /**
+     * Resume an Azure SQL Data Warehouse database.
+     */
+    void resumeDataWarehouse();
+
+    /**
+     * @return returns the list of all restore points on the database
+     */
+    PagedList<RestorePoint> listRestorePoints();
+
+    /**
+     * @return returns the list of usages (DatabaseMetrics) of the database
+     */
+    PagedList<DatabaseMetric> listUsages();
+
+    /**
+     * @return entry point to manage and get transparentDataEncryption
+     */
+    TransparentDataEncryptions transparentDataEncryptions();
+
+    /**
+     * @return the list of all service tier advisor in the database
+     */
+    PagedList<ServiceTierAdvisor> listServiceTierAdvisor();
+
+    /**
+     * Get information about a service tier advisor.
+     * @param serviceTierAdvisorName name of the service tier advisor
+     * @return information about specific service tier advisor
+     */
+    ServiceTierAdvisor getServiceTierAdvisor(String serviceTierAdvisorName);
+
+    /**
+     * Entry point to access TransparentDataEncryption from SQL Database.
+     */
+    interface TransparentDataEncryptions {
+        /**
+         * Gets an Azure SQL Database Transparent Data Encryption for the database.
+         *
+         * @return an Azure SQL Database Transparent Data Encryption for the database.
+         */
+        TransparentDataEncryption get();
+
+        /**
+         * Updates the state of the transparent data encryption status.
+         *
+         * @param transparentDataEncryptionState state of the data encryption to set
+         * @return the new encryption settings after update
+         */
+        TransparentDataEncryption update(TransparentDataEncryptionStates transparentDataEncryptionState);
+
+        /**
+         * @return an Azure SQL Database Transparent Data Encryption Activity
+         */
+        PagedList<TransparentDataEncryptionActivity> listActivity();
+    }
+
+    /**
+     * Entry point to access replication links from SQL Database.
+     */
+    interface ReplicationLinks {
+        /**
+         * Gets a particular replication link.
+         *
+         * @param linkId name of the replication to get
+         * @return Returns the replication link with in the SQL Database
+         */
+        ReplicationLink get(String linkId);
+
+        /**
+         * Returns all the replication links for the database.
+         *
+         * @return list of replication links for the database
+         */
+        PagedList<ReplicationLink> list();
+
+        /**
+         * Delete specified replication link in the database.
+         *
+         * @param linkId name of the replication link to delete
+         */
+        void delete(String linkId);
+    }
+
+
     /**************************************************************
-     * Fluent interfaces to provision a SqlServer
+     * Fluent interfaces to provision a Sql Database
      **************************************************************/
 
     /**
@@ -177,7 +273,7 @@ public interface SqlDatabase extends
              *
              * @return The next stage of definition.
              */
-            WithExistingDatabase withoutExistingElasticPool();
+            WithExistingDatabase withoutElasticPool();
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.
@@ -388,7 +484,7 @@ public interface SqlDatabase extends
              *
              * @return The next stage of definition.
              */
-            WithEdition withoutExistingElasticPool();
+            WithEdition withoutElasticPool();
 
             /**
              * Sets the existing elastic pool for the SQLDatabase.

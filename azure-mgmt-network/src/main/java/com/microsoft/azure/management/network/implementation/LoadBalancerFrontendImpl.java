@@ -13,10 +13,10 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
-import com.microsoft.azure.management.network.InboundNatPool;
-import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.PrivateFrontend;
-import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
@@ -25,21 +25,21 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
- *  Implementation for {@link PublicFrontend}.
+ *  Implementation for {@link LoadBalancerPublicFrontend}.
  */
 @LangDefinition
 class LoadBalancerFrontendImpl
     extends ChildResourceImpl<FrontendIPConfigurationInner, LoadBalancerImpl, LoadBalancer>
     implements
         LoadBalancerFrontend,
-        PrivateFrontend,
-        PrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrBackend>,
-        PrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
-        PrivateFrontend.Update,
-        PublicFrontend,
-        PublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrBackend>,
-        PublicFrontend.UpdateDefinition<LoadBalancer.Update>,
-        PublicFrontend.Update {
+        LoadBalancerPrivateFrontend,
+        LoadBalancerPrivateFrontend.Definition<LoadBalancer.DefinitionStages.WithPrivateFrontendOrBackend>,
+        LoadBalancerPrivateFrontend.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerPrivateFrontend.Update,
+        LoadBalancerPublicFrontend,
+        LoadBalancerPublicFrontend.Definition<LoadBalancer.DefinitionStages.WithPublicFrontendOrBackend>,
+        LoadBalancerPublicFrontend.UpdateDefinition<LoadBalancer.Update>,
+        LoadBalancerPublicFrontend.Update {
 
     LoadBalancerFrontendImpl(FrontendIPConfigurationInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
@@ -109,12 +109,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> inboundNatPools() {
-        final Map<String, InboundNatPool> pools = new TreeMap<>();
+    public Map<String, LoadBalancerInboundNatPool> inboundNatPools() {
+        final Map<String, LoadBalancerInboundNatPool> pools = new TreeMap<>();
         if (this.inner().inboundNatPools() != null) {
             for (SubResource innerRef : this.inner().inboundNatPools()) {
                 String name = ResourceUtils.nameFromResourceId(innerRef.id());
-                InboundNatPool pool = this.parent().inboundNatPools().get(name);
+                LoadBalancerInboundNatPool pool = this.parent().inboundNatPools().get(name);
                 if (pool != null) {
                     pools.put(name, pool);
                 }
@@ -125,12 +125,12 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public Map<String, InboundNatRule> inboundNatRules() {
-        final Map<String, InboundNatRule> rules = new TreeMap<>();
+    public Map<String, LoadBalancerInboundNatRule> inboundNatRules() {
+        final Map<String, LoadBalancerInboundNatRule> rules = new TreeMap<>();
         if (this.inner().inboundNatRules() != null) {
             for (SubResource innerRef : this.inner().inboundNatRules()) {
                 String name = ResourceUtils.nameFromResourceId(innerRef.id());
-                InboundNatRule rule = this.parent().inboundNatRules().get(name);
+                LoadBalancerInboundNatRule rule = this.parent().inboundNatRules().get(name);
                 if (rule != null) {
                     rules.put(name, rule);
                 }
