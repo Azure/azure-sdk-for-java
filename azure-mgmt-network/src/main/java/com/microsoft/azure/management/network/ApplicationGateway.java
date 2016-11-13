@@ -71,7 +71,7 @@ public interface ApplicationGateway extends
     /**
      * @return backend HTTP configurations of this application gateway, indexed by name
      */
-    Map<String, ApplicationGatewayHttpConfiguration> httpConfigurations();
+    Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations();
 
     /**
      * @return SSL certificates, indexed by name
@@ -81,7 +81,7 @@ public interface ApplicationGateway extends
     /**
      * @return HTTP listeners, indexed by name
      */
-    Map<String, ApplicationGatewayFrontendHttpListener> httpListeners();
+    Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners();
 
     /**
      * The entirety of the application gateway definition.
@@ -297,7 +297,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrRequestRoutingRule> defineHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrRequestRoutingRule> defineBackendHttpConfiguration(String name);
         }
 
         /**
@@ -501,21 +501,21 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayHttpConfiguration.UpdateDefinitionStages.Blank<Update> defineHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.UpdateDefinitionStages.Blank<Update> defineBackendHttpConfiguration(String name);
 
             /**
              * Removes the specified backend HTTP configuration from this application gateway.
              * @param name the name of an existing HTTP configuration on this application gateway
              * @return the next stage of the update
              */
-            Update withoutHttpConfiguration(String name);
+            Update withoutBackendHttpConfiguration(String name);
 
             /**
              * Begins the update of a backend HTTP configuration.
              * @param name the name of an existing backend HTTP configuration on this application gateway
              * @return the next stage of the update
              */
-            ApplicationGatewayHttpConfiguration.Update updateHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.Update updateBackendHttpConfiguration(String name);
         }
     }
 

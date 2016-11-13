@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an application gateway's backend HTTP configuration.
  */
 @Fluent()
-public interface ApplicationGatewayHttpConfiguration extends
+public interface ApplicationGatewayBackendHttpConfiguration extends
     Wrapper<ApplicationGatewayBackendHttpSettingsInner>,
     ChildResource<ApplicationGateway>,
     HasProtocol<ApplicationGatewayProtocol> {

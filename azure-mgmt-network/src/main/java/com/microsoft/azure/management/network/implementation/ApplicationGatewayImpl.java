@@ -7,7 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
@@ -53,7 +53,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayIpConfiguration> configs;
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
-    private Map<String, ApplicationGatewayHttpConfiguration> httpConfigs;
+    private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
     private Map<String, ApplicationGatewayFrontendHttpListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
@@ -126,7 +126,7 @@ class ApplicationGatewayImpl
         List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
-                ApplicationGatewayHttpConfigurationImpl httpConfig = new ApplicationGatewayHttpConfigurationImpl(inner, this);
+                ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
                 this.httpConfigs.put(inner.name(), httpConfig);
             }
         }
@@ -267,7 +267,7 @@ class ApplicationGatewayImpl
         }
     }
 
-    ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayHttpConfigurationImpl httpConfig) {
+    ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
         if (httpConfig == null) {
             return null;
         } else {
@@ -403,15 +403,15 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayHttpConfigurationImpl defineHttpConfiguration(String name) {
-        ApplicationGatewayHttpConfiguration httpConfig = this.httpConfigs.get(name);
+    public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
+        ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
                     .withPort(80);
-            return new ApplicationGatewayHttpConfigurationImpl(inner, this);
+            return new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
         } else {
-            return (ApplicationGatewayHttpConfigurationImpl) httpConfig;
+            return (ApplicationGatewayBackendHttpConfigurationImpl) httpConfig;
         }
     }
 
@@ -589,20 +589,20 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutHttpConfiguration(String name) {
+    public ApplicationGatewayImpl withoutBackendHttpConfiguration(String name) {
         this.httpConfigs.remove(name);
         return this;
     }
 
     @Override
-    public ApplicationGatewayHttpConfigurationImpl updateHttpConfiguration(String name) {
-        return (ApplicationGatewayHttpConfigurationImpl) this.httpConfigs.get(name);
+    public ApplicationGatewayBackendHttpConfigurationImpl updateBackendHttpConfiguration(String name) {
+        return (ApplicationGatewayBackendHttpConfigurationImpl) this.httpConfigs.get(name);
     }
 
     // Getters
 
     @Override
-    public Map<String, ApplicationGatewayHttpConfiguration> httpConfigurations() {
+    public Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations() {
         return Collections.unmodifiableMap(this.httpConfigs);
     }
 
@@ -622,7 +622,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public Map<String, ApplicationGatewayFrontendHttpListener> httpListeners() {
+    public Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners() {
         return Collections.unmodifiableMap(this.httpListeners);
     }
 
