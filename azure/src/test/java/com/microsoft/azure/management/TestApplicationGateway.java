@@ -105,17 +105,18 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
-                            .withBackendIpAddress("11.1.1.1")   // Backends
-                            .withBackendIpAddress("11.1.1.2")
-                            //TODO .withBackendPort(8080)
-                            .defineHttpConfiguration("default") // Backend HTTP config
-                                .withBackendPort(8080)
-                                .attach()
 
                             // HTTP listeners
                             .defineHttpListener("default")
                                 .withFrontend("default")
                                 .withFrontendPort(80)
+                                .attach()
+
+                            .withBackendIpAddress("11.1.1.1")   // Backends
+                            .withBackendIpAddress("11.1.1.2")
+                            //TODO .withBackendPort(8080)
+                            .defineHttpConfiguration("default") // Backend HTTP config
+                                .withBackendPort(8080)
                                 .attach()
 
                             // Request routing rules
@@ -288,6 +289,18 @@ public class TestApplicationGateway {
                             // Private frontend
                             .withPrivateFrontend()
 
+                            // HTTP listeners
+                            .defineHttpListener("listener1")
+                                .withFrontend("default")
+                                .withFrontendPort(443)
+                                .withHttps()
+                                .withSslCertificate("cert1")
+                                .attach()
+                            .defineHttpListener("listener2")
+                                .withFrontend("default")
+                                .withFrontendPort(80)
+                                .attach()
+
                             // Backends
                             .withBackendIpAddress("11.1.1.1")
                             .withBackendIpAddress("11.1.1.2")
@@ -306,19 +319,6 @@ public class TestApplicationGateway {
                                 .withBackendPort(82)
                                 .withProtocol(ApplicationGatewayProtocol.HTTPS)
                                 .withRequestTimeout(15)
-                                .attach()
-
-                            // HTTP listeners
-                            .defineHttpListener("listener1")
-                                .withFrontend("default")
-                                .withFrontendPort(443)
-                                .withHttps()
-                                .withSslCertificate("cert1")
-                                .attach()
-
-                            .defineHttpListener("listener2")
-                                .withFrontend("default")
-                                .withFrontendPort(80)
                                 .attach()
 
                             // Request routing rules

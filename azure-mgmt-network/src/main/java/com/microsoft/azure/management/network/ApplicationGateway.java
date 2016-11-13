@@ -98,9 +98,9 @@ public interface ApplicationGateway extends
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrHttpConfig,
         DefinitionStages.WithHttpConfig,
-        DefinitionStages.WithHttpConfigOrListener,
+        DefinitionStages.WithHttpConfigOrRequestRoutingRule,
         DefinitionStages.WithHttpListener,
-        DefinitionStages.WithHttpListenerOrRequestRoutingRule,
+        DefinitionStages.WithHttpListenerOrBackend,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -131,46 +131,6 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an internal application gateway definition allowing to define a private frontend.
-         */
-        interface WithPrivateFrontend {
-            /**
-             * Begins the definition of a private, or internal, application gateway frontend IP configuration.
-             * @param name the name for the frontend
-             * @return the first stage of a private frontend IP configuration definition
-             */
-            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithBackend> definePrivateFrontend(String name);
-
-            /**
-             * Enables a private default frontend in the subnet containing the application gateway.
-             * <p>
-             * A frontend with the name "default" will be created if needed.
-             * @return the next stage of the definition
-             */
-            WithBackend withPrivateFrontend();
-
-            /**
-             * Enables a private frontend in the subnet containing the application gateway.
-             * @param frontendName the name for the frontend to create
-             * @return the next stage of the definition
-             */
-            WithBackend withPrivateFrontend(String frontendName);
-        }
-
-        /**
-         * The stage of an internal application gateway definition allowing to optionally define a private,
-         * or internal, frontend IP configuration.
-         */
-        interface WithPrivateFrontendOptional extends WithPrivateFrontend {
-            /**
-             * Specifies that no private, or internal, frontend should be enabled.
-             * @return the next stage of the definition
-             */
-            @Method
-            WithBackend withoutPrivateFrontend();
-        }
-
-        /**
          * The stage of an application gateway definition allowing to define one or more public, or Internet-facing, frontends.
          */
         interface WithPublicFrontend extends WithPublicIpAddress<WithPrivateFrontendOptional> {
@@ -188,6 +148,59 @@ public interface ApplicationGateway extends
             @Method
             WithPrivateFrontend withoutPublicFrontend();
         }
+
+        /**
+         * The stage of an internal application gateway definition allowing to define a private frontend.
+         */
+        interface WithPrivateFrontend {
+            /**
+             * Begins the definition of a private, or internal, application gateway frontend IP configuration.
+             * @param name the name for the frontend
+             * @return the first stage of a private frontend IP configuration definition
+             */
+            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name);
+
+            /**
+             * Enables a private default frontend in the subnet containing the application gateway.
+             * <p>
+             * A frontend with the name "default" will be created if needed.
+             * @return the next stage of the definition
+             */
+            WithHttpListener withPrivateFrontend();
+
+            /**
+             * Enables a private frontend in the subnet containing the application gateway.
+             * @param frontendName the name for the frontend to create
+             * @return the next stage of the definition
+             */
+            WithHttpListener withPrivateFrontend(String frontendName);
+        }
+
+        /**
+         * The stage of an internal application gateway definition allowing to optionally define a private,
+         * or internal, frontend IP configuration.
+         */
+        interface WithPrivateFrontendOptional extends WithPrivateFrontend {
+            /**
+             * Specifies that no private, or internal, frontend should be enabled.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithHttpListener withoutPrivateFrontend();
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add an HTTP listener.
+         */
+        interface WithHttpListener {
+            /**
+             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
+             * @param name a unique name for the HTTP listener
+             * @return the first stage of the HTTP listener definition
+             */
+            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineHttpListener(String name);
+        }
+
 
         /**
          * The stage of an application gateway definition allowing to add a frontend port.
@@ -283,33 +296,21 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrListener> defineHttpConfiguration(String name);
+            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrRequestRoutingRule> defineHttpConfiguration(String name);
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more backend
-         * HTTP configurations or start adding HTTP listeners.
+         * HTTP configurations or start adding request routing rules.
          */
-        interface WithHttpConfigOrListener extends WithHttpConfig, WithHttpListener {
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to add an HTTP listener.
-         */
-        interface WithHttpListener {
-            /**
-             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
-             * @param name a unique name for the HTTP listener
-             * @return the first stage of the HTTP listener definition
-             */
-            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrRequestRoutingRule> defineHttpListener(String name);
+        interface WithHttpConfigOrRequestRoutingRule extends WithHttpConfig, WithRequestRoutingRule {
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more HTTP listeners,
-         * or start specifying request routing rules.
+         * or start specifying backends.
          */
-        interface WithHttpListenerOrRequestRoutingRule extends WithHttpListener, WithRequestRoutingRule {
+        interface WithHttpListenerOrBackend extends WithHttpListener, WithBackend {
         }
 
         /**
