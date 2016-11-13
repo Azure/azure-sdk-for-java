@@ -57,6 +57,18 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayFrontend> frontends();
 
     /**
+     * @return named frontend ports of this application gateway, indexed by name
+     */
+    Map<String, Integer> frontendPorts();
+
+    /**
+     * Returns the name of the existing port, if any, that is associated with the specified port number.
+     * @param portNumber a port number
+     * @return the existing port name for that port number, or null if none found
+     */
+    String frontendPortNameFromNumber(int portNumber);
+
+    /**
      * @return backend HTTP configurations of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayHttpConfiguration> httpConfigurations();
@@ -83,12 +95,10 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithFrontendPort,
-        DefinitionStages.WithFrontendPortOrBackend,
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrHttpConfig,
-        DefinitionStages.WithBackendHttpConfig,
-        DefinitionStages.WithBackendHttpConfigOrListener,
+        DefinitionStages.WithHttpConfig,
+        DefinitionStages.WithHttpConfigOrListener,
         DefinitionStages.WithHttpListener,
         DefinitionStages.WithHttpListenerOrRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRule,
@@ -129,7 +139,7 @@ public interface ApplicationGateway extends
              * @param name the name for the frontend
              * @return the first stage of a private frontend IP configuration definition
              */
-            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithFrontendPort> definePrivateFrontend(String name);
+            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithBackend> definePrivateFrontend(String name);
 
             /**
              * Enables a private default frontend in the subnet containing the application gateway.
@@ -137,14 +147,14 @@ public interface ApplicationGateway extends
              * A frontend with the name "default" will be created if needed.
              * @return the next stage of the definition
              */
-            WithFrontendPort withPrivateFrontend();
+            WithBackend withPrivateFrontend();
 
             /**
              * Enables a private frontend in the subnet containing the application gateway.
              * @param frontendName the name for the frontend to create
              * @return the next stage of the definition
              */
-            WithFrontendPort withPrivateFrontend(String frontendName);
+            WithBackend withPrivateFrontend(String frontendName);
         }
 
         /**
@@ -157,7 +167,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithFrontendPort withoutPrivateFrontend();
+            WithBackend withoutPrivateFrontend();
         }
 
         /**
@@ -188,7 +198,7 @@ public interface ApplicationGateway extends
              * @param portNumber a port number
              * @return the next stage of the definition
              */
-            WithFrontendPortOrBackend withFrontendPort(int portNumber);
+            WithCreate withFrontendPort(int portNumber);
 
             /**
              * Creates a port.
@@ -196,13 +206,7 @@ public interface ApplicationGateway extends
              * @param name the name to assign to the port
              * @return the next stage of the definition
              */
-            WithFrontendPortOrBackend withFrontendPort(int portNumber, String name);
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to add a backend or continue adding frontend ports.
-         */
-        interface WithFrontendPortOrBackend extends WithFrontendPort, WithBackend {
+            WithCreate withFrontendPort(int portNumber, String name);
         }
 
         /**
@@ -267,26 +271,26 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to continue adding more backends
          * or start defining backend HTTP configurations.
          */
-        interface WithBackendOrHttpConfig extends WithBackend, WithBackendHttpConfig {
+        interface WithBackendOrHttpConfig extends WithBackend, WithHttpConfig {
         }
 
         /**
          * The stage of an application gateway definition allowing to add a backend HTTP configuration.
          */
-        interface WithBackendHttpConfig {
+        interface WithHttpConfig {
             /**
              * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrListener> defineHttpConfiguration(String name);
+            ApplicationGatewayHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrListener> defineHttpConfiguration(String name);
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more backend
          * HTTP configurations or start adding HTTP listeners.
          */
-        interface WithBackendHttpConfigOrListener extends WithBackendHttpConfig, WithHttpListener {
+        interface WithHttpConfigOrListener extends WithHttpConfig, WithHttpListener {
         }
 
         /**
@@ -390,7 +394,8 @@ public interface ApplicationGateway extends
         interface WithCreate extends
             Creatable<ApplicationGateway>,
             Resource.DefinitionWithTags<WithCreate>,
-            WithSslCert {
+            WithSslCert,
+            WithFrontendPort {
         }
     }
 

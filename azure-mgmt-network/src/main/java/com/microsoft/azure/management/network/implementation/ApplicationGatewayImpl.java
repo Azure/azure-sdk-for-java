@@ -582,6 +582,17 @@ class ApplicationGatewayImpl
         return (ApplicationGatewayBackendImpl) this.backends.get(name);
     }
 
+    @Override
+    public ApplicationGatewayImpl withoutHttpConfiguration(String name) {
+        this.httpConfigs.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayHttpConfigurationImpl updateHttpConfiguration(String name) {
+        return (ApplicationGatewayHttpConfigurationImpl) this.httpConfigs.get(name);
+    }
+
     // Getters
 
     @Override
@@ -625,13 +636,25 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withoutHttpConfiguration(String name) {
-        this.httpConfigs.remove(name);
-        return this;
+    public Map<String, Integer> frontendPorts() {
+        Map<String, Integer> ports = new TreeMap<>();
+        if (this.inner().frontendPorts() != null) {
+            for (ApplicationGatewayFrontendPortInner portInner : this.inner().frontendPorts()) {
+                ports.put(portInner.name(), portInner.port());
+            }
+        }
+        return Collections.unmodifiableMap(ports);
     }
 
     @Override
-    public ApplicationGatewayHttpConfigurationImpl updateHttpConfiguration(String name) {
-        return (ApplicationGatewayHttpConfigurationImpl) this.httpConfigs.get(name);
+    public String frontendPortNameFromNumber(int portNumber) {
+        String portName = null;
+        for (Entry<String, Integer> portEntry : this.frontendPorts().entrySet()) {
+            if (portNumber == portEntry.getValue()) {
+                portName = portEntry.getKey();
+                break;
+            }
+        }
+        return portName;
     }
 }

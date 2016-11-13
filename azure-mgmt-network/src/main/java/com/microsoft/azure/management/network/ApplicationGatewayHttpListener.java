@@ -21,6 +21,21 @@ public interface ApplicationGatewayHttpListener extends
     ChildResource<ApplicationGateway> {
 
     /**
+     * @return the frontend IP configuration this listenet is associated with.
+     */
+    ApplicationGatewayFrontend frontend();
+
+    /**
+     * @return the number of the frontend port the listener is listening on
+     */
+    int frontendPortNumber();
+
+    /**
+     * @return the name of the frontend port the listener is listening on
+     */
+    String frontendPortName();
+
+    /**
      * @return the associated SSL certificate, if any
      */
     ApplicationGatewaySslCertificate sslCertificate();
@@ -72,11 +87,20 @@ public interface ApplicationGatewayHttpListener extends
          */
         interface WithFrontendPort<ParentT> {
             /**
-             * Associates the listener with an existing frontend port.
+             * Enables the listener to listen on the specified existing frontend port.
              * @param name the name of an existing frontend port
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withFrontendPort(String name);
+
+            /**
+             * Enables the listener to listen on the specified port number, creating a new
+             * automatically-named port for it if needed, or associating it with an existing frontend port
+             * that is already configured to listen on this port number.
+             * @param portNumber a port number
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withFrontendPort(int portNumber);
         }
 
         /**
