@@ -9,7 +9,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
@@ -54,7 +54,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayHttpConfiguration> httpConfigs;
-    private Map<String, ApplicationGatewayHttpListener> httpListeners;
+    private Map<String, ApplicationGatewayFrontendHttpListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
 
@@ -137,7 +137,7 @@ class ApplicationGatewayImpl
         List<ApplicationGatewayHttpListenerInner> inners = this.inner().httpListeners();
         if (inners != null) {
             for (ApplicationGatewayHttpListenerInner inner : inners) {
-                ApplicationGatewayHttpListenerImpl httpListener = new ApplicationGatewayHttpListenerImpl(inner, this);
+                ApplicationGatewayFrontendHttpListenerImpl httpListener = new ApplicationGatewayFrontendHttpListenerImpl(inner, this);
                 this.httpListeners.put(inner.name(), httpListener);
             }
         }
@@ -249,7 +249,7 @@ class ApplicationGatewayImpl
         }
     }
 
-    ApplicationGatewayImpl withHttpListener(ApplicationGatewayHttpListenerImpl httpListener) {
+    ApplicationGatewayImpl withHttpListener(ApplicationGatewayFrontendHttpListenerImpl httpListener) {
         if (httpListener == null) {
             return null;
         } else {
@@ -379,14 +379,14 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl defineFrontendHttpListener(String name) {
-        ApplicationGatewayHttpListener httpListener = this.httpListeners.get(name);
+    public ApplicationGatewayFrontendHttpListenerImpl defineFrontendHttpListener(String name) {
+        ApplicationGatewayFrontendHttpListener httpListener = this.httpListeners.get(name);
         if (httpListener == null) {
             ApplicationGatewayHttpListenerInner inner = new ApplicationGatewayHttpListenerInner()
                     .withName(name);
-            return new ApplicationGatewayHttpListenerImpl(inner, this);
+            return new ApplicationGatewayFrontendHttpListenerImpl(inner, this);
         } else {
-            return (ApplicationGatewayHttpListenerImpl) httpListener;
+            return (ApplicationGatewayFrontendHttpListenerImpl) httpListener;
         }
     }
 
@@ -622,7 +622,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public Map<String, ApplicationGatewayHttpListener> httpListeners() {
+    public Map<String, ApplicationGatewayFrontendHttpListener> httpListeners() {
         return Collections.unmodifiableMap(this.httpListeners);
     }
 

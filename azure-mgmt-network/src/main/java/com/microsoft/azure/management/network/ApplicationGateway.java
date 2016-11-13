@@ -81,7 +81,7 @@ public interface ApplicationGateway extends
     /**
      * @return HTTP listeners, indexed by name
      */
-    Map<String, ApplicationGatewayHttpListener> httpListeners();
+    Map<String, ApplicationGatewayFrontendHttpListener> httpListeners();
 
     /**
      * The entirety of the application gateway definition.
@@ -200,7 +200,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the HTTP listener
              * @return the first stage of the HTTP listener definition
              */
-            ApplicationGatewayHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineFrontendHttpListener(String name);
+            ApplicationGatewayFrontendHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineFrontendHttpListener(String name);
         }
 
         /**

@@ -20,7 +20,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayHttpConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -375,7 +375,7 @@ public class TestApplicationGateway {
 
             // Verify listeners
             Assert.assertTrue(appGateway.httpListeners().size() == 2);
-            ApplicationGatewayHttpListener listener = appGateway.httpListeners().get("listener1");
+            ApplicationGatewayFrontendHttpListener listener = appGateway.httpListeners().get("listener1");
             Assert.assertTrue(listener != null);
             Assert.assertTrue(listener.sslCertificate() != null);
             Assert.assertTrue(listener.sslCertificate().name().equalsIgnoreCase("cert1"));
@@ -600,9 +600,9 @@ public class TestApplicationGateway {
         }
 
         // Show HTTP listeners
-        Map<String, ApplicationGatewayHttpListener> listeners = resource.httpListeners();
+        Map<String, ApplicationGatewayFrontendHttpListener> listeners = resource.httpListeners();
         info.append("\n\tHTTP listeners: ").append(listeners.size());
-        for (ApplicationGatewayHttpListener listener : listeners.values()) {
+        for (ApplicationGatewayFrontendHttpListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
                 .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                 .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())

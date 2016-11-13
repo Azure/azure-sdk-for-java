@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  * An immutable client-side representation of an application gateway's HTTP listener.
  */
 @Fluent()
-public interface ApplicationGatewayHttpListener extends
+public interface ApplicationGatewayFrontendHttpListener extends
     Wrapper<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway> {
 

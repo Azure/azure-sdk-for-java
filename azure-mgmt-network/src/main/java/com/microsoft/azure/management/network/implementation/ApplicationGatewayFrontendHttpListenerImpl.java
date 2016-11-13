@@ -11,7 +11,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -22,15 +22,15 @@ import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
  *  Implementation for ApplicationGatewayHttpListener.
  */
 @LangDefinition
-class ApplicationGatewayHttpListenerImpl
+class ApplicationGatewayFrontendHttpListenerImpl
     extends ChildResourceImpl<ApplicationGatewayHttpListenerInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
-        ApplicationGatewayHttpListener,
-        ApplicationGatewayHttpListener.Definition<ApplicationGateway.DefinitionStages.WithHttpListenerOrBackend>,
-        ApplicationGatewayHttpListener.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayHttpListener.Update {
+        ApplicationGatewayFrontendHttpListener,
+        ApplicationGatewayFrontendHttpListener.Definition<ApplicationGateway.DefinitionStages.WithHttpListenerOrBackend>,
+        ApplicationGatewayFrontendHttpListener.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayFrontendHttpListener.Update {
 
-    ApplicationGatewayHttpListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayFrontendHttpListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -114,7 +114,7 @@ class ApplicationGatewayHttpListenerImpl
     // Withers
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withFrontend(String name) {
+    public ApplicationGatewayFrontendHttpListenerImpl withFrontend(String name) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.inner().withFrontendIPConfiguration(frontendRef);
@@ -122,7 +122,7 @@ class ApplicationGatewayHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withFrontendPort(String name) {
+    public ApplicationGatewayFrontendHttpListenerImpl withFrontendPort(String name) {
         SubResource portRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
@@ -130,7 +130,7 @@ class ApplicationGatewayHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withSslCertificate(String name) {
+    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificate(String name) {
         SubResource certRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
         this.inner().withSslCertificate(certRef);
@@ -140,20 +140,20 @@ class ApplicationGatewayHttpListenerImpl
     private ApplicationGatewaySslCertificateImpl sslCert = null;
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
         String name = ResourceNamer.randomResourceName("cert", 10);
         return withSslCertificateFromPfxFile(pfxFile, name);
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
         this.sslCert = this.parent().defineSslCertificate(name)
             .withPfxFile(pfxFile);
         return this;
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withSslCertificatePassword(String password) {
+    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificatePassword(String password) {
         if (this.sslCert != null) {
             this.sslCert.withPassword(password).attach();
             this.withSslCertificate(sslCert.name());
@@ -165,19 +165,19 @@ class ApplicationGatewayHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withHttp() {
+    public ApplicationGatewayFrontendHttpListenerImpl withHttp() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTP);
         return this;
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withHttps() {
+    public ApplicationGatewayFrontendHttpListenerImpl withHttps() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
         return this;
     }
 
     @Override
-    public ApplicationGatewayHttpListenerImpl withFrontendPort(int portNumber) {
+    public ApplicationGatewayFrontendHttpListenerImpl withFrontendPort(int portNumber) {
         // Attempt to find an existing port referencing this port number
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
