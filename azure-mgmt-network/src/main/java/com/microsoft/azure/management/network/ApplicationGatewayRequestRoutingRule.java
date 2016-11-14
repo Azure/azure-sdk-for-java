@@ -52,7 +52,15 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing listener
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> withListener(String name);
+            WithBackend<ParentT> fromFrontendListener(String name);
+
+            /**
+             * Associates the request routing rule with an existing frontend listener on this application gateway
+             * associated with the specified port number.
+             * @param portNumber the port number used by an existing listener
+             * @return the next stage of the definition
+             */
+            //TODO WithBackend<ParentT> fromFrontendListenerOnPort(int portNumber);
         }
 
         /**
@@ -65,7 +73,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> withBackend(String name);
+            WithBackendHttpConfiguration<ParentT> toBackend(String name);
         }
 
         /**

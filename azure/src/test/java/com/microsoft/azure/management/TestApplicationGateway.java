@@ -105,13 +105,10 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
+                            .withFrontendHttpListenerOnPort(80) // Frontend HTTP listener
 
-                            // HTTP listeners
-                            .defineFrontendHttpListener("default")
-                                .withFrontendPort(80)
-                                .attach()
-
-                            .withBackendIpAddress("11.1.1.1")   // Backends
+                            // Backends
+                            .withBackendIpAddress("11.1.1.1")
                             .withBackendIpAddress("11.1.1.2")
                             //TODO .withBackendPort(8080)
                             .defineBackendHttpConfiguration("default") // Backend HTTP config
@@ -120,8 +117,9 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .withListener("default")
-                                .withBackend("default")
+                                // TODO fromFrontendListenerOnPort(80)
+                                .fromFrontendListener("default")
+                                .toBackend("default")
                                 .withBackendHttpConfiguration("default")
                                 .attach()
                             .create();
@@ -289,14 +287,12 @@ public class TestApplicationGateway {
                             .withPrivateFrontend()
 
                             // HTTP listeners
+                            .withFrontendHttpListenerOnPort(80)
                             .defineFrontendHttpListener("listener1")
                                 .withFrontendPort(443)
                                 .withHttps()
                                 .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                                 .withSslCertificatePassword("Abc123")
-                                .attach()
-                            .defineFrontendHttpListener("listener2")
-                                .withFrontendPort(80)
                                 .attach()
 
                             // Backends
@@ -321,8 +317,8 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .withListener("listener1")
-                                .withBackend("default")
+                                .fromFrontendListener("listener1")
+                                .toBackend("default")
                                 .withBackendHttpConfiguration("httpConfig1")
                                 .attach()
 
@@ -344,7 +340,6 @@ public class TestApplicationGateway {
 
             // ...But don't wait till the end - not needed for the test, 30 sec should be enough
             Thread.sleep(30 * 1000);
-            //creationThread.join(0);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -381,8 +376,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTPS));
             Assert.assertTrue(listener.frontendPortNumber() == 443);
 
-            Assert.assertTrue(appGateway.frontendHttpListeners().containsKey("listener2"));
-            listener = appGateway.frontendHttpListeners().get("listener2");
+            listener = appGateway.getListenerByPortNumber(80);
             Assert.assertTrue(listener != null);
             Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTP));
             Assert.assertTrue(listener.frontendPortNumber() == 80);

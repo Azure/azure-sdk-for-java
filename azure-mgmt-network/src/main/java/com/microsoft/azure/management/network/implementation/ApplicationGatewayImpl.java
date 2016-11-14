@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -391,6 +392,55 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayImpl withFrontendHttpListenerOnPort(int portNumber) {
+        return withFrontendHttpListenerOnPort(portNumber, null);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withFrontendHttpListenerOnPort(int portNumber, String name) {
+        // Try to find existing listener by name
+        ApplicationGatewayFrontendHttpListener listenerByName = null;
+        if (name != null) {
+            listenerByName = this.httpListeners.get(name);
+        }
+
+        // Try to find existing listener by port number
+        ApplicationGatewayFrontendHttpListener listenerByPort = getListenerByPortNumber(portNumber);
+
+        if (listenerByName != null) {
+            // If a listener with this name already exists...
+            if (listenerByPort == listenerByName) {
+                // ...and it has the same port number, then do nothing
+                return this;
+            } else {
+                // ...but if it has a different port number, then fail fast
+                return null;
+            }
+        } else if (listenerByPort != null) {
+            // If a listener with this port number already exists...
+            if (name == null) {
+                // ...and no name is provided, then do nothing
+                return this;
+            } else {
+                // ...but if a clashing name is provided, then fail fast
+                return null;
+            }
+        } else {
+            // If no existing listener with this name nor port exists, create one
+            if (name == null) {
+                // Auto-name it
+                name = ResourceNamer.randomResourceName("listener", 13);
+            }
+
+            return this.defineFrontendHttpListener(name)
+                    .withHttp()
+                    .withFrontendPort(portNumber)
+                    //TODO Someday, when multiple frontends are supported, this will need to take into account the frontend selection logic
+                    .attach();
+        }
+    }
+
+    @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
         ApplicationGatewayRequestRoutingRule rule = this.rules.get(name);
         if (rule == null) {
@@ -600,6 +650,18 @@ class ApplicationGatewayImpl
     }
 
     // Getters
+
+    @Override
+    public ApplicationGatewayFrontendHttpListener getListenerByPortNumber(int portNumber) {
+        ApplicationGatewayFrontendHttpListener listener = null;
+        for (ApplicationGatewayFrontendHttpListener l : this.httpListeners.values()) {
+            if (l.frontendPortNumber() == portNumber) {
+                listener = l;
+                break;
+            }
+        }
+        return listener;
+    }
 
     @Override
     public Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations() {

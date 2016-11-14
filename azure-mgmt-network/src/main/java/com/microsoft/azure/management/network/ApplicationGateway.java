@@ -69,6 +69,13 @@ public interface ApplicationGateway extends
     String frontendPortNameFromNumber(int portNumber);
 
     /**
+     * Finds a frontend listener associated with the specified port number, if any.
+     * @param portNumber a used port number
+     * @return the frontend listener associated with the specified port number, or null if none
+     */
+    ApplicationGatewayFrontendHttpListener getListenerByPortNumber(int portNumber);
+
+    /**
      * @return backend HTTP configurations of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations();
@@ -201,6 +208,23 @@ public interface ApplicationGateway extends
              * @return the first stage of the HTTP listener definition
              */
             ApplicationGatewayFrontendHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineFrontendHttpListener(String name);
+
+            /**
+             * Associates a new frontend HTTP listener with the specified port number and an automatically generated name,
+             * if no listener associated with the specified frontend port already exists.
+             * @param portNumber an unused frontend port number
+             * @return the next stage of the definition
+             */
+            WithHttpListenerOrBackend withFrontendHttpListenerOnPort(int portNumber);
+
+            /**
+             * Associates a new frontend HTTP listener with the specified port number and the specified name,
+             * if neither this port number nor name is already taken.
+             * @param portNumber a frontend port number
+             * @param name the name for the new listener
+             * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
+             */
+            WithHttpListenerOrBackend withFrontendHttpListenerOnPort(int portNumber, String name);
         }
 
         /**

@@ -43,7 +43,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withListener(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListener(String name) {
         SubResource listenerRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
@@ -51,7 +51,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withBackend(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackend(String name) {
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
         this.inner().withBackendAddressPool(backendRef);
