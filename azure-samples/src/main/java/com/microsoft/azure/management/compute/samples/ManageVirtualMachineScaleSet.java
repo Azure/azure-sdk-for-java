@@ -225,7 +225,7 @@ public final class ManageVirtualMachineScaleSet {
                         .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
                         .withoutPrimaryInternalLoadBalancer()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withNewStorageAccount(storageAccountName1)
                         .withNewStorageAccount(storageAccountName2)

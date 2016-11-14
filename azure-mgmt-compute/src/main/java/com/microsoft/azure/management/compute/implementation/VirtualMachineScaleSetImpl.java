@@ -25,6 +25,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
@@ -68,6 +69,7 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.Update {
     // Clients
     private final VirtualMachineScaleSetsInner client;
+    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // used to generate unique name for any dependency resources
@@ -107,11 +109,13 @@ public class VirtualMachineScaleSetImpl
     VirtualMachineScaleSetImpl(String name,
                         VirtualMachineScaleSetInner innerModel,
                         VirtualMachineScaleSetsInner client,
+                        VirtualMachineScaleSetVMsInner vmInstancesClient,
                         final ComputeManager computeManager,
                         final StorageManager storageManager,
                         final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
         this.client = client;
+        this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.namer = new ResourceNamer(this.name());
@@ -134,6 +138,11 @@ public class VirtualMachineScaleSetImpl
             }
         }
     }
+
+   @Override
+   public VirtualMachineScaleSetVMs virtualMachines() {
+        return new VirtualMachineScaleSetVMsImpl(this, this.vmInstancesClient, this.myManager);
+   }
 
    @Override
    public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {

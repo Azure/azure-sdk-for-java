@@ -32,6 +32,12 @@ public interface VirtualMachineScaleSet extends
         Updatable<VirtualMachineScaleSet.UpdateStages.WithPrimaryLoadBalancer> {
     // Actions
     //
+
+    /**
+     * @return entry point to manage virtual machine instances in the scale set.
+     */
+    VirtualMachineScaleSetVMs virtualMachines();
+
     /**
      * @return  available SKUs for the virtual machine scale set, including the minimum and maximum virtual machine instances
      *          allowed for a particular SKU

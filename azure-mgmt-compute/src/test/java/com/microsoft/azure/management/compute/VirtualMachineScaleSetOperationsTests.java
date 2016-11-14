@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.jcraft.jsch.JSch;
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -35,7 +36,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     @Test
     public void canCreateVirtualMachineScaleSetWithCustomScriptExtension() throws Exception {
         final String vmssName = ResourceNamer.randomResourceName("vmss", 10);
-        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/l_apache.sh";
+        final String apacheInstallScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-mgmt-compute/src/test/assets/install_apache.sh";
         final String installCommand = "bash install_apache.sh Abc.123x(";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(apacheInstallScript);
@@ -77,6 +78,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                     .withPublicSetting("commandToExecute", installCommand)
                 .attach()
                 .create();
+
+        checkInstances(virtualMachineScaleSet);
 
         List<String> publicIpAddressIds = virtualMachineScaleSet.primaryPublicIpAddressIds();
         PublicIpAddress publicIpAddress = this.networkManager.publicIpAddresses()
@@ -199,6 +202,36 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 2);
+    }
+
+    private void checkInstances(VirtualMachineScaleSet vmScaleSet) {
+        VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
+        PagedList<VirtualMachineScaleSetVM> virtualMachines = virtualMachineScaleSetVMs.list();
+        Assert.assertEquals(virtualMachines.size(), vmScaleSet.capacity());
+        for (VirtualMachineScaleSetVM vm : virtualMachines) {
+            Assert.assertNotNull(vm.size());
+            Assert.assertEquals(vm.osType(), OperatingSystemTypes.LINUX);
+            Assert.assertNotNull(vm.computerName().startsWith(vmScaleSet.computerNamePrefix()));
+            Assert.assertTrue(vm.isLinuxPasswordAuthenticationEnabled());
+            Assert.assertTrue(vm.isOsBasedOnPlatformImage());
+            Assert.assertNull(vm.customImageVhdUri());
+            Assert.assertFalse(vm.isWindowsAutoUpdateEnabled());
+            Assert.assertFalse(vm.isWindowsVmAgentProvisioned());
+            Assert.assertTrue(vm.administratorUserName().equalsIgnoreCase("jvuser"));
+            VirtualMachineImage vmImage = vm.getPlatformImage();
+            Assert.assertNotNull(vmImage);
+            Assert.assertEquals(vm.extensions().size(), vmScaleSet.extensions().size());
+            Assert.assertNotNull(vm.powerState());
+            vm.refreshInstanceView();
+        }
+        // Check actions
+        VirtualMachineScaleSetVM virtualMachineScaleSetVM = virtualMachines.get(0);
+        Assert.assertNotNull(virtualMachineScaleSetVM);
+        virtualMachineScaleSetVM.restart();
+        virtualMachineScaleSetVM.powerOff();
+        virtualMachineScaleSetVM.refreshInstanceView();
+        Assert.assertEquals(virtualMachineScaleSetVM.powerState(), PowerState.STOPPED);
+        virtualMachineScaleSetVM.start();
     }
 
     private LoadBalancer createHttpLoadBalancers(ResourceGroup resourceGroup,
