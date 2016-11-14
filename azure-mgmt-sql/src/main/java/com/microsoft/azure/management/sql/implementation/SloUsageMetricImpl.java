@@ -39,6 +39,4 @@ class SloUsageMetricImpl
     public double inRangeTimeRatio() {
         return this.inner().inRangeTimeRatio();
     }
-
-
 }

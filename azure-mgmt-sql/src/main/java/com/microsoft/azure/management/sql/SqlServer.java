@@ -58,13 +58,11 @@ public interface SqlServer extends
      */
     Databases databases();
 
-    // TODO - ans - Testing pending for upgrade scenario. Need to implement startUpgrade first for the same.
     /**
      * Cancels a pending upgrade for the Azure SQL Server.
      */
     void cancelUpgrade();
 
-    // TODO - ans - Testing pending for upgrade scenario. Need to implement startUpgrade first for the same.
     /**
      * @return get information about upgrade status of the an Azure SQL Server
      */

@@ -99,18 +99,13 @@ class RecommendedElasticPoolImpl
 
     @Override
     public List<SqlDatabase> databases() {
-        ArrayList<SqlDatabase> databases = new ArrayList<SqlDatabase>();
+        ArrayList<SqlDatabase> databases = new ArrayList<>();
 
         for (DatabaseInner databaseInner : this.inner().databases()) {
             databases.add(new SqlDatabaseImpl(databaseInner.name(), databaseInner, this.databasesInner));
         }
 
         return databases;
-    }
-
-    @Override
-    public List<RecommendedElasticPoolMetricInner> metrics() {
-        return null;
     }
 
     @Override
