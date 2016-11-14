@@ -251,7 +251,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
         Assert.assertEquals(dataWarehouse.edition(), DatabaseEditions.DATA_WAREHOUSE);
 
-        // TODO - ans - Get Restore points.
+        // List Restore points.
         Assert.assertNotNull(dataWarehouse.listRestorePoints());
         // Get usages.
         Assert.assertNotNull(dataWarehouse.listUsages());

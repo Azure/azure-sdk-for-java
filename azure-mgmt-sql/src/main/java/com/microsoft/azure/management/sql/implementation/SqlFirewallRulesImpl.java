@@ -35,7 +35,6 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
         super(innerCollection, manager);
     }
 
-    // TODO - ans - Check if we can get rid of this and create another interface where this is not required.
     @Override
     protected SqlFirewallRuleImpl wrapModel(String name) {
         throw new NotImplementedException("Should never hit this code, currently not exposed");

@@ -14,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourc
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.RecommendedElasticPoolInner;
-import com.microsoft.azure.management.sql.implementation.RecommendedElasticPoolMetricInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -86,12 +85,6 @@ public interface RecommendedElasticPool extends
      * @return the list of Azure SQL Databases in this pool. Expanded property.
      */
     List<SqlDatabase> databases();
-
-    // TODO - ans - Will implement this once knowing what to do with  expanded properties
-    /**
-     * @return the list of Azure SQL Databases housed in the server. Expanded property.
-     */
-    List<RecommendedElasticPoolMetricInner> metrics();
 
     /**
      * Fetches list of databases by making call to Azure.

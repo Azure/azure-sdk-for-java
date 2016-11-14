@@ -148,7 +148,6 @@ class SqlDatabaseImpl
         this.innerCollection.resumeDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
-
     @Override
     public List<RestorePoint> listRestorePoints() {
         PagedListConverter<RestorePointInner, RestorePoint> converter = new PagedListConverter<RestorePointInner, RestorePoint>() {
