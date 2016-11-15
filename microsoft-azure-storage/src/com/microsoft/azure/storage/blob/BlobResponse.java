@@ -124,6 +124,12 @@ final class BlobResponse extends BaseResponse {
             properties.setAppendBlobCommittedBlockCount(Integer.parseInt(comittedBlockCount));
         }
 
+        final String incrementalCopyHeaderString =
+                request.getHeaderField(Constants.HeaderConstants.INCREMENTAL_COPY);
+        if (!Utility.isNullOrEmpty(incrementalCopyHeaderString)) {
+            properties.setIncrementalCopy(Constants.TRUE.equals(incrementalCopyHeaderString));
+        }
+
         attributes.setStorageUri(resourceURI);
         attributes.setSnapshotID(snapshotID);
 
@@ -205,6 +211,12 @@ final class BlobResponse extends BaseResponse {
                     request.getHeaderField(Constants.HeaderConstants.COPY_COMPLETION_TIME);
             if (!Utility.isNullOrEmpty(copyCompletionTimeString)) {
                 copyState.setCompletionTime(Utility.parseRFC1123DateFromStringInGMT(copyCompletionTimeString));
+            }
+
+            final String copyDestinationSnapshotString =
+                    request.getHeaderField(Constants.HeaderConstants.COPY_DESTINATION_SNAPSHOT_ID);
+            if (!Utility.isNullOrEmpty(copyDestinationSnapshotString)) {
+                copyState.setCopyDestinationSnapshotID(copyDestinationSnapshotString);
             }
 
             return copyState;

@@ -691,12 +691,12 @@ public abstract class CloudBlob implements ListBlobItem {
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.startCopyImpl(source, sourceAccessCondition, destinationAccessCondition, options),
+                this.startCopyImpl(source, false /* incrementalCopy */, sourceAccessCondition, destinationAccessCondition, options),
                 options.getRetryPolicyFactory(), opContext);
     }
 
-    private StorageRequest<CloudBlobClient, CloudBlob, String> startCopyImpl(
-            final URI source, final AccessCondition sourceAccessCondition,
+    protected StorageRequest<CloudBlobClient, CloudBlob, String> startCopyImpl(
+            final URI source, final boolean incrementalCopy, final AccessCondition sourceAccessCondition,
             final AccessCondition destinationAccessCondition, final BlobRequestOptions options) {
 
         final StorageRequest<CloudBlobClient, CloudBlob, String> putRequest =
@@ -708,7 +708,7 @@ public abstract class CloudBlob implements ListBlobItem {
                 // toASCIIString() must be used in order to appropriately encode the URI
                 return BlobRequest.copyFrom(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
                         options, context, sourceAccessCondition, destinationAccessCondition, source.toASCIIString(),
-                        blob.snapshotID);
+                        blob.snapshotID, incrementalCopy);
             }
 
             @Override

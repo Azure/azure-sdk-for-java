@@ -39,6 +39,7 @@ import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.RequestLocationMode;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.StorageRequest;
+import com.microsoft.azure.storage.core.UriQueryBuilder;
 import com.microsoft.azure.storage.core.Utility;
 
 /**
@@ -218,6 +219,127 @@ public final class CloudPageBlob extends CloudBlob {
         Utility.assertNotNull("sourceBlob", sourceBlob);
         return this.startCopy(
                 sourceBlob.getQualifiedUri(), sourceAccessCondition, destinationAccessCondition, options, opContext);
+    }
+
+    /**
+     * Requests the service to start an incremental copy of another page blob's contents, properties, and metadata
+     * to this blob.
+     *
+     * @param sourceSnapshot
+     *            A <code>CloudPageBlob</code> object that represents the source blob to copy. Must be a snapshot.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     */
+    @DoesServiceRequest
+    public final String startIncrementalCopy(final CloudPageBlob sourceSnapshot) throws StorageException, URISyntaxException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.SNAPSHOT, sourceSnapshot.snapshotID);
+        URI sourceUri = builder.addToURI(sourceSnapshot.getTransformedAddress(null).getPrimaryUri());
+
+        return this.startIncrementalCopy(sourceUri, null /* destinationAccessCondition */,
+                null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Requests the service to start an incremental copy of another page blob's contents, properties, and metadata
+     * to this blob.
+     *
+     * @param sourceSnapshot
+     *            A <code>CloudPageBlob</code> object that represents the source blob to copy. Must be a snapshot.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     */
+    @DoesServiceRequest
+    public final String startIncrementalCopy(final URI sourceSnapshot) throws StorageException, URISyntaxException {
+        return this.startIncrementalCopy(sourceSnapshot, null /* destinationAccessCondition */,
+                null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
+     * specified access conditions, lease ID, request options, and operation context.
+     *
+     * @param sourceSnapshot
+     *            A <code>CloudPageBlob</code> object that represents the source blob to copy. Must be a snapshot.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *
+     */
+    @DoesServiceRequest
+    public final String startIncrementalCopy(final CloudPageBlob sourceSnapshot, 
+            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException, URISyntaxException {
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        builder.add(Constants.QueryConstants.SNAPSHOT, sourceSnapshot.snapshotID);
+
+        URI sourceUri = builder.addToURI(sourceSnapshot.getTransformedAddress(null).getPrimaryUri());
+        return this.startIncrementalCopy(sourceUri, destinationAccessCondition, options, opContext);
+    }
+
+    /**
+     * Requests the service to start copying a blob's contents, properties, and metadata to a new blob, using the
+     * specified access conditions, lease ID, request options, and operation context.
+     *
+     * @param sourceSnapshot
+     *            A <code>CloudPageBlob</code> object that represents the source blob to copy. Must be a snapshot.
+     * @param destinationAccessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the destination blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A <code>String</code> which represents the copy ID associated with the copy operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *
+     */
+    @DoesServiceRequest
+    public final String startIncrementalCopy(final URI sourceSnapshot,
+            final AccessCondition destinationAccessCondition, BlobRequestOptions options, OperationContext opContext)
+            throws StorageException, URISyntaxException {
+        Utility.assertNotNull("sourceSnapshot", sourceSnapshot);
+        this.assertNoWriteOperationForSnapshot();
+        
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+
+        return ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.startCopyImpl(sourceSnapshot, true /* incrementalCopy */, null /* sourceAccesCondition */,
+                        destinationAccessCondition, options),
+                options.getRetryPolicyFactory(), opContext);
     }
 
     /**
