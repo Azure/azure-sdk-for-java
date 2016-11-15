@@ -247,6 +247,10 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public void create(BlobContainerPublicAccessType accessType, BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (accessType == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", accessType));
+        }
+
         if (opContext == null) {
             opContext = new OperationContext();
         }
@@ -366,6 +370,10 @@ public final class CloudBlobContainer {
      */
     @DoesServiceRequest
     public boolean createIfNotExists(BlobContainerPublicAccessType accessType, BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (accessType == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", accessType));
+        }
+
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.UNSPECIFIED, this.blobServiceClient);
 
         boolean exists = this.exists(true /* primaryOnly */, null /* accessCondition */, options, opContext);
@@ -1820,6 +1828,10 @@ public final class CloudBlobContainer {
     @DoesServiceRequest
     public void uploadPermissions(final BlobContainerPermissions permissions, final AccessCondition accessCondition,
             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (permissions.getPublicAccess() == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", permissions.getPublicAccess()));
+        }
+
         if (opContext == null) {
             opContext = new OperationContext();
         }

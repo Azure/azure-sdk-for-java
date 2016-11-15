@@ -284,6 +284,10 @@ final class BlobRequest {
      */
     public static HttpURLConnection createContainer(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final BlobContainerPublicAccessType publicAccess) throws IOException, URISyntaxException, StorageException {
+        if (publicAccess == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", publicAccess));
+        }
+        
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
         final HttpURLConnection request = BaseRequest.create(uri, blobOptions, containerBuilder, opContext);
 
@@ -1398,6 +1402,10 @@ final class BlobRequest {
     public static HttpURLConnection setAcl(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition,
             final BlobContainerPublicAccessType publicAccess) throws IOException, URISyntaxException, StorageException {
+        if (publicAccess == BlobContainerPublicAccessType.UNKNOWN) {
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_OUT_OF_RANGE_ERROR, "accessType", publicAccess));
+        }
+
         final UriQueryBuilder builder = getContainerUriQueryBuilder();
         builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.ACL);
 
