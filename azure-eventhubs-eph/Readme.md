@@ -111,21 +111,16 @@ notification is primarily informational.
 In order to do this, the user will first need to build a connection string for the Event Hub. This may be conveniently done using
 the ConnectionStringBuilder class provided by the Java client for Azure Event Hubs. Make sure the sasKey has listen as well as manage permissions; the manage permissions are needed to request the partitions.
 
-The EventProcessorHost class itself has four constructors. All of them require the path to the Event Hub, the name of the consumer
+The EventProcessorHost class itself has multiple constructors. All of them require the path to the Event Hub, the name of the consumer
 group to receive from, and the connection string for the Event Hub. The most basic constructor also requires an Azure Storage
 connection string for a storage account that the built-in partition lease and checkpoint managers will use to persist these
-artifacts. The next simplest constructor allows the caller to control the host name of the EventProcessorHost instance, which is
-a string that uniquely identifies the instance among all EventProcessorHosts receiving from the same Event Hub and consumer group.
-The EventProcessorHost.createHostName method appends a UUID to a user-supplied string, providing a convenient way to guarantee
-uniqueness. The third constructor allows the caller to also control the name of the Azure Storage container used by the
-partition lease and checkpoint managers, which is otherwise assembled by combining the Event Hub and consumer group names. The
-final constructor is the most advanced, allowing the user to replace the lease and checkpoint managers with user implementations
-of ILeaseManager and ICheckpointManager (for example, to use Zookeeper instead of Azure Storage), and hence is lacking the
-Azure Storage-related arguments.
+artifacts, and the name of a container to user or create in that storage account. Other constructors add more options. The
+most advanced constructor allows the user to replace the Azure Storage-based lease and checkpoint managers with user implementations
+of ILeaseManager and ICheckpointManager (for example, to use Zookeeper instead of Azure Storage).
 
     ``` Java
     ConnectionStringBuilder eventHubConnectionString = new ConnectionStringBuilder(namespaceName, eventHubName, sasKeyName, sasKey);
-    EventProcessorHost host = new EventProcessorHost(eventHubName, consumerGroupName, eventHubConnectionString.toString(), storageConnectionString);
+    EventProcessorHost host = new EventProcessorHost(eventHubName, consumerGroupName, eventHubConnectionString.toString(), storageConnectionString, storageContainerName);
     ```
 
 ###Step 4: Register the Event Processor Implementation to Start Processing Events
@@ -180,4 +175,19 @@ shown here is very, very conservative.
     ``` Java
     EventProcessorHost.forceExecutorShutdown(120);
     ```
+
+## Running Tests
+
+Event Processor Host comes with a suite of JUnit-based tests. To run these tests, you will need an event hub and an Azure Storage account.
+You can create both through the Azure Portal at [portal.azure.com](http://portal.azure.com/). Once you have done that, get the
+connection strings for both and place them in environment variables:
+
+* `EVENT_HUB_CONNECTION_STRING` is the event hub connection string. The connection string needs to include a SAS rule which has send and listen permissions.
+* `EPHTESTSTORAGE` is the storage account connection string.
+
+Under src/test/java, the general test cases are in files named *Test. If you have made modifications to the code, these are the
+cases to run in order to detect major breakage. There are also some test cases in Repros.java, but those are not suitable for
+general use. That file preserves repro code from times when we had to mount a major investigation to get to the
+bottom of a problem.
+
 

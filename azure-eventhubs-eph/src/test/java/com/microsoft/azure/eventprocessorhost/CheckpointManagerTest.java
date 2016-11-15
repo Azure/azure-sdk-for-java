@@ -54,8 +54,8 @@ public class CheckpointManagerTest
 		this.hosts = new EventProcessorHost[1];
 		setupOneManager(useAzureStorage, 0, "0", generateContainerName("0"));
 		
-		System.out.println("singleManagerCheckpointSmokeTest");
-		System.out.println("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryCheckpointManager"));
+		TestUtilities.log("singleManagerCheckpointSmokeTest");
+		TestUtilities.log("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryCheckpointManager"));
 
 		TestUtilities.log("Check whether checkpoint store exists before create");
 		boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
@@ -134,7 +134,7 @@ public class CheckpointManagerTest
 		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up store", boolret);
 		
-		System.out.println("singleManagerCheckpointSmokeTest DONE");
+		TestUtilities.log("singleManagerCheckpointSmokeTest DONE");
 	}
 	
 	public void twoManagerCheckpointSmokeTest(boolean useAzureStorage, int partitionCount) throws Exception
@@ -146,8 +146,8 @@ public class CheckpointManagerTest
 		setupOneManager(useAzureStorage, 0, "twoCheckpoint", containerName);
 		setupOneManager(useAzureStorage, 1, "twoCheckpoint", containerName);
 		
-		System.out.println("twoManagerCheckpointSmokeTest");
-		System.out.println("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryLeaseManager"));
+		TestUtilities.log("twoManagerCheckpointSmokeTest");
+		TestUtilities.log("USING " + (useAzureStorage ? "AzureStorageCheckpointLeaseManager" : "InMemoryLeaseManager"));
 		
 		TestUtilities.log("Check whether checkpoint store exists before create");
 		boolean boolret = this.checkpointManagers[0].checkpointStoreExists().get();
@@ -226,7 +226,7 @@ public class CheckpointManagerTest
 		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
 		assertTrue("failed while cleaning up store", boolret);
 		
-		System.out.println("twoManagerCheckpointSmokeTest DONE");
+		TestUtilities.log("twoManagerCheckpointSmokeTest DONE");
 	}
 
 	private String generateContainerName(String infix)
@@ -254,7 +254,7 @@ public class CheckpointManagerTest
 		}
 		else
 		{
-			System.out.println("Container name: " + containerName);
+			TestUtilities.log("Container name: " + containerName);
 			AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(this.azureStorageConnectionString, containerName);
 			leaseMgr = azMgr;
 			checkpointMgr = azMgr;
@@ -279,7 +279,7 @@ public class CheckpointManagerTest
 		}
     	catch (Exception e)
     	{
-    		System.out.println("Manager initializion failed");
+    		TestUtilities.log("Manager initializion failed");
     		throw e;
 		}
 		

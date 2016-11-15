@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.concurrent.*;
 import java.util.logging.Level;
 
@@ -45,7 +46,12 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private final static int leaseDurationInSeconds = 30;
     private final static int leaseRenewIntervalInMilliseconds = 10 * 1000; // ten seconds
     private final BlobRequestOptions renewRequestOptions = new BlobRequestOptions();
+    
+    private enum UploadActivity { Create, Acquire, Release, Update };
 
+    private Hashtable<String, Checkpoint> latestCheckpoint = new Hashtable<String, Checkpoint>(); 
+
+    
     AzureStorageCheckpointLeaseManager(String storageConnectionString)
     {
         this(storageConnectionString, null);
@@ -331,7 +337,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		this.host.logWithHostAndPartition(Level.INFO, partitionId,
     				"CreateLeaseIfNotExist - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
     				"storageBlobPrefix: " + this.storageBlobPrefix);
-    		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), "created");
+    		uploadLease(returnLease, leaseBlob, AccessCondition.generateIfNoneMatchCondition("*"), UploadActivity.Create);
     	}
     	catch (StorageException se)
     	{
@@ -346,8 +352,6 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		}
     		else
     		{
-    			System.out.println("errorCode " + extendedErrorInfo.getErrorCode());
-    			System.out.println("errorString " + extendedErrorInfo.getErrorMessage());
     			this.host.logWithHostAndPartition(Level.SEVERE, partitionId,
     				"CreateLeaseIfNotExist StorageException - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.host.getConsumerGroupName() +
     				"storageBlobPrefix: " + this.storageBlobPrefix,
@@ -402,7 +406,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	lease.setToken(newToken);
 	    	lease.setOwner(this.host.getHostName());
 	    	lease.incrementEpoch(); // Increment epoch each time lease is acquired or stolen by a new host
-	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), "acquire");
+	    	uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(lease.getToken()), UploadActivity.Acquire);
     	}
     	catch (StorageException se)
     	{
@@ -469,7 +473,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		AzureBlobLease releasedCopy = new AzureBlobLease(lease);
     		releasedCopy.setToken("");
     		releasedCopy.setOwner("");
-    		uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), "release");
+    		uploadLease(releasedCopy, leaseBlob, AccessCondition.generateLeaseCondition(leaseId), UploadActivity.Release);
     		leaseBlob.releaseLease(AccessCondition.generateLeaseCondition(leaseId));
     	}
     	catch (StorageException se)
@@ -517,7 +521,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	try
     	{
-    		uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), "update");
+    		uploadLease(lease, leaseBlob, AccessCondition.generateLeaseCondition(token), UploadActivity.Update);
     	}
     	catch (StorageException se)
     	{
@@ -540,11 +544,38 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	this.host.logWithHost(Level.FINEST, "Raw JSON downloaded: " + jsonLease);
     	AzureBlobLease rehydrated = this.gson.fromJson(jsonLease, AzureBlobLease.class);
     	AzureBlobLease blobLease = new AzureBlobLease(rehydrated, blob);
+    	
+    	if (blobLease.getOffset() != null)
+    	{
+    		this.latestCheckpoint.put(blobLease.getPartitionId(), blobLease.getCheckpoint());
+    	}
+    	
     	return blobLease;
     }
     
-    private void uploadLease(AzureBlobLease lease, CloudBlockBlob blob, AccessCondition condition, String activity) throws StorageException, IOException
+    private void uploadLease(AzureBlobLease lease, CloudBlockBlob blob, AccessCondition condition, UploadActivity activity) throws StorageException, IOException
     {
+    	if (activity != UploadActivity.Create)
+    	{
+    		// It is possible for AzureBlobLease objects in memory to have stale offset/sequence number fields if a
+    		// checkpoint was written but PartitionManager hasn't done its ten-second sweep which downloads new copies
+    		// of all the leases. This can happen because we're trying to maintain the fiction that checkpoints and leases
+    		// are separate -- which they can be in other implementations -- even though they are completely intertwined
+    		// in this implementation. To prevent writing stale checkpoint data to the store, merge the checkpoint data
+    		// from the most recently written checkpoint into this write, if needed.
+    		Checkpoint cached = this.latestCheckpoint.get(lease.getPartitionId());
+    		if ((cached != null) && ((cached.getSequenceNumber() > lease.getSequenceNumber()) || (lease.getOffset() == null)))
+    		{
+				lease.setOffset(cached.getOffset());
+				lease.setSequenceNumber(cached.getSequenceNumber());
+				this.host.logWithHostAndPartition(Level.FINEST, lease.getPartitionId(), "Replacing stale offset/seqno while uploading lease");
+			}
+			else if (lease.getOffset() != null)
+			{
+				this.latestCheckpoint.put(lease.getPartitionId(), lease.getCheckpoint());
+			}
+    	}
+    	
     	String jsonLease = this.gson.toJson(lease);
  		blob.uploadText(jsonLease, null, condition, null, null);
 		// During create, we blindly try upload and it may throw. Doing the logging after the upload
