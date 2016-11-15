@@ -17,19 +17,19 @@ public class CheckNameAvailabilityOutputInner {
     /**
      * Indicates whether the name is available.
      */
-    @JsonProperty(value = "NameAvailable")
+    @JsonProperty(value = "nameAvailable")
     private Boolean nameAvailable;
 
     /**
      * The reason why the name is not available.
      */
-    @JsonProperty(value = "Reason")
+    @JsonProperty(value = "reason")
     private String reason;
 
     /**
      * The detailed error message describing why the name is not available.
      */
-    @JsonProperty(value = "Message")
+    @JsonProperty(value = "message")
     private String message;
 
     /**

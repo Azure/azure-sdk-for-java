@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.cdn.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
@@ -15,8 +17,13 @@ import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 import rx.Observable;
+import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -46,15 +53,23 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 {
 
     private final EndpointsInner client;
-    private List<String> customDomainList;
+    private final OriginsInner originsClient;
+    private final CustomDomainsInner customDomainsClient;
+    private List<CustomDomainInner> customDomainList;
+    private List<CustomDomainInner> deletedCustomDomainList;
 
     CdnEndpointImpl(String name,
                     CdnProfileImpl parent,
                     EndpointInner inner,
-                    EndpointsInner client) {
+                    EndpointsInner client,
+                    OriginsInner originsClient,
+                    CustomDomainsInner customDomainsClient) {
         super(name, parent, inner);
         this.client = client;
-        customDomainList = new ArrayList<String>();
+        this.originsClient = originsClient;
+        this.customDomainsClient = customDomainsClient;
+        this.customDomainList = new ArrayList<CustomDomainInner>();
+        this.deletedCustomDomainList = new ArrayList<CustomDomainInner>();
     }
 
     @Override
@@ -73,6 +88,19 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                     @Override
                     public CdnEndpoint call(EndpointInner inner) {
                         self.setInner(inner);
+                        for(CustomDomainInner itemToCreate : self.customDomainList) {
+                            self.customDomainsClient.create(
+                                    self.parent().resourceGroupName(),
+                                    self.parent().name(),
+                                    self.name(),
+                                    ResourceNamer.randomResourceName("CustomDomain", 50),
+                                    itemToCreate.hostName());
+                        }
+                        self.customDomainList.clear();
+                        self.customDomainList.addAll(self.customDomainsClient.listByEndpoint(
+                                self.parent().resourceGroupName(),
+                                self.parent().name(),
+                                self.name()));
                         return self;
                     }
                 });
@@ -80,8 +108,62 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public Observable<CdnEndpoint> updateAsync() {
-        return createAsync();
+        final CdnEndpointImpl self = this;
+        EndpointUpdateParametersInner updateInner = new EndpointUpdateParametersInner();
+        updateInner.withIsHttpAllowed(this.inner().isHttpAllowed())
+                .withIsHttpsAllowed(this.inner().isHttpsAllowed())
+                .withOriginPath(this.inner().originPath())
+                .withOriginHostHeader(this.inner().originHostHeader())
+                .withIsCompressionEnabled(this.inner().isCompressionEnabled())
+                .withContentTypesToCompress(this.inner().contentTypesToCompress())
+                .withGeoFilters(this.inner().geoFilters())
+                .withOptimizationType(this.inner().optimizationType())
+                .withQueryStringCachingBehavior(this.inner().queryStringCachingBehavior())
+                .withTags(this.inner().getTags());
+
+        DeepCreatedOrigin originInner = this.inner().origins().get(0);
+        OriginUpdateParametersInner originParameters = new OriginUpdateParametersInner()
+                .withHostName(originInner.hostName())
+                .withHttpPort(originInner.httpPort())
+                .withHttpsPort(originInner.httpsPort());
+
+        Observable<OriginInner> originObservable = this.originsClient.updateAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                originInner.name(),
+                originParameters);
+
+        Observable<CdnEndpoint> endpointObservable = this.client.updateAsync(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name(),
+                updateInner)
+                .map(new Func1<EndpointInner, CdnEndpoint>() {
+                    @Override
+                    public CdnEndpoint call(EndpointInner inner) {
+                        self.setInner(inner);
+                        return self;
+                    }
+                });
+
+        for(CustomDomainInner itemToDelete : this.deletedCustomDomainList ) {
+            customDomainsClient.delete(
+                    this.parent().resourceGroupName(),
+                    this.parent().name(),
+                    this.name(),
+                    itemToDelete.name());
+        }
+        this.deletedCustomDomainList.clear();
+
+        return Observable.zip(originObservable, endpointObservable, new Func2<OriginInner, CdnEndpoint, CdnEndpoint>() {
+            @Override
+            public CdnEndpoint call(OriginInner originInner, CdnEndpoint cdnEndpoint) {
+                return cdnEndpoint;
+            }
+        });
     }
+
 
     @Override
     public Observable<Void> deleteAsync() {
@@ -101,6 +183,12 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
                 this.parent().name(),
                 this.name());
         this.setInner(inner);
+        this.customDomainList.clear();
+        this.deletedCustomDomainList.clear();
+        this.customDomainList.addAll(this.customDomainsClient.listByEndpoint(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                this.name()));
         return this;
     }
 
@@ -195,22 +283,35 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public List<String> customDomains() {
-        return this.customDomainList;
+        return Lists.transform(this.customDomainList,
+                new Function<CustomDomainInner,String>() {
+            public String apply(CustomDomainInner customDomain) { return customDomain.hostName(); }
+        });
+    }
+
+    @Override
+    public void start() {
+        this.parent().endpointStart(this.name());
+    }
+
+    @Override
+    public void stop() {
+        this.parent().endpointStop(this.name());
     }
 
     @Override
     public void purgeContent(List<String> contentPaths) {
-
+        this.parent().endpointPurgeContent(this.name(), contentPaths);
     }
 
     @Override
     public void loadContent(List<String> contentPaths) {
-
+        this.parent().endpointLoadContent(this.name(), contentPaths);
     }
 
     @Override
     public CustomDomainValidationResult validateCustomDomain(String hostName) {
-        return null;
+        return this.parent().endpointValidateCustomDomain(this.name(), hostName);
     }
 
     @Override
@@ -239,31 +340,41 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public CdnEndpointImpl withOriginPath(String originPath) {
+        this.inner().withOriginPath(originPath);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpAllowed(boolean httpAllowed) {
+        this.inner().withIsHttpAllowed(httpAllowed);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpsAllowed(boolean httpsAllowed) {
+        this.inner().withIsHttpsAllowed(httpsAllowed);
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpPort(int httpPort) {
+        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
+            this.inner().origins().get(0).withHttpPort(httpPort);
+        }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHttpsPort(int httpsPort) {
+        if (this.inner().origins() != null && !this.inner().origins().isEmpty()) {
+            this.inner().origins().get(0).withHttpsPort(httpsPort);
+        }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withHostHeader(String hostHeader) {
+        this.inner().withOriginHostHeader(hostHeader);
         return this;
     }
 
@@ -300,11 +411,13 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public CdnEndpointImpl withCompressionEnabled(boolean compressionEnabled) {
+        this.inner().withIsCompressionEnabled(compressionEnabled);
         return this;
     }
 
     @Override
-    public CdnEndpointImpl withCachingBehavior(QueryStringCachingBehavior cachingBehavior) {
+    public CdnEndpointImpl withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior) {
+        this.inner().withQueryStringCachingBehavior(cachingBehavior);
         return this;
     }
 
@@ -366,18 +479,19 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public CdnEndpointImpl withCustomDomain(String hostName) {
-        if( this.customDomains() != null ) {
-            this.customDomains().add(hostName);
+        if( this.customDomainList != null ) {
+            this.customDomainList.add(new CustomDomainInner().withHostName(hostName));
         }
         return this;
     }
 
     @Override
     public CdnEndpointImpl withoutCustomDomain(String hostName) {
-        for (Iterator<String> iter = this.customDomainList.listIterator(); iter.hasNext();) {
-            String customDomain = iter.next();
-            if (customDomain.equals(hostName)) {
+        for (Iterator<CustomDomainInner> iter = this.customDomainList.listIterator(); iter.hasNext();) {
+            CustomDomainInner customDomain = iter.next();
+            if (hostName.equals(customDomain.hostName())) {
                 iter.remove();
+                deletedCustomDomainList.add(customDomain);
             }
         }
         return this;

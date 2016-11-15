@@ -3,6 +3,7 @@ package com.microsoft.azure.management.cdn.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
+import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
 import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
@@ -27,8 +28,9 @@ public class ManageCdn {
 
         final String cdnStandardProfileName = Utils.createRandomName("cdnStandardProfile");
         final String cdnPremiumProfileName = Utils.createRandomName("cdnPremiumProfile");
-        final String epName1 = Utils.createRandomName("ep1");
-        final String rgName = Utils.createRandomName("rgRCMC");
+        final String cdnEndpointName = "endpoint-f3757d2a3e10";
+        final String cdnPremiumEndpointName = "premiumVerizonEndpointFluentTest";
+        final String rgName = Utils.createRandomName("rgRCCDN");
 
         try {
 
@@ -37,7 +39,7 @@ public class ManageCdn {
             Azure azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
-                    //.withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    .withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -55,26 +57,23 @@ public class ManageCdn {
                         .withNewResourceGroup(rgName)
 
                         .withStandardAkamaiSku()
-                        .withNewEndpoint("abdulraxmanibnxatab","https://someweirdnam.blob.core.windows.net")
-                        .defineNewEndpoint("supermuperprofileAkamai")
-                            .withOrigin("origin1","https://someweirdnam.blob.core.windows.net")
+                        .withNewEndpoint("supername.cloudapp.net")
+                        .defineNewEndpoint("akamiEndpointWithoutMuchProperties")
+                            .withOrigin("originSuperName","storageforazdevextest.blob.core.windows.net")
                             .attach()
-                        .defineNewEndpoint("abdulraxmedibnaxmed")
-                            .withOrigin("mylinuxapp.azurewebsites.net")
+                        .defineNewEndpoint(cdnEndpointName, "mylinuxapp.azurewebsites.net")
                             .withContentTypeToCompress("powershell/pain")
                             .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
                             .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryISOCode.BELGIUM)
                             .withContentTypeToCompress("text/plain")
                             .withCompressionEnabled(true)
-                            .withCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
+                            .withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
                             .withHttpsAllowed(true)
-                            .withHttpsPort(321)
+                            .withHttpsPort(444)
                             .withHttpAllowed(true)
-                            .withHttpPort(123)
-                            .withCustomDomain("www.worldlinuxapps.com")
-                            .withCustomDomain("www.domainone.com")
-                            .withCustomDomain("www.domaintwo.au")
-                            .withCustomDomain("www.domainthree.fr")
+                            .withHttpPort(85)
+                            .withCustomDomain("sdk-1-f3757d2a3e10.azureedge-test.net")
+                            .withCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net")
                             .attach()
                         .create();
 
@@ -82,58 +81,70 @@ public class ManageCdn {
                         .withRegion(Region.US_CENTRAL)
                         .withNewResourceGroup(rgName)
                         .withPremiumVerizonSku()
-                        .withNewPremiumEndpoint("abdulatraxtenberg","https://someweirdnam.blob.core.windows.net")
+                        .withNewPremiumEndpoint("someweirdname.blob.core.windows.net")
                         .defineNewPremiumEndpoint("supermuperep1")
-                            .withPremiumOrigin("origin1", "https://xplattestvmss1sto0575014.blob.core.windows.net")
+                            .withPremiumOrigin("originPremium", "xplattestvmss1sto0575014.blob.core.windows.net")
                             .attach()
-                        .defineNewPremiumEndpoint("abdulmabdulqerugagul")
-                            .withPremiumOrigin("https://supername.cloudapp.net")
+                        .defineNewPremiumEndpoint(cdnPremiumEndpointName)
+                            .withPremiumOrigin("supername.cloudapp.net")
                             .withHttpAllowed(true)
                             .withHttpsAllowed(true)
                             .withHttpsPort(12)
                             .withHttpPort(123)
-                            .withCustomDomain("www.europeaninternet.eu")
-                            .withCustomDomain("www.asianinternet.ch")
                             .attach()
                         .create();
 
-                for (CdnEndpoint endpoint : standardProfile.endpoints().values()) {
+                CdnProfile profileRead = standardProfile.refresh();
+
+                for (CdnEndpoint endpoint : profileRead.endpoints().values()) {
                     System.out.println("CDN Endpoint: " + endpoint.name());
+                    System.out.println("EP Hostname: " + endpoint.hostName());
+                    System.out.println("EP Origin hostname: " + endpoint.originHostName());
+                    System.out.println("EP optimization type: " + endpoint.optimizationType());
+                    System.out.println("EP Origin host header: " + endpoint.originHostHeader());
+                    System.out.println("EP Origin path: " + endpoint.originPath());
+                    for (String customDomain : endpoint.customDomains()) {
+                        System.out.println("EP custom domain: " + customDomain);
+                    }
                 }
 
-                if(standardProfile.isPremiumVerizon() == false){
+                if(standardProfile.isPremiumVerizon() == false) {
                     standardProfile.update()
                             .withTag("provider", "Akamai")
-                            .withNewEndpoint("axlkalakichampeqin", "https://www.vazgen.com")
-                            .defineNewEndpoint("vorteges.obijnik.vorteges")
-                                .withOrigin("https://www.vazgen.com")
+                            .withNewEndpoint("www.vazgen.com")
+                            .defineNewEndpoint("somenewnamefortheendpoint")
+                                .withOrigin("www.vazgen.com")
                                 .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.ESTONIA)
                                 .attach()
-                            .updateEndpoint("supermuperprofileAkamai")
-                                .withoutContentTypesToCompress()
+                            .updateEndpoint(cdnEndpointName)
                                 .withoutGeoFilters()
                                 .withHttpAllowed(true)
-                                .withHttpPort(555)
+                                .withHttpPort(1111)
+                                .withoutCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net")
                                 .parent()
                     .apply();
                 }
 
                 premiumProfile.update()
                         .withTag("provider", "Verizon")
-                        .withNewPremiumEndpoint("chlini.mezanic.heraceles","https://xplattestvmss1sto0575014.blob.core.windows.net")
+                        .withNewPremiumEndpoint("xplattestvmss1sto0575014.blob.core.windows.net")
                         .defineNewPremiumEndpoint("supermuperep3")
-                            .withPremiumOrigin("https://xplattestvmss1sto0575014.blob.core.windows.net")
-                            .withCustomDomain("www.northamerica.com")
+                            .withPremiumOrigin("xplattestvmss1sto0575014.blob.core.windows.net")
                         .attach()
-                        .updatePremiumEndpoint("supermuperep2")
+                        .updatePremiumEndpoint(cdnPremiumEndpointName)
                             .withHttpsAllowed(true)
-                            .withHttpsPort(678)
+                            .withHttpsPort(1111)
                         .parent()
                         .withoutEndpoint("supermuperep1")
                 .apply();
 
-                String ssoUri = azure.cdnProfiles().generateSsoUri("Rg1", "ProfileName");
-                String ssoUri1 = premiumProfile.generateSsoUri();
+                String ssoUri = premiumProfile.generateSsoUri();
+
+                System.out.println("Standard Akamai Endpoints: " + standardProfile.endpoints().size());
+                CdnEndpoint standardEp = standardProfile.endpoints().get(cdnEndpointName);
+                CustomDomainValidationResult validationResult = standardEp.validateCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net");
+                standardProfile.endpointStop(standardEp.name());
+                standardEp.start();
 
             } catch (Exception f) {
                 System.out.println(f.getMessage());

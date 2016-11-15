@@ -6,11 +6,13 @@
 package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.Operation;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 
 import java.util.ArrayList;
@@ -28,6 +30,8 @@ class CdnProfilesImpl
             CdnManager>
         implements CdnProfiles {
     private final EndpointsInner endpointsClient;
+    private final OriginsInner originsClient;
+    private final CustomDomainsInner customDomainsClient;
     private final CdnManagementClientImpl cdnManagementClient;
 
     CdnProfilesImpl(
@@ -35,6 +39,8 @@ class CdnProfilesImpl
             final CdnManager cdnManager) {
         super(cdnManagementClient.profiles(), cdnManager);
         this.endpointsClient = cdnManagementClient.endpoints();
+        this.originsClient = cdnManagementClient.origins();
+        this.customDomainsClient = cdnManagementClient.customDomains();
         this.cdnManagementClient = cdnManagementClient;
     }
 
@@ -59,6 +65,8 @@ class CdnProfilesImpl
                 new ProfileInner(),
                 this.innerCollection,
                 this.endpointsClient,
+                this.originsClient,
+                this.customDomainsClient,
                 this.myManager);
     }
 
@@ -68,6 +76,8 @@ class CdnProfilesImpl
                 inner,
                 this.innerCollection,
                 this.endpointsClient,
+                this.originsClient,
+                this.customDomainsClient,
                 this.myManager);
     }
 
@@ -78,6 +88,10 @@ class CdnProfilesImpl
 
     @Override
     public String generateSsoUri(String resourceGroupName, String profileName) {
+        SsoUriInner ssoUri = this.cdnManagementClient.profiles().generateSsoUri(resourceGroupName, profileName);
+        if(ssoUri != null) {
+            return ssoUri.ssoUriValue();
+        }
         return null;
     }
 
@@ -87,8 +101,33 @@ class CdnProfilesImpl
     }
 
     @Override
-    public List<Operation> listOperations() {
-        return null;
+    public PagedList<Operation> listOperations() {
+        return (new PagedListConverter<OperationInner, Operation>() {
+            @Override
+            public Operation typeConvert(OperationInner inner) {
+                return new Operation(inner);
+            }
+        }).convert(this.cdnManagementClient.listOperations());
+    }
+
+    @Override
+    public void endpointStart(String resourceGroupName, String profileName, String endpointName) {
+        this.cdnManagementClient.endpoints().start(resourceGroupName, profileName, endpointName);
+    }
+
+    @Override
+    public void endpointStop(String resourceGroupName, String profileName, String endpointName) {
+        this.cdnManagementClient.endpoints().stop(resourceGroupName, profileName, endpointName);
+    }
+
+    @Override
+    public void endpointPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
+        this.cdnManagementClient.endpoints().purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
+    }
+
+    @Override
+    public void endpointLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
+        this.cdnManagementClient.endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 
     @Override

@@ -126,6 +126,8 @@ public interface CdnEndpoint extends
     List<String> customDomains();
 
     // Actions
+    void start();
+    void stop();
     void purgeContent(List<String> contentPaths);
     void loadContent(List<String> contentPaths);
     CustomDomainValidationResult validateCustomDomain(String hostName);
@@ -155,7 +157,7 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
-            WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
+            WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryISOCode> countryCodes);
@@ -209,7 +211,7 @@ public interface CdnEndpoint extends
             WithStandardAttach<ParentT> withContentTypesToCompress(List<String> contentTypesToCompress);
             WithStandardAttach<ParentT> withContentTypeToCompress(String contentTypeToCompress);
             WithStandardAttach<ParentT> withCompressionEnabled(boolean compressionEnabled);
-            WithStandardAttach<ParentT> withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
+            WithStandardAttach<ParentT> withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
             WithStandardAttach<ParentT> withGeoFilters(List<GeoFilter> geoFilters);
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);
             WithStandardAttach<ParentT> withGeoFilter(String relativePath, GeoFilterActions action, List<CountryISOCode> countryCodes);
@@ -249,7 +251,7 @@ public interface CdnEndpoint extends
         UpdateStandardEndpoint withContentTypeToCompress(String contentTypeToCompress);
         UpdateStandardEndpoint withoutContentTypeToCompress(String contentTypeToCompress);
         UpdateStandardEndpoint withCompressionEnabled(boolean compressionEnabled);
-        UpdateStandardEndpoint withCachingBehavior(QueryStringCachingBehavior cachingBehavior);
+        UpdateStandardEndpoint withQueryStringCachingBehavior(QueryStringCachingBehavior cachingBehavior);
         UpdateStandardEndpoint withGeoFilters(List<GeoFilter> geoFilters);
         UpdateStandardEndpoint withoutGeoFilters();
         UpdateStandardEndpoint withGeoFilter(String relativePath, GeoFilterActions action, CountryISOCode countryCode);

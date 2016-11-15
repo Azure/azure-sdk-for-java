@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.cdn;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -41,5 +42,10 @@ public interface CdnProfiles extends
 
     CheckNameAvailabilityResult checkEndpointNameAvailability(String name);
 
-    List<Operation> listOperations();
+    PagedList<Operation> listOperations();
+
+    void endpointStart(String resourceGroupName, String profileName, String endpointName);
+    void endpointStop(String resourceGroupName, String profileName, String endpointName);
+    void endpointPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void endpointLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
 }

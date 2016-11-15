@@ -9,7 +9,7 @@ import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.DeepCreatedOrigin;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 import java.util.ArrayList;
@@ -18,16 +18,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Represents an endpoint collection associated with a traffic manager profile.
- */
 class CdnEndpointsImpl extends
-        ExternalChildResourcesImpl<CdnEndpointImpl,
-                CdnEndpoint,
-                EndpointInner,
-                CdnProfileImpl,
-                CdnProfile> {
+        ExternalChildResourcesCachedImpl<CdnEndpointImpl,
+                        CdnEndpoint,
+                        EndpointInner,
+                        CdnProfileImpl,
+                        CdnProfile> {
     private final EndpointsInner client;
+    private final OriginsInner originsClient;
+    private final CustomDomainsInner customDomainsClient;
 
     /**
      * Creates new EndpointsImpl.
@@ -35,10 +34,14 @@ class CdnEndpointsImpl extends
      * @param client the client to perform REST calls on endpoints
      * @param parent the parent traffic manager profile of the endpoints
      */
-    CdnEndpointsImpl(EndpointsInner client, CdnProfileImpl parent) {
+    CdnEndpointsImpl(EndpointsInner client,
+                     OriginsInner originsClient,
+                     CustomDomainsInner customDomainsClient,
+                     CdnProfileImpl parent) {
         super(parent, "Endpoint");
         this.client = client;
-        this.initializeCollection();
+        this.originsClient = originsClient;
+        this.customDomainsClient = customDomainsClient;
     }
 
     /**
@@ -90,28 +93,41 @@ class CdnEndpointsImpl extends
         CdnEndpointImpl endpoint = new CdnEndpointImpl(name,
                 this.parent(),
                 new EndpointInner(),
-                this.client);
+                this.client,
+                this.originsClient,
+                this.customDomainsClient);
 
         return endpoint;
     }
 
-    public CdnEndpointImpl defineNewEndpoint(String endpointName, String endpointHostname) {
-        CdnEndpointImpl endpoint = this.prepareDefine(endpointName);
+    public CdnEndpointImpl defineNewEndpoint(String endpointName, String originName, String endpointOriginHostname) {
+        CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName);
+        endpoint.inner().origins().add(
+                new DeepCreatedOrigin()
+                        .withName(originName)
+                        .withHostName(endpointOriginHostname));
+        return endpoint;
+    }
+
+    public CdnEndpointImpl defineNewEndpoint(String endpointName, String endpointOriginHostname) {
+        return this.defineNewEndpoint(endpointName, "origin", endpointOriginHostname);
+    }
+
+    public CdnEndpointImpl defineNewEndpoint(String name) {
+        CdnEndpointImpl endpoint = this.prepareDefine(name);
+        endpoint.inner().withLocation(endpoint.parent().region().toString());
         endpoint.inner().withOrigins( new ArrayList<DeepCreatedOrigin>());
         return endpoint;
     }
 
-    public CdnEndpointImpl defineNewEndpoint(String endpointHostname) {
+    public CdnEndpointImpl defineNewEndpoint() {
         String endpointName = this.generateUniqueEndpointName("Endpoint");
-        return this.defineNewEndpoint(endpointName, endpointHostname);
+        return this.defineNewEndpoint(endpointName);
     }
 
-    public CdnEndpointImpl defineNewEndpointWithOrigin(String endpointHostname, String endpointOriginHostname) {
-        CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointHostname);
-        endpoint.inner().origins().add(
-                new DeepCreatedOrigin()
-                        .withName("origin")
-                        .withHostName(endpointOriginHostname));
+    public CdnEndpointImpl defineNewEndpointWithOriginHostname(String endpointOriginHostname) {
+        String endpointName = this.generateUniqueEndpointName("Endpoint");
+        CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName, "origin", endpointOriginHostname);
         return endpoint;
     }
 

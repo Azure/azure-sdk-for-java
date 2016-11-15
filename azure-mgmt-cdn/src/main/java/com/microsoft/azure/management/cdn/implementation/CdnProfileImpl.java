@@ -22,9 +22,6 @@ import rx.functions.Func1;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Implementation for Redis Cache and its parent interfaces.
- */
 @LangDefinition
 class CdnProfileImpl
         extends GroupableResourceImpl<
@@ -36,9 +33,9 @@ class CdnProfileImpl
         CdnProfile,
         CdnProfile.Definition,
         CdnProfile.Update {
-
     private final EndpointsInner endpointsClient;
-    private ProfileUpdateParameters updateParameters;
+    private final OriginsInner originsClient;
+    private final CustomDomainsInner customDomainsClient;
     private final ProfilesInner innerCollection;
     private CdnEndpointsImpl endpointsImpl;
 
@@ -46,11 +43,18 @@ class CdnProfileImpl
                    final ProfileInner innerModel,
                    final ProfilesInner innerCollection,
                    final EndpointsInner endpointsClient,
+                   final OriginsInner originsClient,
+                   final CustomDomainsInner customDomainsClient,
                    final CdnManager cdnManager) {
         super(name, innerModel, cdnManager);
         this.innerCollection = innerCollection;
         this.endpointsClient = endpointsClient;
-        this.endpointsImpl = new CdnEndpointsImpl(endpointsClient, this);
+        this.originsClient = originsClient;
+        this.customDomainsClient = customDomainsClient;
+        this.endpointsImpl = new CdnEndpointsImpl(this.endpointsClient,
+                this.originsClient,
+                this.customDomainsClient,
+                this);
     }
 
     @Override
@@ -70,28 +74,33 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnEndpoint endpointStart(String endpointName) {
-        return null;
+    public void endpointStart(String endpointName) {
+        this.endpointsClient.start(this.resourceGroupName(), this.name(), endpointName);
     }
 
     @Override
-    public CdnEndpoint endpointStop(String endpointName) {
-        return null;
+    public void endpointStop(String endpointName) {
+        this.endpointsClient.stop(this.resourceGroupName(), this.name(), endpointName);
     }
 
     @Override
     public void endpointPurgeContent(String endpointName, List<String> contentPaths) {
-
+        this.endpointsClient.purgeContent(this.resourceGroupName(), this.name(), endpointName, contentPaths);
     }
 
     @Override
     public void endpointLoadContent(String endpointName, List<String> contentPaths) {
-
+        this.endpointsClient.loadContent(this.resourceGroupName(), this.name(), endpointName, contentPaths);
     }
 
     @Override
     public CustomDomainValidationResult endpointValidateCustomDomain(String endpointName, String hostName) {
-        return null;
+        return new CustomDomainValidationResult(
+                this.endpointsClient.validateCustomDomain(
+                        this.resourceGroupName(),
+                        this.name(),
+                        endpointName,
+                        hostName));
     }
 
     @Override
@@ -133,18 +142,20 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnProfileImpl update() {
-        return super.update();
-    }
-
-    @Override
     public Observable<CdnProfile> updateResourceAsync() {
-        return innerCollection.updateAsync(resourceGroupName(), name(), updateParameters.tags())
-                .map(innerToFluentMap(this))
-                .doOnNext(new Action1<CdnProfile>() {
-                    @Override
-                    public void call(CdnProfile profile) {
-                        /*updatePatchSchedules();*/
+        final CdnProfileImpl self = this;
+
+        return self.endpointsImpl.commitAndGetAllAsync()
+                .flatMap(new Func1<List<CdnEndpointImpl>, Observable<? extends CdnProfile>>() {
+                    public Observable<? extends CdnProfile> call(List<CdnEndpointImpl> endpoints) {
+                        return innerCollection.updateAsync(resourceGroupName(), name(), inner().getTags())
+                                .map(new Func1<ProfileInner, CdnProfile>() {
+                                    @Override
+                                    public CdnProfile call(ProfileInner profileInner) {
+                                        self.setInner(profileInner);
+                                        return self;
+                                    }
+                                });
                     }
                 });
     }
@@ -198,35 +209,35 @@ class CdnProfileImpl
     }
 
     @Override
-    public CdnProfileImpl withNewEndpoint(String endpointHostname, String endpointOriginHostname) {
-        CdnEndpointImpl endpoint = this.endpointsImpl.defineNewEndpointWithOrigin(endpointHostname, endpointOriginHostname);
+    public CdnProfileImpl withNewEndpoint(String endpointOriginHostname) {
+        CdnEndpointImpl endpoint = this.endpointsImpl.defineNewEndpointWithOriginHostname(endpointOriginHostname);
         this.endpointsImpl.addEndpoint(endpoint);
         return this;
     }
 
     @Override
-    public CdnEndpointImpl defineNewEndpoint(String endpointHostname) {
-        return this.endpointsImpl.defineNewEndpoint(endpointHostname);
+    public CdnEndpointImpl defineNewEndpoint(String name) {
+        return this.endpointsImpl.defineNewEndpoint(name);
     }
 
     @Override
-    public CdnEndpointImpl defineNewEndpoint(String name, String endpointHostname) {
-        return this.endpointsImpl.defineNewEndpoint(name, endpointHostname);
+    public CdnEndpointImpl defineNewEndpoint(String name, String endpointOriginHostname) {
+        return this.endpointsImpl.defineNewEndpoint(name, endpointOriginHostname);
     }
 
     @Override
-    public CdnProfileImpl withNewPremiumEndpoint(String endpointHostname, String endpointOriginHostname) {
-        return this.withNewEndpoint(endpointHostname, endpointOriginHostname);
+    public CdnProfileImpl withNewPremiumEndpoint(String endpointOriginHostname) {
+        return this.withNewEndpoint(endpointOriginHostname);
     }
 
     @Override
-    public CdnEndpointImpl defineNewPremiumEndpoint(String endpointHostname) {
-        return this.defineNewEndpoint(endpointHostname);
+    public CdnEndpointImpl defineNewPremiumEndpoint(String name) {
+        return this.defineNewEndpoint(name);
     }
 
     @Override
-    public CdnEndpointImpl defineNewPremiumEndpoint(String name, String endpointHostname) {
-        return this.defineNewEndpoint(name, endpointHostname);
+    public CdnEndpointImpl defineNewPremiumEndpoint(String name, String endpointOriginHostname) {
+        return this.defineNewEndpoint(name, endpointOriginHostname);
     }
 
     @Override

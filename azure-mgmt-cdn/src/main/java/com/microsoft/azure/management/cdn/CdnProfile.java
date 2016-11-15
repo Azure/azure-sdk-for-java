@@ -47,9 +47,9 @@ public interface CdnProfile extends
      */
     String generateSsoUri();
 
-    CdnEndpoint endpointStart(String endpointName);
+    void endpointStart(String endpointName);
 
-    CdnEndpoint endpointStop(String endpointName);
+    void endpointStop(String endpointName);
 
     void endpointPurgeContent(String endpointName, List<String> contentPaths);
     void endpointLoadContent(String endpointName, List<String> contentPaths);
@@ -106,15 +106,15 @@ public interface CdnProfile extends
         }
 
         interface WithStandardCreate extends WithCreate {
-            WithStandardCreate withNewEndpoint(String endpointHostname, String endpointOriginHostname);
-            CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<WithStandardCreate> defineNewEndpoint(String endpointHostname);
-            CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<WithStandardCreate> defineNewEndpoint(String name, String endpointHostname);
+            WithStandardCreate withNewEndpoint(String endpointOriginHostname);
+            CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<WithStandardCreate> defineNewEndpoint(String name);
+            CdnEndpoint.DefinitionStages.WithStandardAttach<WithStandardCreate> defineNewEndpoint(String name, String endpointOriginHostname);
         }
 
         interface WithPremiumVerizonCreate extends WithCreate {
-            WithPremiumVerizonCreate withNewPremiumEndpoint(String endpointHostname, String endpointOriginHostname);
-            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String endpointHostname);
-            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String name, String endpointHostname);
+            WithPremiumVerizonCreate withNewPremiumEndpoint(String endpointOriginHostname);
+            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String name);
+            CdnEndpoint.DefinitionStages.WithPremiumAttach<WithPremiumVerizonCreate> defineNewPremiumEndpoint(String name, String endpointOriginHostname);
         }
         interface WithCreate extends
                 Creatable<CdnProfile>,
@@ -124,13 +124,13 @@ public interface CdnProfile extends
 
     interface UpdateStages {
         interface WithEndpoint {
-            Update withNewEndpoint(String endpointHostname, String endpointOriginHostname);
-            CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<Update> defineNewEndpoint(String endpointHostname);
-            CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<Update> defineNewEndpoint(String name, String endpointHostname);
+            Update withNewEndpoint(String endpointOriginHostname);
+            CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<Update> defineNewEndpoint(String name);
+            CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(String name, String endpointOriginHostname);
 
-            Update withNewPremiumEndpoint(String endpointHostname, String endpointOriginHostname);
-            CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint(String endpointHostname);
-            CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint(String name, String endpointHostname);
+            Update withNewPremiumEndpoint(String endpointOriginHostname);
+            CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint(String name);
+            CdnEndpoint.UpdateDefinitionStages.WithPremiumAttach<Update> defineNewPremiumEndpoint(String name, String endpointOriginHostname);
 
             CdnEndpoint.UpdateStandardEndpoint updateEndpoint(String name);
             CdnEndpoint.UpdatePremiumEndpoint updatePremiumEndpoint(String name);
