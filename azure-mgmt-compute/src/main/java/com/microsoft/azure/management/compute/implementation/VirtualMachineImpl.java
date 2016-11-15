@@ -14,7 +14,6 @@ import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.HardwareProfile;
 import com.microsoft.azure.management.compute.ImageReference;
-import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -910,11 +909,7 @@ class VirtualMachineImpl
 
     @Override
     public PowerState powerState() {
-        String powerStateCode = this.getStatusCodeFromInstanceView("PowerState");
-        if (powerStateCode != null) {
-            return PowerState.fromValue(powerStateCode);
-        }
-        return null;
+        return PowerState.fromInstanceView(this.instanceView());
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
@@ -1257,19 +1252,6 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
-    }
-
-    private String getStatusCodeFromInstanceView(String codePrefix) {
-        try {
-            for (InstanceViewStatus status : this.instanceView().statuses()) {
-                if (status.code() != null && status.code().startsWith(codePrefix)) {
-                    return status.code();
-                }
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        return null;
     }
 
     private void clearCachedRelatedResources() {
