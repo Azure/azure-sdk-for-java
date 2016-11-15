@@ -19,12 +19,19 @@ public class SessionHandler extends BaseHandler
 {
 	protected static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 
-	private final String name;
-
-	public SessionHandler(final String name)
+	private final String entityName;
+        private final String sessionId;
+        
+	public SessionHandler(final String entityName, final String sessionId)
 	{
-		this.name = name;
+		this.entityName = entityName;
+                this.sessionId = sessionId;
 	}
+        
+        protected String getSessionId()
+        {
+            return this.sessionId;
+        }
 
 	@Override
 	public void onSessionRemoteOpen(Event e) 
@@ -32,7 +39,7 @@ public class SessionHandler extends BaseHandler
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
 		{
 			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], sessionIncCapacity[%s], sessionOutgoingWindow[%s]",
-					this.name, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
+					this.entityName, e.getSession().getIncomingCapacity(), e.getSession().getOutgoingWindow()));
 		}
 
 		Session session = e.getSession();
@@ -48,7 +55,7 @@ public class SessionHandler extends BaseHandler
 	{
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
 		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name, 
+			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName, 
 					e.getSession().getCondition() == null ? "none" : e.getSession().getCondition().toString()));
 		}
 	}
@@ -58,7 +65,7 @@ public class SessionHandler extends BaseHandler
 	{ 
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
 		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.name,
+			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s], condition[%s]", this.entityName,
 					e.getSession().getRemoteCondition() == null ? "none" : e.getSession().getRemoteCondition().toString()));
 		}
 
@@ -74,7 +81,7 @@ public class SessionHandler extends BaseHandler
 	{ 
 		if(TRACE_LOGGER.isLoggable(Level.FINE))
 		{
-			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.name));
+			TRACE_LOGGER.log(Level.FINE, String.format(Locale.US, "entityName[%s]", this.entityName));
 		}
 	}
 

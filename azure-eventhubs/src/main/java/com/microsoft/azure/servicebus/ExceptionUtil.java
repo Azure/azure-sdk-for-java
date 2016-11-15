@@ -12,9 +12,11 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 import com.microsoft.azure.servicebus.amqp.AmqpException;
+import com.microsoft.azure.servicebus.amqp.AmqpManagementResponseCode;
 
 final class ExceptionUtil
 {
@@ -103,7 +105,7 @@ final class ExceptionUtil
 
 		future.completeExceptionally(exception);
 	}
-
+        
 	// not a specific message related error
 	static boolean isGeneralSendError(Symbol amqpError)
 	{

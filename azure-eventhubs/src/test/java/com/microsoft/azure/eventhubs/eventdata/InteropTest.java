@@ -140,8 +140,10 @@ public class InteropTest extends ApiTestBase
 				msgFactory, 
 				"receiver1", 
 				connStrBuilder.getEntityPath() + "/ConsumerGroups/" + TestContext.getConsumerGroupName() + "/Partitions/" + partitionId,
-				reSentAndReceivedEvent.getSystemProperties().getOffset(), false, null, 100, 0L, false).get();
-		reSendAndReceivedMessage = msgReceiver.receive(10).get().iterator().next();
+				100,
+				ehClient.createReceiver(TestContext.getConsumerGroupName(), partitionId, reSentAndReceivedEvent.getSystemProperties().getOffset(), false).get()).get();
+                
+                reSendAndReceivedMessage = msgReceiver.receive(10).get().iterator().next();
 	}
 
 	@Test

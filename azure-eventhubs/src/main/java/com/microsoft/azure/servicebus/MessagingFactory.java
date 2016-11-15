@@ -7,6 +7,7 @@ package com.microsoft.azure.servicebus;
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
+import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
@@ -22,6 +23,7 @@ import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Handler;
 import org.apache.qpid.proton.engine.HandlerException;
 import org.apache.qpid.proton.engine.Link;
+import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.reactor.Reactor;
 
 import com.microsoft.azure.servicebus.amqp.BaseLinkHandler;
@@ -31,12 +33,13 @@ import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
 import com.microsoft.azure.servicebus.amqp.ProtonUtil;
 import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
+import com.microsoft.azure.servicebus.amqp.SessionHandler;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
  * Manages connection life-cycle
  */
-public class MessagingFactory extends ClientEntity implements IAmqpConnection, IConnectionFactory
+public class MessagingFactory extends ClientEntity implements IAmqpConnection, ISessionProvider
 {
 	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
 
@@ -46,6 +49,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final ConnectionHandler connectionHandler;
 	private final LinkedList<Link> registeredLinks;
 	private final Object reactorLock;
+        private final Hashtable<String, Session> sessionCache;
 	
 	private Reactor reactor;
 	private ReactorDispatcher reactorScheduler;
@@ -68,12 +72,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
             this.operationTimeout = builder.getOperationTimeout();
             this.retryPolicy = builder.getRetryPolicy();
-            this.registeredLinks = new LinkedList<Link>();
+            this.registeredLinks = new LinkedList<>();
             this.reactorLock = new Object();
             this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
-            this.openConnection = new CompletableFuture<Connection>();
+            this.openConnection = new CompletableFuture<>();
+            this.sessionCache = new Hashtable<>();
 
-            this.closeTask = new CompletableFuture<Void>();
+            this.closeTask = new CompletableFuture<>();
             this.closeTask.thenAccept(new Consumer<Void>()
             {
                 @Override
@@ -135,15 +140,76 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	}
 
 	@Override
-	public Connection getConnection()
+	public Session getSession(final String path, final String sessionId, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
 	{
+                if (StringUtil.isNullOrEmpty(sessionId))
+                    throw new IllegalArgumentException("sessionId cannot be empty");
+                
+                boolean createSession = false;
+		Session session = null;
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.connection = this.getReactor().connectionToHost(this.hostName, ClientConstants.AMQPS_PORT, this.connectionHandler);
+			createSession = true;
 		}
+		else
+		{
+			if (this.sessionCache.containsKey(sessionId))
+			{
+				final Session oldSession = this.sessionCache.get(sessionId);
+				if (oldSession.getLocalState() != EndpointState.CLOSED && oldSession.getRemoteState() != EndpointState.CLOSED)
+					session = oldSession;
+				else
+					createSession = true;
+			}
+			else
+			{
+                                createSession = true;
+			}
+		}
+                
+                if (createSession)
+                {
+                        session = this.connection.session();
+                        sessionCache.put(sessionId, session);
 
-		return this.connection;
-	}
+                        BaseHandler.setHandler(session, new SessionHandler(path, sessionId)
+                        {
+                            private boolean sessionCreated = false;
+
+                            @Override
+                            public void onSessionRemoteOpen(Event e) 
+                            {
+                                super.onSessionRemoteOpen(e);
+                                sessionCreated = true;
+                                onRemoteSessionOpen.accept(e.getSession());
+                            }
+                            
+                            @Override 
+                            public void onSessionRemoteClose(Event e)
+                            {
+                                super.onSessionRemoteClose(e);
+                                if (!sessionCreated)
+                                    onRemoteSessionOpenError.accept(e.getSession().getRemoteCondition());
+                            }
+                            
+                            @Override 
+                            public void onSessionLocalClose(Event e)
+                            {
+                                super.onSessionLocalClose(e);
+                                MessagingFactory.this.sessionCache.remove(this.getSessionId());
+                            }
+                        });
+
+                        session.open();
+                }
+                else
+                {
+                    onRemoteSessionOpen.accept(session);
+                }
+
+		return session;
+        }
 
 	public Duration getOperationTimeout()
 	{

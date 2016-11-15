@@ -7,24 +7,28 @@ package com.microsoft.azure.eventhubs;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.ClientConstants;
 import com.microsoft.azure.servicebus.ClientEntity;
+import com.microsoft.azure.servicebus.IReceiverSettingsProvider;
 import com.microsoft.azure.servicebus.MessageReceiver;
 import com.microsoft.azure.servicebus.MessagingFactory;
 import com.microsoft.azure.servicebus.ServiceBusException;
 import com.microsoft.azure.servicebus.StringUtil;
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.
@@ -38,8 +42,9 @@ import com.microsoft.azure.servicebus.StringUtil;
  * @see EventHubClient#createReceiver
  * @see EventHubClient#createEpochReceiver 
  */
-public final class PartitionReceiver extends ClientEntity
+public final class PartitionReceiver extends ClientEntity implements IReceiverSettingsProvider
 {
+	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private static final int MINIMUM_PREFETCH_COUNT = 10;
 	private static final int MAXIMUM_PREFETCH_COUNT = 999;
 
@@ -123,13 +128,14 @@ public final class PartitionReceiver extends ClientEntity
 
 	private CompletableFuture<Void> createInternalReceiver() throws ServiceBusException
 	{
-		return MessageReceiver.create(this.underlyingFactory, StringUtil.getRandomString(), 
-				String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId), 
-				this.startingOffset, this.offsetInclusive, this.startingDateTime, PartitionReceiver.DEFAULT_PREFETCH_COUNT, this.epoch, this.isEpochReceiver)
-				.thenAcceptAsync(new Consumer<MessageReceiver>()
-				{
-					public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
-				});
+            return MessageReceiver.create(this.underlyingFactory,
+                StringUtil.getRandomString(),
+                String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
+                PartitionReceiver.DEFAULT_PREFETCH_COUNT, this)
+                    .thenAcceptAsync(new Consumer<MessageReceiver>()
+                    {
+                            public void accept(MessageReceiver r) { PartitionReceiver.this.internalReceiver = r;}
+                    });
 	}
 
 	/**
@@ -377,5 +383,66 @@ public final class PartitionReceiver extends ClientEntity
 		{
 			return CompletableFuture.completedFuture(null);
 		}
+	}
+        
+        
+	@Override
+	public Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage)
+	{
+		final UnknownDescribedType filter;
+		if (lastReceivedMessage == null && this.startingOffset == null)
+		{
+			long totalMilliSeconds;
+			try
+			{
+				totalMilliSeconds = this.startingDateTime.toEpochMilli();
+			}
+			catch(ArithmeticException ex)
+			{
+				totalMilliSeconds = Long.MAX_VALUE;
+				if(TRACE_LOGGER.isLoggable(Level.WARNING))
+				{
+					TRACE_LOGGER.log(Level.WARNING,
+							String.format("receiverPath[%s], action[createReceiveLink], warning[starting receiver from epoch+Long.Max]", this.internalReceiver.getReceivePath()));
+				}
+			}
+
+			filter = new UnknownDescribedType(AmqpConstants.STRING_FILTER,
+					String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, StringUtil.EMPTY, totalMilliSeconds));
+		}
+		else 
+		{
+			final String lastReceivedOffset;
+			final boolean offsetInclusiveFlag;
+			if (lastReceivedMessage != null)
+			{
+				offsetInclusiveFlag = false;
+				lastReceivedOffset = lastReceivedMessage.getMessageAnnotations().getValue().get(AmqpConstants.OFFSET).toString();
+			}
+			else
+			{
+				offsetInclusiveFlag = this.offsetInclusive;
+				lastReceivedOffset = this.startingOffset;
+			}
+			
+			if(TRACE_LOGGER.isLoggable(Level.FINE))
+			{
+				TRACE_LOGGER.log(Level.FINE, String.format("receiverPath[%s], action[createReceiveLink], offset[%s], offsetInclusive[%s]", this.internalReceiver.getReceivePath(), lastReceivedOffset, offsetInclusiveFlag));
+			}
+
+			filter =  new UnknownDescribedType(AmqpConstants.STRING_FILTER,
+							String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT,
+							AmqpConstants.OFFSET_ANNOTATION_NAME,
+							offsetInclusiveFlag ? "=" : StringUtil.EMPTY,
+							lastReceivedOffset));
+		}
+
+		return Collections.singletonMap(AmqpConstants.STRING_FILTER, filter);
+	}
+
+	@Override
+	public Map<Symbol, Object> getProperties()
+	{
+		return this.isEpochReceiver ? Collections.singletonMap(AmqpConstants.EPOCH, (Object) this.epoch) : null;
 	}
 }

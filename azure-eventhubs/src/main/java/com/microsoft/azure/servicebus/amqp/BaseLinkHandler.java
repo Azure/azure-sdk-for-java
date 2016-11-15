@@ -34,6 +34,8 @@ public class BaseLinkHandler extends BaseHandler
 				TRACE_LOGGER.log(Level.FINE, String.format("linkName[%s]", link.getName()));
 			}
 		}
+                
+                closeSession(link);
 	}
 
 	@Override
@@ -51,6 +53,8 @@ public class BaseLinkHandler extends BaseHandler
 			ErrorCondition condition = link.getRemoteCondition();
 			this.processOnClose(link, condition);	
 		}
+                
+                closeSession(link);
 	}
 
 	@Override
@@ -67,6 +71,8 @@ public class BaseLinkHandler extends BaseHandler
 		{
 			this.processOnClose(link, link.getRemoteCondition());
 		}
+                
+                closeSession(link);
 	}
 
 	public void processOnClose(Link link, ErrorCondition condition)
@@ -86,5 +92,11 @@ public class BaseLinkHandler extends BaseHandler
 	public void processOnClose(Link link, Exception exception)
 	{
 		this.underlyingEntity.onError(exception);
+	}
+        
+        private void closeSession(Link link)
+	{
+		if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED)
+			link.getSession().close();
 	}
 }

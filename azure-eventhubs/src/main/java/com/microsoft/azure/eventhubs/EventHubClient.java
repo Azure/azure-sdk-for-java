@@ -4,14 +4,23 @@
  */
 package com.microsoft.azure.eventhubs;
 
-import java.io.*;
-import java.nio.channels.*;
-import java.time.*;
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.function.*;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-import com.microsoft.azure.servicebus.*;
+import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.ClientEntity;
+import com.microsoft.azure.servicebus.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.IllegalEntityException;
+import com.microsoft.azure.servicebus.IteratorUtil;
+import com.microsoft.azure.servicebus.MessageSender;
+import com.microsoft.azure.servicebus.MessagingFactory;
+import com.microsoft.azure.servicebus.ServiceBusException;
+import com.microsoft.azure.servicebus.StringUtil;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
@@ -23,19 +32,19 @@ public class EventHubClient extends ClientEntity
 
 	private final String eventHubName;
 	private final Object senderCreateSync;
-
+        
 	private MessagingFactory underlyingFactory;
 	private MessageSender sender;
 	private boolean isSenderCreateStarted;
-	private CompletableFuture<Void> createSender;
-
+        private CompletableFuture<Void> createSender;
+        
 	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
 		super(StringUtil.getRandomString(), null);
 
 		this.eventHubName = connectionString.getEntityPath();
 		this.senderCreateSync = new Object();
-	}
+        }
 
 	/**
 	 * Synchronous version of {@link #createFromConnectionString(String)}. 
@@ -927,7 +936,7 @@ public class EventHubClient extends ClientEntity
 		{
                     synchronized (this.senderCreateSync)
                     {
-                        return this.sender != null 
+                        final CompletableFuture<Void> internalSenderClose = this.sender != null 
                             ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>()
                                 {
                                     @Override
@@ -937,12 +946,14 @@ public class EventHubClient extends ClientEntity
                                     }
                                 })
                             : this.underlyingFactory.close();
+
+                        return internalSenderClose;
                     }
 		}
 
 		return CompletableFuture.completedFuture(null);
 	}
-
+        
 	private CompletableFuture<Void> createInternalSender()
 	{
 		if (!this.isSenderCreateStarted)

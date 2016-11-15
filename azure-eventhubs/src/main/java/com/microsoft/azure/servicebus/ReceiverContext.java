@@ -13,30 +13,24 @@ public class ReceiverContext extends ErrorContext
 
 	final String receivePath;
 	final String referenceId;
-	final Long lastReceivedOffset;
 	final Integer prefetchCount;
 	final Integer currentLinkCredit;
 	final Integer prefetchQueueLength;
-	final Boolean receiverType;
 
 	ReceiverContext(
 			final String namespaceName, 
 			final String receivePath, 
 			final String referenceId,
-			final Long lastReceivedOffset,
 			final Integer prefetchCount,
 			final Integer currentLinkCredit,
-			final Integer prefetchQueueLength,
-			final Boolean receiverType)
+			final Integer prefetchQueueLength)
 	{
 		super(namespaceName);
 		this.receivePath = receivePath;
 		this.referenceId = referenceId;
-		this.lastReceivedOffset = lastReceivedOffset;
 		this.prefetchCount = prefetchCount;
 		this.currentLinkCredit = currentLinkCredit;
 		this.prefetchQueueLength = prefetchQueueLength;
-		this.receiverType = receiverType;
 	}
 
 	@Override
@@ -63,12 +57,6 @@ public class ReceiverContext extends ErrorContext
 			toString.append(", ");
 		}
 
-		if (this.lastReceivedOffset != null)
-		{
-			toString.append(String.format(Locale.US, "LAST_OFFSET: %s", this.lastReceivedOffset));
-			toString.append(", ");
-		}
-
 		if (this.prefetchCount != null)
 		{
 			toString.append(String.format(Locale.US, "PREFETCH_COUNT: %s", this.prefetchCount));
@@ -84,12 +72,6 @@ public class ReceiverContext extends ErrorContext
 		if (this.prefetchQueueLength != null)
 		{
 			toString.append(String.format(Locale.US, "PREFETCH_Q_LEN: %s", this.prefetchQueueLength));
-			toString.append(", ");
-		}
-
-		if (this.receiverType != null)
-		{
-			toString.append(String.format(Locale.US, "R_TYPE: %s", this.receiverType ? "EPOCH" : "NON_EPOCH"));
 			toString.append(", ");
 		}
 
