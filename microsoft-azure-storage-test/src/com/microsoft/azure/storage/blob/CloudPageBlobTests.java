@@ -247,6 +247,13 @@ public class CloudPageBlobTests {
 
         options.setDisableContentMD5Validation(true);
         pageBlobRef.download(new ByteArrayOutputStream(), null, options, null);
+        
+        final CloudPageBlob pageBlobRef2 = this.container.getPageBlobReference(pageBlobName);
+        assertNull(pageBlobRef2.getProperties().getContentMD5());
+
+        byte[] target = new byte[4];
+        pageBlobRef2.downloadRangeToByteArray(0L, 4L, target, 0);
+        assertEquals("MDAwMDAwMDA=", pageBlobRef2.properties.getContentMD5());
     }
 
     @Test

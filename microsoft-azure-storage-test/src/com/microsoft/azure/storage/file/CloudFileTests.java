@@ -715,6 +715,13 @@ public class CloudFileTests {
             assertEquals(e.getCause().getMessage(),
                     "The conditionals specified for this operation did not match server.");
         }
+
+        final CloudFile fileRef2 = this.share.getRootDirectoryReference().getFileReference(fileName);
+        assertNull(fileRef2.getProperties().getContentMD5());
+
+        byte[] target = new byte[4];
+        fileRef2.downloadRangeToByteArray(0L, 4L, target, 0);
+        assertEquals(calculatedMD5, fileRef2.getProperties().getContentMD5());
     }
 
     @Test

@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -13,6 +13,11 @@
  * limitations under the License.
  */
 package com.microsoft.azure.storage.blob;
+
+import java.util.Locale;
+
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.core.Utility;
 
 /**
  * Specifies the level of public access that is allowed on the container.
@@ -46,5 +51,35 @@ public enum BlobContainerPublicAccessType {
     /**
      * Specifies no public access. Only the account owner can access resources in this container.
      */
-    OFF
+    OFF,
+
+    /**
+     * Specifies that the public access type is unknown.
+     */
+    UNKNOWN;
+
+    /**
+     * Parses a public access level from the specified string.
+     *
+     * @param typeString
+     *            A <code>String</code> which contains the public access level
+     *            to parse.
+     *
+     * @return A <code>BlobContainerPublicAccessType</code> value that
+     *         represents the public access level for the container.
+     */
+    protected static BlobContainerPublicAccessType parse(final String typeString) {
+        if (Utility.isNullOrEmpty(typeString)) {
+            return OFF;
+        }
+        else if (SR.BLOB.equals(typeString.toLowerCase(Locale.US))) {
+            return BLOB;
+        }
+        else if (SR.CONTAINER.equals(typeString.toLowerCase(Locale.US))) {
+            return CONTAINER;
+        }
+        else {
+            return UNKNOWN;
+        }
+    }
 }

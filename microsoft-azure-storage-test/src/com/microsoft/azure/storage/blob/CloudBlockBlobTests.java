@@ -1046,6 +1046,13 @@ public class CloudBlockBlobTests {
 
         options.setDisableContentMD5Validation(true);
         blockBlobRef.download(new ByteArrayOutputStream(), null, options, null);
+
+        final CloudBlockBlob blockBlobRef2 = this.container.getBlockBlobReference(blockBlobName);
+        assertNull(blockBlobRef2.getProperties().getContentMD5());
+
+        byte[] target = new byte[4];
+        blockBlobRef2.downloadRangeToByteArray(0L, 4L, target, 0);
+        assertEquals("MDAwMDAwMDA=", blockBlobRef2.properties.getContentMD5());
     }
 
     @Test

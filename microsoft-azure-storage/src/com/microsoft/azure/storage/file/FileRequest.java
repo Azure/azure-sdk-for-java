@@ -788,6 +788,10 @@ final class FileRequest {
             if (listingContext.getMaxResults() != null && listingContext.getMaxResults() > 0) {
                 builder.add(Constants.QueryConstants.MAX_RESULTS, listingContext.getMaxResults().toString());
             }
+
+            if (!Utility.isNullOrEmpty(listingContext.getPrefix())) {
+                builder.add(Constants.QueryConstants.PREFIX, listingContext.getPrefix().toString());
+            }
         }
 
         final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);

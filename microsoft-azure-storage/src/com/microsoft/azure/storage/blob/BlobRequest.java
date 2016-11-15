@@ -266,14 +266,22 @@ final class BlobRequest {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
+     * @param publicAccess
+     *            The type of public access to allow for the container.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection createContainer(final URI uri, final BlobRequestOptions blobOptions,
-            final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+            final OperationContext opContext, final BlobContainerPublicAccessType publicAccess) throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder containerBuilder = getContainerUriQueryBuilder();
-        return BaseRequest.create(uri, blobOptions, containerBuilder, opContext);
+        final HttpURLConnection request = BaseRequest.create(uri, blobOptions, containerBuilder, opContext);
+
+        if (publicAccess != null && publicAccess != BlobContainerPublicAccessType.OFF) {
+            request.setRequestProperty(BlobConstants.BLOB_PUBLIC_ACCESS_HEADER, publicAccess.toString().toLowerCase());
+        }
+
+        return request;
     }
 
     /**

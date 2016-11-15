@@ -1,3 +1,10 @@
+2016.XX.XX Version 5.0.0
+ * Prefix support for listing files and directories.
+ * Added support for setting public access when creating a blob container
+ * The public access setting on a blob container is now a container property returned from downloadProperties.
+ * Add Message now modifies the PopReceipt, Id, NextVisibleTime, InsertionTime, and ExpirationTime properties of its CloudQueueMessage parameter.
+ * Populate content MD5 for range gets on Blobs and Files.
+
 2016.08.30 Version 4.4.0
  * Fixed a bug in client-side encryption for tables that was preventing the Java client from decrypting entities encrypted with the .NET client, and vice versa.
 

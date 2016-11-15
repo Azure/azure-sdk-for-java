@@ -51,6 +51,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
+import com.microsoft.azure.keyvault.extensions.Strings;
 import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.NameValidator;
 import com.microsoft.azure.storage.OperationContext;
@@ -680,12 +681,40 @@ public class CloudQueueTests {
 
     @Test
     @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testAddMessageVerifyPopReceipt() throws StorageException
+    {
+        CloudQueueMessage message1 = new CloudQueueMessage("firstmessagetest1");
+        message1.setNextVisibleTime(null);
+        this.queue.addMessage(message1);
+
+        VerifyAddMessageResult(message1, "firstmessagetest1");
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testDeleteMessageWithAddMessagePopReceipt() throws StorageException
+    {
+        CloudQueueMessage message1 = new CloudQueueMessage("messagetest1");
+        message1.setNextVisibleTime(null);
+        this.queue.addMessage(message1);
+
+        VerifyAddMessageResult(message1, "messagetest1");
+
+        queue.deleteMessage(message1);
+
+        assertNull(queue.retrieveMessage());
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
     public void testClearMessages() throws StorageException {
         CloudQueueMessage message1 = new CloudQueueMessage("messagetest1");
         this.queue.addMessage(message1);
+        VerifyAddMessageResult(message1, "messagetest1");
 
         CloudQueueMessage message2 = new CloudQueueMessage("messagetest2");
         this.queue.addMessage(message2);
+        VerifyAddMessageResult(message2, "messagetest2");
 
         int count = 0;
         for (CloudQueueMessage m : this.queue.peekMessages(32)) {
@@ -730,6 +759,7 @@ public class CloudQueueTests {
         String msgContent = UUID.randomUUID().toString();
         final CloudQueueMessage message = new CloudQueueMessage(msgContent);
         this.queue.addMessage(message);
+        VerifyAddMessageResult(message, msgContent);
         CloudQueueMessage msgFromRetrieve1 = this.queue.retrieveMessage();
         assertEquals(message.getMessageContentAsString(), msgContent);
         assertEquals(msgFromRetrieve1.getMessageContentAsString(), msgContent);
@@ -1446,5 +1476,16 @@ public class CloudQueueTests {
                 new StorageCredentialsSharedAccessSignature(sasString));
         CloudQueue queue2 = new CloudQueue(queueUri, queueClient2.getCredentials());
         queue2.getName();
+    }
+
+    private void VerifyAddMessageResult(CloudQueueMessage originalMessage, String expectedMessageContent)
+    {
+        assertFalse(Strings.isNullOrEmpty(originalMessage.getId()));
+        assertNotNull(originalMessage.getInsertionTime());
+        assertNotNull(originalMessage.getExpirationTime());
+        assertFalse(Strings.isNullOrEmpty(originalMessage.getPopReceipt()));
+
+        assertTrue(originalMessage.messageContent.equals(expectedMessageContent));
+        assertNotNull(originalMessage.getNextVisibleTime());
     }
 }

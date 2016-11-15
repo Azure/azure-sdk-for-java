@@ -1351,18 +1351,8 @@ public abstract class CloudBlob implements ListBlobItem {
                 }
 
                 if (!this.getArePropertiesPopulated()) {
-                    String originalContentMD5 = null;
-
                     final BlobAttributes retrievedAttributes = BlobResponse.getBlobAttributes(this.getConnection(),
                             blob.getStorageUri(), blob.snapshotID);
-
-                    // Do not update Content-MD5 if it is a range get.
-                    if (isRangeGet) {
-                        originalContentMD5 = blob.properties.getContentMD5();
-                    }
-                    else {
-                        originalContentMD5 = retrievedAttributes.getProperties().getContentMD5();
-                    }
 
                     if (!options.getDisableContentMD5Validation() && options.getUseTransactionalContentMD5()
                             && Utility.isNullOrEmpty(retrievedAttributes.getProperties().getContentMD5())) {
@@ -1372,8 +1362,11 @@ public abstract class CloudBlob implements ListBlobItem {
 
                     blob.properties = retrievedAttributes.getProperties();
                     blob.metadata = retrievedAttributes.getMetadata();
-                    this.setContentMD5(retrievedAttributes.getProperties().getContentMD5());
-                    blob.properties.setContentMD5(originalContentMD5);
+                    
+                    // Need to store the Content MD5 in case we fail part way through.
+                    // We would still need to verify the entire range.
+                    String contentMD5 = this.getConnection().getHeaderField(Constants.HeaderConstants.CONTENT_MD5);
+                    this.setContentMD5(contentMD5);
                     this.setLockedETag(blob.properties.getEtag());
                     this.setArePropertiesPopulated(true);
                 }
