@@ -180,7 +180,7 @@ public final class DataLakeAnalyticsJobManagementClientImpl extends AzureService
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-03-20-preview";
+        this.apiVersion = "2016-11-01";
         this.adlaJobDnsSuffix = "azuredatalakeanalytics.net";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
@@ -198,6 +198,6 @@ public final class DataLakeAnalyticsJobManagementClientImpl extends AzureService
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "DataLakeAnalyticsJobManagementClient, 2016-03-20-preview");
+                "DataLakeAnalyticsJobManagementClient, 2016-11-01");
     }
 }

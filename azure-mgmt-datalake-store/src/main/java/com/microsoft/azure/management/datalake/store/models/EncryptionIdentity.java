@@ -12,14 +12,15 @@ import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The EncryptionIdentity model.
+ * The encryption identity properties.
  */
 public class EncryptionIdentity {
     /**
      * The type of encryption being used. Currently the only supported type is
-     * 'SystemAssigned'. Possible values include: 'SystemAssigned'.
+     * 'SystemAssigned'.
      */
-    private EncryptionIdentityType type;
+    @JsonProperty(required = true)
+    private String type;
 
     /**
      * The principal identifier associated with the encryption.
@@ -34,11 +35,18 @@ public class EncryptionIdentity {
     private UUID tenantId;
 
     /**
+     * Creates an instance of EncryptionIdentity class.
+     */
+    public EncryptionIdentity() {
+        type = "SystemAssigned";
+    }
+
+    /**
      * Get the type value.
      *
      * @return the type value
      */
-    public EncryptionIdentityType type() {
+    public String type() {
         return this.type;
     }
 
@@ -48,7 +56,7 @@ public class EncryptionIdentity {
      * @param type the type value to set
      * @return the EncryptionIdentity object itself.
      */
-    public EncryptionIdentity withType(EncryptionIdentityType type) {
+    public EncryptionIdentity withType(String type) {
         this.type = type;
         return this;
     }

@@ -12,11 +12,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Storage account parameters for a storage account being added to a Data Lake
- * Analytics account.
+ * Azure Storage account information to add to the Data Lake analytics account
+ * being created.
  */
 @JsonFlatten
-public class AddStorageAccountParameters {
+public class CreateStorageAccountInfo {
+    /**
+     * the account name associated with the Azure storage account to add to
+     * the Data Lake analytics account being created.
+     */
+    @JsonProperty(required = true)
+    private String name;
+
     /**
      * the access key associated with this Azure Storage account that will be
      * used to connect to it.
@@ -31,6 +38,26 @@ public class AddStorageAccountParameters {
     private String suffix;
 
     /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name value.
+     *
+     * @param name the name value to set
+     * @return the CreateStorageAccountInfo object itself.
+     */
+    public CreateStorageAccountInfo withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the accessKey value.
      *
      * @return the accessKey value
@@ -43,9 +70,9 @@ public class AddStorageAccountParameters {
      * Set the accessKey value.
      *
      * @param accessKey the accessKey value to set
-     * @return the AddStorageAccountParameters object itself.
+     * @return the CreateStorageAccountInfo object itself.
      */
-    public AddStorageAccountParameters withAccessKey(String accessKey) {
+    public CreateStorageAccountInfo withAccessKey(String accessKey) {
         this.accessKey = accessKey;
         return this;
     }
@@ -63,9 +90,9 @@ public class AddStorageAccountParameters {
      * Set the suffix value.
      *
      * @param suffix the suffix value to set
-     * @return the AddStorageAccountParameters object itself.
+     * @return the CreateStorageAccountInfo object itself.
      */
-    public AddStorageAccountParameters withSuffix(String suffix) {
+    public CreateStorageAccountInfo withSuffix(String suffix) {
         this.suffix = suffix;
         return this;
     }

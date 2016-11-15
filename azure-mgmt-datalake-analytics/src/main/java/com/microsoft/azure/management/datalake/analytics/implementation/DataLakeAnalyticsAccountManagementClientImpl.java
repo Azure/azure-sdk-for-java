@@ -12,6 +12,8 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.management.datalake.analytics.Accounts;
 import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsAccountManagementClient;
+import com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts;
+import com.microsoft.azure.management.datalake.analytics.StorageAccounts;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -135,6 +137,32 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
     }
 
     /**
+     * The StorageAccounts object to access its operations.
+     */
+    private StorageAccounts storageAccounts;
+
+    /**
+     * Gets the StorageAccounts object to access its operations.
+     * @return the StorageAccounts object.
+     */
+    public StorageAccounts storageAccounts() {
+        return this.storageAccounts;
+    }
+
+    /**
+     * The DataLakeStoreAccounts object to access its operations.
+     */
+    private DataLakeStoreAccounts dataLakeStoreAccounts;
+
+    /**
+     * Gets the DataLakeStoreAccounts object to access its operations.
+     * @return the DataLakeStoreAccounts object.
+     */
+    public DataLakeStoreAccounts dataLakeStoreAccounts() {
+        return this.dataLakeStoreAccounts;
+    }
+
+    /**
      * The Accounts object to access its operations.
      */
     private Accounts accounts;
@@ -180,10 +208,12 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-10-01-preview";
+        this.apiVersion = "2016-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.storageAccounts = new StorageAccountsImpl(restClient().retrofit(), this);
+        this.dataLakeStoreAccounts = new DataLakeStoreAccountsImpl(restClient().retrofit(), this);
         this.accounts = new AccountsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
@@ -197,6 +227,6 @@ public final class DataLakeAnalyticsAccountManagementClientImpl extends AzureSer
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "DataLakeAnalyticsAccountManagementClient, 2015-10-01-preview");
+                "DataLakeAnalyticsAccountManagementClient, 2016-11-01");
     }
 }

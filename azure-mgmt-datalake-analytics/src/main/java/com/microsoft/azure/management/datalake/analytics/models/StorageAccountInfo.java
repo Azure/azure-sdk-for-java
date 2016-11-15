@@ -9,22 +9,31 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Azure Storage account information.
  */
+@JsonFlatten
 public class StorageAccountInfo {
     /**
      * the account name associated with the Azure storage account.
      */
-    @JsonProperty(required = true)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * the properties associated with this storage account.
+     * the access key associated with this Azure Storage account that will be
+     * used to connect to it.
      */
-    @JsonProperty(required = true)
-    private StorageAccountProperties properties;
+    @JsonProperty(value = "properties.accessKey", required = true)
+    private String accessKey;
+
+    /**
+     * the optional suffix for the storage account.
+     */
+    @JsonProperty(value = "properties.suffix")
+    private String suffix;
 
     /**
      * Get the name value.
@@ -36,33 +45,42 @@ public class StorageAccountInfo {
     }
 
     /**
-     * Set the name value.
+     * Get the accessKey value.
      *
-     * @param name the name value to set
+     * @return the accessKey value
+     */
+    public String accessKey() {
+        return this.accessKey;
+    }
+
+    /**
+     * Set the accessKey value.
+     *
+     * @param accessKey the accessKey value to set
      * @return the StorageAccountInfo object itself.
      */
-    public StorageAccountInfo withName(String name) {
-        this.name = name;
+    public StorageAccountInfo withAccessKey(String accessKey) {
+        this.accessKey = accessKey;
         return this;
     }
 
     /**
-     * Get the properties value.
+     * Get the suffix value.
      *
-     * @return the properties value
+     * @return the suffix value
      */
-    public StorageAccountProperties properties() {
-        return this.properties;
+    public String suffix() {
+        return this.suffix;
     }
 
     /**
-     * Set the properties value.
+     * Set the suffix value.
      *
-     * @param properties the properties value to set
+     * @param suffix the suffix value to set
      * @return the StorageAccountInfo object itself.
      */
-    public StorageAccountInfo withProperties(StorageAccountProperties properties) {
-        this.properties = properties;
+    public StorageAccountInfo withSuffix(String suffix) {
+        this.suffix = suffix;
         return this;
     }
 
