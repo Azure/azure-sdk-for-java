@@ -285,7 +285,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public VirtualMachineInstanceView instanceView() {
-        if(this.virtualMachineInstanceView == null) {
+        if (this.virtualMachineInstanceView == null) {
             refreshInstanceView();
         }
         return this.virtualMachineInstanceView;

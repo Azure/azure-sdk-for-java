@@ -51,6 +51,13 @@ public class PowerState {
         this.value = value;
     }
 
+    /**
+     * Creates an instance of PowerState from the virtual machine instance view status entry corresponding
+     * to the power state.
+     *
+     * @param virtualMachineInstanceView the virtual machine instance view
+     * @return the PowerState
+     */
     public static PowerState fromInstanceView(VirtualMachineInstanceView virtualMachineInstanceView) {
         if (virtualMachineInstanceView != null && virtualMachineInstanceView.statuses() != null) {
             for (InstanceViewStatus status : virtualMachineInstanceView.statuses()) {

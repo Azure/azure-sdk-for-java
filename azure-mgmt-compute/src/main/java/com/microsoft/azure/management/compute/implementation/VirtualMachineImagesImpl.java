@@ -23,13 +23,13 @@ class VirtualMachineImagesImpl
     }
 
     @Override
-    public VirtualMachineImage getImage(Region region, String publisherName, String OfferName, String skuName, String version) {
+    public VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version) {
         VirtualMachineImageInner innerImage = this.client.get(region.name(),
                 publisherName,
-                OfferName,
+                offerName,
                 skuName,
                 version);
-        return new VirtualMachineImageImpl(region, publisherName, OfferName, skuName, version, innerImage);
+        return new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage);
     }
 
     @Override

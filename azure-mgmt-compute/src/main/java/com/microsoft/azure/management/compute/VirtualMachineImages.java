@@ -20,12 +20,12 @@ public interface VirtualMachineImages extends
      *
      * @param region the region
      * @param publisherName publisher name
-     * @param OfferName offer name
+     * @param offerName offer name
      * @param skuName sku name
      * @param version version name
      * @return the virtual machine image
      */
-    VirtualMachineImage getImage(Region region, String publisherName, String OfferName, String skuName, String version);
+    VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version);
 
     /**
      * @return entry point to virtual machine image publishers
