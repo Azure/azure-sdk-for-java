@@ -11,8 +11,8 @@ import com.google.common.collect.Maps;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.Contact;
-import com.microsoft.azure.management.website.Domain;
 import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.DomainPurchaseConsent;
 import com.microsoft.azure.management.website.DomainStatus;
@@ -29,26 +29,26 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The implementation for {@link Domain}.
+ * The implementation for {@link AppServiceDomain}.
  */
-class DomainImpl
+class AppServiceDomainImpl
         extends
         GroupableResourceImpl<
-                Domain,
+                AppServiceDomain,
                 DomainInner,
-                DomainImpl,
+                AppServiceDomainImpl,
                 AppServiceManager>
         implements
-        Domain,
-        Domain.Definition,
-        Domain.Update {
+        AppServiceDomain,
+        AppServiceDomain.Definition,
+        AppServiceDomain.Update {
 
     private final DomainsInner client;
     private final TopLevelDomainsInner topLevelDomainsInner;
 
     private Map<String, HostName> hostNameMap;
 
-    DomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
+    AppServiceDomainImpl(String name, DomainInner innerObject, final DomainsInner client, final TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
         this.topLevelDomainsInner = topLevelDomainsInner;
@@ -64,7 +64,7 @@ class DomainImpl
     }
 
     @Override
-    public Observable<Domain> createResourceAsync() {
+    public Observable<AppServiceDomain> createResourceAsync() {
         String[] domainParts = this.name().split("\\.");
         String topLevel = domainParts[domainParts.length - 1];
         return topLevelDomainsInner.listAgreementsAsync(topLevel)
@@ -98,7 +98,7 @@ class DomainImpl
     }
 
     @Override
-    public DomainImpl refresh() {
+    public AppServiceDomainImpl refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
     }
@@ -177,19 +177,19 @@ class DomainImpl
     }
 
     @Override
-    public DomainImpl withAdminContact(Contact contact) {
+    public AppServiceDomainImpl withAdminContact(Contact contact) {
         inner().withContactAdmin(contact);
         return this;
     }
 
     @Override
-    public DomainImpl withBillingContact(Contact contact) {
+    public AppServiceDomainImpl withBillingContact(Contact contact) {
         inner().withContactBilling(contact);
         return this;
     }
 
     @Override
-    public DomainImpl withRegistrantContact(Contact contact) {
+    public AppServiceDomainImpl withRegistrantContact(Contact contact) {
         inner().withContactAdmin(contact);
         inner().withContactBilling(contact);
         inner().withContactRegistrant(contact);
@@ -198,24 +198,24 @@ class DomainImpl
     }
 
     @Override
-    public DomainContact.DefinitionStages.Blank<Domain.DefinitionStages.WithCreate> defineRegistrantContact() {
+    public DomainContact.DefinitionStages.Blank<AppServiceDomain.DefinitionStages.WithCreate> defineRegistrantContact() {
         return new DomainContactImpl(new Contact(), this);
     }
 
     @Override
-    public DomainImpl withTechContact(Contact contact) {
+    public AppServiceDomainImpl withTechContact(Contact contact) {
         inner().withContactTech(contact);
         return this;
     }
 
     @Override
-    public DomainImpl withDomainPrivacyEnabled(boolean domainPrivacy) {
+    public AppServiceDomainImpl withDomainPrivacyEnabled(boolean domainPrivacy) {
         inner().withPrivacy(domainPrivacy);
         return this;
     }
 
     @Override
-    public DomainImpl withAutoRenewEnabled(boolean autoRenew) {
+    public AppServiceDomainImpl withAutoRenewEnabled(boolean autoRenew) {
         inner().withAutoRenew(autoRenew);
         return this;
     }

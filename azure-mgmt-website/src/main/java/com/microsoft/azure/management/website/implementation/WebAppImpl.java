@@ -11,9 +11,6 @@ import com.google.common.collect.Maps;
 import com.microsoft.azure.management.website.DeploymentSlots;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.WebApp;
-import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.FuncN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,64 +74,6 @@ class WebAppImpl
     public WebAppImpl refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
-    }
-
-    @Override
-    public Observable<WebApp> createResourceAsync() {
-        if (hostNameSslStateMap.size() > 0) {
-            inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
-        }
-        // Construct web app observable
-        inner().siteConfig().withLocation(inner().location());
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                // Submit hostname bindings
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(final SiteInner site) {
-                        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
-                        for (HostNameBindingImpl<WebApp, WebAppImpl> binding: hostNameBindingsToCreate.values()) {
-                            bindingObservables.add(binding.createAsync());
-                        }
-                        hostNameBindingsToCreate.clear();
-                        if (bindingObservables.isEmpty()) {
-                            return Observable.just(site);
-                        } else {
-                            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
-                                @Override
-                                public SiteInner call(Object... args) {
-                                    return site;
-                                }
-                            });
-                        }
-                    }
-                })
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(SiteInner site) {
-                        return client.getAsync(resourceGroupName(), site.name());
-                    }
-                })
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(final SiteInner siteInner) {
-                        inner().siteConfig().withLocation(inner().location());
-                        return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), inner().siteConfig())
-                                .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
-                                    @Override
-                                    public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                        siteInner.withSiteConfig(siteConfigInner);
-                                        return Observable.just(siteInner);
-                                    }
-                                });
-                    }
-                })
-                .map(new Func1<SiteInner, WebApp>() {
-                    @Override
-                    public WebApp call(SiteInner siteInner) {
-                        setInner(siteInner);
-                        return normalizeProperties();
-                    }
-                });
     }
 
 }

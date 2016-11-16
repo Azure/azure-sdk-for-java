@@ -31,11 +31,14 @@ public class CertificatesTests extends AppServiceTestBase {
     @Test
     public void canCRDCertificateOrder() throws Exception {
         // CREATE
-        Certificate certificate = appServiceManager.certificates().define(CERTIFICATE_NAME)
+        AppServiceCertificate certificate = appServiceManager.certificates().define(CERTIFICATE_NAME)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(RG_NAME)
                 .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
-                .withPfxFilePassword("StrongPass!123")
+              //.withPfxBytes(byte[])
+              //.withPfxUrl(String url)
+              //.withPfxFromKeyVault(Vault vault, String secretName)
+                .withPfxFilePassword("StrongPass!123") // withPfxPassword(String), withPfxPasswordFromKeyVault(Vault vault, String secretName)
                 .create();
         Assert.assertNotNull(certificate);
     }

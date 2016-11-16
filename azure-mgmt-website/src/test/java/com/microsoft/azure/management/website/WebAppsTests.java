@@ -13,11 +13,9 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.io.File;
-
 public class WebAppsTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
-    private static final String WEBAPP_NAME = "java-webapp-319";
+    private static final String WEBAPP_NAME = "banana-webapp-319";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
@@ -32,17 +30,18 @@ public class WebAppsTests extends AppServiceTestBase {
 
     @Test
     public void canCRUDWebApp() throws Exception {
-        Domain domain = appServiceManager.domains().getByGroup(RG_NAME, "javatestpr319.com");
+        AppServiceDomain domain = appServiceManager.domains().getByGroup(RG_NAME, "blueberry-webapp-319.com");
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withExistingAppServicePlan("java-plan-323")
-                .withManagedHostNameBindings(domain, "@")
-                .defineNewSSLBindingForHostName("javatestpr319.com")
-                    .withPfxCertificateToUpload(new File("/Users/jianghlu/Documents/code/certs/javatestpr319_com.pfx"), "StrongPass!123")
-                    .withIpBasedSSL()
+                .withExistingAppServicePlan("blueberry-plan-323")
+                .withManagedHostNameBindings(domain, "@", "www", "wwww", "wwwww")
+                .defineSslBindingForHostName("blueberry.graph-webapp-319.com")
+                    .withNewAppServiceCertificateOrder(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL, 1)
+                    .withSniSsl()
                     .attach()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
+                .withJavaVersion(JavaVersion.JAVA_1_8_0_25)
                 .create();
 
         Assert.assertNotNull(webApp);

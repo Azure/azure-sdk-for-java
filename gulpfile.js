@@ -177,7 +177,14 @@ gulp.task('codegen', function(cb) {
     var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
         autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        exec('tools\\nuget.exe install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
+        nugetExe = "tools\\nuget.exe";
+        if (process.platform !== 'win32') {
+            nugetExe = "mono tools/nuget.exe";
+            autoRestExe = autoRestExe.replace(/\\/g, "/");
+            exec('chmod +x ' + autoRestExe);
+            autoRestExe = "mono " + autoRestExe;
+        }
+        exec(nugetExe + ' install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             handleInput(projects, cb);
@@ -217,11 +224,11 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
-    cmd = autoRestExe + ' -Modeler ' + modeler + 
-                        ' -CodeGenerator ' + generator + 
-                        ' -Namespace ' + mappings[project].package + 
-                        ' -Input ' + specRoot + '/' + mappings[project].source + 
-                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
+    cmd = autoRestExe + ' -Modeler ' + modeler +
+                        ' -CodeGenerator ' + generator +
+                        ' -Namespace ' + mappings[project].package +
+                        ' -Input ' + specRoot + '/' + mappings[project].source +
+                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
@@ -257,8 +264,8 @@ function GetAutoRestFolder() {
   }
   if( isMac ) {
 	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
-  } 
-  if( isLinux ) { 
+  }
+  if( isLinux ) {
 	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"
   }
    throw new Error("Unknown platform?");

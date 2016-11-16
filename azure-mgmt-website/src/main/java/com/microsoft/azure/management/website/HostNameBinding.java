@@ -20,41 +20,44 @@ public interface HostNameBinding
         Wrapper<HostNameBindingInner>,
         ExternalChildResource<HostNameBinding, WebAppBase<?>>, Resource {
     /**
-     * @return Hostname.
+     * @return the hostname to bind to
      */
     String hostName();
 
     /**
-     * @return Web app name.
+     * @return the web app name
      */
-    String siteName();
+    String webAppName();
 
     /**
-     * @return Fully qualified ARM domain resource URI.
+     * @return the fully qualified ARM domain resource URI
      */
     String domainId();
 
     /**
-     * @return Azure resource name.
+     * @return Azure resource name to bind to
      */
     String azureResourceName();
 
     /**
-     * @return Azure resource type. Possible values include: 'Website',
-     * 'TrafficManager'.
+     * @return Azure resource type
      */
     AzureResourceType azureResourceType();
 
     /**
-     * @return Custom DNS record type. Possible values include: 'CName', 'A'.
+     * @return custom DNS record type
      */
     CustomHostNameDnsRecordType DnsRecordType();
 
     /**
-     * @return Host name type. Possible values include: 'Verified', 'Managed'.
+     * @return the host name type
      */
     HostNameType hostNameType();
 
+    /**
+     * The entirety of a hostname binding definition.
+     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+     */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithDomain<ParentT>,
@@ -63,31 +66,65 @@ public interface HostNameBinding
     }
 
     /**
-     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     * Grouping of hostname binding definition stages applicable as part of a web app creation.
      */
     interface DefinitionStages {
         /**
          * The first stage of a host name binding definition.
-         *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithDomain<ParentT> {
         }
 
+        /**
+         * The stage of hostname binding definition allowing domain to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithDomain<ParentT> {
-            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            /**
+             * Binds to a domain purchased from Azure.
+             * @param domain the domain purchased from Azure
+             * @return the next stage of the host name binding definition
+             */
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(AppServiceDomain domain);
+
+            /**
+             * Binds to a 3rd party domain.
+             * @param domain the 3rd party domain name
+             * @return the next stage of the host name binding definition
+             */
             WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
         }
 
+        /**
+         * The stage of hostname binding definition allowing DNS record type to be set.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithHostNameDnsRecordType<ParentT> {
+            /**
+             * Specifies the DNS record type.
+             * @param hostNameDnsRecordType the DNS record type
+             * @return the next stage of the host name binding definition
+             */
             WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
 
+        /**
+         * The final stage of the hostname binding definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the hostname binding definition
+         * can be attached to the parent web app definition using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
         interface WithAttach<ParentT> extends
                 Attachable.InDefinition<ParentT> {
         }
     }
 
+    /**
+     * The entirety of a hostname binding definition as part of a web app update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithDomain<ParentT>,
@@ -96,26 +133,56 @@ public interface HostNameBinding
     }
 
     /**
-     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     * Grouping of security rule definition stages applicable as part of a web app creation.
      */
     interface UpdateDefinitionStages {
         /**
          * The first stage of a host name binding definition.
-         *
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithDomain<ParentT> {
         }
 
+        /**
+         * The stage of hostname binding definition allowing domain to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithDomain<ParentT> {
-            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(Domain domain);
+            /**
+             * Binds to a domain purchased from Azure.
+             * @param domain the domain purchased from Azure
+             * @return the next stage of the host name binding definition
+             */
+            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(AppServiceDomain domain);
+
+            /**
+             * Binds to a 3rd party domain.
+             * @param domain the 3rd party domain name
+             * @return the next stage of the host name binding definition
+             */
             WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
         }
 
+        /**
+         * The stage of hostname binding definition allowing DNS record type to be set.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithHostNameDnsRecordType<ParentT> {
+            /**
+             * Specifies the DNS record type.
+             * @param hostNameDnsRecordType the DNS record type
+             * @return the next stage of the host name binding definition
+             */
             WithAttach<ParentT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType);
         }
 
+        /**
+         * The final stage of the hostname binding definition.
+         * <p>
+         * At this stage, any remaining optional settings can be specified, or the hostname binding definition
+         * can be attached to the parent web app  update using {@link WithAttach#attach()}.
+         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         */
         interface WithAttach<ParentT> extends
                 Attachable.InUpdate<ParentT> {
         }

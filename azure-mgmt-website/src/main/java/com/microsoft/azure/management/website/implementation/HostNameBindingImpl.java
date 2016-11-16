@@ -12,7 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.website.DeploymentSlot;
-import com.microsoft.azure.management.website.Domain;
+import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameType;
 import com.microsoft.azure.management.website.WebAppBase;
@@ -27,7 +27,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * A host name binding object.
+ *  Implementation for {@link HostNameBinding} and its create and update interfaces.
  */
 class HostNameBindingImpl<
             FluentT extends WebAppBase<FluentT>,
@@ -38,7 +38,7 @@ class HostNameBindingImpl<
             Creatable<HostNameBinding>,
             HostNameBinding,
             HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
-            HostNameBinding.UpdateDefinition<WebAppBase.Update> {
+            HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
     private WebAppsInner client;
     private String fqdn;
     private final FluentImplT parent;
@@ -86,7 +86,7 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public String siteName() {
+    public String webAppName() {
         return inner().siteName();
     }
 
@@ -186,7 +186,7 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public HostNameBindingImpl<FluentT, FluentImplT> withAzureManagedDomain(Domain domain) {
+    public HostNameBindingImpl<FluentT, FluentImplT> withAzureManagedDomain(AppServiceDomain domain) {
         inner().withDomainId(domain.id());
         inner().withHostNameType(HostNameType.MANAGED);
         this.fqdn = normalizeHostNameBindingName(name(), domain.name());

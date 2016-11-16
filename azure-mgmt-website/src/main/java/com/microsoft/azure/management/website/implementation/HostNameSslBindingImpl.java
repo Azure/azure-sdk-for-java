@@ -6,20 +6,26 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.keyvault.SecretPermissions;
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AppServiceCertificate;
-import com.microsoft.azure.management.website.Certificate;
-import com.microsoft.azure.management.website.DomainContact;
+import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.HostNameSslBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.SslState;
 import com.microsoft.azure.management.website.WebAppBase;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.File;
 
 /**
- *  Implementation for {@link DomainContact} and its create and update interfaces.
+ *  Implementation for {@link HostNameSslBinding} and its create and update interfaces.
  */
 @LangDefinition
 class HostNameSslBindingImpl<
@@ -29,10 +35,10 @@ class HostNameSslBindingImpl<
     implements
         HostNameSslBinding,
         HostNameSslBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
-        HostNameSslBinding.UpdateDefinition<WebAppBase.Update> {
+        HostNameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
-    private Creatable<Certificate> newCertificate;
-    private Creatable<AppServiceCertificate> newCertificateOrder;
+    private CreatableUpdatableImpl<AppServiceCertificate, CertificateInner, AppServiceCertificateImpl> newCertificate;
+    private CreatableUpdatableImpl<AppServiceCertificateOrder, AppServiceCertificateOrderInner, AppServiceCertificateOrderImpl> newCertificateOrder;
     private final AppServiceManager manager;
     private final FluentImplT parent;
 
@@ -69,66 +75,123 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(File pfxFile, String password) {
-        newCertificate = manager.certificates().define(name() + "cert")
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(final File pfxFile, final String password) {
+        final HostNameSslBindingImpl<FluentT, FluentImplT> self = this;
+        final AppServiceCertificateImpl raw = (AppServiceCertificateImpl) manager.certificates().define(name() + "cert")
                 .withRegion(parent().region())
-                .withNewResourceGroup(parent().resourceGroupName())
+                .withExistingResourceGroup(parent().resourceGroupName())
                 .withPfxFile(pfxFile)
                 .withPfxFilePassword(password);
+        newCertificate = new CreatableUpdatableImpl<AppServiceCertificate, CertificateInner, AppServiceCertificateImpl>(raw.name(), raw.inner()) {
+            @Override
+            public Observable<AppServiceCertificate> createResourceAsync() {
+                AppServiceCertificate certificate = (AppServiceCertificate) createdResource(raw.key());
+                withCertificateThumbprint(certificate.thumbprint());
+                return Observable.just(certificate);
+            }
+
+            @Override
+            public boolean isInCreateMode() {
+                return raw.isInCreateMode();
+            }
+
+            @Override
+            public AppServiceCertificate refresh() {
+                return raw.refresh();
+            }
+        };
+        raw.creatorUpdatorTaskGroup().merge(newCertificate.creatorUpdatorTaskGroup());
         return this;
     }
 
-//    @Override
-//    public HostNameSslBindingImpl withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears) {
-//        final String certificateName = name().replaceAll("[-.]", "");
-//        Observable<AppServiceCertificateOrder> orderObservable = manager.certificateOrders().define(certificateName)
-//                .withExistingResourceGroup(parent().resourceGroupName())
-//                .withHostName(name())
-//                .withSku(productType)
-//                .withValidYears(1)
-//                .createAsync();
-//        Observable<Vault> vaultObservable = manager.keyVaultManager().vaults().define(certificateName + "vault")
-//                .withRegion(parent().region())
-//                .withNewResourceGroup(parent().resourceGroupName())
-//                .defineAccessPolicy()
-//                    .forServicePrincipal("Microsoft.Azure.CertificateRegistration")
-//                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
-//                    .attach()
-//                .defineAccessPolicy()
-//                    .forServicePrincipal("Microsoft.Azure.WebSites")
-//                    .allowSecretPermissions(SecretPermissions.GET)
-//                    .attach()
-//                .createAsync();
-//        return this;
-//    }
+    @Override
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears) {
+        this.newCertificateOrder = new CompleteAppServiceCertificateOrder(name(), new AppServiceCertificateOrderInner(), productType, validYears);
+        return this;
+    }
 
-    HostNameSslBindingImpl withCertificateThumbprint(String thumbprint) {
+    private HostNameSslBindingImpl<FluentT, FluentImplT> withCertificateThumbprint(String thumbprint) {
         inner().withThumbprint(thumbprint);
         return this;
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withSniSSL() {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withSniSsl() {
         inner().withSslState(SslState.SNI_ENABLED);
         return this;
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withIpBasedSSL() {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withIpBasedSsl() {
         inner().withSslState(SslState.IP_BASED_ENABLED);
         return this;
     }
 
-    Creatable<Certificate> newCertificate() {
+    Creatable<AppServiceCertificate> newCertificate() {
         return newCertificate;
     }
 
-    Creatable<AppServiceCertificate> newCertificateOrder() {
+    Creatable<AppServiceCertificateOrder> newCertificateOrder() {
         return newCertificateOrder;
     }
 
     @Override
     public WebAppBase<FluentT> parent() {
         return parent;
+    }
+
+    private class CompleteAppServiceCertificateOrder
+            extends CreatableUpdatableImpl<
+            AppServiceCertificateOrder,
+            AppServiceCertificateOrderInner,
+            AppServiceCertificateOrderImpl> {
+        private AppServiceCertificateOrderImpl certCreatable;
+        private Creatable<Vault> vaultCreatable;
+
+        protected CompleteAppServiceCertificateOrder(String name, AppServiceCertificateOrderInner innerObject, CertificateProductType productType, int validYears) {
+            super(name.replaceAll("[-.]", ""), innerObject);
+            final String certificateName = name.replaceAll("[-.]", "");
+            certCreatable = (AppServiceCertificateOrderImpl) manager.certificateOrders().define(certificateName)
+                    .withExistingResourceGroup(parent().resourceGroupName())
+                    .withHostName(name)
+                    .withSku(productType)
+                    .withValidYears(validYears);
+            vaultCreatable = manager.keyVaultManager().vaults().define(certificateName)
+                    .withRegion(parent().region())
+                    .withExistingResourceGroup(parent().resourceGroupName())
+                    .defineAccessPolicy()
+                        .forServicePrincipal("f3c21649-0979-4721-ac85-b0216b2cf413")
+                        .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
+                        .attach()
+                    .defineAccessPolicy()
+                        .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
+                        .allowSecretPermissions(SecretPermissions.GET)
+                        .attach();
+            addCreatableDependency(certCreatable);
+            addCreatableDependency(vaultCreatable);
+        }
+
+        @Override
+        public AppServiceCertificateOrder refresh() {
+            return certCreatable.refresh();
+        }
+
+        @Override
+        public Observable<AppServiceCertificateOrder> createResourceAsync() {
+            final AppServiceCertificateOrder order = (AppServiceCertificateOrder) createdResource(certCreatable.key());
+            Vault vault = (Vault) createdResource(vaultCreatable.key());
+            return order.createKeyVaultBindingAsync(order.name(), vault)
+                    .map(new Func1<AppServiceCertificateKeyVaultBinding, AppServiceCertificateOrder>() {
+                        @Override
+                        public AppServiceCertificateOrder call(AppServiceCertificateKeyVaultBinding appServiceCertificate) {
+                            return order;
+                        }
+                    });
+        }
+
+        @Override
+        public boolean isInCreateMode() {
+            return certCreatable.isInCreateMode();
+        }
     }
 }

@@ -13,7 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import java.io.File;
 
 /**
- * A Host name - SSL binding definition.
+ * A Host name - SSL certificate binding definition.
  */
 @Fluent
 public interface HostNameSslBinding extends
@@ -35,7 +35,7 @@ public interface HostNameSslBinding extends
     String thumbprint();
 
     /**
-     * The entirety of a domain contact definition.
+     * The entirety of a hostname SSL binding definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
     interface Definition<ParentT> extends
@@ -45,31 +45,62 @@ public interface HostNameSslBinding extends
     }
 
     /**
-     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     * Grouping of hostname SSL binding definition stages applicable as part of a web app creation.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a security rule definition.
+         * The first stage of a hostname SSL binding definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithCertificate<ParentT> {
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing certificate information to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithCertificate<ParentT> {
+            /**
+             * Upload a PFX certificate.
+             * @param pfxFile the PFX certificate file to upload
+             * @param password the password to the certificate
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
-//            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
+
+            /**
+             * Place a new App Service certificate order to use for the hostname
+             * @param productType the sku of the certificate order
+             * @param validYears the number of years this certificate is valid (1 - 3)
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
 //            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing SSL type to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithSslType<ParentT> {
-            WithAttach<ParentT> withSniSSL();
-            WithAttach<ParentT> withIpBasedSSL();
+            /**
+             * Use Server Name Indication (SNI) based SSL.
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithAttach<ParentT> withSniSsl();
+
+            /**
+             * Use IP based SSL. Only one hostname can be bound to IP based SSL.
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithAttach<ParentT> withIpBasedSsl();
         }
 
-        /** The final stage of the security rule definition.
+        /**
+         * The final stage of the hostname SSL binding definition.
          * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
+         * At this stage, any remaining optional settings can be specified, or the hostname SSL binding definition
+         * can be attached to the parent web app definition using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends
@@ -77,6 +108,10 @@ public interface HostNameSslBinding extends
         }
     }
 
+    /**
+     * The entirety of a hostname SSL binding definition as part of a web app update.
+     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+     */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithSslType<ParentT>,
@@ -84,29 +119,62 @@ public interface HostNameSslBinding extends
     }
 
     /**
-     * Grouping of security rule definition stages applicable as part of a network security group creation.
+     * Grouping of hostname SSL binding definition stages applicable as part of a web app update.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of a security rule definition.
+         * The first stage of a hostname SSL binding definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface Blank<ParentT> extends WithCertificate<ParentT> {
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing certificate information to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithCertificate<ParentT> {
-            WithCertificate<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
+            /**
+             * Upload a PFX certificate.
+             * @param pfxFile the PFX certificate file to upload
+             * @param password the password to the certificate
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
+
+            /**
+             * Place a new App Service certificate order to use for the hostname
+             * @param productType the sku of the certificate order
+             * @param validYears the number of years this certificate is valid (1 - 3)
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
+//            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing SSL type to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithSslType<ParentT> {
-            WithAttach<ParentT> withSniSSL();
-            WithAttach<ParentT> withIpBasedSSL();
+            /**
+             * Use Server Name Indication (SNI) based SSL.
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithAttach<ParentT> withSniSsl();
+
+            /**
+             * Use IP based SSL. Only one hostname can be bound to IP based SSL.
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithAttach<ParentT> withIpBasedSsl();
         }
 
-        /** The final stage of the security rule definition.
+        /**
+         * The final stage of the hostname SSL binding definition.
          * <p>
-         * At this stage, any remaining optional settings can be specified, or the security rule definition
-         * can be attached to the parent network security group definition using {@link WithAttach#attach()}.
+         * At this stage, any remaining optional settings can be specified, or the hostname SSL binding definition
+         * can be attached to the parent web app update using {@link WithAttach#attach()}.
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
         interface WithAttach<ParentT> extends

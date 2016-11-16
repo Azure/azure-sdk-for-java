@@ -8,12 +8,12 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.website.AppServiceCertificate;
-import com.microsoft.azure.management.website.AppServicePlan;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
 import com.microsoft.azure.management.website.CertificateProductType;
-import com.microsoft.azure.management.website.ProvisioningState;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -81,12 +81,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public boolean autoRenew() {
-        return inner().autoRenew();
-    }
-
-    @Override
-    public ProvisioningState provisioningState() {
-        return inner().provisioningState();
+        return Utils.toPrimitiveBoolean(inner().autoRenew());
     }
 
     @Override
@@ -130,22 +125,22 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public AppServiceCertificate createCertificate(String certificateName, Vault vault) {
-        return createCertificateAsync(certificateName, vault).toBlocking().single();
+    public AppServiceCertificateKeyVaultBinding createKeyVaultBinding(String certificateName, Vault vault) {
+        return createKeyVaultBindingAsync(certificateName, vault).toBlocking().single();
     }
 
     @Override
-    public Observable<AppServiceCertificate> createCertificateAsync(String certificateName, Vault vault) {
+    public Observable<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault) {
         AppServiceCertificateInner certInner = new AppServiceCertificateInner();
         certInner.withLocation(vault.regionName());
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName.replace("_", ""));
         final AppServiceCertificateOrderImpl self = this;
         return client.beginCreateOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
-                .map(new Func1<AppServiceCertificateInner, AppServiceCertificate>() {
+                .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
-                    public AppServiceCertificate call(AppServiceCertificateInner appServiceCertificateInner) {
-                        return new AppServiceCertificateImpl(appServiceCertificateInner, self);
+                    public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {
+                        return new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInner, self);
                     }
                 });
     }
@@ -172,5 +167,11 @@ class AppServiceCertificateOrderImpl
     public Observable<AppServiceCertificateOrder> createResourceAsync() {
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withAutoRenew(boolean enabled) {
+        inner().withAutoRenew(enabled);
+        return this;
     }
 }

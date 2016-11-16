@@ -12,15 +12,24 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+import rx.Observable;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for app service certificate order management API.
  */
-public interface CertificateOrders extends
+public interface AppServiceCertificateOrders extends
         SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,
         SupportsListingByGroup<AppServiceCertificateOrder>,
         SupportsGettingByGroup<AppServiceCertificateOrder>,
         SupportsGettingById<AppServiceCertificateOrder>,
         SupportsDeletingByGroup {
+    /**
+     * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
+     *
+     * @param resourceGroupName the name of the resource group the resource is in
+     * @param name the name of the resource. (Note, this is not the ID)
+     * @return an immutable representation of the resource
+     */
+    Observable<AppServiceCertificateOrder> getByGroupAsync(String resourceGroupName, String name);
 }

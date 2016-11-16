@@ -31,7 +31,7 @@ public interface WebApp extends
     }
 
     /**
-     * Grouping of all the site definition stages.
+     * Grouping of all the web app definition stages.
      */
     interface DefinitionStages {
         /**
@@ -47,9 +47,8 @@ public interface WebApp extends
                 WebAppBase.DefinitionStages.WithAppServicePlan<WebApp>> {
         }
 
-
         /**
-         * A site definition with sufficient inputs to create a new
+         * A web app definition with sufficient inputs to create a new
          * website in the cloud, but exposing additional optional inputs to
          * specify.
          */
@@ -58,7 +57,7 @@ public interface WebApp extends
     }
 
     /**
-     * The template for a site update operation, containing all the settings that can be modified.
+     * The template for a web app update operation, containing all the settings that can be modified.
      */
     interface Update extends WebAppBase.Update<WebApp> {
     }

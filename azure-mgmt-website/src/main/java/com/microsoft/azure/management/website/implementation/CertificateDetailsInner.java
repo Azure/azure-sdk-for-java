@@ -8,10 +8,9 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.rest.serializer.JsonFlatten;
+import org.joda.time.DateTime;
 
 /**
  * Certificate Details.
@@ -21,55 +20,46 @@ public class CertificateDetailsInner extends Resource {
     /**
      * Version.
      */
-    @JsonProperty(value = "properties.version")
     private Integer version;
 
     /**
      * Serial Number.
      */
-    @JsonProperty(value = "properties.serialNumber")
     private String serialNumber;
 
     /**
      * Thumbprint.
      */
-    @JsonProperty(value = "properties.thumbprint")
     private String thumbprint;
 
     /**
      * Subject.
      */
-    @JsonProperty(value = "properties.subject")
     private String subject;
 
     /**
      * Valid from.
      */
-    @JsonProperty(value = "properties.notBefore")
     private DateTime notBefore;
 
     /**
      * Valid to.
      */
-    @JsonProperty(value = "properties.notAfter")
     private DateTime notAfter;
 
     /**
      * Signature Algorithm.
      */
-    @JsonProperty(value = "properties.signatureAlgorithm")
     private String signatureAlgorithm;
 
     /**
      * Issuer.
      */
-    @JsonProperty(value = "properties.issuer")
     private String issuer;
 
     /**
      * Raw certificate data.
      */
-    @JsonProperty(value = "properties.rawData")
     private String rawData;
 
     /**

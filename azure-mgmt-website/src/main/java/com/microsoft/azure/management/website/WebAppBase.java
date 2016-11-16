@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * An immutable client-side representation of an Azure Web App.
+ * An immutable client-side representation of an Azure Web App or deployment slot.
  */
 public interface WebAppBase<T extends WebAppBase<T>> extends
         HasName,
@@ -272,94 +272,242 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     interface DefinitionStages {
         /**
          * A web app definition allowing app service plan to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
          */
         interface WithAppServicePlan<FluentT> {
+            /**
+             * Create a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withNewFreeAppServicePlan();
+
+            /**
+             * Create a new app service plan to use.
+             * @param name the name of the app service plan
+             * @param pricingTier the pricing tier to use
+             * @return the next stage of web app definition
+             */
             WithHostNameBinding<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
+
+            /**
+             * Use an existing app service plan for the web app.
+             * @param appServicePlanName the name of the existing app service plan
+             * @return the next stage of web app definition
+             */
             WithHostNameBinding<FluentT> withExistingAppServicePlan(String appServicePlanName);
         }
 
+        /**
+         * A web app definition stage allowing host name binding to be specified.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithHostNameBinding<FluentT> extends WithCreate<FluentT> {
+            /**
+             * Start the definition of a new host name binding.
+             * @param hostname the sub-domain name or fully qualified domain name
+             * @return the first stage of a hostname binding definition
+             */
             HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineNewHostNameBinding(String hostname);
-            WithHostNameSslBinding<FluentT> withManagedHostNameBindings(Domain domain, String... hostnames);
+
+            /**
+             * Define a list of host names of an Azure managed domain. The DNS record type is
+             * defaulted to be CNAME except for the root level domain ("@").
+             * @param domain the Azure managed domain
+             * @param hostnames the list of sub-domains
+             * @return the next stage of web app definition
+             */
+            WithHostNameSslBinding<FluentT> withManagedHostNameBindings(AppServiceDomain domain, String... hostnames);
+
+            /**
+             * Define a list of host names of an externally purchased domain. The hostnames
+             * must be configured before hand to point to the web app.
+             * @param domain the external domain name
+             * @param hostnames the list of sub-domains
+             * @return the next stage of web app definition
+             */
             WithHostNameSslBinding<FluentT> withVerifiedHostNameBinding(String domain, String... hostnames);
         }
 
+        /**
+         * A web app definition stage allowing SSL binding to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithHostNameSslBinding<FluentT> extends WithHostNameBinding<FluentT> {
-            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineNewSSLBindingForHostName(String hostname);
+            /**
+             * Start a definition of an SSL binding.
+             * @param hostname the hostname to bind an SSL certificate to
+             * @return the first stage of an SSL binding definition
+             */
+            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBindingForHostName(String hostname);
         }
 
+        /**
+         * A web app definition stage allowing disabling the web app upon creation.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithSiteEnabled<FluentT> {
+            /**
+             * Disable the web app upon creation.
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withAppDisabledOnCreation();
         }
 
+        /**
+         * A web app definition stage allowing setting if SCM site is also stopped when the web app is stopped.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithScmSiteAlsoStopped<FluentT> {
+            /**
+             * Specify if SCM site is also stopped when the web app is stopped.
+             * @param scmSiteAlsoStopped true if SCM site is also stopped
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
         }
 
+        /**
+         * A web app definition stage allowing setting if client affinity is enabled.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithClientAffinityEnabled<FluentT> {
+            /**
+             * Specify if client affinity is enabled.
+             * @param enabled true if client affinity is enabled
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withClientAffinityEnabled(boolean enabled);
         }
 
+        /**
+         * A web app definition stage allowing setting if client cert is enabled.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
         interface WithClientCertEnabled<FluentT> {
+            /**
+             * Specify if client cert is enabled.
+             * @param enabled true if client cert is enabled
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withClientCertEnabled(boolean enabled);
         }
 
-        interface WithNetFrameworkVersion<FluentT> {
-            WithCreate withNetFrameworkVersion(NetFrameworkVersion version);
-        }
+        /**
+         * A web app definition stage allowing other configurations to be set. These configurations
+         * can be cloned when creating or swapping with a deployment slot.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithSiteConfigs<FluentT> {
+            /**
+             * Specifies the .NET Framework version.
+             * @param version the .NET Framework version
+             * @return the next stage of web app definition
+             */
+            WithCreate<FluentT> withNetFrameworkVersion(NetFrameworkVersion version);
 
-        interface WithPhpVersion<FluentT> {
+            /**
+             * Specifies the PHP version.
+             * @param version the PHP version
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
-        }
 
-        interface WithJavaVersion<FluentT> {
+            /**
+             * Specifies the Java version.
+             * @param version the Java version
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withJavaVersion(JavaVersion version);
-        }
 
-        interface WithWebContainer<FluentT> {
+            /**
+             * Specifies the Java web container.
+             * @param webContainer the Java web container
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withWebContainer(WebContainer webContainer);
-        }
 
-        interface WithPythonVersion<FluentT> {
+            /**
+             * Specifies the Python version.
+             * @param version the Python version
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withPythonVersion(PythonVersion version);
-        }
 
-        interface WithPlatformArchitecture<FluentT> {
+            /**
+             * Specifies the platform architecture to use.
+             * @param platform the platform architecture
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withPlatformArchitecture(PlatformArchitecture platform);
-        }
 
-        interface WithWebSockets<FluentT> {
+            /**
+             * Specifies if web sockets are enabled.
+             * @param enabled true if web sockets are enabled
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withWebSocketsEnabled(boolean enabled);
-        }
 
-        interface WithAlwaysOn<FluentT> {
-            WithCreate withWebAppAlwaysOn(boolean alwaysOn);
-        }
+            /**
+             * Specifies if the VM powering the web app is always powered on.
+             * @param alwaysOn true if the web app is always powered on
+             * @return the next stage of web app definition
+             */
+            WithCreate<FluentT> withWebAppAlwaysOn(boolean alwaysOn);
 
-        interface WithManagedPipelineMode<FluentT> {
+            /**
+             * Specifies the managed pipeline mode.
+             * @param managedPipelineMode managed pipeline mode
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
-        }
 
-        interface WithAutoSwap<FluentT> {
+            /**
+             * Specifies slot name to auto-swap when a deployment is completed in this web app / deployment slot.
+             * @param slotName the name of the slot, or 'production', to auto-swap
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withAutoSwapSlotName(String slotName);
-        }
 
-        interface WithRemoteDebugging<FluentT> {
+            /**
+             * Specifies the Visual Studio version for remote debugging.
+             * @param remoteVisualStudioVersion the Visual Studio version for remote debugging
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
-            WithCreate<FluentT> withReoteDebuggingDisabled();
-        }
 
-        interface WithDefaultDocuments<FluentT> {
+            /**
+             * Disables remote debugging.
+             * @return the next stage of web app definition
+             */
+            WithCreate<FluentT> withRemoteDebuggingDisabled();
+
+            /**
+             * Add a default document.
+             * @param document default document
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withDefaultDocument(String document);
+
+            /**
+             * Add a list of default documents.
+             * @param documents list of default documents
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withDefaultDocuments(List<String> documents);
+
+            /**
+             * Removes a default document.
+             * @param document default document to remove
+             * @return the next stage of web app definition
+             */
             WithCreate<FluentT> withoutDefaultDocument(String document);
         }
 
         /**
-         * A site definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
-         * specify.
+         * A site definition with sufficient inputs to create a new web app /
+         * deployments slot in the cloud, but exposing additional optional
+         * inputs to specify.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
          */
         interface WithCreate<FluentT> extends
                 Creatable<FluentT>,
@@ -367,52 +515,260 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
                 WithScmSiteAlsoStopped<FluentT>,
                 WithClientAffinityEnabled<FluentT>,
                 WithClientCertEnabled<FluentT>,
-                WithNetFrameworkVersion<FluentT>,
-                WithPhpVersion<FluentT>,
-                WithJavaVersion<FluentT>,
-                WithWebContainer<FluentT>,
-                WithPythonVersion<FluentT>,
-                WithPlatformArchitecture<FluentT>,
-                WithWebSockets<FluentT>,
-                WithAlwaysOn<FluentT>,
-                WithManagedPipelineMode<FluentT>,
-                WithAutoSwap<FluentT>,
-                WithRemoteDebugging<FluentT>,
-                WithDefaultDocuments<FluentT> {
+                WithSiteConfigs<FluentT> {
         }
     }
 
     /**
-     * Grouping of all the site update stages.
+     * Grouping of all the web app update stages.
      */
     interface UpdateStages {
         /**
-         * A site definition allowing server farm to be set.
+         * The stage of the web app update allowing app service plan to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
          */
-        interface WithAppServicePlan {
-            Update withNewFreeAppServicePlan();
-            Update withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
-            Update withExistingAppServicePlan(String appServicePlanName);
+        interface WithAppServicePlan<FluentT> {
+            /**
+             * Create a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withNewFreeAppServicePlan();
+
+            /**
+             * Create a new app service plan to use.
+             * @param name the name of the app service plan
+             * @param pricingTier the pricing tier to use
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
+
+            /**
+             * Use an existing app service plan for the web app.
+             * @param appServicePlanName the name of the existing app service plan
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withExistingAppServicePlan(String appServicePlanName);
         }
 
-        interface WithHostNameBinding {
-            HostNameBinding.UpdateDefinitionStages.Blank<Update> defineNewHostNameBinding(String hostname);
-            Update withManagedHostNameBindings(Domain domain, String... hostnames);
-            Update withVerifiedHostNameBinding(String domain, String... hostnames);
+        /**
+         * The stage of the web app update allowing host name binding to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithHostNameBinding<FluentT> {
+            /**
+             * Start the definition of a new host name binding.
+             * @param hostname the sub-domain name or fully qualified domain name
+             * @return the first stage of a hostname binding update
+             */
+            HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineNewHostNameBinding(String hostname);
+
+            /**
+             * Define a list of host names of an Azure managed domain. The DNS record type is
+             * defaulted to be CNAME except for the root level domain ("@").
+             * @param domain the Azure managed domain
+             * @param hostnames the list of sub-domains
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withManagedHostNameBindings(AppServiceDomain domain, String... hostnames);
+
+            /**
+             * Define a list of host names of an externally purchased domain. The hostnames
+             * must be configured before hand to point to the web app.
+             * @param domain the external domain name
+             * @param hostnames the list of sub-domains
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withVerifiedHostNameBinding(String domain, String... hostnames);
         }
 
-        interface WithHostNameSslBinding {
-            HostNameSslBinding.UpdateDefinitionStages.Blank<Update> defineNewSSLBindingForHostName(String hostname);
+        /**
+         * The stage of the web app update allowing SSL binding to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithHostNameSslBinding<FluentT> {
+            /**
+             * Start a definition of an SSL binding.
+             * @param hostname the hostname to bind an SSL certificate to
+             * @return the first stage of an SSL binding definition
+             */
+            HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBindingForHostName(String hostname);
+        }
+
+        /**
+         * The stage of the web app update allowing disabling the web app upon creation.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithSiteEnabled<FluentT> {
+            /**
+             * Disable the web app upon creation.
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withAppDisabledOnCreation();
+        }
+
+        /**
+         * The stage of the web app update allowing setting if SCM site is also stopped when the web app is stopped.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithScmSiteAlsoStopped<FluentT> {
+            /**
+             * Specify if SCM site is also stopped when the web app is stopped.
+             * @param scmSiteAlsoStopped true if SCM site is also stopped
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withScmSiteAlsoStopped(boolean scmSiteAlsoStopped);
+        }
+
+        /**
+         * The stage of the web app update allowing setting if client affinity is enabled.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithClientAffinityEnabled<FluentT> {
+            /**
+             * Specify if client affinity is enabled.
+             * @param enabled true if client affinity is enabled
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withClientAffinityEnabled(boolean enabled);
+        }
+
+        /**
+         * The stage of the web app update allowing setting if client cert is enabled.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithClientCertEnabled<FluentT> {
+            /**
+             * Specify if client cert is enabled.
+             * @param enabled true if client cert is enabled
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withClientCertEnabled(boolean enabled);
+        }
+
+        /**
+         * The stage of the web app update allowing other configurations to be set. These configurations
+         * can be cloned when creating or swapping with a deployment slot.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithSiteConfigs<FluentT> {
+            /**
+             * Specifies the .NET Framework version.
+             * @param version the .NET Framework version
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withNetFrameworkVersion(NetFrameworkVersion version);
+
+            /**
+             * Specifies the PHP version.
+             * @param version the PHP version
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withPhpVersion(PhpVersion version);
+
+            /**
+             * Specifies the Java version.
+             * @param version the Java version
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withJavaVersion(JavaVersion version);
+
+            /**
+             * Specifies the Java web container.
+             * @param webContainer the Java web container
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withWebContainer(WebContainer webContainer);
+
+            /**
+             * Specifies the Python version.
+             * @param version the Python version
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withPythonVersion(PythonVersion version);
+
+            /**
+             * Specifies the platform architecture to use.
+             * @param platform the platform architecture
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withPlatformArchitecture(PlatformArchitecture platform);
+
+            /**
+             * Specifies if web sockets are enabled.
+             * @param enabled true if web sockets are enabled
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withWebSocketsEnabled(boolean enabled);
+
+            /**
+             * Specifies if the VM powering the web app is always powered on.
+             * @param alwaysOn true if the web app is always powered on
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withWebAppAlwaysOn(boolean alwaysOn);
+
+            /**
+             * Specifies the managed pipeline mode.
+             * @param managedPipelineMode managed pipeline mode
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
+
+            /**
+             * Specifies slot name to auto-swap when a deployment is completed in this web app / deployment slot.
+             * @param slotName the name of the slot, or 'production', to auto-swap
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withAutoSwapSlotName(String slotName);
+
+            /**
+             * Specifies the Visual Studio version for remote debugging.
+             * @param remoteVisualStudioVersion the Visual Studio version for remote debugging
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withRemoteDebuggingEnabled(RemoteVisualStudioVersion remoteVisualStudioVersion);
+
+            /**
+             * Disables remote debugging.
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withRemoteDebuggingDisabled();
+
+            /**
+             * Add a default document.
+             * @param document default document
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withDefaultDocument(String document);
+
+            /**
+             * Add a list of default documents.
+             * @param documents list of default documents
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withDefaultDocuments(List<String> documents);
+
+            /**
+             * Removes a default document.
+             * @param document default document to remove
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withoutDefaultDocument(String document);
         }
     }
 
     /**
-     * The template for a site update operation, containing all the settings that can be modified.
+     * The template for a web app update operation, containing all the settings that can be modified.
      */
-    interface Update<FluentT extends WebAppBase<FluentT>> extends
+    interface Update<FluentT> extends
             Appliable<FluentT>,
-            UpdateStages.WithAppServicePlan,
-            UpdateStages.WithHostNameBinding,
-            UpdateStages.WithHostNameSslBinding {
+            UpdateStages.WithAppServicePlan<FluentT>,
+            UpdateStages.WithHostNameBinding<FluentT>,
+            UpdateStages.WithHostNameSslBinding<FluentT>,
+            UpdateStages.WithClientAffinityEnabled<FluentT>,
+            UpdateStages.WithClientCertEnabled<FluentT>,
+            UpdateStages.WithScmSiteAlsoStopped<FluentT>,
+            UpdateStages.WithSiteEnabled<FluentT>,
+            UpdateStages.WithSiteConfigs<FluentT> {
     }
 }

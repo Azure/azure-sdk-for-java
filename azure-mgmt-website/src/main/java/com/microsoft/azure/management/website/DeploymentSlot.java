@@ -10,7 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
- * An immutable client-side representation of an Azure Web App.
+ * An immutable client-side representation of an Azure Web App deployment slot.
  */
 public interface DeploymentSlot extends
         IndependentChildResource,
@@ -20,7 +20,7 @@ public interface DeploymentSlot extends
     WebApp parent();
 
     /**************************************************************
-     * Fluent interfaces to provision a Web App
+     * Fluent interfaces to provision a deployment slot
      **************************************************************/
 
     /**
@@ -33,25 +33,49 @@ public interface DeploymentSlot extends
     }
 
     /**
-     * Grouping of all the site definition stages.
+     * Grouping of all the deployment slot definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of the web app definition.
+         * The first stage of the deployment slot definition.
          */
         interface Blank extends WithConfiguration {
         }
 
+        /**
+         * A deployment slot definition allowing the configuration to clone from to be specified.
+         */
         interface WithConfiguration {
+            /**
+             * Create the deployment slot with brand new site configurations.
+             * @return the next stage of the deployment slot definition
+             */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withBrandNewConfiguration();
+
+            /**
+             * Copy the site configurations from the web app the deployment slot belongs to.
+             * @return the next stage of the deployment slot definition
+             */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromParent();
+
+            /**
+             * Copy the site configurations from a given web app.
+             * @param webApp the web app to copy the configurations from
+             * @return the next stage of the deployment slot definition
+             */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromWebApp(WebApp webApp);
+
+            /**
+             * Copy the site configurations from a given deployment slot.
+             * @param deploymentSlot the deployment slot to copy the configurations from
+             * @return the next stage of the deployment slot definition
+             */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
         }
 
         /**
-         * A site definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
+         * A deployment slot definition with sufficient inputs to create a new
+         * slot in the cloud, but exposing additional optional inputs to
          * specify.
          */
         interface WithCreate extends WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
@@ -59,7 +83,7 @@ public interface DeploymentSlot extends
     }
 
     /**
-     * The template for a site update operation, containing all the settings that can be modified.
+     * The template for a deployment slot update operation, containing all the settings that can be modified.
      */
     interface Update extends WebAppBase.Update<DeploymentSlot> {
     }

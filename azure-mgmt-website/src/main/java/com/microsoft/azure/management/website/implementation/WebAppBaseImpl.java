@@ -8,16 +8,16 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.AzureResourceType;
-import com.microsoft.azure.management.website.Certificate;
 import com.microsoft.azure.management.website.CloningInfo;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
-import com.microsoft.azure.management.website.Domain;
+import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.HostNameType;
 import com.microsoft.azure.management.website.JavaVersion;
@@ -33,8 +33,14 @@ import com.microsoft.azure.management.website.UsageState;
 import com.microsoft.azure.management.website.WebAppBase;
 import com.microsoft.azure.management.website.WebContainer;
 import org.joda.time.DateTime;
+import retrofit2.http.Body;
+import retrofit2.http.Headers;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.FuncN;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,17 +73,21 @@ abstract class WebAppBaseImpl<
     private Set<String> outboundIpAddressesSet;
     Map<String, HostNameSslState> hostNameSslStateMap;
     Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
+    Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> SslBindingsWithNewCertToCreate;
+    private VerifyDomainOwnershipService verifyDomainOwnershipService;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
         this.client = client;
         this.inner().withSiteConfig(configObject);
+        verifyDomainOwnershipService = myManager.restClient().retrofit().create(VerifyDomainOwnershipService.class);
         normalizeProperties();
     }
 
     @SuppressWarnings("unchecked")
     FluentT normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
+        this.SslBindingsWithNewCertToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
         }
@@ -296,6 +306,123 @@ abstract class WebAppBaseImpl<
         return inner().siteConfig().autoSwapSlotName();
     }
 
+
+    @Override
+    public Observable<FluentT> createResourceAsync() {
+        if (hostNameSslStateMap.size() > 0) {
+            inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
+        }
+        // Construct web app observable
+        inner().siteConfig().withLocation(inner().location());
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                // Submit hostname bindings
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner site) {
+                        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
+                        for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
+                            bindingObservables.add(binding.createAsync());
+                        }
+                        hostNameBindingsToCreate.clear();
+                        if (bindingObservables.isEmpty()) {
+                            return Observable.just(site);
+                        } else {
+                            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
+                                @Override
+                                public SiteInner call(Object... args) {
+                                    return site;
+                                }
+                            });
+                        }
+                    }
+                })
+                // refresh after hostname bindings
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(SiteInner site) {
+                        return client.getAsync(resourceGroupName(), site.name());
+                    }
+                })
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner siteInner) {
+                        List<Observable<DomainOwnershipIdentifier>> identifyObservables = new ArrayList<>();
+                        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : SslBindingsWithNewCertToCreate.values()) {
+//                            String path = String.format(
+//                                    "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/domainOwnershipIdentifiers/%s?api-version=%s",
+//                                    myManager.subscriptionId(), resourceGroupName(), name(), binding.newCertificateOrder().name(), "2016-08-01");
+                            final AppServiceCertificateOrder createdOrder = (AppServiceCertificateOrder) createdResource(binding.newCertificateOrder().key());
+//                            Request request = new Request.Builder()
+//                                    .url(myManager.restClient().retrofit().baseUrl().host() + path)
+//                                    .put(RequestBody.create(
+//                                            MediaType.parse("application/json; charset=utf-8"),
+//                                            "{\"location\":\"global\",\"properties\":{\"id\":\"" + createdOrder.domainVerificationToken() +"\"}}"))
+//                                    .build();
+//                            myManager.restClient().httpClient().newCall(request).
+                            identifyObservables.add(verifyDomainOwnershipService.verifyDomainOwnership(
+                                    myManager.subscriptionId(),
+                                    resourceGroupName(),
+                                    name(),
+                                    createdOrder.name(),
+                                    new DomainOwnershipIdentifier().withOwnershipId(createdOrder.domainVerificationToken()),
+                                    "2016-08-01")
+                            .flatMap(new Func1<DomainOwnershipIdentifier, Observable<DomainOwnershipIdentifier>>() {
+                                @Override
+                                public Observable<DomainOwnershipIdentifier> call(final DomainOwnershipIdentifier domainOwnershipIdentifier) {
+                                    return myManager.certificateOrders().getByGroupAsync(createdOrder.resourceGroupName(), createdOrder.name())
+                                            .map(new Func1<AppServiceCertificateOrder, DomainOwnershipIdentifier>() {
+                                                @Override
+                                                public DomainOwnershipIdentifier call(AppServiceCertificateOrder appServiceCertificateOrder) {
+                                                    siteInner.hostNameSslStates().add(binding.inner()
+                                                            .withThumbprint(appServiceCertificateOrder.signedCertificate().thumbprint())
+                                                            .withToUpdate(true));
+                                                    return domainOwnershipIdentifier;
+                                                }
+                                            });
+                                }
+                            }));
+                        }
+                        return Observable.zip(identifyObservables, new FuncN<SiteInner>() {
+                            @Override
+                            public SiteInner call(Object... args) {
+                                return siteInner;
+                            }
+                        });
+                    }
+                })
+                // refresh after hostname bindings
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(SiteInner site) {
+                        return client.createOrUpdateAsync(resourceGroupName(), site.name(), site);
+                    }
+                })
+                // submit config
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner siteInner) {
+                        inner().siteConfig().withLocation(inner().location());
+                        return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), inner().siteConfig())
+                                .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                                    @Override
+                                    public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
+                                        siteInner.withSiteConfig(siteConfigInner);
+                                        return Observable.just(siteInner);
+                                    }
+                                });
+                    }
+                })
+                // convert from inner
+                .map(new Func1<SiteInner, FluentT>() {
+                    @Override
+                    public FluentT call(SiteInner siteInner) {
+                        setInner(siteInner);
+                        return normalizeProperties();
+                    }
+                });
+    }
+
+
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNewFreeAppServicePlan() {
@@ -380,46 +507,21 @@ abstract class WebAppBaseImpl<
 //    }
 
     WebAppBaseImpl withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
-        this.hostNameSslStateMap.put(hostNameSslBinding.name(), hostNameSslBinding.inner().withToUpdate(true));
-        if (hostNameSslBinding.newCertificate() != null) {
-            final CertificateImpl certificateImpl = (CertificateImpl) hostNameSslBinding.newCertificate();
-            // Convert creatable to apply thumbprint after creation
-            CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl> postCert = new CreatableUpdatableImpl<Certificate, CertificateInner, CertificateImpl>(
-                    certificateImpl.name(),
-                    certificateImpl.inner()) {
-                @Override
-                public Observable<Certificate> createResourceAsync() {
-                    return hostNameSslBinding.newCertificate().createAsync().map(new Func1<Certificate, Certificate>() {
-                        @Override
-                        public Certificate call(Certificate certificate) {
-                            hostNameSslBinding.withCertificateThumbprint(certificate.thumbprint());
-                            return certificate;
-                        }
-                    });
-                }
-
-                @Override
-                public boolean isInCreateMode() {
-                    return certificateImpl.isInCreateMode();
-                }
-
-                @Override
-                public Certificate refresh() {
-                    return certificateImpl.refresh();
-                }
-            };
-            ((CertificateImpl) hostNameSslBinding.newCertificate()).creatorUpdatorTaskGroup().merge(postCert.creatorUpdatorTaskGroup());
-            addCreatableDependency(postCert);
-        }
         if (hostNameSslBinding.newCertificateOrder() != null) {
+            SslBindingsWithNewCertToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
             addCreatableDependency(hostNameSslBinding.newCertificateOrder());
+        } else {
+            this.hostNameSslStateMap.put(hostNameSslBinding.name(), hostNameSslBinding.inner().withToUpdate(true));
+            if (hostNameSslBinding.newCertificate() != null) {
+                addCreatableDependency(hostNameSslBinding.newCertificate());
+            }
         }
         return this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withManagedHostNameBindings(Domain domain, String... hostnames) {
+    public FluentImplT withManagedHostNameBindings(AppServiceDomain domain, String... hostnames) {
         for(String hostname : hostnames) {
             if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
                 defineNewHostNameBinding(hostname)
@@ -498,7 +600,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     @SuppressWarnings("unchecked")
-    public HostNameSslBindingImpl<FluentT, FluentImplT> defineNewSSLBindingForHostName(String hostname) {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBindingForHostName(String hostname) {
         return new HostNameSslBindingImpl<>(new HostNameSslState().withName(hostname), (FluentImplT) this, myManager);
     }
 
@@ -584,7 +686,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withReoteDebuggingDisabled() {
+    public FluentImplT withRemoteDebuggingDisabled() {
         inner().siteConfig().withRemoteDebuggingEnabled(false);
         return (FluentImplT) this;
     }
@@ -616,5 +718,20 @@ abstract class WebAppBaseImpl<
             inner().siteConfig().defaultDocuments().remove(document);
         }
         return (FluentImplT) this;
+    }
+
+    private interface VerifyDomainOwnershipService {
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
+        Observable<DomainOwnershipIdentifier> verifyDomainOwnership(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String siteName, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Body DomainOwnershipIdentifier domainOwnershipIdentifier, @Query("api-version") String apiVersion);
+    }
+
+    private static class DomainOwnershipIdentifier {
+        private String ownershipId;
+
+        private DomainOwnershipIdentifier withOwnershipId(String ownershipId) {
+            this.ownershipId = ownershipId;
+            return this;
+        }
     }
 }
