@@ -15,7 +15,7 @@ import org.junit.Test;
 
 public class WebAppsTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
-    private static final String WEBAPP_NAME = "banana-webapp-319";
+    private static final String WEBAPP_NAME = "orange-webapp-319";
     private static ResourceGroup resourceGroup;
 
     @BeforeClass
@@ -30,26 +30,28 @@ public class WebAppsTests extends AppServiceTestBase {
 
     @Test
     public void canCRUDWebApp() throws Exception {
-        AppServiceDomain domain = appServiceManager.domains().getByGroup(RG_NAME, "blueberry-webapp-319.com");
+        AppServiceDomain domain = appServiceManager.domains().getByGroup(RG_NAME, "graph-webapp-319.com");
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withExistingAppServicePlan("blueberry-plan-323")
-                .withManagedHostNameBindings(domain, "@", "www", "wwww", "wwwww")
-                .defineSslBindingForHostName("blueberry.graph-webapp-319.com")
-                    .withNewAppServiceCertificateOrder(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL, 1)
+                .withExistingAppServicePlan("java-plan-323")
+                .withManagedHostnameBindings(domain, "orange")
+                .defineSslBinding()
+                    .forHostname("orange.graph-webapp-319.com")
+                    .withNewAppServiceCertificateOrder("orangecert", CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
+                    .withNewKeyVault("orangecertvault")
                     .withSniSsl()
                     .attach()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
-                .withJavaVersion(JavaVersion.JAVA_1_8_0_25)
                 .create();
 
         Assert.assertNotNull(webApp);
 
         DeploymentSlot slot = webApp.deploymentSlots().define("newslot2")
                 .withConfigurationFromDeploymentSlot(webApp.deploymentSlots().getByName("newslot"))
-                .defineNewHostNameBinding("newslot2")
+                .defineHostnameBinding()
                     .withAzureManagedDomain(domain)
+                    .withSubDomain("newslot2")
                     .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                     .attach()
                 .withAutoSwapSlotName("newslot")

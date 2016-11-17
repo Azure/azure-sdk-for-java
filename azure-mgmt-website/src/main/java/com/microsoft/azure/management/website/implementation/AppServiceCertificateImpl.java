@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.io.BaseEncoding;
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServiceCertificate;
@@ -136,6 +137,12 @@ class AppServiceCertificateImpl
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateImpl withKeyVaultSecretCertificateStore(Vault vault, String secretName) {
+        inner().withKeyVaultId(vault.id()).withKeyVaultSecretName(secretName);
         return this;
     }
 

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -109,7 +110,7 @@ public interface AppServiceCertificate extends
     interface Definition extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
-            DefinitionStages.WithPfxFile,
+            DefinitionStages.WithCertificate,
             DefinitionStages.WithPfxFilePassword,
             DefinitionStages.WithCreate {
     }
@@ -127,19 +128,21 @@ public interface AppServiceCertificate extends
         /**
          * An app service certificate definition allowing resource group to be set.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithPfxFile> {
+        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithCertificate> {
         }
 
         /**
          * An app service certificate definition allowing PFX certificate file to be set.
          */
-        interface WithPfxFile {
+        interface WithCertificate {
             /**
              * Specifies the PFX certificate file to upload.
              * @param file the PFX certificate file
              * @return the next stage of app service certificate definition
              */
             WithPfxFilePassword withPfxFile(File file);
+
+            WithCreate withKeyVaultSecretCertificateStore(Vault vault, String secretName);
         }
         /**
          * An app service certificate definition allowing PFX certificate password to be set.

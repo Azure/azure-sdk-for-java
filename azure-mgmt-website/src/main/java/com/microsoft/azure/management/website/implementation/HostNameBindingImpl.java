@@ -40,18 +40,17 @@ class HostNameBindingImpl<
             HostNameBinding.Definition<WebAppBase.DefinitionStages.WithHostNameSslBinding<FluentT>>,
             HostNameBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
     private WebAppsInner client;
-    private String fqdn;
     private final FluentImplT parent;
-    private final String name;
+    private String domainName;
+    private String name;
 
-    HostNameBindingImpl(String name, HostNameBindingInner innerObject, FluentImplT parent, WebAppsInner client) {
+    HostNameBindingImpl(HostNameBindingInner innerObject, FluentImplT parent, WebAppsInner client) {
         super(innerObject);
-        this.name = name;
         this.parent = parent;
         this.client = client;
-        this.fqdn = name;
-        if (name.contains("/")) {
-            this.fqdn = name.replace(parent.name() + "/", "");
+        this.name = innerObject.name();
+        if (name != null && name.contains("/")) {
+            this.name = name.replace(parent.name() + "/", "");
         }
     }
 
@@ -124,7 +123,7 @@ class HostNameBindingImpl<
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> withDnsRecordType(CustomHostNameDnsRecordType hostNameDnsRecordType) {
         Pattern pattern = Pattern.compile("([.\\w-]+)\\.([\\w-]+\\.\\w+)");
-        Matcher matcher = pattern.matcher(fqdn);
+        Matcher matcher = pattern.matcher(name);
         if (hostNameDnsRecordType == CustomHostNameDnsRecordType.CNAME && !matcher.matches()) {
             throw new IllegalArgumentException("root hostname cannot be assigned with a CName record");
         }
@@ -169,9 +168,9 @@ class HostNameBindingImpl<
             }
         };
         if (parent instanceof DeploymentSlot) {
-            return client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), fqdn, parent().name(), inner()).map(mapper);
+            return client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), name, parent().name(), inner()).map(mapper);
         } else {
-            return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), fqdn, inner()).map(mapper);
+            return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
         }
     }
 
@@ -189,14 +188,14 @@ class HostNameBindingImpl<
     public HostNameBindingImpl<FluentT, FluentImplT> withAzureManagedDomain(AppServiceDomain domain) {
         inner().withDomainId(domain.id());
         inner().withHostNameType(HostNameType.MANAGED);
-        this.fqdn = normalizeHostNameBindingName(name(), domain.name());
+        this.domainName = domain.name();
         return this;
     }
 
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> withThirdPartyDomain(String domain) {
         inner().withHostNameType(HostNameType.VERIFIED);
-        this.fqdn = normalizeHostNameBindingName(name(), domain);
+        this.domainName = domain;
         return this;
     }
 
@@ -208,7 +207,7 @@ class HostNameBindingImpl<
         } else {
             suffix = ".azurewebsites.net";
         }
-        return fqdn + ": " + DnsRecordType() + " " + azureResourceName() + suffix;
+        return name + ": " + DnsRecordType() + " " + azureResourceName() + suffix;
     }
 
     @Override
@@ -219,5 +218,11 @@ class HostNameBindingImpl<
     @Override
     public WebAppBase<FluentT> parent() {
         return parent;
+    }
+
+    @Override
+    public HostNameBindingImpl<FluentT, FluentImplT> withSubDomain(String subDomain) {
+        this.name = normalizeHostNameBindingName(subDomain, domainName);
+        return this;
     }
 }

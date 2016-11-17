@@ -304,10 +304,9 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         interface WithHostNameBinding<FluentT> extends WithCreate<FluentT> {
             /**
              * Start the definition of a new host name binding.
-             * @param hostname the sub-domain name or fully qualified domain name
              * @return the first stage of a hostname binding definition
              */
-            HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineNewHostNameBinding(String hostname);
+            HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineHostnameBinding();
 
             /**
              * Define a list of host names of an Azure managed domain. The DNS record type is
@@ -316,7 +315,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param hostnames the list of sub-domains
              * @return the next stage of web app definition
              */
-            WithHostNameSslBinding<FluentT> withManagedHostNameBindings(AppServiceDomain domain, String... hostnames);
+            WithHostNameSslBinding<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
             /**
              * Define a list of host names of an externally purchased domain. The hostnames
@@ -325,7 +324,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param hostnames the list of sub-domains
              * @return the next stage of web app definition
              */
-            WithHostNameSslBinding<FluentT> withVerifiedHostNameBinding(String domain, String... hostnames);
+            WithHostNameSslBinding<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
         }
 
         /**
@@ -335,10 +334,9 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         interface WithHostNameSslBinding<FluentT> extends WithHostNameBinding<FluentT> {
             /**
              * Start a definition of an SSL binding.
-             * @param hostname the hostname to bind an SSL certificate to
              * @return the first stage of an SSL binding definition
              */
-            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBindingForHostName(String hostname);
+            HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBinding();
         }
 
         /**
@@ -557,10 +555,9 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         interface WithHostNameBinding<FluentT> {
             /**
              * Start the definition of a new host name binding.
-             * @param hostname the sub-domain name or fully qualified domain name
              * @return the first stage of a hostname binding update
              */
-            HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineNewHostNameBinding(String hostname);
+            HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineHostnameBinding();
 
             /**
              * Define a list of host names of an Azure managed domain. The DNS record type is
@@ -569,7 +566,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param hostnames the list of sub-domains
              * @return the next stage of web app update
              */
-            Update<FluentT> withManagedHostNameBindings(AppServiceDomain domain, String... hostnames);
+            Update<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
             /**
              * Define a list of host names of an externally purchased domain. The hostnames
@@ -578,7 +575,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param hostnames the list of sub-domains
              * @return the next stage of web app update
              */
-            Update<FluentT> withVerifiedHostNameBinding(String domain, String... hostnames);
+            Update<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
         }
 
         /**
@@ -588,10 +585,9 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         interface WithHostNameSslBinding<FluentT> {
             /**
              * Start a definition of an SSL binding.
-             * @param hostname the hostname to bind an SSL certificate to
              * @return the first stage of an SSL binding definition
              */
-            HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBindingForHostName(String hostname);
+            HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
         }
 
         /**

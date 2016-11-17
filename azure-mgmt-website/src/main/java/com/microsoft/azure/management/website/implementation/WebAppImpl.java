@@ -45,7 +45,7 @@ class WebAppImpl
         List<HostNameBindingInner> collectionInner = client.listHostNameBindings(resourceGroupName(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
         for (HostNameBindingInner inner : collectionInner) {
-            hostNameBindings.add(new HostNameBindingImpl<>(inner.name(), inner, this, client));
+            hostNameBindings.add(new HostNameBindingImpl<>(inner, this, client));
         }
         return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
             @Override

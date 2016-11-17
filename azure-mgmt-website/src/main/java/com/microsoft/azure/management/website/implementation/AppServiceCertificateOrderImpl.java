@@ -134,9 +134,9 @@ class AppServiceCertificateOrderImpl
         AppServiceCertificateInner certInner = new AppServiceCertificateInner();
         certInner.withLocation(vault.regionName());
         certInner.withKeyVaultId(vault.id());
-        certInner.withKeyVaultSecretName(certificateName.replace("_", ""));
+        certInner.withKeyVaultSecretName(certificateName);
         final AppServiceCertificateOrderImpl self = this;
-        return client.beginCreateOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
+        return client.createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
                 .map(new Func1<AppServiceCertificateInner, AppServiceCertificateKeyVaultBinding>() {
                     @Override
                     public AppServiceCertificateKeyVaultBinding call(AppServiceCertificateInner appServiceCertificateInner) {

@@ -61,6 +61,7 @@ public interface HostNameBinding
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
             DefinitionStages.WithDomain<ParentT>,
+            DefinitionStages.WithSubDomain<ParentT>,
             DefinitionStages.WithHostNameDnsRecordType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
@@ -86,14 +87,18 @@ public interface HostNameBinding
              * @param domain the domain purchased from Azure
              * @return the next stage of the host name binding definition
              */
-            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(AppServiceDomain domain);
+            WithSubDomain<ParentT> withAzureManagedDomain(AppServiceDomain domain);
 
             /**
              * Binds to a 3rd party domain.
              * @param domain the 3rd party domain name
              * @return the next stage of the host name binding definition
              */
-            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
+            WithSubDomain<ParentT> withThirdPartyDomain(String domain);
+        }
+
+        interface WithSubDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 
         /**
@@ -128,6 +133,7 @@ public interface HostNameBinding
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
             UpdateDefinitionStages.WithDomain<ParentT>,
+            UpdateDefinitionStages.WithSubDomain<ParentT>,
             UpdateDefinitionStages.WithHostNameDnsRecordType<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
@@ -153,14 +159,18 @@ public interface HostNameBinding
              * @param domain the domain purchased from Azure
              * @return the next stage of the host name binding definition
              */
-            WithHostNameDnsRecordType<ParentT> withAzureManagedDomain(AppServiceDomain domain);
+            WithSubDomain<ParentT> withAzureManagedDomain(AppServiceDomain domain);
 
             /**
              * Binds to a 3rd party domain.
              * @param domain the 3rd party domain name
              * @return the next stage of the host name binding definition
              */
-            WithHostNameDnsRecordType<ParentT> withThirdPartyDomain(String domain);
+            WithSubDomain<ParentT> withThirdPartyDomain(String domain);
+        }
+
+        interface WithSubDomain<ParentT> {
+            WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 
         /**

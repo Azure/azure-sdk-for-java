@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -40,6 +41,9 @@ public interface HostNameSslBinding extends
      */
     interface Definition<ParentT> extends
             DefinitionStages.Blank<ParentT>,
+            DefinitionStages.WithHostname<ParentT>,
+            DefinitionStages.WithCertificate<ParentT>,
+            DefinitionStages.WithKeyVault<ParentT>,
             DefinitionStages.WithSslType<ParentT>,
             DefinitionStages.WithAttach<ParentT> {
     }
@@ -52,7 +56,11 @@ public interface HostNameSslBinding extends
          * The first stage of a hostname SSL binding definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithCertificate<ParentT> {
+        interface Blank<ParentT> extends WithHostname<ParentT> {
+        }
+
+        interface WithHostname<ParentT> {
+            WithCertificate<ParentT> forHostname(String hostname);
         }
 
         /**
@@ -70,12 +78,17 @@ public interface HostNameSslBinding extends
 
             /**
              * Place a new App Service certificate order to use for the hostname
+             * @param certificateOrderName the name of the certificate order
              * @param productType the sku of the certificate order
-             * @param validYears the number of years this certificate is valid (1 - 3)
              * @return the next stage of the hostname SSL binding definition
              */
-            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
+            WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 //            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
+        }
+
+        interface WithKeyVault<ParentT> {
+            WithSslType<ParentT> withExistingKeyVault(Vault vault);
+            WithSslType<ParentT> withNewKeyVault(String vaultName);
         }
 
         /**
@@ -114,6 +127,9 @@ public interface HostNameSslBinding extends
      */
     interface UpdateDefinition<ParentT> extends
             UpdateDefinitionStages.Blank<ParentT>,
+            UpdateDefinitionStages.WithHostname<ParentT>,
+            UpdateDefinitionStages.WithCertificate<ParentT>,
+            UpdateDefinitionStages.WithKeyVault<ParentT>,
             UpdateDefinitionStages.WithSslType<ParentT>,
             UpdateDefinitionStages.WithAttach<ParentT> {
     }
@@ -126,7 +142,11 @@ public interface HostNameSslBinding extends
          * The first stage of a hostname SSL binding definition.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithCertificate<ParentT> {
+        interface Blank<ParentT> extends WithHostname<ParentT> {
+        }
+
+        interface WithHostname<ParentT> {
+            WithCertificate<ParentT> forHostname(String hostname);
         }
 
         /**
@@ -144,12 +164,17 @@ public interface HostNameSslBinding extends
 
             /**
              * Place a new App Service certificate order to use for the hostname
+             * @param certificateOrderName the name of the certificate order
              * @param productType the sku of the certificate order
-             * @param validYears the number of years this certificate is valid (1 - 3)
              * @return the next stage of the hostname SSL binding definition
              */
-            WithSslType<ParentT> withNewAppServiceCertificateOrder(CertificateProductType productType, int validYears);
+            WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 //            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
+        }
+
+        interface WithKeyVault<ParentT> {
+            WithSslType<ParentT> withExistingKeyVault(Vault vault);
+            WithSslType<ParentT> withNewKeyVault(String vaultName);
         }
 
         /**

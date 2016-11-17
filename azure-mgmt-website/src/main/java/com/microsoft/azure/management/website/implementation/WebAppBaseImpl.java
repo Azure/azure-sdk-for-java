@@ -10,7 +10,7 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
-import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
@@ -73,7 +73,7 @@ abstract class WebAppBaseImpl<
     private Set<String> outboundIpAddressesSet;
     Map<String, HostNameSslState> hostNameSslStateMap;
     Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
-    Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> SslBindingsWithNewCertToCreate;
+    Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToCreate;
     private VerifyDomainOwnershipService verifyDomainOwnershipService;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
@@ -87,7 +87,7 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     FluentT normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
-        this.SslBindingsWithNewCertToCreate = new HashMap<>();
+        this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
         }
@@ -346,51 +346,24 @@ abstract class WebAppBaseImpl<
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(final SiteInner siteInner) {
-                        List<Observable<DomainOwnershipIdentifier>> identifyObservables = new ArrayList<>();
-                        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : SslBindingsWithNewCertToCreate.values()) {
-//                            String path = String.format(
-//                                    "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Web/sites/%s/domainOwnershipIdentifiers/%s?api-version=%s",
-//                                    myManager.subscriptionId(), resourceGroupName(), name(), binding.newCertificateOrder().name(), "2016-08-01");
-                            final AppServiceCertificateOrder createdOrder = (AppServiceCertificateOrder) createdResource(binding.newCertificateOrder().key());
-//                            Request request = new Request.Builder()
-//                                    .url(myManager.restClient().retrofit().baseUrl().host() + path)
-//                                    .put(RequestBody.create(
-//                                            MediaType.parse("application/json; charset=utf-8"),
-//                                            "{\"location\":\"global\",\"properties\":{\"id\":\"" + createdOrder.domainVerificationToken() +"\"}}"))
-//                                    .build();
-//                            myManager.restClient().httpClient().newCall(request).
-                            identifyObservables.add(verifyDomainOwnershipService.verifyDomainOwnership(
-                                    myManager.subscriptionId(),
-                                    resourceGroupName(),
-                                    name(),
-                                    createdOrder.name(),
-                                    new DomainOwnershipIdentifier().withOwnershipId(createdOrder.domainVerificationToken()),
-                                    "2016-08-01")
-                            .flatMap(new Func1<DomainOwnershipIdentifier, Observable<DomainOwnershipIdentifier>>() {
-                                @Override
-                                public Observable<DomainOwnershipIdentifier> call(final DomainOwnershipIdentifier domainOwnershipIdentifier) {
-                                    return myManager.certificateOrders().getByGroupAsync(createdOrder.resourceGroupName(), createdOrder.name())
-                                            .map(new Func1<AppServiceCertificateOrder, DomainOwnershipIdentifier>() {
-                                                @Override
-                                                public DomainOwnershipIdentifier call(AppServiceCertificateOrder appServiceCertificateOrder) {
-                                                    siteInner.hostNameSslStates().add(binding.inner()
-                                                            .withThumbprint(appServiceCertificateOrder.signedCertificate().thumbprint())
-                                                            .withToUpdate(true));
-                                                    return domainOwnershipIdentifier;
-                                                }
-                                            });
-                                }
-                            }));
+                        List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
+                        for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
+                            certs.add(binding.newCertificate());
+                            siteInner.hostNameSslStates().add(binding.inner().withToUpdate(true));
                         }
-                        return Observable.zip(identifyObservables, new FuncN<SiteInner>() {
-                            @Override
-                            public SiteInner call(Object... args) {
-                                return siteInner;
-                            }
-                        });
+                        if (certs.isEmpty()) {
+                            return Observable.just(siteInner);
+                        } else {
+                            return Observable.zip(certs, new FuncN<SiteInner>() {
+                                @Override
+                                public SiteInner call(Object... args) {
+                                    return siteInner;
+                                }
+                            });
+                        }
                     }
                 })
-                // refresh after hostname bindings
+                // refresh after hostname SSL bindings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
@@ -455,82 +428,27 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-//    private boolean isUpdateSsl(String hostName) {
-//        boolean update = false;
-//        if (hostNameSslStates() != null) {
-//            for (HostNameSslState hostNameSslState : hostNameSslStates()) {
-//                if (hostName.equals(hostNameSslState.name())) {
-//                    update = true;
-//                }
-//            }
-//        }
-//        return update;
-//    }
-//
-//    @Override
-//    public WebAppImpl disableSsl(String hostName) {
-//        if (hostName == null) {
-//            throw new IllegalArgumentException("Null host name");
-//        }
-//        hostNameSslStateMap.put(hostName, new HostNameSslState()
-//                .withName(hostName)
-//                .withSslState(SslState.DISABLED)
-//                .withToUpdate(isUpdateSsl(hostName)));
-//        return this;
-//    }
-//
-//    @Override
-//    public WebAppImpl enableSniSsl(String hostName, String thumbprint) {
-//        if (hostName == null) {
-//            throw new IllegalArgumentException("Null host name");
-//        }
-//        hostNameSslStateMap.put(hostName, new HostNameSslState()
-//                .withName(hostName)
-//                .withSslState(SslState.SNI_ENABLED)
-//                .withThumbprint(thumbprint)
-//                .withToUpdate(isUpdateSsl(hostName)));
-//        return this;
-//    }
-//
-//    @Override
-//    public WebAppImpl enableIpBasedSsl(String hostName, String thumbprint, String virtualIp) {
-//        if (hostName == null) {
-//            throw new IllegalArgumentException("Null host name");
-//        }
-//        hostNameSslStateMap.put(hostName, new HostNameSslState()
-//                .withName(hostName)
-//                .withSslState(SslState.SNI_ENABLED)
-//                .withThumbprint(thumbprint)
-//                .withVirtualIP(virtualIp)
-//                .withToUpdate(isUpdateSsl(hostName)));
-//        return this;
-//    }
-
     WebAppBaseImpl withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
-        if (hostNameSslBinding.newCertificateOrder() != null) {
-            SslBindingsWithNewCertToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
-            addCreatableDependency(hostNameSslBinding.newCertificateOrder());
-        } else {
-            this.hostNameSslStateMap.put(hostNameSslBinding.name(), hostNameSslBinding.inner().withToUpdate(true));
-            if (hostNameSslBinding.newCertificate() != null) {
-                addCreatableDependency(hostNameSslBinding.newCertificate());
-            }
+        if (hostNameSslBinding.newCertificate() != null) {
+            sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         }
         return this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withManagedHostNameBindings(AppServiceDomain domain, String... hostnames) {
+    public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
         for(String hostname : hostnames) {
             if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
-                defineNewHostNameBinding(hostname)
+                defineHostnameBinding()
                         .withAzureManagedDomain(domain)
+                        .withSubDomain(hostname)
                         .withDnsRecordType(CustomHostNameDnsRecordType.A)
                         .attach();
             } else {
-                defineNewHostNameBinding(hostname)
+                defineHostnameBinding()
                         .withAzureManagedDomain(domain)
+                        .withSubDomain(hostname)
                         .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                         .attach();
             }
@@ -540,22 +458,23 @@ abstract class WebAppBaseImpl<
 
     @Override
     @SuppressWarnings("unchecked")
-    public HostNameBindingImpl<FluentT, FluentImplT> defineNewHostNameBinding(String hostname) {
+    public HostNameBindingImpl<FluentT, FluentImplT> defineHostnameBinding() {
         HostNameBindingInner inner = new HostNameBindingInner();
         inner.withSiteName(name());
         inner.withLocation(regionName());
         inner.withAzureResourceType(AzureResourceType.WEBSITE);
         inner.withAzureResourceName(name());
         inner.withHostNameType(HostNameType.VERIFIED);
-        return new HostNameBindingImpl<>(hostname, inner, (FluentImplT) this, client);
+        return new HostNameBindingImpl<>(inner, (FluentImplT) this, client);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public FluentImplT withVerifiedHostNameBinding(String domain, String... hostnames) {
+    public FluentImplT withThirdPartyHostnameBinding(String domain, String... hostnames) {
         for(String hostname : hostnames) {
-            defineNewHostNameBinding(hostname)
+            defineHostnameBinding()
                     .withThirdPartyDomain(domain)
+                    .withSubDomain(hostname)
                     .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                     .attach();
         }
@@ -600,8 +519,8 @@ abstract class WebAppBaseImpl<
 
     @Override
     @SuppressWarnings("unchecked")
-    public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBindingForHostName(String hostname) {
-        return new HostNameSslBindingImpl<>(new HostNameSslState().withName(hostname), (FluentImplT) this, myManager);
+    public HostNameSslBindingImpl<FluentT, FluentImplT> defineSslBinding() {
+        return new HostNameSslBindingImpl<>(new HostNameSslState(), (FluentImplT) this, myManager);
     }
 
     @Override
