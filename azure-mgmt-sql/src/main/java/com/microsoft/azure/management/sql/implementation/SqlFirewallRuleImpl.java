@@ -60,8 +60,14 @@ class SqlFirewallRuleImpl
 
     @Override
     public Region region() {
-        return Region.fromName(this.inner().location());
+        return Region.findByLabelOrName(this.inner().location());
     }
+
+    @Override
+    public void delete() {
+        this.innerCollection.deleteFirewallRule(this.resourceGroupName(), this.sqlServerName(), this.name());
+    }
+
     @Override
     public SqlFirewallRule refresh() {
         this.innerCollection.getFirewallRule(this.resourceGroupName(), this.sqlServerName(), this.name());
@@ -105,5 +111,17 @@ class SqlFirewallRuleImpl
     @Override
     public String id() {
         return this.inner().id();
+    }
+
+    @Override
+    public SqlFirewallRuleImpl withIpAddressRange(String startIpAddress, String endIpAddress) {
+        this.inner().withStartIpAddress(startIpAddress).withEndIpAddress(endIpAddress);
+        return this;
+    }
+
+    @Override
+    public SqlFirewallRuleImpl withIpAddress(String ipAddress) {
+        this.inner().withStartIpAddress(ipAddress).withEndIpAddress(ipAddress);
+        return this;
     }
 }

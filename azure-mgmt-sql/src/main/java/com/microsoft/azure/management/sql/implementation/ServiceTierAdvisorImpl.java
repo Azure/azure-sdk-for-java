@@ -8,9 +8,9 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ServiceTierAdvisor;
 import com.microsoft.azure.management.sql.SloUsageMetric;
 import org.joda.time.DateTime;
@@ -107,7 +107,7 @@ class ServiceTierAdvisorImpl
                 }
             };
 
-            sloUsageMetrics = converter.convert(Utils.convertToPagedList(this.inner().serviceLevelObjectiveUsageMetrics()));
+            sloUsageMetrics = converter.convert(ReadableWrappersImpl.convertToPagedList(this.inner().serviceLevelObjectiveUsageMetrics()));
         }
         return sloUsageMetrics;
     }

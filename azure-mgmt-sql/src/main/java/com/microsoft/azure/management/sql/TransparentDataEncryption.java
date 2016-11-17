@@ -46,7 +46,7 @@ public interface TransparentDataEncryption extends
      * @param transparentDataEncryptionState state of the data encryption to set
      * @return the new encryption settings after modifyState
      */
-    TransparentDataEncryption updateState(TransparentDataEncryptionStates transparentDataEncryptionState);
+    TransparentDataEncryption updateStatus(TransparentDataEncryptionStates transparentDataEncryptionState);
 
     /**
      * @return an Azure SQL Database Transparent Data Encryption Activity

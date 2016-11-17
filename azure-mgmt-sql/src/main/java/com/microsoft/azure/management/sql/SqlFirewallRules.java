@@ -6,12 +6,14 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+
+import java.util.List;
 
 /**
  *  Entry point to SQL FirewallRule management API.
@@ -20,6 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 public interface SqlFirewallRules extends
         SupportsDeletingById,
         SupportsGettingById<SqlFirewallRule>,
+        SupportsBatchCreation<SqlFirewallRule>,
         SupportsDeletingByParent {
 
     /**
@@ -48,7 +51,7 @@ public interface SqlFirewallRules extends
      * @param sqlServerName the name of SQLServer
      * @return the list of SQLDatabases in a SQLServer
      */
-    PagedList<SqlFirewallRule> listBySqlServer(String resourceGroupName, String sqlServerName);
+    List<SqlFirewallRule> listBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
      * Gets the SQLDatabase based on the SQLServer.
@@ -56,7 +59,7 @@ public interface SqlFirewallRules extends
      * @param sqlServer the instance of SQLServer
      * @return the list of SQLDatabases in a SQLServer
      */
-    PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer);
+    List<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer);
 
     /**
      * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.

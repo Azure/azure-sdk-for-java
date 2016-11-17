@@ -8,17 +8,19 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import org.joda.time.DateTime;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SqlServerOperationsTests extends SqlServerTestBase {
-    private static final String RG_NAME = "javasqlserver1237";
-    private static final String SQL_SERVER_NAME = "javasqlserver1237";
+    private static final String RG_NAME = ResourceNamer.randomResourceName("javasqlserver", 20);
+    private static final String SQL_SERVER_NAME = RG_NAME;
     private static final String SQL_DATABASE_NAME = "myTestDatabase2";
     private static final String COLLATION = "SQL_Latin1_General_CP1_CI_AS";
     private static final String SQL_ELASTIC_POOL_NAME = "testElasticPool";
@@ -40,8 +42,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     @Test
     public void canListRecommendedElasticPools() throws Exception {
         SqlServer sqlServer = sqlServerManager.sqlServers().getByGroup("ans", "ans-secondary");
-        sqlServer.databases().list().get(0).listServiceTierAdvisors().get(0).serviceLevelObjectiveUsageMetrics();
-        List<RecommendedElasticPool> recommendedElasticPools = sqlServer.recommendedElasticPools().list();
+        sqlServer.databases().list().get(0).listServiceTierAdvisors().values().iterator().next().serviceLevelObjectiveUsageMetrics();
+        Map<String, RecommendedElasticPool> recommendedElasticPools = sqlServer.listRecommendedElasticPools();
         Assert.assertNotNull(recommendedElasticPools);
         Assert.assertNotNull(sqlServer.databases().list().get(0).getUpgradeHint());
     }
@@ -80,6 +82,145 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     @Test
+    public void canUseCoolShortcutsForResourceCreation() throws Exception {
+        String database2Name = "database2";
+        String database1InEPName = "database1InEP";
+        String database2InEPName = "database2InEP";
+        String elasticPool2Name = "elasticPool2";
+        String elasticPool3Name = "elasticPool3";
+        String elasticPool1Name = SQL_ELASTIC_POOL_NAME;
+
+        // Create
+        SqlServer sqlServer = sqlServerManager.sqlServers().define(SQL_SERVER_NAME)
+                .withRegion(Region.US_CENTRAL)
+                .withNewResourceGroup(RG_NAME)
+                .withAdministratorLogin("userName")
+                .withAdministratorPassword("Password~1")
+                .withNewDatabase(SQL_DATABASE_NAME)
+                .withNewDatabase(database2Name)
+                .withNewElasticPool(elasticPool1Name, ElasticPoolEditions.STANDARD)
+                .withNewElasticPool(elasticPool2Name, ElasticPoolEditions.PREMIUM, database1InEPName, database2InEPName)
+                .withNewElasticPool(elasticPool3Name, ElasticPoolEditions.STANDARD)
+                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS, SQL_FIREWALLRULE_NAME)
+                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS)
+                .withNewFirewallRule(START_IPADDRESS)
+                .create();
+
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer);
+        elasticPool1Name = SQL_ELASTIC_POOL_NAME + " U";
+        database2Name = "database2U";
+        database1InEPName = "database1InEPU";
+        database2InEPName = "database2InEPU";
+        elasticPool2Name = "elasticPool2U";
+        elasticPool3Name = "elasticPool3U";
+
+        // Update
+        sqlServer = sqlServer.update()
+                .withNewDatabase(SQL_DATABASE_NAME).withNewDatabase(database2Name)
+                .withNewElasticPool(elasticPool1Name, ElasticPoolEditions.STANDARD)
+                .withNewElasticPool(elasticPool2Name, ElasticPoolEditions.PREMIUM, database1InEPName, database2InEPName)
+                .withNewElasticPool(elasticPool3Name, ElasticPoolEditions.STANDARD)
+                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS, SQL_FIREWALLRULE_NAME)
+                .withNewFirewallRule(START_IPADDRESS, END_IPADDRESS)
+                .withNewFirewallRule(START_IPADDRESS)
+                .apply();
+
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer);
+
+        // List
+        List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
+        boolean found = false;
+        for (SqlServer server : sqlServers) {
+            if (server.name().equals(SQL_SERVER_NAME)) {
+                found = true;
+            }
+        }
+
+        Assert.assertTrue(found);
+        // Get
+        sqlServer = sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
+        Assert.assertNotNull(sqlServer);
+
+        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
+        validateSqlServerNotFound(sqlServer);
+    }
+
+    private static void validateMultiCreation(
+            String database2Name,
+            String database1InEPName,
+            String database2InEPName,
+            String elasticPool1Name,
+            String elasticPool2Name,
+            String elasticPool3Name,
+            SqlServer sqlServer) {
+        validateSqlServer(sqlServer);
+        validateSqlServer(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME));
+        validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
+        validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
+
+        List<SqlFirewallRule> firewalls = sqlServer.firewallRules().list();
+        Assert.assertEquals(3, firewalls.size());
+
+        int startIpAddress = 0;
+        int endIpAddress = 0;
+
+        for (SqlFirewallRule firewall: firewalls) {
+            if (!firewall.name().equalsIgnoreCase(SQL_FIREWALLRULE_NAME)) {
+                Assert.assertEquals(firewall.startIpAddress(), START_IPADDRESS);
+                if (firewall.endIpAddress().equalsIgnoreCase(START_IPADDRESS)) {
+                    startIpAddress++;
+                }
+                else if (firewall.endIpAddress().equalsIgnoreCase(END_IPADDRESS)) {
+                    endIpAddress++;
+                }
+            }
+        }
+
+        Assert.assertEquals(startIpAddress, 1);
+        Assert.assertEquals(endIpAddress, 1);
+
+        Assert.assertNotNull(sqlServer.databases().get(database2Name));
+        Assert.assertNotNull(sqlServer.databases().get(database1InEPName));
+        Assert.assertNotNull(sqlServer.databases().get(database2InEPName));
+
+        SqlElasticPool ep1 = sqlServer.elasticPools().get(elasticPool1Name);
+        validateSqlElasticPool(ep1, elasticPool1Name);
+        SqlElasticPool ep2 = sqlServer.elasticPools().get(elasticPool2Name);
+
+        Assert.assertNotNull(ep2);
+        Assert.assertEquals(ep2.edition(), ElasticPoolEditions.PREMIUM);
+        Assert.assertEquals(ep2.listDatabases().size(), 2);
+        Assert.assertNotNull(ep2.getDatabase(database1InEPName));
+        Assert.assertNotNull(ep2.getDatabase(database2InEPName));
+
+        SqlElasticPool ep3 = sqlServer.elasticPools().get(elasticPool3Name);
+
+        Assert.assertNotNull(ep3);
+        Assert.assertEquals(ep3.edition(), ElasticPoolEditions.STANDARD);
+
+        sqlServer.databases().delete(database2Name);
+        sqlServer.databases().delete(database1InEPName);
+        sqlServer.databases().delete(database2InEPName);
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
+
+        Assert.assertEquals(ep1.listDatabases().size(), 0);
+        Assert.assertEquals(ep2.listDatabases().size(), 0);
+        Assert.assertEquals(ep3.listDatabases().size(), 0);
+
+        sqlServer.elasticPools().delete(elasticPool1Name);
+        sqlServer.elasticPools().delete(elasticPool2Name);
+        sqlServer.elasticPools().delete(elasticPool3Name);
+
+        Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
+        // Only master database is remaining in the SQLServer.
+        Assert.assertEquals(sqlServer.databases().list().size(), 1);
+        for (SqlFirewallRule firewallRule :firewalls) {
+            firewallRule.delete();
+        }
+    }
+
+
+    @Test
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -101,7 +242,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         List<TransparentDataEncryptionActivity> transparentDataEncryptionActivities = transparentDataEncryption.listActivity();
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
-        transparentDataEncryption = transparentDataEncryption.updateState(TransparentDataEncryptionStates.ENABLED);
+        transparentDataEncryption = transparentDataEncryption.updateStatus(TransparentDataEncryptionStates.ENABLED);
         Assert.assertNotNull(transparentDataEncryption);
         Assert.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStates.ENABLED);
 
@@ -109,7 +250,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
         Thread.sleep(10000);
-        transparentDataEncryption = sqlDatabase.getTransparentDataEncryption().updateState(TransparentDataEncryptionStates.DISABLED);
+        transparentDataEncryption = sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionStates.DISABLED);
         Assert.assertNotNull(transparentDataEncryption);
         Assert.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStates.DISABLED);
         Assert.assertEquals(transparentDataEncryption.sqlServerName(), SQL_SERVER_NAME);
@@ -121,13 +262,13 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(sqlDatabase.getUpgradeHint());
 
         // Test Service tier advisors.
-        List<ServiceTierAdvisor> serviceTierAdvisors = sqlDatabase.listServiceTierAdvisors();
+        Map<String, ServiceTierAdvisor> serviceTierAdvisors = sqlDatabase.listServiceTierAdvisors();
         Assert.assertNotNull(serviceTierAdvisors);
-        Assert.assertNotNull(serviceTierAdvisors.get(0).serviceLevelObjectiveUsageMetrics());
+        Assert.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
         Assert.assertNotEquals(serviceTierAdvisors.size(), 0);
 
-        Assert.assertNotNull(serviceTierAdvisors.get(0).refresh());
-        Assert.assertNotNull(serviceTierAdvisors.get(0).serviceLevelObjectiveUsageMetrics());
+        Assert.assertNotNull(serviceTierAdvisors.values().iterator().next().refresh());
+        Assert.assertNotNull(serviceTierAdvisors.values().iterator().next().serviceLevelObjectiveUsageMetrics());
         // End of testing service tier advisors.
 
         sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
@@ -141,8 +282,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlDatabase anotherDatabase = sqlServer.databases()
                 .define(anotherDatabaseName)
                 .withNewElasticPool(sqlElasticPoolCreatable)
-                .withSourceDatabaseId(sqlDatabase.id())
-                .withCreateMode(CreateMode.COPY)
+                .withSourceDatabase(sqlDatabase.id())
+                .withMode(CreateMode.COPY)
                 .create();
 
         validateSqlDatabaseWithElasticPool(anotherDatabase, anotherDatabaseName);
@@ -191,31 +332,30 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlDatabase databaseInServer2 = sqlServer2.databases()
                 .define(SQL_DATABASE_NAME)
                 .withoutElasticPool()
-                .withSourceDatabaseId(databaseInServer1.id())
-                .withCreateMode(CreateMode.ONLINE_SECONDARY)
+                .withSourceDatabase(databaseInServer1.id())
+                .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
         Thread.sleep(2000);
-        List<ReplicationLink> replicationLinksInDb1 = databaseInServer1.replicationLinks().list();
+        List<ReplicationLink> replicationLinksInDb1 = new ArrayList<>(databaseInServer1.listReplicationLinks().values());
 
         Assert.assertEquals(replicationLinksInDb1.size() , 1);
         Assert.assertEquals(replicationLinksInDb1.get(0).partnerDatabase(), databaseInServer2.name());
         Assert.assertEquals(replicationLinksInDb1.get(0).partnerServer(), databaseInServer2.sqlServerName());
 
-        List<ReplicationLink> replicationLinksInDb2 = databaseInServer2.replicationLinks().list();
+        List<ReplicationLink> replicationLinksInDb2 = new ArrayList<>(databaseInServer2.listReplicationLinks().values());
 
         Assert.assertEquals(replicationLinksInDb2.size() , 1);
         Assert.assertEquals(replicationLinksInDb2.get(0).partnerDatabase(), databaseInServer1.name());
         Assert.assertEquals(replicationLinksInDb2.get(0).partnerServer(), databaseInServer1.sqlServerName());
 
         Assert.assertNotNull(replicationLinksInDb1.get(0).refresh());
-        Assert.assertNotNull(databaseInServer1.replicationLinks().get(replicationLinksInDb1.get(0).name()));
 
-        databaseInServer2.replicationLinks().delete(replicationLinksInDb2.get(0).name());
+        replicationLinksInDb1.get(0).delete();
+        Assert.assertEquals(databaseInServer1.listReplicationLinks().size(), 0);
 
-        Assert.assertEquals(databaseInServer2.replicationLinks().list().size(), 0);
-
-        Thread.sleep(5000);
-        Assert.assertEquals(databaseInServer1.replicationLinks().list().size(), 0);
+        Thread.sleep(30000);
+        // Only master database
+        Assert.assertEquals(sqlServer2.databases().list().size(), 1);
 
         sqlServer1.databases().delete(databaseInServer1.name());
         sqlServer2.databases().delete(databaseInServer2.name());
@@ -236,7 +376,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // List usages for the server.
         Assert.assertNotNull(sqlServer.listUsages());
 
-        SqlDatabase dataWarehouse = sqlServer.databases()
+        SqlDatabase sqlDatabase = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withoutElasticPool()
                 .withoutSourceDatabaseId()
@@ -244,14 +384,19 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withEdition(DatabaseEditions.DATA_WAREHOUSE)
                 .createAsync().toBlocking().first();
 
+        sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
+        Assert.assertNotNull(sqlDatabase);
+        Assert.assertTrue(sqlDatabase.isDataWarehouse());
+
         // Get
-        dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME);
+        SqlWarehouse dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME).castToWarehouse();
 
         Assert.assertNotNull(dataWarehouse);
         Assert.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
         Assert.assertEquals(dataWarehouse.edition(), DatabaseEditions.DATA_WAREHOUSE);
 
         // List Restore points.
+        dataWarehouse.resumeDataWarehouse();
         Assert.assertNotNull(dataWarehouse.listRestorePoints());
         // Get usages.
         Assert.assertNotNull(dataWarehouse.listUsages());
@@ -260,14 +405,12 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         dataWarehouse.pauseDataWarehouse();
 
         // Resume warehouse
-        dataWarehouse.resumeDataWarehouse();
 
         sqlServer.databases().delete(SQL_DATABASE_NAME);
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
         validateSqlServerNotFound(sqlServer);
     }
-
 
     @Test
     public void canCRUDSqlDatabaseWithElasticPool() throws Exception {
@@ -343,10 +486,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(sqlDatabase.elasticPoolName(), SQL_ELASTIC_POOL_NAME);
 
         // List Activity in elastic pool
-        Assert.assertNotNull(elasticPool.listActivity());
+        Assert.assertNotNull(elasticPool.listActivities());
 
         // List Database activity in elastic pool.
-        Assert.assertNotNull(elasticPool.listDatabaseActivity());
+        Assert.assertNotNull(elasticPool.listDatabaseActivities());
 
         // List databases in elastic pool.
         List<SqlDatabase> databasesInElasticPool = elasticPool.listDatabases();
@@ -391,71 +534,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     @Test
-    public void canUpgradeSqlServer() throws Exception {
-        // Create
-        SqlServer sqlServer = sqlServerManager.sqlServers()
-                .define(SQL_SERVER_NAME)
-                .withRegion(Region.US_CENTRAL)
-                .withNewResourceGroup(RG_NAME)
-                .withAdministratorLogin("userName")
-                .withAdministratorPassword("P@ssword~1")
-                .withVersion(ServerVersion.TWO_FULL_STOP_ZERO)
-                .create();
-        sqlServer.refresh();
-
-        SqlElasticPool elasticPool = sqlServer.elasticPools()
-                .define(SQL_ELASTIC_POOL_NAME)
-                .withEdition(ElasticPoolEditions.STANDARD).create();
-        sqlServer.refresh();
-        SqlDatabase sqlDatabase = sqlServer.databases()
-                .define(SQL_DATABASE_NAME)
-                .withExistingElasticPool(elasticPool)
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
-                .withServiceObjective(ServiceObjectiveName.S1)
-                .createAsync().toBlocking().first();
-        sqlServer.refresh();
-
-        validateSqlDatabaseWithElasticPool(sqlDatabase, SQL_DATABASE_NAME);
-        validateSqlDatabaseWithElasticPool(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
-
-        sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
-        validateSqlServer(sqlServer);
-
-        // Get Elastic pool
-        elasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
-        validateSqlElasticPool(elasticPool);
-
-        // Upgrade
-        sqlServer.scheduledUpgrade()
-                .withScheduleUpgradeAfterUtcDateTime(DateTime.now().minusMinutes(-10))
-                .updateDatabase(SQL_DATABASE_NAME)
-                    .withTargetEdition(TargetDatabaseEditions.PREMIUM)
-                    .withTargetServiceLevelObjective(ServiceObjectiveName.P3.toString())
-                    .attach()
-                .updateElasticPool(SQL_ELASTIC_POOL_NAME)
-                    .withEdition(TargetElasticPoolEditions.PREMIUM)
-                    .withDtu(100)
-                    .withDatabaseDtuMax(20)
-                    .withDatabaseDtuMin(10)
-                    .attach()
-                .schedule();
-        Assert.assertNotNull(sqlServer.getUpgrade());
-        sqlServer.cancelUpgrade();
-
-         // Delete
-        sqlServer.databases().delete(SQL_DATABASE_NAME);
-        validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
-        sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
-        validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
-
-        sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
-        validateSqlServerNotFound(sqlServer);
-    }
-
-
-    @Test
     public void canCRUDSqlElasticPool() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
@@ -467,14 +545,19 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD)
                 .createAsync().toBlocking().first();
+        validateSqlElasticPool(sqlElasticPool);
+        Assert.assertEquals(sqlElasticPool.listDatabases().size(), 0);
 
         sqlElasticPool = sqlElasticPool.update()
                 .withDtu(100)
                 .withDatabaseDtuMax(20)
                 .withDatabaseDtuMin(10)
-                .withStorageCapacity(102400).apply();
+                .withStorageCapacity(102400)
+                .withNewDatabase(SQL_DATABASE_NAME)
+                .apply();
 
         validateSqlElasticPool(sqlElasticPool);
+        Assert.assertEquals(sqlElasticPool.listDatabases().size(), 1);
 
         // Get
         validateSqlElasticPool(sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME));
@@ -483,6 +566,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateListSqlElasticPool(sqlServer.elasticPools().list());
 
         // Delete
+        sqlServer.databases().delete(SQL_DATABASE_NAME);
         sqlServer.elasticPools().delete(SQL_ELASTIC_POOL_NAME);
         validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
 
@@ -509,8 +593,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         SqlFirewallRule sqlFirewallRule = sqlServer.firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
+                .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
                 .createAsync().toBlocking().first();
 
         validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
@@ -520,11 +603,16 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         String secondFirewallRuleName = "secondFireWallRule";
         SqlFirewallRule secondFirewallRule = sqlServer.firewallRules()
                 .define(secondFirewallRuleName)
-                .withStartIpAddress(START_IPADDRESS)
-                .withEndIpAddress(END_IPADDRESS)
+                .withIpAddress(START_IPADDRESS)
                 .create();
 
-        Assert.assertNotNull(sqlServer.firewallRules().get(secondFirewallRuleName));
+        secondFirewallRule = sqlServer.firewallRules().get(secondFirewallRuleName);
+
+        Assert.assertNotNull(secondFirewallRule);
+        Assert.assertEquals(START_IPADDRESS, secondFirewallRule.endIpAddress());
+
+        secondFirewallRule = secondFirewallRule.update().withEndIpAddress(END_IPADDRESS).apply();
+
         validateSqlFirewallRule(secondFirewallRule, secondFirewallRuleName);
         sqlServer.firewallRules().delete(secondFirewallRuleName);
         Assert.assertNull(sqlServer.firewallRules().get(secondFirewallRuleName));
@@ -555,7 +643,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNull(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME).firewallRules().get(SQL_FIREWALLRULE_NAME));
     }
 
-
     private static void validateSqlElasticPoolNotFound(SqlServer sqlServer, String elasticPoolName) {
         Assert.assertNull(sqlServer.elasticPools().get(elasticPoolName));
     }
@@ -572,6 +659,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     private static SqlServer createSqlServer() {
         return createSqlServer(SQL_SERVER_NAME);
     }
+
     private static SqlServer createSqlServer(String SQL_SERVER_NAME) {
         return sqlServerManager.sqlServers()
                 .define(SQL_SERVER_NAME)
@@ -582,6 +670,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
                 .create();
     }
+
     private static void validateListSqlFirewallRule(List<SqlFirewallRule> sqlFirewallRules) {
         boolean found = false;
         for (SqlFirewallRule firewallRule: sqlFirewallRules) {
@@ -614,9 +703,13 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     }
 
     private static void validateSqlElasticPool(SqlElasticPool sqlElasticPool) {
+        validateSqlElasticPool(sqlElasticPool, SQL_ELASTIC_POOL_NAME);
+    }
+
+    private static void validateSqlElasticPool(SqlElasticPool sqlElasticPool, String elasticPoolName) {
         Assert.assertNotNull(sqlElasticPool);
         Assert.assertEquals(RG_NAME, sqlElasticPool.resourceGroupName());
-        Assert.assertEquals(SQL_ELASTIC_POOL_NAME, sqlElasticPool.name());
+        Assert.assertEquals(elasticPoolName, sqlElasticPool.name());
         Assert.assertEquals(SQL_SERVER_NAME, sqlElasticPool.sqlServerName());
         Assert.assertEquals(ElasticPoolEditions.STANDARD, sqlElasticPool.edition());
         Assert.assertNotNull(sqlElasticPool.creationDate());

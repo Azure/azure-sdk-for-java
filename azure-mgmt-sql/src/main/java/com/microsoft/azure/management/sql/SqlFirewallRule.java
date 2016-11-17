@@ -51,12 +51,17 @@ public interface SqlFirewallRule extends
     Region region();
 
     /**
+     * Deletes the firewall rule.
+     */
+    void delete();
+
+    /**
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition extends
             SqlFirewallRule.DefinitionStages.Blank,
-            SqlFirewallRule.DefinitionStages.WithStartIpAddress,
-            SqlFirewallRule.DefinitionStages.WithEndIpAddress,
+            SqlFirewallRule.DefinitionStages.WithIpAddress,
+            SqlFirewallRule.DefinitionStages.WithIpAddressRange,
             SqlFirewallRule.DefinitionStages.WithCreate {
     }
 
@@ -67,33 +72,36 @@ public interface SqlFirewallRule extends
         /**
          * The first stage of the SQL Server definition.
          */
-        interface Blank extends SqlFirewallRule.DefinitionStages.WithStartIpAddress {
+        interface Blank extends
+                SqlFirewallRule.DefinitionStages.WithIpAddressRange,
+                SqlFirewallRule.DefinitionStages.WithIpAddress {
         }
 
         /**
          * The SQL Firewall Rule definition to set the starting IP Address for the server.
          */
-        interface WithStartIpAddress {
+        interface WithIpAddressRange {
             /**
              * Sets the starting IP address of SQL server's firewall rule.
              *
-             * @param startIpAddress start IP address in IPv4 format.
-             * @return The next stage of definition.
+             * @param startIpAddress starting IP address in IPv4 format.
+             * @param endIpAddress starting IP address in IPv4 format.
+             * @return The next stage of the definition.
              */
-            SqlFirewallRule.DefinitionStages.WithEndIpAddress withStartIpAddress(String startIpAddress);
+            WithCreate withIpAddressRange(String startIpAddress, String endIpAddress);
         }
 
         /**
          * The SQL Firewall Rule definition to set the starting IP Address for the server.
          */
-        interface WithEndIpAddress {
+        interface WithIpAddress {
             /**
              * Sets the ending IP address of SQL server's firewall rule.
              *
-             * @param endIpAddress end IP address in IPv4 format.
-             * @return The next stage of definition.
+             * @param ipAddress IP address in IPv4 format.
+             * @return The next stage of the definition.
              */
-            WithCreate withEndIpAddress(String endIpAddress);
+            WithCreate withIpAddress(String ipAddress);
         }
 
         /**
@@ -126,7 +134,7 @@ public interface SqlFirewallRule extends
              * Sets the starting IP address of SQL server's firewall rule.
              *
              * @param startIpAddress start IP address in IPv4 format.
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withStartIpAddress(String startIpAddress);
         }
@@ -139,7 +147,7 @@ public interface SqlFirewallRule extends
              * Sets the ending IP address of SQL server's firewall rule.
              *
              * @param endIpAddress end IP address in IPv4 format.
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withEndIpAddress(String endIpAddress);
         }
