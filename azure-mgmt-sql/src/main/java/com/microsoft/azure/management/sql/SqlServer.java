@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -15,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
+
+import java.util.List;
 
 
 /**
@@ -57,27 +58,30 @@ public interface SqlServer extends
      */
     Databases databases();
 
-    // TODO - ans - Testing pending for upgrade scenario. Need to implement startUpgrade first for the same.
     /**
      * Cancels a pending upgrade for the Azure SQL Server.
      */
     void cancelUpgrade();
 
-    // TODO - ans - Testing pending for upgrade scenario. Need to implement startUpgrade first for the same.
     /**
      * @return get information about upgrade status of the an Azure SQL Server
      */
     ServerUpgradeResult getUpgrade();
 
     /**
+     * @return the definition stage for specifying the arguments for upgrade.
+     */
+    ServerUpgrade.UpgradeDefinitions.Blank scheduledUpgrade();
+
+    /**
      * @return returns the list of usages (ServerMetric) of Azure SQL Server
      */
-    PagedList<ServerMetric> listUsages();
+    List<ServerMetric> listUsages();
 
     /**
      * @return the list of information on all service objectives
      */
-    PagedList<ServiceObjective> listServiceObjectives();
+    List<ServiceObjective> listServiceObjectives();
 
     /**
      * Gets the information on a particular Sql Server Service Objective.
@@ -116,7 +120,7 @@ public interface SqlServer extends
          *
          * @return list of firewall rules for the server.
          */
-        PagedList<SqlFirewallRule> list();
+        List<SqlFirewallRule> list();
 
         /**
          * Delete specified firewall rule in the server.
@@ -143,7 +147,7 @@ public interface SqlServer extends
          *
          * @return list of recommended elastic pools for the server.
          */
-        PagedList<RecommendedElasticPool> list();
+        List<RecommendedElasticPool> list();
     }
 
     /**
@@ -171,7 +175,7 @@ public interface SqlServer extends
          *
          * @return list of elastic pools for the server.
          */
-        PagedList<SqlElasticPool> list();
+        List<SqlElasticPool> list();
 
         /**
          * Delete specified elastic pool in the server.
@@ -206,7 +210,7 @@ public interface SqlServer extends
          *
          * @return list of databases for the server.
          */
-        PagedList<SqlDatabase> list();
+        List<SqlDatabase> list();
 
         /**
          * Delete specified database in the server.

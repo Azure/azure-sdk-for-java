@@ -12,35 +12,32 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for OperationStatus.
+ * Defines values for TrustedIdProviderState.
  */
-public enum OperationStatus {
-    /** Enum value InProgress. */
-    IN_PROGRESS("InProgress"),
+public enum TrustedIdProviderState {
+    /** Enum value Enabled. */
+    ENABLED("Enabled"),
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded"),
+    /** Enum value Disabled. */
+    DISABLED("Disabled");
 
-    /** Enum value Failed. */
-    FAILED("Failed");
-
-    /** The actual serialized value for a OperationStatus instance. */
+    /** The actual serialized value for a TrustedIdProviderState instance. */
     private String value;
 
-    OperationStatus(String value) {
+    TrustedIdProviderState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a OperationStatus instance.
+     * Parses a serialized value to a TrustedIdProviderState instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed OperationStatus object, or null if unable to parse.
+     * @return the parsed TrustedIdProviderState object, or null if unable to parse.
      */
     @JsonCreator
-    public static OperationStatus fromString(String value) {
-        OperationStatus[] items = OperationStatus.values();
-        for (OperationStatus item : items) {
+    public static TrustedIdProviderState fromString(String value) {
+        TrustedIdProviderState[] items = TrustedIdProviderState.values();
+        for (TrustedIdProviderState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

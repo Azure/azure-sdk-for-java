@@ -103,6 +103,18 @@ public interface DataLakeAnalyticsAccountManagementClient {
     DataLakeAnalyticsAccountManagementClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
+     * Gets the StorageAccounts object to access its operations.
+     * @return the StorageAccounts object.
+     */
+    StorageAccounts storageAccounts();
+
+    /**
+     * Gets the DataLakeStoreAccounts object to access its operations.
+     * @return the DataLakeStoreAccounts object.
+     */
+    DataLakeStoreAccounts dataLakeStoreAccounts();
+
+    /**
      * Gets the Accounts object to access its operations.
      * @return the Accounts object.
      */

@@ -9,7 +9,10 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ServiceTierAdvisor;
+import com.microsoft.azure.management.sql.SloUsageMetric;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -24,6 +27,7 @@ class ServiceTierAdvisorImpl
         implements ServiceTierAdvisor {
     private final ResourceId resourceId;
     private final DatabasesInner databasesInner;
+    private List<SloUsageMetric> sloUsageMetrics;
 
     protected ServiceTierAdvisorImpl(ServiceTierAdvisorInner innerObject, DatabasesInner databasesInner) {
         super(innerObject);
@@ -93,8 +97,19 @@ class ServiceTierAdvisorImpl
     }
 
     @Override
-    public List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics() {
-        return this.inner().serviceLevelObjectiveUsageMetrics();
+    public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
+        if (sloUsageMetrics == null) {
+            PagedListConverter<SloUsageMetricInner, SloUsageMetric> converter = new PagedListConverter<SloUsageMetricInner, SloUsageMetric>() {
+                @Override
+                public SloUsageMetric typeConvert(SloUsageMetricInner sloUsageMetricInner) {
+
+                    return new SloUsageMetricImpl(sloUsageMetricInner);
+                }
+            };
+
+            sloUsageMetrics = converter.convert(Utils.convertToPagedList(this.inner().serviceLevelObjectiveUsageMetrics()));
+        }
+        return sloUsageMetrics;
     }
 
     @Override
@@ -154,6 +169,7 @@ class ServiceTierAdvisorImpl
 
     @Override
     public ServiceTierAdvisor refresh() {
+        sloUsageMetrics = null;
         this.setInner(this.databasesInner.getServiceTierAdvisor(this.resourceGroupName(), this.sqlServerName(), this.databaseName(), this.name()));
         return this;
     }

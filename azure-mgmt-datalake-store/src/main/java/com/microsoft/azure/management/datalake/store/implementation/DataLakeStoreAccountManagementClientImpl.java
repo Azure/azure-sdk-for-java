@@ -12,6 +12,8 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.management.datalake.store.Accounts;
 import com.microsoft.azure.management.datalake.store.DataLakeStoreAccountManagementClient;
+import com.microsoft.azure.management.datalake.store.FirewallRules;
+import com.microsoft.azure.management.datalake.store.TrustedIdProviders;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
@@ -135,6 +137,32 @@ public final class DataLakeStoreAccountManagementClientImpl extends AzureService
     }
 
     /**
+     * The FirewallRules object to access its operations.
+     */
+    private FirewallRules firewallRules;
+
+    /**
+     * Gets the FirewallRules object to access its operations.
+     * @return the FirewallRules object.
+     */
+    public FirewallRules firewallRules() {
+        return this.firewallRules;
+    }
+
+    /**
+     * The TrustedIdProviders object to access its operations.
+     */
+    private TrustedIdProviders trustedIdProviders;
+
+    /**
+     * Gets the TrustedIdProviders object to access its operations.
+     * @return the TrustedIdProviders object.
+     */
+    public TrustedIdProviders trustedIdProviders() {
+        return this.trustedIdProviders;
+    }
+
+    /**
      * The Accounts object to access its operations.
      */
     private Accounts accounts;
@@ -180,10 +208,12 @@ public final class DataLakeStoreAccountManagementClientImpl extends AzureService
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-10-01-preview";
+        this.apiVersion = "2016-11-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.firewallRules = new FirewallRulesImpl(restClient().retrofit(), this);
+        this.trustedIdProviders = new TrustedIdProvidersImpl(restClient().retrofit(), this);
         this.accounts = new AccountsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
@@ -197,6 +227,6 @@ public final class DataLakeStoreAccountManagementClientImpl extends AzureService
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "DataLakeStoreAccountManagementClient, 2015-10-01-preview");
+                "DataLakeStoreAccountManagementClient, 2016-11-01");
     }
 }

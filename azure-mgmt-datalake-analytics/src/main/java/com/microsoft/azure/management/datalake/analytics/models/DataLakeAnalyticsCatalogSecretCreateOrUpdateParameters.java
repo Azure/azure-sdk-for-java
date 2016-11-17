@@ -11,7 +11,9 @@ package com.microsoft.azure.management.datalake.analytics.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * DataLakeAnalytics DataLakeAnalyticsAccount information.
+ * Data Lake Analytics catalog secret creation and update parameters. This is
+ * deprecated and will be removed in the next release. Please use
+ * DataLakeAnalyticsCatalogCredentialCreateOrUpdateParameters instead.
  */
 public class DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters {
     /**
