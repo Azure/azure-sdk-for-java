@@ -92,6 +92,15 @@ class ReplicationLinkImpl
     }
 
     @Override
+    public void delete() {
+        this.innerCollection.deleteReplicationLink(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.databaseName(),
+                this.name());
+    }
+
+    @Override
     public String name() {
         return this.resourceId.name();
     }
