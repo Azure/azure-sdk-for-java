@@ -744,6 +744,11 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules() {
+        return Collections.unmodifiableMap(this.requestRoutingRules());
+    }
+
+    @Override
     public Map<String, ApplicationGatewayFrontend> frontends() {
         return Collections.unmodifiableMap(this.frontends);
     }

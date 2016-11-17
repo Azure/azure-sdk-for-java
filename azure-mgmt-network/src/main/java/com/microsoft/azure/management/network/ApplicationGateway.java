@@ -62,6 +62,26 @@ public interface ApplicationGateway extends
     Map<String, Integer> frontendPorts();
 
     /**
+     * @return backend HTTP configurations of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations();
+
+    /**
+     * @return SSL certificates, indexed by name
+     */
+    Map<String, ApplicationGatewaySslCertificate> sslCertificates();
+
+    /**
+     * @return HTTP listeners, indexed by name
+     */
+    Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners();
+
+    /**
+     * @return request routing rules, indexed by name
+     */
+    Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
+
+    /**
      * Returns the name of the existing port, if any, that is associated with the specified port number.
      * @param portNumber a port number
      * @return the existing port name for that port number, or null if none found
@@ -81,21 +101,6 @@ public interface ApplicationGateway extends
      * @return the backend HTTP configuration, or null if none found
      */
     ApplicationGatewayBackendHttpConfiguration getBackendHttpConfigurationByPortNumber(int portNumber);
-
-    /**
-     * @return backend HTTP configurations of this application gateway, indexed by name
-     */
-    Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations();
-
-    /**
-     * @return SSL certificates, indexed by name
-     */
-    Map<String, ApplicationGatewaySslCertificate> sslCertificates();
-
-    /**
-     * @return HTTP listeners, indexed by name
-     */
-    Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners();
 
     /**
      * The entirety of the application gateway definition.

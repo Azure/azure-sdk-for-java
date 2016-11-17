@@ -25,6 +25,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGateways;
@@ -392,6 +393,11 @@ public class TestApplicationGateway {
 
             // Verify frontend ports
             Assert.assertTrue(appGateway.frontendPorts().size() == 3);
+
+            // Verify request routing rules
+            Assert.assertTrue(appGateway.requestRoutingRules().size() == 1);
+            Assert.assertTrue(appGateway.requestRoutingRules().containsKey("rule1"));
+            ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
 
             creationThread.join(30 * 1000);
 
