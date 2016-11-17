@@ -116,10 +116,10 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                // TODO fromFrontendListenerOnPort(80)
-                                .fromFrontendListener("default")
+                                .fromFrontendListenerOnPort(80)
                                 .toBackend("default")
                                 .withBackendHttpConfiguration("backhttp1")
+                                // TODO withBackendHttpConfigurationOnPort(8080)
                                 .attach()
                             .create();
                 }
@@ -317,8 +317,7 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                //TODO .fromFrontendListenerOnPort(int port)
-                                .fromFrontendListener("listener1")
+                                .fromFrontendListenerOnPort(443)
                                 .toBackend("default")
                                 //TODO withBackendHttpConfigurationOnPort(int port)
                                 .withBackendHttpConfiguration("httpConfig1")
@@ -393,7 +392,9 @@ public class TestApplicationGateway {
 
             // Verify frontend ports
             Assert.assertTrue(appGateway.frontendPorts().size() == 3);
+
             creationThread.join(30 * 1000);
+
             return appGateway;
         }
 

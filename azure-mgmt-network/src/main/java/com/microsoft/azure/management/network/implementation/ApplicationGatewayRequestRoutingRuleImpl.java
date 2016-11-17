@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -48,6 +49,16 @@ class ApplicationGatewayRequestRoutingRuleImpl
                 .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
         return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListenerOnPort(int portNumber) {
+        ApplicationGatewayFrontendHttpListener listener = this.parent().getFrontendListenerByPortNumber(portNumber);
+        if (listener == null) {
+            return null;
+        } else {
+            return this.fromFrontendListener(listener.name());
+        }
     }
 
     @Override

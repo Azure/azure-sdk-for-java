@@ -58,9 +58,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the request routing rule with an existing frontend listener on this application gateway
              * associated with the specified port number.
              * @param portNumber the port number used by an existing listener
-             * @return the next stage of the definition
+             * @return the next stage of the definition or null if the specified port number is not used by any listener
              */
-            //TODO WithBackend<ParentT> fromFrontendListenerOnPort(int portNumber);
+            WithBackend<ParentT> fromFrontendListenerOnPort(int portNumber);
         }
 
         /**
