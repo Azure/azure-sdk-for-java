@@ -20,7 +20,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayBackendHttpSettingsInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayBackendHttpConfiguration,
-        ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithHttpConfigOrRequestRoutingRule>,
+        ApplicationGatewayBackendHttpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithBackendHttpConfigOrRequestRoutingRule>,
         ApplicationGatewayBackendHttpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackendHttpConfiguration.Update {
 

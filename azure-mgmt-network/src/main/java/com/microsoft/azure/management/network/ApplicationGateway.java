@@ -69,11 +69,18 @@ public interface ApplicationGateway extends
     String frontendPortNameFromNumber(int portNumber);
 
     /**
-     * Finds a frontend listener associated with the specified port number, if any.
+     * Finds a frontend listener associated with the specified frontend port number, if any.
      * @param portNumber a used port number
-     * @return the frontend listener associated with the specified port number, or null if none
+     * @return a frontend listener, or null if none found
      */
-    ApplicationGatewayFrontendHttpListener getListenerByPortNumber(int portNumber);
+    ApplicationGatewayFrontendHttpListener getFrontendListenerByPortNumber(int portNumber);
+
+    /**
+     * Finds a backend HTTP configuration associated with the specified backend port number, if any.
+     * @param portNumber a used port number
+     * @return the backend HTTP configuration, or null if none found
+     */
+    ApplicationGatewayBackendHttpConfiguration getBackendHttpConfigurationByPortNumber(int portNumber);
 
     /**
      * @return backend HTTP configurations of this application gateway, indexed by name
@@ -104,8 +111,8 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPublicFrontend,
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrHttpConfig,
-        DefinitionStages.WithHttpConfig,
-        DefinitionStages.WithHttpConfigOrRequestRoutingRule,
+        DefinitionStages.WithBackendHttpConfig,
+        DefinitionStages.WithBackendHttpConfigOrRequestRoutingRule,
         DefinitionStages.WithHttpListener,
         DefinitionStages.WithHttpListenerOrBackend,
         DefinitionStages.WithRequestRoutingRule,
@@ -309,26 +316,42 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to continue adding more backends
          * or start defining backend HTTP configurations.
          */
-        interface WithBackendOrHttpConfig extends WithBackend, WithHttpConfig {
+        interface WithBackendOrHttpConfig extends WithBackend, WithBackendHttpConfig {
         }
 
         /**
          * The stage of an application gateway definition allowing to add a backend HTTP configuration.
          */
-        interface WithHttpConfig {
+        interface WithBackendHttpConfig {
             /**
              * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithHttpConfigOrRequestRoutingRule> defineBackendHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrRequestRoutingRule> defineBackendHttpConfiguration(String name);
+
+            /**
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on and an automatically generated name.
+             * @param portNumber the port number for the backend HTTP configuration
+             * @return the next stage of the definition
+             */
+            WithBackendHttpConfigOrRequestRoutingRule withBackendHttpConfigurationOnPort(int portNumber);
+
+            /**
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
+             * and the specified name that can be referenced from request routing rules.
+             * @param portNumber
+             * @param backendHttpConfigurationName
+             * @return the next stage of the definition
+             */
+            WithBackendHttpConfigOrRequestRoutingRule withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
         }
 
         /**
          * The stage of an application gateway definition allowing to continue adding more backend
          * HTTP configurations or start adding request routing rules.
          */
-        interface WithHttpConfigOrRequestRoutingRule extends WithHttpConfig, WithRequestRoutingRule {
+        interface WithBackendHttpConfigOrRequestRoutingRule extends WithBackendHttpConfig, WithRequestRoutingRule {
         }
 
         /**

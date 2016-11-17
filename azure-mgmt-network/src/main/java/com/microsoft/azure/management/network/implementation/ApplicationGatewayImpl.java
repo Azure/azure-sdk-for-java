@@ -54,7 +54,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayIpConfiguration> configs;
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
-    private Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs;
+    private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
     private Map<String, ApplicationGatewayFrontendHttpListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
@@ -123,12 +123,12 @@ class ApplicationGatewayImpl
     }
 
     private void initializeBackendHttpConfigsFromInner() {
-        this.httpConfigs = new TreeMap<>();
+        this.backendHttpConfigs = new TreeMap<>();
         List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
                 ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
-                this.httpConfigs.put(inner.name(), httpConfig);
+                this.backendHttpConfigs.put(inner.name(), httpConfig);
             }
         }
     }
@@ -187,7 +187,7 @@ class ApplicationGatewayImpl
         this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
 
         // Reset and update backend HTTP configs
-        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.httpConfigs.values()));
+        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.httpListeners.values()));
@@ -272,7 +272,7 @@ class ApplicationGatewayImpl
         if (httpConfig == null) {
             return null;
         } else {
-            this.httpConfigs.put(httpConfig.name(), httpConfig);
+            this.backendHttpConfigs.put(httpConfig.name(), httpConfig);
             return this;
         }
     }
@@ -392,6 +392,75 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayImpl withBackendHttpConfigurationOnPort(int portNumber) {
+        return withBackendHttpConfigurationOnPort(portNumber, null);
+    }
+
+    /**
+     * Determines whether the app gateway child that can be found using a name or a port number can be created,
+     * or it already exists, or there is a clash.
+     * @param byName object found by name
+     * @param byPort object found by port
+     * @param name the desired name of the object
+     * @return true if already found, false if ok to create, null if conflict
+     */
+    private <T> Boolean okToCreate(T byName, T byPort, String name) {
+        if (byName != null) {
+            // If an object with this name already exists...
+            if (byName == byPort) {
+                // ...and it has the same port number, then do nothing
+                return false;
+            } else {
+                // ...but if it has a different port number, then fail fast
+                return null;
+            }
+        } else if (byPort != null) {
+            // If an object with this port number already exists...
+            if (name == null) {
+                // ...and no name is provided, then do nothing
+                return false;
+            } else {
+                // ...but if a clashing name is provided, then fail fast
+                return null;
+            }
+        } else {
+            // Ok to create the object
+            return true;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayImpl withBackendHttpConfigurationOnPort(int portNumber, String name) {
+        // Try to find existing listener by name
+        ApplicationGatewayBackendHttpConfiguration backendHttpByName = null;
+        if (name != null) {
+            backendHttpByName = this.backendHttpConfigs.get(name);
+        }
+
+        // Try to find existing backend HTTP config by port number
+        ApplicationGatewayBackendHttpConfiguration backendHttpByPort = getBackendHttpConfigurationByPortNumber(portNumber);
+
+        Boolean okToCreate = okToCreate(backendHttpByName, backendHttpByPort, name);
+        if (okToCreate == null) {
+            // Name clash so fail fast
+            return null;
+        } else if (!okToCreate) {
+            // Already exists so skip
+            return this;
+        } else {
+            // No existing backend HTTP config with this name nor port exists, so create one
+            if (name == null) {
+                // Auto-name it
+                name = ResourceNamer.randomResourceName("backendHttp", 16);
+            }
+
+            return this.defineBackendHttpConfiguration(name)
+                    .withBackendPort(portNumber)
+                    .attach();
+        }
+    }
+
+    @Override
     public ApplicationGatewayImpl withFrontendHttpListenerOnPort(int portNumber) {
         return withFrontendHttpListenerOnPort(portNumber, null);
     }
@@ -405,26 +474,15 @@ class ApplicationGatewayImpl
         }
 
         // Try to find existing listener by port number
-        ApplicationGatewayFrontendHttpListener listenerByPort = getListenerByPortNumber(portNumber);
+        ApplicationGatewayFrontendHttpListener listenerByPort = getFrontendListenerByPortNumber(portNumber);
 
-        if (listenerByName != null) {
-            // If a listener with this name already exists...
-            if (listenerByPort == listenerByName) {
-                // ...and it has the same port number, then do nothing
-                return this;
-            } else {
-                // ...but if it has a different port number, then fail fast
-                return null;
-            }
-        } else if (listenerByPort != null) {
-            // If a listener with this port number already exists...
-            if (name == null) {
-                // ...and no name is provided, then do nothing
-                return this;
-            } else {
-                // ...but if a clashing name is provided, then fail fast
-                return null;
-            }
+        Boolean okToCreate = okToCreate(listenerByName, listenerByPort, name);
+        if (okToCreate == null) {
+            // Name clash so fail fast
+            return null;
+        } else if (!okToCreate) {
+            // Already exists so skip
+            return this;
         } else {
             // If no existing listener with this name nor port exists, create one
             if (name == null) {
@@ -454,7 +512,7 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
-        ApplicationGatewayBackendHttpConfiguration httpConfig = this.httpConfigs.get(name);
+        ApplicationGatewayBackendHttpConfiguration httpConfig = this.backendHttpConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
@@ -640,19 +698,19 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutBackendHttpConfiguration(String name) {
-        this.httpConfigs.remove(name);
+        this.backendHttpConfigs.remove(name);
         return this;
     }
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl updateBackendHttpConfiguration(String name) {
-        return (ApplicationGatewayBackendHttpConfigurationImpl) this.httpConfigs.get(name);
+        return (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfigs.get(name);
     }
 
     // Getters
 
     @Override
-    public ApplicationGatewayFrontendHttpListener getListenerByPortNumber(int portNumber) {
+    public ApplicationGatewayFrontendHttpListener getFrontendListenerByPortNumber(int portNumber) {
         ApplicationGatewayFrontendHttpListener listener = null;
         for (ApplicationGatewayFrontendHttpListener l : this.httpListeners.values()) {
             if (l.frontendPortNumber() == portNumber) {
@@ -664,8 +722,20 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayBackendHttpConfiguration getBackendHttpConfigurationByPortNumber(int portNumber) {
+        ApplicationGatewayBackendHttpConfiguration backendHttp = null;
+        for (ApplicationGatewayBackendHttpConfiguration b : this.backendHttpConfigs.values()) {
+            if (b.backendPort() == portNumber) {
+                backendHttp = b;
+                break;
+            }
+        }
+        return backendHttp;
+    }
+
+    @Override
     public Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations() {
-        return Collections.unmodifiableMap(this.httpConfigs);
+        return Collections.unmodifiableMap(this.backendHttpConfigs);
     }
 
     @Override

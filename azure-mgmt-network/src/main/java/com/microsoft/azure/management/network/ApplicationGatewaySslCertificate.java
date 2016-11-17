@@ -58,14 +58,14 @@ public interface ApplicationGatewaySslCertificate extends
              * @param pfxData the contents of the private key in the PFX format
              * @return the next stage of the definition
              */
-            WithPassword<ParentT> withPfxContent(byte[] pfxData);
+            WithPassword<ParentT> withPfxFromBytes(byte[] pfxData);
 
             /**
              * Specifies the PFX (PKCS#12) file to get the private key content from.
              * @param pfxFile a file in the PFX format
              * @return the next stage of the definition
              */
-            WithPassword<ParentT> withPfxFile(File pfxFile);
+            WithPassword<ParentT> withPfxFromFile(File pfxFile);
         }
 
         /**
@@ -78,7 +78,7 @@ public interface ApplicationGatewaySslCertificate extends
              * @param password a password
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withPassword(String password);
+            WithAttach<ParentT> withPfxPassword(String password);
         }
     }
 

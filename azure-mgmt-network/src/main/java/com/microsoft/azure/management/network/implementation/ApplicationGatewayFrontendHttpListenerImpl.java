@@ -148,14 +148,14 @@ class ApplicationGatewayFrontendHttpListenerImpl
     @Override
     public ApplicationGatewayFrontendHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
         this.sslCert = this.parent().defineSslCertificate(name)
-            .withPfxFile(pfxFile);
+            .withPfxFromFile(pfxFile);
         return this;
     }
 
     @Override
     public ApplicationGatewayFrontendHttpListenerImpl withSslCertificatePassword(String password) {
         if (this.sslCert != null) {
-            this.sslCert.withPassword(password).attach();
+            this.sslCert.withPfxPassword(password).attach();
             this.withSslCertificate(sslCert.name());
             this.sslCert = null;
             return this;
