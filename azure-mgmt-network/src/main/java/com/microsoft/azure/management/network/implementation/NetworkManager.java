@@ -13,6 +13,7 @@ import java.util.Map;
 
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
+import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterfaces;
@@ -39,6 +40,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private NetworkInterfaces networkInterfaces;
     private LoadBalancers loadBalancers;
     private RouteTables routeTables;
+    private ApplicationGateways applicationGateways;
     private NetworkUsages networkUsages;
 
     /**
@@ -166,6 +168,18 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
                     this);
         }
         return this.networkInterfaces;
+    }
+
+    /**
+     * @return entry point to appplication gateway management
+     */
+    public ApplicationGateways applicationGateways() {
+        if (this.applicationGateways == null) {
+            this.applicationGateways = new ApplicationGatewaysImpl(
+                    super.innerManagementClient,
+                    this);
+        }
+        return this.applicationGateways;
     }
 
     /**

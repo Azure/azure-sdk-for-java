@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
@@ -15,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+
+import java.util.List;
 
 /**
  *  Entry point to SQL Elastic Pool management API.
@@ -53,7 +54,7 @@ public interface SqlElasticPools extends
      * @param sqlServerName the name of SQLServer
      * @return the list of SQLElasticPools in a SQLServer
      */
-    PagedList<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName);
+    List<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
      * Gets the SQLElasticPool based on the SQLServer.
@@ -61,7 +62,7 @@ public interface SqlElasticPools extends
      * @param sqlServer the instance of SQLServer
      * @return the list of SQLElasticPools in a SQLServer
      */
-    PagedList<SqlElasticPool> listBySqlServer(GroupableResource sqlServer);
+    List<SqlElasticPool> listBySqlServer(GroupableResource sqlServer);
 
     /**
      * Entry point to SQL ElasticPool management API, which already have the SQLServer specified.

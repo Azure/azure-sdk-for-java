@@ -42,16 +42,25 @@ public abstract class ReadableWrappersImpl<
     }
 
     protected PagedList<T> wrapList(List<InnerT> list) {
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(list));
+    }
+
+    /**
+     * Converts the List to PagedList.
+     * @param list list to be converted in to paged list
+     * @param <InnerT> the wrapper inner type
+     * @return the Paged list for the inner type.
+     */
+    public static <InnerT> PagedList<InnerT> convertToPagedList(List<InnerT> list) {
         PageImpl<InnerT> page = new PageImpl<>();
         page.setItems(list);
         page.setNextPageLink(null);
-        PagedList<InnerT> pagedList = new PagedList<InnerT>(page) {
+        return new PagedList<InnerT>(page) {
             @Override
             public Page<InnerT> nextPage(String nextPageLink) {
                 return null;
             }
         };
-
-        return converter.convert(pagedList);
     }
+
 }

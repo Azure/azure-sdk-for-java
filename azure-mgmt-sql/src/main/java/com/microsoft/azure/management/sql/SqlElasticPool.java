@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ElasticPoolInner;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 /**
  * An immutable client-side representation of an Azure SQL ElasticPool.
  */
@@ -27,7 +29,7 @@ public interface SqlElasticPool extends
         Wrapper<ElasticPoolInner> {
 
     /**
-     * @return the SQL Server name to which this elastic pool belongs
+     * @return name of the SQL Server to which this elastic pool belongs
      */
     String sqlServerName();
 
@@ -51,7 +53,6 @@ public interface SqlElasticPool extends
      */
     int dtu();
 
-
     /**
      * @return the maximum DTU any one SQL Azure database can consume.
      */
@@ -66,6 +67,38 @@ public interface SqlElasticPool extends
      * @return the storage limit for the SQL Azure Database Elastic Pool in MB
      */
     int storageMB();
+
+    /**
+     * @return the information about elastic pool activities
+     */
+    List<ElasticPoolActivity> listActivities();
+
+    /**
+     * @return the information about elastic pool database activities
+     */
+    List<ElasticPoolDatabaseActivity> listDatabaseActivities();
+
+    /**
+     * @return the information about databases in elastic pool
+     */
+    List<SqlDatabase> listDatabases();
+
+    /**
+     * Gets the specific database in the elastic pool.
+     *
+     * @param databaseName name of the database to look into
+     * @return the information about specific database in elastic pool
+     */
+    SqlDatabase getDatabase(String databaseName);
+
+    /**
+     * Deletes the elastic pool from the server.
+     */
+    void delete();
+
+    /**************************************************************
+     * Fluent interfaces to provision a Sql Elastic pool
+     **************************************************************/
 
     /**
      * Container interface for all the definitions that need to be implemented.
@@ -94,7 +127,7 @@ public interface SqlElasticPool extends
              * Sets the edition for the SQL Elastic Pool.
              *
              * @param edition edition to be set for elastic pool.
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             SqlElasticPool.DefinitionStages.WithCreate withEdition(ElasticPoolEditions edition);
         }
@@ -107,7 +140,7 @@ public interface SqlElasticPool extends
              * Sets the minimum DTU all SQL Azure Databases are guaranteed.
              *
              * @param databaseDtuMin minimum DTU for all SQL Azure databases
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             SqlElasticPool.DefinitionStages.WithCreate withDatabaseDtuMin(int databaseDtuMin);
         }
@@ -120,7 +153,7 @@ public interface SqlElasticPool extends
              * Sets the maximum DTU any one SQL Azure Database can consume.
              *
              * @param databaseDtuMax maximum DTU any one SQL Azure Database can consume
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             SqlElasticPool.DefinitionStages.WithCreate withDatabaseDtuMax(int databaseDtuMax);
         }
@@ -133,7 +166,7 @@ public interface SqlElasticPool extends
              * Sets the total shared DTU for the SQL Azure Database Elastic Pool.
              *
              * @param dtu total shared DTU for the SQL Azure Database Elastic Pool
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             SqlElasticPool.DefinitionStages.WithCreate withDtu(int dtu);
         }
@@ -146,9 +179,38 @@ public interface SqlElasticPool extends
              * Sets the storage limit for the SQL Azure Database Elastic Pool in MB.
              *
              * @param storageMB storage limit for the SQL Azure Database Elastic Pool in MB
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             SqlElasticPool.DefinitionStages.WithCreate withStorageCapacity(int storageMB);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to add the Database in the elastic pool.
+         */
+        interface WithDatabase {
+            /**
+             * Creates a new database in the SQL elastic pool.
+             *
+             * @param databaseName name of the new database to be added in the elastic pool
+             * @return The next stage of the definition.
+             */
+            WithCreate withNewDatabase(String databaseName);
+
+            /**
+             * Adds an existing database in the SQL elastic pool.
+             *
+             * @param databaseName name of the existing database to be added in the elastic pool
+             * @return The next stage of the definition.
+             */
+            WithCreate withExistingDatabase(String databaseName);
+
+            /**
+             * Adds the database in the SQL elastic pool.
+             *
+             * @param database database instance to be added in SQL elastic pool
+             * @return The next stage of the definition.
+             */
+            WithCreate withExistingDatabase(SqlDatabase database);
         }
 
         /**
@@ -162,7 +224,8 @@ public interface SqlElasticPool extends
                 WithDatabaseDtuMin,
                 WithDatabaseDtuMax,
                 WithDtu,
-                WithStorageCapacity {
+                WithStorageCapacity,
+                WithDatabase {
         }
     }
 
@@ -174,6 +237,7 @@ public interface SqlElasticPool extends
             UpdateStages.WithDatabaseDtuMin,
             UpdateStages.WithDtu,
             UpdateStages.WithStorageCapacity,
+            UpdateStages.WithDatabase,
             Appliable<SqlElasticPool> {
     }
 
@@ -232,6 +296,35 @@ public interface SqlElasticPool extends
              * @return The next stage of definition.
              */
             Update withStorageCapacity(int storageMB);
+        }
+
+        /**
+         * The SQL Elastic Pool definition to add the Database in the elastic pool.
+         */
+        interface WithDatabase {
+            /**
+             * Creates a new database in the SQL elastic pool.
+             *
+             * @param databaseName name of the new database to be added in the elastic pool
+             * @return The next stage of the definition.
+             */
+            Update withNewDatabase(String databaseName);
+
+            /**
+             * Adds an existing database in the SQL elastic pool.
+             *
+             * @param databaseName name of the existing database to be added in the elastic pool
+             * @return The next stage of the definition.
+             */
+            Update withExistingDatabase(String databaseName);
+
+            /**
+             * Adds the database in the SQL elastic pool.
+             *
+             * @param database database instance to be added in SQL elastic pool
+             * @return The next stage of the definition.
+             */
+            Update withExistingDatabase(SqlDatabase database);
         }
     }
 }

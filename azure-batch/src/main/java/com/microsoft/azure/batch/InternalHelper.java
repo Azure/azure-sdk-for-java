@@ -9,7 +9,16 @@ package com.microsoft.azure.batch;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Internal helper functions
+ */
 class InternalHelper {
+    /**
+     * Inherit the BatchClientBehavior classes from parent object
+     *
+     * @param inheritingObject
+     * @param baseBehaviors
+     */
     public static void InheritClientBehaviorsAndSetPublicProperty(IInheritedBehaviors inheritingObject, Iterable<BatchClientBehavior> baseBehaviors) {
         // implement inheritance of behaviors
         List<BatchClientBehavior> customBehaviors = new ArrayList<BatchClientBehavior>();

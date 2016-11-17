@@ -65,7 +65,7 @@ public interface PublicIpAddress extends
     /**
      * @return the load balancer public frontend that this public IP address is assigned to
      */
-    PublicFrontend getAssignedLoadBalancerFrontend();
+    LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend();
 
     /**
      * @return true if this public IP address is assigned to a load balancer

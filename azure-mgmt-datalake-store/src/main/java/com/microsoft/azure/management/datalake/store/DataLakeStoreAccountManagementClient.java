@@ -103,6 +103,18 @@ public interface DataLakeStoreAccountManagementClient {
     DataLakeStoreAccountManagementClient withGenerateClientRequestId(boolean generateClientRequestId);
 
     /**
+     * Gets the FirewallRules object to access its operations.
+     * @return the FirewallRules object.
+     */
+    FirewallRules firewallRules();
+
+    /**
+     * Gets the TrustedIdProviders object to access its operations.
+     * @return the TrustedIdProviders object.
+     */
+    TrustedIdProviders trustedIdProviders();
+
+    /**
      * Gets the Accounts object to access its operations.
      * @return the Accounts object.
      */

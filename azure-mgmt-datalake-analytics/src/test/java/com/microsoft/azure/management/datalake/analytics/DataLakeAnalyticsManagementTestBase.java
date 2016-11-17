@@ -84,14 +84,20 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(restClient);
         dataLakeAnalyticsAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
         RestClient restClientWithTimeout = new RestClient.Builder(new OkHttpClient.Builder().readTimeout(5, TimeUnit.MINUTES), new Retrofit.Builder())
-                .withBaseUrl(armUri)
+                .withBaseUrl("https://{accountName}.{adlaJobDnsSuffix}")
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
         dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClientWithTimeout);
         dataLakeAnalyticsJobManagementClient.withAdlaJobDnsSuffix(adlaSuffix);
 
-        dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(restClient);
+        RestClient catalogRestClient = new RestClient.Builder()
+                .withBaseUrl("https://{accountName}.{adlaCatalogDnsSuffix}")
+                .withCredentials(credentials)
+                .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                .build();
+
+        dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(catalogRestClient);
         dataLakeAnalyticsCatalogManagementClient.withAdlaCatalogDnsSuffix(adlaSuffix);
 
         resourceManagementClient = new ResourceManagementClientImpl(armUri, credentials);
@@ -114,10 +120,10 @@ public abstract class DataLakeAnalyticsManagementTestBase {
         jobToSubmit.withType(JobType.USQL);
         jobToSubmit.withProperties(jobProperties);
 
-        JobInformation jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = jobClient.jobs().create(adlaAcct, jobId, jobToSubmit);
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+        JobInformation getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 2700; // giving it 45 minutes for now.
@@ -127,7 +133,7 @@ public abstract class DataLakeAnalyticsManagementTestBase {
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+            getJobResponse = jobClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
             Assert.assertNotNull(getJobResponse);
         }
 

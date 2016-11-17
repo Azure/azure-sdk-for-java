@@ -10,7 +10,7 @@ package com.microsoft.azure.management.datalake.store;
 
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
-import com.microsoft.azure.management.datalake.store.models.FirewallRule;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
@@ -24,169 +24,6 @@ import rx.Observable;
  * in Accounts.
  */
 public interface Accounts {
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     */
-    void deleteFirewallRule(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<Void> deleteFirewallRuleAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<Void> serviceCallback);
-
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deleteFirewallRuleAsync(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Deletes the specified firewall rule from the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to delete the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to delete.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<ServiceResponse<Void>> deleteFirewallRuleWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
-     * @return the FirewallRule object if successful.
-     */
-    FirewallRule getFirewallRule(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<FirewallRule> getFirewallRuleAsync(String resourceGroupName, String accountName, String firewallRuleName, final ServiceCallback<FirewallRule> serviceCallback);
-
-    /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
-     * @return the observable to the FirewallRule object
-     */
-    Observable<FirewallRule> getFirewallRuleAsync(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Gets the specified Data Lake Store firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rule.
-     * @param firewallRuleName The name of the firewall rule to retrieve.
-     * @return the observable to the FirewallRule object
-     */
-    Observable<ServiceResponse<FirewallRule>> getFirewallRuleWithServiceResponseAsync(String resourceGroupName, String accountName, String firewallRuleName);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
-     * @return the PagedList&lt;FirewallRule&gt; object if successful.
-     */
-    PagedList<FirewallRule> listFirewallRules(final String resourceGroupName, final String accountName);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<List<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName, final ListOperationCallback<FirewallRule> serviceCallback);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
-     * @return the observable to the PagedList&lt;FirewallRule&gt; object
-     */
-    Observable<Page<FirewallRule>> listFirewallRulesAsync(final String resourceGroupName, final String accountName);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account from which to get the firewall rules.
-     * @return the observable to the PagedList&lt;FirewallRule&gt; object
-     */
-    Observable<ServiceResponse<Page<FirewallRule>>> listFirewallRulesWithServiceResponseAsync(final String resourceGroupName, final String accountName);
-
-    /**
-     * Creates or updates the specified firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
-     * @param name The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create the create firewall rule.
-     * @return the FirewallRule object if successful.
-     */
-    FirewallRule createOrUpdateFirewallRule(String resourceGroupName, String accountName, String name, FirewallRule parameters);
-
-    /**
-     * Creates or updates the specified firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
-     * @param name The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create the create firewall rule.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<FirewallRule> createOrUpdateFirewallRuleAsync(String resourceGroupName, String accountName, String name, FirewallRule parameters, final ServiceCallback<FirewallRule> serviceCallback);
-
-    /**
-     * Creates or updates the specified firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
-     * @param name The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create the create firewall rule.
-     * @return the observable to the FirewallRule object
-     */
-    Observable<FirewallRule> createOrUpdateFirewallRuleAsync(String resourceGroupName, String accountName, String name, FirewallRule parameters);
-
-    /**
-     * Creates or updates the specified firewall rule.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account.
-     * @param accountName The name of the Data Lake Store account to which to add the firewall rule.
-     * @param name The name of the firewall rule to create or update.
-     * @param parameters Parameters supplied to create the create firewall rule.
-     * @return the observable to the FirewallRule object
-     */
-    Observable<ServiceResponse<FirewallRule>> createOrUpdateFirewallRuleWithServiceResponseAsync(String resourceGroupName, String accountName, String name, FirewallRule parameters);
-
     /**
      * Creates the specified Data Lake Store account.
      *
@@ -277,7 +114,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the DataLakeStoreAccount object if successful.
      */
-    DataLakeStoreAccount update(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    DataLakeStoreAccount update(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -288,7 +125,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -298,7 +135,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    Observable<DataLakeStoreAccount> updateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -308,7 +145,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<ServiceResponse<DataLakeStoreAccount>> updateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    Observable<ServiceResponse<DataLakeStoreAccount>> updateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -318,7 +155,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the DataLakeStoreAccount object if successful.
      */
-    DataLakeStoreAccount beginUpdate(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    DataLakeStoreAccount beginUpdate(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -329,7 +166,7 @@ public interface Accounts {
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters, final ServiceCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -339,7 +176,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    Observable<DataLakeStoreAccount> beginUpdateAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Updates the specified Data Lake Store account information.
@@ -349,7 +186,7 @@ public interface Accounts {
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @return the observable to the DataLakeStoreAccount object
      */
-    Observable<ServiceResponse<DataLakeStoreAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccount parameters);
+    Observable<ServiceResponse<DataLakeStoreAccount>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name, DataLakeStoreAccountUpdateParameters parameters);
 
     /**
      * Deletes the specified Data Lake Store account.
@@ -535,15 +372,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
-    PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -552,16 +386,13 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -570,15 +401,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
-    Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
@@ -587,15 +415,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
-    Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -631,15 +456,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
      */
-    PagedList<DataLakeStoreAccount> list(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    PagedList<DataLakeStoreAccount> list(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -647,16 +469,13 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
+    ServiceCall<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -664,15 +483,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
-    Observable<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    Observable<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
@@ -680,49 +496,12 @@ public interface Accounts {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories/$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The desired return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
      */
-    Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;FirewallRule&gt; object if successful.
-     */
-    PagedList<FirewallRule> listFirewallRulesNext(final String nextPageLink);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    ServiceCall<List<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink, final ServiceCall<List<FirewallRule>> serviceCall, final ListOperationCallback<FirewallRule> serviceCallback);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;FirewallRule&gt; object
-     */
-    Observable<Page<FirewallRule>> listFirewallRulesNextAsync(final String nextPageLink);
-
-    /**
-     * Lists the Data Lake Store firewall rules within the specified Data Lake Store account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;FirewallRule&gt; object
-     */
-    Observable<ServiceResponse<Page<FirewallRule>>> listFirewallRulesNextWithServiceResponseAsync(final String nextPageLink);
+    Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.

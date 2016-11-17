@@ -25,12 +25,13 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSetOSProfile;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSku;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetSkuTypes;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetStorageProfile;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.compute.WinRMConfiguration;
 import com.microsoft.azure.management.compute.WinRMListener;
 import com.microsoft.azure.management.compute.WindowsConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.InboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -68,6 +69,7 @@ public class VirtualMachineScaleSetImpl
         VirtualMachineScaleSet.Update {
     // Clients
     private final VirtualMachineScaleSetsInner client;
+    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
     // used to generate unique name for any dependency resources
@@ -107,11 +109,13 @@ public class VirtualMachineScaleSetImpl
     VirtualMachineScaleSetImpl(String name,
                         VirtualMachineScaleSetInner innerModel,
                         VirtualMachineScaleSetsInner client,
+                        VirtualMachineScaleSetVMsInner vmInstancesClient,
                         final ComputeManager computeManager,
                         final StorageManager storageManager,
                         final NetworkManager networkManager) {
         super(name, innerModel, computeManager);
         this.client = client;
+        this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
         this.namer = new ResourceNamer(this.name());
@@ -134,6 +138,11 @@ public class VirtualMachineScaleSetImpl
             }
         }
     }
+
+   @Override
+   public VirtualMachineScaleSetVMs virtualMachines() {
+        return new VirtualMachineScaleSetVMsImpl(this, this.vmInstancesClient, this.myManager);
+   }
 
    @Override
    public PagedList<VirtualMachineScaleSetSku> listAvailableSkus() throws CloudException, IOException {
@@ -233,7 +242,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
+    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternetFacingLoadBalancerInboundNatPools() throws IOException {
         if (this.getPrimaryInternetFacingLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternetFacingLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -259,7 +268,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Map<String, InboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
+    public Map<String, LoadBalancerInboundNatPool> listPrimaryInternalLoadBalancerInboundNatPools() throws IOException {
         if (this.getPrimaryInternalLoadBalancer() != null) {
             return getInboundNatPoolsAssociatedWithIpConfiguration(this.primaryInternalLoadBalancer,
                     primaryNicDefaultIPConfiguration());
@@ -322,7 +331,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
+    public VirtualMachineScaleSetImpl withExistingPrimaryInternetFacingLoadBalancer(LoadBalancer loadBalancer) {
         if (loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internet facing load balancer");
         }
@@ -367,7 +376,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
+    public VirtualMachineScaleSetImpl withExistingPrimaryInternalLoadBalancer(LoadBalancer loadBalancer) {
         if (!loadBalancer.publicIpAddressIds().isEmpty()) {
             throw new IllegalArgumentException("Parameter loadBalancer must be an internal load balancer");
         }
@@ -594,7 +603,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withAdminUserName(String adminUserName) {
+    public VirtualMachineScaleSetImpl withAdminUsername(String adminUserName) {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile()
@@ -603,12 +612,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withRootUserName(String rootUserName) {
-        return this.withAdminUserName(rootUserName);
+    public VirtualMachineScaleSetImpl withRootUsername(String adminUserName) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withAdminUsername(adminUserName);
+        return this;
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withPassword(String password) {
+    public VirtualMachineScaleSetImpl withAdminPassword(String password) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withRootPassword(String password) {
         this.inner()
                 .virtualMachineProfile()
                 .osProfile()
@@ -773,6 +795,15 @@ public class VirtualMachineScaleSetImpl
     @Override
     public VirtualMachineScaleSetImpl withExistingStorageAccount(StorageAccount storageAccount) {
         this.existingStorageAccountsToAssociate.add(storageAccount);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withCustomData(String base64EncodedCustomData) {
+        this.inner()
+                .virtualMachineProfile()
+                .osProfile()
+                .withCustomData(base64EncodedCustomData);
         return this;
     }
 
@@ -1248,12 +1279,12 @@ public class VirtualMachineScaleSetImpl
         return attachedBackends;
     }
 
-    private static Map<String, InboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
+    private static Map<String, LoadBalancerInboundNatPool> getInboundNatPoolsAssociatedWithIpConfiguration(LoadBalancer loadBalancer,
                                                                                                VirtualMachineScaleSetIPConfigurationInner ipConfig) {
         String loadBalancerId = loadBalancer.id();
-        Map<String, InboundNatPool> attachedInboundNatPools = new HashMap<>();
-        Map<String, InboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
-        for (InboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
+        Map<String, LoadBalancerInboundNatPool> attachedInboundNatPools = new HashMap<>();
+        Map<String, LoadBalancerInboundNatPool> lbInboundNatPools = loadBalancer.inboundNatPools();
+        for (LoadBalancerInboundNatPool lbInboundNatPool : lbInboundNatPools.values()) {
             String inboundNatPoolId =  mergePath(loadBalancerId, "inboundNatPools", lbInboundNatPool.name());
             for (SubResource subResource : ipConfig.loadBalancerInboundNatPools()) {
                 if (subResource.id().equalsIgnoreCase(inboundNatPoolId)) {
@@ -1278,10 +1309,10 @@ public class VirtualMachineScaleSetImpl
                 ipConfig,
                 backendNames);
 
-        Collection<InboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
+        Collection<LoadBalancerInboundNatPool> inboundNatPools = loadBalancer.inboundNatPools().values();
         String[] natPoolNames = new String[inboundNatPools.size()];
         i = 0;
-        for (InboundNatPool inboundNatPool : inboundNatPools) {
+        for (LoadBalancerInboundNatPool inboundNatPool : inboundNatPools) {
             natPoolNames[i] = inboundNatPool.name();
             i++;
         }

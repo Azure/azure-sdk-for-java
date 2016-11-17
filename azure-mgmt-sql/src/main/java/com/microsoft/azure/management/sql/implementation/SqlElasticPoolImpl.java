@@ -6,15 +6,26 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.sql.ElasticPoolActivity;
+import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.ElasticPoolState;
+import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implementation for SqlElasticPool and its parent interfaces.
@@ -30,12 +41,20 @@ class SqlElasticPoolImpl
             SqlElasticPool.Update,
         IndependentChild.DefinitionStages.WithParentResource<SqlElasticPool, SqlServer> {
     private final ElasticPoolsInner innerCollection;
+    private final DatabasesInner databasesInner;
+    private final DatabasesImpl databasesImpl;
+    private final Map<String, SqlDatabaseImpl> databaseCreatableMap;
 
     protected SqlElasticPoolImpl(String name,
                                  ElasticPoolInner innerObject,
-                                 ElasticPoolsInner innerCollection) {
+                                 ElasticPoolsInner innerCollection,
+                                 DatabasesInner databasesInner,
+                                 DatabasesImpl databasesImpl) {
         super(name, innerObject);
         this.innerCollection = innerCollection;
+        this.databasesInner = databasesInner;
+        this.databasesImpl = databasesImpl;
+        this.databaseCreatableMap = new HashMap<>();
     }
 
     @Override
@@ -79,6 +98,72 @@ class SqlElasticPoolImpl
     }
 
     @Override
+    public List<ElasticPoolActivity> listActivities() {
+        PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity> converter = new PagedListConverter<ElasticPoolActivityInner, ElasticPoolActivity>() {
+            @Override
+            public ElasticPoolActivity typeConvert(ElasticPoolActivityInner elasticPoolActivityInner) {
+
+                return new ElasticPoolActivityImpl(elasticPoolActivityInner);
+            }
+        };
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
+                this.innerCollection.listActivity(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public List<ElasticPoolDatabaseActivity> listDatabaseActivities() {
+        PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity> converter
+                = new PagedListConverter<ElasticPoolDatabaseActivityInner, ElasticPoolDatabaseActivity>() {
+            @Override
+            public ElasticPoolDatabaseActivity typeConvert(ElasticPoolDatabaseActivityInner elasticPoolDatabaseActivityInner) {
+
+                return new ElasticPoolDatabaseActivityImpl(elasticPoolDatabaseActivityInner);
+            }
+        };
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
+                this.innerCollection.listDatabaseActivity(
+                        this.name(),
+                        this.resourceGroupName(),
+                        this.sqlServerName())));
+    }
+
+    @Override
+    public List<SqlDatabase> listDatabases() {
+        final DatabasesInner databasesInner = this.databasesInner;
+        PagedListConverter<DatabaseInner, SqlDatabase> converter
+                = new PagedListConverter<DatabaseInner, SqlDatabase>() {
+            @Override
+            public SqlDatabase typeConvert(DatabaseInner databaseInner) {
+
+                return new SqlDatabaseImpl(databaseInner.name(), databaseInner, databasesInner);
+            }
+        };
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
+                this.innerCollection.listDatabases(
+                        this.resourceGroupName(),
+                        this.sqlServerName(),
+                        this.name())));
+    }
+
+    @Override
+    public SqlDatabase getDatabase(String databaseName) {
+        DatabaseInner database = this.innerCollection.getDatabase(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.name(),
+                databaseName);
+        return new SqlDatabaseImpl(database.name(), database, this.databasesInner);
+    }
+
+    @Override
+    public void delete() {
+        this.innerCollection.delete(this.resourceGroupName(), this.sqlServerName(), this.name());
+    }
+
+    @Override
     public SqlElasticPool refresh() {
         this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name());
         return this;
@@ -93,6 +178,7 @@ class SqlElasticPoolImpl
                     public SqlElasticPool call(ElasticPoolInner databaseInner) {
                         setInner(databaseInner);
 
+                        createOrUpdateDatabase();
                         return self;
                     }
                 });
@@ -126,5 +212,31 @@ class SqlElasticPoolImpl
     public SqlElasticPoolImpl withStorageCapacity(int storageMB) {
         this.inner().withStorageMB(storageMB);
         return this;
+    }
+
+    @Override
+    public SqlElasticPoolImpl withNewDatabase(String databaseName) {
+        this.databaseCreatableMap.put(databaseName,
+                (SqlDatabaseImpl) this.databasesImpl.define(databaseName).withExistingElasticPool(this.name()).withoutSourceDatabaseId());
+        return this;
+    }
+
+    @Override
+    public SqlElasticPoolImpl withExistingDatabase(String databaseName) {
+        this.databaseCreatableMap.put(databaseName, (SqlDatabaseImpl) this.databasesImpl.get(databaseName).update().withExistingElasticPool(this.name()));
+        return this;
+    }
+
+    @Override
+    public SqlElasticPoolImpl withExistingDatabase(SqlDatabase database) {
+        this.databaseCreatableMap.put(database.name(), (SqlDatabaseImpl) database.update().withExistingElasticPool(this.name()));
+        return this;
+    }
+
+    private void createOrUpdateDatabase() {
+        if (this.databaseCreatableMap.size() > 0) {
+            this.databasesImpl.databases().create(new ArrayList<Creatable<SqlDatabase>>(this.databaseCreatableMap.values()));
+            this.databaseCreatableMap.clear();
+        }
     }
 }

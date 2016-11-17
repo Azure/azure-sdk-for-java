@@ -87,25 +87,25 @@ var mappings = {
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
+        'source': 'arm-datalake-store/account/2016-11-01/swagger/account.json',
         'package': 'com.microsoft.azure.management.datalake.store',
         'fluent': false
     },
     'datalake.analytics.account': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/account/2015-10-01-preview/swagger/account.json',
+        'source': 'arm-datalake-analytics/account/2016-11-01/swagger/account.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/job/2016-03-20-preview/swagger/job.json',
+        'source': 'arm-datalake-analytics/job/2016-11-01/swagger/job.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.catalog': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/catalog/2015-10-01-preview/swagger/catalog.json',
+        'source': 'arm-datalake-analytics/catalog/2016-11-01/swagger/catalog.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },

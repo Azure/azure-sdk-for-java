@@ -9,123 +9,63 @@
 package com.microsoft.azure.management.datalake.store.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.SubResource;
 
 /**
  * Data Lake Store firewall rule information.
  */
-public class FirewallRule {
+@JsonFlatten
+public class FirewallRule extends SubResource {
     /**
-     * the firewall rule's name.
+     * the start IP address for the firewall rule.
      */
-    private String name;
+    @JsonProperty(value = "properties.startIpAddress", required = true)
+    private String startIpAddress;
 
     /**
-     * the namespace and type of the firewall Rule.
+     * the end IP address for the firewall rule.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
+    @JsonProperty(value = "properties.endIpAddress", required = true)
+    private String endIpAddress;
 
     /**
-     * the firewall rule's subscription ID.
-     */
-    private String id;
-
-    /**
-     * the firewall rule's regional location.
-     */
-    private String location;
-
-    /**
-     * the properties of the firewall rule.
-     */
-    private FirewallRuleProperties properties;
-
-    /**
-     * Get the name value.
+     * Get the startIpAddress value.
      *
-     * @return the name value
+     * @return the startIpAddress value
      */
-    public String name() {
-        return this.name;
+    public String startIpAddress() {
+        return this.startIpAddress;
     }
 
     /**
-     * Set the name value.
+     * Set the startIpAddress value.
      *
-     * @param name the name value to set
+     * @param startIpAddress the startIpAddress value to set
      * @return the FirewallRule object itself.
      */
-    public FirewallRule withName(String name) {
-        this.name = name;
+    public FirewallRule withStartIpAddress(String startIpAddress) {
+        this.startIpAddress = startIpAddress;
         return this;
     }
 
     /**
-     * Get the type value.
+     * Get the endIpAddress value.
      *
-     * @return the type value
+     * @return the endIpAddress value
      */
-    public String type() {
-        return this.type;
+    public String endIpAddress() {
+        return this.endIpAddress;
     }
 
     /**
-     * Get the id value.
+     * Set the endIpAddress value.
      *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id value.
-     *
-     * @param id the id value to set
+     * @param endIpAddress the endIpAddress value to set
      * @return the FirewallRule object itself.
      */
-    public FirewallRule withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the location value.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location value.
-     *
-     * @param location the location value to set
-     * @return the FirewallRule object itself.
-     */
-    public FirewallRule withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the properties value.
-     *
-     * @return the properties value
-     */
-    public FirewallRuleProperties properties() {
-        return this.properties;
-    }
-
-    /**
-     * Set the properties value.
-     *
-     * @param properties the properties value to set
-     * @return the FirewallRule object itself.
-     */
-    public FirewallRule withProperties(FirewallRuleProperties properties) {
-        this.properties = properties;
+    public FirewallRule withEndIpAddress(String endIpAddress) {
+        this.endIpAddress = endIpAddress;
         return this;
     }
 

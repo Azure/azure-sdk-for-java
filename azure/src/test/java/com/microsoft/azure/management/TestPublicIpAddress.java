@@ -10,7 +10,7 @@ import org.junit.Assert;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -72,7 +72,7 @@ public class TestPublicIpAddress extends TestTemplate<PublicIpAddress, PublicIpA
         // Show the associated load balancer if any
         info.append("\n\tLoad balancer association: ");
         if (resource.hasAssignedLoadBalancer()) {
-            final PublicFrontend frontend = resource.getAssignedLoadBalancerFrontend();
+            final LoadBalancerPublicFrontend frontend = resource.getAssignedLoadBalancerFrontend();
             final LoadBalancer lb = frontend.parent();
             info.append("\n\t\tLoad balancer ID: ").append(lb.id())
                 .append("\n\t\tFrontend name: ").append(frontend.name());

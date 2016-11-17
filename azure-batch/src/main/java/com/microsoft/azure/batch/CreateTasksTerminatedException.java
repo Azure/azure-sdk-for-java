@@ -13,16 +13,16 @@ import com.microsoft.azure.batch.protocol.models.TaskAddResult;
 import java.util.List;
 
 /**
- * CreateTasksTerminatedException.
+ * The exception that is thrown when the CreateTasks operation is terminated.
  */
 public class CreateTasksTerminatedException extends BatchErrorException {
 
     /**
      * Initializes a new instance of the CreateTasksTerminatedException class.
      *
-     * @param message the exception message
-     * @param failureTasks the list of failed tasks
-     * @param pendingList the list of pending tasks
+     * @param message The exception message
+     * @param failureTasks The list of failed tasks
+     * @param pendingList The list of pending tasks
      */
     public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
         super(message);
@@ -37,14 +37,14 @@ public class CreateTasksTerminatedException extends BatchErrorException {
     private List<TaskAddParameter> pendingTaskList;
 
     /**
-     * @return the list of failed tasks
+     * @return The list of failed tasks
      */
     public List<TaskAddResult> failureTasks() {
         return failureTasks;
     }
 
     /**
-     * @return the list of pending tasks
+     * @return The list of pending tasks
      */
     public List<TaskAddParameter> pendingTaskList() {
         return pendingTaskList;

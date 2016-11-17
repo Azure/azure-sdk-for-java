@@ -119,10 +119,14 @@ public abstract class TestTemplate<
         print(this.resource);
 
         // Verify update
-        this.resource = updateResource(this.resource);
-        Assert.assertTrue(this.resource != null);
-        System.out.println("\n------------\nUpdated resource:\n");
-        print(this.resource);
+        try {
+            this.resource = updateResource(this.resource);
+            Assert.assertTrue(this.resource != null);
+            System.out.println("\n------------\nUpdated resource:\n");
+            print(this.resource);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Verify deletion
         verifyDeleting();

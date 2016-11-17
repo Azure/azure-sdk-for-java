@@ -19,8 +19,11 @@ import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.dns.DnsZones;
+import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
+import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
@@ -66,6 +69,7 @@ public final class Azure {
     private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
+    private final DnsZoneManager dnsZoneManager;
     private final String subscriptionId;
 
     /**
@@ -270,6 +274,7 @@ public final class Azure {
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
         this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
         this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
+        this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -372,6 +377,13 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing application gateways
+     */
+    public ApplicationGateways applicationGateways() {
+        return networkManager.applicationGateways();
+    }
+
+    /**
      * @return entry point to managing network security groups
      */
     public NetworkSecurityGroups networkSecurityGroups() {
@@ -455,4 +467,10 @@ public final class Azure {
         return redisManager.redisCaches();
     }
 
+    /**
+     * @return entry point to managing Dns zones.
+     */
+    public DnsZones dnsZones() {
+        return dnsZoneManager.zones();
+    }
 }
