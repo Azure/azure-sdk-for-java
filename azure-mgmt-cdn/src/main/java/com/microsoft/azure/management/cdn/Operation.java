@@ -8,12 +8,19 @@
 
 package com.microsoft.azure.management.cdn;
 
-import com.microsoft.azure.management.cdn.implementation.CheckNameAvailabilityOutputInner;
 import com.microsoft.azure.management.cdn.implementation.OperationInner;
 
+/**
+ * Operation that CDN service supports.
+ */
 public class Operation {
     private OperationInner inner;
 
+    /**
+     * Construct Operation object from server response object.
+     *
+     * @param inner server response object containing supported operation description.
+     */
     public Operation(OperationInner inner) {
         this.inner = inner;
     }
@@ -33,7 +40,9 @@ public class Operation {
      * @return the provider value
      */
     public String provider() {
-        if (this.inner.display() == null) return null;
+        if (this.inner.display() == null) {
+            return null;
+        }
         return this.inner.display().provider();
     }
 
@@ -43,7 +52,9 @@ public class Operation {
      * @return the resource value
      */
     public String resource() {
-        if (this.inner.display() == null) return null;
+        if (this.inner.display() == null) {
+            return null;
+        }
         return this.inner.display().resource();
     }
 
@@ -53,7 +64,9 @@ public class Operation {
      * @return the operation value
      */
     public String type() {
-        if (this.inner.display() == null) return null;
+        if (this.inner.display() == null) {
+            return null;
+        }
         return this.inner.display().operation();
     }
 

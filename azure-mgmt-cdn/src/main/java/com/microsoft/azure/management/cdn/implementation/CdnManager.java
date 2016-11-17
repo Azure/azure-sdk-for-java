@@ -7,6 +7,9 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 
+/**
+ * Entry point to Azure CDN management.
+ */
 public final class CdnManager extends Manager<CdnManager, CdnManagementClientImpl> {
     // Collections
     private CdnProfiles profiles;

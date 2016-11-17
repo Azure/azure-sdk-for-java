@@ -11,17 +11,18 @@ import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
-import com.microsoft.azure.management.cdn.ProfileUpdateParameters;
 import com.microsoft.azure.management.cdn.Sku;
 import com.microsoft.azure.management.cdn.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Implementation for {@link CdnProfile}.
+ */
 @LangDefinition
 class CdnProfileImpl
         extends GroupableResourceImpl<
@@ -67,7 +68,7 @@ class CdnProfileImpl
         SsoUriInner ssoUri = this.innerCollection.generateSsoUri(
                 this.resourceGroupName(),
                 this.name());
-        if(ssoUri != null) {
+        if (ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
         return null;
@@ -110,9 +111,9 @@ class CdnProfileImpl
 
     @Override
     public boolean isPremiumVerizon() {
-        if( this.sku() != null &&
-                this.sku().name() != null &&
-                this.sku().name().equals(SkuName.PREMIUM_VERIZON)) {
+        if (this.sku() != null
+                && this.sku().name() != null
+                && this.sku().name().equals(SkuName.PREMIUM_VERIZON)) {
             return true;
         }
         return false;

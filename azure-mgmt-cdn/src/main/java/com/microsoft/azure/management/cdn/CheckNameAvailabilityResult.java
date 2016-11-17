@@ -8,15 +8,19 @@
 
 package com.microsoft.azure.management.cdn;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.azure.management.cdn.implementation.CheckNameAvailabilityOutputInner;
 
 /**
- * Input of the custom domain to be validated.
+ * Result of the custom domain validation.
  */
 public class CheckNameAvailabilityResult {
     private CheckNameAvailabilityOutputInner inner;
 
+    /**
+     * Construct CheckNameAvailabilityResult object from server response object.
+     *
+     * @param inner server response for CheckNameAvailability request.
+     */
     public CheckNameAvailabilityResult(CheckNameAvailabilityOutputInner inner) {
         this.inner = inner;
     }

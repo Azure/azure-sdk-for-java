@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents an endpoint collection associated with a CDN manager profile.
+ */
 class CdnEndpointsImpl extends
         ExternalChildResourcesCachedImpl<CdnEndpointImpl,
                         CdnEndpoint,
@@ -28,12 +31,6 @@ class CdnEndpointsImpl extends
     private final OriginsInner originsClient;
     private final CustomDomainsInner customDomainsClient;
 
-    /**
-     * Creates new EndpointsImpl.
-     *
-     * @param client the client to perform REST calls on endpoints
-     * @param parent the parent traffic manager profile of the endpoints
-     */
     CdnEndpointsImpl(EndpointsInner client,
                      OriginsInner originsClient,
                      CustomDomainsInner customDomainsClient,
@@ -77,14 +74,17 @@ class CdnEndpointsImpl extends
     @Override
     protected List<CdnEndpointImpl> listChildResources() {
         List<CdnEndpointImpl> childResources = new ArrayList<>();
-        /*if (parent().inner().endpoints() != null) {
-            for (EndpointInner inner : parent().inner().endpoints()) {
-                childResources.add(new CdnEndpointImpl(inner.name(),
+
+        for (EndpointInner innerEndpoint : this.client.listByProfile(
+                                        this.parent().resourceGroupName(),
+                                        this.parent().name())) {
+            childResources.add(new CdnEndpointImpl(innerEndpoint.name(),
                     this.parent(),
-                    inner,
-                    this.client));
-            }
-        }*/
+                    innerEndpoint,
+                    this.client,
+                    this.originsClient,
+                    this.customDomainsClient));
+        }
         return childResources;
     }
 
@@ -116,13 +116,8 @@ class CdnEndpointsImpl extends
     public CdnEndpointImpl defineNewEndpoint(String name) {
         CdnEndpointImpl endpoint = this.prepareDefine(name);
         endpoint.inner().withLocation(endpoint.parent().region().toString());
-        endpoint.inner().withOrigins( new ArrayList<DeepCreatedOrigin>());
+        endpoint.inner().withOrigins(new ArrayList<DeepCreatedOrigin>());
         return endpoint;
-    }
-
-    public CdnEndpointImpl defineNewEndpoint() {
-        String endpointName = this.generateUniqueEndpointName("Endpoint");
-        return this.defineNewEndpoint(endpointName);
     }
 
     public CdnEndpointImpl defineNewEndpointWithOriginHostname(String endpointOriginHostname) {
@@ -145,7 +140,7 @@ class CdnEndpointsImpl extends
 
             result = this.parent().checkEndpointNameAvailability(endpointName);
 
-        } while(!result.nameAvailable());
+        } while (!result.nameAvailable());
 
         return endpointName;
     }

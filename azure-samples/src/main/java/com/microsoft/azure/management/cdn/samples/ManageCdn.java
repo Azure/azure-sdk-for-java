@@ -12,13 +12,11 @@ import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 
 /**
  * Created by hovsepm on 10/26/2016.
  */
-public class ManageCdn {
+public final class ManageCdn {
 
     /**
      * Main entry point.
@@ -39,7 +37,7 @@ public class ManageCdn {
             Azure azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
-                    .withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    //.withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -59,7 +57,7 @@ public class ManageCdn {
                         .withStandardAkamaiSku()
                         .withNewEndpoint("supername.cloudapp.net")
                         .defineNewEndpoint("akamiEndpointWithoutMuchProperties")
-                            .withOrigin("originSuperName","storageforazdevextest.blob.core.windows.net")
+                            .withOrigin("originSuperName", "storageforazdevextest.blob.core.windows.net")
                             .attach()
                         .defineNewEndpoint(cdnEndpointName, "mylinuxapp.azurewebsites.net")
                             .withContentTypeToCompress("powershell/pain")
@@ -108,7 +106,7 @@ public class ManageCdn {
                     }
                 }
 
-                if(standardProfile.isPremiumVerizon() == false) {
+                if (!standardProfile.isPremiumVerizon()) {
                     standardProfile.update()
                             .withTag("provider", "Akamai")
                             .withNewEndpoint("www.vazgen.com")

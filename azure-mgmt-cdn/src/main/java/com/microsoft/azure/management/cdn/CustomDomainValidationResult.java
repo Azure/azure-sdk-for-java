@@ -10,11 +10,16 @@ package com.microsoft.azure.management.cdn;
 import com.microsoft.azure.management.cdn.implementation.ValidateCustomDomainOutputInner;
 
 /**
- * The {@link com.microsoft.azure.management.cdn.CdnProfile#endpointValidateCustomDomain(String, String)}   action result.
+ * The {@link com.microsoft.azure.management.cdn.CdnProfile#endpointValidateCustomDomain(String, String)} action result.
  */
 public class CustomDomainValidationResult {
     private ValidateCustomDomainOutputInner inner;
 
+    /**
+     * Construct CustomDomainValidationResult object from server response object.
+     *
+     * @param inner server response for CustomDomainValidation request.
+     */
     public CustomDomainValidationResult(ValidateCustomDomainOutputInner inner) {
         this.inner = inner;
     }

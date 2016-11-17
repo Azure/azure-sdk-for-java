@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.cdn.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
 import com.microsoft.azure.management.cdn.CdnProfiles;
 import com.microsoft.azure.management.cdn.CheckNameAvailabilityResult;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -89,7 +87,7 @@ class CdnProfilesImpl
     @Override
     public String generateSsoUri(String resourceGroupName, String profileName) {
         SsoUriInner ssoUri = this.cdnManagementClient.profiles().generateSsoUri(resourceGroupName, profileName);
-        if(ssoUri != null) {
+        if (ssoUri != null) {
             return ssoUri.ssoUriValue();
         }
         return null;
@@ -132,6 +130,6 @@ class CdnProfilesImpl
 
     @Override
     public Observable<Void> deleteByGroupAsync(String groupName, String name) {
-        return null;
+        return this.innerCollection.deleteAsync(groupName, name);
     }
 }
