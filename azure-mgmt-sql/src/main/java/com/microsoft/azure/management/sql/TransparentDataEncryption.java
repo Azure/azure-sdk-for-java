@@ -49,8 +49,8 @@ public interface TransparentDataEncryption extends
     TransparentDataEncryption updateStatus(TransparentDataEncryptionStates transparentDataEncryptionState);
 
     /**
-     * @return an Azure SQL Database Transparent Data Encryption Activity
+     * @return an Azure SQL Database Transparent Data Encryption Activities
      */
-    List<TransparentDataEncryptionActivity> listActivity();
+    List<TransparentDataEncryptionActivity> listActivities();
 }
 
