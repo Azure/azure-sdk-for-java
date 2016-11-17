@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -90,7 +89,7 @@ public interface RecommendedElasticPool extends
      * Fetches list of databases by making call to Azure.
      * @return list of the databases in recommended elastic pool
      */
-    PagedList<SqlDatabase> listDatabases();
+    List<SqlDatabase> listDatabases();
 
     /**
      * Get a specific database in the recommended database.
@@ -100,11 +99,10 @@ public interface RecommendedElasticPool extends
      */
     SqlDatabase getDatabase(String databaseName);
 
-
     /**
      * Fetches list of metrics information by making call to Azure.
      * @return list of the databases in recommended elastic pool
      */
-    PagedList<RecommendedElasticPoolMetric> listMetrics();
+    List<RecommendedElasticPoolMetric> listMetrics();
 
 }
