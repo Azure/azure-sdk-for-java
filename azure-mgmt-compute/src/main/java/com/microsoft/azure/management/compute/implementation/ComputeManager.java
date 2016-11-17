@@ -128,7 +128,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
             virtualMachineImages = new VirtualMachineImagesImpl(new VirtualMachinePublishersImpl(super.innerManagementClient.virtualMachineImages(),
-                    super.innerManagementClient.virtualMachineExtensionImages()));
+                    super.innerManagementClient.virtualMachineExtensionImages()),
+                    super.innerManagementClient.virtualMachineImages());
         }
         return virtualMachineImages;
     }
@@ -150,6 +151,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
             virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(super.innerManagementClient.virtualMachineScaleSets(),
+                    this.innerManagementClient.virtualMachineScaleSetVMs(),
                     this,
                     storageManager,
                     networkManager);

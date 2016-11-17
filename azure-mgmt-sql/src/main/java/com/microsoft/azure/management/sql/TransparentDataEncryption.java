@@ -13,6 +13,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourc
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.TransparentDataEncryptionInner;
 
+import java.util.List;
+
 
 /**
  * An immutable client-side representation of an Azure SQL database's TransparentDataEncryption.
@@ -37,5 +39,18 @@ public interface TransparentDataEncryption extends
      * @return the status of the Azure SQL Database Transparent Data Encryption
      */
     TransparentDataEncryptionStates status();
+
+    /**
+     * Updates the state of the transparent data encryption status.
+     *
+     * @param transparentDataEncryptionState state of the data encryption to set
+     * @return the new encryption settings after modifyState
+     */
+    TransparentDataEncryption updateState(TransparentDataEncryptionStates transparentDataEncryptionState);
+
+    /**
+     * @return an Azure SQL Database Transparent Data Encryption Activity
+     */
+    List<TransparentDataEncryptionActivity> listActivity();
 }
 

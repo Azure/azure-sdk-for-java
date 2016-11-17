@@ -8,143 +8,285 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
-import java.util.Map;
+import java.util.List;
+import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
  * A Data Lake Analytics account object, containing all information associated
  * with the named Data Lake Analytics account.
  */
-public class DataLakeAnalyticsAccount {
+@JsonFlatten
+public class DataLakeAnalyticsAccount extends Resource {
     /**
-     * the account regional location.
+     * the provisioning status of the Data Lake Analytics account. Possible
+     * values include: 'Failed', 'Creating', 'Running', 'Succeeded',
+     * 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'.
      */
-    private String location;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private DataLakeAnalyticsAccountStatus provisioningState;
 
     /**
-     * the account name.
+     * the state of the Data Lake Analytics account. Possible values include:
+     * 'Active', 'Suspended'.
      */
-    private String name;
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private DataLakeAnalyticsAccountState state;
 
     /**
-     * the namespace and type of the account.
+     * the default data lake storage account associated with this Data Lake
+     * Analytics account.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
+    @JsonProperty(value = "properties.defaultDataLakeStoreAccount", required = true)
+    private String defaultDataLakeStoreAccount;
 
     /**
-     * the account subscription ID.
+     * the maximum supported degree of parallelism for this account.
      */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
+    @JsonProperty(value = "properties.maxDegreeOfParallelism")
+    private Integer maxDegreeOfParallelism;
 
     /**
-     * the value of custom properties.
+     * the number of days that job metadata is retained.
      */
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties.queryStoreRetention")
+    private Integer queryStoreRetention;
 
     /**
-     * the properties defined by Data Lake Analytics all properties are
-     * specific to each resource provider.
+     * the maximum supported jobs running under the account at the same time.
      */
-    private DataLakeAnalyticsAccountProperties properties;
+    @JsonProperty(value = "properties.maxJobCount")
+    private Integer maxJobCount;
 
     /**
-     * Get the location value.
+     * the system defined maximum supported degree of parallelism for this
+     * account, which restricts the maximum value of parallelism the user can
+     * set for the account..
+     */
+    @JsonProperty(value = "properties.systemMaxDegreeOfParallelism", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer systemMaxDegreeOfParallelism;
+
+    /**
+     * the system defined maximum supported jobs running under the account at
+     * the same time, which restricts the maximum number of running jobs the
+     * user can set for the account.
+     */
+    @JsonProperty(value = "properties.systemMaxJobCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer systemMaxJobCount;
+
+    /**
+     * the list of Data Lake storage accounts associated with this account.
+     */
+    @JsonProperty(value = "properties.dataLakeStoreAccounts", required = true)
+    private List<DataLakeStoreAccountInfo> dataLakeStoreAccounts;
+
+    /**
+     * the list of Azure Blob storage accounts associated with this account.
+     */
+    @JsonProperty(value = "properties.storageAccounts")
+    private List<StorageAccountInfo> storageAccounts;
+
+    /**
+     * the account creation time.
+     */
+    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime creationTime;
+
+    /**
+     * the account last modified time.
+     */
+    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastModifiedTime;
+
+    /**
+     * the full CName endpoint for this account.
+     */
+    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String endpoint;
+
+    /**
+     * Get the provisioningState value.
      *
-     * @return the location value
+     * @return the provisioningState value
      */
-    public String location() {
-        return this.location;
+    public DataLakeAnalyticsAccountStatus provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Set the location value.
+     * Get the state value.
      *
-     * @param location the location value to set
+     * @return the state value
+     */
+    public DataLakeAnalyticsAccountState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the defaultDataLakeStoreAccount value.
+     *
+     * @return the defaultDataLakeStoreAccount value
+     */
+    public String defaultDataLakeStoreAccount() {
+        return this.defaultDataLakeStoreAccount;
+    }
+
+    /**
+     * Set the defaultDataLakeStoreAccount value.
+     *
+     * @param defaultDataLakeStoreAccount the defaultDataLakeStoreAccount value to set
      * @return the DataLakeAnalyticsAccount object itself.
      */
-    public DataLakeAnalyticsAccount withLocation(String location) {
-        this.location = location;
+    public DataLakeAnalyticsAccount withDefaultDataLakeStoreAccount(String defaultDataLakeStoreAccount) {
+        this.defaultDataLakeStoreAccount = defaultDataLakeStoreAccount;
         return this;
     }
 
     /**
-     * Get the name value.
+     * Get the maxDegreeOfParallelism value.
      *
-     * @return the name value
+     * @return the maxDegreeOfParallelism value
      */
-    public String name() {
-        return this.name;
+    public Integer maxDegreeOfParallelism() {
+        return this.maxDegreeOfParallelism;
     }
 
     /**
-     * Set the name value.
+     * Set the maxDegreeOfParallelism value.
      *
-     * @param name the name value to set
+     * @param maxDegreeOfParallelism the maxDegreeOfParallelism value to set
      * @return the DataLakeAnalyticsAccount object itself.
      */
-    public DataLakeAnalyticsAccount withName(String name) {
-        this.name = name;
+    public DataLakeAnalyticsAccount withMaxDegreeOfParallelism(Integer maxDegreeOfParallelism) {
+        this.maxDegreeOfParallelism = maxDegreeOfParallelism;
         return this;
     }
 
     /**
-     * Get the type value.
+     * Get the queryStoreRetention value.
      *
-     * @return the type value
+     * @return the queryStoreRetention value
      */
-    public String type() {
-        return this.type;
+    public Integer queryStoreRetention() {
+        return this.queryStoreRetention;
     }
 
     /**
-     * Get the id value.
+     * Set the queryStoreRetention value.
      *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the tags value.
-     *
-     * @return the tags value
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags value.
-     *
-     * @param tags the tags value to set
+     * @param queryStoreRetention the queryStoreRetention value to set
      * @return the DataLakeAnalyticsAccount object itself.
      */
-    public DataLakeAnalyticsAccount withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public DataLakeAnalyticsAccount withQueryStoreRetention(Integer queryStoreRetention) {
+        this.queryStoreRetention = queryStoreRetention;
         return this;
     }
 
     /**
-     * Get the properties value.
+     * Get the maxJobCount value.
      *
-     * @return the properties value
+     * @return the maxJobCount value
      */
-    public DataLakeAnalyticsAccountProperties properties() {
-        return this.properties;
+    public Integer maxJobCount() {
+        return this.maxJobCount;
     }
 
     /**
-     * Set the properties value.
+     * Set the maxJobCount value.
      *
-     * @param properties the properties value to set
+     * @param maxJobCount the maxJobCount value to set
      * @return the DataLakeAnalyticsAccount object itself.
      */
-    public DataLakeAnalyticsAccount withProperties(DataLakeAnalyticsAccountProperties properties) {
-        this.properties = properties;
+    public DataLakeAnalyticsAccount withMaxJobCount(Integer maxJobCount) {
+        this.maxJobCount = maxJobCount;
         return this;
+    }
+
+    /**
+     * Get the systemMaxDegreeOfParallelism value.
+     *
+     * @return the systemMaxDegreeOfParallelism value
+     */
+    public Integer systemMaxDegreeOfParallelism() {
+        return this.systemMaxDegreeOfParallelism;
+    }
+
+    /**
+     * Get the systemMaxJobCount value.
+     *
+     * @return the systemMaxJobCount value
+     */
+    public Integer systemMaxJobCount() {
+        return this.systemMaxJobCount;
+    }
+
+    /**
+     * Get the dataLakeStoreAccounts value.
+     *
+     * @return the dataLakeStoreAccounts value
+     */
+    public List<DataLakeStoreAccountInfo> dataLakeStoreAccounts() {
+        return this.dataLakeStoreAccounts;
+    }
+
+    /**
+     * Set the dataLakeStoreAccounts value.
+     *
+     * @param dataLakeStoreAccounts the dataLakeStoreAccounts value to set
+     * @return the DataLakeAnalyticsAccount object itself.
+     */
+    public DataLakeAnalyticsAccount withDataLakeStoreAccounts(List<DataLakeStoreAccountInfo> dataLakeStoreAccounts) {
+        this.dataLakeStoreAccounts = dataLakeStoreAccounts;
+        return this;
+    }
+
+    /**
+     * Get the storageAccounts value.
+     *
+     * @return the storageAccounts value
+     */
+    public List<StorageAccountInfo> storageAccounts() {
+        return this.storageAccounts;
+    }
+
+    /**
+     * Set the storageAccounts value.
+     *
+     * @param storageAccounts the storageAccounts value to set
+     * @return the DataLakeAnalyticsAccount object itself.
+     */
+    public DataLakeAnalyticsAccount withStorageAccounts(List<StorageAccountInfo> storageAccounts) {
+        this.storageAccounts = storageAccounts;
+        return this;
+    }
+
+    /**
+     * Get the creationTime value.
+     *
+     * @return the creationTime value
+     */
+    public DateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the lastModifiedTime value.
+     *
+     * @return the lastModifiedTime value
+     */
+    public DateTime lastModifiedTime() {
+        return this.lastModifiedTime;
+    }
+
+    /**
+     * Get the endpoint value.
+     *
+     * @return the endpoint value
+     */
+    public String endpoint() {
+        return this.endpoint;
     }
 
 }

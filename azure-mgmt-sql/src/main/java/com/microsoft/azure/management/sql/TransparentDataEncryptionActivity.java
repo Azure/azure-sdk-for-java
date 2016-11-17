@@ -42,6 +42,6 @@ public interface TransparentDataEncryptionActivity extends
      * @return the percent complete of the transparent data encryption scan for a
      * Azure SQL Database.
      */
-    Double percentComplete();
+    double percentComplete();
 }
 

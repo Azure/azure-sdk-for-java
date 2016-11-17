@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasResourc
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServiceTierAdvisorInner;
-import com.microsoft.azure.management.sql.implementation.SloUsageMetricInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -21,7 +20,7 @@ import java.util.UUID;
 
 
 /**
- * An immutable client-side representation of an Azure SQL Replication link.
+ * An immutable client-side representation of an Azure SQL Service tier advisor.
  */
 @Fluent
 public interface ServiceTierAdvisor extends
@@ -77,10 +76,10 @@ public interface ServiceTierAdvisor extends
     double maxSizeInGB();
 
     /**
-     * @return or sets serviceLevelObjectiveUsageMetrics for the service tier
+     * @return serviceLevelObjectiveUsageMetrics for the service tier
      * advisor.
      */
-    List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics();
+    List<SloUsageMetric> serviceLevelObjectiveUsageMetrics();
 
     /**
      * @return or sets currentServiceLevelObjective for service tier advisor.
