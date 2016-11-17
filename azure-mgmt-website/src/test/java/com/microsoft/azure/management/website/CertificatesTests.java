@@ -33,7 +33,7 @@ public class CertificatesTests extends AppServiceTestBase {
         AppServiceCertificate certificate = appServiceManager.certificates().define("bananacert")
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withKeyVaultSecretCertificateStore(vault, "bananagraphwebapp319com")
+                .withKeyVaultSecretCertificateStore(vault.id(), "bananagraphwebapp319com")
                 .create();
 
         // CREATE

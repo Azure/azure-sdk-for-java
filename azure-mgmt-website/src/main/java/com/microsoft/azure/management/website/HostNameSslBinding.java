@@ -92,7 +92,13 @@ public interface HostNameSslBinding extends
              * @return the next stage of the hostname SSL binding definition
              */
             WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
-//            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
+
+            /**
+             * Use a ready-to-use certificate order. This is usually useful for reusing wildcard certificates.
+             * @param certificateOrder the ready-to-use certificate order
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithSslType<ParentT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
 
         /**
@@ -202,7 +208,13 @@ public interface HostNameSslBinding extends
              * @return the next stage of the hostname SSL binding definition
              */
             WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
-//            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
+
+            /**
+             * Use a ready-to-use certificate order. This is usually useful for reusing wildcard certificates.
+             * @param certificateOrder the ready-to-use certificate order
+             * @return the next stage of the hostname SSL binding definition
+             */
+            WithSslType<ParentT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
 
         /**

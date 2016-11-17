@@ -31,6 +31,7 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -87,7 +88,6 @@ class HostNameSslBindingImpl<
 
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(final File pfxFile, final String password) {
-        final HostNameSslBindingImpl<FluentT, FluentImplT> self = this;
         newCertificate = manager.certificates().define(name() + "cert")
                 .withRegion(parent().region())
                 .withExistingResourceGroup(parent().resourceGroupName())
@@ -120,6 +120,17 @@ class HostNameSslBindingImpl<
                                 });
                     }
                 });
+        return this;
+    }
+
+    @Override
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder) {
+        AppServiceCertificateKeyVaultBinding binding = new ArrayList<>(certificateOrder.keyVaultBindings().values()).get(0);
+        newCertificate = manager.certificates().define(name() + "cert")
+                .withRegion(parent().region())
+                .withExistingResourceGroup(parent().resourceGroupName())
+                .withKeyVaultSecretCertificateStore(binding.keyVaultId(), binding.keyVaultSecretName())
+                .createAsync();
         return this;
     }
 
@@ -168,7 +179,7 @@ class HostNameSslBindingImpl<
                 return manager.certificates().define(order.name())
                         .withRegion(parent().regionName())
                         .withExistingResourceGroup(parent().resourceGroupName())
-                        .withKeyVaultSecretCertificateStore(vault, order.name())
+                        .withKeyVaultSecretCertificateStore(vault.id(), order.name())
                         .createAsync();
             }
         });

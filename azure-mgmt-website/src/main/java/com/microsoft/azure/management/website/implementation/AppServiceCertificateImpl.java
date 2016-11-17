@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.io.BaseEncoding;
-import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServiceCertificate;
@@ -141,8 +140,8 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public AppServiceCertificateImpl withKeyVaultSecretCertificateStore(Vault vault, String secretName) {
-        inner().withKeyVaultId(vault.id()).withKeyVaultSecretName(secretName);
+    public AppServiceCertificateImpl withKeyVaultSecretCertificateStore(String vaultId, String secretName) {
+        inner().withKeyVaultId(vaultId).withKeyVaultSecretName(secretName);
         return this;
     }
 

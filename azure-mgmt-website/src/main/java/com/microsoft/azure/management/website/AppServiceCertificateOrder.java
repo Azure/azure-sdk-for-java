@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.website.implementation.AppServiceCertificateInner;
 import com.microsoft.azure.management.website.implementation.AppServiceCertificateOrderInner;
 import org.joda.time.DateTime;
 import rx.Observable;
@@ -32,7 +31,7 @@ public interface AppServiceCertificateOrder extends
     /**
      * @return the state of the Key Vault secret
      */
-    Map<String, AppServiceCertificateInner> certificates();
+    Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings();
 
     /**
      * @return certificate's distinguished name

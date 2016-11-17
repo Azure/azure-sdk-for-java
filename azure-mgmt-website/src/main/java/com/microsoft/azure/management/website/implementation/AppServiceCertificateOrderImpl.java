@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -36,22 +37,34 @@ class AppServiceCertificateOrderImpl
         AppServiceCertificateOrder.Update {
 
     final AppServiceCertificateOrdersInner client;
+    Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings;
 
     AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
         this.withRegion("global");
+        keyVaultBindings = new HashMap<>();
+        if (inner().certificates() != null) {
+            for (Map.Entry<String, AppServiceCertificateInner> binding: inner().certificates().entrySet()) {
+                keyVaultBindings.put(binding.getKey(), new AppServiceCertificateKeyVaultBindingImpl(binding.getValue(), this));
+            }
+        }
     }
 
     @Override
     public AppServiceCertificateOrder refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
+        if (inner().certificates() != null) {
+            for (Map.Entry<String, AppServiceCertificateInner> binding: inner().certificates().entrySet()) {
+                keyVaultBindings.put(binding.getKey(), new AppServiceCertificateKeyVaultBindingImpl(binding.getValue(), this));
+            }
+        }
         return this;
     }
 
     @Override
-    public Map<String, AppServiceCertificateInner> certificates() {
-        return inner().certificates();
+    public Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings() {
+        return keyVaultBindings;
     }
 
     @Override

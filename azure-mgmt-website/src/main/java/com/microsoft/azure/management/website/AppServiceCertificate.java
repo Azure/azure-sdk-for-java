@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.website;
 
-import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -142,7 +141,7 @@ public interface AppServiceCertificate extends
              */
             WithPfxFilePassword withPfxFile(File file);
 
-            WithCreate withKeyVaultSecretCertificateStore(Vault vault, String secretName);
+            WithCreate withKeyVaultSecretCertificateStore(String vaultId, String secretName);
         }
         /**
          * An app service certificate definition allowing PFX certificate password to be set.
