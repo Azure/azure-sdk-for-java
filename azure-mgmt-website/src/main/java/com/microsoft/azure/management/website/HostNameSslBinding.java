@@ -59,7 +59,16 @@ public interface HostNameSslBinding extends
         interface Blank<ParentT> extends WithHostname<ParentT> {
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing hostname to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithHostname<ParentT> {
+            /**
+             * Specifies the hostname to bind SSL certificate to.
+             * @param hostname the naked hostname, excluding "www". But use *. prefix for wild card typed certificate order.
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithCertificate<ParentT> forHostname(String hostname);
         }
 
@@ -86,8 +95,23 @@ public interface HostNameSslBinding extends
 //            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing key vault for certificate store to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithKeyVault<ParentT> {
+            /**
+             * Store the certificate in an existing vault.
+             * @param vault the existing vault to use
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithSslType<ParentT> withExistingKeyVault(Vault vault);
+
+            /**
+             * Create a new key vault and store the certificate in it.
+             * @param vaultName the name of the key vault to create
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithSslType<ParentT> withNewKeyVault(String vaultName);
         }
 
@@ -145,7 +169,16 @@ public interface HostNameSslBinding extends
         interface Blank<ParentT> extends WithHostname<ParentT> {
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing hostname to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithHostname<ParentT> {
+            /**
+             * Specifies the hostname to bind SSL certificate to.
+             * @param hostname the naked hostname, excluding "www". But use *. prefix for wild card typed certificate order.
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithCertificate<ParentT> forHostname(String hostname);
         }
 
@@ -172,8 +205,23 @@ public interface HostNameSslBinding extends
 //            WithSslType<ParentT> withExistingAppServiceCertificate(AppServiceCertificate appServiceCertificate);
         }
 
+        /**
+         * The stage of hostname SSL binding definition allowing key vault for certificate store to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithKeyVault<ParentT> {
+            /**
+             * Store the certificate in an existing vault.
+             * @param vault the existing vault to use
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithSslType<ParentT> withExistingKeyVault(Vault vault);
+
+            /**
+             * Create a new key vault and store the certificate in it.
+             * @param vaultName the name of the key vault to create
+             * @return the next stage of the hostname SSL binding definition
+             */
             WithSslType<ParentT> withNewKeyVault(String vaultName);
         }
 

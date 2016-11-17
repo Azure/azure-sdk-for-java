@@ -12,8 +12,6 @@ import com.microsoft.azure.management.website.DeploymentSlot;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.WebApp;
 import rx.Observable;
-import rx.functions.Func1;
-import rx.functions.FuncN;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,65 +46,6 @@ class DeploymentSlotImpl
         inner.withSiteConfig(client.getConfigurationSlot(resourceGroupName(), parent.name(), name()));
         setInner(inner);
         return this;
-    }
-
-    @Override
-    public Observable<DeploymentSlot> createResourceAsync() {
-        if (hostNameSslStateMap.size() > 0) {
-            inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
-        }
-        // Construct web app observable
-        inner().siteConfig().withLocation(inner().location());
-        final SiteConfigInner localConfig = inner().siteConfig();
-        return client.createOrUpdateSlotAsync(resourceGroupName(), parent.name(), name(), inner())
-                // Submit hostname bindings
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(final SiteInner site) {
-                        List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
-                        for (HostNameBindingImpl<DeploymentSlot, DeploymentSlotImpl> binding: hostNameBindingsToCreate.values()) {
-                            bindingObservables.add(binding.createAsync());
-                        }
-                        hostNameBindingsToCreate.clear();
-                        if (bindingObservables.isEmpty()) {
-                            return Observable.just(site);
-                        } else {
-                            return Observable.zip(bindingObservables, new FuncN<SiteInner>() {
-                                @Override
-                                public SiteInner call(Object... args) {
-                                    return site;
-                                }
-                            });
-                        }
-                    }
-                })
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(SiteInner site) {
-                        return client.getSlotAsync(resourceGroupName(), parent.name(), name());
-                    }
-                })
-                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-                    @Override
-                    public Observable<SiteInner> call(final SiteInner siteInner) {
-                        siteInner.withSiteConfig(localConfig);
-                        return client.createOrUpdateConfigurationSlotAsync(resourceGroupName(), parent.name(), name(), localConfig)
-                                .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
-                                    @Override
-                                    public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                        siteInner.withSiteConfig(siteConfigInner);
-                                        return Observable.just(siteInner);
-                                    }
-                                });
-                    }
-                })
-                .map(new Func1<SiteInner, DeploymentSlot>() {
-                    @Override
-                    public DeploymentSlot call(SiteInner siteInner) {
-                        setInner(siteInner);
-                        return normalizeProperties();
-                    }
-                });
     }
 
     @Override
@@ -167,5 +106,20 @@ class DeploymentSlotImpl
     @Override
     public WebAppImpl parent() {
         return parent;
+    }
+
+    @Override
+    Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site) {
+        return client.createOrUpdateSlotAsync(resourceGroupName, parent.name(), name, site);
+    }
+
+    @Override
+    Observable<SiteInner> getInner(String resourceGroupName, String name) {
+        return client.getSlotAsync(resourceGroupName, parent.name(), name);
+    }
+
+    @Override
+    Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+        return client.createOrUpdateConfigurationSlotAsync(resourceGroupName, parent.name(), name, siteConfig);
     }
 }

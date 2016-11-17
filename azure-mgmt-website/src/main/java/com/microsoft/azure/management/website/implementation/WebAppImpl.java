@@ -11,6 +11,7 @@ import com.google.common.collect.Maps;
 import com.microsoft.azure.management.website.DeploymentSlots;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.WebApp;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,21 @@ class WebAppImpl
 
     WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, configObject, client, manager);
+    }
+
+    @Override
+    Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site) {
+        return client.createOrUpdateAsync(resourceGroupName, name, site);
+    }
+
+    @Override
+    Observable<SiteInner> getInner(String resourceGroupName, String name) {
+        return client.getAsync(resourceGroupName, name);
+    }
+
+    @Override
+    Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
+        return client.createOrUpdateConfigurationAsync(resourceGroupName, name, siteConfig);
     }
 
     @Override

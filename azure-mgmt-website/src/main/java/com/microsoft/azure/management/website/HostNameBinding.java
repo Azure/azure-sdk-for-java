@@ -97,7 +97,16 @@ public interface HostNameBinding
             WithSubDomain<ParentT> withThirdPartyDomain(String domain);
         }
 
+        /**
+         * The stage of hostname binding definition allowing sub-domain to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithSubDomain<ParentT> {
+            /**
+             * Specifies the sub-domain to bind to.
+             * @param subDomain the sub-domain name excluding the top level domain, e.g., "@", "www"
+             * @return the next stage of the host name binding definition
+             */
             WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 
@@ -169,7 +178,16 @@ public interface HostNameBinding
             WithSubDomain<ParentT> withThirdPartyDomain(String domain);
         }
 
+        /**
+         * The stage of hostname binding definition allowing sub-domain to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithSubDomain<ParentT> {
+            /**
+             * Specifies the sub-domain to bind to.
+             * @param subDomain the sub-domain name excluding the top level domain, e.g., "@", "www"
+             * @return the next stage of the host name binding definition
+             */
             WithHostNameDnsRecordType<ParentT> withSubDomain(String subDomain);
         }
 

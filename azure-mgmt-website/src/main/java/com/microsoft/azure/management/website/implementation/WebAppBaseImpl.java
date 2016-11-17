@@ -306,6 +306,11 @@ abstract class WebAppBaseImpl<
         return inner().siteConfig().autoSwapSlotName();
     }
 
+    abstract Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site);
+
+    abstract Observable<SiteInner> getInner(String resourceGroupName, String name);
+
+    abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig);
 
     @Override
     public Observable<FluentT> createResourceAsync() {
@@ -314,7 +319,7 @@ abstract class WebAppBaseImpl<
         }
         // Construct web app observable
         inner().siteConfig().withLocation(inner().location());
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+        return createOrUpdateInner(resourceGroupName(), name(), inner())
                 // Submit hostname bindings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
@@ -340,7 +345,7 @@ abstract class WebAppBaseImpl<
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
-                        return client.getAsync(resourceGroupName(), site.name());
+                        return getInner(resourceGroupName(), site.name());
                     }
                 })
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
@@ -367,7 +372,7 @@ abstract class WebAppBaseImpl<
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
-                        return client.createOrUpdateAsync(resourceGroupName(), site.name(), site);
+                        return createOrUpdateInner(resourceGroupName(), site.name(), site);
                     }
                 })
                 // submit config
@@ -375,7 +380,7 @@ abstract class WebAppBaseImpl<
                     @Override
                     public Observable<SiteInner> call(final SiteInner siteInner) {
                         inner().siteConfig().withLocation(inner().location());
-                        return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), inner().siteConfig())
+                        return createOrUpdateSiteConfig(resourceGroupName(), name(), inner().siteConfig())
                                 .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
                                     @Override
                                     public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
