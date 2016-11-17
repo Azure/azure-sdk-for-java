@@ -137,11 +137,32 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the PFX certificate file to upload.
              * @param file the PFX certificate file
-             * @return the next stage of app service certificate definition
+             * @return the next stage of the app service certificate definition
              */
             WithPfxFilePassword withPfxFile(File file);
 
-            WithCreate withKeyVaultSecretCertificateStore(String vaultId, String secretName);
+            /**
+             * Specifies the PFX byte array to upload.
+             * @param pfxByteArray the PFX byte array
+             * @return the next stage of the app service certificate definition
+             */
+            WithPfxFilePassword withPfxByteArray(byte[] pfxByteArray);
+
+            /**
+             * Specifies the PFX file from a URL.
+             * @param url the URL pointing to the PFX file.
+             * @return the next stage of the app service certificate definition
+             */
+            WithPfxFilePassword withPfxFileFromUrl(String url);
+
+            /**
+             * Specifies the PFX certificate - key vault binding generated from
+             * an app service certificate order purchase.
+             * @param vaultId the id of the vault
+             * @param secretName the name of the key vault secret
+             * @return the next stage of the app service certificate definition
+             */
+            WithCreate withCertificateOrderKeyVaultBinding(String vaultId, String secretName);
         }
         /**
          * An app service certificate definition allowing PFX certificate password to be set.
@@ -150,9 +171,9 @@ public interface AppServiceCertificate extends
             /**
              * Specifies the password to the PFX certificate
              * @param password the PFX certificate password
-             * @return the next stage of app service certificate definition
+             * @return the next stage of the app service certificate definition
              */
-            WithCreate withPfxFilePassword(String password);
+            WithCreate withPfxPassword(String password);
         }
 
         /**

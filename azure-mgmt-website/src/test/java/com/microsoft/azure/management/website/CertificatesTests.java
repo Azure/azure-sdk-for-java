@@ -13,6 +13,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.io.File;
+
 public class CertificatesTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
     private static final String CERTIFICATE_NAME = "javagoodcert319";
@@ -28,24 +30,22 @@ public class CertificatesTests extends AppServiceTestBase {
     }
 
     @Test
-    public void canCRDCertificateOrder() throws Exception {
+    public void canCRDCertificate() throws Exception {
         Vault vault = keyVaultManager.vaults().getByGroup(RG_NAME, "bananagraphwebapp319com");
         AppServiceCertificate certificate = appServiceManager.certificates().define("bananacert")
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withKeyVaultSecretCertificateStore(vault.id(), "bananagraphwebapp319com")
+                .withCertificateOrderKeyVaultBinding(vault.id(), "bananagraphwebapp319com")
                 .create();
+        Assert.assertNotNull(certificate);
 
         // CREATE
-//        AppServiceCertificate certificate = appServiceManager.certificates().define(CERTIFICATE_NAME)
-//                .withRegion(Region.US_EAST)
-//                .withExistingResourceGroup(RG_NAME)
-//                .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
-//              //.withPfxBytes(byte[])
-//              //.withPfxUrl(String url)
-//              //.withPfxFromKeyVault(Vault vault, String secretName)
-//                .withPfxFilePassword("StrongPass!123") // withPfxPassword(String), withPfxPasswordFromKeyVault(Vault vault, String secretName)
-//                .create();
+        certificate = appServiceManager.certificates().define(CERTIFICATE_NAME)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(RG_NAME)
+                .withPfxFile(new File("/Users/jianghlu/Documents/code/certs/myserver.pfx"))
+                .withPfxPassword("StrongPass!123")
+                .create();
         Assert.assertNotNull(certificate);
     }
 }

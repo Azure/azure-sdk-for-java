@@ -92,7 +92,7 @@ class HostNameSslBindingImpl<
                 .withRegion(parent().region())
                 .withExistingResourceGroup(parent().resourceGroupName())
                 .withPfxFile(pfxFile)
-                .withPfxFilePassword(password)
+                .withPfxPassword(password)
                 .createAsync();
         return this;
     }
@@ -129,7 +129,7 @@ class HostNameSslBindingImpl<
         newCertificate = manager.certificates().define(name() + "cert")
                 .withRegion(parent().region())
                 .withExistingResourceGroup(parent().resourceGroupName())
-                .withKeyVaultSecretCertificateStore(binding.keyVaultId(), binding.keyVaultSecretName())
+                .withCertificateOrderKeyVaultBinding(binding.keyVaultId(), binding.keyVaultSecretName())
                 .createAsync();
         return this;
     }
@@ -179,7 +179,7 @@ class HostNameSslBindingImpl<
                 return manager.certificates().define(order.name())
                         .withRegion(parent().regionName())
                         .withExistingResourceGroup(parent().resourceGroupName())
-                        .withKeyVaultSecretCertificateStore(vault.id(), order.name())
+                        .withCertificateOrderKeyVaultBinding(vault.id(), order.name())
                         .createAsync();
             }
         });

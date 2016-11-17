@@ -8,11 +8,13 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.website.AppServicePlan;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceCertificate;
+import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,6 +36,7 @@ class AppServiceCertificateImpl
         AppServiceCertificate.Definition {
 
     private final CertificatesInner client;
+    private String pfxFileUrl;
 
     AppServiceCertificateImpl(String name, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -123,30 +126,56 @@ class AppServiceCertificateImpl
 
     @Override
     public Observable<AppServiceCertificate> createResourceAsync() {
-        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+        Observable<String> pfxString = Observable.just(pfxBlob());
+        if (pfxFileUrl != null) {
+            pfxString = Utils.downloadFile(pfxFileUrl, myManager.restClient().retrofit())
+                    .map(new Func1<byte[], String>() {
+                        @Override
+                        public String call(byte[] bytes) {
+                            return BaseEncoding.base64().encode(bytes);
+                        }
+                    });
+        }
+        return pfxString.flatMap(new Func1<String, Observable<CertificateInner>>() {
+            @Override
+            public Observable<CertificateInner> call(String s) {
+                inner().withPfxBlob(s);
+                return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
+            }
+        }).map(innerToFluentMap(this));
     }
 
     @Override
     public AppServiceCertificateImpl withPfxFile(File file) {
         try {
             byte[] fileContent = Files.readAllBytes(file.toPath());
-            String base64String = BaseEncoding.base64().encode(fileContent);
-            inner().withPfxBlob(base64String);
+            return withPfxByteArray(fileContent);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public AppServiceCertificateImpl withPfxByteArray(byte[] pfxByteArray) {
+        String base64String = BaseEncoding.base64().encode(pfxByteArray);
+        inner().withPfxBlob(base64String);
         return this;
     }
 
     @Override
-    public AppServiceCertificateImpl withKeyVaultSecretCertificateStore(String vaultId, String secretName) {
+    public AppServiceCertificateImpl withPfxFileFromUrl(String url) {
+        this.pfxFileUrl = url;
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateImpl withCertificateOrderKeyVaultBinding(String vaultId, String secretName) {
         inner().withKeyVaultId(vaultId).withKeyVaultSecretName(secretName);
         return this;
     }
 
     @Override
-    public AppServiceCertificate.DefinitionStages.WithCreate withPfxFilePassword(String password) {
+    public AppServiceCertificate.DefinitionStages.WithCreate withPfxPassword(String password) {
         inner().withPassword(password);
         return this;
     }
