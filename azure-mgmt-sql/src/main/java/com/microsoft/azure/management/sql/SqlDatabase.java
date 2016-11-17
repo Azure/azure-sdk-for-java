@@ -17,6 +17,7 @@ import com.microsoft.azure.management.sql.implementation.DatabaseInner;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -29,7 +30,6 @@ public interface SqlDatabase extends
         Refreshable<SqlDatabase>,
         Updatable<SqlDatabase.Update>,
         Wrapper<DatabaseInner> {
-
     /**
      * @return name of the SQL Server to which this database belongs
      */
@@ -114,21 +114,15 @@ public interface SqlDatabase extends
      */
     UpgradeHint getUpgradeHint();
 
+    /**
+     * @return true if this Database is SqlWarehouse
+     */
+    boolean isDataWarehouse();
 
     /**
-     * @return the handler to replication links
+     * @return SqlWarehouse instance for more operations
      */
-    ReplicationLinks replicationLinks();
-
-    /**
-     * Pause an Azure SQL Data Warehouse database.
-     */
-    void pauseDataWarehouse();
-
-    /**
-     * Resume an Azure SQL Data Warehouse database.
-     */
-    void resumeDataWarehouse();
+    SqlWarehouse castToWarehouse();
 
     /**
      * @return returns the list of all restore points on the database
@@ -143,43 +137,24 @@ public interface SqlDatabase extends
     /**
      * Gets an Azure SQL Database Transparent Data Encryption for the database.
      *
-     * @return an Azure SQL Database Transparent Data Encryption for the database.
+     * @return an Azure SQL Database Transparent Data Encryption for the database
      */
     TransparentDataEncryption getTransparentDataEncryption();
 
     /**
-     * @return the list of all service tier advisor in the database
+     * @return information about service tier advisors for specified database
      */
-    // TODO - ans - Tried converting this to map, but that does not give good experience.
-    List<ServiceTierAdvisor> listServiceTierAdvisors();
+    Map<String, ServiceTierAdvisor> listServiceTierAdvisors();
 
     /**
-     * Entry point to access replication links from SQL Database.
+     * @return all the replication links associated with the database
      */
-    interface ReplicationLinks {
-        /**
-         * Gets a particular replication link.
-         *
-         * @param linkId name of the replication to get
-         * @return Returns the replication link with in the SQL Database
-         */
-        ReplicationLink get(String linkId);
+    Map<String, ReplicationLink> listReplicationLinks();
 
-        /**
-         * Returns all the replication links for the database.
-         *
-         * @return list of replication links for the database
-         */
-        List<ReplicationLink> list();
-
-        /**
-         * Delete specified replication link in the database.
-         *
-         * @param linkId name of the replication link to delete
-         */
-        void delete(String linkId);
-    }
-
+    /**
+     * Deletes the existing SQL database.
+     */
+    void delete();
 
     /**************************************************************
      * Fluent interfaces to provision a Sql Database
@@ -217,7 +192,7 @@ public interface SqlDatabase extends
             /**
              * Specifies database to be created without elastic pool.
              *
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithExistingDatabase withoutElasticPool();
 
@@ -225,7 +200,7 @@ public interface SqlDatabase extends
              * Sets the existing elastic pool for the SQLDatabase.
              *
              * @param elasticPoolName for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithExistingDatabase withExistingElasticPool(String elasticPoolName);
 
@@ -233,7 +208,7 @@ public interface SqlDatabase extends
              * Sets the existing elastic pool for the SQLDatabase.
              *
              * @param sqlElasticPool for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithExistingDatabase withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
@@ -241,7 +216,7 @@ public interface SqlDatabase extends
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
              *
              * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithExistingDatabase withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
         }
@@ -253,7 +228,7 @@ public interface SqlDatabase extends
             /**
              * Sets the creation flow to ask relevant question when source database is not specified.
              *
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithCreate withoutSourceDatabaseId();
         }
@@ -268,9 +243,19 @@ public interface SqlDatabase extends
              * active. Values specified for these parameters will be ignored.
              *
              * @param sourceDatabaseId id of the source database
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
-            WithCreateMode withSourceDatabaseId(String sourceDatabaseId);
+            WithCreateMode withSourceDatabase(String sourceDatabaseId);
+
+            /**
+             * Sets the resource if of source database for the SQL Database.
+             * Collation, Edition, and MaxSizeBytes must remain the same while the link is
+             * active. Values specified for these parameters will be ignored.
+             *
+             * @param sourceDatabase instance of the source database
+             * @return The next stage of the definition.
+             */
+            WithCreateMode withSourceDatabase(SqlDatabase sourceDatabase);
         }
 
         /**
@@ -281,9 +266,9 @@ public interface SqlDatabase extends
              * Sets the create mode for the SQL Database.
              *
              * @param createMode create mode for the database, should not be default in this flow
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
-            WithCreateWithLessOptions withCreateMode(CreateMode createMode);
+            WithCreateWithLessOptions withMode(CreateMode createMode);
         }
 
         /**
@@ -294,7 +279,7 @@ public interface SqlDatabase extends
              * Sets the collation for the SQL Database.
              *
              * @param collation collation to be set for database
-             * @return The next stage of definition
+             * @return The next stage of the definition
              */
             WithCreate withCollation(String collation);
         }
@@ -307,7 +292,7 @@ public interface SqlDatabase extends
              * Sets the edition for the SQL Database.
              *
              * @param edition edition to be set for database
-             * @return The next stage of definition
+             * @return The next stage of the definition
              */
             WithCreate withEdition(DatabaseEditions edition);
         }
@@ -323,7 +308,7 @@ public interface SqlDatabase extends
              * the following sizes are supported (in addition to limitations being
              * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
              * GB | 30 GB … 150 GB | 200 GB … 500 GB }
-             * @return The next stage of definition.
+             * @return The next stage of the definition.
              */
             WithCreate withMaxSizeBytes(long maxSizeBytes);
         }
@@ -388,7 +373,7 @@ public interface SqlDatabase extends
              * Sets the edition for the SQL Database.
              *
              * @param edition edition to be set for database
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withEdition(DatabaseEditions edition);
         }
@@ -403,7 +388,7 @@ public interface SqlDatabase extends
              * the following sizes are supported (in addition to limitations being
              * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
              * GB | 30 GB … 150 GB | 200 GB … 500 GB }
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withMaxSizeBytes(long maxSizeBytes);
         }
@@ -416,7 +401,7 @@ public interface SqlDatabase extends
              * Sets the service level objective for the SQL Database.
              *
              * @param serviceLevelObjective service level objected for the SQL Database
-             * @return The next stage of the definition.
+             * @return The next stage of the update.
              */
             Update withServiceObjective(ServiceObjectiveName serviceLevelObjective);
         }
@@ -428,7 +413,7 @@ public interface SqlDatabase extends
             /**
              * Removes database from it's elastic pool.
              *
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             WithEdition withoutElasticPool();
 
@@ -436,7 +421,7 @@ public interface SqlDatabase extends
              * Sets the existing elastic pool for the SQLDatabase.
              *
              * @param elasticPoolName for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withExistingElasticPool(String elasticPoolName);
 
@@ -444,7 +429,7 @@ public interface SqlDatabase extends
              * Sets the existing elastic pool for the SQLDatabase.
              *
              * @param sqlElasticPool for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withExistingElasticPool(SqlElasticPool sqlElasticPool);
 
@@ -452,7 +437,7 @@ public interface SqlDatabase extends
              * Sets the new elastic pool for the SQLDatabase, this will create a new elastic pool while creating database.
              *
              * @param sqlElasticPool creatable definition for new elastic pool to be created for the SQL Database
-             * @return The next stage of definition.
+             * @return The next stage of the update.
              */
             Update withNewElasticPool(Creatable<SqlElasticPool> sqlElasticPool);
         }

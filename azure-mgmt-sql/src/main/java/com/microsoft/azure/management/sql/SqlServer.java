@@ -8,14 +8,17 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -26,6 +29,7 @@ public interface SqlServer extends
         GroupableResource,
         Refreshable<SqlServer>,
         Updatable<SqlServer.Update>,
+        HasManager<SqlServerManager>,
         Wrapper<ServerInner> {
 
     /**
@@ -59,21 +63,6 @@ public interface SqlServer extends
     Databases databases();
 
     /**
-     * Cancels a pending upgrade for the Azure SQL Server.
-     */
-    void cancelUpgrade();
-
-    /**
-     * @return get information about upgrade status of the an Azure SQL Server
-     */
-    ServerUpgradeResult getUpgrade();
-
-    /**
-     * @return the definition stage for specifying the arguments for upgrade.
-     */
-    ServerUpgrade.UpgradeDefinitions.Blank scheduledUpgrade();
-
-    /**
      * @return returns the list of usages (ServerMetric) of Azure SQL Server
      */
     List<ServerMetric> listUsages();
@@ -91,9 +80,11 @@ public interface SqlServer extends
     ServiceObjective getServiceObjective(String serviceObjectiveName);
 
     /**
-     * @return the entry point to RecommendedElasticPools.
+     * Returns all the recommended elastic pools for the server.
+     *
+     * @return list of recommended elastic pools for the server
      */
-    RecommendedElasticPools recommendedElasticPools();
+    Map<String, RecommendedElasticPool> listRecommendedElasticPools();
 
     /**
      * Entry point to access FirewallRules from the SQL Server.
@@ -128,26 +119,6 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to delete
          */
         void delete(String firewallRuleName);
-    }
-
-    /**
-     * Entry point to access RecommendedElasticPool from the SQL Server.
-     */
-    interface RecommendedElasticPools {
-        /**
-         * Gets a particular recommended elastic pool.
-         *
-         * @param recommendedElasticPoolName name of the elastic pool to get
-         * @return Returns the elastic pool with in the SQL Server
-         */
-        RecommendedElasticPool get(String recommendedElasticPoolName);
-
-        /**
-         * Returns all the recommended elastic pools for the server.
-         *
-         * @return list of recommended elastic pools for the server.
-         */
-        List<RecommendedElasticPool> list();
     }
 
     /**
@@ -233,6 +204,9 @@ public interface SqlServer extends
         DefinitionStages.WithAdministratorLogin,
         DefinitionStages.WithAdministratorPassword,
         DefinitionStages.WithVersion,
+        DefinitionStages.WithElasticPool,
+        DefinitionStages.WithDatabase,
+        DefinitionStages.WithFirewallRule,
         DefinitionStages.WithCreate {
     }
 
@@ -260,7 +234,7 @@ public interface SqlServer extends
              * Sets the administrator login user name.
              *
              * @param administratorLogin administrator login user name
-             * @return Next stage of the SQL Server creation
+             * @return Next stage of the SQL Server definition
              */
             WithAdministratorPassword withAdministratorLogin(String administratorLogin);
         }
@@ -273,7 +247,7 @@ public interface SqlServer extends
              * Sets the administrator login password.
              *
              * @param administratorLoginPassword password for administrator login
-             * @return Next stage of the SQL Server creation
+             * @return Next stage of the SQL Server definition
              */
             WithCreate withAdministratorPassword(String administratorLoginPassword);
         }
@@ -286,11 +260,76 @@ public interface SqlServer extends
              * Sets the version of SQL Server to be created.
              *
              * @param version Version of SQL server to be created
-             * @return Next stage of the SQL Server creation
+             * @return Next stage of the SQL Server definition
              */
             WithCreate withVersion(ServerVersion version);
         }
 
+        /**
+         * A SQL Server definition for specifying elastic pool.
+         */
+        interface WithElasticPool {
+            /**
+             * Creates new elastic pool in the SQL Server.
+             * @param elasticPoolName name of the elastic pool to be created
+             * @param elasticPoolEdition edition of the elastic pool
+             * @param databaseNames names of the database to be included in the elastic pool
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition, String... databaseNames);
+
+            /**
+             * Creates new elastic pool in the SQL Server.
+             * @param elasticPoolName name of the elastic pool to be created
+             * @param elasticPoolEdition edition of the elastic pool
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition);
+        }
+
+        /**
+         * A SQL Server definition for specifying the databases.
+         */
+        interface WithDatabase {
+            /**
+             * Creates new database in the SQL Server.
+             * @param databaseName name of the database to be created
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewDatabase(String databaseName);
+        }
+
+        /**
+         * A SQL Server definition for specifying the firewall rule.
+         */
+        interface WithFirewallRule {
+            /**
+             * Creates new firewall rule in the SQL Server.
+             *
+             * @param ipAddress ipAddress for the firewall rule
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewFirewallRule(String ipAddress);
+
+            /**
+             * Creates new firewall rule in the SQL Server.
+             *
+             * @param startIpAddress start ipAddress for the firewall rule
+             * @param endIpAddress end ipAddress for the firewall rule
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewFirewallRule(String startIpAddress, String endIpAddress);
+
+            /**
+             * Creates new firewall rule in the SQL Server.
+             *
+             * @param startIpAddress start ipAddress for the firewall rule
+             * @param endIpAddress end ipAddress for the firewall rule
+             * @param firewallRuleName name for the firewall rule
+             * @return Next stage of the SQL Server definition
+             */
+            WithCreate withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName);
+        }
         /**
          * A SQL Server definition with sufficient inputs to create a new
          * SQL Server in the cloud, but exposing additional optional inputs to
@@ -299,22 +338,29 @@ public interface SqlServer extends
         interface WithCreate extends
             Creatable<SqlServer>,
             DefinitionWithTags<WithCreate>,
+            WithElasticPool,
+            WithDatabase,
+            WithFirewallRule,
             WithVersion {
         }
     }
+
     /**
      * The template for a SQLServer update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Appliable<SqlServer>,
-            UpdateStages.WithAdministratorPassword {
+            UpdateStages.WithAdministratorPassword,
+            UpdateStages.WithElasticPool,
+            UpdateStages.WithDatabase,
+            UpdateStages.WithFirewallRule {
+
     }
 
     /**
      * Grouping of all the SQLServer update stages.
      */
     interface UpdateStages {
-
         /**
          * A SQL Server definition setting admin user password.
          */
@@ -323,9 +369,76 @@ public interface SqlServer extends
              * Sets the administrator login password.
              *
              * @param administratorLoginPassword password for administrator login
-             * @return Next stage of the SQL Server creation.
+             * @return Next stage of the update.
              */
             Update withAdministratorPassword(String administratorLoginPassword);
+        }
+
+        /**
+         * A SQL Server definition for specifying elastic pool.
+         */
+        interface WithElasticPool {
+            /**
+             * Create new elastic pool in the SQL Server.
+             * @param elasticPoolName name of the elastic pool to be created
+             * @param elasticPoolEdition edition of the elastic pool
+             * @param databaseNames names of the database to be included in the elastic pool
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition, String... databaseNames);
+
+            /**
+             * Create new elastic pool in the SQL Server.
+             * @param elasticPoolName name of the elastic pool to be created
+             * @param elasticPoolEdition edition of the elastic pool
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition);
+        }
+
+        /**
+         * A SQL Server definition for specifying the databases.
+         */
+        interface WithDatabase {
+            /**
+             * Create new database in the SQL Server.
+             * @param databaseName name of the database to be created
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewDatabase(String databaseName);
+        }
+
+
+        /**
+         * A SQL Server definition for specifying the firewall rule.
+         */
+        interface WithFirewallRule {
+            /**
+             * Create new firewall rule in the SQL Server.
+             *
+             * @param ipAddress ipAddress for the firewall rule
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewFirewallRule(String ipAddress);
+
+            /**
+             * Create new firewall rule in the SQL Server.
+             *
+             * @param startIpAddress Start ipAddress for the firewall rule
+             * @param endIpAddress ipAddress for the firewall rule
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewFirewallRule(String startIpAddress, String endIpAddress);
+
+            /**
+             * Creates new firewall rule in the SQL Server.
+             *
+             * @param startIpAddress start ipAddress for the firewall rule
+             * @param endIpAddress end ipAddress for the firewall rule
+             * @param firewallRuleName name for the firewall rule
+             * @return Next stage of the SQL Server update
+             */
+            Update withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName);
         }
     }
 }

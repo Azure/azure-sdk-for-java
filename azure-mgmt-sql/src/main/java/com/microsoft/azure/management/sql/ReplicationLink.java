@@ -77,5 +77,10 @@ public interface ReplicationLink extends
      */
     ReplicationState replicationState();
 
+
+    /**
+     * Deletes the replication link.
+     */
+    void delete();
 }
 

@@ -8,9 +8,9 @@ package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.TransparentDataEncryption;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionActivity;
 import com.microsoft.azure.management.sql.TransparentDataEncryptionStates;
@@ -64,7 +64,7 @@ class TransparentDataEncryptionImpl
     }
 
     @Override
-    public TransparentDataEncryption updateState(TransparentDataEncryptionStates transparentDataEncryptionState) {
+    public TransparentDataEncryption updateStatus(TransparentDataEncryptionStates transparentDataEncryptionState) {
         this.inner().withStatus(transparentDataEncryptionState);
         this.setInner(this.databasesInner.createOrUpdateTransparentDataEncryptionConfiguration(
                 this.resourceGroupName(),
@@ -85,7 +85,7 @@ class TransparentDataEncryptionImpl
                 return new TransparentDataEncryptionActivityImpl(transparentDataEncryptionActivityInner);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.databasesInner.listTransparentDataEncryptionActivity(
                         this.resourceGroupName(),
                         this.sqlServerName(),
