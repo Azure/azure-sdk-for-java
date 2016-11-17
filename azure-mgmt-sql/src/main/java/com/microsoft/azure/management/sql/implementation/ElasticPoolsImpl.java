@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
 import com.microsoft.azure.management.sql.SqlServer;
+import rx.Observable;
 
 import java.util.List;
 
@@ -40,13 +41,13 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
         return this.elasticPools;
     }
     @Override
-    public SqlElasticPool get(String firewallRuleName) {
-        return this.elasticPools.getBySqlServer(this.resourceGroupName, this.sqlServerName, firewallRuleName);
+    public SqlElasticPool get(String elasticPoolName) {
+        return this.elasticPools.getBySqlServer(this.resourceGroupName, this.sqlServerName, elasticPoolName);
     }
 
     @Override
-    public SqlElasticPool.DefinitionStages.Blank define(String firewallRuleName) {
-        return this.elasticPools.definedWithSqlServer(this.resourceGroupName, this.sqlServerName, firewallRuleName, this.region);
+    public SqlElasticPool.DefinitionStages.Blank define(String elasticPoolName) {
+        return this.elasticPools.definedWithSqlServer(this.resourceGroupName, this.sqlServerName, elasticPoolName, this.region);
     }
 
     @Override
@@ -55,7 +56,12 @@ public class ElasticPoolsImpl implements SqlServer.ElasticPools {
     }
 
     @Override
-    public void delete(String firewallRuleName) {
-        this.elasticPools.deleteByParent(this.resourceGroupName, this.sqlServerName, firewallRuleName);
+    public void delete(String elasticPoolName) {
+        this.elasticPools.deleteByParent(this.resourceGroupName, this.sqlServerName, elasticPoolName);
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String elasticPoolName) {
+        return this.elasticPools.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, elasticPoolName);
     }
 }

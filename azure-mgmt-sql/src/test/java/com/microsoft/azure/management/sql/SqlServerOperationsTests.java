@@ -106,7 +106,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewFirewallRule(START_IPADDRESS)
                 .create();
 
-        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer);
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer, false);
         elasticPool1Name = SQL_ELASTIC_POOL_NAME + " U";
         database2Name = "database2U";
         database1InEPName = "database1InEPU";
@@ -125,7 +125,10 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewFirewallRule(START_IPADDRESS)
                 .apply();
 
-        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer);
+        validateMultiCreation(database2Name, database1InEPName, database2InEPName, elasticPool1Name, elasticPool2Name, elasticPool3Name, sqlServer, true);
+
+        sqlServer.refresh();
+        Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
 
         // List
         List<SqlServer> sqlServers = sqlServerManager.sqlServers().listByGroup(RG_NAME);
@@ -152,7 +155,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
             String elasticPool1Name,
             String elasticPool2Name,
             String elasticPool3Name,
-            SqlServer sqlServer) {
+            SqlServer sqlServer,
+            boolean deleteUsingUpdate) {
         validateSqlServer(sqlServer);
         validateSqlServer(sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME));
         validateSqlDatabase(sqlServer.databases().get(SQL_DATABASE_NAME), SQL_DATABASE_NAME);
@@ -198,25 +202,54 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertNotNull(ep3);
         Assert.assertEquals(ep3.edition(), ElasticPoolEditions.STANDARD);
 
-        sqlServer.databases().delete(database2Name);
-        sqlServer.databases().delete(database1InEPName);
-        sqlServer.databases().delete(database2InEPName);
-        sqlServer.databases().delete(SQL_DATABASE_NAME);
+        if (!deleteUsingUpdate) {
+            sqlServer.databases().delete(database2Name);
+            sqlServer.databases().delete(database1InEPName);
+            sqlServer.databases().delete(database2InEPName);
+            sqlServer.databases().delete(SQL_DATABASE_NAME);
 
-        Assert.assertEquals(ep1.listDatabases().size(), 0);
-        Assert.assertEquals(ep2.listDatabases().size(), 0);
-        Assert.assertEquals(ep3.listDatabases().size(), 0);
+            Assert.assertEquals(ep1.listDatabases().size(), 0);
+            Assert.assertEquals(ep2.listDatabases().size(), 0);
+            Assert.assertEquals(ep3.listDatabases().size(), 0);
 
-        sqlServer.elasticPools().delete(elasticPool1Name);
-        sqlServer.elasticPools().delete(elasticPool2Name);
-        sqlServer.elasticPools().delete(elasticPool3Name);
+            sqlServer.elasticPools().delete(elasticPool1Name);
+            sqlServer.elasticPools().delete(elasticPool2Name);
+            sqlServer.elasticPools().delete(elasticPool3Name);
+
+            firewalls = sqlServer.firewallRules().list();
+
+            for (SqlFirewallRule firewallRule :firewalls) {
+                firewallRule.delete();
+            }
+        }
+        else {
+            sqlServer.update()
+                    .withoutDatabase(database2Name)
+                    .withoutElasticPool(elasticPool1Name)
+                    .withoutElasticPool(elasticPool2Name)
+                    .withoutElasticPool(elasticPool3Name)
+                    .withoutElasticPool(elasticPool1Name)
+                    .withoutDatabase(database1InEPName)
+                    .withoutDatabase(SQL_DATABASE_NAME)
+                    .withoutDatabase(database2InEPName)
+                    .withoutFirewallRule(SQL_FIREWALLRULE_NAME)
+                    .apply();
+
+            Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
+
+            firewalls = sqlServer.firewallRules().list();
+            Assert.assertEquals(firewalls.size(), 2);
+            for (SqlFirewallRule firewallRule :firewalls) {
+                firewallRule.delete();
+            }
+        }
+
+
 
         Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
         // Only master database is remaining in the SQLServer.
         Assert.assertEquals(sqlServer.databases().list().size(), 1);
-        for (SqlFirewallRule firewallRule :firewalls) {
-            firewallRule.delete();
-        }
+
     }
 
 
@@ -239,14 +272,14 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();
         Assert.assertNotNull(transparentDataEncryption.status());
 
-        List<TransparentDataEncryptionActivity> transparentDataEncryptionActivities = transparentDataEncryption.listActivity();
+        List<TransparentDataEncryptionActivity> transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
         transparentDataEncryption = transparentDataEncryption.updateStatus(TransparentDataEncryptionStates.ENABLED);
         Assert.assertNotNull(transparentDataEncryption);
         Assert.assertEquals(transparentDataEncryption.status(), TransparentDataEncryptionStates.ENABLED);
 
-        transparentDataEncryptionActivities = transparentDataEncryption.listActivity();
+        transparentDataEncryptionActivities = transparentDataEncryption.listActivities();
         Assert.assertNotNull(transparentDataEncryptionActivities);
 
         Thread.sleep(10000);
@@ -350,12 +383,18 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Assert.assertNotNull(replicationLinksInDb1.get(0).refresh());
 
-        replicationLinksInDb1.get(0).delete();
-        Assert.assertEquals(databaseInServer1.listReplicationLinks().size(), 0);
+        // Failover
+        replicationLinksInDb2.get(0).failover();
+        replicationLinksInDb2.get(0).refresh();
+        Thread.sleep(30000);
+        // Force failover
+        replicationLinksInDb1.get(0).forceFailoverAllowDataLoss();
+        replicationLinksInDb1.get(0).refresh();
 
         Thread.sleep(30000);
-        // Only master database
-        Assert.assertEquals(sqlServer2.databases().list().size(), 1);
+
+        replicationLinksInDb2.get(0).delete();
+        Assert.assertEquals(databaseInServer2.listReplicationLinks().size(), 0);
 
         sqlServer1.databases().delete(databaseInServer1.name());
         sqlServer2.databases().delete(databaseInServer2.name());
@@ -667,7 +706,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .withNewResourceGroup(RG_NAME)
                 .withAdministratorLogin("userName")
                 .withAdministratorPassword("P@ssword~1")
-                .withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO)
                 .create();
     }
 
