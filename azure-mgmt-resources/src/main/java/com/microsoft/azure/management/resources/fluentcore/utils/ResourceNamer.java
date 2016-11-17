@@ -33,7 +33,7 @@ public class ResourceNamer {
             return randomString(maxLen);
         }
 
-        if (maxLen <= prefix.length() + minRandomnessLength) {
+        if (maxLen < prefix.length() + minRandomnessLength) {
             return randomString(maxLen);
         }
 
