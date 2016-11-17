@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
 import rx.Observable;
 
+import java.util.List;
+
 /**
  * Implementation for SQLDatabases and its parent interfaces.
  */
@@ -30,7 +32,7 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
         implements SqlDatabases.SqlDatabaseCreatable,
         SupportsGettingByParent<SqlDatabase>,
         SupportsListingByParent<SqlDatabase> {
-    protected   SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
+    protected SqlDatabasesImpl(DatabasesInner innerCollection, SqlServerManager manager) {
         super(innerCollection, manager);
     }
 
@@ -83,12 +85,12 @@ class SqlDatabasesImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public PagedList<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName) {
+    public List<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName) {
         return this.listByParent(resourceGroupName, sqlServerName);
     }
 
     @Override
-    public PagedList<SqlDatabase> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlDatabase> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
     }
 

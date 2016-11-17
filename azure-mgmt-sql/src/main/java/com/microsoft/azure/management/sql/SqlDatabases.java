@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.sql;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
@@ -15,6 +14,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
+
+import java.util.List;
 
 /**
  *  Entry point to SQL Database management API.
@@ -53,7 +54,7 @@ public interface SqlDatabases extends
      * @param sqlServerName the name of SQLServer
      * @return the list of SQLDatabases in a SQLServer
      */
-    PagedList<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName);
+    List<SqlDatabase> listBySqlServer(String resourceGroupName, String sqlServerName);
 
     /**
      * Gets the SQLDatabase based on the SQLServer.
@@ -61,7 +62,7 @@ public interface SqlDatabases extends
      * @param sqlServer the instance of SQLServer
      * @return the list of SQLDatabases in a SQLServer
      */
-    PagedList<SqlDatabase> listBySqlServer(GroupableResource sqlServer);
+    List<SqlDatabase> listBySqlServer(GroupableResource sqlServer);
 
     /**
      * Entry point to SQL FirewallRule management API, which already have the SQLServer specified.

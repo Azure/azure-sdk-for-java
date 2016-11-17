@@ -37,7 +37,7 @@ public abstract class IndependentChildrenImpl<
         InnerT,
         InnerCollectionT,
         ManagerT extends ManagerBase>
-    extends CreatableWrappersImpl<T, ImplT, InnerT>
+    extends CreatableResourcesImpl<T, ImplT, InnerT>
     implements
         SupportsGettingById<T>,
         SupportsGettingByParent<T>,

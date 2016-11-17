@@ -6,14 +6,16 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.ListToMapConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.DatabaseMetric;
+import com.microsoft.azure.management.sql.ReplicationLink;
 import com.microsoft.azure.management.sql.RestorePoint;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.ServiceTierAdvisor;
@@ -27,6 +29,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -42,7 +45,7 @@ class SqlDatabaseImpl
             SqlDatabase.Definition,
             SqlDatabase.Update,
         IndependentChild.DefinitionStages.WithParentResource<SqlDatabase, SqlServer> {
-    private final DatabasesInner innerCollection;
+    protected final DatabasesInner innerCollection;
     private String elasticPoolCreatableKey;
 
     protected SqlDatabaseImpl(String name,
@@ -134,11 +137,6 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public ReplicationLinks replicationLinks() {
-        return new ReplicationLinksImpl(this.innerCollection, this.resourceGroupName(), this.sqlServerName(), this.name());
-    }
-
-    @Override
     public void pauseDataWarehouse() {
         this.innerCollection.pauseDataWarehouse(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
@@ -157,7 +155,7 @@ class SqlDatabaseImpl
                 return new RestorePointImpl(restorePointInner);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.innerCollection.listRestorePoints(
                         this.resourceGroupName(),
                         this.sqlServerName(),
@@ -172,7 +170,7 @@ class SqlDatabaseImpl
                 return new DatabaseMetricImpl(databaseMetricInner);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.innerCollection.listUsages(
                         this.resourceGroupName(),
                         this.sqlServerName(),
@@ -189,20 +187,50 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public List<ServiceTierAdvisor> listServiceTierAdvisors() {
+    public Map<String, ServiceTierAdvisor> listServiceTierAdvisors() {
         final SqlDatabaseImpl self = this;
-        PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor> converter
-                = new PagedListConverter<ServiceTierAdvisorInner, ServiceTierAdvisor>() {
+        ListToMapConverter<ServiceTierAdvisor, ServiceTierAdvisorInner> converter = new ListToMapConverter<ServiceTierAdvisor, ServiceTierAdvisorInner>() {
             @Override
-            public ServiceTierAdvisor typeConvert(ServiceTierAdvisorInner serviceTierAdvisorInner) {
-                return new ServiceTierAdvisorImpl(serviceTierAdvisorInner, self.innerCollection);
+            protected String name(ServiceTierAdvisorInner serviceTierAdvisorInner) {
+                return serviceTierAdvisorInner.name();
+            }
+
+            @Override
+            protected ServiceTierAdvisor impl(ServiceTierAdvisorInner serviceTierAdvisorInner) {
+                return new ServiceTierAdvisorImpl(serviceTierAdvisorInner,
+                        self.innerCollection);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
-                this.innerCollection.listServiceTierAdvisors(
-                        this.resourceGroupName(),
-                        this.sqlServerName(),
-                        this.name())));
+        return converter.convertToUnmodifiableMap(this.innerCollection.listServiceTierAdvisors(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.name()));
+    }
+
+    @Override
+    public Map<String, ReplicationLink> listReplicationLinks() {
+        final SqlDatabaseImpl self = this;
+
+        ListToMapConverter<ReplicationLink, ReplicationLinkInner> converter = new ListToMapConverter<ReplicationLink, ReplicationLinkInner>() {
+            @Override
+            protected String name(ReplicationLinkInner replicationLinkInner) {
+                return replicationLinkInner.name();
+            }
+
+            @Override
+            protected ReplicationLink impl(ReplicationLinkInner replicationLinkInner) {
+                return new ReplicationLinkImpl(replicationLinkInner, self.innerCollection);
+            }
+        };
+        return converter.convertToUnmodifiableMap(this.innerCollection.listReplicationLinks(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.name()));
+    }
+
+    @Override
+    public void delete() {
+        this.innerCollection.delete(this.resourceGroupName(), this.sqlServerName(), this.name());
     }
 
     @Override
@@ -293,13 +321,7 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public SqlDatabaseImpl withSourceDatabaseId(String sourceDatabaseId) {
-        this.inner().withSourceDatabaseId(sourceDatabaseId);
-        return this;
-    }
-
-    @Override
-    public SqlDatabaseImpl withCreateMode(CreateMode createMode) {
+    public SqlDatabaseImpl withMode(CreateMode createMode) {
         this.inner().withCreateMode(createMode);
         return this;
     }
@@ -307,5 +329,16 @@ class SqlDatabaseImpl
     @Override
     public SqlDatabaseImpl withoutSourceDatabaseId() {
         return this;
+    }
+
+    @Override
+    public SqlDatabase.DefinitionStages.WithCreateMode withSourceDatabase(String sourceDatabaseId) {
+        this.inner().withSourceDatabaseId(sourceDatabaseId);
+        return this;
+    }
+
+    @Override
+    public SqlDatabase.DefinitionStages.WithCreateMode withSourceDatabase(SqlDatabase sourceDatabase) {
+        return withSourceDatabase(sourceDatabase.id());
     }
 }

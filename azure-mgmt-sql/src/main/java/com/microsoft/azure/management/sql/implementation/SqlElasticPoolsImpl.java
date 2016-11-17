@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
 import rx.Observable;
 
+import java.util.List;
+
 /**
  * Implementation for SQLElasticPools and its parent interfaces.
  */
@@ -31,10 +33,12 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
         SupportsGettingByParent<SqlElasticPool>,
         SupportsListingByParent<SqlElasticPool> {
     private final DatabasesInner databasesInner;
+    private final DatabasesImpl databasesImpl;
 
-    protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager, DatabasesInner databasesInner) {
+    protected SqlElasticPoolsImpl(ElasticPoolsInner innerCollection, SqlServerManager manager, DatabasesInner databasesInner, DatabasesImpl databasesImpl) {
         super(innerCollection, manager);
         this.databasesInner = databasesInner;
+        this.databasesImpl = databasesImpl;
     }
 
     @Override
@@ -44,7 +48,8 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
                 name,
                 inner,
                 this.innerCollection,
-                this.databasesInner);
+                this.databasesInner,
+                this.databasesImpl);
     }
 
     @Override
@@ -63,7 +68,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
             return null;
         }
 
-        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection, this.databasesInner);
+        return new SqlElasticPoolImpl(inner.name(), inner, this.innerCollection, this.databasesInner, this.databasesImpl);
     }
 
     @Override
@@ -87,12 +92,12 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
     }
 
     @Override
-    public PagedList<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName) {
+    public List<SqlElasticPool> listBySqlServer(String resourceGroupName, String sqlServerName) {
         return this.listByParent(resourceGroupName, sqlServerName);
     }
 
     @Override
-    public PagedList<SqlElasticPool> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlElasticPool> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
     }
 
@@ -105,6 +110,7 @@ class SqlElasticPoolsImpl extends IndependentChildResourcesImpl<
                 elasticPoolName,
                 inner,
                 this.innerCollection,
-                this.databasesInner).withExistingParentResource(resourceGroupName, sqlServerName);
+                this.databasesInner,
+                this.databasesImpl).withExistingParentResource(resourceGroupName, sqlServerName);
     }
 }

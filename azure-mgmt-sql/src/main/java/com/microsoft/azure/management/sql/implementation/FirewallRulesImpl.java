@@ -6,10 +6,11 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServer;
+
+import java.util.List;
 
 /**
  * Implementation of SqlServer.FirewallRules, which enables the creating the firewall rules from the SQLServer directly.
@@ -37,12 +38,16 @@ class FirewallRulesImpl implements SqlServer.FirewallRules {
     }
 
     @Override
-    public PagedList<SqlFirewallRule> list() {
+    public List<SqlFirewallRule> list() {
         return this.sqlFirewallRules.listBySqlServer(this.resourceGroupName, this.sqlServerName);
     }
 
     @Override
     public void delete(String firewallRuleName) {
         this.sqlFirewallRules.deleteByParent(this.resourceGroupName, this.sqlServerName, firewallRuleName);
+    }
+
+    protected SqlFirewallRules sqlFirewallRules() {
+        return this.sqlFirewallRules;
     }
 }
