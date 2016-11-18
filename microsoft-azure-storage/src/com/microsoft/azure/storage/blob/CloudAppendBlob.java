@@ -1008,7 +1008,7 @@ public final class CloudAppendBlob extends CloudBlob {
      */
     @Override
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
+        if (streamWriteSizeInBytes > Constants.MAX_APPEND_BLOCK_SIZE || streamWriteSizeInBytes < 16 * Constants.KB) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 

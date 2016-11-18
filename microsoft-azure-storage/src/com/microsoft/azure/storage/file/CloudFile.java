@@ -2900,7 +2900,7 @@ public final class CloudFile implements ListFileItem {
      *             If <code>streamWriteSizeInBytes</code> is less than 512 bytes or greater than 4 MB.
      */
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < Constants.PAGE_SIZE) {
+        if (streamWriteSizeInBytes > Constants.MAX_FILE_WRITE_SIZE || streamWriteSizeInBytes < Constants.MIN_PERMITTED_FILE_WRITE_SIZE) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 

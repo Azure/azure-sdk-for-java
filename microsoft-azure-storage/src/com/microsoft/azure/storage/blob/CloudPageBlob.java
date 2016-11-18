@@ -1353,8 +1353,8 @@ public final class CloudPageBlob extends CloudBlob {
      */
     @Override
     public void setStreamWriteSizeInBytes(final int streamWriteSizeInBytes) {
-        if (streamWriteSizeInBytes > Constants.MAX_BLOCK_SIZE || streamWriteSizeInBytes < Constants.PAGE_SIZE
-                || streamWriteSizeInBytes % Constants.PAGE_SIZE != 0) {
+        if (streamWriteSizeInBytes > Constants.MAX_PAGE_WRITE_SIZE || streamWriteSizeInBytes < Constants.PAGE_SIZE
+            || streamWriteSizeInBytes % Constants.PAGE_SIZE != 0) {
             throw new IllegalArgumentException("StreamWriteSizeInBytes");
         }
 
