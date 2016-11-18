@@ -128,7 +128,7 @@ class AppServiceCertificateImpl
     public Observable<AppServiceCertificate> createResourceAsync() {
         Observable<String> pfxString = Observable.just(pfxBlob());
         if (pfxFileUrl != null) {
-            pfxString = Utils.downloadFile(pfxFileUrl, myManager.restClient().retrofit())
+            pfxString = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit())
                     .map(new Func1<byte[], String>() {
                         @Override
                         public String call(byte[] bytes) {
