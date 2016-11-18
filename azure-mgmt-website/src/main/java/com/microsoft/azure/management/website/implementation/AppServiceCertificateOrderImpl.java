@@ -18,6 +18,7 @@ import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,7 @@ class AppServiceCertificateOrderImpl
         AppServiceCertificateOrder.Update {
 
     final AppServiceCertificateOrdersInner client;
-    Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings;
+    private Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings;
 
     AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
@@ -64,7 +65,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings() {
-        return keyVaultBindings;
+        return Collections.unmodifiableMap(keyVaultBindings);
     }
 
     @Override

@@ -81,7 +81,7 @@ class DomainContactImpl
     }
 
     @Override
-    public AppServiceDomain.DefinitionStages.WithCreate attach() {
+    public AppServiceDomainImpl attach() {
         return parent().withRegistrantContact(inner());
     }
 

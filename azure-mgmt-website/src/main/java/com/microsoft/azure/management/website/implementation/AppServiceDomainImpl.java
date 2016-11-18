@@ -13,7 +13,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.Contact;
-import com.microsoft.azure.management.website.DomainContact;
 import com.microsoft.azure.management.website.DomainPurchaseConsent;
 import com.microsoft.azure.management.website.DomainStatus;
 import com.microsoft.azure.management.website.HostName;
@@ -130,7 +129,7 @@ class AppServiceDomainImpl
 
     @Override
     public List<String> nameServers() {
-        return inner().nameServers();
+        return Collections.unmodifiableList(inner().nameServers());
     }
 
     @Override
@@ -198,7 +197,7 @@ class AppServiceDomainImpl
     }
 
     @Override
-    public DomainContact.DefinitionStages.Blank<AppServiceDomain.DefinitionStages.WithCreate> defineRegistrantContact() {
+    public DomainContactImpl defineRegistrantContact() {
         return new DomainContactImpl(new Contact(), this);
     }
 

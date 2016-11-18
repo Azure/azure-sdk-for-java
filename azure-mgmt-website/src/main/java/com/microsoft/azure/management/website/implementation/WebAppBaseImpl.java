@@ -113,7 +113,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Set<String> hostNames() {
-        return hostNamesSet;
+        return Collections.unmodifiableSet(hostNamesSet);
     }
 
     @Override
@@ -146,7 +146,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Map<String, HostNameSslState> hostNameSslStates() {
-        return hostNameSslStateMap;
+        return Collections.unmodifiableMap(hostNameSslStateMap);
     }
 
     @Override
@@ -161,7 +161,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Set<String> trafficManagerHostNames() {
-        return trafficManagerHostNamesSet;
+        return Collections.unmodifiableSet(trafficManagerHostNamesSet);
     }
 
     @Override
@@ -206,7 +206,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public Set<String> outboundIpAddresses() {
-        return outboundIpAddressesSet;
+        return Collections.unmodifiableSet(outboundIpAddressesSet);
     }
 
     @Override
@@ -234,7 +234,7 @@ abstract class WebAppBaseImpl<
         if (inner().siteConfig() == null) {
             return null;
         }
-        return inner().siteConfig().defaultDocuments();
+        return Collections.unmodifiableList(inner().siteConfig().defaultDocuments());
     }
 
     @Override

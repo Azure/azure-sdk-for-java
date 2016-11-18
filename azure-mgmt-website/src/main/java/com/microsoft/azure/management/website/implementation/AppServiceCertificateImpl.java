@@ -19,6 +19,7 @@ import rx.functions.Func1;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -55,7 +56,7 @@ class AppServiceCertificateImpl
 
     @Override
     public List<String> hostNames() {
-        return inner().hostNames();
+        return Collections.unmodifiableList(inner().hostNames());
     }
 
     @Override
