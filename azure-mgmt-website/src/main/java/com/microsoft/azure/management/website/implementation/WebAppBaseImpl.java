@@ -357,6 +357,9 @@ abstract class WebAppBaseImpl<
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
+        if (inner().siteConfig() != null & inner().siteConfig().location() == null) {
+            inner().siteConfig().withLocation(inner().location());
+        }
         // Construct web app observable
         return createOrUpdateInner(resourceGroupName(), name(), inner())
                 // Submit hostname bindings
@@ -427,9 +430,6 @@ abstract class WebAppBaseImpl<
                     public Observable<SiteInner> call(final SiteInner siteInner) {
                         if (inner().siteConfig() == null) {
                             return Observable.just(siteInner);
-                        }
-                        if (inner().siteConfig().location() == null) {
-                            inner().siteConfig().withLocation(inner().location());
                         }
                         return createOrUpdateSiteConfig(resourceGroupName(), name(), inner().siteConfig())
                                 .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {

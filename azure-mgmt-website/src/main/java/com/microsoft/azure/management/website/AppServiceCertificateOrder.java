@@ -17,8 +17,6 @@ import com.microsoft.azure.management.website.implementation.AppServiceCertifica
 import org.joda.time.DateTime;
 import rx.Observable;
 
-import java.util.Map;
-
 /**
  * An immutable client-side representation of an Azure App Service Certificate Order.
  */
@@ -27,11 +25,6 @@ public interface AppServiceCertificateOrder extends
         Refreshable<AppServiceCertificateOrder>,
         Updatable<AppServiceCertificateOrder.Update>,
         Wrapper<AppServiceCertificateOrderInner> {
-
-    /**
-     * @return the state of the Key Vault secret
-     */
-    Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings();
 
     /**
      * @return certificate's distinguished name
@@ -118,6 +111,16 @@ public interface AppServiceCertificateOrder extends
      * @return a binding containing the key vault information
      */
     Observable<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault);
+
+    /**
+     * @return the state of the Key Vault secret
+     */
+    AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
+
+    /**
+     * @return the state of the Key Vault secret
+     */
+    Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**************************************************************
      * Fluent interfaces to provision a App service certificate order

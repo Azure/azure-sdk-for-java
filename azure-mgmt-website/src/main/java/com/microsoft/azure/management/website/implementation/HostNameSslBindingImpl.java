@@ -31,7 +31,6 @@ import rx.functions.Func1;
 import rx.functions.Func2;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Map;
 
 /**
@@ -125,12 +124,17 @@ class HostNameSslBindingImpl<
 
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder) {
-        AppServiceCertificateKeyVaultBinding binding = new ArrayList<>(certificateOrder.keyVaultBindings().values()).get(0);
-        newCertificate = manager.certificates().define(name() + "cert")
-                .withRegion(parent().region())
-                .withExistingResourceGroup(parent().resourceGroupName())
-                .withCertificateOrderKeyVaultBinding(binding.keyVaultId(), binding.keyVaultSecretName())
-                .createAsync();
+        newCertificate = certificateOrder.getKeyVaultBindingAsync()
+                .flatMap(new Func1<AppServiceCertificateKeyVaultBinding, Observable<AppServiceCertificate>>() {
+                    @Override
+                    public Observable<AppServiceCertificate> call(AppServiceCertificateKeyVaultBinding binding) {
+                        return manager.certificates().define(name() + "cert")
+                                .withRegion(parent().region())
+                                .withExistingResourceGroup(parent().resourceGroupName())
+                                .withCertificateOrderKeyVaultBinding(binding.keyVaultId(), binding.keyVaultSecretName())
+                                .createAsync();
+                    }
+                });
         return this;
     }
 

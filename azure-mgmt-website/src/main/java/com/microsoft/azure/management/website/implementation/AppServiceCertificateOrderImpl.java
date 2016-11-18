@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.microsoft.azure.Page;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -18,7 +19,6 @@ import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -64,8 +64,25 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings() {
-        return Collections.unmodifiableMap(keyVaultBindings);
+    public AppServiceCertificateKeyVaultBinding getKeyVaultBinding() {
+        return getKeyVaultBindingAsync().toBlocking().single();
+    }
+
+    @Override
+    public Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
+        final AppServiceCertificateOrderImpl self = this;
+        return client.listCertificatesAsync(resourceGroupName(), name())
+                .map(new Func1<Page<AppServiceCertificateInner>, AppServiceCertificateKeyVaultBinding>() {
+                    @Override
+                    public AppServiceCertificateKeyVaultBinding call(Page<AppServiceCertificateInner> appServiceCertificateInnerPage) {
+                        // There can only be one binding associated with an order
+                        if (appServiceCertificateInnerPage.getItems() == null || appServiceCertificateInnerPage.getItems().isEmpty()) {
+                            return null;
+                        } else {
+                            return new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInnerPage.getItems().get(0), self);
+                        }
+                    }
+                });
     }
 
     @Override
