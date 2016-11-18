@@ -48,7 +48,7 @@ public class WebAppsTests extends AppServiceTestBase {
         Assert.assertNotNull(webApp);
 
         DeploymentSlot slot = webApp.deploymentSlots().define("newslot2")
-                .withConfigurationFromDeploymentSlot(webApp.deploymentSlots().getByName("newslot"))
+                .withConfigurationFromDeploymentSlot(webApp.deploymentSlots().getByName("newslot")) // use name
                 .defineHostnameBinding()
                     .withAzureManagedDomain(domain)
                     .withSubDomain("newslot2")

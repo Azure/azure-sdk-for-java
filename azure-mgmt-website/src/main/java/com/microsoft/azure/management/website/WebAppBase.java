@@ -263,6 +263,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             DefinitionStages.WithAppServicePlan<FluentT>,
             DefinitionStages.WithHostNameBinding<FluentT>,
             DefinitionStages.WithHostNameSslBinding<FluentT>,
+            DefinitionStages.WithWebContainer<FluentT>,
             DefinitionStages.WithCreate<FluentT> {
     }
 
@@ -391,6 +392,20 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
+         * A web app definition stage allowing Java web container to be set. This is required
+         * after specifying Java version.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithWebContainer<FluentT> {
+            /**
+             * Specifies the Java web container.
+             * @param webContainer the Java web container
+             * @return the next stage of web app definition
+             */
+            WithCreate<FluentT> withWebContainer(WebContainer webContainer);
+        }
+
+        /**
          * A web app definition stage allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
@@ -415,14 +430,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param version the Java version
              * @return the next stage of web app definition
              */
-            WithCreate<FluentT> withJavaVersion(JavaVersion version);
-
-            /**
-             * Specifies the Java web container.
-             * @param webContainer the Java web container
-             * @return the next stage of web app definition
-             */
-            WithCreate<FluentT> withWebContainer(WebContainer webContainer);
+            WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
              * Specifies the Python version.

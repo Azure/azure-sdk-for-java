@@ -46,7 +46,7 @@ class DeploymentSlotsImpl
 
     @Override
     protected DeploymentSlotImpl wrapModel(String name) {
-        return new DeploymentSlotImpl(name, new SiteInner(), new SiteConfigInner(), parent, innerCollection, super.manager)
+        return new DeploymentSlotImpl(name, new SiteInner(), null, parent, innerCollection, super.manager)
                 .withRegion(parent.regionName())
                 .withExistingResourceGroup(parent.resourceGroupName());
     }

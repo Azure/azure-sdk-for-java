@@ -57,7 +57,7 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), new SiteConfigInner(), innerCollection, super.myManager);
+        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager);
     }
 
     @Override
