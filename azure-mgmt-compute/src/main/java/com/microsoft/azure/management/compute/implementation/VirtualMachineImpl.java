@@ -64,10 +64,10 @@ import java.util.UUID;
 @LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
-            VirtualMachine,
-            VirtualMachineInner,
-            VirtualMachineImpl,
-            ComputeManager>
+        VirtualMachine,
+        VirtualMachineInner,
+        VirtualMachineImpl,
+        ComputeManager>
         implements
         VirtualMachine,
         VirtualMachine.Definition,
@@ -275,6 +275,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
