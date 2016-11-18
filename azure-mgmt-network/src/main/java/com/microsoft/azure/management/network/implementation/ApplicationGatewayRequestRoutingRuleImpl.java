@@ -8,8 +8,12 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -33,6 +37,44 @@ class ApplicationGatewayRequestRoutingRuleImpl
     @Override
     public String name() {
         return this.inner().name();
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleType ruleType() {
+        return this.inner().ruleType();
+    }
+
+    @Override
+    public ApplicationGatewayBackend backend() {
+        SubResource backendRef = this.inner().backendAddressPool();
+        if (backendRef != null) {
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+            return this.parent().backends().get(backendName);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration() {
+        SubResource configRef = this.inner().backendHttpSettings();
+        if (configRef != null) {
+            String configName = ResourceUtils.nameFromResourceId(configRef.id());
+            return this.parent().backendHttpConfigurations().get(configName);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayFrontendHttpListener frontendHttpListener() {
+        SubResource listenerRef = this.inner().httpListener();
+        if (listenerRef != null) {
+            String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
+            return this.parent().frontendHttpListeners().get(listenerName);
+        } else {
+            return null;
+        }
     }
 
     // Verbs
@@ -62,7 +104,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl toBackend(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl withBackend(String name) {
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
         this.inner().withBackendAddressPool(backendRef);
@@ -70,10 +112,20 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withBackendHttpConfiguration(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpConfiguration(String name) {
         SubResource httpConfigRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendHttpSettingsCollection/" + name);
         this.inner().withBackendHttpSettings(httpConfigRef);
         return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpConfigurationOnPort(int portNumber) {
+        ApplicationGatewayBackendHttpConfiguration config = this.parent().getBackendHttpConfigurationByPortNumber(portNumber);
+        if (config == null) {
+            return null;
+        } else {
+            return this.toBackendHttpConfiguration(config.name());
+        }
     }
 }

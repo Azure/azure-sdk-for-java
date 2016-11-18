@@ -20,6 +20,27 @@ public interface ApplicationGatewayRequestRoutingRule extends
     Wrapper<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway> {
 
+    /**
+     * @return rule type
+     */
+    ApplicationGatewayRequestRoutingRuleType ruleType();
+
+    /**
+     * @return the associated backend address pool
+     */
+    ApplicationGatewayBackend backend();
+
+    /**
+     * @return the associated backend HTTP settings configuration
+     */
+    ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
+
+    /**
+     * @return the associated frontend HTTP listener
+     */
+    ApplicationGatewayFrontendHttpListener frontendHttpListener();
+
+    // TODO urlPathMap()
 
     /**
      * Grouping of application gateway request routing rule definition stages.
@@ -52,7 +73,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing listener
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> fromFrontendListener(String name);
+            WithBackendHttpConfiguration<ParentT> fromFrontendListener(String name);
 
             /**
              * Associates the request routing rule with an existing frontend listener on this application gateway
@@ -60,7 +81,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number used by an existing listener
              * @return the next stage of the definition or null if the specified port number is not used by any listener
              */
-            WithBackend<ParentT> fromFrontendListenerOnPort(int portNumber);
+            WithBackendHttpConfiguration<ParentT> fromFrontendListenerOnPort(int portNumber);
         }
 
         /**
@@ -73,7 +94,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> toBackend(String name);
+            WithAttach<ParentT> withBackend(String name);
         }
 
         /**
@@ -88,7 +109,15 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing backend HTTP settings configuration
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBackendHttpConfiguration(String name);
+            WithBackend<ParentT> toBackendHttpConfiguration(String name);
+
+            /**
+             * Associates the request routing rule with an existing backend HTTP settings configuration on this application gateway
+             * configured to send traffic to the specified backend port, if such a configuration exists.
+             * @param portNumber the port number of a backend HTTP settings configuration on this application gateway
+             * @return teh next stage of the definition or null if no backend HTTP configuration exists for the specified port number
+             */
+            WithBackend<ParentT> toBackendHttpConfigurationOnPort(int portNumber);
         }
     }
 

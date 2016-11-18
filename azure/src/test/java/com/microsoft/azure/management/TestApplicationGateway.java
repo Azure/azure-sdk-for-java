@@ -97,7 +97,6 @@ public class TestApplicationGateway {
             Thread creationThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    // TODO Auto-generated method stub
                     // Create an application gateway
                     ApplicationGateway ag = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                             .withRegion(REGION)
@@ -118,13 +117,11 @@ public class TestApplicationGateway {
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
                                 .fromFrontendListenerOnPort(80)
-                                .toBackend("default")
-                                .withBackendHttpConfiguration("backhttp1")
-                                // TODO withBackendHttpConfigurationOnPort(8080)
+                                .toBackendHttpConfigurationOnPort(8080)
+                                .withBackend("default")
                                 .attach()
                             .create();
                 }
-
             });
 
             // Start the creation...
@@ -318,10 +315,10 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendListenerOnPort(443)
-                                .toBackend("default")
-                                //TODO withBackendHttpConfigurationOnPort(int port)
-                                .withBackendHttpConfiguration("httpConfig1")
+                                .fromFrontendListenerOnPort(80)
+                                .toBackendHttpConfigurationOnPort(8080)
+                                .withBackend("default")
+                                // TODO withRuleType
                                 .attach()
 
                             // SSL certificates
@@ -398,6 +395,18 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.requestRoutingRules().size() == 1);
             Assert.assertTrue(appGateway.requestRoutingRules().containsKey("rule1"));
             ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
+
+            ApplicationGatewayBackend backend = rule.backend();
+            Assert.assertTrue(backend != null);
+            Assert.assertTrue(backend.name().equalsIgnoreCase("default"));
+
+            httpConfig = rule.backendHttpConfiguration();
+            Assert.assertTrue(httpConfig != null);
+            Assert.assertTrue(httpConfig.backendPort() == 8080);
+
+            listener = rule.frontendHttpListener();
+            Assert.assertTrue(listener != null);
+            Assert.assertTrue(listener.frontendPortNumber() == 80);
 
             creationThread.join(30 * 1000);
 
@@ -619,6 +628,40 @@ public class TestApplicationGateway {
                 }
         }
 
+        // Show request routing rules
+        Map<String, ApplicationGatewayRequestRoutingRule> rules = resource.requestRoutingRules();
+        info.append("\n\tRequest routing rules: ").append(rules.size());
+        for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
+            info.append("\n\t\tName: ").append(rule.name())
+                .append("\n\t\t\tType: ").append(rule.ruleType());
+            
+            // Show backend
+            info.append("\n\t\t\tAssociated backend address pool: ");
+            ApplicationGatewayBackend backend = rule.backend();
+            if (backend == null) {
+                info.append("(None)");
+            } else {
+                info.append(backend.name());
+            }
+
+            // Show backend HTTP settings config
+            info.append("\n\t\t\tAssociated backend HTTP settings configuration: ");
+            ApplicationGatewayBackendHttpConfiguration config = rule.backendHttpConfiguration();
+            if (config == null) {
+                info.append("(None)");
+            } else {
+                info.append(config.name());
+            }
+
+            // Show frontend listener
+            info.append("\n\t\t\tAssociated frontend listener: ");
+            ApplicationGatewayFrontendHttpListener listener= rule.frontendHttpListener();
+            if (listener == null) {
+                info.append("(None)");
+            } else {
+                info.append(config.name());
+            }
+        }
         System.out.println(info.toString());
     }
 }
