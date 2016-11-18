@@ -67,9 +67,9 @@ public interface AppServiceCertificateOrder extends
     CertificateDetails signedCertificate();
 
     /**
-     * @return last CSR that was created for this order
+     * @return last certificate signing request that was created for this order
      */
-    String csr();
+    String certificateSigningRequest();
 
     /**
      * @return the intermediate certificate
@@ -190,7 +190,7 @@ public interface AppServiceCertificateOrder extends
          */
         interface WithAutoRenew {
             /**
-             * Specifies the if the certificate should be auto-renewed.
+             * Specifies if the certificate should be auto-renewed.
              * @param enabled true if the certificate order should be auto-renewed
              * @return the next stage of the app service certificate definition
              */
@@ -218,7 +218,7 @@ public interface AppServiceCertificateOrder extends
          */
         interface WithAutoRenew {
             /**
-             * Specifies the if the certificate should be auto-renewed.
+             * Specifies if the certificate should be auto-renewed.
              * @param enabled true if the certificate order should be auto-renewed
              * @return the next stage of the app service certificate definition
              */

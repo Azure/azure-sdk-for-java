@@ -265,7 +265,7 @@ public interface DomainContact extends
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithOrganization<ParentT> {
-            WithAttach<ParentT> withOrganziation(String organziation);
+            WithAttach<ParentT> withOrganization(String organziation);
         }
 
         /**

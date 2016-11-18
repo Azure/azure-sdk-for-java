@@ -144,7 +144,7 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withSniSsl() {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withSniBasedSsl() {
         inner().withSslState(SslState.SNI_ENABLED);
         return this;
     }

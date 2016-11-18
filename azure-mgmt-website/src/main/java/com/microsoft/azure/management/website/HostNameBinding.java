@@ -78,7 +78,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing domain to be specified.
+         * The stage of a hostname binding definition allowing domain to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDomain<ParentT> {
@@ -98,7 +98,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing sub-domain to be specified.
+         * The stage of a hostname binding definition allowing sub-domain to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSubDomain<ParentT> {
@@ -111,7 +111,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing DNS record type to be set.
+         * The stage of a hostname binding definition allowing DNS record type to be set.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithHostNameDnsRecordType<ParentT> {
@@ -148,7 +148,7 @@ public interface HostNameBinding
     }
 
     /**
-     * Grouping of security rule definition stages applicable as part of a web app creation.
+     * Grouping of host name binding definition stages applicable as part of a web app creation.
      */
     interface UpdateDefinitionStages {
         /**
@@ -159,7 +159,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing domain to be specified.
+         * The stage of a hostname binding definition allowing domain to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithDomain<ParentT> {
@@ -179,7 +179,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing sub-domain to be specified.
+         * The stage of a hostname binding definition allowing sub-domain to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSubDomain<ParentT> {
@@ -192,7 +192,7 @@ public interface HostNameBinding
         }
 
         /**
-         * The stage of hostname binding definition allowing DNS record type to be set.
+         * The stage of a hostname binding definition allowing DNS record type to be set.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithHostNameDnsRecordType<ParentT> {

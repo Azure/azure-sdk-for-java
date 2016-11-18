@@ -164,7 +164,7 @@ class DomainContactImpl
     }
 
     @Override
-    public DomainContactImpl withOrganziation(String organziation) {
+    public DomainContactImpl withOrganization(String organziation) {
         inner().withOrganization(organziation);
         return this;
     }

@@ -40,7 +40,7 @@ public class WebAppsTests extends AppServiceTestBase {
                     .forHostname("pineapple.graph-webapp-319.com")
                     .withReadyToUseAppServiceCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwildcert"))
 //                    .withNewKeyVault("orangecertvault")
-                    .withSniSsl()
+                    .withSniBasedSsl()
                     .attach()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
                 .create();

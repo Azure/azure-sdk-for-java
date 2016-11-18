@@ -105,7 +105,7 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public String cerBlob() {
+    public String certificateBlob() {
         return inner().cerBlob();
     }
 

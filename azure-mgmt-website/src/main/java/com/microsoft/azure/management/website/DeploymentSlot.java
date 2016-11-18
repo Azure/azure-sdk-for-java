@@ -17,6 +17,9 @@ public interface DeploymentSlot extends
         WebAppBase<DeploymentSlot>,
         Updatable<DeploymentSlot.Update> {
 
+    /**
+     * @return the web app containing this deployment slot
+     */
     WebApp parent();
 
     /**************************************************************
@@ -47,26 +50,26 @@ public interface DeploymentSlot extends
          */
         interface WithConfiguration {
             /**
-             * Create the deployment slot with brand new site configurations.
+             * Creates the deployment slot with brand new site configurations.
              * @return the next stage of the deployment slot definition
              */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withBrandNewConfiguration();
 
             /**
-             * Copy the site configurations from the web app the deployment slot belongs to.
+             * Copies the site configurations from the web app the deployment slot belongs to.
              * @return the next stage of the deployment slot definition
              */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromParent();
 
             /**
-             * Copy the site configurations from a given web app.
+             * Copies the site configurations from a given web app.
              * @param webApp the web app to copy the configurations from
              * @return the next stage of the deployment slot definition
              */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromWebApp(WebApp webApp);
 
             /**
-             * Copy the site configurations from a given deployment slot.
+             * Copies the site configurations from a given deployment slot.
              * @param deploymentSlot the deployment slot to copy the configurations from
              * @return the next stage of the deployment slot definition
              */

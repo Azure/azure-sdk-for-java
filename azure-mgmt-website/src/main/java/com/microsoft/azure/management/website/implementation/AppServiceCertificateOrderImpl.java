@@ -126,7 +126,7 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public String csr() {
+    public String certificateSigningRequest() {
         return inner().csr();
     }
 

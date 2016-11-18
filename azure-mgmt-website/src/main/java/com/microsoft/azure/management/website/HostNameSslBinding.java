@@ -60,7 +60,7 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing hostname to be specified.
+         * The stage of a hostname SSL binding definition allowing hostname to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithHostname<ParentT> {
@@ -73,12 +73,12 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing certificate information to be specified.
+         * The stage of a hostname SSL binding definition allowing certificate information to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithCertificate<ParentT> {
             /**
-             * Upload a PFX certificate.
+             * Uploads a PFX certificate.
              * @param pfxFile the PFX certificate file to upload
              * @param password the password to the certificate
              * @return the next stage of the hostname SSL binding definition
@@ -86,7 +86,7 @@ public interface HostNameSslBinding extends
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
 
             /**
-             * Place a new App Service certificate order to use for the hostname
+             * Places a new App Service certificate order to use for the hostname
              * @param certificateOrderName the name of the certificate order
              * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
@@ -94,7 +94,7 @@ public interface HostNameSslBinding extends
             WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 
             /**
-             * Use a ready-to-use certificate order. This is usually useful for reusing wildcard certificates.
+             * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.
              * @param certificateOrder the ready-to-use certificate order
              * @return the next stage of the hostname SSL binding definition
              */
@@ -102,19 +102,19 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing key vault for certificate store to be specified.
+         * The stage of a hostname SSL binding definition allowing key vault for certificate store to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithKeyVault<ParentT> {
             /**
-             * Store the certificate in an existing vault.
+             * Stores the certificate in an existing vault.
              * @param vault the existing vault to use
              * @return the next stage of the hostname SSL binding definition
              */
             WithSslType<ParentT> withExistingKeyVault(Vault vault);
 
             /**
-             * Create a new key vault and store the certificate in it.
+             * Creates a new key vault to store the certificate.
              * @param vaultName the name of the key vault to create
              * @return the next stage of the hostname SSL binding definition
              */
@@ -122,18 +122,18 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing SSL type to be specified.
+         * The stage of a hostname SSL binding definition allowing SSL type to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSslType<ParentT> {
             /**
-             * Use Server Name Indication (SNI) based SSL.
+             * Uses Server Name Indication (SNI) based SSL.
              * @return the next stage of the hostname SSL binding definition
              */
-            WithAttach<ParentT> withSniSsl();
+            WithAttach<ParentT> withSniBasedSsl();
 
             /**
-             * Use IP based SSL. Only one hostname can be bound to IP based SSL.
+             * Uses IP based SSL. Only one hostname can be bound to IP based SSL.
              * @return the next stage of the hostname SSL binding definition
              */
             WithAttach<ParentT> withIpBasedSsl();
@@ -176,7 +176,7 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing hostname to be specified.
+         * The stage of a hostname SSL binding definition allowing hostname to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithHostname<ParentT> {
@@ -189,12 +189,12 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing certificate information to be specified.
+         * The stage of a hostname SSL binding definition allowing certificate information to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithCertificate<ParentT> {
             /**
-             * Upload a PFX certificate.
+             * Uploads a PFX certificate.
              * @param pfxFile the PFX certificate file to upload
              * @param password the password to the certificate
              * @return the next stage of the hostname SSL binding definition
@@ -202,7 +202,7 @@ public interface HostNameSslBinding extends
             WithSslType<ParentT> withPfxCertificateToUpload(File pfxFile, String password);
 
             /**
-             * Place a new App Service certificate order to use for the hostname
+             * Places a new App Service certificate order to use for the hostname
              * @param certificateOrderName the name of the certificate order
              * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
@@ -210,7 +210,7 @@ public interface HostNameSslBinding extends
             WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 
             /**
-             * Use a ready-to-use certificate order. This is usually useful for reusing wildcard certificates.
+             * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.
              * @param certificateOrder the ready-to-use certificate order
              * @return the next stage of the hostname SSL binding definition
              */
@@ -218,19 +218,19 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing key vault for certificate store to be specified.
+         * The stage of a hostname SSL binding definition allowing key vault for certificate store to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithKeyVault<ParentT> {
             /**
-             * Store the certificate in an existing vault.
+             * Stores the certificate in an existing vault.
              * @param vault the existing vault to use
              * @return the next stage of the hostname SSL binding definition
              */
             WithSslType<ParentT> withExistingKeyVault(Vault vault);
 
             /**
-             * Create a new key vault and store the certificate in it.
+             * Creates a new key vault to store the certificate.
              * @param vaultName the name of the key vault to create
              * @return the next stage of the hostname SSL binding definition
              */
@@ -238,18 +238,18 @@ public interface HostNameSslBinding extends
         }
 
         /**
-         * The stage of hostname SSL binding definition allowing SSL type to be specified.
+         * The stage of a hostname SSL binding definition allowing SSL type to be specified.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithSslType<ParentT> {
             /**
-             * Use Server Name Indication (SNI) based SSL.
+             * Uses Server Name Indication (SNI) based SSL.
              * @return the next stage of the hostname SSL binding definition
              */
-            WithAttach<ParentT> withSniSsl();
+            WithAttach<ParentT> withSniBasedSsl();
 
             /**
-             * Use IP based SSL. Only one hostname can be bound to IP based SSL.
+             * Uses IP based SSL. Only one hostname can be bound to IP based SSL.
              * @return the next stage of the hostname SSL binding definition
              */
             WithAttach<ParentT> withIpBasedSsl();

@@ -59,14 +59,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     Set<String> enabledHostNames();
 
     /**
-     * @return management information availability state for the web app.
-     *
-     * Normal means that the site is running correctly and that
-     * management information for the site is available.
-     * Limited means that only partial management information for
-     * the site is available and that detailed site information is
-     * unavailable. Possible values include: 'Normal', 'Limited',
-     * 'DisasterRecoveryMode'.
+     * @return management information availability state for the web app
      */
     SiteAvailabilityState availabilityState();
 
@@ -163,11 +156,6 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     String defaultHostName();
 
     /**
-     * @return the mapping from host names and the host name bindings
-     */
-    Map<String, HostNameBinding> getHostNameBindings();
-
-    /**
      * @return the default documents
      */
     List<String> defaultDocuments();
@@ -238,17 +226,22 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     String autoSwapSlotName();
 
     /**
-     * Start the web app or deployment slot.
+     * @return the mapping from host names and the host name bindings
+     */
+    Map<String, HostNameBinding> getHostNameBindings();
+
+    /**
+     * Starts the web app or deployment slot.
      */
     void start();
 
     /**
-     * Stop the web app or deployment slot.
+     * Stops the web app or deployment slot.
      */
     void stop();
 
     /**
-     * Restart the web app or deployment slot.
+     * Restarts the web app or deployment slot.
      */
     void restart();
 
@@ -277,13 +270,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithAppServicePlan<FluentT> {
             /**
-             * Create a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
              * @return the next stage of web app definition
              */
             WithCreate<FluentT> withNewFreeAppServicePlan();
 
             /**
-             * Create a new app service plan to use.
+             * Creates a new app service plan to use.
              * @param name the name of the app service plan
              * @param pricingTier the pricing tier to use
              * @return the next stage of web app definition
@@ -291,7 +284,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             WithHostNameBinding<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
 
             /**
-             * Use an existing app service plan for the web app.
+             * Uses an existing app service plan for the web app.
              * @param appServicePlanName the name of the existing app service plan
              * @return the next stage of web app definition
              */
@@ -304,13 +297,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithHostNameBinding<FluentT> extends WithCreate<FluentT> {
             /**
-             * Start the definition of a new host name binding.
+             * Starts the definition of a new host name binding.
              * @return the first stage of a hostname binding definition
              */
             HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineHostnameBinding();
 
             /**
-             * Define a list of host names of an Azure managed domain. The DNS record type is
+             * Defines a list of host names of an Azure managed domain. The DNS record type is
              * defaulted to be CNAME except for the root level domain ("@").
              * @param domain the Azure managed domain
              * @param hostnames the list of sub-domains
@@ -319,7 +312,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             WithHostNameSslBinding<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
             /**
-             * Define a list of host names of an externally purchased domain. The hostnames
+             * Defines a list of host names of an externally purchased domain. The hostnames
              * must be configured before hand to point to the web app.
              * @param domain the external domain name
              * @param hostnames the list of sub-domains
@@ -334,7 +327,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithHostNameSslBinding<FluentT> extends WithHostNameBinding<FluentT> {
             /**
-             * Start a definition of an SSL binding.
+             * Starts a definition of an SSL binding.
              * @return the first stage of an SSL binding definition
              */
             HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBinding();
@@ -346,7 +339,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithSiteEnabled<FluentT> {
             /**
-             * Disable the web app upon creation.
+             * Disables the web app upon creation.
              * @return the next stage of web app definition
              */
             WithCreate<FluentT> withAppDisabledOnCreation();
@@ -358,7 +351,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithScmSiteAlsoStopped<FluentT> {
             /**
-             * Specify if SCM site is also stopped when the web app is stopped.
+             * Specifies if SCM site is also stopped when the web app is stopped.
              * @param scmSiteAlsoStopped true if SCM site is also stopped
              * @return the next stage of web app definition
              */
@@ -371,7 +364,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithClientAffinityEnabled<FluentT> {
             /**
-             * Specify if client affinity is enabled.
+             * Specifies if client affinity is enabled.
              * @param enabled true if client affinity is enabled
              * @return the next stage of web app definition
              */
@@ -384,7 +377,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithClientCertEnabled<FluentT> {
             /**
-             * Specify if client cert is enabled.
+             * Specifies if client cert is enabled.
              * @param enabled true if client cert is enabled
              * @return the next stage of web app definition
              */
@@ -468,7 +461,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             WithCreate<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
 
             /**
-             * Specifies slot name to auto-swap when a deployment is completed in this web app / deployment slot.
+             * Specifies the slot name to auto-swap when a deployment is completed in this web app / deployment slot.
              * @param slotName the name of the slot, or 'production', to auto-swap
              * @return the next stage of web app definition
              */
@@ -488,14 +481,14 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             WithCreate<FluentT> withRemoteDebuggingDisabled();
 
             /**
-             * Add a default document.
+             * Adds a default document.
              * @param document default document
              * @return the next stage of web app definition
              */
             WithCreate<FluentT> withDefaultDocument(String document);
 
             /**
-             * Add a list of default documents.
+             * Adds a list of default documents.
              * @param documents list of default documents
              * @return the next stage of web app definition
              */
@@ -535,13 +528,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithAppServicePlan<FluentT> {
             /**
-             * Create a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
              * @return the next stage of web app update
              */
             Update<FluentT> withNewFreeAppServicePlan();
 
             /**
-             * Create a new app service plan to use.
+             * Creates a new app service plan to use.
              * @param name the name of the app service plan
              * @param pricingTier the pricing tier to use
              * @return the next stage of web app update
@@ -549,7 +542,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
 
             /**
-             * Use an existing app service plan for the web app.
+             * Uses an existing app service plan for the web app.
              * @param appServicePlanName the name of the existing app service plan
              * @return the next stage of web app update
              */
@@ -562,13 +555,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithHostNameBinding<FluentT> {
             /**
-             * Start the definition of a new host name binding.
+             * Starts the definition of a new host name binding.
              * @return the first stage of a hostname binding update
              */
             HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineHostnameBinding();
 
             /**
-             * Define a list of host names of an Azure managed domain. The DNS record type is
+             * Defines a list of host names of an Azure managed domain. The DNS record type is
              * defaulted to be CNAME except for the root level domain ("@").
              * @param domain the Azure managed domain
              * @param hostnames the list of sub-domains
@@ -577,7 +570,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withManagedHostnameBindings(AppServiceDomain domain, String... hostnames);
 
             /**
-             * Define a list of host names of an externally purchased domain. The hostnames
+             * Defines a list of host names of an externally purchased domain. The hostnames
              * must be configured before hand to point to the web app.
              * @param domain the external domain name
              * @param hostnames the list of sub-domains
@@ -586,7 +579,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
 
             /**
-             * Unbind a hostname from the web app.
+             * Unbinds a hostname from the web app.
              * @param hostname the hostname to unbind
              * @return the next stage of web app update
              */
@@ -599,13 +592,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithHostNameSslBinding<FluentT> {
             /**
-             * Start a definition of an SSL binding.
+             * Starts a definition of an SSL binding.
              * @return the first stage of an SSL binding definition
              */
             HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
 
             /**
-             * Remove an SSL binding for a specific hostname.
+             * Removes an SSL binding for a specific hostname.
              * @param hostname the hostname to remove SSL certificate from
              * @return the next stage of web app update
              */
@@ -618,7 +611,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithSiteEnabled<FluentT> {
             /**
-             * Disable the web app upon creation.
+             * Disables the web app upon creation.
              * @return the next stage of web app update
              */
             Update<FluentT> withAppDisabledOnCreation();
@@ -630,7 +623,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithScmSiteAlsoStopped<FluentT> {
             /**
-             * Specify if SCM site is also stopped when the web app is stopped.
+             * Specifies if SCM site is also stopped when the web app is stopped.
              * @param scmSiteAlsoStopped true if SCM site is also stopped
              * @return the next stage of web app update
              */
@@ -643,7 +636,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithClientAffinityEnabled<FluentT> {
             /**
-             * Specify if client affinity is enabled.
+             * Specifies if client affinity is enabled.
              * @param enabled true if client affinity is enabled
              * @return the next stage of web app update
              */
@@ -656,7 +649,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithClientCertEnabled<FluentT> {
             /**
-             * Specify if client cert is enabled.
+             * Specifies if client cert is enabled.
              * @param enabled true if client cert is enabled
              * @return the next stage of web app update
              */
@@ -733,7 +726,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withManagedPipelineMode(ManagedPipelineMode managedPipelineMode);
 
             /**
-             * Specifies slot name to auto-swap when a deployment is completed in this web app / deployment slot.
+             * Specifies the slot name to auto-swap when a deployment is completed in this web app / deployment slot.
              * @param slotName the name of the slot, or 'production', to auto-swap
              * @return the next stage of web app update
              */
@@ -753,14 +746,14 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withRemoteDebuggingDisabled();
 
             /**
-             * Add a default document.
+             * Adds a default document.
              * @param document default document
              * @return the next stage of web app update
              */
             Update<FluentT> withDefaultDocument(String document);
 
             /**
-             * Add a list of default documents.
+             * Adds a list of default documents.
              * @param documents list of default documents
              * @return the next stage of web app update
              */

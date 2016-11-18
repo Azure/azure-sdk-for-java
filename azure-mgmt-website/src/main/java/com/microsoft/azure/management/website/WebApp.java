@@ -15,6 +15,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 public interface WebApp extends
         WebAppBase<WebApp>,
         Updatable<WebApp.Update> {
+    /**
+     * @return the entry point to deployment slot management API under the web app
+     */
     DeploymentSlots deploymentSlots();
 
     /**************************************************************
