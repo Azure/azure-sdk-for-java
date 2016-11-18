@@ -584,6 +584,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of web app update
              */
             Update<FluentT> withThirdPartyHostnameBinding(String domain, String... hostnames);
+
+            /**
+             * Unbind a hostname from the web app.
+             * @param hostname the hostname to unbind
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withoutHostnameBinding(String hostname);
         }
 
         /**
@@ -596,6 +603,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the first stage of an SSL binding definition
              */
             HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
+
+            /**
+             * Remove an SSL binding for a specific hostname.
+             * @param hostname the hostname to remove SSL certificate from
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withoutSslBinding(String hostname);
         }
 
         /**

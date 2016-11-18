@@ -71,6 +71,9 @@ public final class Utils {
         });
     }
 
+    /**
+     * A Retrofit service used to download a file.
+     */
     private interface FileService {
         @GET
         Observable<ResponseBody> download(@Url String url);

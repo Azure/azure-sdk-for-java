@@ -14,6 +14,7 @@ import com.microsoft.azure.management.website.WebApp;
 import rx.Observable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,11 @@ class WebAppImpl
     }
 
     @Override
+    Observable<Object> deleteHostNameBinding(String hostname) {
+        return client.deleteHostNameBindingAsync(resourceGroupName(), name(), hostname);
+    }
+
+    @Override
     public DeploymentSlots deploymentSlots() {
         if (deploymentSlots == null) {
             deploymentSlots = new DeploymentSlotsImpl(this, client, myManager);
@@ -63,12 +69,12 @@ class WebAppImpl
         for (HostNameBindingInner inner : collectionInner) {
             hostNameBindings.add(new HostNameBindingImpl<>(inner, this, client));
         }
-        return Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
+        return Collections.unmodifiableMap(Maps.uniqueIndex(hostNameBindings, new Function<HostNameBinding, String>() {
             @Override
             public String apply(HostNameBinding input) {
                 return input.name().replace(name() + "/", "");
             }
-        });
+        }));
     }
 
     @Override

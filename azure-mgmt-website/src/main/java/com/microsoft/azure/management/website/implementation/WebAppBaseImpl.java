@@ -68,7 +68,9 @@ abstract class WebAppBaseImpl<
     private Set<String> outboundIpAddressesSet;
     private Map<String, HostNameSslState> hostNameSslStateMap;
     private Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
+    private List<String> hostNameBindingsToDelete;
     private Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToCreate;
+    private Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToDelete;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -80,6 +82,7 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     private FluentT normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
+        this.hostNameBindingsToDelete = new ArrayList<>();
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -347,6 +350,8 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig);
 
+    abstract Observable<Object> deleteHostNameBinding(String hostname);
+
     @Override
     public Observable<FluentT> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
@@ -362,7 +367,14 @@ abstract class WebAppBaseImpl<
                         for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
                             bindingObservables.add(binding.createAsync());
                         }
-                        hostNameBindingsToCreate.clear();
+                        for (String binding: hostNameBindingsToDelete) {
+                            bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {
+                                @Override
+                                public HostNameBinding call(Object o) {
+                                    return null;
+                                }
+                            }));
+                        }
                         if (bindingObservables.isEmpty()) {
                             return Observable.just(site);
                         } else {
@@ -521,6 +533,22 @@ abstract class WebAppBaseImpl<
                     .withSubDomain(hostname)
                     .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                     .attach();
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutHostnameBinding(String hostname) {
+        hostNameBindingsToDelete.add(hostname);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutSslBinding(String hostname) {
+        if (hostNameSslStateMap.containsKey(hostname)) {
+            hostNameSslStateMap.get(hostname).withSslState(SslState.DISABLED).withToUpdate(true);
         }
         return (FluentImplT) this;
     }

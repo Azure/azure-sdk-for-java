@@ -122,4 +122,9 @@ class DeploymentSlotImpl
     Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
         return client.createOrUpdateConfigurationSlotAsync(resourceGroupName, parent.name(), name, siteConfig);
     }
+
+    @Override
+    Observable<Object> deleteHostNameBinding(String hostname) {
+        return client.deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
+    }
 }
