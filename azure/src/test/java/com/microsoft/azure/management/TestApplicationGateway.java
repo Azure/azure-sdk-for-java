@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -33,6 +34,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -345,6 +347,14 @@ public class TestApplicationGateway {
             ApplicationGateway appGateway = resources.getById(resourceId);
             Assert.assertTrue(appGateway != null);
 
+            // Verify IP configs
+            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
+            ApplicationGatewayIpConfiguration ipConfig = appGateway.ipConfigurations().values().iterator().next();
+            Assert.assertTrue(ipConfig != null);
+            Subnet subnet = ipConfig.getSubnet();
+            Assert.assertTrue(subnet != null);
+            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
+
             // Verify backends
             Assert.assertTrue(appGateway.backends().size() == 3);
             Assert.assertTrue(appGateway.backends().containsKey("default"));
@@ -557,6 +567,15 @@ public class TestApplicationGateway {
                 .append("\n\tSKU: ").append(resource.sku().toString())
                 .append("\n\tOperational state: ").append(resource.operationalState())
                 .append("\n\tSSL policy: ").append(resource.sslPolicy());
+
+        // Show IP configs
+        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
+        info.append("\n\tIP configurations: ").append(ipConfigs.size());
+        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
+            info.append("\n\t\tName: ").append(ipConfig.name())
+                .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
+                .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
+        }
 
         // Show frontends
         Map<String, ApplicationGatewayFrontend> frontends = resource.frontends();

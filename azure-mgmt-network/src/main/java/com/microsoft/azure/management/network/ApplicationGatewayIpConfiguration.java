@@ -21,6 +21,23 @@ public interface ApplicationGatewayIpConfiguration extends
     ChildResource<ApplicationGateway> {
 
     /**
+     * @return the resource ID of the virtual network the application gateway is in
+     */
+    String networkId();
+
+    /**
+     * @return the name of the subnet the application gateway is in
+     */
+    String subnetName();
+
+    /**
+     * @return the subnet the application gateway is in
+     * <p>
+     * Note, this results in a separate call to Azure.
+     */
+    Subnet getSubnet();
+
+    /**
      * Grouping of application gateway IP configuration definition stages.
      */
     interface DefinitionStages {

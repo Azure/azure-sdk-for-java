@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
 /**
@@ -59,5 +60,41 @@ class ApplicationGatewayIpConfigurationImpl
     @Override
     public ApplicationGatewayImpl attach() {
         return this.parent().withConfig(this);
+    }
+
+    @Override
+    public String networkId() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String subnetName() {
+        SubResource subnetRef = this.inner().subnet();
+        if (subnetRef != null) {
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Subnet getSubnet() {
+        String vnetId = this.networkId();
+        if (vnetId == null) {
+            return null;
+        }
+
+        String subnetName = this.subnetName();
+        if (subnetName == null) {
+            return null;
+        }
+
+        Network vnet = this.parent().manager().networks().getById(vnetId);
+        return vnet.subnets().get(subnetName);
     }
 }

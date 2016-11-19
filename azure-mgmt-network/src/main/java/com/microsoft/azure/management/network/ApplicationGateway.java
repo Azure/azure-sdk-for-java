@@ -47,6 +47,11 @@ public interface ApplicationGateway extends
     ApplicationGatewaySslPolicy sslPolicy();
 
     /**
+     * @return IP configurations of this application gateway, indexed by name
+     */
+    Map<String, ApplicationGatewayIpConfiguration> ipConfigurations();
+
+    /**
      * @return backend address pools of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayBackend> backends();

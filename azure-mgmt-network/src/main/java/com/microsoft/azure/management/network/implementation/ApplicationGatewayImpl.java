@@ -51,7 +51,7 @@ class ApplicationGatewayImpl
         ApplicationGateway.Definition,
         ApplicationGateway.Update {
 
-    private Map<String, ApplicationGatewayIpConfiguration> configs;
+    private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
@@ -156,12 +156,12 @@ class ApplicationGatewayImpl
     }
 
     private void initializeConfigsFromInner() {
-        this.configs = new TreeMap<>();
+        this.ipConfigs = new TreeMap<>();
         List<ApplicationGatewayIPConfigurationInner> inners = this.inner().gatewayIPConfigurations();
         if (inners != null) {
             for (ApplicationGatewayIPConfigurationInner inner : inners) {
                 ApplicationGatewayIpConfigurationImpl config = new ApplicationGatewayIpConfigurationImpl(inner, this);
-                this.configs.put(inner.name(), config);
+                this.ipConfigs.put(inner.name(), config);
             }
         }
     }
@@ -178,7 +178,7 @@ class ApplicationGatewayImpl
         this.creatablePIPKeys.clear();
 
         // Reset and update configs
-        this.inner().withGatewayIPConfigurations(innersFromWrappers(this.configs.values()));
+        this.inner().withGatewayIPConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
         // Reset and update frontends
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
@@ -314,7 +314,7 @@ class ApplicationGatewayImpl
         if (config == null) {
             return null;
         } else {
-            this.configs.put(config.name(), config);
+            this.ipConfigs.put(config.name(), config);
             return this;
         }
     }
@@ -333,7 +333,7 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
-        ApplicationGatewayIpConfiguration config = this.configs.get(name);
+        ApplicationGatewayIpConfiguration config = this.ipConfigs.get(name);
         if (config == null) {
             ApplicationGatewayIPConfigurationInner inner = new ApplicationGatewayIPConfigurationInner()
                     .withName(name);
@@ -620,11 +620,11 @@ class ApplicationGatewayImpl
          */
 
         // Attempt to get the default config first
-        ApplicationGatewayIpConfiguration ipConfig = this.configs.get(DEFAULT);
+        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
         if (ipConfig == null) {
             // No default config, so get the first IP config that exists
-            ApplicationGatewayIpConfiguration[] ipConfigArray = new ApplicationGatewayIpConfiguration[this.configs.values().size()];
-            ipConfigArray = this.configs.values().toArray(ipConfigArray);
+            ApplicationGatewayIpConfiguration[] ipConfigArray = new ApplicationGatewayIpConfiguration[this.ipConfigs.values().size()];
+            ipConfigArray = this.ipConfigs.values().toArray(ipConfigArray);
             if (ipConfigArray.length > 0) {
                 ipConfig = ipConfigArray[0];
             } else {
@@ -761,6 +761,11 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners() {
         return Collections.unmodifiableMap(this.httpListeners);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayIpConfiguration> ipConfigurations() {
+        return Collections.unmodifiableMap(this.ipConfigs);
     }
 
     @Override
