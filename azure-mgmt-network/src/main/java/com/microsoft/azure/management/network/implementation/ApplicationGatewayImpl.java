@@ -32,6 +32,7 @@ import java.util.TreeMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
 import rx.Observable;
@@ -186,19 +187,65 @@ class ApplicationGatewayImpl
         // Reset and update backends
         this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
 
-        // Reset and update backend HTTP configs
+        // Reset and update backend HTTP settings configs
         this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.httpListeners.values()));
+        for (ApplicationGatewayFrontendHttpListener listener : this.httpListeners.values()) {
+            SubResource ref;
+
+            // Clear deleted frontend references
+            ref = listener.inner().frontendIPConfiguration();
+            if (ref != null
+                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                listener.inner().withFrontendIPConfiguration(null);
+            }
+
+            // Clear deleted frontend port references
+            ref = listener.inner().frontendPort();
+            if (ref != null
+                    && !this.frontendPorts().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                listener.inner().withFrontendPort(null);
+            }
+
+            // Clear deleted SSL certificate references
+            ref = listener.inner().sslCertificate();
+            if (ref != null
+                    && !this.sslCertificates().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                listener.inner().withSslCertificate(null);
+            }
+        }
 
         // Reset and update request routing rules
         this.inner().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
+        for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
+            SubResource ref;
+
+            // Clear deleted backends
+            ref = rule.inner().backendAddressPool();
+            if (ref != null
+                    && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                rule.inner().withBackendAddressPool(null);
+            }
+
+            // Clear deleted backend HTTP configs
+            ref = rule.inner().backendHttpSettings();
+            if (ref != null
+                    && !this.backendHttpConfigurations().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                rule.inner().withBackendHttpSettings(null);
+            }
+
+            // Clear deleted frontend HTTP listeners
+            ref = rule.inner().httpListener();
+            if (ref != null
+                    && !this.frontendHttpListeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                rule.inner().withHttpListener(null);
+            }
+        }
 
         // Reset and update SSL certs
         this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
-
-        // TODO: Clean up invalid orphaned references between children
     }
 
     @Override

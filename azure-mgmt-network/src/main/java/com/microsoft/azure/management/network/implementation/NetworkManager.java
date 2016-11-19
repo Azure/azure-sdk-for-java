@@ -212,7 +212,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
         }
 
         String vnetId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
-        String subnetName = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+        String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
 
         if (vnetId == null || subnetName == null) {
             return null;
