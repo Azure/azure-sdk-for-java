@@ -730,6 +730,66 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayImpl withoutIpConfiguration(String ipConfigurationName) {
+        this.ipConfigs.remove(ipConfigurationName);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutFrontend(String frontendName) {
+        this.frontends.remove(frontendName);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutFrontendPort(String name) {
+        if (this.inner().frontendPorts() == null) {
+            return this;
+        }
+
+        for (int i = 0; i < this.inner().frontendPorts().size(); i++) {
+            ApplicationGatewayFrontendPortInner inner = this.inner().frontendPorts().get(i);
+            if (inner.name().equalsIgnoreCase(name)) {
+                this.inner().frontendPorts().remove(i);
+                break;
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutFrontendPort(int portNumber) {
+        for (int i = 0; i < this.inner().frontendPorts().size(); i++) {
+            ApplicationGatewayFrontendPortInner inner = this.inner().frontendPorts().get(i);
+            if (inner.port().equals(portNumber)) {
+                this.inner().frontendPorts().remove(i);
+                break;
+            }
+        }
+
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutCertificate(String name) {
+        this.sslCerts.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutFrontendHttpListener(String name) {
+        this.httpListeners.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutRequestRoutingRule(String name) {
+        this.rules.remove(name);
+        return this;
+    }
+
+    @Override
     public ApplicationGatewayImpl withoutBackend(String backendName) {
         this.backends.remove(backendName);
         return this;

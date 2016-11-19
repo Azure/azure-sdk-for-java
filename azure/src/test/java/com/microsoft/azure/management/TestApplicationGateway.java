@@ -439,12 +439,15 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
+            // TODO: Fix this - this test doesn't work yet
+
             // Prepare a separate thread for running the update to make the test go faster
             Thread updateThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     resource.update()
                         .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                        .withoutFrontendHttpListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
                         .withBackendIpAddress("11.1.1.3", "backend2")

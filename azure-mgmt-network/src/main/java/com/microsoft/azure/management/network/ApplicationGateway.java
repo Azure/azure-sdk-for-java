@@ -463,7 +463,23 @@ public interface ApplicationGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of an application gateway update allowing to add a backend.
+         * The stage of an application gateway update allowing to modify IP configurations.
+         */
+        interface WithIpConfig {
+            /**
+             * Removes the specified IP configuration.
+             * <p>
+             * Note that removing an IP configuration referenced by other settings may break the application gateway.
+             * Also, there must be at least one IP configuration for the application gateway to function.
+             * @param backendName the name of an existing IP configuration
+             * @return the next stage of the update
+             */
+            Update withoutIpConfiguration(String ipConfigurationName);
+
+            // TODO Other IP config updates...
+        }
+        /**
+         * The stage of an application gateway update allowing to modify backends.
          */
         interface WithBackend {
             /**
@@ -522,7 +538,10 @@ public interface ApplicationGateway extends
             Update withoutBackendIpAddress(String ipAddress);
 
             /**
-             * Removes the specified backend from this application gateway.
+            /**
+             * Removes the specified backend.
+             * <p>
+             * Note that removing a backend referenced by other settings may break the application gateway.
              * @param backendName the name of an existing backend on this application gateway
              * @return the next stage of the update
              */
@@ -534,6 +553,60 @@ public interface ApplicationGateway extends
              * @return the first stage of an update of the backend
              */
             ApplicationGatewayBackend.Update updateBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify frontends.
+         */
+        interface WithFrontend {
+            /**
+             * Removes the specified frontend IP configuration.
+             * <p>
+             * Note that removing a frontend referenced by other settings may break the application gateway.
+             * @param frontendName
+             * @return the next stage of the update
+             */
+            Update withoutFrontend(String frontendName);
+
+            // TODO Other frontend updates...
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to modify frontend ports.
+         */
+        interface WithFrontendPort {
+            /**
+             * Creates a port with an auto-generated name.
+             * @param portNumber a port number
+             * @return the next stage of the definition
+             */
+            Update withFrontendPort(int portNumber);
+
+            /**
+             * Creates a port.
+             * @param portNumber a port number
+             * @param name the name to assign to the port
+             * @return the next stage of the definition
+             */
+            Update withFrontendPort(int portNumber, String name);
+
+            /**
+             * Removes the specified frontend port.
+             * <p>
+             * Note that removing a frontend port referenced by other settings may break the appllication gateway.
+             * @param name the name of the frontend port to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontendPort(String name);
+
+            /**
+             * Removes the specified frontend port.
+             * <p>
+             * Note that removing a frontend port referenced by other settings may break the appllication gateway.
+             * @param portNumber the port number of the frontend port to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontendPort(int portNumber);
         }
 
         /**
@@ -550,9 +623,84 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway update allowing to add a backend HTTP configuration.
+         * The stage of an application gateway update allowing to modify SSL certificates.
+         */
+        interface WithSslCert {
+            /**
+             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway.
+             * @param name a unique name for the certificate
+             * @return the first stage of the certificate definition
+             */
+            ApplicationGatewaySslCertificate.UpdateDefinitionStages.Blank<Update> defineSslCertificate(String name);
+
+            /**
+             * Removes the specified SSL certificate from the application gateway.
+             * <p>
+             * Note that removing a certificate referenced by other settings may break the application gateway
+             * @param name the name of the certificate to remove
+             * @return the next stage of the update
+             */
+            Update withoutCertificate(String name);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify HTTP listeners.
+         */
+        interface WithHttpListener {
+            /**
+             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
+             * @param name a unique name for the HTTP listener
+             * @return the first stage of the HTTP listener definition
+             */
+            ApplicationGatewayFrontendHttpListener.UpdateDefinitionStages.Blank<Update> defineFrontendHttpListener(String name);
+
+            /**
+             * Associates a new frontend HTTP listener with the specified port number and an automatically generated name,
+             * if no listener associated with the specified frontend port already exists.
+             * @param portNumber an unused frontend port number
+             * @return the next stage of the definition
+             */
+            Update withFrontendHttpListenerOnPort(int portNumber);
+
+            /**
+             * Associates a new frontend HTTP listener with the specified port number and the specified name,
+             * if neither this port number nor name is already taken.
+             * @param portNumber a frontend port number
+             * @param name the name for the new listener
+             * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
+             */
+            Update withFrontendHttpListenerOnPort(int portNumber, String name);
+
+            /**
+             * Removes a frontend HTTP listener from the application gateway.
+             * <p>
+             * Note that removing a listener referenced by other settings may break the application gateway.
+             * @param name the name of the listener to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontendHttpListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify backend HTTP configurations.
          */
         interface WithBackendHttpConfig {
+            /**
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on and an automatically generated name.
+             * @param portNumber the port number for the backend HTTP configuration
+             * @return the next stage of the update
+             */
+            Update withBackendHttpConfigurationOnPort(int portNumber);
+
+            /**
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
+             * and the specified name that can be referenced from request routing rules.
+             * @param portNumber
+             * @param backendHttpConfigurationName
+             * @return the next stage of the update
+             */
+            Update withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
+
             /**
              * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
              * @param name a unique name for the backend HTTP configuration
@@ -574,6 +722,25 @@ public interface ApplicationGateway extends
              */
             ApplicationGatewayBackendHttpConfiguration.Update updateBackendHttpConfiguration(String name);
         }
+
+        /**
+         * The stage of an application gateway update allowing to modify request routing rules.
+         */
+        interface WithRequestRoutingRule {
+            /**
+             * Begins the definition of a new application gateway request routing rule to be attached to the gateway.
+             * @param name a unique name for the request routing rule
+             * @return the first stage of the request routing rule
+             */
+            ApplicationGatewayRequestRoutingRule.UpdateDefinitionStages.Blank<Update> defineRequestRoutingRule(String name);
+
+            /**
+             * Removes a request routing rule from the application gateway.
+             * @param name the name of the request routing rule to remove
+             * @return the next stage of the update
+             */
+            Update withoutRequestRoutingRule(String name);
+        }
     }
 
     /**
@@ -587,6 +754,12 @@ public interface ApplicationGateway extends
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithSku,
         UpdateStages.WithBackend,
-        UpdateStages.WithBackendHttpConfig {
+        UpdateStages.WithBackendHttpConfig,
+        UpdateStages.WithIpConfig,
+        UpdateStages.WithFrontend,
+        UpdateStages.WithFrontendPort,
+        UpdateStages.WithSslCert,
+        UpdateStages.WithHttpListener,
+        UpdateStages.WithRequestRoutingRule {
     }
 }
