@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
@@ -202,6 +203,27 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.networkUsages = new NetworkUsagesImpl(super.innerManagementClient);
         }
         return this.networkUsages;
+    }
+
+    // Internal utility funtion
+    Subnet getAssociatedSubnet(SubResource subnetRef) {
+        if (subnetRef == null) {
+            return null;
+        }
+
+        String vnetId = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+        String subnetName = ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+
+        if (vnetId == null || subnetName == null) {
+            return null;
+        }
+
+        Network network = this.networks().getById(vnetId);
+        if (network == null) {
+            return null;
+        }
+
+        return network.subnets().get(subnetName);
     }
 
     // Internal utility function

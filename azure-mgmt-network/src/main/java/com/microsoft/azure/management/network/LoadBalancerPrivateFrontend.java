@@ -21,6 +21,13 @@ public interface LoadBalancerPrivateFrontend extends
     HasSubnet {
 
     /**
+     * @return associated subnet
+     * <p>
+     * Note this makes a separate call to Azure.
+     */
+    Subnet getSubnet();
+
+    /**
      * Grouping of private frontend definition stages.
      */
     interface DefinitionStages {

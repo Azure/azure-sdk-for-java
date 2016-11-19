@@ -50,7 +50,7 @@ public interface ApplicationGatewayIpConfiguration extends
 
         /**
          * The stage of an application gateway IP configuration definition allowing to specify the subnet the application gateway is on.
-         * @param <ParentT> the parent type
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithContainingSubnet<ParentT> {
             /**

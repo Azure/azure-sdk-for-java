@@ -84,17 +84,6 @@ class ApplicationGatewayIpConfigurationImpl
 
     @Override
     public Subnet getSubnet() {
-        String vnetId = this.networkId();
-        if (vnetId == null) {
-            return null;
-        }
-
-        String subnetName = this.subnetName();
-        if (subnetName == null) {
-            return null;
-        }
-
-        Network vnet = this.parent().manager().networks().getById(vnetId);
-        return vnet.subnets().get(subnetName);
+        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
     }
 }

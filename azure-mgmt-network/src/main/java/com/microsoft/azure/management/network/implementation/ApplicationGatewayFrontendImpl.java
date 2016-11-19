@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -85,6 +86,10 @@ class ApplicationGatewayFrontendImpl
         return (this.inner().publicIPAddress() != null);
     }
 
+    @Override
+    public boolean isPrivate() {
+        return (this.inner().subnet() != null);
+    }
 
     // Fluent setters
 
@@ -150,6 +155,11 @@ class ApplicationGatewayFrontendImpl
     }
 
     // Verbs
+
+    @Override
+    public Subnet getSubnet() {
+        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+    }
 
     @Override
     public ApplicationGatewayImpl attach() {

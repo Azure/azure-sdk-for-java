@@ -623,11 +623,8 @@ class ApplicationGatewayImpl
         ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
         if (ipConfig == null) {
             // No default config, so get the first IP config that exists
-            ApplicationGatewayIpConfiguration[] ipConfigArray = new ApplicationGatewayIpConfiguration[this.ipConfigs.values().size()];
-            ipConfigArray = this.ipConfigs.values().toArray(ipConfigArray);
-            if (ipConfigArray.length > 0) {
-                ipConfig = ipConfigArray[0];
-            } else {
+            ipConfig = this.ipConfigs.values().iterator().next();
+            if (ipConfig == null) {
                 // No IP config found, so fail fast, since there is nothing else that could be done here,
                 // the state is corrupt, this should not happen
                 return null;

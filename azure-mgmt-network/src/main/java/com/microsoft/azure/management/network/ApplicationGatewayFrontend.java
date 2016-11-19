@@ -19,7 +19,12 @@ public interface ApplicationGatewayFrontend extends
     ChildResource<ApplicationGateway> {
 
     /**
-     * @return true if the frontend is public, i.e. it has a public IP address associated with it
+     * @return true if the frontend is accessible via a public IP address
      */
     boolean isPublic();
+
+    /**
+     * @return true is the frontend is accessible via an private IP address
+     */
+    boolean isPrivate();
 }

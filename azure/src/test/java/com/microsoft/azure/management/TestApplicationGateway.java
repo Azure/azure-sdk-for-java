@@ -30,6 +30,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRu
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGateways;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -277,6 +278,8 @@ public class TestApplicationGateway {
                             .withRegion(REGION)
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+
+                            // IP configuration for the app gateway (which subnet is it contained in)
                             .withContainingSubnet(vnet, "subnet1")
 
                             // Public frontend
@@ -355,6 +358,20 @@ public class TestApplicationGateway {
             Assert.assertTrue(subnet != null);
             Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
 
+            // Verify frontend ports
+            Assert.assertTrue(appGateway.frontendPorts().size() == 3);
+
+            // Verify frontends
+            Assert.assertTrue(appGateway.frontends().size() == 1);
+            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            Assert.assertTrue(frontend != null);
+            Assert.assertTrue(!frontend.isPublic());
+            Assert.assertTrue(frontend.isPrivate());
+            ApplicationGatewayPrivateFrontend privateFrontend = (ApplicationGatewayPrivateFrontend) frontend;
+            Assert.assertTrue(privateFrontend.networkId().equalsIgnoreCase(vnet.id()));
+            Assert.assertTrue(privateFrontend.subnetName().equalsIgnoreCase("subnet1"));
+            Assert.assertTrue(privateFrontend.privateIpAllocationMethod().equals(IPAllocationMethod.DYNAMIC));
+
             // Verify backends
             Assert.assertTrue(appGateway.backends().size() == 3);
             Assert.assertTrue(appGateway.backends().containsKey("default"));
@@ -397,9 +414,6 @@ public class TestApplicationGateway {
             // Verify SSL certs
             Assert.assertTrue(appGateway.sslCertificates().size() == 2);
             Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
-
-            // Verify frontend ports
-            Assert.assertTrue(appGateway.frontendPorts().size() == 3);
 
             // Verify request routing rules
             Assert.assertTrue(appGateway.requestRoutingRules().size() == 1);

@@ -21,6 +21,13 @@ public interface ApplicationGatewayPrivateFrontend extends
     HasSubnet {
 
     /**
+     * @return the associated subnet
+     * <p>
+     * Note this makes a separate call to Azure.
+     */
+    Subnet getSubnet();
+
+    /**
      * Grouping of private frontend definition stages.
      */
     interface DefinitionStages {
