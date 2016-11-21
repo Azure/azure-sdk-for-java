@@ -12,7 +12,7 @@
 
     <artifactId>azure-mgmt-cdn</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0-beta4-SNAPSHOT</version>
 
     <name>Microsoft Azure SDK for CDN Management</name>
     <description>This package contains Microsoft Azure CDN SDK.</description>
