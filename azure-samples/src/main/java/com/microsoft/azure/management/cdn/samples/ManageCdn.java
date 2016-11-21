@@ -141,7 +141,7 @@ public final class ManageCdn {
                 System.out.println("Standard Akamai Endpoints: " + standardProfile.endpoints().size());
                 CdnEndpoint standardEp = standardProfile.endpoints().get(cdnEndpointName);
                 CustomDomainValidationResult validationResult = standardEp.validateCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net");
-                standardProfile.endpointStop(standardEp.name());
+                standardProfile.stopEndpoint(standardEp.name());
                 standardEp.start();
 
             } catch (Exception f) {

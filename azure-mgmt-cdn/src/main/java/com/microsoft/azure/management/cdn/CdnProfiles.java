@@ -40,14 +40,14 @@ public interface CdnProfiles extends
      * rules engine, advanced HTTP reports, and real-time stats and alerts in a premium profile.
      * The SSO URI changes approximately every 10 minutes.
      *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @return the SsoUri string if successful.
+     * @param resourceGroupName name of the resource group within the Azure subscription.
+     * @param profileName name of the CDN profile which is unique within the resource group.
+     * @return the Sso Uri string if successful.
      */
     String generateSsoUri(String resourceGroupName, String profileName);
 
     /**
-     * Check the availability of a endpoint name without creating the CDN Endpoint.
+     * Checks the availability of a endpoint name without creating the CDN endpoint.
      *
      * @param name The endpoint resource name to validate.
      * @return the CheckNameAvailabilityResult object if successful.
@@ -57,45 +57,45 @@ public interface CdnProfiles extends
     /**
      * Lists all of the available CDN REST API operations.
      *
-     * @return the list of available CDN REST operations.
+     * @return list of available CDN REST operations.
      */
     PagedList<Operation> listOperations();
 
     /**
      * Starts an existing stopped CDN endpoint.
      *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param resourceGroupName name of the resource group within the Azure subscription.
+     * @param profileName name of the CDN profile which is unique within the resource group.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
      */
-    void endpointStart(String resourceGroupName, String profileName, String endpointName);
+    void startEndpoint(String resourceGroupName, String profileName, String endpointName);
 
     /**
      * Stops an existing running CDN endpoint.
      *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param resourceGroupName name of the resource group within the Azure subscription.
+     * @param profileName name of the CDN profile which is unique within the resource group.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
      */
-    void endpointStop(String resourceGroupName, String profileName, String endpointName);
+    void stopEndpoint(String resourceGroupName, String profileName, String endpointName);
 
     /**
      * Forcibly purges CDN endpoint content.
      *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
+     * @param resourceGroupName name of the resource group within the Azure subscription.
+     * @param profileName name of the CDN profile which is unique within the resource group.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
      */
-    void endpointPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
 
     /**
-     * Forcibly pre-loads CDN endpoint content. Available for Verizon Profiles.
+     * Forcibly pre-loads CDN endpoint content. Available for Verizon profiles.
      *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param resourceGroupName name of the resource group within the Azure subscription.
+     * @param profileName name of the CDN profile which is unique within the resource group.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
-    void endpointLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
+    void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths);
 }

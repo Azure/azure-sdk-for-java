@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -24,7 +29,7 @@ public interface CdnProfile extends
         Updatable<CdnProfile.Update> {
 
     /**
-     * @return the sku value.
+     * @return sku value.
      */
     Sku sku();
 
@@ -40,63 +45,63 @@ public interface CdnProfile extends
     Map<String, CdnEndpoint> endpoints();
 
     /**
-     * Generates a dynamic SSO URI used to sign in to the CDN Supplemental Portal used for advanced management tasks.
+     * Generates a dynamic SSO URI used to sign in to the CDN supplemental portal used for advanced management tasks.
      *
-     * @return The URI used to login to third party web portal.
+     * @return URI used to login to third party web portal.
      */
     String generateSsoUri();
 
     /**
      * Starts stopped CDN endpoint in current profile.
      *
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
      */
-    void endpointStart(String endpointName);
+    void startEndpoint(String endpointName);
 
     /**
      * Stops running CDN endpoint in the current profile.
      *
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
      */
-    void endpointStop(String endpointName);
+    void stopEndpoint(String endpointName);
 
     /**
      * Forcibly purges CDN endpoint content in current profile.
      *
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be purged. Can describe a file path or a wild card directory.
      */
-    void endpointPurgeContent(String endpointName, List<String> contentPaths);
+    void purgeEndpointContent(String endpointName, List<String> contentPaths);
 
     /**
      * Forcibly pre-loads CDN endpoint content in current profile. Available for Verizon Profiles.
      *
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be loaded. Should describe a file path.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param contentPaths the path to the content to be loaded. Should describe a file path.
      */
-    void endpointLoadContent(String endpointName, List<String> contentPaths);
+    void loadEndpointContent(String endpointName, List<String> contentPaths);
 
     /**
      * Validates a custom domain mapping to ensure it maps to the correct CNAME in DNS in current profile.
      *
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostName The host name of the custom domain. Must be a domain name.
-     * @return the ValidateCustomDomainOutputInner object if successful.
+     * @param endpointName name of the endpoint under the profile which is unique globally.
+     * @param hostName the host name of the custom domain. Must be a domain name.
+     * @return CustomDomainValidationResult object if successful.
      */
-    CustomDomainValidationResult endpointValidateCustomDomain(String endpointName, String hostName);
+    CustomDomainValidationResult validateEndpointCustomDomain(String endpointName, String hostName);
 
     /**
-     * Check the availability of a endpoint name without creating the CDN Endpoint.
+     * Checks the availability of a endpoint name without creating the CDN endpoint.
      *
-     * @param name The endpoint resource name to validate.
+     * @param name the endpoint resource name to validate.
      * @return the CheckNameAvailabilityResult object if successful.
      */
     CheckNameAvailabilityResult checkEndpointNameAvailability(String name);
 
     /**
-     * Checks if current instance of CDN Profile Sku is Premium Verizone.
+     * Checks if current instance of CDN profile Sku is Premium Verizon.
      *
-     * @return true if current instance of CDN Profile Sku is of Premium Verizone.
+     * @return true if current instance of CDN Profile Sku is of Premium Verizon, false otherwise.
      */
     boolean isPremiumVerizon();
 
@@ -173,6 +178,13 @@ public interface CdnProfile extends
             /**
              * Specifies definition of an endpoint to be attached to the CDN profile.
              *
+             * @return the stage representing configuration for the endpoint
+             */
+            CdnEndpoint.DefinitionStages.Blank.StandardEndpoint<WithStandardCreate> defineNewEndpoint();
+
+            /**
+             * Specifies definition of an endpoint to be attached to the CDN profile.
+             *
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
@@ -200,6 +212,13 @@ public interface CdnProfile extends
              * @return the next stage of CDN profile definition.
              */
             WithPremiumVerizonCreate withNewPremiumEndpoint(String endpointOriginHostname);
+
+            /**
+             * Specifies definition of an endpoint to be attached to the CDN profile.
+             *
+             * @return the stage representing configuration for the endpoint
+             */
+            CdnEndpoint.DefinitionStages.Blank.PremiumEndpoint<WithPremiumVerizonCreate> defineNewPremiumEndpoint();
 
             /**
              * Specifies definition of an endpoint to be attached to the CDN profile.
@@ -246,6 +265,14 @@ public interface CdnProfile extends
              */
             Update withNewEndpoint(String endpointOriginHostname);
 
+
+            /**
+             * Specifies definition of an endpoint to be attached to the CDN profile.
+             *
+             * @return the stage representing configuration for the endpoint
+             */
+            CdnEndpoint.UpdateDefinitionStages.Blank.StandardEndpoint<Update> defineNewEndpoint();
+
             /**
              * Specifies definition of an endpoint to be attached to the CDN profile.
              *
@@ -264,7 +291,7 @@ public interface CdnProfile extends
             CdnEndpoint.UpdateDefinitionStages.WithStandardAttach<Update> defineNewEndpoint(String name, String endpointOriginHostname);
 
             /**
-             * Adds new endpoint to current Premium Verizone CDN profile.
+             * Adds new endpoint to current Premium Verizon CDN profile.
              *
              * @param endpointOriginHostname the endpoint origin hostname.
              * @return the next stage of CDN profile update.
@@ -272,7 +299,14 @@ public interface CdnProfile extends
             Update withNewPremiumEndpoint(String endpointOriginHostname);
 
             /**
-             * Specifies definition of an endpoint to be attached to the current Premium Verizone CDN profile.
+             * Specifies definition of an endpoint to be attached to the current Premium Verizon CDN profile.
+             *
+             * @return the stage representing configuration for the endpoint
+             */
+            CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint();
+
+            /**
+             * Specifies definition of an endpoint to be attached to the current Premium Verizon CDN profile.
              *
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
@@ -280,7 +314,7 @@ public interface CdnProfile extends
             CdnEndpoint.UpdateDefinitionStages.Blank.PremiumEndpoint<Update> defineNewPremiumEndpoint(String name);
 
             /**
-             * Specifies definition of an endpoint to be attached to the current Premium Verizone CDN profile.
+             * Specifies definition of an endpoint to be attached to the current Premium Verizon CDN profile.
              *
              * @param name the name for the endpoint
              * @param endpointOriginHostname the endpoint origin hostname.
@@ -297,7 +331,7 @@ public interface CdnProfile extends
             CdnEndpoint.UpdateStandardEndpoint updateEndpoint(String name);
 
             /**
-             * Begins the description of an update of an existing endpoint in current Premium Verizone profile.
+             * Begins the description of an update of an existing endpoint in current Premium Verizon profile.
              *
              * @param name the name of the endpoint
              * @return the stage representing updating configuration for the endpoint

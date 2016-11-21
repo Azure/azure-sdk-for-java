@@ -75,27 +75,27 @@ class CdnProfileImpl
     }
 
     @Override
-    public void endpointStart(String endpointName) {
+    public void startEndpoint(String endpointName) {
         this.endpointsClient.start(this.resourceGroupName(), this.name(), endpointName);
     }
 
     @Override
-    public void endpointStop(String endpointName) {
+    public void stopEndpoint(String endpointName) {
         this.endpointsClient.stop(this.resourceGroupName(), this.name(), endpointName);
     }
 
     @Override
-    public void endpointPurgeContent(String endpointName, List<String> contentPaths) {
+    public void purgeEndpointContent(String endpointName, List<String> contentPaths) {
         this.endpointsClient.purgeContent(this.resourceGroupName(), this.name(), endpointName, contentPaths);
     }
 
     @Override
-    public void endpointLoadContent(String endpointName, List<String> contentPaths) {
+    public void loadEndpointContent(String endpointName, List<String> contentPaths) {
         this.endpointsClient.loadContent(this.resourceGroupName(), this.name(), endpointName, contentPaths);
     }
 
     @Override
-    public CustomDomainValidationResult endpointValidateCustomDomain(String endpointName, String hostName) {
+    public CustomDomainValidationResult validateEndpointCustomDomain(String endpointName, String hostName) {
         return new CustomDomainValidationResult(
                 this.endpointsClient.validateCustomDomain(
                         this.resourceGroupName(),
@@ -217,6 +217,11 @@ class CdnProfileImpl
     }
 
     @Override
+    public CdnEndpointImpl defineNewEndpoint() {
+        return this.endpointsImpl.defineNewEndpoint();
+    }
+
+    @Override
     public CdnEndpointImpl defineNewEndpoint(String name) {
         return this.endpointsImpl.defineNewEndpoint(name);
     }
@@ -229,6 +234,11 @@ class CdnProfileImpl
     @Override
     public CdnProfileImpl withNewPremiumEndpoint(String endpointOriginHostname) {
         return this.withNewEndpoint(endpointOriginHostname);
+    }
+
+    @Override
+    public CdnEndpointImpl defineNewPremiumEndpoint() {
+        return this.endpointsImpl.defineNewEndpoint();
     }
 
     @Override

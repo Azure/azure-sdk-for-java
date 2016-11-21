@@ -120,6 +120,12 @@ class CdnEndpointsImpl extends
         return endpoint;
     }
 
+
+    public CdnEndpointImpl defineNewEndpoint() {
+        String endpointName = this.generateUniqueEndpointName("Endpoint");
+        return this.defineNewEndpoint(endpointName);
+    }
+
     public CdnEndpointImpl defineNewEndpointWithOriginHostname(String endpointOriginHostname) {
         String endpointName = this.generateUniqueEndpointName("Endpoint");
         CdnEndpointImpl endpoint = this.defineNewEndpoint(endpointName, "origin", endpointOriginHostname);

@@ -109,22 +109,22 @@ class CdnProfilesImpl
     }
 
     @Override
-    public void endpointStart(String resourceGroupName, String profileName, String endpointName) {
+    public void startEndpoint(String resourceGroupName, String profileName, String endpointName) {
         this.cdnManagementClient.endpoints().start(resourceGroupName, profileName, endpointName);
     }
 
     @Override
-    public void endpointStop(String resourceGroupName, String profileName, String endpointName) {
+    public void stopEndpoint(String resourceGroupName, String profileName, String endpointName) {
         this.cdnManagementClient.endpoints().stop(resourceGroupName, profileName, endpointName);
     }
 
     @Override
-    public void endpointPurgeContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
+    public void purgeEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.cdnManagementClient.endpoints().purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 
     @Override
-    public void endpointLoadContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
+    public void loadEndpointContent(String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.cdnManagementClient.endpoints().loadContent(resourceGroupName, profileName, endpointName, contentPaths);
     }
 

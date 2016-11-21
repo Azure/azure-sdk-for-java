@@ -307,27 +307,27 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public void start() {
-        this.parent().endpointStart(this.name());
+        this.parent().startEndpoint(this.name());
     }
 
     @Override
     public void stop() {
-        this.parent().endpointStop(this.name());
+        this.parent().stopEndpoint(this.name());
     }
 
     @Override
     public void purgeContent(List<String> contentPaths) {
-        this.parent().endpointPurgeContent(this.name(), contentPaths);
+        this.parent().purgeEndpointContent(this.name(), contentPaths);
     }
 
     @Override
     public void loadContent(List<String> contentPaths) {
-        this.parent().endpointLoadContent(this.name(), contentPaths);
+        this.parent().loadEndpointContent(this.name(), contentPaths);
     }
 
     @Override
     public CustomDomainValidationResult validateCustomDomain(String hostName) {
-        return this.parent().endpointValidateCustomDomain(this.name(), hostName);
+        return this.parent().validateEndpointCustomDomain(this.name(), hostName);
     }
 
     @Override
