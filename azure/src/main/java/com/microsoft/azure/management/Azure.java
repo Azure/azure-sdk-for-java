@@ -13,6 +13,8 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
+import com.microsoft.azure.management.cdn.CdnProfiles;
+import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
 import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
@@ -69,6 +71,7 @@ public final class Azure {
     private final BatchManager batchManager;
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
+    private final CdnManager cdnManager;
     private final DnsZoneManager dnsZoneManager;
     private final String subscriptionId;
 
@@ -274,6 +277,7 @@ public final class Azure {
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
         this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
         this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
+        this.cdnManager = CdnManager.authenticate(restClient, subscriptionId);
         this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
@@ -465,6 +469,13 @@ public final class Azure {
      */
     public RedisCaches redisCaches() {
         return redisManager.redisCaches();
+    }
+
+    /**
+     * @return entry point to managing cdn manager profiles.
+     */
+    public CdnProfiles cdnProfiles() {
+        return cdnManager.profiles();
     }
 
     /**
