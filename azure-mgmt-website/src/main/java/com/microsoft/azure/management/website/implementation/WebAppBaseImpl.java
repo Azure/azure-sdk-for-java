@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
@@ -40,6 +42,7 @@ import rx.functions.FuncN;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -70,7 +73,10 @@ abstract class WebAppBaseImpl<
     private Map<String, HostNameBindingImpl<FluentT, FluentImplT>> hostNameBindingsToCreate;
     private List<String> hostNameBindingsToDelete;
     private Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToCreate;
-    private Map<String, HostNameSslBindingImpl<FluentT, FluentImplT>> sslBindingsToDelete;
+
+    private Map<String, String> appSettingsToAdd;
+    private List<String> appSettingsToRemove;
+    private Map<String, Boolean> appSettingStickiness;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -83,6 +89,9 @@ abstract class WebAppBaseImpl<
     private FluentT normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
         this.hostNameBindingsToDelete = new ArrayList<>();
+        appSettingsToAdd = new HashMap<>();
+        appSettingsToRemove = new ArrayList<>();
+        appSettingStickiness = new HashMap<>();
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -344,13 +353,21 @@ abstract class WebAppBaseImpl<
         return inner().siteConfig().autoSwapSlotName();
     }
 
-    abstract Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site);
+    abstract Observable<SiteInner> createOrUpdateInner(SiteInner site);
 
-    abstract Observable<SiteInner> getInner(String resourceGroupName, String name);
+    abstract Observable<SiteInner> getInner();
 
-    abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig);
+    abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig);
 
     abstract Observable<Object> deleteHostNameBinding(String hostname);
+
+    abstract Observable<StringDictionaryInner> listAppSettings();
+
+    abstract Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner);
+
+    abstract Observable<SlotConfigNamesResourceInner> listSlotConfigurations();
+
+    abstract Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner);
 
     @Override
     public Observable<FluentT> createResourceAsync() {
@@ -361,7 +378,7 @@ abstract class WebAppBaseImpl<
             inner().siteConfig().withLocation(inner().location());
         }
         // Construct web app observable
-        return createOrUpdateInner(resourceGroupName(), name(), inner())
+        return createOrUpdateInner(inner())
                 // Submit hostname bindings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
@@ -394,7 +411,7 @@ abstract class WebAppBaseImpl<
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
-                        return getInner(resourceGroupName(), site.name());
+                        return getInner();
                     }
                 })
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
@@ -421,7 +438,7 @@ abstract class WebAppBaseImpl<
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(SiteInner site) {
-                        return createOrUpdateInner(resourceGroupName(), site.name(), site);
+                        return createOrUpdateInner(inner());
                     }
                 })
                 // submit config
@@ -431,7 +448,7 @@ abstract class WebAppBaseImpl<
                         if (inner().siteConfig() == null) {
                             return Observable.just(siteInner);
                         }
-                        return createOrUpdateSiteConfig(resourceGroupName(), name(), inner().siteConfig())
+                        return createOrUpdateSiteConfig(inner().siteConfig())
                                 .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
                                     @Override
                                     public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
@@ -439,6 +456,77 @@ abstract class WebAppBaseImpl<
                                         return Observable.just(siteInner);
                                     }
                                 });
+                    }
+                })
+                // app settings
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner inner) {
+                        Observable<SiteInner> observable = Observable.just(inner);
+                        if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
+                            observable = listAppSettings()
+                                    .flatMap(new Func1<StringDictionaryInner, Observable<StringDictionaryInner>>() {
+                                        @Override
+                                        public Observable<StringDictionaryInner> call(StringDictionaryInner stringDictionaryInner) {
+                                            if (stringDictionaryInner == null) {
+                                                stringDictionaryInner = new StringDictionaryInner();
+                                                stringDictionaryInner.withLocation(regionName());
+                                            }
+                                            if (stringDictionaryInner.properties() == null) {
+                                                stringDictionaryInner.withProperties(new HashMap<String, String>());
+                                            }
+                                            stringDictionaryInner.properties().putAll(appSettingsToAdd);
+                                            for (String appSettingKey : appSettingsToRemove) {
+                                                stringDictionaryInner.properties().remove(appSettingKey);
+                                            }
+                                            return updateAppSettings(stringDictionaryInner);
+                                        }
+                                    }).map(new Func1<StringDictionaryInner, SiteInner>() {
+                                        @Override
+                                        public SiteInner call(StringDictionaryInner stringDictionaryInner) {
+                                            return inner;
+                                        }
+                                    });
+                        }
+                        return observable;
+                    }
+                })
+                // app setting stickiness
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner inner) {
+                        Observable<SiteInner> observable = Observable.just(inner);
+                        if (!appSettingStickiness.isEmpty()) {
+                            observable = listSlotConfigurations()
+                                    .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
+                                        @Override
+                                        public Observable<SlotConfigNamesResourceInner> call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                                            if (slotConfigNamesResourceInner == null) {
+                                                slotConfigNamesResourceInner = new SlotConfigNamesResourceInner();
+                                                slotConfigNamesResourceInner.withLocation(regionName());
+                                            }
+                                            if (slotConfigNamesResourceInner.appSettingNames() == null) {
+                                                slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
+                                            }
+                                            Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
+                                            for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
+                                                if (stickiness.getValue()) {
+                                                    stickyAppSettingKeys.add(stickiness.getKey());
+                                                } else {
+                                                    stickyAppSettingKeys.remove(stickiness.getKey());
+                                                }
+                                            }
+                                            slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
+                                            return updateSlotConfigurations(slotConfigNamesResourceInner);
+                                        }
+                                    }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
+                                        @Override
+                                        public SiteInner call(SlotConfigNamesResourceInner slotConfigNamesResourceInner) {
+                                            return inner;
+                                        }
+                                    });
+                        }
+                        return observable;
                     }
                 })
                 // convert from inner
@@ -753,6 +841,57 @@ abstract class WebAppBaseImpl<
         if (inner().siteConfig().defaultDocuments() != null) {
             inner().siteConfig().defaultDocuments().remove(document);
         }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAppSetting(String key, String value) {
+        appSettingsToAdd.put(key, value);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAppSettings(Map<String, String> settings) {
+        appSettingsToAdd.putAll(settings);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withStickyAppSetting(String key, String value) {
+        withAppSetting(key, value);
+        return withAppSettingStickiness(key, true);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withStickyAppSettings(Map<String, String> settings) {
+        withAppSettings(settings);
+        appSettingStickiness.putAll(Maps.asMap(settings.keySet(), new Function<String, Boolean>() {
+            @Override
+            public Boolean apply(String input) {
+                return true;
+            }
+        }));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutAppSetting(String key) {
+        appSettingsToRemove.add(key);
+        if (appSettingStickiness.containsKey(key)) {
+            appSettingStickiness.remove(key);
+        }
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withAppSettingStickiness(String key, boolean sticky) {
+        appSettingStickiness.put(key, sticky);
         return (FluentImplT) this;
     }
 }

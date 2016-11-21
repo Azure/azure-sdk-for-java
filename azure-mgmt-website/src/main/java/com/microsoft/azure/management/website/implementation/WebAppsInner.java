@@ -208,7 +208,7 @@ public final class WebAppsInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/slotConfigNames")
-        Observable<Response<ResponseBody>> updateSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateSlotConfigurationNames(@Path("resourceGroupName") String resourceGroupName, @Path(value = "name", encoded = true) String name, @Path("subscriptionId") String subscriptionId, @Body SlotConfigNamesResourceInner slotConfigNames, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/config/web")

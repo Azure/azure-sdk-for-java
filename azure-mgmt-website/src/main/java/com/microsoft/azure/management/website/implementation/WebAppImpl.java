@@ -35,23 +35,43 @@ class WebAppImpl
     }
 
     @Override
-    Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site) {
-        return client.createOrUpdateAsync(resourceGroupName, name, site);
+    Observable<SiteInner> createOrUpdateInner(SiteInner site) {
+        return client.createOrUpdateAsync(resourceGroupName(), name(), site);
     }
 
     @Override
-    Observable<SiteInner> getInner(String resourceGroupName, String name) {
-        return client.getAsync(resourceGroupName, name);
+    Observable<SiteInner> getInner() {
+        return client.getAsync(resourceGroupName(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return client.createOrUpdateConfigurationAsync(resourceGroupName, name, siteConfig);
+    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+        return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
 
     @Override
     Observable<Object> deleteHostNameBinding(String hostname) {
         return client.deleteHostNameBindingAsync(resourceGroupName(), name(), hostname);
+    }
+
+    @Override
+    Observable<StringDictionaryInner> listAppSettings() {
+        return client.listApplicationSettingsAsync(resourceGroupName(), name());
+    }
+
+    @Override
+    Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
+        return client.updateApplicationSettingsAsync(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
+        return client.listSlotConfigurationNamesAsync(resourceGroupName(), name());
+    }
+
+    @Override
+    Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
+        return client.updateSlotConfigurationNamesAsync(resourceGroupName(), name(), inner);
     }
 
     @Override
@@ -97,5 +117,4 @@ class WebAppImpl
         this.setInner(client.get(resourceGroupName(), name()));
         return this;
     }
-
 }
