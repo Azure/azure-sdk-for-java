@@ -6,11 +6,10 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.RecommendedElasticPool;
 import com.microsoft.azure.management.sql.RecommendedElasticPoolMetric;
@@ -109,7 +108,7 @@ class RecommendedElasticPoolImpl
     }
 
     @Override
-    public PagedList<SqlDatabase> listDatabases() {
+    public List<SqlDatabase> listDatabases() {
         final RecommendedElasticPoolImpl self = this;
         PagedListConverter<DatabaseInner, SqlDatabase> converter = new PagedListConverter<DatabaseInner, SqlDatabase>() {
             @Override
@@ -118,7 +117,7 @@ class RecommendedElasticPoolImpl
                 return new SqlDatabaseImpl(databaseInner.name(), databaseInner, self.databasesInner);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.recommendedElasticPoolsInner.listDatabases(
                         this.resourceGroupName(),
                         this.sqlServerName(),
@@ -137,7 +136,7 @@ class RecommendedElasticPoolImpl
     }
 
     @Override
-    public PagedList<RecommendedElasticPoolMetric> listMetrics() {
+    public List<RecommendedElasticPoolMetric> listMetrics() {
         PagedListConverter<RecommendedElasticPoolMetricInner, RecommendedElasticPoolMetric> converter = new PagedListConverter<RecommendedElasticPoolMetricInner, RecommendedElasticPoolMetric>() {
             @Override
             public RecommendedElasticPoolMetric typeConvert(RecommendedElasticPoolMetricInner databaseInner) {
@@ -145,7 +144,7 @@ class RecommendedElasticPoolImpl
                 return new RecommendedElasticPoolMetricImpl(databaseInner);
             }
         };
-        return converter.convert(Utils.convertToPagedList(
+        return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.recommendedElasticPoolsInner.listMetrics(
                         this.resourceGroupName(),
                         this.sqlServerName(),

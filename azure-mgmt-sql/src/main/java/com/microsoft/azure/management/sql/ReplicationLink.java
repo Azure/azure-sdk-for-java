@@ -77,5 +77,19 @@ public interface ReplicationLink extends
      */
     ReplicationState replicationState();
 
+    /**
+     * Deletes the replication link.
+     */
+    void delete();
+
+    /**
+     * Fails over the Azure SQL Database Replication Link.
+     */
+    void failover();
+
+    /**
+     * Forces fail over the Azure SQL Database Replication Link which may result in data loss.
+     */
+    void forceFailoverAllowDataLoss();
 }
 

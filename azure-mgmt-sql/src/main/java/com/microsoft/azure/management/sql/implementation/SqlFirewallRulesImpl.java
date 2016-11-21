@@ -17,6 +17,8 @@ import com.microsoft.azure.management.sql.SqlFirewallRules;
 import org.apache.commons.lang3.NotImplementedException;
 import rx.Observable;
 
+import java.util.List;
+
 /**
  * Implementation for SQLElasticPools and its parent interfaces.
  */
@@ -74,12 +76,12 @@ class SqlFirewallRulesImpl extends IndependentChildrenImpl<
     }
 
     @Override
-    public PagedList<SqlFirewallRule> listBySqlServer(String resourceGroupName, String sqlServerName) {
+    public List<SqlFirewallRule> listBySqlServer(String resourceGroupName, String sqlServerName) {
         return this.listByParent(resourceGroupName, sqlServerName);
     }
 
     @Override
-    public PagedList<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
+    public List<SqlFirewallRule> listBySqlServer(GroupableResource sqlServer) {
         return this.listByParent(sqlServer);
     }
 

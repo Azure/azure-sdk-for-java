@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServer;
+import rx.Observable;
+
+import java.util.List;
 
 /**
  * Implementation of SqlServer.Databases, which enables the creating the database from the SQLServer directly.
@@ -29,6 +31,10 @@ public class DatabasesImpl implements SqlServer.Databases {
         this.databases = new SqlDatabasesImpl(innerCollection, manager);
     }
 
+    protected SqlDatabases databases() {
+        return this.databases;
+    }
+
     @Override
     public SqlDatabase get(String databaseName) {
         return this.databases.getBySqlServer(this.resourceGroupName, this.sqlServerName, databaseName);
@@ -40,12 +46,17 @@ public class DatabasesImpl implements SqlServer.Databases {
     }
 
     @Override
-    public PagedList<SqlDatabase> list() {
+    public List<SqlDatabase> list() {
         return this.databases.listBySqlServer(this.resourceGroupName, this.sqlServerName);
     }
 
     @Override
     public void delete(String databaseName) {
         this.databases.deleteByParent(this.resourceGroupName, this.sqlServerName, databaseName);
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String databaseName) {
+        return this.databases.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, databaseName);
     }
 }
