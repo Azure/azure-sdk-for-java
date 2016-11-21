@@ -47,34 +47,34 @@ public class CreateVirtualMachinesInParallel {
         Map<Region, Integer> virtualMachinesByLocation = new HashMap<Region, Integer>();
         
         // debug target
+        /**
         virtualMachinesByLocation.put(Region.US_EAST, 5);
         virtualMachinesByLocation.put(Region.US_SOUTH_CENTRAL, 5);
+        */
 
         // final demo target
-        /**
-        .. virtualMachinesByLocation.put(Region.US_EAST, 10);
+        virtualMachinesByLocation.put(Region.US_EAST, 10);
         virtualMachinesByLocation.put(Region.US_SOUTH_CENTRAL, 10);
         virtualMachinesByLocation.put(Region.US_WEST, 10);
         virtualMachinesByLocation.put(Region.BRAZIL_SOUTH, 5);
         virtualMachinesByLocation.put(Region.EUROPE_NORTH, 5);
         virtualMachinesByLocation.put(Region.EUROPE_WEST, 5);
-        virtualMachinesByLocation.put(Region.GERMANY_CENTRAL, 5);
+        virtualMachinesByLocation.put(Region.UK_WEST, 5);
         virtualMachinesByLocation.put(Region.ASIA_SOUTHEAST, 5);
-        virtualMachinesByLocation.put(Region.INDIA_WEST, 5);
-        virtualMachinesByLocation.put(Region.JAPAN_EAST, 5);
-        virtualMachinesByLocation.put(Region.JAPAN_WEST, 5);
-        */
+        virtualMachinesByLocation.put(Region.INDIA_SOUTH, 5);
+        // virtualMachinesByLocation.put(Region.JAPAN_EAST, 5);
+        // virtualMachinesByLocation.put(Region.JAPAN_WEST, 5);
 
         try {
             //=============================================================
             // Authenticate
             //
-            System.out.println("AZURE_AUTH_LOCATION_2=" + System.getenv("AZURE_AUTH_LOCATION"));
-            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+            System.out.println("AZURE_AUTH_LOCATION_2=" + System.getenv("AZURE_AUTH_LOCATION_2"));
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION_2"));
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withLogLevel(HttpLoggingInterceptor.Level.NONE)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
