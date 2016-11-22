@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * Target Azure resource types supported for an Azure endpoint in a traffic manager profile.
  */
+@LangDefinition
 public class TargetAzureResourceType {
     /** Static value Microsoft.Network/publicIPAddresses for TargetAzureResourceType. */
     public static final TargetAzureResourceType PUBLICIP = new TargetAzureResourceType("Microsoft.Network", "publicIPAddresses");
