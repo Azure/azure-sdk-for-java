@@ -1,5 +1,11 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.RecordType;
 import com.microsoft.azure.management.dns.SoaRecord;
 import com.microsoft.azure.management.dns.SoaRecordSet;
@@ -7,6 +13,7 @@ import com.microsoft.azure.management.dns.SoaRecordSet;
 /**
  * Implementation of {@link SoaRecordSet}.
  */
+@LangDefinition
 class SoaRecordSetImpl
         extends DnsRecordSetImpl
         implements SoaRecordSet {
