@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.website.WebApp;
 import com.microsoft.azure.management.website.WebApps;
 import rx.Observable;
@@ -25,8 +26,18 @@ class WebAppsImpl
         AppServiceManager>
         implements WebApps {
 
-    WebAppsImpl(WebAppsInner innerCollection, AppServiceManager manager) {
+    private final PagedListConverter<SiteInner, WebApp> converter;
+
+    WebAppsImpl(final WebAppsInner innerCollection, AppServiceManager manager) {
         super(innerCollection, manager);
+
+        converter = new PagedListConverter<SiteInner, WebApp>() {
+            @Override
+            public WebApp typeConvert(SiteInner siteInner) {
+                siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
+                return wrapModel(siteInner);
+            }
+        };
     }
 
     @Override
@@ -36,12 +47,17 @@ class WebAppsImpl
 
     @Override
     public WebApp getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        SiteInner siteInner = innerCollection.get(groupName, name);
+        if (siteInner == null) {
+            return null;
+        }
+        siteInner.withSiteConfig(innerCollection.getConfiguration(groupName, name));
+        return wrapModel(siteInner);
     }
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), innerCollection, super.myManager);
+        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager);
     }
 
     @Override
@@ -49,8 +65,18 @@ class WebAppsImpl
         if (inner == null) {
             return null;
         }
-        return new WebAppImpl(inner.name(), inner, innerCollection, super.myManager);
+        SiteConfigInner configInner = inner.siteConfig();
+        if (configInner == null) {
+            configInner = new SiteConfigInner();
+            configInner.withLocation(inner.location());
+        }
+        return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager);
     }
+
+    protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {
+        return converter.convert(pagedList);
+    }
+
 
     @Override
     public WebAppImpl define(String name) {

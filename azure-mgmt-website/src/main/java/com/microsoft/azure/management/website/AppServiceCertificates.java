@@ -14,13 +14,13 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for certificate management API.
  */
-public interface Certificates extends
-        SupportsCreating<Certificate.DefinitionStages.Blank>,
+public interface AppServiceCertificates extends
+        SupportsCreating<AppServiceCertificate.DefinitionStages.Blank>,
         SupportsDeletingById,
-        SupportsListingByGroup<Certificate>,
-        SupportsGettingByGroup<Certificate>,
-        SupportsGettingById<Certificate>,
+        SupportsListingByGroup<AppServiceCertificate>,
+        SupportsGettingByGroup<AppServiceCertificate>,
+        SupportsGettingById<AppServiceCertificate>,
         SupportsDeletingByGroup {
 }

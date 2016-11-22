@@ -30,8 +30,7 @@ public class DomainsTests extends AppServiceTestBase {
     @Test
     public void canCRUDDomain() throws Exception {
         // CREATE
-        Domain domain = appServiceManager.domains()
-                .define(DOMAIN_NAME)
+        AppServiceDomain domain = appServiceManager.domains().define(DOMAIN_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .defineRegistrantContact()
                     .withFirstName("Jianghao")
