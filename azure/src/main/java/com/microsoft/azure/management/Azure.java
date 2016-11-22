@@ -48,6 +48,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.sql.SqlServers;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -70,6 +72,7 @@ public final class Azure {
     private final TrafficManager trafficManager;
     private final RedisManager redisManager;
     private final DnsZoneManager dnsZoneManager;
+    private final SqlServerManager sqlServerManager;
     private final String subscriptionId;
 
     /**
@@ -275,6 +278,7 @@ public final class Azure {
         this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
         this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
         this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
+        this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -472,5 +476,12 @@ public final class Azure {
      */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();
+    }
+
+    /**
+     * @return entry point to managing Sql server.
+     */
+    public SqlServers sqlServers() {
+        return sqlServerManager.sqlServers();
     }
 }

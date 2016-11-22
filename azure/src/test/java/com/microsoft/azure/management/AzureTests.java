@@ -8,6 +8,7 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
@@ -21,6 +22,7 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
+import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,6 +31,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AzureTests {
     private static final ApplicationTokenCredentials CREDENTIALS = new ApplicationTokenCredentials(
@@ -83,6 +86,7 @@ public class AzureTests {
             this.azure = Azure.configure()
                     .withLogLevel(Level.BODY)
                     .withUserAgent("AzureTests")
+                    .withReadTimeout(60, TimeUnit.SECONDS)
                     .authenticate(new File("my.azureauth"))
                     .withDefaultSubscription();
         } else {
@@ -432,5 +436,11 @@ public class AzureTests {
     public void testDnsZones() throws Exception {
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());
+    }
+
+
+    @Test
+    public void testSqlServer() throws Exception {
+        new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
     }
 }
