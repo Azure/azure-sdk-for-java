@@ -26,7 +26,7 @@ class ApplicationGatewayBackendImpl
     extends ChildResourceImpl<ApplicationGatewayBackendAddressPoolInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayBackend,
-        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithBackendOrHttpConfig>,
+        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithBackendOrRequestRoutingRule>,
         ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackend.Update {
 

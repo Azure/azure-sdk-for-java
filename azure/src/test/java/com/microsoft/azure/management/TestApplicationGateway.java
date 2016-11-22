@@ -110,12 +110,12 @@ public class TestApplicationGateway {
                             .withPrivateFrontend()              // Private frontend
                             .withFrontendHttpListenerOnPort(80) // Frontend HTTP listener
 
+                            // Backend HTTP configs
+                            .withBackendHttpConfigurationOnPort(8080)
+
                             // Backends
                             .withBackendIpAddress("11.1.1.1")
                             .withBackendIpAddress("11.1.1.2")
-
-                            // Backend HTTP configs
-                            .withBackendHttpConfigurationOnPort(8080, "backhttp1")
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
@@ -152,8 +152,7 @@ public class TestApplicationGateway {
 
             // Verify backend HTTP configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
-            Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("backhttp1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig = appGateway.backendHttpConfigurations().get("backhttp1");
+            ApplicationGatewayBackendHttpConfiguration httpConfig = appGateway.getBackendHttpConfigurationByPortNumber(8080);
             Assert.assertTrue(httpConfig.backendPort() == 8080);
 
             // Verify listeners
@@ -297,13 +296,6 @@ public class TestApplicationGateway {
                                 .withSslCertificatePassword("Abc123")
                                 .attach()
 
-                            // Backends
-                            .withBackendIpAddress("11.1.1.1")
-                            .withBackendIpAddress("11.1.1.2")
-                            .withBackendFqdn("www.microsoft.com", "backend2")
-                            .defineBackend("backend3")
-                                .attach()
-
                             // HTTP configs
                             .withBackendHttpConfigurationOnPort(8080)
                             .defineBackendHttpConfiguration("httpConfig1")
@@ -316,6 +308,13 @@ public class TestApplicationGateway {
                                 .withBackendPort(82)
                                 .withProtocol(ApplicationGatewayProtocol.HTTPS)
                                 .withRequestTimeout(15)
+                                .attach()
+
+                            // Backends
+                            .withBackendIpAddress("11.1.1.1")
+                            .withBackendIpAddress("11.1.1.2")
+                            .withBackendFqdn("www.microsoft.com", "backend2")
+                            .defineBackend("backend3")
                                 .attach()
 
                             // Request routing rules

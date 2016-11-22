@@ -119,12 +119,12 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithBackend,
-        DefinitionStages.WithBackendOrHttpConfig,
-        DefinitionStages.WithBackendHttpConfig,
-        DefinitionStages.WithBackendHttpConfigOrRequestRoutingRule,
         DefinitionStages.WithHttpListener,
-        DefinitionStages.WithHttpListenerOrBackend,
+        DefinitionStages.WithHttpListenerOrBackendHttpConfig,
+        DefinitionStages.WithBackendHttpConfig,
+        DefinitionStages.WithBackendHttpConfigOrBackend,
+        DefinitionStages.WithBackend,
+        DefinitionStages.WithBackendOrRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -224,7 +224,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the HTTP listener
              * @return the first stage of the HTTP listener definition
              */
-            ApplicationGatewayFrontendHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackend> defineFrontendHttpListener(String name);
+            ApplicationGatewayFrontendHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackendHttpConfig> defineFrontendHttpListener(String name);
 
             /**
              * Associates a new frontend HTTP listener with the specified port number and an automatically generated name,
@@ -232,7 +232,7 @@ public interface ApplicationGateway extends
              * @param portNumber an unused frontend port number
              * @return the next stage of the definition
              */
-            WithHttpListenerOrBackend withFrontendHttpListenerOnPort(int portNumber);
+            WithHttpListenerOrBackendHttpConfig withFrontendHttpListenerOnPort(int portNumber);
 
             /**
              * Associates a new frontend HTTP listener with the specified port number and the specified name,
@@ -241,7 +241,13 @@ public interface ApplicationGateway extends
              * @param name the name for the new listener
              * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
              */
-            WithHttpListenerOrBackend withFrontendHttpListenerOnPort(int portNumber, String name);
+            WithHttpListenerOrBackendHttpConfig withFrontendHttpListenerOnPort(int portNumber, String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add another frontend HTTP listener or start adding backend HTTP settings configurations.
+         */
+        interface WithHttpListenerOrBackendHttpConfig extends WithHttpListener, WithBackendHttpConfig {
         }
 
         /**
@@ -285,7 +291,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend
              * @return the first stage of the backend definition
              */
-            ApplicationGatewayBackend.DefinitionStages.Blank<WithBackendOrHttpConfig> defineBackend(String name);
+            ApplicationGatewayBackend.DefinitionStages.Blank<WithBackendOrRequestRoutingRule> defineBackend(String name);
 
             /**
              * Adds an IP address to the default backend.
@@ -294,7 +300,7 @@ public interface ApplicationGateway extends
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithBackendOrHttpConfig withBackendIpAddress(String ipAddress);
+            WithBackendOrRequestRoutingRule withBackendIpAddress(String ipAddress);
 
             /**
              * Adds an FQDN (fully qualified domain name) to the default backend.
@@ -303,7 +309,7 @@ public interface ApplicationGateway extends
              * @param fqdn a fully qualified domain name
              * @return the next stage of the definition
              */
-            WithBackendOrHttpConfig withBackendFqdn(String fqdn);
+            WithBackendOrRequestRoutingRule withBackendFqdn(String fqdn);
 
             /**
              * Adds an IP address to a backend.
@@ -311,7 +317,7 @@ public interface ApplicationGateway extends
              * @param backendName the name for the backend to add the address to
              * @return the next stage of the definition
              */
-            WithBackendOrHttpConfig withBackendIpAddress(String ipAddress, String backendName);
+            WithBackendOrRequestRoutingRule withBackendIpAddress(String ipAddress, String backendName);
 
             /**
              * Adds an FQDN (fully qualified domain name) to a backend.
@@ -319,14 +325,13 @@ public interface ApplicationGateway extends
              * @param backendName the name for the backend to add the FQDN to
              * @return the next stage of the definition
              */
-            WithBackendOrHttpConfig withBackendFqdn(String fqdn, String backendName);
+            WithBackendOrRequestRoutingRule withBackendFqdn(String fqdn, String backendName);
         }
 
         /**
-         * The stage of an application gateway definition allowing to continue adding more backends
-         * or start defining backend HTTP configurations.
+         * The stage of an application gateway definition allowing to continue adding backends or start adding request routing rules.
          */
-        interface WithBackendOrHttpConfig extends WithBackend, WithBackendHttpConfig {
+        interface WithBackendOrRequestRoutingRule extends WithBackend, WithRequestRoutingRule {
         }
 
         /**
@@ -338,14 +343,14 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrRequestRoutingRule> defineBackendHttpConfiguration(String name);
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrBackend> defineBackendHttpConfiguration(String name);
 
             /**
              * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on and an automatically generated name.
              * @param portNumber the port number for the backend HTTP configuration
              * @return the next stage of the definition
              */
-            WithBackendHttpConfigOrRequestRoutingRule withBackendHttpConfigurationOnPort(int portNumber);
+            WithBackendHttpConfigOrBackend withBackendHttpConfigurationOnPort(int portNumber);
 
             /**
              * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
@@ -354,21 +359,13 @@ public interface ApplicationGateway extends
              * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
              * @return the next stage of the definition
              */
-            WithBackendHttpConfigOrRequestRoutingRule withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
+            WithBackendHttpConfigOrBackend withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
         }
 
         /**
-         * The stage of an application gateway definition allowing to continue adding more backend
-         * HTTP configurations or start adding request routing rules.
+         * The stage of an application gateway definition allowing to add more backend HTTP settings configurations or start adding backends.
          */
-        interface WithBackendHttpConfigOrRequestRoutingRule extends WithBackendHttpConfig, WithRequestRoutingRule {
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to continue adding more HTTP listeners,
-         * or start specifying backends.
-         */
-        interface WithHttpListenerOrBackend extends WithHttpListener, WithBackend {
+        interface WithBackendHttpConfigOrBackend extends WithBackend, WithBackendHttpConfig {
         }
 
         /**
