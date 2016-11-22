@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CertificateOrdersTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
-    private static final String CERTIFICATE_NAME = "javatestcert319";
+    private static final String CERTIFICATE_NAME = "javawildcert319";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -34,7 +34,7 @@ public class CertificateOrdersTests extends AppServiceTestBase {
                 .define(CERTIFICATE_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .withHostName("javatest319.com")
-                .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
+                .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL)
                 .withValidYears(1)
                 .create();
         Assert.assertNotNull(certificateOrder);

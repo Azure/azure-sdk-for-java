@@ -13,10 +13,10 @@ import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
+import com.microsoft.azure.management.website.AppServiceCertificates;
+import com.microsoft.azure.management.website.AppServiceDomains;
 import com.microsoft.azure.management.website.AppServicePlans;
-import com.microsoft.azure.management.website.CertificateOrders;
-import com.microsoft.azure.management.website.Certificates;
-import com.microsoft.azure.management.website.Domains;
+import com.microsoft.azure.management.website.AppServiceCertificateOrders;
 import com.microsoft.azure.management.website.WebApps;
 
 /**
@@ -28,9 +28,10 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     // Collections
     private WebApps webApps;
     private AppServicePlans appServicePlans;
-    private CertificateOrders certificateOrders;
-    private Certificates certificates;
-    private Domains domains;
+    private AppServiceCertificateOrders appServiceCertificateOrders;
+    private AppServiceCertificates appServiceCertificates;
+    private AppServiceDomains appServiceDomains;
+    private RestClient restClient;
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -95,6 +96,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
                 subscriptionId,
                 new WebSiteManagementClientImpl(restClient).withSubscriptionId(subscriptionId));
         keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
+        this.restClient = restClient;
     }
 
     /**
@@ -103,6 +105,11 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     KeyVaultManager keyVaultManager() {
         return keyVaultManager;
     }
+
+    RestClient restClient() {
+        return restClient;
+    }
+
 
     /**
      * @return the web app management API entry point
@@ -127,30 +134,30 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
     /**
      * @return the certificate order management API entry point
      */
-    public CertificateOrders certificateOrders() {
-        if (certificateOrders == null) {
-            certificateOrders = new CertificateOrdersImpl(innerManagementClient.appServiceCertificateOrders(), this);
+    public AppServiceCertificateOrders certificateOrders() {
+        if (appServiceCertificateOrders == null) {
+            appServiceCertificateOrders = new AppServiceCertificateOrdersImpl(innerManagementClient.appServiceCertificateOrders(), this);
         }
-        return certificateOrders;
+        return appServiceCertificateOrders;
     }
 
     /**
      * @return the certificate management API entry point
      */
-    public Certificates certificates() {
-        if (certificates == null) {
-            certificates = new CertificatesImpl(innerManagementClient.certificates(), this);
+    public AppServiceCertificates certificates() {
+        if (appServiceCertificates == null) {
+            appServiceCertificates = new AppServiceCertificatesImpl(innerManagementClient.certificates(), this);
         }
-        return certificates;
+        return appServiceCertificates;
     }
 
     /**
      * @return the app service plan management API entry point
      */
-    public Domains domains() {
-        if (domains == null) {
-            domains = new DomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
+    public AppServiceDomains domains() {
+        if (appServiceDomains == null) {
+            appServiceDomains = new AppServiceDomainsImpl(innerManagementClient.domains(), innerManagementClient.topLevelDomains(), this);
         }
-        return domains;
+        return appServiceDomains;
     }
 }

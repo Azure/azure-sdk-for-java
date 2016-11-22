@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import java.util.List;
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.website.HostingEnvironmentProfile;
+import com.microsoft.rest.serializer.JsonFlatten;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * App certificate.
@@ -103,6 +104,30 @@ public class CertificateInner extends Resource {
      */
     @JsonProperty(value = "properties.publicKeyHash")
     private String publicKeyHash;
+
+    public String keyVaultId() {
+        return keyVaultId;
+    }
+
+    public CertificateInner withKeyVaultId(String keyVaultId) {
+        this.keyVaultId = keyVaultId;
+        return this;
+    }
+
+    public String keyVaultSecretName() {
+        return keyVaultSecretName;
+    }
+
+    public CertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
+        this.keyVaultSecretName = keyVaultSecretName;
+        return this;
+    }
+
+    @JsonProperty(value = "properties.keyVaultId")
+    private String keyVaultId;
+
+    @JsonProperty(value = "properties.keyVaultSecretName")
+    private String keyVaultSecretName;
 
     /**
      * Specification for the hosting environment (App Service Environment) to

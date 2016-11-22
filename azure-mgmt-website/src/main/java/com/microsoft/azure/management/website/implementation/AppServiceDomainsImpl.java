@@ -9,32 +9,32 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
-import com.microsoft.azure.management.website.Domain;
+import com.microsoft.azure.management.website.AppServiceDomain;
+import com.microsoft.azure.management.website.AppServiceDomains;
 import com.microsoft.azure.management.website.DomainLegalAgreement;
-import com.microsoft.azure.management.website.Domains;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
- * The implementation for {@link Domains}.
+ * The implementation for {@link AppServiceDomains}.
  */
-class DomainsImpl
+class AppServiceDomainsImpl
         extends GroupableResourcesImpl<
-        Domain,
-        DomainImpl,
+        AppServiceDomain,
+        AppServiceDomainImpl,
         DomainInner,
         DomainsInner,
         AppServiceManager>
-        implements Domains {
+        implements AppServiceDomains {
     TopLevelDomainsInner topLevelDomainsInner;
 
-    DomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
+    AppServiceDomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
         super(innerCollection, manager);
         this.topLevelDomainsInner = topLevelDomainsInner;
     }
 
     @Override
-    public DomainImpl getByGroup(String groupName, String name) {
+    public AppServiceDomainImpl getByGroup(String groupName, String name) {
         return wrapModel(innerCollection.get(groupName, name));
     }
 
@@ -50,30 +50,30 @@ class DomainsImpl
     }
 
     @Override
-    protected DomainImpl wrapModel(String name) {
-        return new DomainImpl(name, new DomainInner(), innerCollection, topLevelDomainsInner, myManager);
+    protected AppServiceDomainImpl wrapModel(String name) {
+        return new AppServiceDomainImpl(name, new DomainInner(), innerCollection, topLevelDomainsInner, myManager);
     }
 
     @Override
-    protected DomainImpl wrapModel(DomainInner inner) {
+    protected AppServiceDomainImpl wrapModel(DomainInner inner) {
         if (inner == null) {
             return null;
         }
-        return new DomainImpl(inner.name(), inner, innerCollection, topLevelDomainsInner, myManager);
+        return new AppServiceDomainImpl(inner.name(), inner, innerCollection, topLevelDomainsInner, myManager);
     }
 
     @Override
-    public DomainImpl define(String name) {
+    public AppServiceDomainImpl define(String name) {
         return wrapModel(name);
     }
 
     @Override
-    public PagedList<Domain> list() {
+    public PagedList<AppServiceDomain> list() {
         return wrapList(innerCollection.list());
     }
 
     @Override
-    public PagedList<Domain> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceDomain> listByGroup(String resourceGroupName) {
         return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
     }
 
