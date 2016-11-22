@@ -101,6 +101,24 @@ class ReplicationLinkImpl
     }
 
     @Override
+    public void failover() {
+        this.innerCollection.failoverReplicationLink(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.databaseName(),
+                this.name());
+    }
+
+    @Override
+    public void forceFailoverAllowDataLoss() {
+        this.innerCollection.failoverReplicationLinkAllowDataLoss(
+                this.resourceGroupName(),
+                this.sqlServerName(),
+                this.databaseName(),
+                this.name());
+    }
+
+    @Override
     public String name() {
         return this.resourceId.name();
     }
