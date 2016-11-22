@@ -94,7 +94,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListenerOnPort(int portNumber) {
+    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber) {
         ApplicationGatewayFrontendHttpListener listener = this.parent().getFrontendListenerByPortNumber(portNumber);
         if (listener == null) {
             return null;
@@ -120,7 +120,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpConfigurationOnPort(int portNumber) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendPort(int portNumber) {
         ApplicationGatewayBackendHttpConfiguration config = this.parent().getBackendHttpConfigurationByPortNumber(portNumber);
         if (config == null) {
             return null;

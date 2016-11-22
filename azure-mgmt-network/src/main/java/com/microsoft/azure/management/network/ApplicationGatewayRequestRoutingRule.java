@@ -81,7 +81,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number used by an existing listener
              * @return the next stage of the definition or null if the specified port number is not used by any listener
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendListenerOnPort(int portNumber);
+            WithBackendHttpConfiguration<ParentT> fromFrontendPort(int portNumber);
         }
 
         /**
@@ -117,7 +117,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number of a backend HTTP settings configuration on this application gateway
              * @return teh next stage of the definition or null if no backend HTTP configuration exists for the specified port number
              */
-            WithBackend<ParentT> toBackendHttpConfigurationOnPort(int portNumber);
+            WithBackend<ParentT> toBackendPort(int portNumber);
         }
     }
 

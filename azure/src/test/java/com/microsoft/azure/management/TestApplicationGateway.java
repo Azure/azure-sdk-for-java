@@ -119,8 +119,8 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendListenerOnPort(80)
-                                .toBackendHttpConfigurationOnPort(8080)
+                                .fromFrontendPort(80)
+                                .toBackendPort(8080)
                                 .withBackend("default")
                                 .attach()
                             .create();
@@ -319,8 +319,8 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendListenerOnPort(80)
-                                .toBackendHttpConfigurationOnPort(8080)
+                                .fromFrontendPort(80)
+                                .toBackendPort(8080)
                                 .withBackend("default")
                                 // TODO withRuleType
                                 .attach()
