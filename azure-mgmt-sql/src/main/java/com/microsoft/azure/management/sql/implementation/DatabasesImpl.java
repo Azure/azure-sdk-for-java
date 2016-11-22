@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.sql.SqlDatabase;
 import com.microsoft.azure.management.sql.SqlDatabases;
 import com.microsoft.azure.management.sql.SqlServer;
+import rx.Observable;
 
 import java.util.List;
 
@@ -52,5 +53,10 @@ public class DatabasesImpl implements SqlServer.Databases {
     @Override
     public void delete(String databaseName) {
         this.databases.deleteByParent(this.resourceGroupName, this.sqlServerName, databaseName);
+    }
+
+    @Override
+    public Observable<Void> deleteAsync(String databaseName) {
+        return this.databases.deleteByParentAsync(this.resourceGroupName, this.sqlServerName, databaseName);
     }
 }

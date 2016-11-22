@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.sql.implementation.ServerInner;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
@@ -119,6 +120,13 @@ public interface SqlServer extends
          * @param firewallRuleName name of the firewall rule to delete
          */
         void delete(String firewallRuleName);
+
+        /**
+         * Delete specified firewall rule in the server.
+         *
+         * @param firewallRuleName name of the firewall rule to delete
+         */
+        Observable<Void> deleteAsync(String firewallRuleName);
     }
 
     /**
@@ -154,6 +162,13 @@ public interface SqlServer extends
          * @param elasticPoolName name of the elastic pool to delete
          */
         void delete(String elasticPoolName);
+
+        /**
+         * Delete specified elastic pool in the server.
+         *
+         * @param elasticPoolName name of the elastic pool to delete
+         */
+        Observable<Void> deleteAsync(String elasticPoolName);
     }
 
     /**
@@ -189,6 +204,13 @@ public interface SqlServer extends
          * @param databaseName name of the database to delete
          */
         void delete(String databaseName);
+
+        /**
+         * Delete specified database in the server.
+         *
+         * @param databaseName name of the database to delete
+         */
+        Observable<Void> deleteAsync(String databaseName);
     }
 
     /**************************************************************
@@ -203,7 +225,6 @@ public interface SqlServer extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithAdministratorLogin,
         DefinitionStages.WithAdministratorPassword,
-        DefinitionStages.WithVersion,
         DefinitionStages.WithElasticPool,
         DefinitionStages.WithDatabase,
         DefinitionStages.WithFirewallRule,
@@ -250,19 +271,6 @@ public interface SqlServer extends
              * @return Next stage of the SQL Server definition
              */
             WithCreate withAdministratorPassword(String administratorLoginPassword);
-        }
-
-        /**
-         * A SQL Server definition setting version.
-         */
-        interface WithVersion {
-            /**
-             * Sets the version of SQL Server to be created.
-             *
-             * @param version Version of SQL server to be created
-             * @return Next stage of the SQL Server definition
-             */
-            WithCreate withVersion(ServerVersion version);
         }
 
         /**
@@ -340,8 +348,7 @@ public interface SqlServer extends
             DefinitionWithTags<WithCreate>,
             WithElasticPool,
             WithDatabase,
-            WithFirewallRule,
-            WithVersion {
+            WithFirewallRule {
         }
     }
 
@@ -354,7 +361,6 @@ public interface SqlServer extends
             UpdateStages.WithElasticPool,
             UpdateStages.WithDatabase,
             UpdateStages.WithFirewallRule {
-
     }
 
     /**
@@ -394,6 +400,13 @@ public interface SqlServer extends
              * @return Next stage of the SQL Server update
              */
             Update withNewElasticPool(String elasticPoolName, ElasticPoolEditions elasticPoolEdition);
+
+            /**
+             * Removes elastic pool from the SQL Server.
+             * @param elasticPoolName name of the elastic pool to be removed
+             * @return Next stage of the SQL Server update
+             */
+            Update withoutElasticPool(String elasticPoolName);
         }
 
         /**
@@ -406,6 +419,13 @@ public interface SqlServer extends
              * @return Next stage of the SQL Server update
              */
             Update withNewDatabase(String databaseName);
+
+            /**
+             * Remove database from the SQL Server.
+             * @param databaseName name of the database to be removed
+             * @return Next stage of the SQL Server update
+             */
+            Update withoutDatabase(String databaseName);
         }
 
 
@@ -439,6 +459,14 @@ public interface SqlServer extends
              * @return Next stage of the SQL Server update
              */
             Update withNewFirewallRule(String startIpAddress, String endIpAddress, String firewallRuleName);
+
+            /**
+             * Removes firewall rule from the SQL Server.
+             *
+             * @param firewallRuleName name of the firewall rule to be removed
+             * @return Next stage of the SQL Server update
+             */
+            Update withoutFirewallRule(String firewallRuleName);
         }
     }
 }
