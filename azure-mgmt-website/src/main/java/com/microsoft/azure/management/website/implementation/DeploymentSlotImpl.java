@@ -139,6 +139,16 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<ConnectionStringDictionaryInner> listConnectionStrings() {
+        return client.listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
+    Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
+        return client.updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
     Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
         return client.listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
     }

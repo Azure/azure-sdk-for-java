@@ -65,6 +65,16 @@ class WebAppImpl
     }
 
     @Override
+    Observable<ConnectionStringDictionaryInner> listConnectionStrings() {
+        return client.listConnectionStringsAsync(resourceGroupName(), name());
+    }
+
+    @Override
+    Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
+        return client.updateConnectionStringsAsync(resourceGroupName(), name(), inner);
+    }
+
+    @Override
     Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
         return client.listSlotConfigurationNamesAsync(resourceGroupName(), name());
     }

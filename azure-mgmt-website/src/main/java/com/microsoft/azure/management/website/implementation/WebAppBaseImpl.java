@@ -16,8 +16,12 @@ import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.AppServicePricingTier;
+import com.microsoft.azure.management.website.AppSetting;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CloningInfo;
+import com.microsoft.azure.management.website.ConnStringValueTypePair;
+import com.microsoft.azure.management.website.ConnectionString;
+import com.microsoft.azure.management.website.ConnectionStringType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
@@ -77,6 +81,9 @@ abstract class WebAppBaseImpl<
     private Map<String, String> appSettingsToAdd;
     private List<String> appSettingsToRemove;
     private Map<String, Boolean> appSettingStickiness;
+    private Map<String, ConnStringValueTypePair> connectionStringsToAdd;
+    private List<String> connectionStringsToRemove;
+    private Map<String, Boolean> connectionStringStickiness;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -92,6 +99,9 @@ abstract class WebAppBaseImpl<
         appSettingsToAdd = new HashMap<>();
         appSettingsToRemove = new ArrayList<>();
         appSettingStickiness = new HashMap<>();
+        connectionStringsToAdd = new HashMap<>();
+        connectionStringsToRemove = new ArrayList<>();
+        connectionStringStickiness = new HashMap<>();
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -353,6 +363,36 @@ abstract class WebAppBaseImpl<
         return inner().siteConfig().autoSwapSlotName();
     }
 
+    @Override
+    public Map<String, AppSetting> getAppSettings() {
+        final StringDictionaryInner inner = listAppSettings().toBlocking().single();
+        final SlotConfigNamesResourceInner slotConfigs = listSlotConfigurations().toBlocking().single();
+        if (inner == null || inner.properties() == null) {
+            return null;
+        }
+        return Maps.asMap(inner.properties().keySet(), new Function<String, AppSetting>() {
+            @Override
+            public AppSetting apply(String input) {
+                return new AppSettingImpl(input, inner.properties().get(input), slotConfigs.appSettingNames().contains(input));
+            }
+        });
+    }
+
+    @Override
+    public Map<String, ConnectionString> getConnectionStrings() {
+        final ConnectionStringDictionaryInner inner = listConnectionStrings().toBlocking().single();
+        final SlotConfigNamesResourceInner slotConfigs = listSlotConfigurations().toBlocking().single();
+        if (inner == null || inner.properties() == null) {
+            return null;
+        }
+        return Maps.asMap(inner.properties().keySet(), new Function<String, ConnectionString>() {
+            @Override
+            public ConnectionString apply(String input) {
+                return new ConnectionStringImpl(input, inner.properties().get(input), slotConfigs.connectionStringNames().contains(input));
+            }
+        });
+    }
+
     abstract Observable<SiteInner> createOrUpdateInner(SiteInner site);
 
     abstract Observable<SiteInner> getInner();
@@ -364,6 +404,10 @@ abstract class WebAppBaseImpl<
     abstract Observable<StringDictionaryInner> listAppSettings();
 
     abstract Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner);
+
+    abstract Observable<ConnectionStringDictionaryInner> listConnectionStrings();
+
+    abstract Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner);
 
     abstract Observable<SlotConfigNamesResourceInner> listSlotConfigurations();
 
@@ -491,12 +535,45 @@ abstract class WebAppBaseImpl<
                         return observable;
                     }
                 })
-                // app setting stickiness
+                // connection strings
                 .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
                     @Override
                     public Observable<SiteInner> call(final SiteInner inner) {
                         Observable<SiteInner> observable = Observable.just(inner);
-                        if (!appSettingStickiness.isEmpty()) {
+                        if (!connectionStringsToAdd.isEmpty() || !connectionStringsToRemove.isEmpty()) {
+                            observable = listConnectionStrings()
+                                    .flatMap(new Func1<ConnectionStringDictionaryInner, Observable<ConnectionStringDictionaryInner>>() {
+                                        @Override
+                                        public Observable<ConnectionStringDictionaryInner> call(ConnectionStringDictionaryInner dictionaryInner) {
+                                            if (dictionaryInner == null) {
+                                                dictionaryInner = new ConnectionStringDictionaryInner();
+                                                dictionaryInner.withLocation(regionName());
+                                            }
+                                            if (dictionaryInner.properties() == null) {
+                                                dictionaryInner.withProperties(new HashMap<String, ConnStringValueTypePair>());
+                                            }
+                                            dictionaryInner.properties().putAll(connectionStringsToAdd);
+                                            for (String connectionString : connectionStringsToRemove) {
+                                                dictionaryInner.properties().remove(connectionString);
+                                            }
+                                            return updateConnectionStrings(dictionaryInner);
+                                        }
+                                    }).map(new Func1<ConnectionStringDictionaryInner, SiteInner>() {
+                                        @Override
+                                        public SiteInner call(ConnectionStringDictionaryInner stringDictionaryInner) {
+                                            return inner;
+                                        }
+                                    });
+                        }
+                        return observable;
+                    }
+                })
+                // app setting & connection string stickiness
+                .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                    @Override
+                    public Observable<SiteInner> call(final SiteInner inner) {
+                        Observable<SiteInner> observable = Observable.just(inner);
+                        if (!appSettingStickiness.isEmpty() || !connectionStringStickiness.isEmpty()) {
                             observable = listSlotConfigurations()
                                     .flatMap(new Func1<SlotConfigNamesResourceInner, Observable<SlotConfigNamesResourceInner>>() {
                                         @Override
@@ -508,7 +585,11 @@ abstract class WebAppBaseImpl<
                                             if (slotConfigNamesResourceInner.appSettingNames() == null) {
                                                 slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<String>());
                                             }
+                                            if (slotConfigNamesResourceInner.connectionStringNames() == null) {
+                                                slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<String>());
+                                            }
                                             Set<String> stickyAppSettingKeys = new HashSet<>(slotConfigNamesResourceInner.appSettingNames());
+                                            Set<String> stickyConnectionStringNames = new HashSet<>(slotConfigNamesResourceInner.connectionStringNames());
                                             for (Map.Entry<String, Boolean> stickiness : appSettingStickiness.entrySet()) {
                                                 if (stickiness.getValue()) {
                                                     stickyAppSettingKeys.add(stickiness.getKey());
@@ -516,7 +597,15 @@ abstract class WebAppBaseImpl<
                                                     stickyAppSettingKeys.remove(stickiness.getKey());
                                                 }
                                             }
+                                            for (Map.Entry<String, Boolean> stickiness : connectionStringStickiness.entrySet()) {
+                                                if (stickiness.getValue()) {
+                                                    stickyConnectionStringNames.add(stickiness.getKey());
+                                                } else {
+                                                    stickyConnectionStringNames.remove(stickiness.getKey());
+                                                }
+                                            }
                                             slotConfigNamesResourceInner.withAppSettingNames(new ArrayList<>(stickyAppSettingKeys));
+                                            slotConfigNamesResourceInner.withConnectionStringNames(new ArrayList<>(stickyConnectionStringNames));
                                             return updateSlotConfigurations(slotConfigNamesResourceInner);
                                         }
                                     }).map(new Func1<SlotConfigNamesResourceInner, SiteInner>() {
@@ -882,9 +971,7 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     public FluentImplT withoutAppSetting(String key) {
         appSettingsToRemove.add(key);
-        if (appSettingStickiness.containsKey(key)) {
-            appSettingStickiness.remove(key);
-        }
+        appSettingStickiness.remove(key);
         return (FluentImplT) this;
     }
 
@@ -892,6 +979,36 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     public FluentImplT withAppSettingStickiness(String key, boolean sticky) {
         appSettingStickiness.put(key, sticky);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withConnectionString(String name, String value, ConnectionStringType type) {
+        connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withStickyConnectionString(String name, String value, ConnectionStringType type) {
+        connectionStringsToAdd.put(name, new ConnStringValueTypePair().withValue(value).withType(type));
+        connectionStringStickiness.put(name, true);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutConnectionString(String name) {
+        connectionStringsToRemove.add(name);
+        connectionStringStickiness.remove(name);
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withConnectionStringStickiness(String name, boolean stickiness) {
+        connectionStringStickiness.put(name, stickiness);
         return (FluentImplT) this;
     }
 }

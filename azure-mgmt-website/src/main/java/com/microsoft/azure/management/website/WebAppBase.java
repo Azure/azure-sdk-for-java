@@ -230,6 +230,10 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     Map<String, HostNameBinding> getHostNameBindings();
 
+    Map<String, AppSetting> getAppSettings();
+
+    Map<String, ConnectionString> getConnectionStrings();
+
     /**
      * Starts the web app or deployment slot.
      */
@@ -541,6 +545,31 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
+         * A web app definition stage allowing connection strings to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithConnectionString<FluentT> {
+            /**
+             * Adds a connection string to the web app.
+             * @param name the name of the connection string
+             * @param value the connection string value
+             * @param type the connection string type
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
+
+            /**
+             * Adds a connection string to the web app. This connection string will be swapped
+             * as well after a deployment slot swap.
+             * @param name the name of the connection string
+             * @param value the connection string value
+             * @param type the connection string type
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withStickyConnectionString(String name, String value, ConnectionStringType type);
+        }
+
+        /**
          * A site definition with sufficient inputs to create a new web app /
          * deployments slot in the cloud, but exposing additional optional
          * inputs to specify.
@@ -553,7 +582,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
                 WithClientAffinityEnabled<FluentT>,
                 WithClientCertEnabled<FluentT>,
                 WithSiteConfigs<FluentT>,
-                WithAppSettings<FluentT> {
+                WithAppSettings<FluentT>,
+                WithConnectionString<FluentT> {
         }
     }
 
@@ -807,7 +837,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
-         * A web app definition stage allowing app settings to be set.
+         * A web app update stage allowing app settings to be set.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
          */
         interface WithAppSettings<FluentT> {
@@ -815,14 +845,14 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * Adds an app setting to the web app.
              * @param key the key for the app setting
              * @param value the value for the app setting
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update<FluentT> withAppSetting(String key, String value);
 
             /**
              * Specifies the app settings for the web app as a {@link Map}.
              * @param settings a {@link Map} of app settings
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update<FluentT> withAppSettings(Map<String, String> settings);
 
@@ -831,7 +861,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * as well after a deployment slot swap.
              * @param key the key for the app setting
              * @param value the value for the app setting
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update<FluentT> withStickyAppSetting(String key, String value);
 
@@ -839,23 +869,64 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * Specifies the app settings for the web app as a {@link Map}. These app settings will be swapped
              * as well after a deployment slot swap.
              * @param settings a {@link Map} of app settings
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update<FluentT> withStickyAppSettings(Map<String, String> settings);
 
             /**
              * Removes an app setting from the web app.
              * @param key the key of the app setting to remove
-             * @return the next stage of the web app definition
+             * @return the next stage of the web app update
              */
             Update<FluentT> withoutAppSetting(String key);
 
             /**
-             * Removes an app setting from the web app.
-             * @param key the key of the app setting to remove
-             * @return the next stage of the web app definition
+             * Changes the stickiness of an app setting.
+             * @param key the key of the app setting to change stickiness
+             * @param sticky true if the app setting sticks to the slot during a swap
+             * @return the next stage of the web app update
              */
             Update<FluentT> withAppSettingStickiness(String key, boolean sticky);
+        }
+
+        /**
+         * A web app update stage allowing connection strings to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithConnectionString<FluentT> {
+            /**
+             * Adds a connection string to the web app.
+             * @param name the name of the connection string
+             * @param value the connection string value
+             * @param type the connection string type
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
+
+            /**
+             * Adds a connection string to the web app. This connection string will be swapped
+             * as well after a deployment slot swap.
+             * @param name the name of the connection string
+             * @param value the connection string value
+             * @param type the connection string type
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withStickyConnectionString(String name, String value, ConnectionStringType type);
+
+            /**
+             * Removes a connection string from the web app.
+             * @param name the name of the connection string
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withoutConnectionString(String name);
+
+            /**
+             * Changes the stickiness of a connection string.
+             * @param name the name of the connection string
+             * @param sticky true if the connection string sticks to the slot during a swap
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withConnectionStringStickiness(String name, boolean sticky);
         }
     }
 
@@ -872,6 +943,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             UpdateStages.WithScmSiteAlsoStopped<FluentT>,
             UpdateStages.WithSiteEnabled<FluentT>,
             UpdateStages.WithSiteConfigs<FluentT>,
-            UpdateStages.WithAppSettings<FluentT> {
+            UpdateStages.WithAppSettings<FluentT>,
+            UpdateStages.WithConnectionString<FluentT> {
     }
 }
