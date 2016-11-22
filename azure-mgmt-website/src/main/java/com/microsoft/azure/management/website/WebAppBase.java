@@ -258,10 +258,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     interface Definition<FluentT> extends
             DefinitionStages.WithAppServicePlan<FluentT>,
-            DefinitionStages.WithHostNameBinding<FluentT>,
             DefinitionStages.WithHostNameSslBinding<FluentT>,
-            DefinitionStages.WithWebContainer<FluentT>,
-            DefinitionStages.WithCreate<FluentT> {
+            DefinitionStages.WithWebContainer<FluentT> {
     }
 
     /**

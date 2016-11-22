@@ -31,8 +31,7 @@ public interface DeploymentSlot extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithConfiguration,
-            WebAppBase.Definition<DeploymentSlot> {
+            DefinitionStages.WithConfiguration {
     }
 
     /**
@@ -74,14 +73,6 @@ public interface DeploymentSlot extends
              * @return the next stage of the deployment slot definition
              */
             WebAppBase.DefinitionStages.WithHostNameBinding<DeploymentSlot> withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot);
-        }
-
-        /**
-         * A deployment slot definition with sufficient inputs to create a new
-         * slot in the cloud, but exposing additional optional inputs to
-         * specify.
-         */
-        interface WithCreate extends WebAppBase.DefinitionStages.WithCreate<DeploymentSlot> {
         }
     }
 

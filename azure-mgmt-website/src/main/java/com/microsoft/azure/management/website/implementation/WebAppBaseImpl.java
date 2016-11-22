@@ -661,7 +661,7 @@ abstract class WebAppBaseImpl<
         return (FluentImplT) this;
     }
 
-    WebAppBaseImpl withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
+    WebAppBaseImpl<FluentT, FluentImplT> withNewHostNameSslBinding(final HostNameSslBindingImpl<FluentT, FluentImplT> hostNameSslBinding) {
         if (hostNameSslBinding.newCertificate() != null) {
             sslBindingsToCreate.put(hostNameSslBinding.name(), hostNameSslBinding);
         }
@@ -948,7 +948,6 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public FluentImplT withStickyAppSetting(String key, String value) {
         withAppSetting(key, value);
         return withAppSettingStickiness(key, true);
