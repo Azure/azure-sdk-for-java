@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
@@ -21,6 +23,7 @@ import rx.Observable;
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
+@LangDefinition
 public abstract class IndependentChildImpl<
             FluentModelT extends IndependentChild,
             FluentParentModelT extends GroupableResource,
@@ -103,6 +106,11 @@ public abstract class IndependentChildImpl<
         return this.createChildResourceAsync();
     }
 
-    protected abstract void setParentName(InnerModelT inner);
+    protected void setParentName(InnerModelT inner) {
+        if (this.id() != null) {
+            this.parentName = ResourceId.parseResourceId(this.id()).parent().name();
+        }
+    }
+
     protected abstract Observable<FluentModelT> createChildResourceAsync();
 }

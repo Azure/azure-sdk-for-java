@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
@@ -75,13 +74,6 @@ class SqlFirewallRuleImpl
     }
 
     @Override
-    protected void setParentName(ServerFirewallRuleInner inner) {
-        if (inner.id() != null) {
-            this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
-        }
-    }
-
-    @Override
     protected Observable<SqlFirewallRule> createChildResourceAsync() {
         final SqlFirewallRule self = this;
 
@@ -110,7 +102,11 @@ class SqlFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        if (this.inner() != null) {
+            return this.inner().id();
+        }
+
+        return null;
     }
 
     @Override
