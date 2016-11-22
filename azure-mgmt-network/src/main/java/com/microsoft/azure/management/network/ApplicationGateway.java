@@ -350,8 +350,8 @@ public interface ApplicationGateway extends
             /**
              * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
              * and the specified name that can be referenced from request routing rules.
-             * @param portNumber
-             * @param backendHttpConfigurationName
+             * @param portNumber the private port number for the backend to listen on
+             * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
              * @return the next stage of the definition
              */
             WithBackendHttpConfigOrRequestRoutingRule withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
@@ -471,7 +471,7 @@ public interface ApplicationGateway extends
              * <p>
              * Note that removing an IP configuration referenced by other settings may break the application gateway.
              * Also, there must be at least one IP configuration for the application gateway to function.
-             * @param backendName the name of an existing IP configuration
+             * @param ipConfigurationName the name of the IP configuration to remove
              * @return the next stage of the update
              */
             Update withoutIpConfiguration(String ipConfigurationName);
@@ -563,7 +563,7 @@ public interface ApplicationGateway extends
              * Removes the specified frontend IP configuration.
              * <p>
              * Note that removing a frontend referenced by other settings may break the application gateway.
-             * @param frontendName
+             * @param frontendName the name of the frontend IP configuration to remove
              * @return the next stage of the update
              */
             Update withoutFrontend(String frontendName);
@@ -695,8 +695,8 @@ public interface ApplicationGateway extends
             /**
              * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
              * and the specified name that can be referenced from request routing rules.
-             * @param portNumber
-             * @param backendHttpConfigurationName
+             * @param portNumber the private port number for the backend to listen on
+             * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
              * @return the next stage of the update
              */
             Update withBackendHttpConfigurationOnPort(int portNumber, String backendHttpConfigurationName);
