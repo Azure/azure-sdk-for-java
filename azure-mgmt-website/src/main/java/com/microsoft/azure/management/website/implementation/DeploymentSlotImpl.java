@@ -109,22 +109,67 @@ class DeploymentSlotImpl
     }
 
     @Override
-    Observable<SiteInner> createOrUpdateInner(String resourceGroupName, String name, SiteInner site) {
-        return client.createOrUpdateSlotAsync(resourceGroupName, parent.name(), name, site);
+    Observable<SiteInner> createOrUpdateInner(SiteInner site) {
+        return client.createOrUpdateSlotAsync(resourceGroupName(), parent.name(), name(), site);
     }
 
     @Override
-    Observable<SiteInner> getInner(String resourceGroupName, String name) {
-        return client.getSlotAsync(resourceGroupName, parent.name(), name);
+    Observable<SiteInner> getInner() {
+        return client.getSlotAsync(resourceGroupName(), parent.name(), name());
     }
 
     @Override
-    Observable<SiteConfigInner> createOrUpdateSiteConfig(String resourceGroupName, String name, SiteConfigInner siteConfig) {
-        return client.createOrUpdateConfigurationSlotAsync(resourceGroupName, parent.name(), name, siteConfig);
+    Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
+        return client.createOrUpdateConfigurationSlotAsync(resourceGroupName(), parent.name(), name(), siteConfig);
     }
 
     @Override
     Observable<Object> deleteHostNameBinding(String hostname) {
         return client.deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
+    }
+
+    @Override
+    Observable<StringDictionaryInner> listAppSettings() {
+        return client.listApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
+    Observable<StringDictionaryInner> updateAppSettings(StringDictionaryInner inner) {
+        return client.updateApplicationSettingsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
+    Observable<ConnectionStringDictionaryInner> listConnectionStrings() {
+        return client.listConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
+    Observable<ConnectionStringDictionaryInner> updateConnectionStrings(ConnectionStringDictionaryInner inner) {
+        return client.updateConnectionStringsSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
+    Observable<SlotConfigNamesResourceInner> listSlotConfigurations() {
+        return client.listSlotConfigurationNamesAsync(resourceGroupName(), parent().name());
+    }
+
+    @Override
+    Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
+        return client.updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
+    }
+
+    @Override
+    public void swap(String slotName) {
+        client.swapSlotsSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+    }
+
+    @Override
+    public void applySlotConfigurations(String slotName) {
+        client.applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+    }
+
+    @Override
+    public void resetSlotConfigurations() {
+        client.resetSlotConfigurationSlot(resourceGroupName(), parent().name(), name());
     }
 }
