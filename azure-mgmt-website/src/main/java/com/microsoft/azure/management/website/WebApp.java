@@ -29,7 +29,9 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithGroup {
+            DefinitionStages.WithRegion,
+            DefinitionStages.WithAppServicePlan,
+            DefinitionStages.WithNewAppServicePlan {
     }
 
     /**
@@ -37,22 +39,102 @@ public interface WebApp extends
      */
     interface DefinitionStages {
         /**
-         * The first stage of the web app definition.
+         * A web app definition allowing resource group to be set.
          */
-        interface Blank extends GroupableResource.DefinitionWithRegion<WithGroup> {
+        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithAppServicePlan> {
         }
 
         /**
-         * A web app definition allowing resource group to be set.
+         * The first stage of the web app definition.
          */
-        interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<
-                WebAppBase.DefinitionStages.WithAppServicePlan<WebApp>> {
+        interface WithRegion extends GroupableResource.DefinitionWithRegion<WithNewAppServicePlan> {
+        }
+
+        /**
+         * A web app definition allowing app service plan to be set.
+         */
+        interface WithAppServicePlan {
+            /**
+             * Creates a new app service plan to use.
+             * @return the next stage of the web app definition
+             * @param name the name of the app service plan
+             */
+            WithRegion withNewAppServicePlan(String name);
+
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlanName the name of the existing app service plan
+             * @return the next stage of the web app definition
+             */
+            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(String appServicePlanName);
+        }
+
+        /**
+         * As web app definition allowing more information of a new app service plan to be set.
+         */
+        interface WithNewAppServicePlan {
+            /**
+             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * @return the next stage of the web app definition
+             */
+            WebAppBase.DefinitionStages.WithCreate<WebApp> withFreePricingTier();
+
+            /**
+             * Creates a new app service plan to use.
+             * @param pricingTier the pricing tier to use
+             * @return the next stage of the web app definition
+             */
+            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withPricingTier(AppServicePricingTier pricingTier);
+        }
+    }
+
+    /**
+     * Grouping of all the web app update stages.
+     */
+    interface UpdateStages {
+        /**
+         * A web app update allowing app service plan to be set.
+         */
+        interface WithAppServicePlan {
+            /**
+             * Creates a new app service plan to use.
+             * @return the next stage of the web app update
+             * @param name the name of the app service plan
+             */
+            WithNewAppServicePlan withNewAppServicePlan(String name);
+
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlanName the name of the existing app service plan
+             * @return the next stage of the web app update
+             */
+            Update withExistingAppServicePlan(String appServicePlanName);
+        }
+
+        /**
+         * As web app update allowing more information of a new app service plan to be set.
+         */
+        interface WithNewAppServicePlan {
+            /**
+             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
+             * @return the next stage of the web app update
+             */
+            Update withFreePricingTier();
+
+            /**
+             * Creates a new app service plan to use.
+             * @param pricingTier the pricing tier to use
+             * @return the next stage of the web app update
+             */
+            Update withPricingTier(AppServicePricingTier pricingTier);
         }
     }
 
     /**
      * The template for a web app update operation, containing all the settings that can be modified.
      */
-    interface Update extends WebAppBase.Update<WebApp> {
+    interface Update extends
+            WebAppBase.Update<WebApp>,
+            UpdateStages.WithAppServicePlan {
     }
 }

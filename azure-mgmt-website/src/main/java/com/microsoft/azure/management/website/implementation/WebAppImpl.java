@@ -8,6 +8,9 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
+import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.DeploymentSlots;
 import com.microsoft.azure.management.website.HostNameBinding;
 import com.microsoft.azure.management.website.WebApp;
@@ -26,9 +29,11 @@ class WebAppImpl
         implements
             WebApp,
             WebApp.Definition,
-            WebApp.Update {
+            WebApp.Update,
+            WebApp.UpdateStages.WithNewAppServicePlan {
 
     private DeploymentSlots deploymentSlots;
+    private AppServicePlanImpl appServicePlan;
 
     WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, configObject, client, manager);
@@ -140,6 +145,40 @@ class WebAppImpl
     @Override
     public WebAppImpl refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withNewAppServicePlan(String name) {
+        appServicePlan = (AppServicePlanImpl) myManager.appServicePlans().define(name);
+        inner().withServerFarmId(name);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withFreePricingTier() {
+        return withPricingTier(AppServicePricingTier.FREE_F1);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public WebAppImpl withPricingTier(AppServicePricingTier pricingTier) {
+        appServicePlan = appServicePlan
+                .withRegion(region())
+                .withPricingTier(pricingTier);
+        if (super.creatableGroup != null) {
+            appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
+            ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
+        } else {
+            appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
+        }
+        addCreatableDependency(appServicePlan);
+        return this;
+    }
+
+    @Override
+    public WebAppImpl withExistingAppServicePlan(String appServicePlanName) {
+        inner().withServerFarmId(appServicePlanName);
         return this;
     }
 }

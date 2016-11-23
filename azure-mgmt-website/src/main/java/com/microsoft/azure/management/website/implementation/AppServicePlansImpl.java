@@ -31,7 +31,7 @@ class AppServicePlansImpl
 
     @Override
     public AppServicePlan getByGroup(String groupName, String name) {
-        return wrapModel(innerCollection.get(groupName, name));
+        return getByGroupAsync(groupName, name).toBlocking().single();
     }
 
     @Override
@@ -66,5 +66,16 @@ class AppServicePlansImpl
     @Override
     public AppServicePlanImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Observable<AppServicePlan> getByGroupAsync(String resourceGroupName, String name) {
+        return innerCollection.getAsync(resourceGroupName, name)
+                .map(new Func1<AppServicePlanInner, AppServicePlan>() {
+                    @Override
+                    public AppServicePlan call(AppServicePlanInner appServicePlanInner) {
+                        return wrapModel(appServicePlanInner);
+                    }
+                });
     }
 }

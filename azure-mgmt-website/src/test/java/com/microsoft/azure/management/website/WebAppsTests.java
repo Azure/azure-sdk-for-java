@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -31,8 +30,8 @@ public class WebAppsTests extends AppServiceTestBase {
     @Test
     public void canCRUDWebApp() throws Exception {
         AppServiceDomain domain = appServiceManager.domains().getByGroup(RG_NAME, "graph-webapp-319.com");
+
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
-                .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
                 .withExistingAppServicePlan("java-plan-323")
                 .withManagedHostnameBindings(domain, "pineapple")

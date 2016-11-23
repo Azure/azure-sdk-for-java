@@ -277,7 +277,6 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      * Container interface for all the definitions that need to be implemented.
      */
     interface Definition<FluentT> extends
-            DefinitionStages.WithAppServicePlan<FluentT>,
             DefinitionStages.WithHostNameSslBinding<FluentT>,
             DefinitionStages.WithWebContainer<FluentT> {
     }
@@ -286,33 +285,6 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      * Grouping of all the site definition stages.
      */
     interface DefinitionStages {
-        /**
-         * A web app definition allowing app service plan to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
-         */
-        interface WithAppServicePlan<FluentT> {
-            /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
-             * @return the next stage of the web app definition
-             */
-            WithCreate<FluentT> withNewFreeAppServicePlan();
-
-            /**
-             * Creates a new app service plan to use.
-             * @param name the name of the app service plan
-             * @param pricingTier the pricing tier to use
-             * @return the next stage of the web app definition
-             */
-            WithHostNameBinding<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
-
-            /**
-             * Uses an existing app service plan for the web app.
-             * @param appServicePlanName the name of the existing app service plan
-             * @return the next stage of the web app definition
-             */
-            WithHostNameBinding<FluentT> withExistingAppServicePlan(String appServicePlanName);
-        }
-
         /**
          * A web app definition stage allowing host name binding to be specified.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
@@ -609,33 +581,6 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      * Grouping of all the web app update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the web app update allowing app service plan to be set.
-         * @param <FluentT> the type of the resource, either a web app or a deployment slot
-         */
-        interface WithAppServicePlan<FluentT> {
-            /**
-             * Creates a new free app service plan to use. No custom domains or SSL bindings are available in this plan.
-             * @return the next stage of web app update
-             */
-            Update<FluentT> withNewFreeAppServicePlan();
-
-            /**
-             * Creates a new app service plan to use.
-             * @param name the name of the app service plan
-             * @param pricingTier the pricing tier to use
-             * @return the next stage of web app update
-             */
-            Update<FluentT> withNewAppServicePlan(String name, AppServicePricingTier pricingTier);
-
-            /**
-             * Uses an existing app service plan for the web app.
-             * @param appServicePlanName the name of the existing app service plan
-             * @return the next stage of web app update
-             */
-            Update<FluentT> withExistingAppServicePlan(String appServicePlanName);
-        }
-
         /**
          * The stage of the web app update allowing host name binding to be set.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
@@ -953,7 +898,6 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     interface Update<FluentT> extends
             Appliable<FluentT>,
-            UpdateStages.WithAppServicePlan<FluentT>,
             UpdateStages.WithHostNameBinding<FluentT>,
             UpdateStages.WithHostNameSslBinding<FluentT>,
             UpdateStages.WithClientAffinityEnabled<FluentT>,
