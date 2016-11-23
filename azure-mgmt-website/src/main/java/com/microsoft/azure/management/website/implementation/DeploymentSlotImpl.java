@@ -157,4 +157,19 @@ class DeploymentSlotImpl
     Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner) {
         return client.updateSlotConfigurationNamesAsync(resourceGroupName(), parent().name(), inner);
     }
+
+    @Override
+    public void swap(String slotName) {
+        client.swapSlotsSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+    }
+
+    @Override
+    public void applySlotConfigurations(String slotName) {
+        client.applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+    }
+
+    @Override
+    public void resetSlotConfigurations() {
+        client.resetSlotConfigurationSlot(resourceGroupName(), parent().name(), name());
+    }
 }

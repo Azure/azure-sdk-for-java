@@ -628,7 +628,6 @@ abstract class WebAppBaseImpl<
                 });
     }
 
-
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withNewFreeAppServicePlan() {

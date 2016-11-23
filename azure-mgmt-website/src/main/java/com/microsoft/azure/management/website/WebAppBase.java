@@ -249,6 +249,26 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     void restart();
 
+    /**
+     * Swaps the app running in the current web app / slot with the app
+     * running in the specified slot.
+     * @param slotName the target slot to swap with. Use 'production' for
+     *                 the production slot.
+     */
+    void swap(String slotName);
+
+    /**
+     * Apply the slot (or sticky) configurations from the specified slot
+     * to the current one. This is useful for "Swap with Preview".
+     * @param slotName the target slot to apply configurations from
+     */
+    void applySlotConfigurations(String slotName);
+
+    /**
+     * Reset the slot to its original configurations.
+     */
+    void resetSlotConfigurations();
+
     /**************************************************************
      * Fluent interfaces to provision a Web App or deployment slot
      **************************************************************/
@@ -855,8 +875,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withAppSettings(Map<String, String> settings);
 
             /**
-             * Adds an app setting to the web app. This app setting will be swapped
-             * as well after a deployment slot swap.
+             * Adds an app setting to the web app. This app setting
+             * will stay at the slot during a swap.
              * @param key the key for the app setting
              * @param value the value for the app setting
              * @return the next stage of the web app update
@@ -864,8 +884,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withStickyAppSetting(String key, String value);
 
             /**
-             * Specifies the app settings for the web app as a {@link Map}. These app settings will be swapped
-             * as well after a deployment slot swap.
+             * Specifies the app settings for the web app as a {@link Map}. These app settings
+             * will stay at the slot during a swap.
              * @param settings a {@link Map} of app settings
              * @return the next stage of the web app update
              */
@@ -902,8 +922,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             Update<FluentT> withConnectionString(String name, String value, ConnectionStringType type);
 
             /**
-             * Adds a connection string to the web app. This connection string will be swapped
-             * as well after a deployment slot swap.
+             * Adds a connection string to the web app. This connection string
+             * will stay at the slot during a swap.
              * @param name the name of the connection string
              * @param value the connection string value
              * @param type the connection string type
