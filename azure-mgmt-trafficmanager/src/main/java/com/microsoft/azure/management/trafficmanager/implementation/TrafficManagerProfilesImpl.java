@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.trafficmanager.CheckProfileDnsNameAvailabilityResult;
 import com.microsoft.azure.management.trafficmanager.DnsConfig;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 /**
  * Implementation for {@link TrafficManagerProfiles}.
  */
+@LangDefinition
 class TrafficManagerProfilesImpl extends GroupableResourcesImpl<
         TrafficManagerProfile,
         TrafficManagerProfileImpl,

@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * Possible endpoint types supported in a Traffic manager profile.
  */
+@LangDefinition
 public enum EndpointType {
     /**
      * Enum value Microsoft.Network/trafficManagerProfiles/azureEndpoints.

@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
@@ -21,6 +22,7 @@ import java.util.Map;
 /**
  * Implementation for {@link TrafficManagerProfile}.
  */
+@LangDefinition
 class TrafficManagerProfileImpl
         extends GroupableResourceImpl<
         TrafficManagerProfile,
