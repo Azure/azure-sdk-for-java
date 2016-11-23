@@ -433,6 +433,18 @@ public class AzureTests {
     }
 
     @Test
+    public void testRedis() throws Exception {
+        new TestRedis()
+                .runTest(azure.redisCaches(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testCdnManager() throws Exception {
+        new TestCdn()
+                .runTest(azure.cdnProfiles(), azure.resourceGroups());
+    }
+
+    @Test
     public void testDnsZones() throws Exception {
         new TestDns()
                 .runTest(azure.dnsZones(), azure.resourceGroups());

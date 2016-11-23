@@ -126,6 +126,11 @@
       <artifactId>api-annotations</artifactId>
       <version>0.0.1</version>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-cdn</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
       <dependency>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>azure-mgmt-sql</artifactId>
