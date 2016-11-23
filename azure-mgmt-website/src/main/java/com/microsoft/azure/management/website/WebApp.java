@@ -29,8 +29,7 @@ public interface WebApp extends
      */
     interface Definition extends
             DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            WebAppBase.Definition<WebApp> {
+            DefinitionStages.WithGroup {
     }
 
     /**
@@ -48,14 +47,6 @@ public interface WebApp extends
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<
                 WebAppBase.DefinitionStages.WithAppServicePlan<WebApp>> {
-        }
-
-        /**
-         * A web app definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
-         * specify.
-         */
-        interface WithCreate extends WebAppBase.DefinitionStages.WithCreate<WebApp> {
         }
     }
 
