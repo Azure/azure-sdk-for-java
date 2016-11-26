@@ -8,7 +8,6 @@ package com.microsoft.azure.management;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
@@ -22,7 +21,6 @@ import com.microsoft.azure.management.resources.Subscriptions;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.SkuName;
 import com.microsoft.azure.management.storage.StorageAccount;
-import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.junit.Assert;
 import org.junit.Before;
@@ -244,6 +242,19 @@ public class AzureTests {
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
         new TestApplicationGateway.PrivateMinimal(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a minimal Internet-facing application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingMinimal() throws Exception {
+        new TestApplicationGateway.PublicMinimal(
                 azure.publicIpAddresses(),
                 azure.virtualMachines(),
                 azure.networks())

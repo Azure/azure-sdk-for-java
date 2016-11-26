@@ -181,6 +181,18 @@ class ApplicationGatewayImpl
         // Reset and update configs
         this.inner().withGatewayIPConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
+        // Clean up frontends that are neither public nor private
+        Set<String> frontendNamesToRemove = new HashSet<String>();
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
+            if (!frontend.isPublic() && !frontend.isPrivate()) {
+                frontendNamesToRemove.add(frontend.name());
+            }
+        }
+
+        for (String frontendName : frontendNamesToRemove) {
+            this.frontends.remove(frontendName);
+        }
+
         // Reset and update frontends
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
 
@@ -581,29 +593,23 @@ class ApplicationGatewayImpl
                 .attach();
     }
 
-    private ApplicationGatewayImpl withoutFrontend(boolean isPublic) {
-        Set<String> frontendNamesToRemove = new HashSet<>();
+    @Override
+    public ApplicationGatewayImpl withoutPrivateFrontend() {
+        // Ensure no frontend is private
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            if (frontend.isPublic() == isPublic) {
-                frontendNamesToRemove.add(frontend.name());
-            }
-        }
-
-        for (String frontendName : frontendNamesToRemove) {
-            this.frontends.remove(frontendName);
+            frontend.inner().withSubnet(null).withPrivateIPAddress(null);
         }
 
         return this;
     }
 
     @Override
-    public ApplicationGatewayImpl withoutPrivateFrontend() {
-        return this.withoutFrontend(false);
-    }
-
-    @Override
     public ApplicationGatewayImpl withoutPublicFrontend() {
-        return this.withoutFrontend(true);
+        // Ensure no frontend is public
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
+            frontend.inner().withPublicIPAddress(null);
+        }
+        return this;
     }
 
     @Override
@@ -685,6 +691,18 @@ class ApplicationGatewayImpl
         return this.definePrivateFrontend(frontendName)
             .withExistingSubnet(networkId, subnetName)
             .attach();
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewPublicIpAddress() {
+        this.definePublicFrontend(DEFAULT).attach();
+        return super.withNewPublicIpAddress();
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewPublicIpAddress(String dnsLeafLabel) {
+        this.definePublicFrontend(DEFAULT).attach();
+        return super.withNewPublicIpAddress(dnsLeafLabel);
     }
 
     @Override

@@ -68,10 +68,14 @@ abstract class NetworkGroupableParentResourceImpl<
         return this.myManager;
     }
 
-    @SuppressWarnings("unchecked")
     public FluentImplT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePIP) {
-        this.creatablePIPKeys.put(creatablePIP.key(), DEFAULT);
-        this.addCreatableDependency(creatablePIP);
+        return withNewPublicIpAddress(creatablePIP, DEFAULT);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected FluentImplT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePip, String configName) {
+        this.creatablePIPKeys.put(creatablePip.key(), configName);
+        this.addCreatableDependency(creatablePip);
         return (FluentImplT) this;
     }
 

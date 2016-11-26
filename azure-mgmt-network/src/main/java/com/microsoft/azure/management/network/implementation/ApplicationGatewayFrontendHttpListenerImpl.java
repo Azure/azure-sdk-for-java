@@ -94,8 +94,8 @@ class ApplicationGatewayFrontendHttpListenerImpl
         if (this.frontend() == null) {
             // If not hooked up to a frontend, hook up to the first or default frontend
             ApplicationGatewayFrontend frontend = this.parent().frontends().get(NetworkGroupableParentResourceImpl.DEFAULT);
-            if (frontend == null) {
-                // If no default frontend, hook up to the first one
+            if (frontend == null && !this.parent().frontends().isEmpty()) {
+                // If no default frontend, hook up to the first one, if available
                 frontend = this.parent().frontends().values().iterator().next();
             }
 
