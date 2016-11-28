@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -23,7 +24,8 @@ public interface ApplicationGatewayFrontendListener extends
     Wrapper<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
-    HasPublicIpAddress {
+    HasPublicIpAddress,
+    HasProtocol<ApplicationGatewayProtocol> {
 
     /**
      * @return the frontend IP configuration this listener is associated with.
@@ -39,11 +41,6 @@ public interface ApplicationGatewayFrontendListener extends
      * @return the name of the frontend port the listener is listening on
      */
     String frontendPortName();
-
-    /**
-     * @return the protocol the listener listens to
-     */
-    ApplicationGatewayProtocol protocol();
 
     /**
      * Grouping of application gateway HTTP listener configuration stages.

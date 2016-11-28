@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
+import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
@@ -38,6 +39,24 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     // Getters
+
+    @Override
+    public ApplicationGatewaySslCertificate sslCertificate() {
+        if (this.frontendListener() == null) {
+            return null;
+        } else {
+            return this.frontendListener().sslCertificate();
+        }
+    }
+
+    @Override
+    public ApplicationGatewayProtocol protocol() {
+        if (this.frontendListener() == null) {
+            return null;
+        } else {
+            return this.frontendListener().protocol();
+        }
+    }
 
     @Override
     public String publicIpAddressId() {

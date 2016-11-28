@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
+import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -21,7 +22,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface ApplicationGatewayRequestRoutingRule extends
     Wrapper<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,
-    HasPublicIpAddress {
+    HasPublicIpAddress,
+    HasProtocol<ApplicationGatewayProtocol>,
+    HasSslCertificate<ApplicationGatewaySslCertificate> {
 
     /**
      * @return rule type
