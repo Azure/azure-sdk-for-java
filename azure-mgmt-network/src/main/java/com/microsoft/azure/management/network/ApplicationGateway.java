@@ -191,6 +191,7 @@ public interface ApplicationGateway extends
              * A frontend with the name "default" will be created if needed.
              * @return the next stage of the definition
              */
+            @Method
             WithListener withPrivateFrontend();
 
             /**

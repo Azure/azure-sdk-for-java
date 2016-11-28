@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.io.File;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -158,12 +159,14 @@ public interface ApplicationGatewayFrontendListener extends
              * Specifies that the listener is for the HTTP protocol.
              * @return the next stage of the definition
              */
+            @Method
             WithAttach<ParentT> withHttp();
 
             /**
              * Specifies that the listener is for the HTTPS protocol.
              * @return the next stage of the definition
              */
+            @Method
             WithSslCertificate<ParentT> withHttps();
         }
     }

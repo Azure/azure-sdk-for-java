@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayBackendHttpSettingsInner;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -80,6 +81,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Enables cookie based affinity.
              * @return the next stage of the update
              */
+            @Method
             WithAttach<ParentT> withCookieBasedAffinity();
         }
 
@@ -143,12 +145,14 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Enables cookie based affinity.
              * @return the next stage of the update
              */
+            @Method
             Update withCookieBasedAffinity();
 
             /**
              * Disables cookie based affinity.
              * @return the next stage of the update.
              */
+            @Method
             Update withoutCookieBasedAffinity();
         }
 
@@ -245,12 +249,14 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Enables cookie based affinity.
              * @return the next stage of the update
              */
+            @Method
             WithAttach<ParentT> withCookieBasedAffinity();
 
             /**
              * Disables cookie based affinity.
              * @return the next stage of the update
              */
+            @Method
             WithAttach<ParentT> withoutCookieBasedAffinity();
         }
     }
