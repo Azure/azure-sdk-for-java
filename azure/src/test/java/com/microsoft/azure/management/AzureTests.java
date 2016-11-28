@@ -261,6 +261,19 @@ public class AzureTests {
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
+    /**
+     * Tests a complex Internet-facing application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingComplex() throws Exception {
+        new TestApplicationGateway.PublicComplex(
+                azure.publicIpAddresses(),
+                azure.virtualMachines(),
+                azure.networks())
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
     @Test
     public void testAppGatewaysExisting() {
         String appGatewayId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/rg1478645787244/providers/Microsoft.Network/applicationGateways/ag1478645787244";

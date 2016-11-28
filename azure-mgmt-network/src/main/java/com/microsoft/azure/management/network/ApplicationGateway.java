@@ -151,7 +151,7 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to add a public IP address as the default public frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddress<ReturnT> extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddress<ReturnT> {
+        interface WithPublicIpAddress<ReturnT> extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddressNoDnsLabel<ReturnT> {
         }
 
         /**
