@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.io.File;
+
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
@@ -69,7 +71,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListener frontendHttpListener() {
+    public ApplicationGatewayFrontendListener frontendListener() {
         SubResource listenerRef = this.inner().httpListener();
         if (listenerRef != null) {
             String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
@@ -107,11 +109,10 @@ class ApplicationGatewayRequestRoutingRuleImpl
         return this.fromFrontendPort(portNumber, ApplicationGatewayProtocol.HTTP, null);
     }
 
-    /* TODO
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromFrontendHttpsPort(int portNumber) {
         return this.fromFrontendPort(portNumber, ApplicationGatewayProtocol.HTTPS, null);
-    } */
+    }
 
     private ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber, ApplicationGatewayProtocol protocol, String name) {
         // Determine listener to use
@@ -172,5 +173,45 @@ class ApplicationGatewayRequestRoutingRuleImpl
         } else {
             return this.toBackendHttpConfiguration(config.name());
         }
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificate(String name) {
+        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withSslCertificate(name);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile) {
+        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withSslCertificateFromPfxFile(pfxFile);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withSslCertificateFromPfxFile(pfxFile, name);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificatePassword(String password) {
+        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withSslCertificatePassword(password);
+        }
+        return this;
     }
 }

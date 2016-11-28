@@ -619,7 +619,9 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendHttpPort(80)
+                                .fromFrontendHttpsPort(443)
+                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificatePassword("Abc123")
                                 .toBackendPort(8080)
                                 .withBackend("default")
                                 .attach()
@@ -787,7 +789,7 @@ public class TestApplicationGateway {
         Assert.assertTrue(httpConfig != null);
         Assert.assertTrue(httpConfig.backendPort() == 8080);
 
-        listener = rule.frontendHttpListener();
+        listener = rule.frontendListener();
         Assert.assertTrue(listener != null);
         Assert.assertTrue(listener.frontendPortNumber() == 80);
     }
@@ -1033,7 +1035,7 @@ public class TestApplicationGateway {
 
             // Show frontend listener
             info.append("\n\t\t\tAssociated frontend listener: ");
-            ApplicationGatewayFrontendListener listener = rule.frontendHttpListener();
+            ApplicationGatewayFrontendListener listener = rule.frontendListener();
             if (listener == null) {
                 info.append("(None)");
             } else {

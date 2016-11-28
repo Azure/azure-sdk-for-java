@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
+import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -38,7 +39,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     /**
      * @return the associated frontend HTTP listener
      */
-    ApplicationGatewayFrontendListener frontendHttpListener();
+    ApplicationGatewayFrontendListener frontendListener();
 
     // TODO urlPathMap()
 
@@ -48,7 +49,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     interface DefinitionStages {
         /**
          * The first stage of an application gateway request routing rule definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithListener<ParentT> {
         }
@@ -57,7 +58,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT> {
@@ -65,7 +66,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
 
         /**
          * The stage of an application gateway request routing rule definition allowing to specify the listener to associate the routing rule with.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithListener<ParentT> {
             /**
@@ -78,17 +79,39 @@ public interface ApplicationGatewayRequestRoutingRule extends
             WithBackendHttpConfiguration<ParentT> fromFrontendListener(String name);
 
             /**
-             * Associates the request routing rule with an existing frontend HTTP listener on this application gateway
-             * associated with the specified port number.
+             * Associates the request routing rule with an existing frontend listener on this application gateway
+             * associated with the specified port number and the HTTP protocol.
              * @param portNumber the port number used by an existing listener
              * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTP protocol (e.g. HTTPS)
              */
             WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
+
+            /**
+             * Associates the request routing rule with an existing frontend listener on this application gateway
+             * associated with the specified port number and the HTTPS protocol.
+             * @param portNumber the port number used by an existing listener
+             * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTPS protocol (e.g. HTTP)
+             */
+            WithSslCertificate<WithBackendHttpConfiguration<ParentT>> fromFrontendHttpsPort(int portNumber);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
+         * @param <ParentT> the next stage of the definition
+         */
+        interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
+         * @param <ParentT> the next stage of the definition
+         */
+        interface WithSslPassword<ParentT> extends HasSslCertificate.DefinitionStages.WithSslPassword<ParentT> {
         }
 
         /**
          * The stage of an application gateway request routing rule definition allowing to specify the backend to associate the routing rule with.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithBackend<ParentT> {
             /**
@@ -102,7 +125,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
         /**
          * The stage of an application gateway request routing rule definition allowing to specify the backend HTTP settings configuration
          * to associate the routing rule with.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
 
         interface WithBackendHttpConfiguration<ParentT> {
@@ -131,7 +154,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithListener<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
-        DefinitionStages.WithBackendHttpConfiguration<ParentT>  {
+        DefinitionStages.WithBackendHttpConfiguration<ParentT>,
+        DefinitionStages.WithSslCertificate<DefinitionStages.WithBackendHttpConfiguration<ParentT>>,
+        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfiguration<ParentT>> {
     }
 
     /**
