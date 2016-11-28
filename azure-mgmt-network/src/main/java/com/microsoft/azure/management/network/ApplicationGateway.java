@@ -256,17 +256,17 @@ public interface ApplicationGateway extends
          */
         interface WithFrontendPort {
             /**
-             * Creates a port with an auto-generated name.
+             * Creates a frontend port with an auto-generated name and the specified port number, unless one already exists.
              * @param portNumber a port number
              * @return the next stage of the definition
              */
             WithCreate withFrontendPort(int portNumber);
 
             /**
-             * Creates a port.
+             * Creates a frontend port with the specified name and port number, unless a port matching this name and/or number already exists.
              * @param portNumber a port number
              * @param name the name to assign to the port
-             * @return the next stage of the definition
+             * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
              */
             WithCreate withFrontendPort(int portNumber, String name);
         }

@@ -273,6 +273,39 @@ class ApplicationGatewayImpl
         return this.myManager;
     }
 
+    /**
+     * Determines whether the app gateway child that can be found using a name or a port number can be created,
+     * or it already exists, or there is a clash.
+     * @param byName object found by name
+     * @param byPort object found by port
+     * @param name the desired name of the object
+     * @return true if already found, false if ok to create, null if conflict
+     */
+    private <T> Boolean okToCreate(T byName, T byPort, String name) {
+        if (byName != null) {
+            // If an object with this name already exists...
+            if (byName == byPort) {
+                // ...and it has the same port number, then do nothing
+                return false;
+            } else {
+                // ...but if it has a different port number, then fail fast
+                return null;
+            }
+        } else if (byPort != null) {
+            // If an object with this port number already exists...
+            if (name == null) {
+                // ...and no name is provided, then do nothing
+                return false;
+            } else {
+                // ...but if a clashing name is provided, then fail fast
+                return null;
+            }
+        } else {
+            // Ok to create the object
+            return true;
+        }
+    }
+
     String futureResourceId() {
         return new StringBuilder()
                 .append(super.resourceIdBase())
@@ -455,39 +488,6 @@ class ApplicationGatewayImpl
         return withBackendListeningOnPort(portNumber, null);
     }
 
-    /**
-     * Determines whether the app gateway child that can be found using a name or a port number can be created,
-     * or it already exists, or there is a clash.
-     * @param byName object found by name
-     * @param byPort object found by port
-     * @param name the desired name of the object
-     * @return true if already found, false if ok to create, null if conflict
-     */
-    private <T> Boolean okToCreate(T byName, T byPort, String name) {
-        if (byName != null) {
-            // If an object with this name already exists...
-            if (byName == byPort) {
-                // ...and it has the same port number, then do nothing
-                return false;
-            } else {
-                // ...but if it has a different port number, then fail fast
-                return null;
-            }
-        } else if (byPort != null) {
-            // If an object with this port number already exists...
-            if (name == null) {
-                // ...and no name is provided, then do nothing
-                return false;
-            } else {
-                // ...but if a clashing name is provided, then fail fast
-                return null;
-            }
-        } else {
-            // Ok to create the object
-            return true;
-        }
-    }
-
     @Override
     public ApplicationGatewayImpl withBackendListeningOnPort(int portNumber, String name) {
         // Try to find existing listener by name
@@ -619,34 +619,47 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withFrontendPort(int portNumber, String name) {
-        if (name == null) {
-            name = DEFAULT;
-        }
-
+        // Ensure inner ports list initialized
         List<ApplicationGatewayFrontendPortInner> frontendPorts = this.inner().frontendPorts();
         if (frontendPorts == null) {
             frontendPorts = new ArrayList<ApplicationGatewayFrontendPortInner>();
             this.inner().withFrontendPorts(frontendPorts);
         }
 
+        // Attempt to find inner port by name if provided, or port number otherwise
         ApplicationGatewayFrontendPortInner frontendPort = null;
         for (ApplicationGatewayFrontendPortInner inner : this.inner().frontendPorts()) {
-            if (name.equalsIgnoreCase(inner.name())) {
+            if (name != null && name.equalsIgnoreCase(inner.name())) {
+                frontendPort = inner;
+                break;
+            } else if (name == null && inner.port() == portNumber) {
                 frontendPort = inner;
                 break;
             }
         }
 
         if (frontendPort == null) {
+            // If still not found, then create a new one
+            if (name == null) {
+                // No name specified, so auto-name it
+                name = ResourceNamer.randomResourceName("port", 9);
+            }
+
             frontendPort = new ApplicationGatewayFrontendPortInner()
                     .withName(name)
                     .withPort(portNumber);
             frontendPorts.add(frontendPort);
+            return this;
+        } else if (portNumber != frontendPort.port()) {
+            // If found but port number is in conflict, then fail
+            return null;
+        } else if (name == null || name.equalsIgnoreCase(frontendPort.name())) {
+            // If port in agreement, name in agreement (or not specified), then nothing needs to happen
+            return this;
         } else {
-            frontendPort.withPort(portNumber);
+            // If name conflict for the same port number, then fail
+            return null;
         }
-
-        return this;
     }
 
     @Override
