@@ -5,11 +5,10 @@
  */
 package com.microsoft.azure.management.network;
 
-import java.io.File;
-
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
+import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -21,7 +20,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 @Fluent()
 public interface ApplicationGatewayFrontendListener extends
     Wrapper<ApplicationGatewayHttpListenerInner>,
-    ChildResource<ApplicationGateway> {
+    ChildResource<ApplicationGateway>,
+    HasSslCertificate<ApplicationGatewaySslCertificate> {
 
     /**
      * @return the frontend IP configuration this listenet is associated with.
@@ -37,11 +37,6 @@ public interface ApplicationGatewayFrontendListener extends
      * @return the name of the frontend port the listener is listening on
      */
     String frontendPortName();
-
-    /**
-     * @return the associated SSL certificate, if any
-     */
-    ApplicationGatewaySslCertificate sslCertificate();
 
     /**
      * @return the protocol the listener listens to
@@ -111,43 +106,14 @@ public interface ApplicationGatewayFrontendListener extends
          * The stage of an application gateway HTTP listener definition allowing to specify the SSL certificate to associate with the listener.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithSslCertificate<ParentT> {
-            /**
-             * Specifies an SSL certificate to associate with this listener, if its protocol is HTTPS.
-             * @param name the name of an existing SSL certificate associated with this application gateway
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withSslCertificate(String name);
-
-            /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this listener to enable HTTPS.
-             * <p>
-             * The certificate will be named using an auto-generated name.
-             * @param pfxFile an existing PFX file
-             * @return the next stage of the definition
-             */
-            WithSslPassword<ParentT> withSslCertificateFromPfxFile(File pfxFile);
-
-            /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this listener to enable HTTPS.
-             * @param pfxFile an existing PFX file
-             * @param name a new name for the certificate that will be used to reference this certificate
-             * @return the next stage of the definition
-             */
-            WithSslPassword<ParentT> withSslCertificateFromPfxFile(File pfxFile, String name);
+        interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<WithAttach<ParentT>> {
         }
 
         /**
          * The stage of an application gateway HTTP listener definition allowing to specify the password for the private key of the imported SSL certificate.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithSslPassword<ParentT> {
-            /**
-             * Specifies the password for the specified PFX file containing the private key of the imported SSL certificate.
-             * @param password the password of the imported PFX file
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withSslCertificatePassword(String password);
+        interface WithSslPassword<ParentT> extends HasSslCertificate.DefinitionStages.WithSslPassword<WithAttach<ParentT>> {
         }
 
         /**
