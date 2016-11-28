@@ -105,15 +105,13 @@ public class TestApplicationGateway {
                             .withRegion(REGION)
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                            .withContainingSubnet(vnet, "subnet1")
+                            .withContainingSubnet(vnet.subnets().get("subnet1"))
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
-                            .withFrontendListenerOnPort(80) // Frontend HTTP listener and port
+                            .withFrontendListeningOnPort(80)     // Default frontend HTTP listener and port
+                            .withBackendListeningOnPort(8080)   // Default backend HTTP settings
 
-                            // Backend HTTP configs
-                            .withBackendHttpConfigurationOnPort(8080)
-
-                            // Backends
+                            // Default backends
                             .withBackendIpAddress("11.1.1.1")
                             .withBackendIpAddress("11.1.1.2")
 
@@ -612,10 +610,10 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
-                            .withFrontendListenerOnPort(80)                 // Frontend HTTP listener
+                            .withFrontendListeningOnPort(80)                     // Frontend HTTP listener
 
                             // Backend HTTP configs
-                            .withBackendHttpConfigurationOnPort(8080)
+                            .withBackendListeningOnPort(8080)
 
                             // Backends
                             .withBackendIpAddress("11.1.1.1")
@@ -799,7 +797,7 @@ public class TestApplicationGateway {
     private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithListener agDefinition) {
         return agDefinition
             // HTTP listeners
-            .withFrontendListenerOnPort(80)
+            .withFrontendListeningOnPort(80)
             .defineFrontendListener("listener1")
                 .withFrontendPort(443)
                 .withHttps()
@@ -808,7 +806,7 @@ public class TestApplicationGateway {
                 .attach()
 
             // HTTP configs
-            .withBackendHttpConfigurationOnPort(8080)
+            .withBackendListeningOnPort(8080)
             .defineBackendHttpConfiguration("httpConfig1")
                 .withBackendPort(81) // Optional, 80 default
                 .withCookieBasedAffinity()

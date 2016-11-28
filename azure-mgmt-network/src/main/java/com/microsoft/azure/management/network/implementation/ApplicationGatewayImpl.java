@@ -451,8 +451,8 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withBackendHttpConfigurationOnPort(int portNumber) {
-        return withBackendHttpConfigurationOnPort(portNumber, null);
+    public ApplicationGatewayImpl withBackendListeningOnPort(int portNumber) {
+        return withBackendListeningOnPort(portNumber, null);
     }
 
     /**
@@ -489,7 +489,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withBackendHttpConfigurationOnPort(int portNumber, String name) {
+    public ApplicationGatewayImpl withBackendListeningOnPort(int portNumber, String name) {
         // Try to find existing listener by name
         ApplicationGatewayBackendHttpConfiguration backendHttpByName = null;
         if (name != null) {
@@ -520,12 +520,12 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withFrontendListenerOnPort(int portNumber) {
-        return withFrontendListenerOnPort(portNumber, null);
+    public ApplicationGatewayImpl withFrontendListeningOnPort(int portNumber) {
+        return withFrontendListeningOnPort(portNumber, null);
     }
 
     @Override
-    public ApplicationGatewayImpl withFrontendListenerOnPort(int portNumber, String name) {
+    public ApplicationGatewayImpl withFrontendListeningOnPort(int portNumber, String name) {
         // Try to find existing listener by name
         ApplicationGatewayFrontendListener listenerByName = null;
         if (name != null) {
