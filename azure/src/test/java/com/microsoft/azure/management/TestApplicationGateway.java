@@ -20,7 +20,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
@@ -108,7 +108,7 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
-                            .withFrontendHttpListenerOnPort(80) // Frontend HTTP listener and port
+                            .withFrontendListenerOnPort(80) // Frontend HTTP listener and port
 
                             // Backend HTTP configs
                             .withBackendHttpConfigurationOnPort(8080)
@@ -610,9 +610,9 @@ public class TestApplicationGateway {
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                             .withContainingSubnet(vnet, "subnet1")
-                            .withNewPublicIpAddress()           // Public frontend
+                            .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
-                            .withFrontendHttpListenerOnPort(80)                 // Frontend HTTP listener
+                            .withFrontendListenerOnPort(80)                 // Frontend HTTP listener
 
                             // Backend HTTP configs
                             .withBackendHttpConfigurationOnPort(8080)
@@ -644,6 +644,9 @@ public class TestApplicationGateway {
             // Verify frontends
             Assert.assertTrue(appGateway.frontends().size() == 1);
             Assert.assertTrue(appGateway.frontends().containsKey("default"));
+            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            Assert.assertTrue(frontend.isPublic());
+            Assert.assertTrue(!frontend.isPrivate());
 
             // Verify frontend ports
             // TODO
@@ -758,8 +761,8 @@ public class TestApplicationGateway {
         Assert.assertTrue(httpConfig.backendPort() == 8080);
 
         // Verify listeners
-        Assert.assertTrue(appGateway.frontendHttpListeners().size() == 2);
-        ApplicationGatewayFrontendHttpListener listener = appGateway.frontendHttpListeners().get("listener1");
+        Assert.assertTrue(appGateway.frontendListeners().size() == 2);
+        ApplicationGatewayFrontendListener listener = appGateway.frontendListeners().get("listener1");
         Assert.assertTrue(listener != null);
         Assert.assertTrue(listener.sslCertificate() != null);
         Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTPS));
@@ -793,11 +796,11 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithHttpListener agDefinition) {
+    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithListener agDefinition) {
         return agDefinition
             // HTTP listeners
-            .withFrontendHttpListenerOnPort(80)
-            .defineFrontendHttpListener("listener1")
+            .withFrontendListenerOnPort(80)
+            .defineFrontendListener("listener1")
                 .withFrontendPort(443)
                 .withHttps()
                 .withSslCertificateFromPfxFile(new File("myTest.pfx"))
@@ -993,9 +996,9 @@ public class TestApplicationGateway {
         }
 
         // Show HTTP listeners
-        Map<String, ApplicationGatewayFrontendHttpListener> listeners = resource.frontendHttpListeners();
+        Map<String, ApplicationGatewayFrontendListener> listeners = resource.frontendListeners();
         info.append("\n\tHTTP listeners: ").append(listeners.size());
-        for (ApplicationGatewayFrontendHttpListener listener : listeners.values()) {
+        for (ApplicationGatewayFrontendListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
                 .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                 .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
@@ -1033,7 +1036,7 @@ public class TestApplicationGateway {
 
             // Show frontend listener
             info.append("\n\t\t\tAssociated frontend listener: ");
-            ApplicationGatewayFrontendHttpListener listener = rule.frontendHttpListener();
+            ApplicationGatewayFrontendListener listener = rule.frontendHttpListener();
             if (listener == null) {
                 info.append("(None)");
             } else {

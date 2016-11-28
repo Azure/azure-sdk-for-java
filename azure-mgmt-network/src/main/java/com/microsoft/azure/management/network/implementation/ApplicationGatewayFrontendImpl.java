@@ -27,7 +27,7 @@ class ApplicationGatewayFrontendImpl
     implements
         ApplicationGatewayFrontend,
         ApplicationGatewayPrivateFrontend,
-        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithHttpListener>,
+        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
         ApplicationGatewayPrivateFrontend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayPrivateFrontend.Update,
         ApplicationGatewayPublicFrontend,

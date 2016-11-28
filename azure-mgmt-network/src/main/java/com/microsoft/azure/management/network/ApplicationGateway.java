@@ -77,9 +77,9 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewaySslCertificate> sslCertificates();
 
     /**
-     * @return HTTP listeners, indexed by name
+     * @return Frontend listeners, indexed by name
      */
-    Map<String, ApplicationGatewayFrontendHttpListener> frontendHttpListeners();
+    Map<String, ApplicationGatewayFrontendListener> frontendListeners();
 
     /**
      * @return request routing rules, indexed by name
@@ -98,7 +98,7 @@ public interface ApplicationGateway extends
      * @param portNumber a used port number
      * @return a frontend listener, or null if none found
      */
-    ApplicationGatewayFrontendHttpListener getFrontendListenerByPortNumber(int portNumber);
+    ApplicationGatewayFrontendListener getFrontendListenerByPortNumber(int portNumber);
 
     /**
      * Finds a backend HTTP configuration associated with the specified backend port number, if any.
@@ -119,8 +119,8 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithHttpListener,
-        DefinitionStages.WithHttpListenerOrBackendHttpConfig,
+        DefinitionStages.WithListener,
+        DefinitionStages.WithListenerOrBackendHttpConfig,
         DefinitionStages.WithBackendHttpConfig,
         DefinitionStages.WithBackendHttpConfigOrBackend,
         DefinitionStages.WithBackend,
@@ -182,8 +182,8 @@ public interface ApplicationGateway extends
              * @param name the name for the frontend
              * @return the first stage of a private frontend IP configuration definition
              */
-            //TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
-            //TODO ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name);
+            /* TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
+            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name); */
 
             /**
              * Enables a private default frontend in the subnet containing the application gateway.
@@ -191,15 +191,15 @@ public interface ApplicationGateway extends
              * A frontend with the name "default" will be created if needed.
              * @return the next stage of the definition
              */
-            WithHttpListener withPrivateFrontend();
+            WithListener withPrivateFrontend();
 
             /**
              * Enables a private frontend in the subnet containing the application gateway.
              * @param frontendName the name for the frontend to create
              * @return the next stage of the definition
              */
-            //TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
-            //TODO WithHttpListener withPrivateFrontend(String frontendName);
+            /* Multiple frontends are not yet supported by Azure, so this should be revisited when they are
+            WithHttpListener withPrivateFrontend(String frontendName); */
         }
 
         /**
@@ -212,42 +212,42 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithHttpListener withoutPrivateFrontend();
+            WithListener withoutPrivateFrontend();
         }
 
         /**
-         * The stage of an application gateway definition allowing to add an HTTP listener.
+         * The stage of an application gateway definition allowing to add a listener.
          */
-        interface WithHttpListener {
+        interface WithListener {
             /**
-             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
-             * @param name a unique name for the HTTP listener
-             * @return the first stage of the HTTP listener definition
+             * Begins the definition of a new application gateway listener to be attached to the gateway.
+             * @param name a unique name for the listener
+             * @return the first stage of the listener definition
              */
-            ApplicationGatewayFrontendHttpListener.DefinitionStages.Blank<WithHttpListenerOrBackendHttpConfig> defineFrontendHttpListener(String name);
+            ApplicationGatewayFrontendListener.DefinitionStages.Blank<WithListenerOrBackendHttpConfig> defineFrontendListener(String name);
 
             /**
-             * Associates a new frontend HTTP listener with the specified port number and an automatically generated name,
+             * Associates a new frontend listener with the specified port number and an automatically generated name,
              * if no listener associated with the specified frontend port already exists.
              * @param portNumber an unused frontend port number
              * @return the next stage of the definition
              */
-            WithHttpListenerOrBackendHttpConfig withFrontendHttpListenerOnPort(int portNumber);
+            WithListenerOrBackendHttpConfig withFrontendListenerOnPort(int portNumber);
 
             /**
-             * Associates a new frontend HTTP listener with the specified port number and the specified name,
+             * Associates a new frontend listener with the specified port number and the specified name,
              * if neither this port number nor name is already taken.
              * @param portNumber a frontend port number
              * @param name the name for the new listener
              * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
              */
-            WithHttpListenerOrBackendHttpConfig withFrontendHttpListenerOnPort(int portNumber, String name);
+            WithListenerOrBackendHttpConfig withFrontendListenerOnPort(int portNumber, String name);
         }
 
         /**
-         * The stage of an application gateway definition allowing to add another frontend HTTP listener or start adding backend HTTP settings configurations.
+         * The stage of an application gateway definition allowing to add another frontend listener or start adding backend HTTP settings configurations.
          */
-        interface WithHttpListenerOrBackendHttpConfig extends WithHttpListener, WithBackendHttpConfig {
+        interface WithListenerOrBackendHttpConfig extends WithListener, WithBackendHttpConfig {
         }
 
         /**
@@ -255,7 +255,7 @@ public interface ApplicationGateway extends
          */
         interface WithFrontendPort {
             /**
-             * Creates a port with an autogenerated name.
+             * Creates a port with an auto-generated name.
              * @param portNumber a port number
              * @return the next stage of the definition
              */
@@ -271,11 +271,11 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition allowing to add an SSL certificate.
+         * The stage of an application gateway definition allowing to add an SSL certificate to be used by HTTPS listeners.
          */
         interface WithSslCert {
             /**
-             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway.
+             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway for use in HTTPS listeners.
              * @param name a unique name for the certificate
              * @return the first stage of the certificate definition
              */
@@ -296,7 +296,7 @@ public interface ApplicationGateway extends
             /**
              * Adds an IP address to the default backend.
              * <p>
-             * A backend with the name "default" will be created if needed.
+             * A backend with the name "default" will be created if it does not already exist.
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
@@ -305,7 +305,7 @@ public interface ApplicationGateway extends
             /**
              * Adds an FQDN (fully qualified domain name) to the default backend.
              * <p>
-             * A backend with the name "default" will be created if needed.
+             * A backend with the name "default" will be created if it does not already exist.
              * @param fqdn a fully qualified domain name
              * @return the next stage of the definition
              */
@@ -346,14 +346,14 @@ public interface ApplicationGateway extends
             ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrBackend> defineBackendHttpConfiguration(String name);
 
             /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on and an automatically generated name.
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on, and an automatically generated name.
              * @param portNumber the port number for the backend HTTP configuration
              * @return the next stage of the definition
              */
             WithBackendHttpConfigOrBackend withBackendHttpConfigurationOnPort(int portNumber);
 
             /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on,
              * and the specified name that can be referenced from request routing rules.
              * @param portNumber the private port number for the backend to listen on
              * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
@@ -382,7 +382,7 @@ public interface ApplicationGateway extends
 
         /**
          * The stage of an application gateway definition allowing to continue adding more request routing rules,
-         * or start specifying optional settings, or create the resource.
+         * or start specifying optional settings, or create the application gateway.
          */
         interface WithRequestRoutingRuleOrCreate extends WithRequestRoutingRule, WithCreate {
         }
@@ -408,7 +408,7 @@ public interface ApplicationGateway extends
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default".
+             * This will create an IP configuration named "default", if it does not already exist.
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
@@ -417,7 +417,7 @@ public interface ApplicationGateway extends
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default".
+             * This will create an IP configuration named "default", if it does not already exist.
              * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
@@ -427,7 +427,7 @@ public interface ApplicationGateway extends
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default".
+             * This will create an IP configuration named "default", if it does not already exist.
              * @param networkResourceId the resource ID of the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
@@ -475,6 +475,7 @@ public interface ApplicationGateway extends
 
             // TODO Other IP config updates...
         }
+
         /**
          * The stage of an application gateway update allowing to modify backends.
          */
@@ -489,7 +490,7 @@ public interface ApplicationGateway extends
             /**
              * Adds an IP address to the default backend.
              * <p>
-             * A backend with the name "default" will be created if needed.
+             * A backend with the name "default" will be created if it does not already exist.
              * @param ipAddress an IP address
              * @return the next stage of the update
              */
@@ -498,7 +499,7 @@ public interface ApplicationGateway extends
             /**
              * Adds an FQDN (fully qualified domain name) to the default backend.
              * <p>
-             * A backend with the name "default" will be created if needed.
+             * A backend with the name "default" will be created if it does not already exist.
              * @param fqdn a fully qualified domain name
              * @return the next stage of the update
              */
@@ -534,7 +535,6 @@ public interface ApplicationGateway extends
              */
             Update withoutBackendIpAddress(String ipAddress);
 
-            /**
             /**
              * Removes the specified backend.
              * <p>
@@ -573,14 +573,14 @@ public interface ApplicationGateway extends
          */
         interface WithFrontendPort {
             /**
-             * Creates a port with an auto-generated name.
+             * Creates a frontend port with an auto-generated name, for use in frontend listeners.
              * @param portNumber a port number
              * @return the next stage of the definition
              */
             Update withFrontendPort(int portNumber);
 
             /**
-             * Creates a port.
+             * Creates a frontend port for use in frontend listeners.
              * @param portNumber a port number
              * @param name the name to assign to the port
              * @return the next stage of the definition
@@ -590,7 +590,7 @@ public interface ApplicationGateway extends
             /**
              * Removes the specified frontend port.
              * <p>
-             * Note that removing a frontend port referenced by other settings may break the appllication gateway.
+             * Note that removing a frontend port referenced by other settings may break the application gateway.
              * @param name the name of the frontend port to remove
              * @return the next stage of the update
              */
@@ -599,7 +599,7 @@ public interface ApplicationGateway extends
             /**
              * Removes the specified frontend port.
              * <p>
-             * Note that removing a frontend port referenced by other settings may break the appllication gateway.
+             * Note that removing a frontend port referenced by other settings may break the application gateway.
              * @param portNumber the port number of the frontend port to remove
              * @return the next stage of the update
              */
@@ -624,7 +624,7 @@ public interface ApplicationGateway extends
          */
         interface WithSslCert {
             /**
-             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway.
+             * Begins the definition of a new application gateway SSL certificate to be attached to the gateway for use in frontend HTTPS listeners.
              * @param name a unique name for the certificate
              * @return the first stage of the certificate definition
              */
@@ -633,7 +633,7 @@ public interface ApplicationGateway extends
             /**
              * Removes the specified SSL certificate from the application gateway.
              * <p>
-             * Note that removing a certificate referenced by other settings may break the application gateway
+             * Note that removing a certificate referenced by other settings may break the application gateway.
              * @param name the name of the certificate to remove
              * @return the next stage of the update
              */
@@ -641,35 +641,35 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway update allowing to modify HTTP listeners.
+         * The stage of an application gateway update allowing to modify frontend listeners.
          */
-        interface WithHttpListener {
+        interface WithListener {
             /**
-             * Begins the definition of a new application gateway HTTP listener to be attached to the gateway.
-             * @param name a unique name for the HTTP listener
-             * @return the first stage of the HTTP listener definition
+             * Begins the definition of a new application gateway frontend listener to be attached to the gateway.
+             * @param name a unique name for the listener
+             * @return the first stage of the listener definition
              */
-            ApplicationGatewayFrontendHttpListener.UpdateDefinitionStages.Blank<Update> defineFrontendHttpListener(String name);
+            ApplicationGatewayFrontendListener.UpdateDefinitionStages.Blank<Update> defineFrontendListener(String name);
 
             /**
-             * Associates a new frontend HTTP listener with the specified port number and an automatically generated name,
+             * Associates a new frontend listener with the specified port number and an automatically generated name,
              * if no listener associated with the specified frontend port already exists.
              * @param portNumber an unused frontend port number
              * @return the next stage of the definition
              */
-            Update withFrontendHttpListenerOnPort(int portNumber);
+            Update withFrontendListenerOnPort(int portNumber);
 
             /**
-             * Associates a new frontend HTTP listener with the specified port number and the specified name,
+             * Associates a new frontend listener with the specified port number and the specified name,
              * if neither this port number nor name is already taken.
              * @param portNumber a frontend port number
              * @param name the name for the new listener
              * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
              */
-            Update withFrontendHttpListenerOnPort(int portNumber, String name);
+            Update withFrontendListenerOnPort(int portNumber, String name);
 
             /**
-             * Removes a frontend HTTP listener from the application gateway.
+             * Removes a frontend listener from the application gateway.
              * <p>
              * Note that removing a listener referenced by other settings may break the application gateway.
              * @param name the name of the listener to remove
@@ -683,14 +683,14 @@ public interface ApplicationGateway extends
          */
         interface WithBackendHttpConfig {
             /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on and an automatically generated name.
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on, and an automatically generated name.
              * @param portNumber the port number for the backend HTTP configuration
              * @return the next stage of the update
              */
             Update withBackendHttpConfigurationOnPort(int portNumber);
 
             /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on
+             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on,
              * and the specified name that can be referenced from request routing rules.
              * @param portNumber the private port number for the backend to listen on
              * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
@@ -707,7 +707,9 @@ public interface ApplicationGateway extends
 
             /**
              * Removes the specified backend HTTP configuration from this application gateway.
-             * @param name the name of an existing HTTP configuration on this application gateway
+             * <p>
+             * Note that removing a backend HTTP configuration referenced by other settings may break the application gateway.
+             * @param name the name of an existing backend HTTP configuration on this application gateway
              * @return the next stage of the update
              */
             Update withoutBackendHttpConfiguration(String name);
@@ -756,7 +758,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithFrontend,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithSslCert,
-        UpdateStages.WithHttpListener,
+        UpdateStages.WithListener,
         UpdateStages.WithRequestRoutingRule {
     }
 }

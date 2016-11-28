@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -67,11 +67,11 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListener frontendHttpListener() {
+    public ApplicationGatewayFrontendListener frontendHttpListener() {
         SubResource listenerRef = this.inner().httpListener();
         if (listenerRef != null) {
             String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
-            return this.parent().frontendHttpListeners().get(listenerName);
+            return this.parent().frontendListeners().get(listenerName);
         } else {
             return null;
         }
@@ -95,7 +95,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber) {
-        ApplicationGatewayFrontendHttpListener listener = this.parent().getFrontendListenerByPortNumber(portNumber);
+        ApplicationGatewayFrontendListener listener = this.parent().getFrontendListenerByPortNumber(portNumber);
         if (listener == null) {
             return null;
         } else {

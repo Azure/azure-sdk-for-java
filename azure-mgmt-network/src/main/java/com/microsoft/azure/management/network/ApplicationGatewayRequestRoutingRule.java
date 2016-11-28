@@ -38,7 +38,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     /**
      * @return the associated frontend HTTP listener
      */
-    ApplicationGatewayFrontendHttpListener frontendHttpListener();
+    ApplicationGatewayFrontendListener frontendHttpListener();
 
     // TODO urlPathMap()
 
