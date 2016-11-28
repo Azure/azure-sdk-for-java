@@ -281,23 +281,23 @@ class ApplicationGatewayImpl
      * @param name the desired name of the object
      * @return true if already found, false if ok to create, null if conflict
      */
-    private <T> Boolean okToCreate(T byName, T byPort, String name) {
-        if (byName != null) {
-            // If an object with this name already exists...
+    <T> Boolean okToCreate(T byName, T byPort, String name) {
+        if (byName != null && byPort != null) {
+            // If objects with this name and/or port already exist...
             if (byName == byPort) {
-                // ...and it has the same port number, then do nothing
+                // ...and it is the same object, then do nothing
                 return false;
             } else {
-                // ...but if it has a different port number, then fail fast
+                // ...but if they are inconsistent, then fail fast
                 return null;
             }
         } else if (byPort != null) {
-            // If an object with this port number already exists...
+            // If no object with the requested name, but the port number is found...
             if (name == null) {
-                // ...and no name is provided, then do nothing
+                // ...and no name is requested, then do nothing, because the object already exists
                 return false;
             } else {
-                // ...but if a clashing name is provided, then fail fast
+                // ...but if a clashing name is requested, then fail fast
                 return null;
             }
         } else {
@@ -500,13 +500,7 @@ class ApplicationGatewayImpl
         ApplicationGatewayBackendHttpConfiguration backendHttpByPort = getBackendHttpConfigurationByPortNumber(portNumber);
 
         Boolean okToCreate = okToCreate(backendHttpByName, backendHttpByPort, name);
-        if (okToCreate == null) {
-            // Name clash so fail fast
-            return null;
-        } else if (!okToCreate) {
-            // Already exists so skip
-            return this;
-        } else {
+        if (Boolean.TRUE.equals(okToCreate)) {
             // No existing backend HTTP config with this name nor port exists, so create one
             if (name == null) {
                 // Auto-name it
@@ -516,6 +510,12 @@ class ApplicationGatewayImpl
             return this.defineBackendHttpConfiguration(name)
                     .withBackendPort(portNumber)
                     .attach();
+        } else if (Boolean.FALSE.equals(okToCreate)) {
+            // Already exists so skip
+            return this;
+        } else {
+            // Name clash so fail fast
+            return null;
         }
     }
 
@@ -536,13 +536,7 @@ class ApplicationGatewayImpl
         ApplicationGatewayFrontendListener listenerByPort = getFrontendListenerByPortNumber(portNumber);
 
         Boolean okToCreate = okToCreate(listenerByName, listenerByPort, name);
-        if (okToCreate == null) {
-            // Name clash so fail fast
-            return null;
-        } else if (!okToCreate) {
-            // Already exists so skip
-            return this;
-        } else {
+        if (Boolean.TRUE.equals(okToCreate)) {
             // If no existing listener with this name nor port exists, create one
             if (name == null) {
                 // Auto-name it
@@ -554,6 +548,12 @@ class ApplicationGatewayImpl
                     .withFrontendPort(portNumber)
                     //TODO Someday, when multiple frontends are supported, this will need to take into account the frontend selection logic
                     .attach();
+        } else if (Boolean.FALSE.equals(okToCreate)) {
+            // Already exists so skip
+            return this;
+        } else {
+            // Name clash so fail fast
+            return null;
         }
     }
 
@@ -627,34 +627,32 @@ class ApplicationGatewayImpl
         }
 
         // Attempt to find inner port by name if provided, or port number otherwise
-        ApplicationGatewayFrontendPortInner frontendPort = null;
+        ApplicationGatewayFrontendPortInner frontendPortByName = null;
+        ApplicationGatewayFrontendPortInner frontendPortByNumber = null;
         for (ApplicationGatewayFrontendPortInner inner : this.inner().frontendPorts()) {
             if (name != null && name.equalsIgnoreCase(inner.name())) {
-                frontendPort = inner;
-                break;
-            } else if (name == null && inner.port() == portNumber) {
-                frontendPort = inner;
-                break;
+                frontendPortByName = inner;
+            }
+            if (inner.port() == portNumber) {
+                frontendPortByNumber = inner;
             }
         }
 
-        if (frontendPort == null) {
-            // If still not found, then create a new one
+        Boolean okToCreate = this.okToCreate(frontendPortByName, frontendPortByNumber, name);
+        if (Boolean.TRUE.equals(okToCreate)) {
+            // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
                 name = ResourceNamer.randomResourceName("port", 9);
             }
 
-            frontendPort = new ApplicationGatewayFrontendPortInner()
+            frontendPortByName = new ApplicationGatewayFrontendPortInner()
                     .withName(name)
                     .withPort(portNumber);
-            frontendPorts.add(frontendPort);
+            frontendPorts.add(frontendPortByName);
             return this;
-        } else if (portNumber != frontendPort.port()) {
-            // If found but port number is in conflict, then fail
-            return null;
-        } else if (name == null || name.equalsIgnoreCase(frontendPort.name())) {
-            // If port in agreement, name in agreement (or not specified), then nothing needs to happen
+        } else if (Boolean.FALSE.equals(okToCreate)) {
+            // If found matching port, then nothing needs to happen
             return this;
         } else {
             // If name conflict for the same port number, then fail
