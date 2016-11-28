@@ -63,7 +63,7 @@ public class TestApplicationGateway {
     }
 
     /**
-     * Internet-facing LB test with NAT pool test.
+     * Minimalistic internal (private) app gateway test.
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         private final Networks networks;
@@ -225,7 +225,7 @@ public class TestApplicationGateway {
     }
 
     /**
-     * Internet-facing LB test with NAT pool test.
+     * Complex internal (private) app gateway test.
      */
     public static class PrivateComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         //private final PublicIpAddresses pips;
@@ -396,6 +396,177 @@ public class TestApplicationGateway {
     }
 
     /**
+     * Complex Internet-facing (public) app gateway test.
+     */
+    public static class PublicComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
+        private final PublicIpAddresses pips;
+        //private final VirtualMachines vms;
+        private final Networks networks;
+
+        /**
+         * Tests minimal internal app gateways.
+         * @param pips public IPs
+         * @param vms virtual machines
+         * @param networks networks
+         */
+        public PublicComplex(
+                PublicIpAddresses pips,
+                VirtualMachines vms,
+                Networks networks) {
+            this.pips = pips;
+            //this.vms = vms;
+            this.networks = networks;
+        }
+
+        @Override
+        public void print(ApplicationGateway resource) {
+            TestApplicationGateway.printAppGateway(resource);
+        }
+
+        @Override
+        public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
+            //VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestApplicationGateway.VM_IDS);
+            final List<PublicIpAddress> existingPips = ensurePIPs(pips);
+            final Network vnet = this.networks.define("net" + this.testId)
+                    .withRegion(REGION)
+                    .withNewResourceGroup(GROUP_NAME)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnet1", "10.0.0.0/29")
+                    .withSubnet("subnet2", "10.0.0.8/29")
+                    .create();
+
+            Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
+                public void uncaughtException(Thread th, Throwable ex) {
+                    System.out.println("Uncaught exception: " + ex);
+                }
+            };
+
+            // Prepare for execution in a separate thread to shorten the test
+            Thread creationThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // Create an application gateway
+                    restOfComplexDefinition(
+                            resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(GROUP_NAME)
+                            .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+
+                            // IP configuration for the app gateway (which subnet is it contained in)
+                            .withContainingSubnet(vnet, "subnet1")
+
+                            // Public frontend
+                            .definePublicFrontend("default")
+                                .withExistingPublicIpAddress(existingPips.get(0))
+                                .attach()
+
+                            // Private frontend
+                            .withoutPrivateFrontend())
+                    .create();
+                    }
+                });
+
+            // Start creating in a separate thread...
+            creationThread.setUncaughtExceptionHandler(threadException);
+            creationThread.start();
+
+            // ...But don't wait till the end - not needed for the test, 30 sec should be enough
+            Thread.sleep(30 * 1000);
+
+            // Get the resource as created so far
+            String resourceId = createResourceId(resources.manager().subscriptionId());
+            ApplicationGateway appGateway = resources.getById(resourceId);
+            Assert.assertTrue(appGateway != null);
+
+            // Verify IP configs
+            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
+            ApplicationGatewayIpConfiguration ipConfig = appGateway.ipConfigurations().values().iterator().next();
+            Assert.assertTrue(ipConfig != null);
+            Subnet subnet = ipConfig.getSubnet();
+            Assert.assertTrue(subnet != null);
+            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
+
+            // Verify frontends
+            Assert.assertTrue(appGateway.frontends().size() == 1);
+            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            Assert.assertTrue(frontend != null);
+            Assert.assertTrue(frontend.isPublic());
+            Assert.assertTrue(!frontend.isPrivate());
+            ApplicationGatewayPublicFrontend publicFrontend = (ApplicationGatewayPublicFrontend) frontend;
+            Assert.assertTrue(publicFrontend.publicIpAddressId().equalsIgnoreCase(existingPips.get(0).id()));
+
+            assertRestOfComplexDefinition(appGateway);
+
+            creationThread.join(30 * 1000);
+
+            return appGateway;
+        }
+
+        @Override
+        public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
+            // TODO: Fix this - this test doesn't work yet
+
+            // Prepare a separate thread for running the update to make the test go faster
+            Thread updateThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    resource.update()
+                        .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                        .withoutFrontendHttpListener("listener1")
+                        .withoutBackendFqdn("www.microsoft.com")
+                        .withoutBackendIpAddress("11.1.1.1")
+                        .withBackendIpAddress("11.1.1.3", "backend2")
+                        .withoutBackendHttpConfiguration("httpConfig2")
+                        .updateBackendHttpConfiguration("httpConfig1")
+                            .withBackendPort(83)
+                            .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                            .withoutCookieBasedAffinity()
+                            .withRequestTimeout(20)
+                            .parent()
+                        .withoutBackend("backend3")
+                        .withTag("tag1", "value1")
+                        .withTag("tag2", "value2")
+                        .apply();
+                }
+            });
+
+            // Start the update thread...
+            updateThread.start();
+
+            // ...But kill it after 30 sec as that should be enough for the test
+            updateThread.join(30 * 1000);
+
+            resource.refresh();
+
+            // Get the resource created so far
+            Assert.assertTrue(resource.tags().containsKey("tag1"));
+            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
+            Assert.assertTrue(resource.sku().capacity() == 2);
+
+            // Verify backends
+            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
+            Assert.assertTrue(defaultBackend.addresses().size() == 1);
+            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
+
+            ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
+            Assert.assertTrue(backend2.addresses().size() == 1);
+            Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
+            Assert.assertTrue(!resource.backends().containsKey("backend3"));
+
+            // Verify HTTP configs
+            Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
+            Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
+            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
+            Assert.assertTrue(httpConfig1.backendPort() == 83);
+            Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
+            Assert.assertTrue(httpConfig1.requestTimeout() == 20);
+
+            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("httpConfig2"));
+            return resource;
+        }
+    }
+
+    /**
      * Internet-facing LB test with NAT pool test.
      */
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
@@ -439,7 +610,7 @@ public class TestApplicationGateway {
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
                             .withContainingSubnet(vnet, "subnet1")
-                            .withNewPublicIpAddress("dns" + TEST_ID)           // Public frontend
+                            .withNewPublicIpAddress()           // Public frontend
                             .withoutPrivateFrontend()                           // No private frontend
                             .withFrontendHttpListenerOnPort(80)                 // Frontend HTTP listener
 
