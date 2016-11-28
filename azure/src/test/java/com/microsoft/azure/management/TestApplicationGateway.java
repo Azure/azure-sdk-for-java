@@ -454,9 +454,7 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
 
                             // Public frontend
-                            .definePublicFrontend("default")
-                                .withExistingPublicIpAddress(existingPips.get(0))
-                                .attach()
+                            .withNewPublicIpAddress()
 
                             // Private frontend
                             .withoutPrivateFrontend())
@@ -491,7 +489,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
             ApplicationGatewayPublicFrontend publicFrontend = (ApplicationGatewayPublicFrontend) frontend;
-            Assert.assertTrue(publicFrontend.publicIpAddressId().equalsIgnoreCase(existingPips.get(0).id()));
+            Assert.assertTrue(publicFrontend.publicIpAddressId() != null);
 
             assertRestOfComplexDefinition(appGateway);
 
