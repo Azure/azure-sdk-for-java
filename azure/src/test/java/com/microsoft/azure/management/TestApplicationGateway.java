@@ -664,7 +664,11 @@ public class TestApplicationGateway {
             // TODO
 
             // Verify rules
-            // TODO
+            Assert.assertTrue(appGateway.requestRoutingRules().size() == 1);
+            ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
+            Assert.assertTrue(rule.publicIpAddressId() != null);
+            Assert.assertTrue(rule.frontendListener() != null);
+            Assert.assertTrue(rule.frontendListener().frontendPortNumber() == 443);
 
             creationThread.join(30 * 1000);
             return appGateway;

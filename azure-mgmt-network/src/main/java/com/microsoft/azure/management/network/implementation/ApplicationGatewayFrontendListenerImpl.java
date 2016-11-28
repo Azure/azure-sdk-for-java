@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
@@ -35,6 +36,26 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     // Getters
+
+    @Override
+    public String publicIpAddressId() {
+        final ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) this.frontend();
+        if (frontend == null) {
+            return null;
+        } else {
+            return frontend.publicIpAddressId();
+        }
+    }
+
+    @Override
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        if (pipId == null) {
+            return null;
+        } else {
+            return this.parent().manager().publicIpAddresses().getById(pipId);
+        }
+    }
 
     @Override
     public String name() {

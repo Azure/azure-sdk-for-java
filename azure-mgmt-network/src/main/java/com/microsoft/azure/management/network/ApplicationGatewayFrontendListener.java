@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
+import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -21,10 +22,11 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 public interface ApplicationGatewayFrontendListener extends
     Wrapper<ApplicationGatewayHttpListenerInner>,
     ChildResource<ApplicationGateway>,
-    HasSslCertificate<ApplicationGatewaySslCertificate> {
+    HasSslCertificate<ApplicationGatewaySslCertificate>,
+    HasPublicIpAddress {
 
     /**
-     * @return the frontend IP configuration this listenet is associated with.
+     * @return the frontend IP configuration this listener is associated with.
      */
     ApplicationGatewayFrontend frontend();
 

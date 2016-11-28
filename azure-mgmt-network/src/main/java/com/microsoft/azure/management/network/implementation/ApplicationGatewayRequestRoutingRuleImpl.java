@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
@@ -37,6 +38,26 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     // Getters
+
+    @Override
+    public String publicIpAddressId() {
+        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        if (listener == null) {
+            return null;
+        } else {
+            return listener.publicIpAddressId();
+        }
+    }
+
+    @Override
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        if (pipId == null) {
+            return null;
+        } else {
+            return this.parent().manager().publicIpAddresses().getById(pipId);
+        }
+    }
 
     @Override
     public String name() {
