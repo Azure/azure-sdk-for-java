@@ -1132,6 +1132,7 @@ public final class DomainsInner {
 
     private ServiceResponse<Object> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Object>() { }.getType())
                 .register(204, new TypeToken<Object>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);

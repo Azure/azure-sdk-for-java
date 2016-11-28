@@ -19,36 +19,46 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
-import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
-import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
-import com.microsoft.azure.management.network.LoadBalancerFrontend;
-import com.microsoft.azure.management.network.LoadBalancerBackend;
-import com.microsoft.azure.management.network.LoadBalancerProbe;
-import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
-import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
-import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.AppServiceDomain;
+import com.microsoft.azure.management.website.AppServicePlan;
+import com.microsoft.azure.management.website.AppSetting;
+import com.microsoft.azure.management.website.ConnectionString;
+import com.microsoft.azure.management.website.Contact;
+import com.microsoft.azure.management.website.HostNameBinding;
+import com.microsoft.azure.management.website.HostNameSslState;
+import com.microsoft.azure.management.website.SslState;
+import com.microsoft.azure.management.website.WebAppBase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -637,6 +647,94 @@ public final class Utils {
                 .toString());
     }
 
+    /**
+     * Print app service domain.
+     * @param resource an app service domain
+     */
+    public static void print(AppServiceDomain resource) {
+        StringBuilder builder = new StringBuilder().append("Domain: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tCreated time: ").append(resource.createdTime())
+                .append("\n\tExpiration time: ").append(resource.expirationTime())
+                .append("\n\tContact: ");
+        Contact contact = resource.registrantContact();
+        if (contact == null) {
+            builder = builder.append("Private");
+        } else {
+            builder = builder.append("\n\t\tName: ").append(contact.nameFirst() + " " + contact.nameLast());
+        }
+        builder = builder.append("\n\tName servers: ");
+        for (String nameServer: resource.nameServers()) {
+            builder = builder.append("\n\t\t" + nameServer);
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print app service certificate order.
+     * @param resource an app service certificate order
+     */
+    public static void print(AppServiceCertificateOrder resource) {
+        StringBuilder builder = new StringBuilder().append("App service certificate order: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tDistinguished name: ").append(resource.distinguishedName())
+                .append("\n\tProduct type: ").append(resource.productType())
+                .append("\n\tValid years: ").append(resource.validityInYears())
+                .append("\n\tStatus: ").append(resource.status())
+                .append("\n\tIssuance time: ").append(resource.lastCertificateIssuanceTime())
+                .append("\n\tSigned certificate: ").append(resource.signedCertificate() == null ? null : resource.signedCertificate().thumbprint());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print app service plan.
+     * @param resource an app service plan
+     */
+    public static void print(AppServicePlan resource) {
+        StringBuilder builder = new StringBuilder().append("App service certificate order: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tPricing tier: ").append(resource.pricingTier());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print a web app.
+     * @param resource a web app
+     */
+    public static void print(WebAppBase<?> resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tDefault hostname: ").append(resource.defaultHostName())
+                .append("\n\tApp service plan: ").append(resource.appServicePlanId())
+                .append("\n\tHost name bindings: ");
+        for (HostNameBinding binding: resource.getHostNameBindings().values()) {
+            builder = builder.append("\n\t\t" + binding.toString());
+        }
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostNameSslState binding: resource.hostNameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
+        }
+        builder = builder.append("\n\tApp settings: ");
+        for (AppSetting setting: resource.getAppSettings().values()) {
+            builder = builder.append("\n\t\t" + setting.key() + ": " + setting.value() + (setting.sticky() ? " - slot setting" : ""));
+        }
+        builder = builder.append("\n\tConnection strings: ");
+        for (ConnectionString conn: resource.getConnectionStrings().values()) {
+            builder = builder.append("\n\t\t" + conn.name() + ": " + conn.value() + " - " + conn.type() + (conn.sticky() ? " - slot setting" : ""));
+        }
+        System.out.println(builder.toString());
+    }
 
     /**
      * Creates and returns a randomized name based on the prefix file for use by the sample.

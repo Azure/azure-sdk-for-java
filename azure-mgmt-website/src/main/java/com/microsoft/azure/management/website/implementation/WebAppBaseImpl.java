@@ -38,7 +38,6 @@ import com.microsoft.azure.management.website.WebAppBase;
 import com.microsoft.azure.management.website.WebContainer;
 import org.joda.time.DateTime;
 import rx.Observable;
-import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.FuncN;
 
@@ -372,7 +371,8 @@ abstract class WebAppBaseImpl<
         return Maps.asMap(inner.properties().keySet(), new Function<String, AppSetting>() {
             @Override
             public AppSetting apply(String input) {
-                return new AppSettingImpl(input, inner.properties().get(input), slotConfigs.appSettingNames().contains(input));
+                return new AppSettingImpl(input, inner.properties().get(input),
+                        slotConfigs.appSettingNames() != null && slotConfigs.appSettingNames().contains(input));
             }
         });
     }
@@ -423,24 +423,35 @@ abstract class WebAppBaseImpl<
                     .map(new Func1<AppServicePlan, String>() {
                         @Override
                         public String call(AppServicePlan appServicePlan) {
+                            inner().withLocation(appServicePlan.regionName());
                             return appServicePlan.regionName();
                         }
                     });
         }
-        locationObs = locationObs.doOnNext(new Action1<String>() {
-            @Override
-            public void call(String s) {
-                inner().withLocation(s);
-                if (inner().siteConfig() != null && inner().siteConfig().location() == null) {
-                    inner().siteConfig().withLocation(s);
-                }
-            }
-        });
         // Construct web app observable
         return locationObs.flatMap(new Func1<String, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(String s) {
                 return createOrUpdateInner(inner());
+            }
+        })
+        // submit config
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner siteInner) {
+                if (inner().siteConfig() == null) {
+                    return Observable.just(siteInner);
+                } else if (inner().siteConfig().location() == null) {
+                    inner().siteConfig().withLocation(inner().location());
+                }
+                return createOrUpdateSiteConfig(inner().siteConfig())
+                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                            @Override
+                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
+                                siteInner.withSiteConfig(siteConfigInner);
+                                return Observable.just(siteInner);
+                            }
+                        });
             }
         })
         // Submit hostname bindings
@@ -478,6 +489,7 @@ abstract class WebAppBaseImpl<
                 return getInner();
             }
         })
+        // Submit SSL bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(final SiteInner siteInner) {
@@ -494,32 +506,13 @@ abstract class WebAppBaseImpl<
                         public SiteInner call(Object... args) {
                             return siteInner;
                         }
+                    }).flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+                        @Override
+                        public Observable<SiteInner> call(SiteInner inner) {
+                            return createOrUpdateInner(inner);
+                        }
                     });
                 }
-            }
-        })
-        // refresh after hostname SSL bindings
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(SiteInner site) {
-                return createOrUpdateInner(inner());
-            }
-        })
-        // submit config
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                if (inner().siteConfig() == null) {
-                    return Observable.just(siteInner);
-                }
-                return createOrUpdateSiteConfig(inner().siteConfig())
-                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
-                            @Override
-                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                siteInner.withSiteConfig(siteConfigInner);
-                                return Observable.just(siteInner);
-                            }
-                        });
             }
         })
         // app settings
