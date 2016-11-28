@@ -95,7 +95,7 @@ public interface HasPublicIpAddress  {
 
         /**
          * The stage of the definition allowing to associate the resource with a public IP address,
-         * but not allowing to create one with a DNS leaf label
+         * but not allowing to create one with a DNS leaf label.
          *
          * @param <ReturnT> the next stage of the definition
          */
