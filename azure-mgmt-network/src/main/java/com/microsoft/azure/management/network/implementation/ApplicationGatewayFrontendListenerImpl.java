@@ -130,6 +130,19 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     @Override
+    public ApplicationGatewayFrontendListenerImpl withFrontendPort(int portNumber) {
+        // Attempt to find an existing port referencing this port number
+        String portName = this.parent().frontendPortNameFromNumber(portNumber);
+        if (portName == null) {
+            // Existing frontend port with this number not found so create one
+            portName = ResourceNamer.randomResourceName("port", 9);
+            this.parent().withFrontendPort(portNumber, portName);
+        }
+
+        return this.withFrontendPort(portName);
+    }
+
+    @Override
     public ApplicationGatewayFrontendListenerImpl withSslCertificate(String name) {
         SubResource certRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
@@ -174,18 +187,5 @@ class ApplicationGatewayFrontendListenerImpl
     public ApplicationGatewayFrontendListenerImpl withHttps() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
         return this;
-    }
-
-    @Override
-    public ApplicationGatewayFrontendListenerImpl withFrontendPort(int portNumber) {
-        // Attempt to find an existing port referencing this port number
-        String portName = this.parent().frontendPortNameFromNumber(portNumber);
-        if (portName == null) {
-            // Existing frontend port with this number not found so create one
-            portName = ResourceNamer.randomResourceName("port", 10);
-            this.parent().withFrontendPort(portNumber, portName);
-        }
-
-        return this.withFrontendPort(portName);
     }
 }

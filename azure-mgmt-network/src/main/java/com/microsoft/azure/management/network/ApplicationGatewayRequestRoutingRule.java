@@ -69,19 +69,21 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithListener<ParentT> {
             /**
-             * Associates the request routing rule with an existing HTTP listener on this application gateway.
+             * Associates the request routing rule with an HTTP listener.
+             * <p>
+             * If no listener with the specified name exists yet, one will be created for port 80 and the HTTP protocol by default.
              * @param name the name of an existing listener
              * @return the next stage of the definition
              */
             WithBackendHttpConfiguration<ParentT> fromFrontendListener(String name);
 
             /**
-             * Associates the request routing rule with an existing frontend listener on this application gateway
+             * Associates the request routing rule with an existing frontend HTTP listener on this application gateway
              * associated with the specified port number.
              * @param portNumber the port number used by an existing listener
-             * @return the next stage of the definition or null if the specified port number is not used by any listener
+             * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTP protocol (e.g. HTTPS)
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendPort(int portNumber);
+            WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
         }
 
         /**

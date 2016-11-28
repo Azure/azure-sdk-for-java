@@ -11,10 +11,12 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
+import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 /**
  *  Implementation for ApplicationGatewayRequestRoutingRule.
@@ -87,6 +89,13 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListener(String name) {
+        ApplicationGatewayFrontendListenerImpl listener =
+                (ApplicationGatewayFrontendListenerImpl) this.parent().frontendListeners().get(name);
+        if (listener == null) {
+            // If no listener with this name exists, create one, assuming HTTP port 80
+            this.fromFrontendPort(80, ApplicationGatewayProtocol.HTTP, name);
+        }
+
         SubResource listenerRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
@@ -94,12 +103,48 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber) {
-        ApplicationGatewayFrontendListener listener = this.parent().getFrontendListenerByPortNumber(portNumber);
-        if (listener == null) {
-            return null;
+    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendHttpPort(int portNumber) {
+        return this.fromFrontendPort(portNumber, ApplicationGatewayProtocol.HTTP, null);
+    }
+
+    /* TODO
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendHttpsPort(int portNumber) {
+        return this.fromFrontendPort(portNumber, ApplicationGatewayProtocol.HTTPS, null);
+    } */
+
+    private ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber, ApplicationGatewayProtocol protocol, String name) {
+        // Determine listener to use
+        ApplicationGatewayFrontendListenerImpl listenerByPort =
+                (ApplicationGatewayFrontendListenerImpl) this.parent().getFrontendListenerByPortNumber(portNumber);
+        ApplicationGatewayFrontendListenerImpl listenerByName = null;
+        if (name != null) {
+            listenerByName = (ApplicationGatewayFrontendListenerImpl) this.parent().frontendListeners().get(name);
+        }
+
+        Boolean needToCreate = this.parent().needToCreate(listenerByName, listenerByPort, name);
+        if (Boolean.TRUE.equals(needToCreate)) {
+            // If no listener exists for the requested port number yet and the name, create one
+            if (name == null) {
+                name = ResourceNamer.randomResourceName("listener", 13);
+            }
+
+            listenerByPort = this.parent().defineFrontendListener(name)
+                    .withFrontendPort(portNumber);
+            if (ApplicationGatewayProtocol.HTTP.equals(protocol)) {
+                listenerByPort.withHttp();
+            } else if (ApplicationGatewayProtocol.HTTPS.equals(protocol)) {
+                listenerByPort.withHttps();
+            }
+
+            listenerByPort.attach();
+            return this.fromFrontendListener(listenerByPort.name());
+        } else if (Boolean.FALSE.equals(needToCreate)) {
+            // If matching listener already exists, then use it
+            return this.fromFrontendListener(listenerByPort.name());
         } else {
-            return this.fromFrontendListener(listener.name());
+            // If found listener conflicting in port number and name, then fail
+            return null;
         }
     }
 

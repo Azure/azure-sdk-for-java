@@ -281,7 +281,7 @@ class ApplicationGatewayImpl
      * @param name the desired name of the object
      * @return true if already found, false if ok to create, null if conflict
      */
-    <T> Boolean okToCreate(T byName, T byPort, String name) {
+    <T> Boolean needToCreate(T byName, T byPort, String name) {
         if (byName != null && byPort != null) {
             // If objects with this name and/or port already exist...
             if (byName == byPort) {
@@ -499,8 +499,8 @@ class ApplicationGatewayImpl
         // Try to find existing backend HTTP config by port number
         ApplicationGatewayBackendHttpConfiguration backendHttpByPort = getBackendHttpConfigurationByPortNumber(portNumber);
 
-        Boolean okToCreate = okToCreate(backendHttpByName, backendHttpByPort, name);
-        if (Boolean.TRUE.equals(okToCreate)) {
+        Boolean needToCreate = needToCreate(backendHttpByName, backendHttpByPort, name);
+        if (Boolean.TRUE.equals(needToCreate)) {
             // No existing backend HTTP config with this name nor port exists, so create one
             if (name == null) {
                 // Auto-name it
@@ -510,7 +510,7 @@ class ApplicationGatewayImpl
             return this.defineBackendHttpConfiguration(name)
                     .withBackendPort(portNumber)
                     .attach();
-        } else if (Boolean.FALSE.equals(okToCreate)) {
+        } else if (Boolean.FALSE.equals(needToCreate)) {
             // Already exists so skip
             return this;
         } else {
@@ -535,8 +535,8 @@ class ApplicationGatewayImpl
         // Try to find existing listener by port number
         ApplicationGatewayFrontendListener listenerByPort = getFrontendListenerByPortNumber(portNumber);
 
-        Boolean okToCreate = okToCreate(listenerByName, listenerByPort, name);
-        if (Boolean.TRUE.equals(okToCreate)) {
+        Boolean needToCreate = needToCreate(listenerByName, listenerByPort, name);
+        if (Boolean.TRUE.equals(needToCreate)) {
             // If no existing listener with this name nor port exists, create one
             if (name == null) {
                 // Auto-name it
@@ -548,7 +548,7 @@ class ApplicationGatewayImpl
                     .withFrontendPort(portNumber)
                     //TODO Someday, when multiple frontends are supported, this will need to take into account the frontend selection logic
                     .attach();
-        } else if (Boolean.FALSE.equals(okToCreate)) {
+        } else if (Boolean.FALSE.equals(needToCreate)) {
             // Already exists so skip
             return this;
         } else {
@@ -638,8 +638,8 @@ class ApplicationGatewayImpl
             }
         }
 
-        Boolean okToCreate = this.okToCreate(frontendPortByName, frontendPortByNumber, name);
-        if (Boolean.TRUE.equals(okToCreate)) {
+        Boolean needToCreate = this.needToCreate(frontendPortByName, frontendPortByNumber, name);
+        if (Boolean.TRUE.equals(needToCreate)) {
             // If no conflict, create a new port
             if (name == null) {
                 // No name specified, so auto-name it
@@ -651,7 +651,7 @@ class ApplicationGatewayImpl
                     .withPort(portNumber);
             frontendPorts.add(frontendPortByName);
             return this;
-        } else if (Boolean.FALSE.equals(okToCreate)) {
+        } else if (Boolean.FALSE.equals(needToCreate)) {
             // If found matching port, then nothing needs to happen
             return this;
         } else {

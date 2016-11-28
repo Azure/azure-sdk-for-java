@@ -99,8 +99,8 @@ public interface ApplicationGatewayFrontendListener extends
 
             /**
              * Enables the listener to listen on the specified port number, creating a new
-             * automatically-named port for it if needed, or associating it with an existing frontend port
-             * that is already configured to listen on this port number.
+             * automatically-named frontend port for it if needed, or associating it with an existing frontend port
+             * that is already set up for this port number.
              * @param portNumber a port number
              * @return the next stage of the definition
              */

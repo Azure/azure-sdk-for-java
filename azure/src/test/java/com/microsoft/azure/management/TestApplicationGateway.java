@@ -117,7 +117,7 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendPort(80)
+                                .fromFrontendHttpPort(80)
                                 .toBackendPort(8080)
                                 .withBackend("default")
                                 .attach()
@@ -619,7 +619,7 @@ public class TestApplicationGateway {
 
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
-                                .fromFrontendPort(80)
+                                .fromFrontendHttpPort(80)
                                 .toBackendPort(8080)
                                 .withBackend("default")
                                 .attach()
@@ -631,7 +631,7 @@ public class TestApplicationGateway {
             creationThread.start();
 
             //...But bail out after 30 sec, as it is enough to test the results
-            creationThread.join(30 * 1000);
+            Thread.sleep(30 * 1000);
 
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
@@ -664,6 +664,7 @@ public class TestApplicationGateway {
             // Verify rules
             // TODO
 
+            creationThread.join(30 * 1000);
             return appGateway;
         }
 
@@ -826,7 +827,7 @@ public class TestApplicationGateway {
 
             // Request routing rules
             .defineRequestRoutingRule("rule1")
-                .fromFrontendPort(80)
+                .fromFrontendHttpPort(80)
                 .toBackendPort(8080)
                 .withBackend("default")
                 // TODO withRuleType
