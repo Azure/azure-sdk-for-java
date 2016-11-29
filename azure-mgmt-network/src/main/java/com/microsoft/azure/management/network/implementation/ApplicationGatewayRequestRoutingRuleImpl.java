@@ -10,11 +10,13 @@ import java.io.File;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule.DefinitionStages.WithAttach;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -252,6 +254,26 @@ class ApplicationGatewayRequestRoutingRuleImpl
             .withBackendPort(portNumber)
             .attach();
         return this.toBackendHttpConfiguration(name);
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withCookieBasedAffinity() {
+        // TODO do this with this.parent().backendConfigs(...).update().withCookieBasedAffinity...
+        ApplicationGatewayBackendHttpConfigurationImpl backendConfig = (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfiguration();
+        if (backendConfig != null) {
+            backendConfig.withCookieBasedAffinity();
+        }
+        return this;
+    }
+
+    @Override
+    public WithAttach<WithRequestRoutingRuleOrCreate> withoutCookieBasedAffinity() {
+        // TODO do this with this.parent().backendConfigs(...).update().withoutCookieBasedAffinity...
+        ApplicationGatewayBackendHttpConfigurationImpl backendConfig = (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfiguration();
+        if (backendConfig != null) {
+            backendConfig.withoutCookieBasedAffinity();
+        }
+        return this;
     }
 
     @Override

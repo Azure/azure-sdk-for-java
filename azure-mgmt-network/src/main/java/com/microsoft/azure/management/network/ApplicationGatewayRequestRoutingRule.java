@@ -77,7 +77,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            WithHostName<ParentT> {
+            WithHostName<ParentT>,
+            WithCookieBasedAffinity<ParentT> {
         }
 
         /**
@@ -141,6 +142,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the next stage of the definition
          */
         interface WithSslPassword<ParentT> extends HasSslCertificate.DefinitionStages.WithSslPassword<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule allowing to enable cookie based affinity.
+         * @param <ParentT> the next stage of the definition
+         */
+        interface WithCookieBasedAffinity<ParentT> extends HasCookieBasedAffinity.DefinitionStages.WithCookieBasedAffinity<WithAttach<ParentT>> {
         }
 
         /**

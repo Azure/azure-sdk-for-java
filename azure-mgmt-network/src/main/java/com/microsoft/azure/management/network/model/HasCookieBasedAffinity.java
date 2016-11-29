@@ -31,6 +31,12 @@ public interface HasCookieBasedAffinity  {
              * @return the next stage of the definition
              */
             ReturnT withCookieBasedAffinity();
+
+            /**
+             * Disables cookie based affinity.
+             * @return the next stage of the definition
+             */
+            ReturnT withoutCookieBasedAffinity();
         }
     }
 

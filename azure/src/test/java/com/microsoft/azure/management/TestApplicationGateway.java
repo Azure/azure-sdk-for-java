@@ -740,6 +740,7 @@ public class TestApplicationGateway {
                 .toBackendHttpPort(8080)
                 .withBackend("default")
                 .withHostName("www.fabricam.com")
+                .withoutCookieBasedAffinity()
                 // TODO withRuleType
                 .attach()
 
@@ -751,6 +752,7 @@ public class TestApplicationGateway {
                 .toBackendHttpPort(8080)
                 .withBackend("default")
                 .withHostName("www.contoso.com")
+                .withCookieBasedAffinity()
                 .attach()
 
             // OPTIONALS
@@ -771,11 +773,6 @@ public class TestApplicationGateway {
                 .withProtocol(ApplicationGatewayProtocol.HTTP)
                 .withRequestTimeout(10)
                 .attach()
-            .defineBackendHttpConfiguration("httpConfig2")
-                .withBackendPort(82)
-                .withProtocol(ApplicationGatewayProtocol.HTTPS)
-                .withRequestTimeout(15)
-                .attach()
 
             // Additional frontend ports
             .withFrontendPort(82, "port1");
@@ -793,7 +790,7 @@ public class TestApplicationGateway {
         Assert.assertTrue(appGateway.backends().containsKey("backend3"));
 
         // Verify backend HTTP configs
-        Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 4);
+        Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 3);
         Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("httpConfig1"));
         ApplicationGatewayBackendHttpConfiguration httpConfig;
 
@@ -802,13 +799,6 @@ public class TestApplicationGateway {
         Assert.assertTrue(httpConfig.cookieBasedAffinity());
         Assert.assertTrue(httpConfig.protocol().equals(ApplicationGatewayProtocol.HTTP));
         Assert.assertTrue(httpConfig.requestTimeout() == 10);
-
-        Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("httpConfig2"));
-        httpConfig = appGateway.backendHttpConfigurations().get("httpConfig2");
-        Assert.assertTrue(httpConfig.backendPort() == 82);
-        Assert.assertTrue(!httpConfig.cookieBasedAffinity());
-        Assert.assertTrue(httpConfig.protocol().equals(ApplicationGatewayProtocol.HTTPS));
-        Assert.assertTrue(httpConfig.requestTimeout() == 15);
 
         // Verify listeners
         Assert.assertTrue(appGateway.frontendListeners().size() == 3);
@@ -853,6 +843,7 @@ public class TestApplicationGateway {
         httpConfig = rule.backendHttpConfiguration();
         Assert.assertTrue(httpConfig != null);
         Assert.assertTrue(httpConfig.backendPort() == 8080);
+        Assert.assertTrue(!rule.cookieBasedAffinity());
 
         rule = appGateway.requestRoutingRules().get("rule443");
         Assert.assertTrue(rule != null);
@@ -866,6 +857,7 @@ public class TestApplicationGateway {
         httpConfig = rule.backendHttpConfiguration();
         Assert.assertTrue(httpConfig != null);
         Assert.assertTrue(httpConfig.backendPort() == 8080);
+        Assert.assertTrue(rule.cookieBasedAffinity());
     }
 
     // Create VNet for the app gateway
