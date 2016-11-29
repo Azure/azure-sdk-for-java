@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
+import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
@@ -24,7 +25,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
     ChildResource<ApplicationGateway>,
     HasPublicIpAddress,
     HasProtocol<ApplicationGatewayProtocol>,
-    HasSslCertificate<ApplicationGatewaySslCertificate> {
+    HasSslCertificate<ApplicationGatewaySslCertificate>,
+    HasFrontendPort {
 
     /**
      * @return rule type

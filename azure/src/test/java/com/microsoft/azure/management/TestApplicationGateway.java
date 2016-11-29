@@ -608,7 +608,7 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
-                            .withFrontendListeningOnPort(80)                     // Frontend HTTP listener
+                            .withFrontendListeningOnPort(80)                    // Frontend HTTP listener
 
                             // Backend HTTP configs
                             .withBackendListeningOnPort(8080)
@@ -668,7 +668,9 @@ public class TestApplicationGateway {
             ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
             Assert.assertTrue(rule.publicIpAddressId() != null);
             Assert.assertTrue(rule.frontendListener() != null);
-            Assert.assertTrue(rule.frontendListener().frontendPortNumber() == 443);
+            Assert.assertTrue(rule.frontendPort() == 443);
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.protocol()));
+            Assert.assertTrue(rule.sslCertificate() != null);
 
             creationThread.join(30 * 1000);
             return appGateway;
@@ -1017,7 +1019,11 @@ public class TestApplicationGateway {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                .append("\n\t\t\tType: ").append(rule.ruleType());
+                .append("\n\t\t\tType: ").append(rule.ruleType())
+                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\t\tProtocol: ").append(rule.protocol().toString())
+                .append("\n\t\t\tSSL certificate: ").append(rule.sslCertificate().name());
 
             // Show backend
             info.append("\n\t\t\tAssociated backend address pool: ");

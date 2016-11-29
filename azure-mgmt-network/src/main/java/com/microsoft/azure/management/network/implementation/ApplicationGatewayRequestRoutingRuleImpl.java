@@ -41,6 +41,16 @@ class ApplicationGatewayRequestRoutingRuleImpl
     // Getters
 
     @Override
+    public int frontendPort() {
+        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        if (listener == null) {
+            return 0;
+        } else {
+            return listener.frontendPortNumber();
+        }
+    }
+
+    @Override
     public ApplicationGatewaySslCertificate sslCertificate() {
         if (this.frontendListener() == null) {
             return null;
