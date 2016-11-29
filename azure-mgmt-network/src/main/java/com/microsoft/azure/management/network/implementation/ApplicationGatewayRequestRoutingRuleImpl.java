@@ -161,13 +161,6 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListener(String name) {
-        ApplicationGatewayFrontendListenerImpl listener =
-                (ApplicationGatewayFrontendListenerImpl) this.parent().frontendListeners().get(name);
-        if (listener == null) {
-            // If no listener with this name exists, create one, assuming HTTP port 80
-            this.fromFrontendPort(80, ApplicationGatewayProtocol.HTTP, name);
-        }
-
         SubResource listenerRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
@@ -185,7 +178,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     private ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber, ApplicationGatewayProtocol protocol, String name) {
-        // Determine listener to use
+        // Verify no conflicting listener exists
         ApplicationGatewayFrontendListenerImpl listenerByPort =
                 (ApplicationGatewayFrontendListenerImpl) this.parent().getFrontendListenerByPortNumber(portNumber);
         ApplicationGatewayFrontendListenerImpl listenerByName = null;
@@ -210,11 +203,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
             listenerByPort.attach();
             return this.fromFrontendListener(listenerByPort.name());
-        } else if (Boolean.FALSE.equals(needToCreate)) {
-            // If matching listener already exists, then use it
-            return this.fromFrontendListener(listenerByPort.name());
         } else {
-            // If found listener conflicting in port number and name, then fail
+            // If matching listener already exists then fail
             return null;
         }
     }

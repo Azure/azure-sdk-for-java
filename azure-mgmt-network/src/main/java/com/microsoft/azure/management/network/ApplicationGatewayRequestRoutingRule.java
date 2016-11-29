@@ -62,7 +62,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The first stage of an application gateway request routing rule definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithFrontendListener<ParentT> {
+        interface Blank<ParentT> extends WithFrontendListenerOrPort<ParentT> {
         }
 
         /** The final stage of an application gateway request routing rule definition.
@@ -77,32 +77,49 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
-         * The stage of an application gateway request routing rule definition allowing to specify the listener to associate the routing rule with.
+         * The stage of an application gateway request routing rule definition allowing to specify an existing listener to
+         * associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithFrontendListener<ParentT> {
             /**
-             * Associates the request routing rule with an HTTP listener.
+             * Associates the request routing rule with a frontend listener.
              * <p>
-             * If no listener with the specified name exists yet, one will be created for port 80 and the HTTP protocol by default.
-             * @param name the name of an existing listener
+             * A listener with the referenced name must be defined separately but as part of the same application gateway creation process.
+             * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
             WithBackendHttpConfiguration<ParentT> fromFrontendListener(String name);
+        }
 
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate a new or existing listener
+         * to associate the routing rule with.
+         * @param <ParentT>
+         */
+        interface WithFrontendListenerOrPort<ParentT> extends
+            WithFrontendListener<ParentT>,
+            WithFrontendPort<ParentT> {
+        }
+
+        /** The stage of an application gateway request routing rule definition allowing to create an associate listener and frontend
+         * for a specific port number and protocol.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithFrontendPort<ParentT> {
             /**
-             * Associates the request routing rule with an existing frontend listener on this application gateway
-             * associated with the specified port number and the HTTP protocol.
-             * @param portNumber the port number used by an existing listener
-             * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTP protocol (e.g. HTTPS)
+             * Creates a new frontend and a frontend listener on this application gateway for the specified port number and the HTTP protocol
+             * and associates it with this rule.
+             * @param portNumber the port number to listen to
+             * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
             WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
 
             /**
-             * Associates the request routing rule with an existing frontend listener on this application gateway
-             * associated with the specified port number and the HTTPS protocol.
-             * @param portNumber the port number used by an existing listener
-             * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTPS protocol (e.g. HTTP)
+             * Creates a new frontend and a frontend listener on this application gateway for the specified port number and the HTTPS protocol
+             * and associates it with this rule.
+             * @param portNumber the port number to listen to
+             * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
             WithSslCertificate<ParentT> fromFrontendHttpsPort(int portNumber);
         }
@@ -111,7 +128,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
          * @param <ParentT> the next stage of the definition
          */
-        interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
+        interface WithSslCertificate<ParentT> extends
+            HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
         }
 
         /**
@@ -189,6 +207,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithFrontendListener<ParentT>,
+        DefinitionStages.WithFrontendPort<ParentT>,
+        DefinitionStages.WithFrontendListenerOrPort<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
         DefinitionStages.WithBackendHttpConfiguration<ParentT>,
         DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,

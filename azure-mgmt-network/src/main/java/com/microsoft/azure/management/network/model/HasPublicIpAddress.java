@@ -20,7 +20,7 @@ public interface HasPublicIpAddress  {
     String publicIpAddressId();
 
     /**
-     * @return the associated public IP address 
+     * @return the associated public IP address
      */
     PublicIpAddress getPublicIpAddress();
 
