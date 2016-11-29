@@ -12,7 +12,6 @@
 
     <artifactId>azure-mgmt-cdn</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.0-beta4-SNAPSHOT</version>
 
     <name>Microsoft Azure SDK for CDN Management</name>
     <description>This package contains Microsoft Azure CDN SDK.</description>
@@ -48,7 +47,6 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-            <version>1.0.0-beta3</version>
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
@@ -63,7 +61,6 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-authentication</artifactId>
-            <version>1.0.0-beta3</version>
             <scope>test</scope>
         </dependency>
         <dependency>
