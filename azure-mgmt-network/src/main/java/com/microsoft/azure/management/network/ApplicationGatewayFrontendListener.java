@@ -43,6 +43,16 @@ public interface ApplicationGatewayFrontendListener extends
     String frontendPortName();
 
     /**
+     * @return the host name
+     */
+    String hostName();
+
+    /**
+     * @return true if server name indication is required
+     */
+    boolean requiresServerNameIndication();
+
+    /**
      * Grouping of application gateway HTTP listener configuration stages.
      */
     interface DefinitionStages {
@@ -62,11 +72,13 @@ public interface ApplicationGatewayFrontendListener extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            WithProtocol<ParentT> {
+            WithProtocol<ParentT>,
+            WithHostName<ParentT>,
+            WithServerNameIndication<ParentT> {
         }
 
         /**
-         * The stage of an application gateway HTTP listener definition allowing to specify the frontend IP configuration to associate the listener with.
+         * The stage of an application gateway frontend listener definition allowing to specify the frontend IP configuration to associate the listener with.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         // TODO Since Azure does not yet support multiple frontends, this needs to be revisited when it does
@@ -80,7 +92,7 @@ public interface ApplicationGatewayFrontendListener extends
         }
 
         /**
-         * The stage of an application gateway HTTP listener definition allowing to specify the frontend port to associate the listener with.
+         * The stage of an application gateway frontend listener definition allowing to specify the frontend port to associate the listener with.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithFrontendPort<ParentT> {
@@ -102,21 +114,21 @@ public interface ApplicationGatewayFrontendListener extends
         }
 
         /**
-         * The stage of an application gateway HTTP listener definition allowing to specify the SSL certificate to associate with the listener.
+         * The stage of an application gateway frontend listener definition allowing to specify the SSL certificate to associate with the listener.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<WithAttach<ParentT>> {
         }
 
         /**
-         * The stage of an application gateway HTTP listener definition allowing to specify the password for the private key of the imported SSL certificate.
+         * The stage of an application gateway frontend listener definition allowing to specify the password for the private key of the imported SSL certificate.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithSslPassword<ParentT> extends HasSslCertificate.DefinitionStages.WithSslPassword<WithAttach<ParentT>> {
         }
 
         /**
-         * The stage of an application gateway HTTP listener definition allowing to specify the protocol.
+         * The stage of an application gateway frontend listener definition allowing to specify the protocol.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
         interface WithProtocol<ParentT> {
@@ -134,6 +146,38 @@ public interface ApplicationGatewayFrontendListener extends
             @Method
             WithSslCertificate<ParentT> withHttps();
         }
+
+        /**
+         * The stage of an application gateway frontend listener definition allowing to specify the hostname of the website for which the
+         * traffic is received.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
+         */
+        interface WithHostName<ParentT> {
+            /**
+             * Specifies the hostname of the website for which the traffic is received.
+             * @param hostname the hostname of an existing website
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withHostName(String hostname);
+        }
+
+        /**
+         * The stage of an application gateway frontend listener definition allowing to require server name indication (SNI).
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
+         */
+        interface WithServerNameIndication<ParentT> {
+            /**
+             * Requires server name indication (SNI).
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withServerNameIndication();
+
+            /**
+             * Ensures server name indication (SNI) is not required.
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withoutServerNameIndication();
+        }
     }
 
     /** The entirety of an application gateway HTTP listener definition.
@@ -145,7 +189,8 @@ public interface ApplicationGatewayFrontendListener extends
         DefinitionStages.WithFrontend<ParentT>,
         DefinitionStages.WithFrontendPort<ParentT>,
         DefinitionStages.WithSslCertificate<ParentT>,
-        DefinitionStages.WithSslPassword<ParentT> {
+        DefinitionStages.WithSslPassword<ParentT>,
+        DefinitionStages.WithHostName<ParentT> {
     }
 
     /**

@@ -58,7 +58,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The first stage of an application gateway request routing rule definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithListener<ParentT> {
+        interface Blank<ParentT> extends WithFrontendListener<ParentT> {
         }
 
         /** The final stage of an application gateway request routing rule definition.
@@ -75,7 +75,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The stage of an application gateway request routing rule definition allowing to specify the listener to associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithListener<ParentT> {
+        interface WithFrontendListener<ParentT> {
             /**
              * Associates the request routing rule with an HTTP listener.
              * <p>
@@ -159,7 +159,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithListener<ParentT>,
+        DefinitionStages.WithFrontendListener<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
         DefinitionStages.WithBackendHttpConfiguration<ParentT>,
         DefinitionStages.WithSslCertificate<DefinitionStages.WithBackendHttpConfiguration<ParentT>>,

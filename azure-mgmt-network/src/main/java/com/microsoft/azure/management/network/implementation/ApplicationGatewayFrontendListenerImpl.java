@@ -38,6 +38,20 @@ class ApplicationGatewayFrontendListenerImpl
     // Getters
 
     @Override
+    public boolean requiresServerNameIndication() {
+        if (this.inner().requireServerNameIndication() != null) {
+            return this.inner().requireServerNameIndication();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String hostName() {
+        return this.inner().hostName();
+    }
+
+    @Override
     public String publicIpAddressId() {
         final ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) this.frontend();
         if (frontend == null) {
@@ -207,6 +221,24 @@ class ApplicationGatewayFrontendListenerImpl
     @Override
     public ApplicationGatewayFrontendListenerImpl withHttps() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayFrontendListenerImpl withHostName(String hostname) {
+        this.inner().withHostName(hostname);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayFrontendListenerImpl withServerNameIndication() {
+        this.inner().withRequireServerNameIndication(true);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayFrontendListenerImpl withoutServerNameIndication() {
+        this.inner().withRequireServerNameIndication(false);
         return this;
     }
 }

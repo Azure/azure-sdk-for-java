@@ -1005,6 +1005,8 @@ public class TestApplicationGateway {
         info.append("\n\tHTTP listeners: ").append(listeners.size());
         for (ApplicationGatewayFrontendListener listener : listeners.values()) {
             info.append("\n\t\tName: ").append(listener.name())
+                .append("\n\t\t\tHost name: ").append(listener.hostName())
+                .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
                 .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
                 .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
                 .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
