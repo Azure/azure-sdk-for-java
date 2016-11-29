@@ -101,13 +101,6 @@ public interface ApplicationGateway extends
     ApplicationGatewayFrontendListener getFrontendListenerByPortNumber(int portNumber);
 
     /**
-     * Finds a backend HTTP configuration associated with the specified backend port number, if any.
-     * @param portNumber a used port number
-     * @return the backend HTTP configuration, or null if none found
-     */
-    ApplicationGatewayBackendHttpConfiguration getBackendHttpConfigurationByPortNumber(int portNumber);
-
-    /**
      * The entirety of the application gateway definition.
      */
     interface Definition extends
@@ -320,22 +313,6 @@ public interface ApplicationGateway extends
              * @return the first stage of the backend HTTP configuration definition
              */
             ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrBackend> defineBackendHttpConfiguration(String name);
-
-            /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on, and an automatically generated name.
-             * @param portNumber the port number for the backend HTTP configuration
-             * @return the next stage of the definition
-             */
-            WithBackendHttpConfigOrBackend withBackendListeningOnPort(int portNumber);
-
-            /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on,
-             * and the specified name that can be referenced from request routing rules.
-             * @param portNumber the private port number for the backend to listen on
-             * @param backendHttpSettingsConfigurationName the name for the backend HTTP settings configuration
-             * @return the next stage of the definition
-             */
-            WithBackendHttpConfigOrBackend withBackendListeningOnPort(int portNumber, String backendHttpSettingsConfigurationName);
         }
 
         /**
@@ -642,22 +619,6 @@ public interface ApplicationGateway extends
          * The stage of an application gateway update allowing to modify backend HTTP configurations.
          */
         interface WithBackendHttpConfig {
-            /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on, and an automatically generated name.
-             * @param portNumber the port number for the backend HTTP configuration
-             * @return the next stage of the update
-             */
-            Update withBackendListeningOnPort(int portNumber);
-
-            /**
-             * Adds a backend HTTP configuration with the specified backend port that the backend will be receiving traffic on,
-             * and the specified name that can be referenced from request routing rules.
-             * @param portNumber the private port number for the backend to listen on
-             * @param backendHttpConfigurationName the name for the backend HTTP settings configuration
-             * @return the next stage of the update
-             */
-            Update withBackendListeningOnPort(int portNumber, String backendHttpConfigurationName);
-
             /**
              * Begins the definition of a new application gateway backend HTTP configuration to be attached to the gateway.
              * @param name a unique name for the backend HTTP configuration

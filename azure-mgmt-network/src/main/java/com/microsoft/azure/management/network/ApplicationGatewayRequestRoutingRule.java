@@ -7,6 +7,8 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
+import com.microsoft.azure.management.network.model.HasBackendPort;
+import com.microsoft.azure.management.network.model.HasCookieBasedAffinity;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
@@ -29,7 +31,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
     HasProtocol<ApplicationGatewayProtocol>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasFrontendPort,
+    HasBackendPort,
     HasHostName,
+    HasCookieBasedAffinity,
     HasServerNameIndication {
 
     /**
@@ -176,12 +180,12 @@ public interface ApplicationGatewayRequestRoutingRule extends
             WithBackend<ParentT> toBackendHttpConfiguration(String name);
 
             /**
-             * Associates the request routing rule with an existing backend HTTP settings configuration on this application gateway
-             * configured to send traffic to the specified backend port, if such a configuration exists.
-             * @param portNumber the port number of a backend HTTP settings configuration on this application gateway
-             * @return teh next stage of the definition or null if no backend HTTP configuration exists for the specified port number
+             * Creates a backend settings configuration for the specified backend port and the HTTP protocol to associate with this
+             * request routing rule.
+             * @param portNumber the port number for a new backend HTTP settings configuration
+             * @return the next stage of the definition
              */
-            WithBackend<ParentT> toBackendPort(int portNumber);
+            WithBackend<ParentT> toBackendHttpPort(int portNumber);
         }
 
         /**

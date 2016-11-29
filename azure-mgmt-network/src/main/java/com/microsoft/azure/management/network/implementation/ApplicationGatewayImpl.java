@@ -484,42 +484,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withBackendListeningOnPort(int portNumber) {
-        return withBackendListeningOnPort(portNumber, null);
-    }
-
-    @Override
-    public ApplicationGatewayImpl withBackendListeningOnPort(int portNumber, String name) {
-        // Try to find existing listener by name
-        ApplicationGatewayBackendHttpConfiguration backendHttpByName = null;
-        if (name != null) {
-            backendHttpByName = this.backendHttpConfigs.get(name);
-        }
-
-        // Try to find existing backend HTTP config by port number
-        ApplicationGatewayBackendHttpConfiguration backendHttpByPort = getBackendHttpConfigurationByPortNumber(portNumber);
-
-        Boolean needToCreate = needToCreate(backendHttpByName, backendHttpByPort, name);
-        if (Boolean.TRUE.equals(needToCreate)) {
-            // No existing backend HTTP config with this name nor port exists, so create one
-            if (name == null) {
-                // Auto-name it
-                name = ResourceNamer.randomResourceName("backendHttp", 16);
-            }
-
-            return this.defineBackendHttpConfiguration(name)
-                    .withBackendPort(portNumber)
-                    .attach();
-        } else if (Boolean.FALSE.equals(needToCreate)) {
-            // Already exists so skip
-            return this;
-        } else {
-            // Name clash so fail fast
-            return null;
-        }
-    }
-
-    @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
         ApplicationGatewayRequestRoutingRule rule = this.rules.get(name);
         if (rule == null) {
@@ -814,18 +778,6 @@ class ApplicationGatewayImpl
             }
         }
         return listener;
-    }
-
-    @Override
-    public ApplicationGatewayBackendHttpConfiguration getBackendHttpConfigurationByPortNumber(int portNumber) {
-        ApplicationGatewayBackendHttpConfiguration backendHttp = null;
-        for (ApplicationGatewayBackendHttpConfiguration b : this.backendHttpConfigs.values()) {
-            if (b.backendPort() == portNumber) {
-                backendHttp = b;
-                break;
-            }
-        }
-        return backendHttp;
     }
 
     @Override

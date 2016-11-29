@@ -41,6 +41,26 @@ class ApplicationGatewayRequestRoutingRuleImpl
     // Getters
 
     @Override
+    public boolean cookieBasedAffinity() {
+        final ApplicationGatewayBackendHttpConfiguration backendConfig = this.backendHttpConfiguration();
+        if (backendConfig == null) {
+            return false;
+        } else {
+            return backendConfig.cookieBasedAffinity();
+        }
+    }
+
+    @Override
+    public int backendPort() {
+        final ApplicationGatewayBackendHttpConfiguration backendConfig = this.backendHttpConfiguration();
+        if (backendConfig == null) {
+            return 0;
+        } else {
+            return backendConfig.backendPort();
+        }
+    }
+
+    @Override
     public boolean requiresServerNameIndication() {
         final ApplicationGatewayFrontendListener listener = this.frontendListener();
         if (listener == null) {
@@ -226,15 +246,12 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl toBackendPort(int portNumber) {
-        // Ensure existence of backend HTTP settings for this port number
-        this.parent().withBackendListeningOnPort(portNumber);
-        ApplicationGatewayBackendHttpConfiguration config = this.parent().getBackendHttpConfigurationByPortNumber(portNumber);
-        if (config == null) {
-            return null;
-        } else {
-            return this.toBackendHttpConfiguration(config.name());
-        }
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpPort(int portNumber) {
+        String name = ResourceNamer.randomResourceName("backcfg", 12);
+        this.parent().defineBackendHttpConfiguration(name)
+            .withBackendPort(portNumber)
+            .attach();
+        return this.toBackendHttpConfiguration(name);
     }
 
     @Override
