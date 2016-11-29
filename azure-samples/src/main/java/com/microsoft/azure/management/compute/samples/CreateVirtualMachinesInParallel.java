@@ -20,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.CreatedResource
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
+import com.sun.org.apache.regexp.internal.RE;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
@@ -53,15 +54,16 @@ public class CreateVirtualMachinesInParallel {
         */
 
         // final demo target
-        virtualMachinesByLocation.put(Region.US_EAST, 10);
-        virtualMachinesByLocation.put(Region.US_SOUTH_CENTRAL, 10);
-        virtualMachinesByLocation.put(Region.US_WEST, 10);
-        virtualMachinesByLocation.put(Region.BRAZIL_SOUTH, 5);
-        virtualMachinesByLocation.put(Region.EUROPE_NORTH, 5);
-        virtualMachinesByLocation.put(Region.EUROPE_WEST, 5);
-        virtualMachinesByLocation.put(Region.UK_WEST, 5);
-        virtualMachinesByLocation.put(Region.ASIA_SOUTHEAST, 5);
-        virtualMachinesByLocation.put(Region.INDIA_SOUTH, 5);
+        virtualMachinesByLocation.put(Region.US_EAST, 13);
+        virtualMachinesByLocation.put(Region.US_SOUTH_CENTRAL, 13);
+        virtualMachinesByLocation.put(Region.US_WEST, 13);
+        virtualMachinesByLocation.put(Region.US_NORTH_CENTRAL, 13);
+        // virtualMachinesByLocation.put(Region.BRAZIL_SOUTH, 5);
+        // virtualMachinesByLocation.put(Region.EUROPE_NORTH, 5);
+        // virtualMachinesByLocation.put(Region.EUROPE_WEST, 5);
+        // virtualMachinesByLocation.put(Region.UK_WEST, 5);
+        // virtualMachinesByLocation.put(Region.ASIA_SOUTHEAST, 5);
+        // virtualMachinesByLocation.put(Region.INDIA_SOUTH, 5);
         // virtualMachinesByLocation.put(Region.JAPAN_EAST, 5);
         // virtualMachinesByLocation.put(Region.JAPAN_WEST, 5);
 
@@ -168,7 +170,7 @@ public class CreateVirtualMachinesInParallel {
                     System.out.println(virtualMachine.id());
                 }
 
-                System.out.println("Virtual Machines create: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) to create " + virtualMachines.size() + "virtual machines");
+                System.out.println("Virtual Machines create: (took " + ((t2.getTime() - t1.getTime()) / 1000) + " seconds) to create == " + virtualMachines.size() + " == virtual machines");
 
                 List<String> publicIpResourceIds = new ArrayList<>();
                 for (String publicIpCreatableKey : publicIpCreatableKeys) {
@@ -204,7 +206,7 @@ public class CreateVirtualMachinesInParallel {
                 }
 
                 TrafficManagerProfile trafficManagerProfile = profileWithCreate.create();
-                System.out.print("Created a traffic manager profile - " + trafficManagerProfile.id());
+                System.out.println("Created a traffic manager profile - " + trafficManagerProfile.id());
             } catch (Exception f) {
 
             System.out.println(f.getMessage());
