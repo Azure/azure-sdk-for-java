@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.implementation.ApplicationGatewayH
 import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -27,7 +28,8 @@ public interface ApplicationGatewayFrontendListener extends
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasPublicIpAddress,
     HasProtocol<ApplicationGatewayProtocol>,
-    HasHostName {
+    HasHostName,
+    HasServerNameIndication {
 
     /**
      * @return the frontend IP configuration this listener is associated with.
@@ -43,11 +45,6 @@ public interface ApplicationGatewayFrontendListener extends
      * @return the name of the frontend port the listener is listening on
      */
     String frontendPortName();
-
-    /**
-     * @return true if server name indication is required
-     */
-    boolean requiresServerNameIndication();
 
     /**
      * Grouping of application gateway HTTP listener configuration stages.
@@ -156,18 +153,7 @@ public interface ApplicationGatewayFrontendListener extends
          * The stage of an application gateway frontend listener definition allowing to require server name indication (SNI).
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithServerNameIndication<ParentT> {
-            /**
-             * Requires server name indication (SNI).
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withServerNameIndication();
-
-            /**
-             * Ensures server name indication (SNI) is not required.
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withoutServerNameIndication();
+        interface WithServerNameIndication<ParentT> extends HasServerNameIndication.DefinitionStages.WithServerNameIndication<WithAttach<ParentT>> {
         }
     }
 

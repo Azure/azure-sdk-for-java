@@ -10,13 +10,11 @@ import java.io.File;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
-import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule.DefinitionStages.WithAttach;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -41,6 +39,16 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     // Getters
+
+    @Override
+    public boolean requiresServerNameIndication() {
+        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        if (listener == null) {
+            return false;
+        } else {
+            return listener.requiresServerNameIndication();
+        }
+    }
 
     @Override
     public String hostName() {
@@ -229,6 +237,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendPort(int portNumber) {
+        // Ensure existence of backend HTTP settings for this port number
+        this.parent().withBackendListeningOnPort(portNumber);
         ApplicationGatewayBackendHttpConfiguration config = this.parent().getBackendHttpConfigurationByPortNumber(portNumber);
         if (config == null) {
             return null;
@@ -278,11 +288,31 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public WithAttach<WithRequestRoutingRuleOrCreate> withHostName(String hostName) {
+    public ApplicationGatewayRequestRoutingRuleImpl withHostName(String hostName) {
         // TODO do this with this.parent().frontendListener(...).update().withHostName()
         ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
         if (listener != null) {
             listener.withHostName(hostName);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withServerNameIndication() {
+        // TODO do this with this.parent().frontendListener(...).update().withHostName()
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withServerNameIndication();
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withoutServerNameIndication() {
+        // TODO do this with this.parent().frontendListener(...).update().withHostName()
+        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        if (listener != null) {
+            listener.withoutServerNameIndication();
         }
         return this;
     }

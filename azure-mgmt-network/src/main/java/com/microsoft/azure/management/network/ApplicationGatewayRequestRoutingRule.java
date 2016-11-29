@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
+import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -28,7 +29,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
     HasProtocol<ApplicationGatewayProtocol>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasFrontendPort,
-    HasHostName {
+    HasHostName,
+    HasServerNameIndication {
 
     /**
      * @return rule type
@@ -102,14 +104,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number used by an existing listener
              * @return the next stage of the definition, or null if the specified port number is already used for a non-HTTPS protocol (e.g. HTTP)
              */
-            WithSslCertificate<WithBackendHttpConfiguration<ParentT>> fromFrontendHttpsPort(int portNumber);
+            WithSslCertificate<ParentT> fromFrontendHttpsPort(int portNumber);
         }
 
         /**
          * The stage of an application gateway request routing rule allowing to specify an SSL certificate.
          * @param <ParentT> the next stage of the definition
          */
-        interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<ParentT> {
+        interface WithSslCertificate<ParentT> extends HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
         }
 
         /**
@@ -130,6 +132,16 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withBackend(String name);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to require server name indication if the
+         * application gateway is serving multiple websites in its backends and SSL is required.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigurationOrSni<ParentT> extends
+            WithBackendHttpConfiguration<ParentT>,
+            HasServerNameIndication.DefinitionStages.WithServerNameIndication<WithBackendHttpConfiguration<ParentT>> {
         }
 
         /**
@@ -161,6 +173,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithHostName<ParentT> extends HasHostName.DefinitionStages.WithHostName<WithAttach<ParentT>> {
         }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to require server name indication.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithServerNameIndication<ParentT> extends HasServerNameIndication.DefinitionStages.WithServerNameIndication<WithAttach<ParentT>> {
+        }
     }
 
     /** The entirety of an application gateway request routing rule definition.
@@ -172,8 +191,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.WithFrontendListener<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
         DefinitionStages.WithBackendHttpConfiguration<ParentT>,
-        DefinitionStages.WithSslCertificate<DefinitionStages.WithBackendHttpConfiguration<ParentT>>,
-        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfiguration<ParentT>> {
+        DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
+        DefinitionStages.WithSslCertificate<ParentT>,
+        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>> {
     }
 
     /**
