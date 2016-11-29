@@ -31,16 +31,11 @@ public final class ConnectionHandler extends BaseHandler
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 
-	private final String username;
-	private final String password;
 	private final IAmqpConnection messagingFactory;
 
-	public ConnectionHandler(final IAmqpConnection messagingFactory, final String username, final String password)
+	public ConnectionHandler(final IAmqpConnection messagingFactory)
 	{
 		add(new Handshaker());
-
-		this.username = username;
-		this.password = password;
 		this.messagingFactory = messagingFactory;
 	}
 	
@@ -70,8 +65,8 @@ public final class ConnectionHandler extends BaseHandler
 		SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
 		transport.ssl(domain);
 
-		Sasl sasl = transport.sasl();
-		sasl.plain(this.username, this.password);
+                Sasl sasl = transport.sasl();
+                sasl.setMechanisms("ANONYMOUS");
 	}
 
 	@Override

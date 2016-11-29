@@ -38,7 +38,7 @@ public final class ReactorDispatcher
 	{
 		this.reactor = reactor;
 		this.ioSignal = Pipe.open();
-		this.workQueue = new ConcurrentLinkedQueue<BaseHandler>();
+		this.workQueue = new ConcurrentLinkedQueue<>();
 		this.workScheduler = new ScheduleHandler();
 		
 		initializeSelectable();

@@ -5,6 +5,7 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
+
 import org.apache.qpid.proton.amqp.Symbol;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
@@ -34,6 +35,7 @@ public final class ClientConstants
 
 	public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
 	public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
+        public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(20);
 
 	public final static int DEFAULT_MAX_RETRY_COUNT = 10;
 
@@ -52,24 +54,37 @@ public final class ClientConstants
 
 	public static final String PLATFORM_INFO = getPlatformInfo();
         
+        public static final String CBS_ADDRESS = "$cbs";
+        public static final String PUT_TOKEN_OPERATION = "operation";
+        public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
+        public static final String PUT_TOKEN_TYPE = "type";
+        public static final String SAS_TOKEN_TYPE = "servicebus.windows.net:sastoken";
+        public static final String PUT_TOKEN_AUDIENCE = "name";
+        public static final String PUT_TOKEN_EXPIRY = "expiration";
+        public static final String PUT_TOKEN_STATUS_CODE = "status-code";
+        public static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";        
+        
         public static final String MANAGEMENT_ADDRESS = "$management";
         public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
         public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
-        public static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
-        public static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
         public static final String MANAGEMENT_OPERATION_KEY = "operation";
         public static final String READ_OPERATION_VALUE = "READ";
         public static final String MANAGEMENT_ENTITY_TYPE_KEY = "type";
         public static final String MANAGEMENT_ENTITY_NAME_KEY = "name";
         public static final String MANAGEMENT_PARTITION_NAME_KEY = "partition";
         public static final String MANAGEMENT_SECURITY_TOKEN_KEY = "security_token";
-        public static final String MANAGEMENT_RESPONSE_ERROR_CONDITION = "error-condition";
         public static final String MANAGEMENT_RESULT_PARTITION_IDS = "partition_ids";
         public static final String MANAGEMENT_RESULT_PARTITION_COUNT = "partition_count";
         public static final String MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER = "begin_sequence_number";
         public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER = "last_enqueued_sequence_number";
         public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET = "last_enqueued_offset";
         public static final String MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC = "last_enqueued_time_utc";
+        public static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
+        public static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
+        public static final String MANAGEMENT_RESPONSE_ERROR_CONDITION = "error-condition";
+        
+        public static final String AMQP_PUT_TOKEN_FAILED_ERROR = "Put token failed. status-code: %s, status-description: %s";
+        public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
 
 	private static String getPlatformInfo()
 	{

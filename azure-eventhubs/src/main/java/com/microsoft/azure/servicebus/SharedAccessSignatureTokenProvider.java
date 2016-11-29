@@ -4,19 +4,44 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.io.*;
-import java.net.*;
-import java.nio.charset.*;
-import java.security.*;
-import java.time.*;
-import java.util.*;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Base64;
+import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Mac;
-import javax.crypto.spec.*;
+import javax.crypto.spec.SecretKeySpec;
 
 public class SharedAccessSignatureTokenProvider
 {
-	public static String generateSharedAccessSignature(final String keyName, final String sharedAccessKey, final String resource, final Duration tokenTimeToLive)
+        final String keyName;
+        final String sharedAccessKey;
+        
+        SharedAccessSignatureTokenProvider(
+                final String keyName,
+                final String sharedAccessKey)
+        {
+                this.keyName = keyName;
+                this.sharedAccessKey = sharedAccessKey;
+        }
+        
+        public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException 
+        {
+                return generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive);
+        }
+    
+	public static String generateSharedAccessSignature(
+                final String keyName,
+                final String sharedAccessKey,
+                final String resource,
+                final Duration tokenTimeToLive)
 			throws IOException, NoSuchAlgorithmException, InvalidKeyException
 	{
 		if (StringUtil.isNullOrWhiteSpace(keyName))

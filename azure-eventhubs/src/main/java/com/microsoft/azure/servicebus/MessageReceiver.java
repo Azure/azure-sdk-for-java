@@ -5,6 +5,8 @@
 package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -35,6 +37,7 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
+import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
 
 /**
@@ -57,7 +60,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         private final String sessionId;
         private final String targetPath;
         private final SenderSettleMode serviceSettleMode;
-
+        private final String tokenAudience;
+        private final ActiveClientTokenManager activeClientTokenManager;
+                    
 	private int prefetchCount;
         private ConcurrentLinkedQueue<Message> prefetchedMessages;
 	private Receiver receiveLink;
@@ -148,6 +153,40 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 				}
 			}
 		};
+                
+                this.tokenAudience = String.format("amqp://%s/%s", underlyingFactory.getHostName(), receivePath);
+                
+                this.activeClientTokenManager = new ActiveClientTokenManager(
+                        this, 
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                        underlyingFactory.getCBSChannel().sendToken(
+                                            underlyingFactory.getReactorScheduler(),
+                                            underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL), 
+                                            tokenAudience, 
+                                            new IOperationResult<Void, Exception>() {
+                                                @Override
+                                                public void onComplete(Void result) {
+                                                    if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                                                            TRACE_LOGGER.log(Level.FINE,
+                                                                            String.format(Locale.US, 
+                                                                            "path[%s], linkName[%s] - token renewed", receivePath, receiveLink.getName()));
+                                                    }
+                                                }
+                                                @Override
+                                                public void onError(Exception error) {
+                                                    MessageReceiver.this.onError(error);
+                                                }
+                                            });
+                                    }
+                                    catch(IOException|NoSuchAlgorithmException|InvalidKeyException exception) {
+                                        MessageReceiver.this.onError(exception);
+                                    }
+                                }
+                            }, 
+                            ClientConstants.TOKEN_REFRESH_INTERVAL);
 	}
         
         public static CompletableFuture<MessageReceiver> create(
@@ -314,8 +353,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 					// This will allow error handling to enact on the enqueued workItem.
 					if (receiveLink.getLocalState() == EndpointState.CLOSED || receiveLink.getRemoteState() == EndpointState.CLOSED)
 					{
-                                                if (!creatingLink)
-                                                    createReceiveLink();
+                                                createReceiveLink();
 					}
 				}
 			});
@@ -405,14 +443,12 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
 		if (this.getIsClosingOrClosed())
 		{
-			this.linkClose.complete(null);
-			
 			WorkItem<Collection<Message>> workItem = null;
 			final boolean isTransientException = exception == null ||
 					(exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient());
 			while ((workItem = this.pendingReceives.poll()) != null)
 			{
-				CompletableFuture<Collection<Message>> future = workItem.getWork();
+				final CompletableFuture<Collection<Message>> future = workItem.getWork();
 				if (isTransientException)
 				{
 					future.complete(null);
@@ -422,6 +458,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 					ExceptionUtil.completeExceptionally(future, exception, this);
 				}
 			}
+                        
+                        this.linkClose.complete(null);
 		}
 		else
 		{
@@ -479,6 +517,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
 	private void createReceiveLink()
 	{	
+            if (creatingLink)
+                return;
+            
             this.creatingLink = true;
             
             final Consumer<Session> onSessionOpen = new Consumer<Session>()
@@ -492,13 +533,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     final Map<Symbol, UnknownDescribedType> filterMap = MessageReceiver.this.settingsProvider.getFilter(MessageReceiver.this.lastReceivedMessage);
                     if (filterMap != null)
                         source.setFilter(filterMap);
-
-
-                    final String receiveLinkNamePrefix = StringUtil.getRandomString();
-                    final String receiveLinkName = session.getConnection() != null && !StringUtil.isNullOrEmpty(session.getConnection().getRemoteContainer()) ? 
-                                    receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(session.getConnection().getRemoteContainer()) :
-                                    receiveLinkNamePrefix;
-                    final Receiver receiver = session.receiver(receiveLinkName);
+                    
+                    final Receiver receiver = session.receiver(TrackingUtil.getLinkName(session));
                     receiver.setSource(source);
                     
                     final Target target = new Target();
@@ -540,11 +576,30 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     onError(t);
                 }
             };
-		
-            this.underlyingFactory.getSession(this.receivePath,
-                    this.sessionId,
-                    onSessionOpen,
-                    onSessionOpenFailed);
+            
+            try {
+                this.underlyingFactory.getCBSChannel().sendToken(
+                    this.underlyingFactory.getReactorScheduler(),
+                    this.underlyingFactory.getTokenProvider().getToken(tokenAudience, Duration.ofSeconds(5)), // ClientConstants.TOKEN_REFRESH_INTERVAL), 
+                    tokenAudience, 
+                    new IOperationResult<Void, Exception>() {
+                        @Override
+                        public void onComplete(Void result) {
+                            underlyingFactory.getSession(
+                                    receivePath,
+                                    sessionId,
+                                    onSessionOpen,
+                                    onSessionOpenFailed);
+                        }
+                        @Override
+                        public void onError(Exception error) {
+                            MessageReceiver.this.onError(error);
+                        }
+                    });
+            }
+            catch(IOException|NoSuchAlgorithmException|InvalidKeyException exception) {
+                MessageReceiver.this.onError(exception);
+            }
         }
 
 	// CONTRACT: message should be delivered to the caller of MessageReceiver.receive() only via Poll on prefetchqueue
@@ -636,10 +691,9 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 	@Override
 	public void onClose(ErrorCondition condition)
 	{
-		if (condition == null)
+		if (condition == null || condition.getCondition() == null)
 		{
-			this.onError(new ServiceBusException(true, 
-					String.format(Locale.US, "Closing the link. LinkName(%s), EntityPath(%s)", this.receiveLink.getName(), this.receivePath)));
+			this.onError((Exception) null);
 		}
 		else
 		{

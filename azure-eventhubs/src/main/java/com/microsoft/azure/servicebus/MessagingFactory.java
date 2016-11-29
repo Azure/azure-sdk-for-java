@@ -30,10 +30,12 @@ import com.microsoft.azure.servicebus.amqp.BaseLinkHandler;
 import com.microsoft.azure.servicebus.amqp.ConnectionHandler;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
+import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.ProtonUtil;
 import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
+import java.util.List;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -49,11 +51,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final ConnectionHandler connectionHandler;
 	private final LinkedList<Link> registeredLinks;
 	private final Object reactorLock;
+        private final Object cbsChannelCreateLock;
         private final Hashtable<String, Session> sessionCache;
+        private final SharedAccessSignatureTokenProvider tokenProvider;
 	
 	private Reactor reactor;
 	private ReactorDispatcher reactorScheduler;
 	private Connection connection;
+        private CBSChannel cbsChannel;
 
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
@@ -74,9 +79,11 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
             this.retryPolicy = builder.getRetryPolicy();
             this.registeredLinks = new LinkedList<>();
             this.reactorLock = new Object();
-            this.connectionHandler = new ConnectionHandler(this, builder.getSasKeyName(), builder.getSasKey());
+            this.connectionHandler = new ConnectionHandler(this);
             this.openConnection = new CompletableFuture<>();
             this.sessionCache = new Hashtable<>();
+            this.cbsChannelCreateLock = new Object();
+            this.tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey());
 
             this.closeTask = new CompletableFuture<>();
             this.closeTask.thenAccept(new Consumer<Void>()
@@ -102,13 +109,18 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 	}
 	
-	private ReactorDispatcher getReactorScheduler()
+	public ReactorDispatcher getReactorScheduler()
 	{
 		synchronized (this.reactorLock)
 		{
 			return this.reactorScheduler;
 		}
 	}
+        
+        public SharedAccessSignatureTokenProvider getTokenProvider()
+        {
+            return this.tokenProvider;
+        }
 
 	private void createConnection(ConnectionStringBuilder builder) throws IOException
 	{
@@ -138,6 +150,19 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		final Thread reactorThread = new Thread(new RunReactor(newReactor));
 		reactorThread.start();
 	}
+        
+        public CBSChannel getCBSChannel()
+        {
+            synchronized (this.cbsChannelCreateLock)
+            {
+                if (this.cbsChannel == null)
+                {
+                    this.cbsChannel = new CBSChannel(this, this, "cbs-link");
+                }
+            }
+            
+            return this.cbsChannel;
+        }
 
 	@Override
 	public Session getSession(final String path, final String sessionId, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
@@ -182,14 +207,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                             {
                                 super.onSessionRemoteOpen(e);
                                 sessionCreated = true;
-                                onRemoteSessionOpen.accept(e.getSession());
+                                
+                                if (onRemoteSessionOpen != null)
+                                    onRemoteSessionOpen.accept(e.getSession());
                             }
                             
                             @Override 
                             public void onSessionRemoteClose(Event e)
                             {
                                 super.onSessionRemoteClose(e);
-                                if (!sessionCreated)
+                                if (!sessionCreated && onRemoteSessionOpenError != null)
                                     onRemoteSessionOpenError.accept(e.getSession().getRemoteCondition());
                             }
                             
@@ -205,7 +232,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                 }
                 else
                 {
-                    onRemoteSessionOpen.accept(session);
+                    if (onRemoteSessionOpen != null)
+                        onRemoteSessionOpen.accept(session);
                 }
 
 		return session;
@@ -248,7 +276,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void onConnectionError(ErrorCondition error)
 	{
-		if (!this.open.isDone())
+            	if (!this.open.isDone())
 		{
 			this.onOpenComplete(ExceptionUtil.toException(error));
 		}
@@ -269,10 +297,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 			{
 				currentConnection.close();
 			}
-			
-			for (Link link: this.registeredLinks)
+                        
+                        // Clone of the registeredLinks is needed here
+                        // onClose of link will lead to un-register - which will result into iteratorCollectionModified error
+                        final List<Link> registeredLinksCopy = new LinkedList<>(this.registeredLinks);
+			for (Link link: registeredLinksCopy)
 			{
-				final Handler handler = BaseHandler.getHandler(link);
+                                final Handler handler = BaseHandler.getHandler(link);
 				if (handler != null && handler instanceof BaseLinkHandler)
 				{
 					final BaseLinkHandler linkHandler = (BaseLinkHandler) handler;
@@ -360,13 +391,45 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
             @Override
             public void onEvent()
             {
+                final ReactorDispatcher dispatcher = getReactorScheduler();
+                synchronized (cbsChannelCreateLock) {
+                    
+                    if (cbsChannel != null) {
+                    
+                        cbsChannel.close(
+                                dispatcher,
+                                new IOperationResult<Void, Exception>() {
+                                    
+                                    private void closeConnection() {
+                                        
+                                        if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
+                                            
+                                            if (connection.getLocalState() != EndpointState.CLOSED) {
+                                                connection.close();
+                                            }
+                                        }
+                                    }
+                                    
+                                    @Override
+                                    public void onComplete(Void result) {
+                                        this.closeConnection();
+                                    }
+                                    @Override
+                                    public void onError(Exception error) {
+                                        this.closeConnection();
+                                    }
+                                });
+                    }
+                    
+                    else {
+                        
+                        if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED)
+                            connection.close();
+                    }
+                }
+                
                 if (connection != null && connection.getRemoteState() != EndpointState.CLOSED)
                 {
-                    if (connection.getLocalState() != EndpointState.CLOSED)
-                    {
-                        connection.close();
-                    }
-
                     Timer.schedule(new Runnable()
                     {
                         @Override
@@ -455,13 +518,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	@Override
 	public void registerForConnectionError(Link link)
 	{
-		this.registeredLinks.add(link);	
+            	this.registeredLinks.add(link);	
 	}
 
 	@Override
 	public void deregisterForConnectionError(Link link)
 	{
-		this.registeredLinks.remove(link);	
+            	this.registeredLinks.remove(link);	
 	}
 	
 	public void scheduleOnReactorThread(final DispatchHandler handler) throws IOException

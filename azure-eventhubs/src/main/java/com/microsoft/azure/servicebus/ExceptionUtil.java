@@ -12,11 +12,10 @@ import java.util.concurrent.TimeoutException;
 
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.amqp.AmqpErrorCode;
 import com.microsoft.azure.servicebus.amqp.AmqpException;
-import com.microsoft.azure.servicebus.amqp.AmqpManagementResponseCode;
+import com.microsoft.azure.servicebus.amqp.AmqpResponseCode;
 
 final class ExceptionUtil
 {
@@ -94,6 +93,26 @@ final class ExceptionUtil
 
 		return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, errorCondition.getDescription());
 	}
+        
+        static Exception amqpResponseCodeToException(final int statusCode, final String statusDescription)
+        {
+            final AmqpResponseCode amqpResponseCode = AmqpResponseCode.valueOf(statusCode);
+            if (amqpResponseCode == null)
+                return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+
+            switch (amqpResponseCode) {
+                case BAD_REQUEST:
+                    return new IllegalArgumentException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                case NOT_FOUND:
+                    return new AmqpException(new ErrorCondition(AmqpErrorCode.NotFound, statusDescription));
+                case FORBIDDEN:
+                    return new QuotaExceededException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                case UNAUTHORIZED:
+                    return new AuthorizationFailedException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+                default:
+                    return new ServiceBusException(true, String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
+            }
+        }
 
 	static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider)
 	{

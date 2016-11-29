@@ -6,6 +6,8 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.nio.BufferOverflowException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -25,11 +27,8 @@ import java.util.logging.Logger;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -46,8 +45,10 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.amqp.AmqpConstants;
+import com.microsoft.azure.servicebus.amqp.AmqpUtil;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpSender;
+import com.microsoft.azure.servicebus.amqp.IOperationResult;
 import com.microsoft.azure.servicebus.amqp.SendLinkHandler;
 
 /**
@@ -69,7 +70,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private final ConcurrentHashMap<String, ReplayableWorkItem<Void>> pendingSendsData;
 	private final PriorityQueue<WeightedDeliveryTag> pendingSends;
 	private final DispatchHandler sendWork;
-
+        private final ActiveClientTokenManager activeClientTokenManager;
+        private final String tokenAudience;
+        
 	private Sender sendLink;
 	private CompletableFuture<MessageSender> linkFirstOpen; 
 	private int linkCredit;
@@ -144,6 +147,39 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				MessageSender.this.processSendWork();
 			}
 		};
+                
+                this.tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, underlyingFactory.getHostName(), sendPath);
+                this.activeClientTokenManager = new ActiveClientTokenManager(
+                        this, 
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                        underlyingFactory.getCBSChannel().sendToken(
+                                            underlyingFactory.getReactorScheduler(),
+                                            underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_REFRESH_INTERVAL), 
+                                            tokenAudience, 
+                                            new IOperationResult<Void, Exception>() {
+                                                @Override
+                                                public void onComplete(Void result) {
+                                                    if (TRACE_LOGGER.isLoggable(Level.FINE)) {
+                                                            TRACE_LOGGER.log(Level.FINE,
+                                                                            String.format(Locale.US, 
+                                                                            "path[%s], linkName[%s] - token renewed", sendPath, sendLink.getName()));
+                                                    }
+                                                }
+                                                @Override
+                                                public void onError(Exception error) {
+                                                    MessageSender.this.onError(error);
+                                                }
+                                            });
+                                    }
+                                    catch(IOException|NoSuchAlgorithmException|InvalidKeyException exception) {
+                                        MessageSender.this.onError(exception);
+                                    }
+                                }
+                            }, 
+                            ClientConstants.TOKEN_REFRESH_INTERVAL);
 	}
 
 	public String getSendPath()
@@ -228,74 +264,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	{
 		return this.sendCore(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
 	}
-
-	private int getPayloadSize(Message msg)
-	{
-		if (msg == null || msg.getBody() == null)
-		{
-			return 0;
-		}
-
-		Data payloadSection = (Data) msg.getBody();
-		if (payloadSection == null)
-		{
-			return 0;
-		}
-
-		Binary payloadBytes = payloadSection.getValue();
-		if (payloadBytes == null)
-		{
-			return 0;
-		}
-
-		return payloadBytes.getLength();
-	}
-
-	private int getDataSerializedSize(Message amqpMessage)
-	{
-		if (amqpMessage == null)
-		{
-			return 0;
-		}
-
-		int payloadSize = this.getPayloadSize(amqpMessage);
-
-		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
-		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
-		
-		int annotationsSize = 0;
-		int applicationPropertiesSize = 0;
-
-		if (messageAnnotations != null)
-		{
-			for(Symbol value: messageAnnotations.getValue().keySet())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-			
-			for(Object value: messageAnnotations.getValue().values())
-			{
-				annotationsSize += Util.sizeof(value);
-			}
-		}
-		
-		if (applicationProperties != null)
-		{
-			for(Object value: applicationProperties.getValue().keySet())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-			
-			for(Object value: applicationProperties.getValue().values())
-			{
-				applicationPropertiesSize += Util.sizeof(value);
-			}
-		}
-		
-		return annotationsSize + applicationPropertiesSize + payloadSize;
-	}
-
+        
 	public CompletableFuture<Void> send(final Iterable<Message> messages)
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))
@@ -322,7 +291,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			Message messageWrappedByData = Proton.message();
 
-			int payloadSize = this.getDataSerializedSize(amqpMessage);
+			int payloadSize = AmqpUtil.getDataSerializedSize(amqpMessage);
 			int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 
 			byte[] messageBytes = new byte[allocationSize];
@@ -348,7 +317,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 	public CompletableFuture<Void> send(Message msg)
 	{
-		int payloadSize = this.getDataSerializedSize(msg);
+		int payloadSize = AmqpUtil.getDataSerializedSize(msg);
 		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
 
 		byte[] bytes = new byte[allocationSize];
@@ -421,9 +390,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	@Override
 	public void onClose(ErrorCondition condition)
 	{
-		Exception completionException = condition != null
-                        ? ExceptionUtil.toException(condition) 
-			: new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, "The entity has been closed due to transient failures (underlying link closed), please retry the operation.");
+            	final Exception completionException = (condition != null && condition.getCondition() != null) ? ExceptionUtil.toException(condition) : null;
 		this.onError(completionException);
 	}
 
@@ -616,19 +583,17 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
 	private void createSendLink()
 	{
+                if (this.creatingLink)
+                    return;
+                
                 this.creatingLink = true;
 
-            	final Consumer<Session> onSessionOpen = new Consumer<Session>()
+                final Consumer<Session> onSessionOpen = new Consumer<Session>()
                 {
                     @Override
                     public void accept(Session session) 
                     {
-                        final String sendLinkNamePrefix = StringUtil.getRandomString();
-                        final String sendLinkName = !StringUtil.isNullOrEmpty(session.getConnection().getRemoteContainer()) ?
-                                        sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(session.getConnection().getRemoteContainer()) :
-                                        sendLinkNamePrefix;
-
-                        final Sender sender = session.sender(sendLinkName);
+                        final Sender sender = session.sender(TrackingUtil.getLinkName(session));
                         final Target target = new Target();
                         target.setAddress(sendPath);
                         sender.setTarget(target);
@@ -638,7 +603,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
                         sender.setSenderSettleMode(SenderSettleMode.UNSETTLED);
 
-                        SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
+                        final SendLinkHandler handler = new SendLinkHandler(MessageSender.this);
                         BaseHandler.setHandler(sender, handler);
 
                         MessageSender.this.underlyingFactory.registerForConnectionError(sender);
@@ -664,17 +629,37 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                     }
                 };
                 
-                this.underlyingFactory.getSession(
-                        this.sendPath,
-                        this.sessionId,
-                        onSessionOpen,
-                        onSessionOpenError);
+                try
+                {                    
+                    this.underlyingFactory.getCBSChannel().sendToken(
+                        this.underlyingFactory.getReactorScheduler(),
+                        this.underlyingFactory.getTokenProvider().getToken(tokenAudience, Duration.ofHours(1)), 
+                        tokenAudience, 
+                        new IOperationResult<Void, Exception>() {
+                            @Override
+                            public void onComplete(Void result) {
+                                underlyingFactory.getSession(
+                                    sendPath,
+                                    sessionId,
+                                    onSessionOpen,
+                                    onSessionOpenError);
+                            }
+                            @Override
+                            public void onError(Exception error) {
+                                MessageSender.this.onError(error);
+                            }
+                        });
+                }
+                catch(IOException|NoSuchAlgorithmException|InvalidKeyException exception)
+                {
+                    MessageSender.this.onError(exception);
+                }
 	}
 
 	// TODO: consolidate common-code written for timeouts in Sender/Receiver
 	private void initializeLinkOpen(TimeoutTracker timeout)
 	{
-		this.linkFirstOpen = new CompletableFuture<MessageSender>();
+		this.linkFirstOpen = new CompletableFuture<>();
 
 		// timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
 		Timer.schedule(
@@ -751,10 +736,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		
 		if (sendLinkCurrent.getLocalState() == EndpointState.CLOSED || sendLinkCurrent.getRemoteState() == EndpointState.CLOSED)
 		{
-                        if (!this.creatingLink)
-                            this.recreateSendLink();
-
-			return;
+                        this.recreateSendLink();
+                        return;
 		}
 		
 		while (sendLinkCurrent.getLocalState() == EndpointState.ACTIVE && sendLinkCurrent.getRemoteState() == EndpointState.ACTIVE
