@@ -39,7 +39,6 @@ com.microsoft.azure.management.resources.fluentcore.arm.collection
 com.microsoft.azure.management.resources.fluentcore.arm.models
 com.microsoft.azure.management.resources.fluentcore.collection
 com.microsoft.azure.management.resources.fluentcore.model
-com.microsoft.azure.management.search
 com.microsoft.azure.management.storage
 com.microsoft.azure.management.website
 com.microsoft.azure.serializer
