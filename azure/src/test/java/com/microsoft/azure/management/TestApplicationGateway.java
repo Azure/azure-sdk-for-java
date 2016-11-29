@@ -772,6 +772,8 @@ public class TestApplicationGateway {
         Assert.assertTrue(listener.sslCertificate() != null);
         Assert.assertTrue(listener.protocol().equals(ApplicationGatewayProtocol.HTTPS));
         Assert.assertTrue(listener.frontendPortNumber() == 443);
+        Assert.assertTrue("www.example.com".equalsIgnoreCase(listener.hostName()));
+        Assert.assertTrue(listener.requiresServerNameIndication());
 
         listener = appGateway.getFrontendListenerByPortNumber(80);
         Assert.assertTrue(listener != null);
@@ -810,6 +812,8 @@ public class TestApplicationGateway {
                 .withHttps()
                 .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                 .withSslCertificatePassword("Abc123")
+                .withHostName("www.example.com")
+                .withServerNameIndication()
                 .attach()
 
             // HTTP configs
@@ -1023,9 +1027,18 @@ public class TestApplicationGateway {
             info.append("\n\t\tName: ").append(rule.name())
                 .append("\n\t\t\tType: ").append(rule.ruleType())
                 .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                .append("\n\t\t\tHost name: ").append(rule.hostName())
                 .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tProtocol: ").append(rule.protocol().toString())
-                .append("\n\t\t\tSSL certificate: ").append(rule.sslCertificate().name());
+                .append("\n\t\t\tProtocol: ").append(rule.protocol().toString());
+
+            // Show SSL cert
+            info.append("\n\t\t\tSSL certificate name: ");
+            ApplicationGatewaySslCertificate cert = rule.sslCertificate();
+            if (cert == null) {
+                info.append("(None)");
+            } else {
+                info.append(cert.name());
+            }
 
             // Show backend
             info.append("\n\t\t\tAssociated backend address pool: ");

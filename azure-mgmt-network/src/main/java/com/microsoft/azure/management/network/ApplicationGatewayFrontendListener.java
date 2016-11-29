@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayHttpListenerInner;
+import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
@@ -25,7 +26,8 @@ public interface ApplicationGatewayFrontendListener extends
     ChildResource<ApplicationGateway>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasPublicIpAddress,
-    HasProtocol<ApplicationGatewayProtocol> {
+    HasProtocol<ApplicationGatewayProtocol>,
+    HasHostName {
 
     /**
      * @return the frontend IP configuration this listener is associated with.
@@ -41,11 +43,6 @@ public interface ApplicationGatewayFrontendListener extends
      * @return the name of the frontend port the listener is listening on
      */
     String frontendPortName();
-
-    /**
-     * @return the host name
-     */
-    String hostName();
 
     /**
      * @return true if server name indication is required
@@ -152,13 +149,7 @@ public interface ApplicationGatewayFrontendListener extends
          * traffic is received.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        interface WithHostName<ParentT> {
-            /**
-             * Specifies the hostname of the website for which the traffic is received.
-             * @param hostname the hostname of an existing website
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withHostName(String hostname);
+        interface WithHostName<ParentT> extends HasHostName.DefinitionStages.WithHostName<WithAttach<ParentT>> {
         }
 
         /**

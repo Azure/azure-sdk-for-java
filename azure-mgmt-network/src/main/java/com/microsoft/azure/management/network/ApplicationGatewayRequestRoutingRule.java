@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
+import com.microsoft.azure.management.network.model.HasHostName;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
@@ -26,7 +27,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
     HasPublicIpAddress,
     HasProtocol<ApplicationGatewayProtocol>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
-    HasFrontendPort {
+    HasFrontendPort,
+    HasHostName {
 
     /**
      * @return rule type
@@ -68,7 +70,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT> {
+            Attachable.InDefinition<ParentT>,
+            WithHostName<ParentT> {
         }
 
         /**
@@ -134,7 +137,6 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * to associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-
         interface WithBackendHttpConfiguration<ParentT> {
             /**
              * Associates the request routing rule with an existing backend HTTP settings configuration on this application gateway.
@@ -150,6 +152,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @return teh next stage of the definition or null if no backend HTTP configuration exists for the specified port number
              */
             WithBackend<ParentT> toBackendPort(int portNumber);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to specify the host name of a backend website
+         * for the listener to receive traffic for.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithHostName<ParentT> extends HasHostName.DefinitionStages.WithHostName<WithAttach<ParentT>> {
         }
     }
 
