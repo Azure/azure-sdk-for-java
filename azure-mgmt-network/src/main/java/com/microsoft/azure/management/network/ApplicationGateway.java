@@ -112,8 +112,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithBackendHttpConfig,
-        DefinitionStages.WithBackendHttpConfigOrBackend,
         DefinitionStages.WithBackend,
         DefinitionStages.WithBackendOrRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRule,
@@ -183,7 +181,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithBackendHttpConfig withPrivateFrontend();
+            WithBackend withPrivateFrontend();
 
             /**
              * Enables a private frontend in the subnet containing the application gateway.
@@ -204,7 +202,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithBackendHttpConfig withoutPrivateFrontend();
+            WithBackend withoutPrivateFrontend();
         }
 
         /**
@@ -312,13 +310,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend HTTP configuration
              * @return the first stage of the backend HTTP configuration definition
              */
-            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithBackendHttpConfigOrBackend> defineBackendHttpConfiguration(String name);
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to add more backend HTTP settings configurations or start adding backends.
-         */
-        interface WithBackendHttpConfigOrBackend extends WithBackend, WithBackendHttpConfig {
+            ApplicationGatewayBackendHttpConfiguration.DefinitionStages.Blank<WithCreate> defineBackendHttpConfiguration(String name);
         }
 
         /**
@@ -405,7 +397,8 @@ public interface ApplicationGateway extends
             Resource.DefinitionWithTags<WithCreate>,
             WithSslCert,
             WithFrontendPort,
-            WithListener {
+            WithListener,
+            WithBackendHttpConfig {
         }
     }
 

@@ -108,8 +108,6 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet.subnets().get("subnet1"))
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
-                            .defineBackendHttpConfiguration("foo") // TODO: Make optional
-                                .attach()
 
                             // Default backends
                             .withBackendIpAddress("11.1.1.1")
@@ -151,7 +149,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(backend.addresses().size() == 2);
 
             // Verify backend HTTP configs
-            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
+            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
 
             // Verify listeners
             // TODO
@@ -607,10 +605,6 @@ public class TestApplicationGateway {
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
 
-                            // Backend HTTP configs
-                            .defineBackendHttpConfiguration("foo")  // TODO Make unnecessary
-                                .attach()
-
                             // Backends
                             .withBackendIpAddress("11.1.1.1")
                             .withBackendIpAddress("11.1.1.2")
@@ -639,8 +633,8 @@ public class TestApplicationGateway {
 
             // Verify frontends
             Assert.assertTrue(appGateway.frontends().size() == 1);
-            Assert.assertTrue(appGateway.frontends().containsKey("default"));
             ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            Assert.assertTrue(frontend != null);
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
 
@@ -654,7 +648,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(backend.addresses().size() == 2);
 
             // Verify backend HTTP configs
-            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
+            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
 
             // Verify listeners
             // TODO
@@ -731,21 +725,8 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithBackendHttpConfig agDefinition) {
+    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithBackend agDefinition) {
         return agDefinition
-            // Backend HTTP configs (explicit)
-            .defineBackendHttpConfiguration("httpConfig1")
-                .withBackendPort(81) // Optional, 80 default
-                .withCookieBasedAffinity()
-                .withProtocol(ApplicationGatewayProtocol.HTTP)
-                .withRequestTimeout(10)
-                .attach()
-            .defineBackendHttpConfiguration("httpConfig2")
-                .withBackendPort(82)
-                .withProtocol(ApplicationGatewayProtocol.HTTPS)
-                .withRequestTimeout(15)
-                .attach()
-
             // Backends
             .withBackendIpAddress("11.1.1.1")
             .withBackendIpAddress("11.1.1.2")
@@ -756,7 +737,7 @@ public class TestApplicationGateway {
             // Request routing rules
             .defineRequestRoutingRule("rule80")
                 .fromFrontendHttpPort(80)
-                .toBackendHttpPort(8081)
+                .toBackendHttpPort(8080)
                 .withBackend("default")
                 .withHostName("www.fabricam.com")
                 // TODO withRuleType
@@ -767,7 +748,7 @@ public class TestApplicationGateway {
                 .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
                 .withSslCertificatePassword("Abc123")
                 .withServerNameIndication()
-                .toBackendHttpPort(8081)
+                .toBackendHttpPort(8080)
                 .withBackend("default")
                 .withHostName("www.contoso.com")
                 .attach()
@@ -781,6 +762,19 @@ public class TestApplicationGateway {
                 .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                 .withSslCertificatePassword("Abc123")
                 .withHostName("www.example.com")
+                .attach()
+
+            // Backend HTTP configs (explicit)
+            .defineBackendHttpConfiguration("httpConfig1")
+                .withBackendPort(81) // Optional, 80 default
+                .withCookieBasedAffinity()
+                .withProtocol(ApplicationGatewayProtocol.HTTP)
+                .withRequestTimeout(10)
+                .attach()
+            .defineBackendHttpConfiguration("httpConfig2")
+                .withBackendPort(82)
+                .withProtocol(ApplicationGatewayProtocol.HTTPS)
+                .withRequestTimeout(15)
                 .attach()
 
             // Additional frontend ports
@@ -871,7 +865,7 @@ public class TestApplicationGateway {
         Assert.assertTrue("default".equalsIgnoreCase(backend.name()));
         httpConfig = rule.backendHttpConfiguration();
         Assert.assertTrue(httpConfig != null);
-        Assert.assertTrue(httpConfig.backendPort() == 8081);
+        Assert.assertTrue(httpConfig.backendPort() == 8080);
     }
 
     // Create VNet for the app gateway
