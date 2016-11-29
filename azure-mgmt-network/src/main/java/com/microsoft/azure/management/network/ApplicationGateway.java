@@ -119,8 +119,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithListener,
-        DefinitionStages.WithListenerOrBackendHttpConfig,
         DefinitionStages.WithBackendHttpConfig,
         DefinitionStages.WithBackendHttpConfigOrBackend,
         DefinitionStages.WithBackend,
@@ -192,7 +190,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithListener withPrivateFrontend();
+            WithBackendHttpConfig withPrivateFrontend();
 
             /**
              * Enables a private frontend in the subnet containing the application gateway.
@@ -213,7 +211,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithListener withoutPrivateFrontend();
+            WithBackendHttpConfig withoutPrivateFrontend();
         }
 
         /**
@@ -225,34 +223,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the listener
              * @return the first stage of the listener definition
              */
-            ApplicationGatewayFrontendListener.DefinitionStages.Blank<WithListenerOrBackendHttpConfig> defineFrontendListener(String name);
-
-            /**
-             * Creates a new frontend listener for the specified port number, under an automatically generated name,
-             * if no listener associated with the specified frontend port already exists.
-             * <p>
-             * If a frontend port for this port number does not already exist, it will be created under an automatically generated name as well.
-             * @param portNumber an unused frontend port number
-             * @return the next stage of the definition
-             */
-            WithListenerOrBackendHttpConfig withFrontendListeningOnPort(int portNumber);
-
-            /**
-             * Associates a new frontend listener with the specified port number, and the specified name,
-             * if neither this port number nor the name is already used by another listener.
-             * <p>
-             * If a frontend port for this port number does not exist yet, it will be created under an automatically generated name.
-             * @param portNumber a frontend port number
-             * @param listenerName the name for the new listener
-             * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
-             */
-            WithListenerOrBackendHttpConfig withFrontendListeningOnPort(int portNumber, String listenerName);
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to add another frontend listener or start adding backend HTTP settings configurations.
-         */
-        interface WithListenerOrBackendHttpConfig extends WithListener, WithBackendHttpConfig {
+            ApplicationGatewayFrontendListener.DefinitionStages.Blank<WithCreate> defineFrontendListener(String name);
         }
 
         /**
@@ -456,7 +427,8 @@ public interface ApplicationGateway extends
             Creatable<ApplicationGateway>,
             Resource.DefinitionWithTags<WithCreate>,
             WithSslCert,
-            WithFrontendPort {
+            WithFrontendPort,
+            WithListener {
         }
     }
 
@@ -655,27 +627,6 @@ public interface ApplicationGateway extends
              * @return the first stage of the listener definition
              */
             ApplicationGatewayFrontendListener.UpdateDefinitionStages.Blank<Update> defineFrontendListener(String name);
-
-            /**
-             * Creates a new frontend listener for the specified port number, under an automatically generated name,
-             * if no listener associated with the specified frontend port already exists.
-             * <p>
-             * If a frontend port for this port number does not already exist, it will be created under an automatically generated name as well.
-             * @param portNumber an unused frontend port number
-             * @return the next stage of the definition
-             */
-            Update withFrontendListeningOnPort(int portNumber);
-
-            /**
-             * Associates a new frontend listener with the specified port number, and the specified name,
-             * if neither this port number nor the name is already used by another listener.
-             * <p>
-             * If a frontend port for this port number does not exist yet, it will be created under an automatically generated name.
-             * @param portNumber a frontend port number
-             * @param listenerName the name for the new listener
-             * @return the next stage of the definition, or null if there is a name or port number conflict with an existing listener
-             */
-            Update withFrontendListeningOnPort(int portNumber, String listenerName);
 
             /**
              * Removes a frontend listener from the application gateway.

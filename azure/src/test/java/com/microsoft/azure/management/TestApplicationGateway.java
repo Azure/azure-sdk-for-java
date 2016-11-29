@@ -108,7 +108,6 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet.subnets().get("subnet1"))
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
-                            .withFrontendListeningOnPort(80)     // Default frontend HTTP listener and port
                             .withBackendListeningOnPort(8080)   // Default backend HTTP settings
 
                             // Default backends
@@ -608,7 +607,6 @@ public class TestApplicationGateway {
                             .withContainingSubnet(vnet, "subnet1")
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
-                            .withFrontendListeningOnPort(80)                    // Frontend HTTP listener
 
                             // Backend HTTP configs
                             .withBackendListeningOnPort(8080)
@@ -735,18 +733,8 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithListener agDefinition) {
+    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithBackendHttpConfig agDefinition) {
         return agDefinition
-            // HTTP listeners
-            .withFrontendListeningOnPort(81)
-            .defineFrontendListener("listener444")
-                .withFrontendPort(444)
-                .withHttps()
-                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                .withSslCertificatePassword("Abc123")
-                .withHostName("www.example.com")
-                .attach()
-
             // Backend HTTP configs (explicit)
             .defineBackendHttpConfiguration("httpConfig1")
                 .withBackendPort(81) // Optional, 80 default
@@ -784,6 +772,17 @@ public class TestApplicationGateway {
                 .toBackendPort(8081)
                 .withBackend("default")
                 .withHostName("www.contoso.com")
+                .attach()
+
+            // OPTIONALS
+
+            // HTTP listeners
+            .defineFrontendListener("listener444")
+                .withFrontendPort(444)
+                .withHttps()
+                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                .withSslCertificatePassword("Abc123")
+                .withHostName("www.example.com")
                 .attach()
 
             // Additional frontend ports

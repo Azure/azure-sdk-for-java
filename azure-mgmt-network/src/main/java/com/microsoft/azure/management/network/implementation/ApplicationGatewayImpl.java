@@ -520,44 +520,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withFrontendListeningOnPort(int portNumber) {
-        return withFrontendListeningOnPort(portNumber, null);
-    }
-
-    @Override
-    public ApplicationGatewayImpl withFrontendListeningOnPort(int portNumber, String name) {
-        // Try to find existing listener by name
-        ApplicationGatewayFrontendListener listenerByName = null;
-        if (name != null) {
-            listenerByName = this.httpListeners.get(name);
-        }
-
-        // Try to find existing listener by port number
-        ApplicationGatewayFrontendListener listenerByPort = getFrontendListenerByPortNumber(portNumber);
-
-        Boolean needToCreate = needToCreate(listenerByName, listenerByPort, name);
-        if (Boolean.TRUE.equals(needToCreate)) {
-            // If no existing listener with this name nor port exists, create one
-            if (name == null) {
-                // Auto-name it
-                name = ResourceNamer.randomResourceName("listener", 13);
-            }
-
-            return this.defineFrontendListener(name)
-                    .withHttp()
-                    .withFrontendPort(portNumber)
-                    //TODO Someday, when multiple frontends are supported, this will need to take into account the frontend selection logic
-                    .attach();
-        } else if (Boolean.FALSE.equals(needToCreate)) {
-            // Already exists so skip
-            return this;
-        } else {
-            // Name clash so fail fast
-            return null;
-        }
-    }
-
-    @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
         ApplicationGatewayRequestRoutingRule rule = this.rules.get(name);
         if (rule == null) {

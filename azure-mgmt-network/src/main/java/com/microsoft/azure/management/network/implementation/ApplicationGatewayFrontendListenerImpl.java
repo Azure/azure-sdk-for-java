@@ -27,7 +27,7 @@ class ApplicationGatewayFrontendListenerImpl
     extends ChildResourceImpl<ApplicationGatewayHttpListenerInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayFrontendListener,
-        ApplicationGatewayFrontendListener.Definition<ApplicationGateway.DefinitionStages.WithListenerOrBackendHttpConfig>,
+        ApplicationGatewayFrontendListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayFrontendListener.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayFrontendListener.Update {
 
