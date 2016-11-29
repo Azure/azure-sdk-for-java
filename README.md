@@ -30,7 +30,7 @@ VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
 configuration.setNodeAgentSKUId(skuId).setImageReference(imageRef);
 client.getPoolOperations().createPool(poolId, poolVMSize, configuration, poolVMCount);
 
-System.out.println("Created an IaaS Pool: " + poolId);
+System.out.println("Created a Pool: " + poolId);
 ```
 
 **Create a Job**
