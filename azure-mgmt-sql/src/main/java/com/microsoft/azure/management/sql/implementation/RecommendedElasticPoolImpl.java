@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
@@ -22,6 +23,7 @@ import java.util.List;
 /**
  * Implementation for RecommendedElasticPool and its parent interfaces.
  */
+@LangDefinition
 class RecommendedElasticPoolImpl
         extends WrapperImpl<RecommendedElasticPoolInner>
         implements RecommendedElasticPool {
@@ -139,9 +141,9 @@ class RecommendedElasticPoolImpl
     public List<RecommendedElasticPoolMetric> listMetrics() {
         PagedListConverter<RecommendedElasticPoolMetricInner, RecommendedElasticPoolMetric> converter = new PagedListConverter<RecommendedElasticPoolMetricInner, RecommendedElasticPoolMetric>() {
             @Override
-            public RecommendedElasticPoolMetric typeConvert(RecommendedElasticPoolMetricInner databaseInner) {
+            public RecommendedElasticPoolMetric typeConvert(RecommendedElasticPoolMetricInner recommendedElasticPoolMetricInner) {
 
-                return new RecommendedElasticPoolMetricImpl(databaseInner);
+                return new RecommendedElasticPoolMetricImpl(recommendedElasticPoolMetricInner);
             }
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(

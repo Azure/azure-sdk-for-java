@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -31,6 +32,7 @@ import rx.functions.Func1;
  * @param <InnerCollectionT> the inner type of the collection object
  * @param <ManagerT> the manager type for this resource provider type
  */
+@LangDefinition
 public abstract class IndependentChildrenImpl<
         T extends IndependentChild,
         ImplT extends T,
