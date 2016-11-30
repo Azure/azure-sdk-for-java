@@ -591,6 +591,20 @@ class ApplicationGatewayImpl
         return withPrivateFrontend(DEFAULT);
     }
 
+    private ApplicationGatewayIpConfiguration defaultIpConfig() {
+        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
+        if (ipConfig == null) {
+            // No default config, so get the first IP config that exists
+            ipConfig = this.ipConfigs.values().iterator().next();
+            if (ipConfig == null) {
+                // No IP config found, so fail fast, since there is nothing else that could be done here,
+                // the state is corrupt, this should not happen
+                return null;
+            }
+        }
+        return ipConfig;
+    }
+
     /* TODO Since Azure does not currently support multiple frontends, despite what the auto-gen'd API says, this needs to be
      * revisited when support is added.
      */
@@ -610,23 +624,14 @@ class ApplicationGatewayImpl
          */
 
         // Attempt to get the default config first
-        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
+        ApplicationGatewayIpConfiguration ipConfig = defaultIpConfig();
         if (ipConfig == null) {
-            // No default config, so get the first IP config that exists
-            ipConfig = this.ipConfigs.values().iterator().next();
-            if (ipConfig == null) {
-                // No IP config found, so fail fast, since there is nothing else that could be done here,
-                // the state is corrupt, this should not happen
-                return null;
-            }
+            return null;
         }
 
         // Get the needed subnet reference
-        String subnetId = ipConfig.inner().subnet().id();
-        String networkId = ResourceUtils.parentResourceIdFromResourceId(subnetId);
-        String subnetName = ResourceUtils.nameFromResourceId(subnetId);
         return this.definePrivateFrontend(frontendName)
-            .withExistingSubnet(networkId, subnetName)
+            .withExistingSubnet(this.networkId(), this.subnetName())
             .attach();
     }
 
@@ -827,5 +832,34 @@ class ApplicationGatewayImpl
             }
         }
         return portName;
+    }
+
+    private SubResource defaultSubnetRef() {
+        ApplicationGatewayIpConfiguration ipConfig = defaultIpConfig();
+        if (ipConfig == null) {
+            return null;
+        } else {
+            return ipConfig.inner().subnet();
+        }
+    }
+
+    @Override
+    public String networkId() {
+        SubResource subnetRef = defaultSubnetRef();
+        if (subnetRef == null) {
+            return null;
+        } else {
+            return ResourceUtils.parentResourceIdFromResourceId(subnetRef.id());
+        }
+    }
+
+    @Override
+    public String subnetName() {
+        SubResource subnetRef = defaultSubnetRef();
+        if (subnetRef == null) {
+            return null;
+        } else {
+            return ResourceUtils.nameFromResourceId(subnetRef.id());
+        }
     }
 }
