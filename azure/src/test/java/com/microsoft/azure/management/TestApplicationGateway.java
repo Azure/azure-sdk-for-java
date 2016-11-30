@@ -109,10 +109,6 @@ public class TestApplicationGateway {
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
 
-                            // Default backends
-                            .withBackendIpAddress("11.1.1.1")
-                            .withBackendIpAddress("11.1.1.2")
-
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
                                 .fromFrontendHttpPort(80)
@@ -145,10 +141,7 @@ public class TestApplicationGateway {
             // TODO
 
             // Verify backends
-            Assert.assertTrue(appGateway.backends().size() == 2);
-            ApplicationGatewayBackend backend = appGateway.backends().get("default");
-            Assert.assertTrue(backend != null);
-            Assert.assertTrue(backend.addresses().size() == 2);
+            Assert.assertTrue(appGateway.backends().size() == 1);
 
             // Verify backend HTTP configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
@@ -175,7 +168,6 @@ public class TestApplicationGateway {
                             //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
                             .withoutBackendFqdn("www.microsoft.com")
                             .withoutBackendIpAddress("11.1.1.1")
-                            .withBackendIpAddress("11.1.1.3", "backend2")
                             .withoutBackendHttpConfiguration("httpConfig2")
                             .updateBackendHttpConfiguration("httpConfig1")
                                 .withBackendPort(83)
@@ -193,7 +185,7 @@ public class TestApplicationGateway {
             updateThread.start();
 
             // ...But bail out after 30 sec as it should be enough to test the results
-            updateThread.join(1000 * 30);
+            Thread.sleep(1000 * 30);
 
             resource.refresh();
 
@@ -202,10 +194,6 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.sku().capacity() == 2);
 
             // Verify backends
-            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
-            Assert.assertTrue(defaultBackend.addresses().size() == 1);
-            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
-
             ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
             Assert.assertTrue(backend2.addresses().size() == 1);
             Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
@@ -220,6 +208,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
 
             Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("httpConfig2"));
+            updateThread.join(5 * 1000);
             return resource;
         }
     }
@@ -323,7 +312,7 @@ public class TestApplicationGateway {
 
             assertRestOfComplexDefinition(appGateway);
 
-            creationThread.join(30 * 1000);
+            creationThread.join(5 * 1000);
 
             return appGateway;
         }
@@ -341,7 +330,6 @@ public class TestApplicationGateway {
                         .withoutFrontendHttpListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
-                        .withBackendIpAddress("11.1.1.3", "backend2")
                         .withoutBackendHttpConfiguration("httpConfig2")
                         .updateBackendHttpConfiguration("httpConfig1")
                             .withBackendPort(83)
@@ -370,10 +358,6 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.sku().capacity() == 2);
 
             // Verify backends
-            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
-            Assert.assertTrue(defaultBackend.addresses().size() == 1);
-            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
-
             ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
             Assert.assertTrue(backend2.addresses().size() == 1);
             Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
@@ -510,7 +494,6 @@ public class TestApplicationGateway {
                         .withoutFrontendHttpListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
-                        .withBackendIpAddress("11.1.1.3", "backend2")
                         .withoutBackendHttpConfiguration("httpConfig2")
                         .updateBackendHttpConfiguration("httpConfig1")
                             .withBackendPort(83)
@@ -608,10 +591,6 @@ public class TestApplicationGateway {
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
 
-                            // Backends
-                            .withBackendIpAddress("11.1.1.1")   // TODO Make unnecessary and remove
-                            .withBackendIpAddress("11.1.1.2")   // TODO Make unnecessary and remove
-
                             // Request routing rules
                             .defineRequestRoutingRule("rule1")
                                 .fromFrontendHttpsPort(443)
@@ -646,11 +625,8 @@ public class TestApplicationGateway {
             // TODO
 
             // Verify backends
-            Assert.assertTrue(appGateway.backends().size() == 2);
+            Assert.assertTrue(appGateway.backends().size() == 1);
             ApplicationGatewayBackend backend;
-            
-            backend = appGateway.backends().get("default");
-            Assert.assertTrue(backend.addresses().size() == 2);
 
             // Verify backend HTTP configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
@@ -681,7 +657,6 @@ public class TestApplicationGateway {
                             //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
                             .withoutBackendFqdn("www.microsoft.com")
                             .withoutBackendIpAddress("11.1.1.1")
-                            .withBackendIpAddress("11.1.1.3", "backend2")
                             .withoutBackendHttpConfiguration("httpConfig2")
                             .updateBackendHttpConfiguration("httpConfig1")
                                 .withBackendPort(83)
@@ -731,11 +706,8 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithBackend agDefinition) {
+    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithRequestRoutingRule agDefinition) {
         return agDefinition
-            // Backends
-            .withBackendFqdn("www.microsoft.com", "backend2")   // TODO Make unnecessary and remove
-
             // Request routing rules
             .defineRequestRoutingRule("rule80")
                 .fromFrontendHttpPort(80)
@@ -778,7 +750,12 @@ public class TestApplicationGateway {
                 .attach()
 
             // Additional frontend ports
-            .withFrontendPort(82, "port1");
+            .withFrontendPort(82, "port1")
+
+            // Backends
+            .defineBackend("backend2")
+                .withFqdn("www.microsoft.com")
+                .attach();
     }
 
     // Verifies the settings of the common rest of a complex application gateway

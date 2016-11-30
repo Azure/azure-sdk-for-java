@@ -643,30 +643,6 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withBackendIpAddress(String ipAddress) {
-        return withBackendIpAddress(ipAddress, DEFAULT);
-    }
-
-    @Override
-    public ApplicationGatewayImpl withBackendFqdn(String fqdn) {
-        return withBackendFqdn(fqdn, DEFAULT);
-    }
-
-    @Override
-    public ApplicationGatewayImpl withBackendIpAddress(String ipAddress, String backendName) {
-        return this.defineBackend(backendName)
-            .withIpAddress(ipAddress)
-            .attach();
-    }
-
-    @Override
-    public ApplicationGatewayImpl withBackendFqdn(String fqdn, String backendName) {
-        return this.defineBackend(backendName)
-            .withFqdn(fqdn)
-            .attach();
-    }
-
-    @Override
     public ApplicationGatewayImpl withoutBackendFqdn(String fqdn) {
         for (ApplicationGatewayBackend backend : this.backends.values()) {
             ApplicationGatewayBackendImpl backendImpl = (ApplicationGatewayBackendImpl) backend;

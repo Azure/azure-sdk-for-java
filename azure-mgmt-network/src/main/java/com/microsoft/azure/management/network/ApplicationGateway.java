@@ -112,8 +112,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
-        DefinitionStages.WithBackend,
-        DefinitionStages.WithBackendOrRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -181,7 +179,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithBackend withPrivateFrontend();
+            WithRequestRoutingRule withPrivateFrontend();
 
             /**
              * Enables a private frontend in the subnet containing the application gateway.
@@ -202,7 +200,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithBackend withoutPrivateFrontend();
+            WithRequestRoutingRule withoutPrivateFrontend();
         }
 
         /**
@@ -258,47 +256,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the backend
              * @return the first stage of the backend definition
              */
-            ApplicationGatewayBackend.DefinitionStages.Blank<WithBackendOrRequestRoutingRule> defineBackend(String name);
-
-            /**
-             * Adds an IP address to the default backend.
-             * <p>
-             * A backend with the name "default" will be created if it does not already exist.
-             * @param ipAddress an IP address
-             * @return the next stage of the definition
-             */
-            WithBackendOrRequestRoutingRule withBackendIpAddress(String ipAddress);
-
-            /**
-             * Adds an FQDN (fully qualified domain name) to the default backend.
-             * <p>
-             * A backend with the name "default" will be created if it does not already exist.
-             * @param fqdn a fully qualified domain name
-             * @return the next stage of the definition
-             */
-            WithBackendOrRequestRoutingRule withBackendFqdn(String fqdn);
-
-            /**
-             * Adds an IP address to a backend.
-             * @param ipAddress an IP address
-             * @param backendName the name for the backend to add the address to
-             * @return the next stage of the definition
-             */
-            WithBackendOrRequestRoutingRule withBackendIpAddress(String ipAddress, String backendName);
-
-            /**
-             * Adds an FQDN (fully qualified domain name) to a backend.
-             * @param fqdn a fully qualified domain name
-             * @param backendName the name for the backend to add the FQDN to
-             * @return the next stage of the definition
-             */
-            WithBackendOrRequestRoutingRule withBackendFqdn(String fqdn, String backendName);
-        }
-
-        /**
-         * The stage of an application gateway definition allowing to continue adding backends or start adding request routing rules.
-         */
-        interface WithBackendOrRequestRoutingRule extends WithBackend, WithRequestRoutingRule {
+            ApplicationGatewayBackend.DefinitionStages.Blank<WithCreate> defineBackend(String name);
         }
 
         /**
@@ -398,7 +356,8 @@ public interface ApplicationGateway extends
             WithSslCert,
             WithFrontendPort,
             WithListener,
-            WithBackendHttpConfig {
+            WithBackendHttpConfig,
+            WithBackend {
         }
     }
 
@@ -433,40 +392,6 @@ public interface ApplicationGateway extends
              * @return the first stage of the backend definition
              */
             ApplicationGatewayBackend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
-
-            /**
-             * Adds an IP address to the default backend.
-             * <p>
-             * A backend with the name "default" will be created if it does not already exist.
-             * @param ipAddress an IP address
-             * @return the next stage of the update
-             */
-            Update withBackendIpAddress(String ipAddress);
-
-            /**
-             * Adds an FQDN (fully qualified domain name) to the default backend.
-             * <p>
-             * A backend with the name "default" will be created if it does not already exist.
-             * @param fqdn a fully qualified domain name
-             * @return the next stage of the update
-             */
-            Update withBackendFqdn(String fqdn);
-
-            /**
-             * Adds an IP address to a backend.
-             * @param ipAddress an IP address
-             * @param backendName the name for the backend to add the address to
-             * @return the next stage of the update
-             */
-            Update withBackendIpAddress(String ipAddress, String backendName);
-
-            /**
-             * Adds an FQDN (fully qualified domain name) to a backend.
-             * @param fqdn a fully qualified domain name
-             * @param backendName the name for the backend to add the FQDN to
-             * @return the next stage of the update
-             */
-            Update withBackendFqdn(String fqdn, String backendName);
 
             /**
              * Ensures the specified fully qualified domain name (FQDN) is not associated with any backend.
