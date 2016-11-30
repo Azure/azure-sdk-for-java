@@ -98,9 +98,8 @@ public interface ApplicationGatewayFrontendListener extends
             WithAttach<ParentT> withFrontendPort(String name);
 
             /**
-             * Enables the listener to listen on the specified port number, creating a new
-             * automatically-named frontend port for it if needed, or associating it with an existing frontend port
-             * that is already set up for this port number.
+             * Enables the listener to listen on the specified frontend port number.
+             * <p>If a frontend port for this port number does not yet exist, a new will be created with an auto-generated name.
              * @param portNumber a port number
              * @return the next stage of the definition
              */
