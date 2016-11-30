@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
@@ -30,6 +31,7 @@ import java.util.Map;
 /**
  * Implementation for SqlElasticPool and its parent interfaces.
  */
+@LangDefinition
 class SqlElasticPoolImpl
         extends IndependentChildResourceImpl<
                             SqlElasticPool,
@@ -175,8 +177,8 @@ class SqlElasticPoolImpl
         return this.innerCollection.createOrUpdateAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<ElasticPoolInner, SqlElasticPool>() {
                     @Override
-                    public SqlElasticPool call(ElasticPoolInner databaseInner) {
-                        setInner(databaseInner);
+                    public SqlElasticPool call(ElasticPoolInner elasticPoolInner) {
+                        setInner(elasticPoolInner);
 
                         createOrUpdateDatabase();
                         return self;
