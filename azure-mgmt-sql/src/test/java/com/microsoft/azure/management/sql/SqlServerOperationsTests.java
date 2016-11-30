@@ -244,12 +244,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
             }
         }
 
-
-
         Assert.assertEquals(sqlServer.elasticPools().list().size(), 0);
         // Only master database is remaining in the SQLServer.
         Assert.assertEquals(sqlServer.databases().list().size(), 1);
-
     }
 
 

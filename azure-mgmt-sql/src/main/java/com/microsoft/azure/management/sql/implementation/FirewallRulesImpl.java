@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
 import com.microsoft.azure.management.sql.SqlFirewallRules;
 import com.microsoft.azure.management.sql.SqlServer;
@@ -16,6 +17,7 @@ import java.util.List;
 /**
  * Implementation of SqlServer.FirewallRules, which enables the creating the firewall rules from the SQLServer directly.
  */
+@LangDefinition
 class FirewallRulesImpl implements SqlServer.FirewallRules {
 
     private final String resourceGroupName;

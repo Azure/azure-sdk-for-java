@@ -6,11 +6,13 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.sql.SqlWarehouse;
 
 /**
  * Implementation for SqlWarehouse and its parent interfaces.
  */
+@LangDefinition
 class SqlWarehouseImpl
         extends SqlDatabaseImpl
         implements SqlWarehouse {
