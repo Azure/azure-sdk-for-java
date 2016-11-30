@@ -148,13 +148,6 @@ public interface ApplicationGateway extends
          */
         interface WithPublicFrontend extends WithPublicIpAddress<WithPrivateFrontendOptional> {
             /**
-             * Begins the definition of a new public, or Internet-facing, frontend.
-             * @param name the name for the frontend
-             * @return the first stage of the new frontend definition
-             */
-            ApplicationGatewayPublicFrontend.DefinitionStages.Blank<WithPrivateFrontendOptional> definePublicFrontend(String name);
-
-            /**
              * Specifies that the application gateway should not be Internet-facing.
              * @return the next stage of the definition
              */

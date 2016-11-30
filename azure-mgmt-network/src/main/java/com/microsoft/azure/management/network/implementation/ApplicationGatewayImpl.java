@@ -435,19 +435,6 @@ class ApplicationGatewayImpl
         }
     }
 
-    /* TODO Since multiple frontends are not yet supported by Azure, this shoudl be revisited when they are.
-     * For now, the assumption is there is only one frontend.
-     */
-    //TODO @Override
-    public ApplicationGatewayFrontendImpl definePrivateFrontend(String name) {
-        return defineFrontend(name);
-    }
-
-    @Override
-    public ApplicationGatewayFrontendImpl definePublicFrontend(String name) {
-        return defineFrontend(name);
-    }
-
     private ApplicationGatewayFrontendImpl defineFrontend(String name) {
         ApplicationGatewayFrontend frontend = this.frontends.get(name);
         if (frontend == null) {
@@ -514,7 +501,7 @@ class ApplicationGatewayImpl
             frontendName = DEFAULT;
         }
 
-        return this.definePublicFrontend(frontendName)
+        return this.defineFrontend(frontendName)
                 .withExistingPublicIpAddress(resourceId)
                 .attach();
     }
@@ -630,20 +617,20 @@ class ApplicationGatewayImpl
         }
 
         // Get the needed subnet reference
-        return this.definePrivateFrontend(frontendName)
+        return this.defineFrontend(frontendName)
             .withExistingSubnet(this.networkId(), this.subnetName())
             .attach();
     }
 
     @Override
     public ApplicationGatewayImpl withNewPublicIpAddress() {
-        this.definePublicFrontend(DEFAULT).attach();
+        this.defineFrontend(DEFAULT).attach();
         return super.withNewPublicIpAddress();
     }
 
     @Override
     public ApplicationGatewayImpl withNewPublicIpAddress(String dnsLeafLabel) {
-        this.definePublicFrontend(DEFAULT).attach();
+        this.defineFrontend(DEFAULT).attach();
         return super.withNewPublicIpAddress(dnsLeafLabel);
     }
 

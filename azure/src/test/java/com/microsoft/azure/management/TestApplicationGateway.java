@@ -23,9 +23,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfi
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
-import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -305,7 +303,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(frontend != null);
             Assert.assertTrue(!frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
-            ApplicationGatewayPrivateFrontend privateFrontend = (ApplicationGatewayPrivateFrontend) frontend;
+            ApplicationGatewayFrontend privateFrontend = frontend;
             Assert.assertTrue(privateFrontend.networkId().equalsIgnoreCase(vnet.id()));
             Assert.assertTrue(privateFrontend.subnetName().equalsIgnoreCase("subnet1"));
             Assert.assertTrue(privateFrontend.privateIpAllocationMethod().equals(IPAllocationMethod.DYNAMIC));
@@ -471,7 +469,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(frontend != null);
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
-            ApplicationGatewayPublicFrontend publicFrontend = (ApplicationGatewayPublicFrontend) frontend;
+            ApplicationGatewayFrontend publicFrontend = frontend;
             Assert.assertTrue(publicFrontend.publicIpAddressId() != null);
 
             assertRestOfComplexDefinition(appGateway);
@@ -941,16 +939,16 @@ public class TestApplicationGateway {
                 .append("\n\t\t\tPublic? ").append(frontend.isPublic());
 
             if (frontend.isPublic()) {
-                // Show public frontend
-                ApplicationGatewayPublicFrontend publicFrontend = (ApplicationGatewayPublicFrontend) frontend;
-                info.append("\n\t\t\tPublic IP address ID: ").append(publicFrontend.publicIpAddressId());
-            } else {
-                // Show private frontend
-                ApplicationGatewayPrivateFrontend privateFrontend = (ApplicationGatewayPrivateFrontend) frontend;
-                info.append("\n\t\t\tPrivate IP address: ").append(privateFrontend.privateIpAddress())
-                    .append("\n\t\t\tPrivate IP allocation method: ").append(privateFrontend.privateIpAllocationMethod())
-                    .append("\n\t\t\tSubnet name: ").append(privateFrontend.subnetName())
-                    .append("\n\t\t\tVirtual network ID: ").append(privateFrontend.networkId());
+                // Show public frontend info
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
+            }
+
+            if (frontend.isPrivate()) {
+                // Show private frontend info
+                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIpAddress())
+                    .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIpAllocationMethod())
+                    .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
+                    .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
             }
         }
 

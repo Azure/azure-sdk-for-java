@@ -9,8 +9,6 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -26,14 +24,9 @@ class ApplicationGatewayFrontendImpl
     extends ChildResourceImpl<ApplicationGatewayFrontendIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayFrontend,
-        ApplicationGatewayPrivateFrontend,
-        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
-        ApplicationGatewayPrivateFrontend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayPrivateFrontend.Update,
-        ApplicationGatewayPublicFrontend,
-        ApplicationGatewayPublicFrontend.Definition<ApplicationGateway.DefinitionStages.WithPrivateFrontendOptional>,
-        ApplicationGatewayPublicFrontend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayPublicFrontend.Update {
+        ApplicationGatewayFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
+        ApplicationGatewayFrontend.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayFrontend.Update {
 
     ApplicationGatewayFrontendImpl(ApplicationGatewayFrontendIPConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
