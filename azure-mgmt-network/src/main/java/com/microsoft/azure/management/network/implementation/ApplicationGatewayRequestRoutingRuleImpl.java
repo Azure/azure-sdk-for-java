@@ -6,12 +6,16 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -41,6 +45,20 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     // Getters
+
+    @Override
+    public List<ApplicationGatewayBackendAddress> backendAddresses() {
+        List<ApplicationGatewayBackendAddress> addresses;
+        ApplicationGatewayBackend backend = this.backend();
+        if (backend == null) {
+            addresses = new ArrayList<>();
+        } else if (backend.addresses() == null) {
+            addresses = new ArrayList<>();
+        } else {
+            addresses = backend.addresses();
+        }
+        return Collections.unmodifiableList(addresses);
+    }
 
     @Override
     public boolean cookieBasedAffinity() {
@@ -258,27 +276,21 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withCookieBasedAffinity() {
-        // TODO do this with this.parent().backendConfigs(...).update().withCookieBasedAffinity...
-        ApplicationGatewayBackendHttpConfigurationImpl backendConfig = (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfiguration();
-        if (backendConfig != null) {
-            backendConfig.withCookieBasedAffinity();
-        }
+        this.parent().updateBackendHttpConfiguration(this.backendHttpConfiguration().name())
+            .withCookieBasedAffinity();
         return this;
     }
 
     @Override
     public WithAttach<WithRequestRoutingRuleOrCreate> withoutCookieBasedAffinity() {
-        // TODO do this with this.parent().backendConfigs(...).update().withoutCookieBasedAffinity...
-        ApplicationGatewayBackendHttpConfigurationImpl backendConfig = (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfiguration();
-        if (backendConfig != null) {
-            backendConfig.withoutCookieBasedAffinity();
-        }
+        this.parent().updateBackendHttpConfiguration(this.backendHttpConfiguration().name())
+            .withoutCookieBasedAffinity();
         return this;
     }
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withSslCertificate(String name) {
-        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
+        // TODO do this with this.parent().updateFrontendListener(...).withSslCertificate...
         ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
         if (listener != null) {
             listener.withSslCertificate(name);
@@ -343,6 +355,30 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (listener != null) {
             listener.withoutServerNameIndication();
         }
+        return this;
+    }
+
+    private ApplicationGatewayBackendImpl ensureBackend() {
+        ApplicationGatewayBackendImpl backend = (ApplicationGatewayBackendImpl) this.backend();
+        if (backend == null) {
+            String name = ResourceNamer.randomResourceName("backend", 12);
+            backend = this.parent().defineBackend(name);
+            backend.attach();
+            this.withBackend(name);
+        }
+
+        return backend;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withBackendIpAddress(String ipAddress) {
+        this.parent().updateBackend(ensureBackend().name()).withIpAddress(ipAddress);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withBackendFqdn(String fqdn) {
+        this.parent().updateBackend(ensureBackend().name()).withFqdn(fqdn);
         return this;
     }
 }

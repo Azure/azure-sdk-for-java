@@ -78,7 +78,11 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public String publicIpAddressId() {
-        return this.inner().publicIPAddress().id();
+        if (this.inner().publicIPAddress() != null) {
+            return this.inner().publicIPAddress().id();
+        } else {
+            return null;
+        }
     }
 
     @Override

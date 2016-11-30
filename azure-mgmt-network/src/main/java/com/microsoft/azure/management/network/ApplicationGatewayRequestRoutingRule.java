@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.List;
+
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
@@ -55,6 +57,11 @@ public interface ApplicationGatewayRequestRoutingRule extends
      * @return the associated frontend HTTP listener
      */
     ApplicationGatewayFrontendListener frontendListener();
+
+    /**
+     * @return the addresses assigned to the associated backend
+     */
+    List<ApplicationGatewayBackendAddress> backendAddresses();
 
     // TODO urlPathMap()
 
@@ -165,6 +172,48 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
+         * The stage of an application gateway request routing rule definition allowing to add an address to the backend used by this request routing rule.
+         * <p>
+         * A new backend will be created if none is associated with this rule yet.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendAddress<ParentT> {
+            /**
+             * Adds an IP address to the backend associated with this rule.
+             * <p>
+             * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
+             * @param ipAddress an IP address
+             * @return the next stage of the definition
+             */
+            WithBackendAddressOrAttach<ParentT> withBackendIpAddress(String ipAddress);
+
+            /**
+             * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.
+             * <p>
+             * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
+             * @param fqdn a fully qualified domain name
+             * @return the next stage of the definition
+             */
+            WithBackendAddressOrAttach<ParentT> withBackendFqdn(String fqdn);
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to add more backend addresses,
+         * start specifying optional settings, or finish the definition by attaching it to the parent application gateway.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendAddressOrAttach<ParentT> extends WithBackendAddress<ParentT>, WithAttach<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to add an address to specify an existing
+         * backend to associate with this request routing rule or create a new backend with an auto-generated name and addresses to it.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendOrAddress<ParentT> extends WithBackend<ParentT>, WithBackendAddress<ParentT> {
+        }
+
+        /**
          * The stage of an application gateway request routing rule definition allowing to require server name indication if the
          * application gateway is serving multiple websites in its backends and SSL is required.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
@@ -185,7 +234,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of an existing backend HTTP settings configuration
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> toBackendHttpConfiguration(String name);
+            WithBackendOrAddress<ParentT> toBackendHttpConfiguration(String name);
 
             /**
              * Creates a backend settings configuration for the specified backend port and the HTTP protocol to associate with this
@@ -193,7 +242,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number for a new backend HTTP settings configuration
              * @return the next stage of the definition
              */
-            WithBackend<ParentT> toBackendHttpPort(int portNumber);
+            WithBackendOrAddress<ParentT> toBackendHttpPort(int portNumber);
+
+            // TODO: toBackendHttpsPort(int portNumber) ?
         }
 
         /**
@@ -222,6 +273,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.WithFrontendPort<ParentT>,
         DefinitionStages.WithFrontendListenerOrPort<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
+        DefinitionStages.WithBackendAddress<ParentT>,
+        DefinitionStages.WithBackendOrAddress<ParentT>,
+        DefinitionStages.WithBackendAddressOrAttach<ParentT>,
         DefinitionStages.WithBackendHttpConfiguration<ParentT>,
         DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
         DefinitionStages.WithSslCertificate<ParentT>,
