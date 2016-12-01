@@ -12,19 +12,18 @@ import com.microsoft.azure.management.website.OperationStatus;
 import java.util.List;
 import com.microsoft.azure.management.website.ErrorEntity;
 import org.joda.time.DateTime;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Class that represents an operation.
+ * Operation.
  */
 public class OperationInner {
     /**
-     * Operation Id.
+     * Operation ID.
      */
     private String id;
 
     /**
-     * Operation Name.
+     * Operation name.
      */
     private String name;
 
@@ -32,7 +31,6 @@ public class OperationInner {
      * The current status of the operation. Possible values include:
      * 'InProgress', 'Failed', 'Succeeded', 'TimedOut', 'Created'.
      */
-    @JsonProperty(required = true)
     private OperationStatus status;
 
     /**

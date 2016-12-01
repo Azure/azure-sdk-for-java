@@ -20,19 +20,19 @@ public class GeoRegionInner extends Resource {
     /**
      * Region name.
      */
-    @JsonProperty(value = "properties.name")
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegionName;
 
     /**
      * Region description.
      */
-    @JsonProperty(value = "properties.description")
+    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
      * Display name for region.
      */
-    @JsonProperty(value = "properties.displayName")
+    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
@@ -45,17 +45,6 @@ public class GeoRegionInner extends Resource {
     }
 
     /**
-     * Set the geoRegionName value.
-     *
-     * @param geoRegionName the geoRegionName value to set
-     * @return the GeoRegionInner object itself.
-     */
-    public GeoRegionInner withGeoRegionName(String geoRegionName) {
-        this.geoRegionName = geoRegionName;
-        return this;
-    }
-
-    /**
      * Get the description value.
      *
      * @return the description value
@@ -65,34 +54,12 @@ public class GeoRegionInner extends Resource {
     }
 
     /**
-     * Set the description value.
-     *
-     * @param description the description value to set
-     * @return the GeoRegionInner object itself.
-     */
-    public GeoRegionInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
      * Get the displayName value.
      *
      * @return the displayName value
      */
     public String displayName() {
         return this.displayName;
-    }
-
-    /**
-     * Set the displayName value.
-     *
-     * @param displayName the displayName value to set
-     * @return the GeoRegionInner object itself.
-     */
-    public GeoRegionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
     }
 
 }

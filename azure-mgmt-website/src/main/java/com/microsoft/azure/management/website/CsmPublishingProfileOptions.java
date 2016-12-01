@@ -17,16 +17,16 @@ public class CsmPublishingProfileOptions {
      * Name of the format. Valid values are:
      * FileZilla3
      * WebDeploy -- default
-     * Ftp.
+     * Ftp. Possible values include: 'FileZilla3', 'WebDeploy', 'Ftp'.
      */
-    private String format;
+    private PublishingProfileFormat format;
 
     /**
      * Get the format value.
      *
      * @return the format value
      */
-    public String format() {
+    public PublishingProfileFormat format() {
         return this.format;
     }
 
@@ -36,7 +36,7 @@ public class CsmPublishingProfileOptions {
      * @param format the format value to set
      * @return the CsmPublishingProfileOptions object itself.
      */
-    public CsmPublishingProfileOptions withFormat(String format) {
+    public CsmPublishingProfileOptions withFormat(PublishingProfileFormat format) {
         this.format = format;
         return this;
     }

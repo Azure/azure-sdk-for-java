@@ -11,26 +11,26 @@ package com.microsoft.azure.management.website;
 import java.util.List;
 
 /**
- * AutoHealTriggers - describes the triggers for auto-heal.
+ * Triggers for auto-heal.
  */
 public class AutoHealTriggers {
     /**
-     * Requests - Defines a rule based on total requests.
+     * A rule based on total requests.
      */
     private RequestsBasedTrigger requests;
 
     /**
-     * PrivateBytesInKB - Defines a rule based on private bytes.
+     * A rule based on private bytes.
      */
     private Integer privateBytesInKB;
 
     /**
-     * StatusCodes - Defines a rule based on status codes.
+     * A rule based on status codes.
      */
     private List<StatusCodesBasedTrigger> statusCodes;
 
     /**
-     * SlowRequests - Defines a rule based on request execution time.
+     * A rule based on request execution time.
      */
     private SlowRequestsBasedTrigger slowRequests;
 

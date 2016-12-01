@@ -20,30 +20,30 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents a domain.
+ * Information about a domain.
  */
 @JsonFlatten
 public class DomainInner extends Resource {
     /**
-     * Admin contact information.
+     * Administrative contact.
      */
     @JsonProperty(value = "properties.contactAdmin")
     private Contact contactAdmin;
 
     /**
-     * Billing contact information.
+     * Billing contact.
      */
     @JsonProperty(value = "properties.contactBilling")
     private Contact contactBilling;
 
     /**
-     * Registrant contact information.
+     * Registrant contact.
      */
     @JsonProperty(value = "properties.contactRegistrant")
     private Contact contactRegistrant;
 
     /**
-     * Technical contact information.
+     * Technical contact.
      */
     @JsonProperty(value = "properties.contactTech")
     private Contact contactTech;
@@ -55,14 +55,14 @@ public class DomainInner extends Resource {
      * 'Reserved', 'Reverted', 'Suspended', 'Transferred', 'Unknown',
      * 'Unlocked', 'Unparked', 'Updated', 'JsonConverterFailed'.
      */
-    @JsonProperty(value = "properties.registrationStatus")
+    @JsonProperty(value = "properties.registrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private DomainStatus registrationStatus;
 
     /**
      * Domain provisioning state. Possible values include: 'Succeeded',
      * 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -72,7 +72,8 @@ public class DomainInner extends Resource {
     private List<String> nameServers;
 
     /**
-     * If true then domain privacy is enabled for this domain.
+     * &lt;code&gt;true&lt;/code&gt; if domain privacy is enabled for this
+     * domain; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.privacy")
     private Boolean privacy;
@@ -80,33 +81,36 @@ public class DomainInner extends Resource {
     /**
      * Domain creation timestamp.
      */
-    @JsonProperty(value = "properties.createdTime")
+    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime createdTime;
 
     /**
      * Domain expiration timestamp.
      */
-    @JsonProperty(value = "properties.expirationTime")
+    @JsonProperty(value = "properties.expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime expirationTime;
 
     /**
      * Timestamp when the domain was renewed last time.
      */
-    @JsonProperty(value = "properties.lastRenewedTime")
+    @JsonProperty(value = "properties.lastRenewedTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastRenewedTime;
 
     /**
-     * If true then domain will renewed automatically.
+     * &lt;code&gt;true&lt;/code&gt; if the domain should be automatically
+     * renewed; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.autoRenew")
     private Boolean autoRenew;
 
     /**
-     * If true then Azure can assign this domain to Web Apps. This value will
-     * be true if domain registration status is active and it is hosted on
-     * name servers Azure has programmatic access to.
+     * &lt;code&gt;true&lt;/code&gt; if Azure can assign this domain to App
+     * Service apps; otherwise, &lt;code&gt;false&lt;/code&gt;. This value
+     * will be &lt;code&gt;true&lt;/code&gt; if domain registration status is
+     * active and
+     * it is hosted on name servers Azure has programmatic access to.
      */
-    @JsonProperty(value = "properties.readyForDnsRecordManagement")
+    @JsonProperty(value = "properties.readyForDnsRecordManagement", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean readyForDnsRecordManagement;
 
     /**
@@ -217,34 +221,12 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the registrationStatus value.
-     *
-     * @param registrationStatus the registrationStatus value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withRegistrationStatus(DomainStatus registrationStatus) {
-        this.registrationStatus = registrationStatus;
-        return this;
-    }
-
-    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**
@@ -297,17 +279,6 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the createdTime value.
-     *
-     * @param createdTime the createdTime value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withCreatedTime(DateTime createdTime) {
-        this.createdTime = createdTime;
-        return this;
-    }
-
-    /**
      * Get the expirationTime value.
      *
      * @return the expirationTime value
@@ -317,34 +288,12 @@ public class DomainInner extends Resource {
     }
 
     /**
-     * Set the expirationTime value.
-     *
-     * @param expirationTime the expirationTime value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withExpirationTime(DateTime expirationTime) {
-        this.expirationTime = expirationTime;
-        return this;
-    }
-
-    /**
      * Get the lastRenewedTime value.
      *
      * @return the lastRenewedTime value
      */
     public DateTime lastRenewedTime() {
         return this.lastRenewedTime;
-    }
-
-    /**
-     * Set the lastRenewedTime value.
-     *
-     * @param lastRenewedTime the lastRenewedTime value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withLastRenewedTime(DateTime lastRenewedTime) {
-        this.lastRenewedTime = lastRenewedTime;
-        return this;
     }
 
     /**
@@ -374,17 +323,6 @@ public class DomainInner extends Resource {
      */
     public Boolean readyForDnsRecordManagement() {
         return this.readyForDnsRecordManagement;
-    }
-
-    /**
-     * Set the readyForDnsRecordManagement value.
-     *
-     * @param readyForDnsRecordManagement the readyForDnsRecordManagement value to set
-     * @return the DomainInner object itself.
-     */
-    public DomainInner withReadyForDnsRecordManagement(Boolean readyForDnsRecordManagement) {
-        this.readyForDnsRecordManagement = readyForDnsRecordManagement;
-        return this;
     }
 
     /**

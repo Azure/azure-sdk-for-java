@@ -11,7 +11,7 @@ package com.microsoft.azure.management.website;
 import org.joda.time.DateTime;
 
 /**
- * Class representing a Perf Mon Sample.
+ * Performance monitor sample in a set.
  */
 public class PerfMonSample {
     /**
@@ -25,7 +25,7 @@ public class PerfMonSample {
     private String instanceName;
 
     /**
-     * Value of Counter at certain time.
+     * Value of counter at a certain time.
      */
     private Double value;
 

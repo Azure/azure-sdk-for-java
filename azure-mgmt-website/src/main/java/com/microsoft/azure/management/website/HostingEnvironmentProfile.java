@@ -8,26 +8,27 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specification for a hostingEnvironment (App Service Environment) to use for
- * this resource.
+ * Specification for an App Service Environment to use for this resource.
  */
 public class HostingEnvironmentProfile {
     /**
-     * Resource id of the hostingEnvironment (App Service Environment).
+     * Resource ID of the App Service Environment.
      */
     private String id;
 
     /**
-     * Name of the hostingEnvironment (App Service Environment) (read only).
+     * Name of the App Service Environment.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Resource type of the hostingEnvironment (App Service Environment) (read
-     * only).
+     * Resource type of the App Service Environment.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
@@ -60,34 +61,12 @@ public class HostingEnvironmentProfile {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the HostingEnvironmentProfile object itself.
-     */
-    public HostingEnvironmentProfile withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the type value.
      *
      * @return the type value
      */
     public String type() {
         return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     * @return the HostingEnvironmentProfile object itself.
-     */
-    public HostingEnvironmentProfile withType(String type) {
-        this.type = type;
-        return this;
     }
 
 }

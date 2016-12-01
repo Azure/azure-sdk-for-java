@@ -12,21 +12,21 @@ import com.microsoft.azure.management.website.SkuDescription;
 import com.microsoft.azure.management.website.SkuCapacity;
 
 /**
- * Sku discovery information.
+ * SKU discovery information.
  */
 public class SkuInfoInner {
     /**
-     * Resource type that this sku applies to.
+     * Resource type that this SKU applies to.
      */
     private String resourceType;
 
     /**
-     * Name and tier of the sku.
+     * Name and tier of the SKU.
      */
     private SkuDescription sku;
 
     /**
-     * Min, max, and default scale values of the sku.
+     * Min, max, and default scale values of the SKU.
      */
     private SkuCapacity capacity;
 

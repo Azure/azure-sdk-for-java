@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Certificate signing request object.
+ * Certificate signing request.
  */
 @JsonFlatten
 public class CsrInner extends Resource {
@@ -48,13 +48,13 @@ public class CsrInner extends Resource {
     private String password;
 
     /**
-     * Hash of the certificates public key.
+     * Hash of the certificate's public key.
      */
     @JsonProperty(value = "properties.publicKeyHash")
     private String publicKeyHash;
 
     /**
-     * Hosting environment.
+     * App Service Environment.
      */
     @JsonProperty(value = "properties.hostingEnvironment")
     private String hostingEnvironment;

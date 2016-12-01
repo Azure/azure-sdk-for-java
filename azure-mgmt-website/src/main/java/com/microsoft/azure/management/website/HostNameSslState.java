@@ -8,14 +8,13 @@
 
 package com.microsoft.azure.management.website;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object that represents a SSL-enabled host name.
+ * SSL-enabled hostname.
  */
 public class HostNameSslState {
     /**
-     * Host name.
+     * Hostname.
      */
     private String name;
 
@@ -23,21 +22,20 @@ public class HostNameSslState {
      * SSL type. Possible values include: 'Disabled', 'SniEnabled',
      * 'IpBasedEnabled'.
      */
-    @JsonProperty(required = true)
     private SslState sslState;
 
     /**
-     * Virtual IP address assigned to the host name if IP based SSL is enabled.
+     * Virtual IP address assigned to the hostname if IP based SSL is enabled.
      */
     private String virtualIP;
 
     /**
-     * SSL cert thumbprint.
+     * SSL certificate thumbprint.
      */
     private String thumbprint;
 
     /**
-     * Set this flag to update existing host name.
+     * Set to &lt;code&gt;true&lt;/code&gt; to update existing hostname.
      */
     private Boolean toUpdate;
 

@@ -22,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -55,15 +56,27 @@ public final class RecommendationsInner {
     interface RecommendationsService {
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
-        Observable<Response<ResponseBody>> get(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
+        Observable<Response<ResponseBody>> resetAllFilters(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
-        Observable<Response<ResponseBody>> listHistoryForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("startTime") String startTime, @Query("endTime") String endTime, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listHistoryForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
-        Observable<Response<ResponseBody>> listRecommendedRulesForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("webAppSku") String webAppSku, @Query("numSlots") Integer numSlots, @Query("liveHours") Integer liveHours, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRecommendedRulesForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("featured") Boolean featured, @Query("webAppSku") String webAppSku, @Query("numSlots") Integer numSlots, @Query("liveHours") Integer liveHours, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable")
+        Observable<Response<ResponseBody>> disableAllForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset")
+        Observable<Response<ResponseBody>> resetAllFiltersForWebApp(@Path("resourceGroupName") String resourceGroupName, @Path("siteName") String siteName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}")
@@ -72,34 +85,34 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> get() {
-        return getWithServiceResponseAsync().toBlocking().single().getBody();
+    public List<RecommendationInner> list() {
+        return listWithServiceResponseAsync().toBlocking().single().getBody();
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RecommendationInner>> getAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(), serviceCallback);
+    public ServiceCall<List<RecommendationInner>> listAsync(final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceCall.create(listWithServiceResponseAsync(), serviceCallback);
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> getAsync() {
-        return getWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<List<RecommendationInner>> listAsync() {
+        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
                 return response.getBody();
@@ -108,24 +121,24 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<ServiceResponse<List<RecommendationInner>>> getWithServiceResponseAsync() {
+    public Observable<ServiceResponse<List<RecommendationInner>>> listWithServiceResponseAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
         final Boolean featured = null;
         final String filter = null;
-        return service.get(this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<RecommendationInner>> clientResponse = getDelegate(response);
+                        ServiceResponse<List<RecommendationInner>> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -135,40 +148,40 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> get(Boolean featured, String filter) {
-        return getWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
+    public List<RecommendationInner> list(Boolean featured, String filter) {
+        return listWithServiceResponseAsync(featured, filter).toBlocking().single().getBody();
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RecommendationInner>> getAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(getWithServiceResponseAsync(featured, filter), serviceCallback);
+    public ServiceCall<List<RecommendationInner>> listAsync(Boolean featured, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceCall.create(listWithServiceResponseAsync(featured, filter), serviceCallback);
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> getAsync(Boolean featured, String filter) {
-        return getWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<List<RecommendationInner>> listAsync(Boolean featured, String filter) {
+        return listWithServiceResponseAsync(featured, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
                 return response.getBody();
@@ -177,24 +190,24 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified subscription.
-     * Gets a list of recommendations associated with the specified subscription.
+     * List all recommendations for a subscription.
+     * List all recommendations for a subscription.
      *
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<ServiceResponse<List<RecommendationInner>>> getWithServiceResponseAsync(Boolean featured, String filter) {
+    public Observable<ServiceResponse<List<RecommendationInner>>> listWithServiceResponseAsync(Boolean featured, String filter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.get(this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.list(this.client.subscriptionId(), featured, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<RecommendationInner>> clientResponse = getDelegate(response);
+                        ServiceResponse<List<RecommendationInner>> clientResponse = listDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -203,7 +216,7 @@ public final class RecommendationsInner {
             });
     }
 
-    private ServiceResponse<List<RecommendationInner>> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<RecommendationInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<RecommendationInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<RecommendationInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -211,11 +224,77 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Reset all recommendation opt-out settings for a subscription.
+     * Reset all recommendation opt-out settings for a subscription.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     */
+    public void resetAllFilters() {
+        resetAllFiltersWithServiceResponseAsync().toBlocking().single().getBody();
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for a subscription.
+     * Reset all recommendation opt-out settings for a subscription.
+     *
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> resetAllFiltersAsync(final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(resetAllFiltersWithServiceResponseAsync(), serviceCallback);
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for a subscription.
+     * Reset all recommendation opt-out settings for a subscription.
+     *
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> resetAllFiltersAsync() {
+        return resetAllFiltersWithServiceResponseAsync().map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for a subscription.
+     * Reset all recommendation opt-out settings for a subscription.
+     *
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> resetAllFiltersWithServiceResponseAsync() {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-03-01";
+        return service.resetAllFilters(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = resetAllFiltersDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> resetAllFiltersDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
@@ -223,11 +302,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -236,11 +315,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName) {
@@ -253,11 +332,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendationInner>>> listHistoryForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -271,9 +350,8 @@ public final class RecommendationsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        final String startTime = null;
-        final String endTime = null;
-        return service.listHistoryForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String filter = null;
+        return service.listHistoryForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -288,46 +366,43 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param startTime The start time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
-     * @param endTime The end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName, String startTime, String endTime) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, startTime, endTime).toBlocking().single().getBody();
+    public List<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName, String filter) {
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).toBlocking().single().getBody();
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param startTime The start time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
-     * @param endTime The end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String startTime, String endTime, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, startTime, endTime), serviceCallback);
+    public ServiceCall<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceCall.create(listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter), serviceCallback);
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param startTime The start time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
-     * @param endTime The end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String startTime, String endTime) {
-        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, startTime, endTime).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<List<RecommendationInner>> listHistoryForWebAppAsync(String resourceGroupName, String siteName, String filter) {
+        return listHistoryForWebAppWithServiceResponseAsync(resourceGroupName, siteName, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
                 return response.getBody();
@@ -336,16 +411,15 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the list of past recommendations optionally specified by the time range.
-     * Gets the list of past recommendations optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
+     * Get past recommendations for an app, optionally specified by the time range.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param startTime The start time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
-     * @param endTime The end time of a time range to query, e.g. $filter=startTime eq '2015-01-01T00:00:00Z' and endTime eq '2015-01-02T00:00:00Z'
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification' and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[PT1H|PT1M|P1D]
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<ServiceResponse<List<RecommendationInner>>> listHistoryForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String startTime, String endTime) {
+    public Observable<ServiceResponse<List<RecommendationInner>>> listHistoryForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -356,7 +430,7 @@ public final class RecommendationsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.listHistoryForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), startTime, endTime, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listHistoryForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -378,11 +452,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
     public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
@@ -390,11 +464,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -403,11 +477,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName) {
@@ -420,11 +494,11 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
     public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
@@ -442,7 +516,8 @@ public final class RecommendationsInner {
         final String webAppSku = null;
         final Integer numSlots = null;
         final Integer liveHours = null;
-        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        final String filter = null;
+        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -457,52 +532,55 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param webAppSku The name of web app SKU.
-     * @param numSlots The number of site slots associated to the site
-     * @param liveHours If greater than zero, this API scans the last active live site symptoms, dynamically generate on-the-fly recommendations
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param webAppSku SKU of the app.
+     * @param numSlots Number of deployment slots in the app.
+     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @return the List&lt;RecommendationInner&gt; object if successful.
      */
-    public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours).toBlocking().single().getBody();
+    public List<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).toBlocking().single().getBody();
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param webAppSku The name of web app SKU.
-     * @param numSlots The number of site slots associated to the site
-     * @param liveHours If greater than zero, this API scans the last active live site symptoms, dynamically generate on-the-fly recommendations
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param webAppSku SKU of the app.
+     * @param numSlots Number of deployment slots in the app.
+     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
-        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours), serviceCallback);
+    public ServiceCall<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter, final ServiceCallback<List<RecommendationInner>> serviceCallback) {
+        return ServiceCall.create(listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter), serviceCallback);
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param webAppSku The name of web app SKU.
-     * @param numSlots The number of site slots associated to the site
-     * @param liveHours If greater than zero, this API scans the last active live site symptoms, dynamically generate on-the-fly recommendations
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param webAppSku SKU of the app.
+     * @param numSlots Number of deployment slots in the app.
+     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours) {
-        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
+    public Observable<List<RecommendationInner>> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
+        return listRecommendedRulesForWebAppWithServiceResponseAsync(resourceGroupName, siteName, featured, webAppSku, numSlots, liveHours, filter).map(new Func1<ServiceResponse<List<RecommendationInner>>, List<RecommendationInner>>() {
             @Override
             public List<RecommendationInner> call(ServiceResponse<List<RecommendationInner>> response) {
                 return response.getBody();
@@ -511,18 +589,19 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets a list of recommendations associated with the specified web site.
-     * Gets a list of recommendations associated with the specified web site.
+     * Get all recommendations for an app.
+     * Get all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Site name
-     * @param featured If set, this API returns only the most critical recommendation among the others. Otherwise this API returns all recommendations available
-     * @param webAppSku The name of web app SKU.
-     * @param numSlots The number of site slots associated to the site
-     * @param liveHours If greater than zero, this API scans the last active live site symptoms, dynamically generate on-the-fly recommendations
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param webAppSku SKU of the app.
+     * @param numSlots Number of deployment slots in the app.
+     * @param liveHours If greater than zero, this operation scans the last active live site symptoms and dynamically generate on-the-fly recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example: $filter=channels eq 'Api' or channel eq 'Notification'
      * @return the observable to the List&lt;RecommendationInner&gt; object
      */
-    public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours) {
+    public Observable<ServiceResponse<List<RecommendationInner>>> listRecommendedRulesForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, Boolean featured, String webAppSku, Integer numSlots, Integer liveHours, String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -533,7 +612,7 @@ public final class RecommendationsInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-03-01";
-        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRecommendedRulesForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), featured, webAppSku, numSlots, liveHours, filter, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<RecommendationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<RecommendationInner>>> call(Response<ResponseBody> response) {
@@ -555,12 +634,172 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     */
+    public void disableAllForWebApp(String resourceGroupName, String siteName) {
+        disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName) {
+        return disableAllForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Disable all recommendations for an app.
+     * Disable all recommendations for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> disableAllForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (siteName == null) {
+            throw new IllegalArgumentException("Parameter siteName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-03-01";
+        return service.disableAllForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = disableAllForWebAppDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> disableAllForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     */
+    public void resetAllFiltersForWebApp(String resourceGroupName, String siteName) {
+        resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName), serviceCallback);
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName) {
+        return resetAllFiltersForWebAppWithServiceResponseAsync(resourceGroupName, siteName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reset all recommendation opt-out settings for an app.
+     * Reset all recommendation opt-out settings for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> resetAllFiltersForWebAppWithServiceResponseAsync(String resourceGroupName, String siteName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (siteName == null) {
+            throw new IllegalArgumentException("Parameter siteName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-03-01";
+        return service.resetAllFiltersForWebApp(resourceGroupName, siteName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = resetAllFiltersForWebAppDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> resetAllFiltersForWebAppDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name) {
@@ -568,12 +807,12 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -582,12 +821,12 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name) {
@@ -600,12 +839,12 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String name) {
@@ -638,13 +877,13 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
-     * @param updateSeen If true, the backend updates the last seen timestamp of the recommendation object.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @return the RecommendationRuleInner object if successful.
      */
     public RecommendationRuleInner getRuleDetailsByWebApp(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
@@ -652,13 +891,13 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
-     * @param updateSeen If true, the backend updates the last seen timestamp of the recommendation object.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -667,13 +906,13 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
-     * @param updateSeen If true, the backend updates the last seen timestamp of the recommendation object.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<RecommendationRuleInner> getRuleDetailsByWebAppAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen) {
@@ -686,13 +925,13 @@ public final class RecommendationsInner {
     }
 
     /**
-     * Gets the detailed properties of the recommendation object for the specified web site.
-     * Gets the detailed properties of the recommendation object for the specified web site.
+     * Get a recommendation rule for an app.
+     * Get a recommendation rule for an app.
      *
-     * @param resourceGroupName Resource group name
-     * @param siteName Name of web app
-     * @param name Recommendation rule name
-     * @param updateSeen If true, the backend updates the last seen timestamp of the recommendation object.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param name Name of the recommendation.
+     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation object.
      * @return the observable to the RecommendationRuleInner object
      */
     public Observable<ServiceResponse<RecommendationRuleInner>> getRuleDetailsByWebAppWithServiceResponseAsync(String resourceGroupName, String siteName, String name, Boolean updateSeen) {

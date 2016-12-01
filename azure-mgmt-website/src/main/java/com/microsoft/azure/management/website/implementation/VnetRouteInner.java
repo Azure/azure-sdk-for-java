@@ -8,12 +8,14 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.microsoft.azure.management.website.RouteType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * VnetRoute contract used to pass routing information for a vnet.
+ * Virtual Network route contract used to pass routing information for a
+ * Virtual Network.
  */
 @JsonFlatten
 public class VnetRouteInner extends Resource {
@@ -40,19 +42,17 @@ public class VnetRouteInner extends Resource {
 
     /**
      * The type of route this is:
-     * DEFAULT - By default, every web app has routes to the local
-     * address ranges specified by RFC1918
-     * INHERITED - Routes inherited from the real Virtual Network
-     * routes
-     * STATIC - Static route set on the web app only
+     * DEFAULT - By default, every app has routes to the local address ranges
+     * specified by RFC1918
+     * INHERITED - Routes inherited from the real Virtual Network routes
+     * STATIC - Static route set on the app only
      * 
-     * These values will be used for syncing a Web App's routes
-     * with those from a Virtual Network. This operation will clear all
-     * DEFAULT and INHERITED routes and replace them
-     * with new INHERITED routes.
+     * These values will be used for syncing an app's routes with those from
+     * a Virtual Network. Possible values include: 'DEFAULT', 'INHERITED',
+     * 'STATIC'.
      */
     @JsonProperty(value = "properties.routeType")
-    private String routeType;
+    private RouteType routeType;
 
     /**
      * Get the vnetRouteName value.
@@ -119,7 +119,7 @@ public class VnetRouteInner extends Resource {
      *
      * @return the routeType value
      */
-    public String routeType() {
+    public RouteType routeType() {
         return this.routeType;
     }
 
@@ -129,7 +129,7 @@ public class VnetRouteInner extends Resource {
      * @param routeType the routeType value to set
      * @return the VnetRouteInner object itself.
      */
-    public VnetRouteInner withRouteType(String routeType) {
+    public VnetRouteInner withRouteType(RouteType routeType) {
         this.routeType = routeType;
         return this;
     }

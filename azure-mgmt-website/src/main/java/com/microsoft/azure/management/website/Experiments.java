@@ -11,11 +11,11 @@ package com.microsoft.azure.management.website;
 import java.util.List;
 
 /**
- * Class containing Routing in production experiments.
+ * Routing rules in production experiments.
  */
 public class Experiments {
     /**
-     * List of {Microsoft.Web.Hosting.Administration.RampUpRule} objects.
+     * List of ramp-up rules.
      */
     private List<RampUpRule> rampUpRules;
 

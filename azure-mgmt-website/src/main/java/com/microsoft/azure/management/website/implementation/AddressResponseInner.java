@@ -12,17 +12,17 @@ import java.util.List;
 import com.microsoft.azure.management.website.VirtualIPMapping;
 
 /**
- * Describes main public ip address and any extra vips.
+ * Describes main public IP address and any extra virtual IPs.
  */
 public class AddressResponseInner {
     /**
-     * Main public vip.
+     * Main public virtual IP.
      */
     private String serviceIpAddress;
 
     /**
-     * VNET internal ip address of the hostingEnvironment (App Service
-     * Environment) if it is in internal load-balancing mode.
+     * Virtual Network internal IP address of the App Service Environment if
+     * it is in internal load-balancing mode.
      */
     private String internalIpAddress;
 
@@ -32,7 +32,7 @@ public class AddressResponseInner {
     private List<String> outboundIpAddresses;
 
     /**
-     * Additional vips.
+     * Additional virtual IPs.
      */
     private List<VirtualIPMapping> vipMappings;
 

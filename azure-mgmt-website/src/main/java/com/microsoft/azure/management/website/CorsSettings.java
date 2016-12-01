@@ -11,14 +11,13 @@ package com.microsoft.azure.management.website;
 import java.util.List;
 
 /**
- * Cross-Origin Resource Sharing (CORS) settings for the web app.
+ * Cross-Origin Resource Sharing (CORS) settings for the app.
  */
 public class CorsSettings {
     /**
      * Gets or sets the list of origins that should be allowed to make
      * cross-origin
-     * calls (for example: http://example.com:12345). Use "*" to
-     * allow all.
+     * calls (for example: http://example.com:12345). Use "*" to allow all.
      */
     private List<String> allowedOrigins;
 

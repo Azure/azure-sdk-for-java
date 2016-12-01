@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
@@ -19,23 +20,21 @@ import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.HTTP;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import rx.Observable;
-import rx.functions.Func1;
-
 import java.io.IOException;
 import java.util.List;
+import okhttp3.ResponseBody;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.HTTP;
+import retrofit2.http.Path;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
+import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -121,7 +120,7 @@ public final class AppServiceCertificateOrdersInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/resendEmail")
-        Observable<Response<ResponseBody>> resendCertificateEmail(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> resendEmail(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{name}/retrieveCertificateActions")
@@ -150,8 +149,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
@@ -166,8 +165,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -185,8 +184,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
@@ -201,8 +200,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
@@ -221,8 +220,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -253,52 +252,51 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Validate certificate purchase information.
-     * Validate certificate purchase information.
+     * Validate information for a certificate order.
+     * Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder Certificate order
-     * @return the Object object if successful.
+     * @param appServiceCertificateOrder Information for a certificate order.
      */
-    public Object validatePurchaseInformation(AppServiceCertificateOrderInner appServiceCertificateOrder) {
-        return validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).toBlocking().single().getBody();
+    public void validatePurchaseInformation(AppServiceCertificateOrderInner appServiceCertificateOrder) {
+        validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).toBlocking().single().getBody();
     }
 
     /**
-     * Validate certificate purchase information.
-     * Validate certificate purchase information.
+     * Validate information for a certificate order.
+     * Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder Certificate order
+     * @param appServiceCertificateOrder Information for a certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder), serviceCallback);
     }
 
     /**
-     * Validate certificate purchase information.
-     * Validate certificate purchase information.
+     * Validate information for a certificate order.
+     * Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder Certificate order
-     * @return the observable to the Object object
+     * @param appServiceCertificateOrder Information for a certificate order.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
-        return validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> validatePurchaseInformationAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
+        return validatePurchaseInformationWithServiceResponseAsync(appServiceCertificateOrder).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Validate certificate purchase information.
-     * Validate certificate purchase information.
+     * Validate information for a certificate order.
+     * Validate information for a certificate order.
      *
-     * @param appServiceCertificateOrder Certificate order
-     * @return the observable to the Object object
+     * @param appServiceCertificateOrder Information for a certificate order.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> validatePurchaseInformationWithServiceResponseAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
+    public Observable<ServiceResponse<Void>> validatePurchaseInformationWithServiceResponseAsync(AppServiceCertificateOrderInner appServiceCertificateOrder) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -308,11 +306,11 @@ public final class AppServiceCertificateOrdersInner {
         Validator.validate(appServiceCertificateOrder);
         final String apiVersion = "2015-08-01";
         return service.validatePurchaseInformation(this.client.subscriptionId(), appServiceCertificateOrder, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = validatePurchaseInformationDelegate(response);
+                        ServiceResponse<Void> clientResponse = validatePurchaseInformationDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -321,10 +319,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> validatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> validatePurchaseInformationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -332,7 +329,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      * Get certificate orders in a resource group.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateOrderInner> listByResourceGroup(final String resourceGroupName) {
@@ -349,7 +346,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      * Get certificate orders in a resource group.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -369,7 +366,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      * Get certificate orders in a resource group.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<Page<AppServiceCertificateOrderInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -386,7 +383,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      * Get certificate orders in a resource group.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -407,7 +404,7 @@ public final class AppServiceCertificateOrdersInner {
      * Get certificate orders in a resource group.
      * Get certificate orders in a resource group.
      *
-    ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param resourceGroupName Azure resource group name
+    ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateOrderInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -440,11 +437,11 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
      * @return the PagedList&lt;AppServiceCertificateInner&gt; object if successful.
      */
     public PagedList<AppServiceCertificateInner> listCertificates(final String resourceGroupName, final String certificateOrderName) {
@@ -458,11 +455,11 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -479,11 +476,11 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
      * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
      */
     public Observable<Page<AppServiceCertificateInner>> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
@@ -497,11 +494,11 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
      * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesWithServiceResponseAsync(final String resourceGroupName, final String certificateOrderName) {
@@ -519,11 +516,11 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
-    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param resourceGroupName Azure resource group name
-    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param certificateOrderName Certificate name
+    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param certificateOrderName Name of the certificate order.
      * @return the PagedList&lt;AppServiceCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServiceCertificateInner>>> listCertificatesSinglePageAsync(final String resourceGroupName, final String certificateOrderName) {
@@ -559,12 +556,12 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Get certificate associated with the certificate order.
-     * Get certificate associated with the certificate order.
+     * Get the certificate associated with a certificate order.
+     * Get the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      * @return the AppServiceCertificateInner object if successful.
      */
     public AppServiceCertificateInner getCertificate(String resourceGroupName, String certificateOrderName, String name) {
@@ -572,12 +569,12 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Get certificate associated with the certificate order.
-     * Get certificate associated with the certificate order.
+     * Get the certificate associated with a certificate order.
+     * Get the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -586,12 +583,12 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Get certificate associated with the certificate order.
-     * Get certificate associated with the certificate order.
+     * Get the certificate associated with a certificate order.
+     * Get the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      * @return the observable to the AppServiceCertificateInner object
      */
     public Observable<AppServiceCertificateInner> getCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
@@ -604,12 +601,12 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Get certificate associated with the certificate order.
-     * Get certificate associated with the certificate order.
+     * Get the certificate associated with a certificate order.
+     * Get the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      * @return the observable to the AppServiceCertificateInner object
      */
     public Observable<ServiceResponse<AppServiceCertificateInner>> getCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
@@ -648,13 +645,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the AppServiceCertificateInner object if successful.
      */
     public AppServiceCertificateInner createOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -662,13 +659,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -677,13 +674,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the observable for the request
      */
     public Observable<AppServiceCertificateInner> createOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -696,13 +693,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<AppServiceCertificateInner>> createOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -728,13 +725,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the AppServiceCertificateInner object if successful.
      */
     public AppServiceCertificateInner beginCreateOrUpdateCertificate(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -742,13 +739,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -757,13 +754,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the observable to the AppServiceCertificateInner object
      */
     public Observable<AppServiceCertificateInner> beginCreateOrUpdateCertificateAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -776,13 +773,13 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
-     * Associates a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * Creates or updates a certificate and associates with key vault secret.
+     * Creates or updates a certificate and associates with key vault secret.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @param keyVaultCertificate Key Vault secret csm Id
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @param keyVaultCertificate Key vault certificate resource Id.
      * @return the observable to the AppServiceCertificateInner object
      */
     public Observable<ServiceResponse<AppServiceCertificateInner>> beginCreateOrUpdateCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name, AppServiceCertificateInner keyVaultCertificate) {
@@ -826,60 +823,59 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Deletes the certificate associated with the certificate order.
-     * Deletes the certificate associated with the certificate order.
+     * Delete the certificate associated with a certificate order.
+     * Delete the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      */
-    public Object deleteCertificate(String resourceGroupName, String certificateOrderName, String name) {
-        return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
+    public void deleteCertificate(String resourceGroupName, String certificateOrderName, String name) {
+        deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes the certificate associated with the certificate order.
-     * Deletes the certificate associated with the certificate order.
+     * Delete the certificate associated with a certificate order.
+     * Delete the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name), serviceCallback);
     }
 
     /**
-     * Deletes the certificate associated with the certificate order.
-     * Deletes the certificate associated with the certificate order.
+     * Delete the certificate associated with a certificate order.
+     * Delete the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
-        return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteCertificateAsync(String resourceGroupName, String certificateOrderName, String name) {
+        return deleteCertificateWithServiceResponseAsync(resourceGroupName, certificateOrderName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Deletes the certificate associated with the certificate order.
-     * Deletes the certificate associated with the certificate order.
+     * Delete the certificate associated with a certificate order.
+     * Delete the certificate associated with a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param certificateOrderName Certificate name
-     * @param name Certificate name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName Name of the certificate order.
+     * @param name Name of the certificate.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
+    public Observable<ServiceResponse<Void>> deleteCertificateWithServiceResponseAsync(String resourceGroupName, String certificateOrderName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -894,11 +890,11 @@ public final class AppServiceCertificateOrdersInner {
         }
         final String apiVersion = "2015-08-01";
         return service.deleteCertificate(resourceGroupName, certificateOrderName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteCertificateDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteCertificateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -907,10 +903,10 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> deleteCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -918,8 +914,8 @@ public final class AppServiceCertificateOrdersInner {
      * Get a certificate order.
      * Get a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      * @return the AppServiceCertificateOrderInner object if successful.
      */
     public AppServiceCertificateOrderInner get(String resourceGroupName, String name) {
@@ -930,8 +926,8 @@ public final class AppServiceCertificateOrdersInner {
      * Get a certificate order.
      * Get a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -943,8 +939,8 @@ public final class AppServiceCertificateOrdersInner {
      * Get a certificate order.
      * Get a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      * @return the observable to the AppServiceCertificateOrderInner object
      */
     public Observable<AppServiceCertificateOrderInner> getAsync(String resourceGroupName, String name) {
@@ -960,8 +956,8 @@ public final class AppServiceCertificateOrdersInner {
      * Get a certificate order.
      * Get a certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      * @return the observable to the AppServiceCertificateOrderInner object
      */
     public Observable<ServiceResponse<AppServiceCertificateOrderInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1000,9 +996,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the AppServiceCertificateOrderInner object if successful.
      */
     public AppServiceCertificateOrderInner createOrUpdate(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1013,9 +1009,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1027,9 +1023,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the observable for the request
      */
     public Observable<AppServiceCertificateOrderInner> createOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1045,9 +1041,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<AppServiceCertificateOrderInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1073,9 +1069,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the AppServiceCertificateOrderInner object if successful.
      */
     public AppServiceCertificateOrderInner beginCreateOrUpdate(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1086,9 +1082,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1100,9 +1096,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the observable to the AppServiceCertificateOrderInner object
      */
     public Observable<AppServiceCertificateOrderInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1118,9 +1114,9 @@ public final class AppServiceCertificateOrdersInner {
      * Create or update a certificate purchase order.
      * Create or update a certificate purchase order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param certificateDistinguishedName Distinguished name to be used for purchasing certificate
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param certificateDistinguishedName Distinguished name to to use for the certificate order.
      * @return the observable to the AppServiceCertificateOrderInner object
      */
     public Observable<ServiceResponse<AppServiceCertificateOrderInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServiceCertificateOrderInner certificateDistinguishedName) {
@@ -1155,6 +1151,7 @@ public final class AppServiceCertificateOrdersInner {
     private ServiceResponse<AppServiceCertificateOrderInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<AppServiceCertificateOrderInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
+                .register(201, new TypeToken<AppServiceCertificateOrderInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1163,24 +1160,23 @@ public final class AppServiceCertificateOrdersInner {
      * Delete an existing certificate order.
      * Delete an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      */
-    public Object deleteCertificateOrder(String resourceGroupName, String name) {
-        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public void deleteCertificateOrder(String resourceGroupName, String name) {
+        deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
      * Delete an existing certificate order.
      * Delete an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> deleteCertificateOrderAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -1188,14 +1184,14 @@ public final class AppServiceCertificateOrdersInner {
      * Delete an existing certificate order.
      * Delete an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteCertificateOrderAsync(String resourceGroupName, String name) {
-        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteCertificateOrderAsync(String resourceGroupName, String name) {
+        return deleteCertificateOrderWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
@@ -1205,11 +1201,11 @@ public final class AppServiceCertificateOrdersInner {
      * Delete an existing certificate order.
      * Delete an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> deleteCertificateOrderWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1221,11 +1217,11 @@ public final class AppServiceCertificateOrdersInner {
         }
         final String apiVersion = "2015-08-01";
         return service.deleteCertificateOrder(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteCertificateOrderDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteCertificateOrderDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1234,10 +1230,10 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> deleteCertificateOrderDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> deleteCertificateOrderDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -1245,26 +1241,25 @@ public final class AppServiceCertificateOrdersInner {
      * Reissue an existing certificate order.
      * Reissue an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param reissueCertificateOrderRequest Reissue parameters
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      */
-    public Object reissue(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
-        return reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single().getBody();
+    public void reissue(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+        reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).toBlocking().single().getBody();
     }
 
     /**
      * Reissue an existing certificate order.
      * Reissue an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param reissueCertificateOrderRequest Reissue parameters
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest), serviceCallback);
     }
 
@@ -1272,15 +1267,15 @@ public final class AppServiceCertificateOrdersInner {
      * Reissue an existing certificate order.
      * Reissue an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param reissueCertificateOrderRequest Reissue parameters
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
-        return reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> reissueAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+        return reissueWithServiceResponseAsync(resourceGroupName, name, reissueCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
@@ -1290,12 +1285,12 @@ public final class AppServiceCertificateOrdersInner {
      * Reissue an existing certificate order.
      * Reissue an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
-     * @param name Certificate name
-     * @param reissueCertificateOrderRequest Reissue parameters
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the certificate.
+     * @param reissueCertificateOrderRequest Parameters for the reissue.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> reissueWithServiceResponseAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
+    public Observable<ServiceResponse<Void>> reissueWithServiceResponseAsync(String resourceGroupName, String name, ReissueCertificateOrderRequestInner reissueCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1311,11 +1306,11 @@ public final class AppServiceCertificateOrdersInner {
         Validator.validate(reissueCertificateOrderRequest);
         final String apiVersion = "2015-08-01";
         return service.reissue(resourceGroupName, name, this.client.subscriptionId(), reissueCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = reissueDelegate(response);
+                        ServiceResponse<Void> clientResponse = reissueDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1324,10 +1319,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> reissueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> reissueDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -1335,26 +1329,25 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      * Renew an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
-     * @return the Object object if successful.
      */
-    public Object renew(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
-        return renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single().getBody();
+    public void renew(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+        renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).toBlocking().single().getBody();
     }
 
     /**
      * Renew an existing certificate order.
      * Renew an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest), serviceCallback);
     }
 
@@ -1362,15 +1355,15 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      * Renew an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
-        return renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> renewAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+        return renewWithServiceResponseAsync(resourceGroupName, name, renewCertificateOrderRequest).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
@@ -1380,12 +1373,12 @@ public final class AppServiceCertificateOrdersInner {
      * Renew an existing certificate order.
      * Renew an existing certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate name
      * @param renewCertificateOrderRequest Renew parameters
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> renewWithServiceResponseAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
+    public Observable<ServiceResponse<Void>> renewWithServiceResponseAsync(String resourceGroupName, String name, RenewCertificateOrderRequestInner renewCertificateOrderRequest) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1401,11 +1394,11 @@ public final class AppServiceCertificateOrdersInner {
         Validator.validate(renewCertificateOrderRequest);
         final String apiVersion = "2015-08-01";
         return service.renew(resourceGroupName, name, this.client.subscriptionId(), renewCertificateOrderRequest, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = renewDelegate(response);
+                        ServiceResponse<Void> clientResponse = renewDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1414,10 +1407,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> renewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> renewDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -1425,39 +1417,38 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      * Resend certificate email.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the Object object if successful.
      */
-    public Object resendCertificateEmail(String resourceGroupName, String name) {
-        return resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public void resendEmail(String resourceGroupName, String name) {
+        resendEmailWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
      * Resend certificate email.
      * Resend certificate email.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> resendCertificateEmailAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceCall<Void> resendEmailAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(resendEmailWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
      * Resend certificate email.
      * Resend certificate email.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> resendCertificateEmailAsync(String resourceGroupName, String name) {
-        return resendCertificateEmailWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> resendEmailAsync(String resourceGroupName, String name) {
+        return resendEmailWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
@@ -1467,11 +1458,11 @@ public final class AppServiceCertificateOrdersInner {
      * Resend certificate email.
      * Resend certificate email.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> resendCertificateEmailWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> resendEmailWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1482,12 +1473,12 @@ public final class AppServiceCertificateOrdersInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2015-08-01";
-        return service.resendCertificateEmail(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+        return service.resendEmail(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = resendCertificateEmailDelegate(response);
+                        ServiceResponse<Void> clientResponse = resendEmailDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1496,10 +1487,9 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> resendCertificateEmailDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> resendEmailDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
@@ -1507,7 +1497,7 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      * Retrieve the list of certificate actions.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the List&lt;CertificateOrderActionInner&gt; object if successful.
      */
@@ -1519,7 +1509,7 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      * Retrieve the list of certificate actions.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1532,7 +1522,7 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      * Retrieve the list of certificate actions.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
      */
@@ -1549,7 +1539,7 @@ public final class AppServiceCertificateOrdersInner {
      * Retrieve the list of certificate actions.
      * Retrieve the list of certificate actions.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateOrderActionInner&gt; object
      */
@@ -1586,10 +1576,10 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Retrive email history.
-     * Retrive email history.
+     * Retrieve email history.
+     * Retrieve email history.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the List&lt;CertificateEmailInner&gt; object if successful.
      */
@@ -1598,10 +1588,10 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Retrive email history.
-     * Retrive email history.
+     * Retrieve email history.
+     * Retrieve email history.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1611,10 +1601,10 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Retrive email history.
-     * Retrive email history.
+     * Retrieve email history.
+     * Retrieve email history.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateEmailInner&gt; object
      */
@@ -1628,10 +1618,10 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Retrive email history.
-     * Retrive email history.
+     * Retrieve email history.
+     * Retrieve email history.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @return the observable to the List&lt;CertificateEmailInner&gt; object
      */
@@ -1671,24 +1661,23 @@ public final class AppServiceCertificateOrdersInner {
      * Verify domain ownership for this certificate order.
      * Verify domain ownership for this certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the Object object if successful.
      */
-    public Object verifyDomainOwnership(String resourceGroupName, String name) {
-        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public void verifyDomainOwnership(String resourceGroupName, String name) {
+        verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
      * Verify domain ownership for this certificate order.
      * Verify domain ownership for this certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
@@ -1696,14 +1685,14 @@ public final class AppServiceCertificateOrdersInner {
      * Verify domain ownership for this certificate order.
      * Verify domain ownership for this certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> verifyDomainOwnershipAsync(String resourceGroupName, String name) {
-        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> verifyDomainOwnershipAsync(String resourceGroupName, String name) {
+        return verifyDomainOwnershipWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
@@ -1713,11 +1702,11 @@ public final class AppServiceCertificateOrdersInner {
      * Verify domain ownership for this certificate order.
      * Verify domain ownership for this certificate order.
      *
-     * @param resourceGroupName Azure resource group name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Certificate order name
-     * @return the observable to the Object object
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> verifyDomainOwnershipWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> verifyDomainOwnershipWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1729,11 +1718,11 @@ public final class AppServiceCertificateOrdersInner {
         }
         final String apiVersion = "2015-08-01";
         return service.verifyDomainOwnership(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = verifyDomainOwnershipDelegate(response);
+                        ServiceResponse<Void> clientResponse = verifyDomainOwnershipDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1742,16 +1731,15 @@ public final class AppServiceCertificateOrdersInner {
             });
     }
 
-    private ServiceResponse<Object> verifyDomainOwnershipDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> verifyDomainOwnershipDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object if successful.
@@ -1767,8 +1755,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1788,8 +1776,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
@@ -1805,8 +1793,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServiceCertificateOrderInner&gt; object
@@ -1826,8 +1814,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * Lists all domains in a subscription.
-     * Lists all domains in a subscription.
+     * List all certificate orders in a subscription.
+     * List all certificate orders in a subscription.
      *
     ServiceResponse<PageImpl<AppServiceCertificateOrderInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServiceCertificateOrderInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1966,8 +1954,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServiceCertificateInner&gt; object if successful.
@@ -1983,8 +1971,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -2004,8 +1992,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
@@ -2021,8 +2009,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServiceCertificateInner&gt; object
@@ -2042,8 +2030,8 @@ public final class AppServiceCertificateOrdersInner {
     }
 
     /**
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
-     * List all certificates associated with a certificate order (only one certificate can be associated with an order at a time).
+     * List all certificates associated with a certificate order.
+     * List all certificates associated with a certificate order.
      *
     ServiceResponse<PageImpl<AppServiceCertificateInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServiceCertificateInner&gt; object wrapped in {@link ServiceResponse} if successful.

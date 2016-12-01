@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website.implementation;
 
 
 /**
- * Diagnostics for a hosting environment (App Service Environment).
+ * Diagnostics for an App Service Environment.
  */
 public class HostingEnvironmentDiagnosticsInner {
     /**

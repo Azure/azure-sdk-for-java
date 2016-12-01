@@ -10,86 +10,106 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.website.StatusOptions;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
+import com.microsoft.azure.management.website.ProvisioningState;
 import com.microsoft.azure.management.website.SkuDescription;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * App Service Plan Model.
+ * App Service plan.
  */
 @JsonFlatten
 public class AppServicePlanInner extends Resource {
     /**
-     * Name for the App Service Plan.
+     * Name for the App Service plan.
      */
     @JsonProperty(value = "properties.name")
     private String appServicePlanName;
 
     /**
-     * Target worker tier assigned to the App Service Plan.
+     * Target worker tier assigned to the App Service plan.
      */
     @JsonProperty(value = "properties.workerTierName")
     private String workerTierName;
 
     /**
-     * App Service Plan Status. Possible values include: 'Ready', 'Pending'.
+     * App Service plan status. Possible values include: 'Ready', 'Pending'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private StatusOptions status;
 
     /**
-     * App Service Plan Subscription.
+     * App Service plan subscription.
      */
-    @JsonProperty(value = "properties.subscription")
+    @JsonProperty(value = "properties.subscription", access = JsonProperty.Access.WRITE_ONLY)
     private String subscription;
 
     /**
-     * App Service Plan administration site.
+     * App Service plan administration site.
      */
     @JsonProperty(value = "properties.adminSiteName")
     private String adminSiteName;
 
     /**
-     * Specification for the hosting environment (App Service Environment) to
-     * use for the App Service Plan.
+     * Specification for the App Service Environment to use for the App
+     * Service plan.
      */
     @JsonProperty(value = "properties.hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /**
      * Maximum number of instances that can be assigned to this App Service
-     * Plan.
+     * plan.
      */
-    @JsonProperty(value = "properties.maximumNumberOfWorkers")
+    @JsonProperty(value = "properties.maximumNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNumberOfWorkers;
 
     /**
-     * Geographical location for the App Service Plan.
+     * Geographical location for the App Service plan.
      */
-    @JsonProperty(value = "properties.geoRegion")
+    @JsonProperty(value = "properties.geoRegion", access = JsonProperty.Access.WRITE_ONLY)
     private String geoRegion;
 
     /**
-     * If True apps assigned to this App Service Plan can be scaled
-     * independently
-     * If False apps assigned to this App Service Plan will scale
-     * to all instances of the plan.
+     * If &lt;code&gt;true&lt;/code&gt;, apps assigned to this App Service
+     * plan can be scaled independently.
+     * If &lt;code&gt;false&lt;/code&gt;, apps assigned to this App Service
+     * plan will scale to all instances of the plan.
      */
     @JsonProperty(value = "properties.perSiteScaling")
     private Boolean perSiteScaling;
 
     /**
-     * Number of web apps assigned to this App Service Plan.
+     * Number of apps assigned to this App Service plan.
      */
-    @JsonProperty(value = "properties.numberOfSites")
+    @JsonProperty(value = "properties.numberOfSites", access = JsonProperty.Access.WRITE_ONLY)
     private Integer numberOfSites;
 
     /**
-     * Resource group of the serverfarm.
+     * Resource group of the App Service plan.
      */
-    @JsonProperty(value = "properties.resourceGroup")
+    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
+
+    /**
+     * Scaling worker count.
+     */
+    @JsonProperty(value = "properties.targetWorkerCount")
+    private Integer targetWorkerCount;
+
+    /**
+     * Scaling worker size ID.
+     */
+    @JsonProperty(value = "properties.targetWorkerSizeId")
+    private Integer targetWorkerSizeId;
+
+    /**
+     * Provisioning state of the App Service Environment. Possible values
+     * include: 'Succeeded', 'Failed', 'Canceled', 'InProgress', 'Deleting'.
+     */
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /**
      * The sku property.
@@ -146,34 +166,12 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the status value.
-     *
-     * @param status the status value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withStatus(StatusOptions status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the subscription value.
      *
      * @return the subscription value
      */
     public String subscription() {
         return this.subscription;
-    }
-
-    /**
-     * Set the subscription value.
-     *
-     * @param subscription the subscription value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withSubscription(String subscription) {
-        this.subscription = subscription;
-        return this;
     }
 
     /**
@@ -226,34 +224,12 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the maximumNumberOfWorkers value.
-     *
-     * @param maximumNumberOfWorkers the maximumNumberOfWorkers value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withMaximumNumberOfWorkers(Integer maximumNumberOfWorkers) {
-        this.maximumNumberOfWorkers = maximumNumberOfWorkers;
-        return this;
-    }
-
-    /**
      * Get the geoRegion value.
      *
      * @return the geoRegion value
      */
     public String geoRegion() {
         return this.geoRegion;
-    }
-
-    /**
-     * Set the geoRegion value.
-     *
-     * @param geoRegion the geoRegion value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withGeoRegion(String geoRegion) {
-        this.geoRegion = geoRegion;
-        return this;
     }
 
     /**
@@ -286,17 +262,6 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the numberOfSites value.
-     *
-     * @param numberOfSites the numberOfSites value to set
-     * @return the AppServicePlanInner object itself.
-     */
-    public AppServicePlanInner withNumberOfSites(Integer numberOfSites) {
-        this.numberOfSites = numberOfSites;
-        return this;
-    }
-
-    /**
      * Get the resourceGroup value.
      *
      * @return the resourceGroup value
@@ -306,14 +271,52 @@ public class AppServicePlanInner extends Resource {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Get the targetWorkerCount value.
      *
-     * @param resourceGroup the resourceGroup value to set
+     * @return the targetWorkerCount value
+     */
+    public Integer targetWorkerCount() {
+        return this.targetWorkerCount;
+    }
+
+    /**
+     * Set the targetWorkerCount value.
+     *
+     * @param targetWorkerCount the targetWorkerCount value to set
      * @return the AppServicePlanInner object itself.
      */
-    public AppServicePlanInner withResourceGroup(String resourceGroup) {
-        this.resourceGroup = resourceGroup;
+    public AppServicePlanInner withTargetWorkerCount(Integer targetWorkerCount) {
+        this.targetWorkerCount = targetWorkerCount;
         return this;
+    }
+
+    /**
+     * Get the targetWorkerSizeId value.
+     *
+     * @return the targetWorkerSizeId value
+     */
+    public Integer targetWorkerSizeId() {
+        return this.targetWorkerSizeId;
+    }
+
+    /**
+     * Set the targetWorkerSizeId value.
+     *
+     * @param targetWorkerSizeId the targetWorkerSizeId value to set
+     * @return the AppServicePlanInner object itself.
+     */
+    public AppServicePlanInner withTargetWorkerSizeId(Integer targetWorkerSizeId) {
+        this.targetWorkerSizeId = targetWorkerSizeId;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState value.
+     *
+     * @return the provisioningState value
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

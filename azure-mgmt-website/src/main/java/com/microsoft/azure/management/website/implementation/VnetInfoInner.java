@@ -14,13 +14,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * VNETInfo contract. This contract is public and is a stripped down version
- * of VNETInfoInternal.
+ * Virtual Network information contract.
  */
 @JsonFlatten
 public class VnetInfoInner extends Resource {
     /**
-     * The vnet resource id.
+     * The Virtual Network's resource ID.
      */
     @JsonProperty(value = "properties.vnetResourceId")
     private String vnetResourceId;
@@ -28,7 +27,7 @@ public class VnetInfoInner extends Resource {
     /**
      * The client certificate thumbprint.
      */
-    @JsonProperty(value = "properties.certThumbprint")
+    @JsonProperty(value = "properties.certThumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String certThumbprint;
 
     /**
@@ -40,20 +39,21 @@ public class VnetInfoInner extends Resource {
     private String certBlob;
 
     /**
-     * The routes that this virtual network connection uses.
+     * The routes that this Virtual Network connection uses.
      */
-    @JsonProperty(value = "properties.routes")
+    @JsonProperty(value = "properties.routes", access = JsonProperty.Access.WRITE_ONLY)
     private List<VnetRouteInner> routes;
 
     /**
-     * Flag to determine if a resync is required.
+     * &lt;code&gt;true&lt;/code&gt; if a resync is required; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.resyncRequired")
+    @JsonProperty(value = "properties.resyncRequired", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean resyncRequired;
 
     /**
-     * Dns servers to be used by this VNET. This should be a comma-separated
-     * list of IP addresses.
+     * DNS servers to be used by this Virtual Network. This should be a
+     * comma-separated list of IP addresses.
      */
     @JsonProperty(value = "properties.dnsServers")
     private String dnsServers;
@@ -88,17 +88,6 @@ public class VnetInfoInner extends Resource {
     }
 
     /**
-     * Set the certThumbprint value.
-     *
-     * @param certThumbprint the certThumbprint value to set
-     * @return the VnetInfoInner object itself.
-     */
-    public VnetInfoInner withCertThumbprint(String certThumbprint) {
-        this.certThumbprint = certThumbprint;
-        return this;
-    }
-
-    /**
      * Get the certBlob value.
      *
      * @return the certBlob value
@@ -128,34 +117,12 @@ public class VnetInfoInner extends Resource {
     }
 
     /**
-     * Set the routes value.
-     *
-     * @param routes the routes value to set
-     * @return the VnetInfoInner object itself.
-     */
-    public VnetInfoInner withRoutes(List<VnetRouteInner> routes) {
-        this.routes = routes;
-        return this;
-    }
-
-    /**
      * Get the resyncRequired value.
      *
      * @return the resyncRequired value
      */
     public Boolean resyncRequired() {
         return this.resyncRequired;
-    }
-
-    /**
-     * Set the resyncRequired value.
-     *
-     * @param resyncRequired the resyncRequired value to set
-     * @return the VnetInfoInner object itself.
-     */
-    public VnetInfoInner withResyncRequired(Boolean resyncRequired) {
-        this.resyncRequired = resyncRequired;
-        return this;
     }
 
     /**

@@ -8,32 +8,31 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.management.website.TopLevelDomainAgreementOption;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.website.TopLevelDomainAgreementOption;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import java.io.IOException;
+import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
-import rx.Observable;
+import retrofit2.Response;
 import rx.functions.Func1;
-
-import java.io.IOException;
-import java.util.List;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -84,8 +83,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
      */
@@ -100,8 +99,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -119,8 +118,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
@@ -135,8 +134,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
      */
@@ -155,8 +154,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -187,10 +186,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Gets details of a top level domain.
-     * Gets details of a top level domain.
+     * Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the TopLevelDomainInner object if successful.
      */
     public TopLevelDomainInner get(String name) {
@@ -198,10 +197,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Gets details of a top level domain.
-     * Gets details of a top level domain.
+     * Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -210,10 +209,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Gets details of a top level domain.
-     * Gets details of a top level domain.
+     * Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the observable to the TopLevelDomainInner object
      */
     public Observable<TopLevelDomainInner> getAsync(String name) {
@@ -226,10 +225,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Gets details of a top level domain.
-     * Gets details of a top level domain.
+     * Get details of a top-level domain.
+     * Get details of a top-level domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the observable to the TopLevelDomainInner object
      */
     public Observable<ServiceResponse<TopLevelDomainInner>> getWithServiceResponseAsync(String name) {
@@ -239,7 +238,7 @@ public final class TopLevelDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         return service.get(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TopLevelDomainInner>>>() {
                 @Override
@@ -262,10 +261,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name) {
@@ -279,10 +278,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -299,10 +298,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name) {
@@ -316,10 +315,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name) {
@@ -337,10 +336,10 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
+     * @param name Name of the top-level domain.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name) {
@@ -369,11 +368,11 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
-     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+     * @param name Name of the top-level domain.
+     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
      */
     public PagedList<TldLegalAgreementInner> listAgreements(final String name, final Boolean includePrivacy) {
@@ -387,11 +386,11 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
-     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+     * @param name Name of the top-level domain.
+     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -408,11 +407,11 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
-     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+     * @param name Name of the top-level domain.
+     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<Page<TldLegalAgreementInner>> listAgreementsAsync(final String name, final Boolean includePrivacy) {
@@ -426,11 +425,11 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-     * @param name Name of the top level domain
-     * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+     * @param name Name of the top-level domain.
+     * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsWithServiceResponseAsync(final String name, final Boolean includePrivacy) {
@@ -448,11 +447,11 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
-    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top level domain
-    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If true then the list of agreements will inclue agreements for domain privacy as well.
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param name Name of the top-level domain.
+    ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param includePrivacy If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will include agreements for domain privacy as well; otherwise, &lt;code&gt;false&lt;/code&gt;.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<TldLegalAgreementInner>>> listAgreementsSinglePageAsync(final String name, final Boolean includePrivacy) {
@@ -462,7 +461,7 @@ public final class TopLevelDomainsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-03-01";
+        final String apiVersion = "2015-04-01";
         TopLevelDomainAgreementOption agreementOption = new TopLevelDomainAgreementOption();
         agreementOption.withIncludePrivacy(includePrivacy);
         return service.listAgreements(name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), agreementOption, this.client.userAgent())
@@ -487,8 +486,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TopLevelDomainInner&gt; object if successful.
@@ -504,8 +503,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -525,8 +524,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
@@ -542,8 +541,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TopLevelDomainInner&gt; object
@@ -563,8 +562,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists all top level domains supported for registration.
-     * Lists all top level domains supported for registration.
+     * Get all top-level domains supported for registration.
+     * Get all top-level domains supported for registration.
      *
     ServiceResponse<PageImpl<TopLevelDomainInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TopLevelDomainInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -595,8 +594,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object if successful.
@@ -612,8 +611,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -633,8 +632,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
@@ -650,8 +649,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;TldLegalAgreementInner&gt; object
@@ -671,8 +670,8 @@ public final class TopLevelDomainsInner {
     }
 
     /**
-     * Lists legal agreements that user needs to accept before purchasing domain.
-     * Lists legal agreements that user needs to accept before purchasing domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
+     * Gets all legal agreements that user needs to accept before purchasing a domain.
      *
     ServiceResponse<PageImpl<TldLegalAgreementInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;TldLegalAgreementInner&gt; object wrapped in {@link ServiceResponse} if successful.

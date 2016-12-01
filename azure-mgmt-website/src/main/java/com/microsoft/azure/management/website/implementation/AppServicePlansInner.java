@@ -77,11 +77,11 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}")
-        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("allowPendingState") Boolean allowPendingState, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body AppServicePlanInner appServicePlan, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}", method = "DELETE", hasBody = true)
@@ -109,7 +109,7 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/sites")
-        Observable<Response<ResponseBody>> listHybridConnectionWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listWebAppsByHybridConnection(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("namespaceName") String namespaceName, @Path("relayName") String relayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionPlanLimits/limit")
@@ -125,11 +125,7 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/metrics")
-        Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/operationresults/{operationId}")
-        Observable<Response<ResponseBody>> getOperation(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("operationId") String operationId, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listMetrics(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("details") Boolean details, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/restartSites")
@@ -137,7 +133,7 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites")
-        Observable<Response<ResponseBody>> listWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query("$filter") String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listWebApps(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("$skipToken") String skipToken, @Query(value = "$filter", encoded = true) String filter, @Query("$top") String top, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections")
@@ -157,7 +153,7 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes")
-        Observable<Response<ResponseBody>> listtRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listRoutesForVnet(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("vnetName") String vnetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes/{routeName}")
@@ -189,6 +185,14 @@ public final class AppServicePlansInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listWebAppsByHybridConnectionNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listHybridConnectionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{nextLink}")
         Observable<Response<ResponseBody>> listMetricDefintionsNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
@@ -202,8 +206,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
@@ -218,8 +222,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -237,8 +241,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
@@ -253,8 +257,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
@@ -273,8 +277,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -299,11 +303,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
-     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-                 Retrieval of all properties may increase the API latency.
+     * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
+      Retrieval of all properties may increase the API latency.
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> list(final Boolean detailed) {
@@ -317,11 +321,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
-     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-                 Retrieval of all properties may increase the API latency.
+     * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
+      Retrieval of all properties may increase the API latency.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -338,11 +342,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
-     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-                 Retrieval of all properties may increase the API latency.
+     * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
+      Retrieval of all properties may increase the API latency.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listAsync(final Boolean detailed) {
@@ -356,11 +360,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
-     * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-                 Retrieval of all properties may increase the API latency.
+     * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
+      Retrieval of all properties may increase the API latency.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listWithServiceResponseAsync(final Boolean detailed) {
@@ -378,11 +382,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
-    ServiceResponse<PageImpl<AppServicePlanInner>> * @param detailed False to return a subset of App Service Plan properties, true to return all of the properties.
-                 Retrieval of all properties may increase the API latency.
+    ServiceResponse<PageImpl<AppServicePlanInner>> * @param detailed Specify &lt;code&gt;true&lt;/code&gt; to return all App Service plan properties. The default is &lt;code&gt;false&lt;/code&gt;, which returns a subset of the properties.
+      Retrieval of all properties may increase the API latency.
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listSinglePageAsync(final Boolean detailed) {
@@ -412,10 +416,10 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
      */
     public PagedList<AppServicePlanInner> listByResourceGroup(final String resourceGroupName) {
@@ -429,10 +433,10 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -449,10 +453,10 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<Page<AppServicePlanInner>> listByResourceGroupAsync(final String resourceGroupName) {
@@ -466,10 +470,10 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
-     * @param resourceGroupName Name of resource group
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
@@ -487,10 +491,10 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
-    ServiceResponse<PageImpl<AppServicePlanInner>> * @param resourceGroupName Name of resource group
+    ServiceResponse<PageImpl<AppServicePlanInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<AppServicePlanInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
@@ -523,11 +527,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets specified App Service Plan in a resource group.
-     * Gets specified App Service Plan in a resource group.
+     * Get an App Service plan.
+     * Get an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner get(String resourceGroupName, String name) {
@@ -535,11 +539,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets specified App Service Plan in a resource group.
-     * Gets specified App Service Plan in a resource group.
+     * Get an App Service plan.
+     * Get an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -548,11 +552,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets specified App Service Plan in a resource group.
-     * Gets specified App Service Plan in a resource group.
+     * Get an App Service plan.
+     * Get an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<AppServicePlanInner> getAsync(String resourceGroupName, String name) {
@@ -565,11 +569,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets specified App Service Plan in a resource group.
-     * Gets specified App Service Plan in a resource group.
+     * Get an App Service plan.
+     * Get an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<ServiceResponse<AppServicePlanInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -608,10 +612,10 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @return the AppServicePlanInner object  if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
+     * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner createOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan).toBlocking().last().getBody();
@@ -621,9 +625,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -635,9 +639,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @return the observable for the request
      */
     public Observable<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -653,9 +657,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<AppServicePlanInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -673,84 +677,7 @@ public final class AppServicePlansInner {
         }
         Validator.validate(appServicePlan);
         final String apiVersion = "2016-09-01";
-        final Boolean allowPendingState = null;
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, allowPendingState, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServicePlanInner>() { }.getType());
-    }
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the AppServicePlanInner object if successful.
-     */
-    public AppServicePlanInner createOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState).toBlocking().last().getBody();
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState), serviceCallback);
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the observable for the request
-     */
-    public Observable<AppServicePlanInner> createOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
-            @Override
-            public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<AppServicePlanInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (appServicePlan == null) {
-            throw new IllegalArgumentException("Parameter appServicePlan is required and cannot be null.");
-        }
-        Validator.validate(appServicePlan);
-        final String apiVersion = "2016-09-01";
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, allowPendingState, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<AppServicePlanInner>() { }.getType());
     }
 
@@ -758,9 +685,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @return the AppServicePlanInner object if successful.
      */
     public AppServicePlanInner beginCreateOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -771,9 +698,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -785,9 +712,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -803,9 +730,9 @@ public final class AppServicePlansInner {
      * Creates or updates an App Service Plan.
      * Creates or updates an App Service Plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param appServicePlan Details of the App Service plan.
      * @return the observable to the AppServicePlanInner object
      */
     public Observable<ServiceResponse<AppServicePlanInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan) {
@@ -823,95 +750,7 @@ public final class AppServicePlansInner {
         }
         Validator.validate(appServicePlan);
         final String apiVersion = "2016-09-01";
-        final Boolean allowPendingState = null;
-        return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, allowPendingState, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServicePlanInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppServicePlanInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppServicePlanInner> clientResponse = beginCreateOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the AppServicePlanInner object if successful.
-     */
-    public AppServicePlanInner beginCreateOrUpdate(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState).toBlocking().single().getBody();
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState), serviceCallback);
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the observable to the AppServicePlanInner object
-     */
-    public Observable<AppServicePlanInner> beginCreateOrUpdateAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, name, appServicePlan, allowPendingState).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
-            @Override
-            public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates an App Service Plan.
-     * Creates or updates an App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param appServicePlan Details of App Service Plan
-     * @param allowPendingState OBSOLETE: If true, allow pending state for App Service Plan
-     * @return the observable to the AppServicePlanInner object
-     */
-    public Observable<ServiceResponse<AppServicePlanInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, AppServicePlanInner appServicePlan, Boolean allowPendingState) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (appServicePlan == null) {
-            throw new IllegalArgumentException("Parameter appServicePlan is required and cannot be null.");
-        }
-        Validator.validate(appServicePlan);
-        final String apiVersion = "2016-09-01";
-        return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, allowPendingState, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginCreateOrUpdate(resourceGroupName, name, this.client.subscriptionId(), appServicePlan, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServicePlanInner>>>() {
                 @Override
                 public Observable<ServiceResponse<AppServicePlanInner>> call(Response<ResponseBody> response) {
@@ -934,56 +773,55 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Deletes a App Service Plan.
-     * Deletes a App Service Plan.
+     * Delete an App Service plan.
+     * Delete an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      */
-    public Object delete(String resourceGroupName, String name) {
-        return deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public void delete(String resourceGroupName, String name) {
+        deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes a App Service Plan.
-     * Deletes a App Service Plan.
+     * Delete an App Service plan.
+     * Delete an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> deleteAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(deleteWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
-     * Deletes a App Service Plan.
-     * Deletes a App Service Plan.
+     * Delete an App Service plan.
+     * Delete an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteAsync(String resourceGroupName, String name) {
-        return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String name) {
+        return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Deletes a App Service Plan.
-     * Deletes a App Service Plan.
+     * Delete an App Service plan.
+     * Delete an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -995,11 +833,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.delete(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1008,19 +846,18 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * List serverfarm capabilities.
-     * List serverfarm capabilities.
+     * List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the List&lt;CapabilityInner&gt; object if successful.
      */
     public List<CapabilityInner> listCapabilities(String resourceGroupName, String name) {
@@ -1028,11 +865,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List serverfarm capabilities.
-     * List serverfarm capabilities.
+     * List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1041,11 +878,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List serverfarm capabilities.
-     * List serverfarm capabilities.
+     * List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the List&lt;CapabilityInner&gt; object
      */
     public Observable<List<CapabilityInner>> listCapabilitiesAsync(String resourceGroupName, String name) {
@@ -1058,11 +895,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List serverfarm capabilities.
-     * List serverfarm capabilities.
+     * List all capabilities of an App Service plan.
+     * List all capabilities of an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the List&lt;CapabilityInner&gt; object
      */
     public Observable<ServiceResponse<List<CapabilityInner>>> listCapabilitiesWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -1098,13 +935,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner getHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1112,13 +949,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1127,13 +964,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> getHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1146,13 +983,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
-     * Retrieves a specific Service Bus Hybrid Connection in use on this App Service Plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
+     * Retrieve a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> getHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1194,14 +1031,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @param connection The hybrid connection entity
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param connection The Hybrid Connection entity.
      * @return the HybridConnectionInner object if successful.
      */
     public HybridConnectionInner updateHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
@@ -1209,14 +1046,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @param connection The hybrid connection entity
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param connection The Hybrid Connection entity.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1225,14 +1062,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @param connection The hybrid connection entity
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param connection The Hybrid Connection entity.
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<HybridConnectionInner> updateHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
@@ -1245,14 +1082,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
-     * Updates an existing Service Bus Hybrid Connection in use on this App Service Plan. This will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
+     * Update a Hybrid Connection in use in an App Service plan. This operation will fail if the Hybrid Connection does not already exist.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @param connection The hybrid connection entity
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @param connection The Hybrid Connection entity.
      * @return the observable to the HybridConnectionInner object
      */
     public Observable<ServiceResponse<HybridConnectionInner>> updateHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName, HybridConnectionInner connection) {
@@ -1298,64 +1135,63 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      */
-    public Object deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+    public void deleteHybridConnection(String resourceGroupName, String name, String namespaceName, String relayName) {
+        deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
     }
 
     /**
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteHybridConnectionAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
+        return deleteHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
-     * Deletes an existing Service Bus Hybrid Connection in use on this App Service Plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
+     * Delete a Hybrid Connection in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Service Bus namespace.
+     * @param relayName Name of the Service Bus relay.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
+    public Observable<ServiceResponse<Void>> deleteHybridConnectionWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1373,11 +1209,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.deleteHybridConnection(resourceGroupName, name, namespaceName, relayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteHybridConnectionDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteHybridConnectionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1386,21 +1222,21 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> deleteHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> deleteHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Gets the send key name and value for this Hybrid Connection.
-     * Gets the send key name and value for this Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
      * @return the HybridConnectionKeyInner object if successful.
      */
     public HybridConnectionKeyInner listHybridConnectionKeys(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1408,13 +1244,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the send key name and value for this Hybrid Connection.
-     * Gets the send key name and value for this Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1423,13 +1259,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the send key name and value for this Hybrid Connection.
-     * Gets the send key name and value for this Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<HybridConnectionKeyInner> listHybridConnectionKeysAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1442,13 +1278,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the send key name and value for this Hybrid Connection.
-     * Gets the send key name and value for this Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
+     * Get the send key name and value of a Hybrid Connection.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @param namespaceName The name of the Service Bus Namespace
-     * @param relayName The name of the Service Bus Relay
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName The name of the Service Bus namespace.
+     * @param relayName The name of the Service Bus relay.
      * @return the observable to the HybridConnectionKeyInner object
      */
     public Observable<ServiceResponse<HybridConnectionKeyInner>> listHybridConnectionKeysWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
@@ -1490,64 +1326,103 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param namespaceName The Hybrid Connection namespace
-     * @param relayName The Hybrid Connection relay name
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Hybrid Connection namespace.
+     * @param relayName Name of the Hybrid Connection relay.
+     * @return the PagedList&lt;String&gt; object if successful.
      */
-    public Object listHybridConnectionWebApps(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionWebAppsWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single().getBody();
+    public PagedList<String> listWebAppsByHybridConnection(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
+        ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName).toBlocking().single();
+        return new PagedList<String>(response.getBody()) {
+            @Override
+            public Page<String> nextPage(String nextPageLink) {
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param namespaceName The Hybrid Connection namespace
-     * @param relayName The Hybrid Connection relay name
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Hybrid Connection namespace.
+     * @param relayName Name of the Hybrid Connection relay.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> listHybridConnectionWebAppsAsync(String resourceGroupName, String name, String namespaceName, String relayName, final ServiceCallback<Object> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionWebAppsWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName), serviceCallback);
+    public ServiceCall<List<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceCall.create(
+            listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName),
+            new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<String>>> call(String nextPageLink) {
+                    return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param namespaceName The Hybrid Connection namespace
-     * @param relayName The Hybrid Connection relay name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Hybrid Connection namespace.
+     * @param relayName Name of the Hybrid Connection relay.
+     * @return the observable to the PagedList&lt;String&gt; object
      */
-    public Observable<Object> listHybridConnectionWebAppsAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
-        return listHybridConnectionWebAppsWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName).map(new Func1<ServiceResponse<Object>, Object>() {
-            @Override
-            public Object call(ServiceResponse<Object> response) {
-                return response.getBody();
-            }
-        });
+    public Observable<Page<String>> listWebAppsByHybridConnectionAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
+        return listWebAppsByHybridConnectionWithServiceResponseAsync(resourceGroupName, name, namespaceName, relayName)
+            .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
+                @Override
+                public Page<String> call(ServiceResponse<Page<String>> response) {
+                    return response.getBody();
+                }
+            });
     }
 
     /**
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
-     * Gets a list of sites that are using a particular Hybrid Connection on an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param namespaceName The Hybrid Connection namespace
-     * @param relayName The Hybrid Connection relay name
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param namespaceName Name of the Hybrid Connection namespace.
+     * @param relayName Name of the Hybrid Connection relay.
+     * @return the observable to the PagedList&lt;String&gt; object
      */
-    public Observable<ServiceResponse<Object>> listHybridConnectionWebAppsWithServiceResponseAsync(String resourceGroupName, String name, String namespaceName, String relayName) {
+    public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionWithServiceResponseAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
+        return listWebAppsByHybridConnectionSinglePageAsync(resourceGroupName, name, namespaceName, relayName)
+            .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listWebAppsByHybridConnectionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     *
+    ServiceResponse<PageImpl<String>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<String>> * @param name Name of the App Service plan.
+    ServiceResponse<PageImpl<String>> * @param namespaceName Name of the Hybrid Connection namespace.
+    ServiceResponse<PageImpl<String>> * @param relayName Name of the Hybrid Connection relay.
+     * @return the PagedList&lt;String&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionSinglePageAsync(final String resourceGroupName, final String name, final String namespaceName, final String relayName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1564,13 +1439,13 @@ public final class AppServicePlansInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-09-01";
-        return service.listHybridConnectionWebApps(resourceGroupName, name, namespaceName, relayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+        return service.listWebAppsByHybridConnection(resourceGroupName, name, namespaceName, relayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<String>>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = listHybridConnectionWebAppsDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1578,64 +1453,64 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> listHybridConnectionWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<String>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the HybridConnectionLimitsInner object if successful.
      */
-    public Object getHybridConnectionPlanLimit(String resourceGroupName, String name) {
+    public HybridConnectionLimitsInner getHybridConnectionPlanLimit(String resourceGroupName, String name) {
         return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionLimitsInner> serviceCallback) {
         return ServiceCall.create(getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the HybridConnectionLimitsInner object
      */
-    public Observable<Object> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name) {
-        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<HybridConnectionLimitsInner> getHybridConnectionPlanLimitAsync(String resourceGroupName, String name) {
+        return getHybridConnectionPlanLimitWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionLimitsInner>, HybridConnectionLimitsInner>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public HybridConnectionLimitsInner call(ServiceResponse<HybridConnectionLimitsInner> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
-     * Gets the maximum number of Hybrid Connections allowed on a specified App Service Plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
+     * Get the maximum number of Hybrid Connections allowed in an App Service plan.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the HybridConnectionLimitsInner object
      */
-    public Observable<ServiceResponse<Object>> getHybridConnectionPlanLimitWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<HybridConnectionLimitsInner>> getHybridConnectionPlanLimitWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1647,11 +1522,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.getHybridConnectionPlanLimit(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HybridConnectionLimitsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<HybridConnectionLimitsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = getHybridConnectionPlanLimitDelegate(response);
+                        ServiceResponse<HybridConnectionLimitsInner> clientResponse = getHybridConnectionPlanLimitDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1660,64 +1535,101 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> getHybridConnectionPlanLimitDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<HybridConnectionLimitsInner> getHybridConnectionPlanLimitDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<HybridConnectionLimitsInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<HybridConnectionLimitsInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @return the HybridConnectionInner object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the PagedList&lt;HybridConnectionInner&gt; object if successful.
      */
-    public HybridConnectionInner listHybridConnections(String resourceGroupName, String name) {
-        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
+    public PagedList<HybridConnectionInner> listHybridConnections(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<HybridConnectionInner>(response.getBody()) {
+            @Override
+            public Page<HybridConnectionInner> nextPage(String nextPageLink) {
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
     }
 
     /**
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name, final ServiceCallback<HybridConnectionInner> serviceCallback) {
-        return ServiceCall.create(listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
+    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listHybridConnectionsSinglePageAsync(resourceGroupName, name),
+            new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(String nextPageLink) {
+                    return listHybridConnectionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
     }
 
     /**
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @return the observable to the HybridConnectionInner object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
-    public Observable<HybridConnectionInner> listHybridConnectionsAsync(String resourceGroupName, String name) {
-        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<HybridConnectionInner>, HybridConnectionInner>() {
-            @Override
-            public HybridConnectionInner call(ServiceResponse<HybridConnectionInner> response) {
-                return response.getBody();
-            }
-        });
+    public Observable<Page<HybridConnectionInner>> listHybridConnectionsAsync(final String resourceGroupName, final String name) {
+        return listHybridConnectionsWithServiceResponseAsync(resourceGroupName, name)
+            .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
+                @Override
+                public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
+                    return response.getBody();
+                }
+            });
     }
 
     /**
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
-     * Retrieves all Service Bus Hybrid Connections in use on this App Service Plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
      *
-     * @param resourceGroupName The resource group name
-     * @param name The name of the App Service Plan
-     * @return the observable to the HybridConnectionInner object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
      */
-    public Observable<ServiceResponse<HybridConnectionInner>> listHybridConnectionsWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+        return listHybridConnectionsSinglePageAsync(resourceGroupName, name)
+            .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listHybridConnectionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+    ServiceResponse<PageImpl<HybridConnectionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<HybridConnectionInner>> * @param name Name of the App Service plan.
+     * @return the PagedList&lt;HybridConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1729,12 +1641,12 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.listHybridConnections(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<HybridConnectionInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<HybridConnectionInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<HybridConnectionInner> clientResponse = listHybridConnectionsDelegate(response);
-                        return Observable.just(clientResponse);
+                        ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1742,46 +1654,46 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<HybridConnectionInner> listHybridConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<HybridConnectionInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<HybridConnectionInner>() { }.getType())
+    private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> listMetricDefintions(final String resourceGroupName, final String name) {
-        ServiceResponse<Page<MetricDefinitionInner>> response = listMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
-        return new PagedList<MetricDefinitionInner>(response.getBody()) {
+    public PagedList<ResourceMetricDefinitionInner> listMetricDefintions(final String resourceGroupName, final String name) {
+        ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsSinglePageAsync(resourceGroupName, name).toBlocking().single();
+        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
+            public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
                 return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<MetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             listMetricDefintionsSinglePageAsync(resourceGroupName, name),
-            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(String nextPageLink) {
                     return listMetricDefintionsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1789,36 +1701,36 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
-    public Observable<Page<MetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name) {
+    public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefintionsAsync(final String resourceGroupName, final String name) {
         return listMetricDefintionsWithServiceResponseAsync(resourceGroupName, name)
-            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+            .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
-                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
                     return response.getBody();
                 }
             });
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefintionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsWithServiceResponseAsync(final String resourceGroupName, final String name) {
         return listMetricDefintionsSinglePageAsync(resourceGroupName, name)
-            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1829,14 +1741,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param resourceGroupName Name of resource group
-    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param name Name of App Service Plan
-     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param name Name of the App Service plan.
+     * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefintionsSinglePageAsync(final String resourceGroupName, final String name) {
+    public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsSinglePageAsync(final String resourceGroupName, final String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1848,12 +1760,12 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.listMetricDefintions(resourceGroupName, name, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = listMetricDefintionsDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1861,19 +1773,19 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
     public PagedList<ResourceMetricInner> listMetrics(final String resourceGroupName, final String name) {
@@ -1887,11 +1799,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1908,11 +1820,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<Page<ResourceMetricInner>> listMetricsAsync(final String resourceGroupName, final String name) {
@@ -1926,11 +1838,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -1948,11 +1860,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ResourceMetricInner>>> listMetricsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -1983,12 +1895,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
      */
@@ -2003,12 +1915,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -2026,12 +1938,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -2046,12 +1958,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param details If true, metrics are broken down per App Service Plan instance
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
      * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
      */
@@ -2070,12 +1982,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of resource group
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of App Service Plan
-    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details If true, metrics are broken down per App Service Plan instance
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param name Name of the App Service plan.
+    ServiceResponse<PageImpl<ResourceMetricInner>> * @param details Specify &lt;code&gt;true&lt;/code&gt; to include instance details. The default is &lt;code&gt;false&lt;/code&gt;.
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param filter Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1' or name.value eq 'Metric2') and startTime eq '2014-01-01T00:00:00Z' and endTime eq '2014-12-31T23:59:59Z' and timeGrain eq duration'[Hour|Minute|Day]'.
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2112,145 +2024,55 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a server farm operation.
-     * Gets a server farm operation.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param operationId Id of Server farm operation"&amp;gt;
-     * @return the AppServicePlanInner object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      */
-    public AppServicePlanInner getOperation(String resourceGroupName, String name, String operationId) {
-        return getOperationWithServiceResponseAsync(resourceGroupName, name, operationId).toBlocking().single().getBody();
+    public void restartWebApps(String resourceGroupName, String name) {
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
-     * Gets a server farm operation.
-     * Gets a server farm operation.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param operationId Id of Server farm operation"&amp;gt;
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<AppServicePlanInner> getOperationAsync(String resourceGroupName, String name, String operationId, final ServiceCallback<AppServicePlanInner> serviceCallback) {
-        return ServiceCall.create(getOperationWithServiceResponseAsync(resourceGroupName, name, operationId), serviceCallback);
-    }
-
-    /**
-     * Gets a server farm operation.
-     * Gets a server farm operation.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param operationId Id of Server farm operation"&amp;gt;
-     * @return the observable to the AppServicePlanInner object
-     */
-    public Observable<AppServicePlanInner> getOperationAsync(String resourceGroupName, String name, String operationId) {
-        return getOperationWithServiceResponseAsync(resourceGroupName, name, operationId).map(new Func1<ServiceResponse<AppServicePlanInner>, AppServicePlanInner>() {
-            @Override
-            public AppServicePlanInner call(ServiceResponse<AppServicePlanInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets a server farm operation.
-     * Gets a server farm operation.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param operationId Id of Server farm operation"&amp;gt;
-     * @return the observable to the AppServicePlanInner object
-     */
-    public Observable<ServiceResponse<AppServicePlanInner>> getOperationWithServiceResponseAsync(String resourceGroupName, String name, String operationId) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (operationId == null) {
-            throw new IllegalArgumentException("Parameter operationId is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        final String apiVersion = "2016-09-01";
-        return service.getOperation(resourceGroupName, name, operationId, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<AppServicePlanInner>>>() {
-                @Override
-                public Observable<ServiceResponse<AppServicePlanInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<AppServicePlanInner> clientResponse = getOperationDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<AppServicePlanInner> getOperationDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<AppServicePlanInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<AppServicePlanInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the Object object if successful.
-     */
-    public Object restartWebApps(String resourceGroupName, String name) {
-        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
-    }
-
-    /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
-     *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Object> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name), serviceCallback);
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> restartWebAppsAsync(String resourceGroupName, String name) {
-        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> restartWebAppsAsync(String resourceGroupName, String name) {
+        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name) {
+    public Observable<ServiceResponse<Void>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2263,11 +2085,11 @@ public final class AppServicePlansInner {
         final String apiVersion = "2016-09-01";
         final Boolean softRestart = null;
         return service.restartWebApps(resourceGroupName, name, this.client.subscriptionId(), softRestart, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = restartWebAppsDelegate(response);
+                        ServiceResponse<Void> clientResponse = restartWebAppsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2277,60 +2099,59 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      */
-    public Object restartWebApps(String resourceGroupName, String name, Boolean softRestart) {
-        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
+    public void restartWebApps(String resourceGroupName, String name, Boolean softRestart) {
+        restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).toBlocking().single().getBody();
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart), serviceCallback);
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart) {
-        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> restartWebAppsAsync(String resourceGroupName, String name, Boolean softRestart) {
+        return restartWebAppsWithServiceResponseAsync(resourceGroupName, name, softRestart).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Restarts web apps in a specified App Service Plan.
-     * Restarts web apps in a specified App Service Plan.
+     * Restart all apps in an App Service plan.
+     * Restart all apps in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param softRestart Soft restart applies the configuration settings and restarts the apps if necessary. Hard restart always restarts and reprovisions the apps
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param softRestart Specify &lt;code&gt;true&lt;/code&gt; to performa a soft restart, applies the configuration settings and restarts the apps if necessary. The default is &lt;code&gt;false&lt;/code&gt;, which always restarts and reprovisions the apps
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart) {
+    public Observable<ServiceResponse<Void>> restartWebAppsWithServiceResponseAsync(String resourceGroupName, String name, Boolean softRestart) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -2342,11 +2163,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.restartWebApps(resourceGroupName, name, this.client.subscriptionId(), softRestart, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = restartWebAppsDelegate(response);
+                        ServiceResponse<Void> clientResponse = restartWebAppsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2355,19 +2176,18 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> restartWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> restartWebAppsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the PagedList&lt;SiteInner&gt; object if successful.
      */
     public PagedList<SiteInner> listWebApps(final String resourceGroupName, final String name) {
@@ -2381,11 +2201,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2402,11 +2222,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<Page<SiteInner>> listWebAppsAsync(final String resourceGroupName, final String name) {
@@ -2420,11 +2240,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsWithServiceResponseAsync(final String resourceGroupName, final String name) {
@@ -2442,11 +2262,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SiteInner>>> listWebAppsSinglePageAsync(final String resourceGroupName, final String name) {
@@ -2478,12 +2298,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @return the PagedList&lt;SiteInner&gt; object if successful.
@@ -2499,12 +2319,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2523,12 +2343,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
@@ -2544,12 +2364,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
      * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
      * @param top List page size. If specified, results are paged.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
@@ -2569,12 +2389,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
-    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of resource group
-    ServiceResponse<PageImpl<SiteInner>> * @param name Name of App Service Plan
-    ServiceResponse<PageImpl<SiteInner>> * @param skipToken Skip to of web apps in a list. If specified, the resulting list will contain web apps starting from (including) the skipToken. Else, the resulting list contains web apps from the start of the list
+    ServiceResponse<PageImpl<SiteInner>> * @param resourceGroupName Name of the resource group to which the resource belongs.
+    ServiceResponse<PageImpl<SiteInner>> * @param name Name of the App Service plan.
+    ServiceResponse<PageImpl<SiteInner>> * @param skipToken Skip to a web app in the list of webapps associated with app service plan. If specified, the resulting list will contain web apps starting from (including) the skipToken. Otherwise, the resulting list contains web apps from the start of the list
     ServiceResponse<PageImpl<SiteInner>> * @param filter Supported filter: $filter=state eq running. Returns only web apps that are currently running
     ServiceResponse<PageImpl<SiteInner>> * @param top List page size. If specified, results are paged.
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -2612,11 +2432,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of vnets associated with App Service Plan.
-     * Gets list of vnets associated with App Service Plan.
+     * Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the List&lt;VnetInfoInner&gt; object if successful.
      */
     public List<VnetInfoInner> listVnets(String resourceGroupName, String name) {
@@ -2624,11 +2444,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of vnets associated with App Service Plan.
-     * Gets list of vnets associated with App Service Plan.
+     * Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2637,11 +2457,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of vnets associated with App Service Plan.
-     * Gets list of vnets associated with App Service Plan.
+     * Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<List<VnetInfoInner>> listVnetsAsync(String resourceGroupName, String name) {
@@ -2654,11 +2474,11 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of vnets associated with App Service Plan.
-     * Gets list of vnets associated with App Service Plan.
+     * Get all Virtual Networks associated with an App Service plan.
+     * Get all Virtual Networks associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
      * @return the observable to the List&lt;VnetInfoInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetInfoInner>>> listVnetsWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -2694,12 +2514,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a vnet associated with an App Service Plan.
-     * Gets a vnet associated with an App Service Plan.
+     * Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the VnetInfoInner object if successful.
      */
     public VnetInfoInner getVnetFromServerFarm(String resourceGroupName, String name, String vnetName) {
@@ -2707,12 +2527,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a vnet associated with an App Service Plan.
-     * Gets a vnet associated with an App Service Plan.
+     * Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2721,12 +2541,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a vnet associated with an App Service Plan.
-     * Gets a vnet associated with an App Service Plan.
+     * Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the observable to the VnetInfoInner object
      */
     public Observable<VnetInfoInner> getVnetFromServerFarmAsync(String resourceGroupName, String name, String vnetName) {
@@ -2739,12 +2559,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a vnet associated with an App Service Plan.
-     * Gets a vnet associated with an App Service Plan.
+     * Get a Virtual Network associated with an App Service plan.
+     * Get a Virtual Network associated with an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the observable to the VnetInfoInner object
      */
     public Observable<ServiceResponse<VnetInfoInner>> getVnetFromServerFarmWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
@@ -2784,12 +2604,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the vnet gateway.
-     * Gets the vnet gateway.
+     * Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of the App Service Plan
-     * @param vnetName Name of the virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @return the VnetGatewayInner object if successful.
      */
@@ -2798,12 +2618,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the vnet gateway.
-     * Gets the vnet gateway.
+     * Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of the App Service Plan
-     * @param vnetName Name of the virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -2813,12 +2633,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the vnet gateway.
-     * Gets the vnet gateway.
+     * Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of the App Service Plan
-     * @param vnetName Name of the virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @return the observable to the VnetGatewayInner object
      */
@@ -2832,12 +2652,12 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets the vnet gateway.
-     * Gets the vnet gateway.
+     * Get a Virtual Network gateway.
+     * Get a Virtual Network gateway.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of the App Service Plan
-     * @param vnetName Name of the virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
      * @return the observable to the VnetGatewayInner object
      */
@@ -2880,14 +2700,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates the vnet gateway.
-     * Updates the vnet gateway.
+     * Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param vnetName The name of the virtual network
-     * @param gatewayName The name of the gateway. Only 'primary' is supported.
-     * @param connectionEnvelope The gateway entity.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope Definition of the gateway.
      * @return the VnetGatewayInner object if successful.
      */
     public VnetGatewayInner updateVnetGateway(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -2895,14 +2715,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates the vnet gateway.
-     * Updates the vnet gateway.
+     * Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param vnetName The name of the virtual network
-     * @param gatewayName The name of the gateway. Only 'primary' is supported.
-     * @param connectionEnvelope The gateway entity.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope Definition of the gateway.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2911,14 +2731,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates the vnet gateway.
-     * Updates the vnet gateway.
+     * Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param vnetName The name of the virtual network
-     * @param gatewayName The name of the gateway. Only 'primary' is supported.
-     * @param connectionEnvelope The gateway entity.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope Definition of the gateway.
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<VnetGatewayInner> updateVnetGatewayAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -2931,14 +2751,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Updates the vnet gateway.
-     * Updates the vnet gateway.
+     * Update a Virtual Network gateway.
+     * Update a Virtual Network gateway.
      *
-     * @param resourceGroupName The resource group
-     * @param name The name of the App Service Plan
-     * @param vnetName The name of the virtual network
-     * @param gatewayName The name of the gateway. Only 'primary' is supported.
-     * @param connectionEnvelope The gateway entity.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param gatewayName Name of the gateway. Only the 'primary' gateway is supported.
+     * @param connectionEnvelope Definition of the gateway.
      * @return the observable to the VnetGatewayInner object
      */
     public Observable<ServiceResponse<VnetGatewayInner>> updateVnetGatewayWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String gatewayName, VnetGatewayInner connectionEnvelope) {
@@ -2984,43 +2804,43 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a list of all routes associated with a vnet, in an app service plan.
-     * Gets a list of all routes associated with a vnet, in an app service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
-    public List<VnetRouteInner> listtRoutesForVnet(String resourceGroupName, String name, String vnetName) {
-        return listtRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
+    public List<VnetRouteInner> listRoutesForVnet(String resourceGroupName, String name, String vnetName) {
+        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).toBlocking().single().getBody();
     }
 
     /**
-     * Gets a list of all routes associated with a vnet, in an app service plan.
-     * Gets a list of all routes associated with a vnet, in an app service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<VnetRouteInner>> listtRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
-        return ServiceCall.create(listtRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
+    public ServiceCall<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName, final ServiceCallback<List<VnetRouteInner>> serviceCallback) {
+        return ServiceCall.create(listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName), serviceCallback);
     }
 
     /**
-     * Gets a list of all routes associated with a vnet, in an app service plan.
-     * Gets a list of all routes associated with a vnet, in an app service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
-    public Observable<List<VnetRouteInner>> listtRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
-        return listtRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
+    public Observable<List<VnetRouteInner>> listRoutesForVnetAsync(String resourceGroupName, String name, String vnetName) {
+        return listRoutesForVnetWithServiceResponseAsync(resourceGroupName, name, vnetName).map(new Func1<ServiceResponse<List<VnetRouteInner>>, List<VnetRouteInner>>() {
             @Override
             public List<VnetRouteInner> call(ServiceResponse<List<VnetRouteInner>> response) {
                 return response.getBody();
@@ -3029,15 +2849,15 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a list of all routes associated with a vnet, in an app service plan.
-     * Gets a list of all routes associated with a vnet, in an app service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
+     * Get all routes that are associated with a Virtual Network in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
-    public Observable<ServiceResponse<List<VnetRouteInner>>> listtRoutesForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
+    public Observable<ServiceResponse<List<VnetRouteInner>>> listRoutesForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3051,12 +2871,12 @@ public final class AppServicePlansInner {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         final String apiVersion = "2016-09-01";
-        return service.listtRoutesForVnet(resourceGroupName, name, vnetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listRoutesForVnet(resourceGroupName, name, vnetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VnetRouteInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<VnetRouteInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<List<VnetRouteInner>> clientResponse = listtRoutesForVnetDelegate(response);
+                        ServiceResponse<List<VnetRouteInner>> clientResponse = listRoutesForVnetDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3065,7 +2885,7 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<List<VnetRouteInner>> listtRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<List<VnetRouteInner>> listRoutesForVnetDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<List<VnetRouteInner>, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<List<VnetRouteInner>>() { }.getType())
                 .registerError(CloudException.class)
@@ -3073,13 +2893,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a specific route associated with a vnet, in an app service plan.
-     * Gets a specific route associated with a vnet, in an app service plan.
+     * Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @return the List&lt;VnetRouteInner&gt; object if successful.
      */
     public List<VnetRouteInner> getRouteForVnet(String resourceGroupName, String name, String vnetName, String routeName) {
@@ -3087,13 +2907,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a specific route associated with a vnet, in an app service plan.
-     * Gets a specific route associated with a vnet, in an app service plan.
+     * Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -3102,13 +2922,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a specific route associated with a vnet, in an app service plan.
-     * Gets a specific route associated with a vnet, in an app service plan.
+     * Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<List<VnetRouteInner>> getRouteForVnetAsync(String resourceGroupName, String name, String vnetName, String routeName) {
@@ -3121,13 +2941,13 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets a specific route associated with a vnet, in an app service plan.
-     * Gets a specific route associated with a vnet, in an app service plan.
+     * Get a Virtual Network route in an App Service plan.
+     * Get a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @return the observable to the List&lt;VnetRouteInner&gt; object
      */
     public Observable<ServiceResponse<List<VnetRouteInner>>> getRouteForVnetWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
@@ -3170,14 +2990,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner createOrUpdateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3185,14 +3005,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -3201,14 +3021,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the observable to the VnetRouteInner object
      */
     public Observable<VnetRouteInner> createOrUpdateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3221,14 +3041,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the observable to the VnetRouteInner object
      */
     public Observable<ServiceResponse<VnetRouteInner>> createOrUpdateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3276,64 +3096,63 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Deletes an existing route for a vnet in an app service plan.
-     * Deletes an existing route for a vnet in an app service plan.
+     * Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      */
-    public Object deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
-        return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
+    public void deleteVnetRoute(String resourceGroupName, String name, String vnetName, String routeName) {
+        deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes an existing route for a vnet in an app service plan.
-     * Deletes an existing route for a vnet in an app service plan.
+     * Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName), serviceCallback);
     }
 
     /**
-     * Deletes an existing route for a vnet in an app service plan.
-     * Deletes an existing route for a vnet in an app service plan.
+     * Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
-        return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> deleteVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName) {
+        return deleteVnetRouteWithServiceResponseAsync(resourceGroupName, name, vnetName, routeName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Deletes an existing route for a vnet in an app service plan.
-     * Deletes an existing route for a vnet in an app service plan.
+     * Delete a Virtual Network route in an App Service plan.
+     * Delete a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> deleteVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
+    public Observable<ServiceResponse<Void>> deleteVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3351,11 +3170,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.deleteVnetRoute(resourceGroupName, name, vnetName, routeName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = deleteVnetRouteDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteVnetRouteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3364,23 +3183,22 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
+    private ServiceResponse<Void> deleteVnetRouteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
                 .register(404, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the VnetRouteInner object if successful.
      */
     public VnetRouteInner updateVnetRoute(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3388,14 +3206,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -3404,14 +3222,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the observable to the VnetRouteInner object
      */
     public Observable<VnetRouteInner> updateVnetRouteAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3424,14 +3242,14 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
-     * Creates a new route or updates an existing route for a vnet in an app service plan.
+     * Create or update a Virtual Network route in an App Service plan.
+     * Create or update a Virtual Network route in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of App Service Plan
-     * @param vnetName Name of virtual network
-     * @param routeName Name of the virtual network route
-     * @param route The route object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param vnetName Name of the Virtual Network.
+     * @param routeName Name of the Virtual Network route.
+     * @param route Definition of the Virtual Network route.
      * @return the observable to the VnetRouteInner object
      */
     public Observable<ServiceResponse<VnetRouteInner>> updateVnetRouteWithServiceResponseAsync(String resourceGroupName, String name, String vnetName, String routeName, VnetRouteInner route) {
@@ -3479,60 +3297,59 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Submit a reboot request for a worker machine in the specified server farm.
-     * Submit a reboot request for a worker machine in the specified server farm.
+     * Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param workerName Name of worker machine, typically starts with RD
-     * @return the Object object if successful.
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      */
-    public Object rebootWorker(String resourceGroupName, String name, String workerName) {
-        return rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
+    public void rebootWorker(String resourceGroupName, String name, String workerName) {
+        rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).toBlocking().single().getBody();
     }
 
     /**
-     * Submit a reboot request for a worker machine in the specified server farm.
-     * Submit a reboot request for a worker machine in the specified server farm.
+     * Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param workerName Name of worker machine, typically starts with RD
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<Object> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Object> serviceCallback) {
+    public ServiceCall<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName, final ServiceCallback<Void> serviceCallback) {
         return ServiceCall.create(rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName), serviceCallback);
     }
 
     /**
-     * Submit a reboot request for a worker machine in the specified server farm.
-     * Submit a reboot request for a worker machine in the specified server farm.
+     * Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param workerName Name of worker machine, typically starts with RD
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Object> rebootWorkerAsync(String resourceGroupName, String name, String workerName) {
-        return rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).map(new Func1<ServiceResponse<Object>, Object>() {
+    public Observable<Void> rebootWorkerAsync(String resourceGroupName, String name, String workerName) {
+        return rebootWorkerWithServiceResponseAsync(resourceGroupName, name, workerName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
-            public Object call(ServiceResponse<Object> response) {
+            public Void call(ServiceResponse<Void> response) {
                 return response.getBody();
             }
         });
     }
 
     /**
-     * Submit a reboot request for a worker machine in the specified server farm.
-     * Submit a reboot request for a worker machine in the specified server farm.
+     * Reboot a worker machine in an App Service plan.
+     * Reboot a worker machine in an App Service plan.
      *
-     * @param resourceGroupName Name of resource group
-     * @param name Name of server farm
-     * @param workerName Name of worker machine, typically starts with RD
-     * @return the observable to the Object object
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service plan.
+     * @param workerName Name of worker machine, which typically starts with RD.
+     * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Object>> rebootWorkerWithServiceResponseAsync(String resourceGroupName, String name, String workerName) {
+    public Observable<ServiceResponse<Void>> rebootWorkerWithServiceResponseAsync(String resourceGroupName, String name, String workerName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -3547,11 +3364,11 @@ public final class AppServicePlansInner {
         }
         final String apiVersion = "2016-09-01";
         return service.rebootWorker(resourceGroupName, name, workerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Object>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
-                public Observable<ServiceResponse<Object>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Object> clientResponse = rebootWorkerDelegate(response);
+                        ServiceResponse<Void> clientResponse = rebootWorkerDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -3560,16 +3377,15 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<Object> rebootWorkerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Object, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Object>() { }.getType())
-                .registerError(CloudException.class)
+    private ServiceResponse<Void> rebootWorkerDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
@@ -3585,8 +3401,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -3606,8 +3422,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -3623,8 +3439,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -3644,8 +3460,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets all App Service Plans for a subcription.
-     * Gets all App Service Plans for a subcription.
+     * Get all App Service plans for a subcription.
+     * Get all App Service plans for a subcription.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -3676,8 +3492,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServicePlanInner&gt; object if successful.
@@ -3693,8 +3509,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -3714,8 +3530,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -3731,8 +3547,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;AppServicePlanInner&gt; object
@@ -3752,8 +3568,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets collection of App Service Plans in a resource group for a given subscription.
-     * Gets collection of App Service Plans in a resource group for a given subscription.
+     * Get all App Service plans in a resource group.
+     * Get all App Service plans in a resource group.
      *
     ServiceResponse<PageImpl<AppServicePlanInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;AppServicePlanInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -3784,37 +3600,253 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;MetricDefinitionInner&gt; object if successful.
+     * @return the PagedList&lt;String&gt; object if successful.
      */
-    public PagedList<MetricDefinitionInner> listMetricDefintionsNext(final String nextPageLink) {
-        ServiceResponse<Page<MetricDefinitionInner>> response = listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<MetricDefinitionInner>(response.getBody()) {
+    public PagedList<String> listWebAppsByHybridConnectionNext(final String nextPageLink) {
+        ServiceResponse<Page<String>> response = listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<String>(response.getBody()) {
             @Override
-            public Page<MetricDefinitionInner> nextPage(String nextPageLink) {
-                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            public Page<String> nextPage(String nextPageLink) {
+                return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
             }
         };
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<MetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<MetricDefinitionInner>> serviceCall, final ListOperationCallback<MetricDefinitionInner> serviceCallback) {
+    public ServiceCall<List<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink, final ServiceCall<List<String>> serviceCall, final ListOperationCallback<String> serviceCallback) {
+        return AzureServiceCall.create(
+            listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<String>>> call(String nextPageLink) {
+                    return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;String&gt; object
+     */
+    public Observable<Page<String>> listWebAppsByHybridConnectionNextAsync(final String nextPageLink) {
+        return listWebAppsByHybridConnectionNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<String>>, Page<String>>() {
+                @Override
+                public Page<String> call(ServiceResponse<Page<String>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;String&gt; object
+     */
+    public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionNextWithServiceResponseAsync(final String nextPageLink) {
+        return listWebAppsByHybridConnectionNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<String>>, Observable<ServiceResponse<Page<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<String>>> call(ServiceResponse<Page<String>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listWebAppsByHybridConnectionNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     * Get all apps that use a Hybrid Connection in an App Service Plan.
+     *
+    ServiceResponse<PageImpl<String>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;String&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<String>>> listWebAppsByHybridConnectionNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listWebAppsByHybridConnectionNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<String>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<String>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<String>> result = listWebAppsByHybridConnectionNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<String>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<String>> listWebAppsByHybridConnectionNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<String>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<String>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;HybridConnectionInner&gt; object if successful.
+     */
+    public PagedList<HybridConnectionInner> listHybridConnectionsNext(final String nextPageLink) {
+        ServiceResponse<Page<HybridConnectionInner>> response = listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<HybridConnectionInner>(response.getBody()) {
+            @Override
+            public Page<HybridConnectionInner> nextPage(String nextPageLink) {
+                return listHybridConnectionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink, final ServiceCall<List<HybridConnectionInner>> serviceCall, final ListOperationCallback<HybridConnectionInner> serviceCallback) {
+        return AzureServiceCall.create(
+            listHybridConnectionsNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(String nextPageLink) {
+                    return listHybridConnectionsNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
+     */
+    public Observable<Page<HybridConnectionInner>> listHybridConnectionsNextAsync(final String nextPageLink) {
+        return listHybridConnectionsNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Page<HybridConnectionInner>>() {
+                @Override
+                public Page<HybridConnectionInner> call(ServiceResponse<Page<HybridConnectionInner>> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;HybridConnectionInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsNextWithServiceResponseAsync(final String nextPageLink) {
+        return listHybridConnectionsNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<HybridConnectionInner>>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(ServiceResponse<Page<HybridConnectionInner>> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listHybridConnectionsNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     * Retrieve all Hybrid Connections in use in an App Service plan.
+     *
+    ServiceResponse<PageImpl<HybridConnectionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;HybridConnectionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<HybridConnectionInner>>> listHybridConnectionsNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        return service.listHybridConnectionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<HybridConnectionInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<HybridConnectionInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<HybridConnectionInner>> result = listHybridConnectionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<HybridConnectionInner>>(result.getBody(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<HybridConnectionInner>> listHybridConnectionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<HybridConnectionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<HybridConnectionInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object if successful.
+     */
+    public PagedList<ResourceMetricDefinitionInner> listMetricDefintionsNext(final String nextPageLink) {
+        ServiceResponse<Page<ResourceMetricDefinitionInner>> response = listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ResourceMetricDefinitionInner>(response.getBody()) {
+            @Override
+            public Page<ResourceMetricDefinitionInner> nextPage(String nextPageLink) {
+                return listMetricDefintionsNextSinglePageAsync(nextPageLink).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink, final ServiceCall<List<ResourceMetricDefinitionInner>> serviceCall, final ListOperationCallback<ResourceMetricDefinitionInner> serviceCallback) {
         return AzureServiceCall.create(
             listMetricDefintionsNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(String nextPageLink) {
                     return listMetricDefintionsNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -3822,34 +3854,34 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
-    public Observable<Page<MetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink) {
+    public Observable<Page<ResourceMetricDefinitionInner>> listMetricDefintionsNextAsync(final String nextPageLink) {
         return listMetricDefintionsNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Page<MetricDefinitionInner>>() {
+            .map(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Page<ResourceMetricDefinitionInner>>() {
                 @Override
-                public Page<MetricDefinitionInner> call(ServiceResponse<Page<MetricDefinitionInner>> response) {
+                public Page<ResourceMetricDefinitionInner> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> response) {
                     return response.getBody();
                 }
             });
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;MetricDefinitionInner&gt; object
+     * @return the observable to the PagedList&lt;ResourceMetricDefinitionInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefintionsNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsNextWithServiceResponseAsync(final String nextPageLink) {
         return listMetricDefintionsNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<MetricDefinitionInner>>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<ResourceMetricDefinitionInner>>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(ServiceResponse<Page<MetricDefinitionInner>> page) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(ServiceResponse<Page<ResourceMetricDefinitionInner>> page) {
                     String nextPageLink = page.getBody().getNextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -3860,23 +3892,23 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * List of metrics that can be queried for an App Service Plan.
-     * List of metrics that can be queried for an App Service Plan.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
+     * Get metrics that can be queried for an App Service plan, and their definitions.
      *
-    ServiceResponse<PageImpl<MetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;MetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+    ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ResourceMetricDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<MetricDefinitionInner>>> listMetricDefintionsNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> listMetricDefintionsNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         return service.listMetricDefintionsNext(nextPageLink, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MetricDefinitionInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MetricDefinitionInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<ResourceMetricDefinitionInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MetricDefinitionInner>> result = listMetricDefintionsNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<MetricDefinitionInner>>(result.getBody(), result.getResponse()));
+                        ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> result = listMetricDefintionsNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<ResourceMetricDefinitionInner>>(result.getBody(), result.getResponse()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -3884,16 +3916,16 @@ public final class AppServicePlansInner {
             });
     }
 
-    private ServiceResponse<PageImpl<MetricDefinitionInner>> listMetricDefintionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<PageImpl<MetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<PageImpl<MetricDefinitionInner>>() { }.getType())
+    private ServiceResponse<PageImpl<ResourceMetricDefinitionInner>> listMetricDefintionsNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<PageImpl<ResourceMetricDefinitionInner>, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<PageImpl<ResourceMetricDefinitionInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ResourceMetricInner&gt; object if successful.
@@ -3909,8 +3941,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -3930,8 +3962,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
@@ -3947,8 +3979,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ResourceMetricInner&gt; object
@@ -3968,8 +4000,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Queries for App Serice Plan metrics.
-     * Queries for App Serice Plan metrics.
+     * Get metrics for an App Serice plan.
+     * Get metrics for an App Serice plan.
      *
     ServiceResponse<PageImpl<ResourceMetricInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ResourceMetricInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -4000,8 +4032,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SiteInner&gt; object if successful.
@@ -4017,8 +4049,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -4038,8 +4070,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
@@ -4055,8 +4087,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SiteInner&gt; object
@@ -4076,8 +4108,8 @@ public final class AppServicePlansInner {
     }
 
     /**
-     * Gets list of Apps associated with an App Service Plan.
-     * Gets list of Apps associated with an App Service Plan.
+     * Get all apps associated with an App Service plan.
+     * Get all apps associated with an App Service plan.
      *
     ServiceResponse<PageImpl<SiteInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SiteInner&gt; object wrapped in {@link ServiceResponse} if successful.

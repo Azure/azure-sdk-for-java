@@ -8,11 +8,13 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Contact information for domain registration. If 'Domain Privacy' option is
- * not selected then the contact information will be  be made publicly
- * available through the Whois directories as per ICANN requirements.
+ * not selected then the contact information is made publicly available
+ * through the Whois
+ * directories as per ICANN requirements.
  */
 public class Contact {
     /**
@@ -23,6 +25,7 @@ public class Contact {
     /**
      * Email address.
      */
+    @JsonProperty(required = true)
     private String email;
 
     /**
@@ -38,11 +41,13 @@ public class Contact {
     /**
      * First name.
      */
+    @JsonProperty(required = true)
     private String nameFirst;
 
     /**
      * Last name.
      */
+    @JsonProperty(required = true)
     private String nameLast;
 
     /**
@@ -58,6 +63,7 @@ public class Contact {
     /**
      * Phone number.
      */
+    @JsonProperty(required = true)
     private String phone;
 
     /**

@@ -127,7 +127,7 @@ class DeploymentSlotImpl
     }
 
     @Override
-    Observable<Object> deleteHostNameBinding(String hostname) {
+    Observable<Void> deleteHostNameBinding(String hostname) {
         return client.deleteHostNameBindingSlotAsync(resourceGroupName(), parent().name(), name(), hostname);
     }
 
@@ -168,7 +168,7 @@ class DeploymentSlotImpl
 
     @Override
     public void swap(String slotName) {
-        client.swapSlotsSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        client.swapSlotSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
     }
 
     @Override

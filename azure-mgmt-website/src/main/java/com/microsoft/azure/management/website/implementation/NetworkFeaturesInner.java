@@ -14,34 +14,33 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * This is an object used to store a full view of network features (presently
- * VNET integration and Hybrid Connections)
- * for a web app.
+ * Full view of network features for an app (presently VNET integration and
+ * Hybrid Connections).
  */
 @JsonFlatten
 public class NetworkFeaturesInner extends Resource {
     /**
-     * The Vnet Name.
+     * The Virtual Network name.
      */
-    @JsonProperty(value = "properties.virtualNetworkName")
+    @JsonProperty(value = "properties.virtualNetworkName", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualNetworkName;
 
     /**
-     * The Vnet Summary view.
+     * The Virtual Network summary view.
      */
-    @JsonProperty(value = "properties.virtualNetworkConnection")
+    @JsonProperty(value = "properties.virtualNetworkConnection", access = JsonProperty.Access.WRITE_ONLY)
     private VnetInfoInner virtualNetworkConnection;
 
     /**
-     * The Hybrid Connections Summary view.
+     * The Hybrid Connections summary view.
      */
-    @JsonProperty(value = "properties.hybridConnections")
+    @JsonProperty(value = "properties.hybridConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<RelayServiceConnectionEntityInner> hybridConnections;
 
     /**
-     * The Hybrid Connection V2 (service bus) view.
+     * The Hybrid Connection V2 (Service Bus) view.
      */
-    @JsonProperty(value = "properties.hybridConnectionsV2")
+    @JsonProperty(value = "properties.hybridConnectionsV2", access = JsonProperty.Access.WRITE_ONLY)
     private List<HybridConnectionInner> hybridConnectionsV2;
 
     /**
@@ -54,34 +53,12 @@ public class NetworkFeaturesInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkName value.
-     *
-     * @param virtualNetworkName the virtualNetworkName value to set
-     * @return the NetworkFeaturesInner object itself.
-     */
-    public NetworkFeaturesInner withVirtualNetworkName(String virtualNetworkName) {
-        this.virtualNetworkName = virtualNetworkName;
-        return this;
-    }
-
-    /**
      * Get the virtualNetworkConnection value.
      *
      * @return the virtualNetworkConnection value
      */
     public VnetInfoInner virtualNetworkConnection() {
         return this.virtualNetworkConnection;
-    }
-
-    /**
-     * Set the virtualNetworkConnection value.
-     *
-     * @param virtualNetworkConnection the virtualNetworkConnection value to set
-     * @return the NetworkFeaturesInner object itself.
-     */
-    public NetworkFeaturesInner withVirtualNetworkConnection(VnetInfoInner virtualNetworkConnection) {
-        this.virtualNetworkConnection = virtualNetworkConnection;
-        return this;
     }
 
     /**
@@ -94,34 +71,12 @@ public class NetworkFeaturesInner extends Resource {
     }
 
     /**
-     * Set the hybridConnections value.
-     *
-     * @param hybridConnections the hybridConnections value to set
-     * @return the NetworkFeaturesInner object itself.
-     */
-    public NetworkFeaturesInner withHybridConnections(List<RelayServiceConnectionEntityInner> hybridConnections) {
-        this.hybridConnections = hybridConnections;
-        return this;
-    }
-
-    /**
      * Get the hybridConnectionsV2 value.
      *
      * @return the hybridConnectionsV2 value
      */
     public List<HybridConnectionInner> hybridConnectionsV2() {
         return this.hybridConnectionsV2;
-    }
-
-    /**
-     * Set the hybridConnectionsV2 value.
-     *
-     * @param hybridConnectionsV2 the hybridConnectionsV2 value to set
-     * @return the NetworkFeaturesInner object itself.
-     */
-    public NetworkFeaturesInner withHybridConnectionsV2(List<HybridConnectionInner> hybridConnectionsV2) {
-        this.hybridConnectionsV2 = hybridConnectionsV2;
-        return this;
     }
 
 }

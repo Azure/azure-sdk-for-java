@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Application logs to azure table storage configuration.
+ * Application logs to Azure table storage configuration.
  */
 public class AzureTableStorageApplicationLogsConfig {
     /**
@@ -20,8 +21,9 @@ public class AzureTableStorageApplicationLogsConfig {
     private LogLevel level;
 
     /**
-     * SAS url to an azure table with add/query/delete permissions.
+     * SAS URL to an Azure table with add/query/delete permissions.
      */
+    @JsonProperty(required = true)
     private String sasUrl;
 
     /**

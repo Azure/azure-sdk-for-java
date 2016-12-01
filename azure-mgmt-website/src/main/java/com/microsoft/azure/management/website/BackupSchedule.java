@@ -20,7 +20,8 @@ public class BackupSchedule {
      * How often should be the backup executed (e.g. for weekly backup, this
      * should be set to 7 and FrequencyUnit should be set to Day).
      */
-    private Integer frequencyInterval;
+    @JsonProperty(required = true)
+    private int frequencyInterval;
 
     /**
      * How often should be the backup executed (e.g. for weekly backup, this
@@ -34,12 +35,14 @@ public class BackupSchedule {
      * True if the retention policy should always keep at least one backup in
      * the storage account, regardless how old it is; false otherwise.
      */
-    private Boolean keepAtLeastOneBackup;
+    @JsonProperty(required = true)
+    private boolean keepAtLeastOneBackup;
 
     /**
      * After how many days backups should be deleted.
      */
-    private Integer retentionPeriodInDays;
+    @JsonProperty(required = true)
+    private int retentionPeriodInDays;
 
     /**
      * When the schedule should start working.
@@ -47,8 +50,9 @@ public class BackupSchedule {
     private DateTime startTime;
 
     /**
-     * The last time when this schedule was triggered.
+     * Last time when this schedule was triggered.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastExecutionTime;
 
     /**
@@ -56,7 +60,7 @@ public class BackupSchedule {
      *
      * @return the frequencyInterval value
      */
-    public Integer frequencyInterval() {
+    public int frequencyInterval() {
         return this.frequencyInterval;
     }
 
@@ -66,7 +70,7 @@ public class BackupSchedule {
      * @param frequencyInterval the frequencyInterval value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule withFrequencyInterval(Integer frequencyInterval) {
+    public BackupSchedule withFrequencyInterval(int frequencyInterval) {
         this.frequencyInterval = frequencyInterval;
         return this;
     }
@@ -96,7 +100,7 @@ public class BackupSchedule {
      *
      * @return the keepAtLeastOneBackup value
      */
-    public Boolean keepAtLeastOneBackup() {
+    public boolean keepAtLeastOneBackup() {
         return this.keepAtLeastOneBackup;
     }
 
@@ -106,7 +110,7 @@ public class BackupSchedule {
      * @param keepAtLeastOneBackup the keepAtLeastOneBackup value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule withKeepAtLeastOneBackup(Boolean keepAtLeastOneBackup) {
+    public BackupSchedule withKeepAtLeastOneBackup(boolean keepAtLeastOneBackup) {
         this.keepAtLeastOneBackup = keepAtLeastOneBackup;
         return this;
     }
@@ -116,7 +120,7 @@ public class BackupSchedule {
      *
      * @return the retentionPeriodInDays value
      */
-    public Integer retentionPeriodInDays() {
+    public int retentionPeriodInDays() {
         return this.retentionPeriodInDays;
     }
 
@@ -126,7 +130,7 @@ public class BackupSchedule {
      * @param retentionPeriodInDays the retentionPeriodInDays value to set
      * @return the BackupSchedule object itself.
      */
-    public BackupSchedule withRetentionPeriodInDays(Integer retentionPeriodInDays) {
+    public BackupSchedule withRetentionPeriodInDays(int retentionPeriodInDays) {
         this.retentionPeriodInDays = retentionPeriodInDays;
         return this;
     }
@@ -158,17 +162,6 @@ public class BackupSchedule {
      */
     public DateTime lastExecutionTime() {
         return this.lastExecutionTime;
-    }
-
-    /**
-     * Set the lastExecutionTime value.
-     *
-     * @param lastExecutionTime the lastExecutionTime value to set
-     * @return the BackupSchedule object itself.
-     */
-    public BackupSchedule withLastExecutionTime(DateTime lastExecutionTime) {
-        this.lastExecutionTime = lastExecutionTime;
-        return this;
     }
 
 }

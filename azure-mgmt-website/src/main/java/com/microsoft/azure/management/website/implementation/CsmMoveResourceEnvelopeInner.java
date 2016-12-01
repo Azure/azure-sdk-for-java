@@ -11,8 +11,8 @@ package com.microsoft.azure.management.website.implementation;
 import java.util.List;
 
 /**
- * Class containing a list of the resources that need to be moved and the
- * resource group they should be moved to.
+ * Object with a list of the resources that need to be moved and the resource
+ * group they should be moved to.
  */
 public class CsmMoveResourceEnvelopeInner {
     /**

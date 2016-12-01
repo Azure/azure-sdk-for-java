@@ -26,7 +26,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Configuration of Azure web site.
+ * Configuration of an App Service app.
  */
 @JsonFlatten
 public class SiteConfigInner extends Resource {
@@ -43,7 +43,7 @@ public class SiteConfigInner extends Resource {
     private List<String> defaultDocuments;
 
     /**
-     * Net Framework Version.
+     * .NET Framework version.
      */
     @JsonProperty(value = "properties.netFrameworkVersion")
     private String netFrameworkVersion;
@@ -61,13 +61,14 @@ public class SiteConfigInner extends Resource {
     private String pythonVersion;
 
     /**
-     * Version of Node.
+     * Version of Node.js.
      */
     @JsonProperty(value = "properties.nodeVersion")
     private String nodeVersion;
 
     /**
-     * Enable request tracing.
+     * &lt;code&gt;true&lt;/code&gt; if request tracing is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.requestTracingEnabled")
     private Boolean requestTracingEnabled;
@@ -79,31 +80,34 @@ public class SiteConfigInner extends Resource {
     private DateTime requestTracingExpirationTime;
 
     /**
-     * Remote Debugging Enabled.
+     * &lt;code&gt;true&lt;/code&gt; if remote debugging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.remoteDebuggingEnabled")
     private Boolean remoteDebuggingEnabled;
 
     /**
-     * Remote Debugging Version.
+     * Remote debugging version.
      */
     @JsonProperty(value = "properties.remoteDebuggingVersion")
     private String remoteDebuggingVersion;
 
     /**
-     * HTTP logging Enabled.
+     * &lt;code&gt;true&lt;/code&gt; if HTTP logging is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.httpLoggingEnabled")
     private Boolean httpLoggingEnabled;
 
     /**
-     * HTTP Logs Directory size limit.
+     * HTTP logs directory size limit.
      */
     @JsonProperty(value = "properties.logsDirectorySizeLimit")
     private Integer logsDirectorySizeLimit;
 
     /**
-     * Detailed error logging enabled.
+     * &lt;code&gt;true&lt;/code&gt; if detailed error logging is enabled;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.detailedErrorLoggingEnabled")
     private Boolean detailedErrorLoggingEnabled;
@@ -117,7 +121,7 @@ public class SiteConfigInner extends Resource {
     /**
      * Site MachineKey.
      */
-    @JsonProperty(value = "properties.machineKey")
+    @JsonProperty(value = "properties.machineKey", access = JsonProperty.Access.WRITE_ONLY)
     private SiteMachineKey machineKey;
 
     /**
@@ -135,23 +139,26 @@ public class SiteConfigInner extends Resource {
     /**
      * SCM type.
      */
-    @JsonProperty(value = "properties.scmType")
+    @JsonProperty(value = "properties.scmType", access = JsonProperty.Access.WRITE_ONLY)
     private String scmType;
 
     /**
-     * Use 32 bit worker process.
+     * &lt;code&gt;true&lt;/code&gt; to use 32-bit worker process; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.use32BitWorkerProcess")
     private Boolean use32BitWorkerProcess;
 
     /**
-     * Web socket enabled.
+     * &lt;code&gt;true&lt;/code&gt; if WebSocket is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.webSocketsEnabled")
     private Boolean webSocketsEnabled;
 
     /**
-     * Always On.
+     * &lt;code&gt;true&lt;/code&gt; if Always On is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.alwaysOn")
     private Boolean alwaysOn;
@@ -175,7 +182,7 @@ public class SiteConfigInner extends Resource {
     private String javaContainerVersion;
 
     /**
-     * App Command Line to launch.
+     * App command line to launch.
      */
     @JsonProperty(value = "properties.appCommandLine")
     private String appCommandLine;
@@ -213,13 +220,14 @@ public class SiteConfigInner extends Resource {
     private SiteLimits limits;
 
     /**
-     * Auto heal enabled.
+     * &lt;code&gt;true&lt;/code&gt; if Auto Heal is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.autoHealEnabled")
     private Boolean autoHealEnabled;
 
     /**
-     * Auto heal rules.
+     * Auto Heal rules.
      */
     @JsonProperty(value = "properties.autoHealRules")
     private AutoHealRules autoHealRules;
@@ -231,7 +239,7 @@ public class SiteConfigInner extends Resource {
     private String tracingOptions;
 
     /**
-     * Vnet name.
+     * Virtual Network name.
      */
     @JsonProperty(value = "properties.vnetName")
     private String vnetName;
@@ -249,25 +257,26 @@ public class SiteConfigInner extends Resource {
     private PushSettingsInner push;
 
     /**
-     * Information about the formal API definition for the web app.
+     * Information about the formal API definition for the app.
      */
     @JsonProperty(value = "properties.apiDefinition")
     private ApiDefinitionInfo apiDefinition;
 
     /**
-     * Auto swap slot name.
+     * Auto-swap slot name.
      */
     @JsonProperty(value = "properties.autoSwapSlotName")
     private String autoSwapSlotName;
 
     /**
-     * Local mysql enabled.
+     * &lt;code&gt;true&lt;/code&gt; to enable local MySQL; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.localMySqlEnabled")
     private Boolean localMySqlEnabled;
 
     /**
-     * Ip Security restrictions.
+     * IP security restrictions.
      */
     @JsonProperty(value = "properties.ipSecurityRestrictions")
     private List<IpSecurityRestriction> ipSecurityRestrictions;
@@ -562,17 +571,6 @@ public class SiteConfigInner extends Resource {
     }
 
     /**
-     * Set the machineKey value.
-     *
-     * @param machineKey the machineKey value to set
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withMachineKey(SiteMachineKey machineKey) {
-        this.machineKey = machineKey;
-        return this;
-    }
-
-    /**
      * Get the handlerMappings value.
      *
      * @return the handlerMappings value
@@ -619,17 +617,6 @@ public class SiteConfigInner extends Resource {
      */
     public String scmType() {
         return this.scmType;
-    }
-
-    /**
-     * Set the scmType value.
-     *
-     * @param scmType the scmType value to set
-     * @return the SiteConfigInner object itself.
-     */
-    public SiteConfigInner withScmType(String scmType) {
-        this.scmType = scmType;
-        return this;
     }
 
     /**

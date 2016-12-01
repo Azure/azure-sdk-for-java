@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * StatusCodeBasedTrigger.
+ * Trigger based on status code.
  */
 public class StatusCodesBasedTrigger {
     /**
@@ -34,7 +34,7 @@ public class StatusCodesBasedTrigger {
     private Integer count;
 
     /**
-     * TimeInterval.
+     * Time interval.
      */
     private String timeInterval;
 

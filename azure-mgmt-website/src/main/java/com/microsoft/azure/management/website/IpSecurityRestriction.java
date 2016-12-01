@@ -11,7 +11,7 @@ package com.microsoft.azure.management.website;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents an ip security restriction on a web app.
+ * IP security restriction on an app.
  */
 public class IpSecurityRestriction {
     /**

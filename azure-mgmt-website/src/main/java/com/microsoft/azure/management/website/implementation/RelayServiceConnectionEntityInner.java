@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Class that represents a Biztalk Hybrid Connection.
+ * Hybrid Connection for an App Service app.
  */
 @JsonFlatten
 public class RelayServiceConnectionEntityInner extends Resource {

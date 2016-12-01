@@ -33,31 +33,33 @@ public class RestoreRequestInner extends Resource {
     private String blobName;
 
     /**
-     * True if the restore operation can overwrite target site. "True" needed
-     * if trying to restore over an existing site.
+     * &lt;code&gt;true&lt;/code&gt; if the restore operation can overwrite
+     * target app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * &lt;code&gt;true&lt;/code&gt; is needed if trying to restore over an
+     * existing app.
      */
     @JsonProperty(value = "properties.overwrite")
     private Boolean overwrite;
 
     /**
-     * Name of a site (Web App).
+     * Name of an app.
      */
     @JsonProperty(value = "properties.siteName")
     private String siteName;
 
     /**
-     * Collection of databses which should be restored. This list has to match
-     * the list of databases included in the backup.
+     * Collection of databases which should be restored. This list has to
+     * match the list of databases included in the backup.
      */
     @JsonProperty(value = "properties.databases")
     private List<DatabaseBackupSetting> databases;
 
     /**
-     * Changes a logic when restoring a site with custom domains. If "true",
-     * custom domains are removed automatically. If "false", custom domains
-     * are added to
-     * the site object when it is being restored, but that might
-     * fail due to conflicts during the operation.
+     * Changes a logic when restoring an app with custom domains.
+     * &lt;code&gt;true&lt;/code&gt; to remove custom domains automatically.
+     * If &lt;code&gt;false&lt;/code&gt;, custom domains are added to
+     * the app's object when it is being restored, but that might fail due to
+     * conflicts during the operation.
      */
     @JsonProperty(value = "properties.ignoreConflictingHostNames")
     private Boolean ignoreConflictingHostNames;
@@ -70,14 +72,14 @@ public class RestoreRequestInner extends Resource {
     private BackupRestoreOperationType operationType;
 
     /**
-     * Gets or sets a flag showing if SiteConfig.ConnectionStrings should be
-     * set in new site.
+     * &lt;code&gt;true&lt;/code&gt; if SiteConfig.ConnectionStrings should be
+     * set in new app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.adjustConnectionStrings")
     private Boolean adjustConnectionStrings;
 
     /**
-     * App Service Environment name, if needed (only when restoring a site to
+     * App Service Environment name, if needed (only when restoring an app to
      * an App Service Environment).
      */
     @JsonProperty(value = "properties.hostingEnvironment")

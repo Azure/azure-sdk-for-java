@@ -16,18 +16,18 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Worker pool of a hostingEnvironment (App Service Environment).
+ * Worker pool of an App Service Environment.
  */
 @JsonFlatten
 public class WorkerPoolInner extends Resource {
     /**
-     * Worker size id for referencing this worker pool.
+     * Worker size ID for referencing this worker pool.
      */
     @JsonProperty(value = "properties.workerSizeId")
     private Integer workerSizeId;
 
     /**
-     * Shared or dedicated web app hosting. Possible values include: 'Shared',
+     * Shared or dedicated app hosting. Possible values include: 'Shared',
      * 'Dedicated', 'Dynamic'.
      */
     @JsonProperty(value = "properties.computeMode")
@@ -48,7 +48,7 @@ public class WorkerPoolInner extends Resource {
     /**
      * Names of all instances in the worker pool (read only).
      */
-    @JsonProperty(value = "properties.instanceNames")
+    @JsonProperty(value = "properties.instanceNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> instanceNames;
 
     /**
@@ -143,17 +143,6 @@ public class WorkerPoolInner extends Resource {
      */
     public List<String> instanceNames() {
         return this.instanceNames;
-    }
-
-    /**
-     * Set the instanceNames value.
-     *
-     * @param instanceNames the instanceNames value to set
-     * @return the WorkerPoolInner object itself.
-     */
-    public WorkerPoolInner withInstanceNames(List<String> instanceNames) {
-        this.instanceNames = instanceNames;
-        return this;
     }
 
     /**

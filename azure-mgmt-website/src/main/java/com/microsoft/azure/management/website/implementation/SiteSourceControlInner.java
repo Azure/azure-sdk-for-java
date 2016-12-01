@@ -13,12 +13,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Describes the source control configuration for web app.
+ * Source control configuration for an app.
  */
 @JsonFlatten
 public class SiteSourceControlInner extends Resource {
     /**
-     * Repository or source control url.
+     * Repository or source control URL.
      */
     @JsonProperty(value = "properties.repoUrl")
     private String repoUrl;
@@ -30,19 +30,23 @@ public class SiteSourceControlInner extends Resource {
     private String branch;
 
     /**
-     * Whether to manual or continuous integration.
+     * &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
+     * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which
+     * configures webhooks into online repos like GitHub).
      */
     @JsonProperty(value = "properties.isManualIntegration")
     private Boolean isManualIntegration;
 
     /**
-     * Whether to manual or continuous integration.
+     * &lt;code&gt;true&lt;/code&gt; to enable deployment rollback; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.deploymentRollbackEnabled")
     private Boolean deploymentRollbackEnabled;
 
     /**
-     * Mercurial or Git repository type.
+     * &lt;code&gt;true&lt;/code&gt; for a Mercurial repository;
+     * &lt;code&gt;false&lt;/code&gt; for a Git repository.
      */
     @JsonProperty(value = "properties.isMercurial")
     private Boolean isMercurial;

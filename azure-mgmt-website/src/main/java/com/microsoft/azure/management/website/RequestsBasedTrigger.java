@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * RequestsBasedTrigger.
+ * Trigger based on total requests.
  */
 public class RequestsBasedTrigger {
     /**
@@ -19,7 +19,7 @@ public class RequestsBasedTrigger {
     private Integer count;
 
     /**
-     * TimeInterval.
+     * Time interval.
      */
     private String timeInterval;
 

@@ -41,7 +41,7 @@ public interface AppServiceCertificate extends
     /**
      * @return the pfx blob
      */
-    String pfxBlob();
+    byte[] pfxBlob();
 
     /**
      * @return the app name

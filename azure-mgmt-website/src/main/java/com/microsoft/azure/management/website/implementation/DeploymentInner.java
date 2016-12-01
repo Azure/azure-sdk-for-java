@@ -14,12 +14,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents user crendentials used for publishing activity.
+ * User crendentials used for publishing activity.
  */
 @JsonFlatten
 public class DeploymentInner extends Resource {
     /**
-     * Id.
+     * ID.
      */
     @JsonProperty(value = "properties.id")
     private String deploymentId;
@@ -49,19 +49,19 @@ public class DeploymentInner extends Resource {
     private String deployer;
 
     /**
-     * AuthorEmail.
+     * Author email.
      */
     @JsonProperty(value = "properties.author_email")
     private String authorEmail;
 
     /**
-     * StartTime.
+     * Start time.
      */
     @JsonProperty(value = "properties.start_time")
     private DateTime startTime;
 
     /**
-     * EndTime.
+     * End time.
      */
     @JsonProperty(value = "properties.end_time")
     private DateTime endTime;

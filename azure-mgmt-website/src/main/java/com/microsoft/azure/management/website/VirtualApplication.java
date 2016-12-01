@@ -11,7 +11,7 @@ package com.microsoft.azure.management.website;
 import java.util.List;
 
 /**
- * Virtual application under web app.
+ * Virtual application in an app.
  */
 public class VirtualApplication {
     /**
@@ -25,12 +25,13 @@ public class VirtualApplication {
     private String physicalPath;
 
     /**
-     * Is preload enabled.
+     * &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean preloadEnabled;
 
     /**
-     * Virtual Directories for virtual application.
+     * Virtual directories for virtual application.
      */
     private List<VirtualDirectory> virtualDirectories;
 

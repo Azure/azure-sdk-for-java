@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Address information for domain registration.
@@ -16,6 +17,7 @@ public class Address {
     /**
      * Address 1.
      */
+    @JsonProperty(required = true)
     private String address1;
 
     /**
@@ -26,21 +28,25 @@ public class Address {
     /**
      * City.
      */
+    @JsonProperty(required = true)
     private String city;
 
     /**
      * Country.
      */
+    @JsonProperty(required = true)
     private String country;
 
     /**
      * Postal code.
      */
+    @JsonProperty(required = true)
     private String postalCode;
 
     /**
      * State.
      */
+    @JsonProperty(required = true)
     private String state;
 
     /**

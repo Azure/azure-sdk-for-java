@@ -12,13 +12,14 @@ import java.util.List;
 import org.joda.time.DateTime;
 
 /**
- * Domain purchase consent object representing acceptance of applicable legal
+ * Domain purchase consent object, representing acceptance of applicable legal
  * agreements.
  */
 public class DomainPurchaseConsent {
     /**
      * List of applicable legal agreement keys. This list can be retrieved
-     * using ListLegalAgreements Api under TopLevelDomain resource.
+     * using ListLegalAgreements API under
+     * &lt;code&gt;TopLevelDomain&lt;/code&gt; resource.
      */
     private List<String> agreementKeys;
 

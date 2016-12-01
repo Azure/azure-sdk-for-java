@@ -8,15 +8,17 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Push settings for the Web App.
+ * Push settings for the App.
  */
 public class PushSettingsInner {
     /**
      * Gets or sets a flag indicating whether the Push endpoint is enabled.
      */
-    private Boolean isPushEnabled;
+    @JsonProperty(required = true)
+    private boolean isPushEnabled;
 
     /**
      * Gets or sets a JSON string containing a list of tags that are
@@ -27,6 +29,9 @@ public class PushSettingsInner {
     /**
      * Gets or sets a JSON string containing a list of tags that require user
      * authentication to be used in the push registration endpoint.
+     * Tags can consist of alphanumeric characters and the following:
+     * '_', '@', '#', '.', ':', '-'.
+     * Validation should be performed at the PushRequestHandler.
      */
     private String tagsRequiringAuth;
 
@@ -41,7 +46,7 @@ public class PushSettingsInner {
      *
      * @return the isPushEnabled value
      */
-    public Boolean isPushEnabled() {
+    public boolean isPushEnabled() {
         return this.isPushEnabled;
     }
 
@@ -51,7 +56,7 @@ public class PushSettingsInner {
      * @param isPushEnabled the isPushEnabled value to set
      * @return the PushSettingsInner object itself.
      */
-    public PushSettingsInner withIsPushEnabled(Boolean isPushEnabled) {
+    public PushSettingsInner withIsPushEnabled(boolean isPushEnabled) {
         this.isPushEnabled = isPushEnabled;
         return this;
     }

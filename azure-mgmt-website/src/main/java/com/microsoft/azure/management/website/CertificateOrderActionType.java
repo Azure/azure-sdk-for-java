@@ -40,7 +40,13 @@ public enum CertificateOrderActionType {
     ORG_VALIDATION_COMPLETE("OrgValidationComplete"),
 
     /** Enum value SanDrop. */
-    SAN_DROP("SanDrop");
+    SAN_DROP("SanDrop"),
+
+    /** Enum value FraudCleared. */
+    FRAUD_CLEARED("FraudCleared"),
+
+    /** Enum value Unknown. */
+    UNKNOWN("Unknown");
 
     /** The actual serialized value for a CertificateOrderActionType instance. */
     private String value;

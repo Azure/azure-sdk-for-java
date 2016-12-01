@@ -24,25 +24,25 @@ public class BackupItemInner extends Resource {
     /**
      * Id of the backup.
      */
-    @JsonProperty(value = "properties.id")
-    private Integer backupItemId;
+    @JsonProperty(value = "properties.id", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer backupId;
 
     /**
      * SAS URL for the storage account container which contains this backup.
      */
-    @JsonProperty(value = "properties.storageAccountUrl")
+    @JsonProperty(value = "properties.storageAccountUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountUrl;
 
     /**
      * Name of the blob which contains data for this backup.
      */
-    @JsonProperty(value = "properties.blobName")
+    @JsonProperty(value = "properties.blobName", access = JsonProperty.Access.WRITE_ONLY)
     private String blobName;
 
     /**
      * Name of this backup.
      */
-    @JsonProperty(value = "properties.name")
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
     private String backupItemName;
 
     /**
@@ -50,82 +50,71 @@ public class BackupItemInner extends Resource {
      * 'Succeeded', 'TimedOut', 'Created', 'Skipped', 'PartiallySucceeded',
      * 'DeleteInProgress', 'DeleteFailed', 'Deleted'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private BackupItemStatus status;
 
     /**
      * Size of the backup in bytes.
      */
-    @JsonProperty(value = "properties.sizeInBytes")
+    @JsonProperty(value = "properties.sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long sizeInBytes;
 
     /**
      * Timestamp of the backup creation.
      */
-    @JsonProperty(value = "properties.created")
+    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime created;
 
     /**
      * Details regarding this backup. Might contain an error message.
      */
-    @JsonProperty(value = "properties.log")
+    @JsonProperty(value = "properties.log", access = JsonProperty.Access.WRITE_ONLY)
     private String log;
 
     /**
      * List of databases included in the backup.
      */
-    @JsonProperty(value = "properties.databases")
+    @JsonProperty(value = "properties.databases", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseBackupSetting> databases;
 
     /**
      * True if this backup has been created due to a schedule being triggered.
      */
-    @JsonProperty(value = "properties.scheduled")
+    @JsonProperty(value = "properties.scheduled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean scheduled;
 
     /**
      * Timestamp of a last restore operation which used this backup.
      */
-    @JsonProperty(value = "properties.lastRestoreTimeStamp")
+    @JsonProperty(value = "properties.lastRestoreTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastRestoreTimeStamp;
 
     /**
      * Timestamp when this backup finished.
      */
-    @JsonProperty(value = "properties.finishedTimeStamp")
+    @JsonProperty(value = "properties.finishedTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime finishedTimeStamp;
 
     /**
      * Unique correlation identifier. Please use this along with the timestamp
      * while communicating with Azure support.
      */
-    @JsonProperty(value = "properties.correlationId")
+    @JsonProperty(value = "properties.correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /**
      * Size of the original web app which has been backed up.
      */
-    @JsonProperty(value = "properties.websiteSizeInBytes")
+    @JsonProperty(value = "properties.websiteSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long websiteSizeInBytes;
 
     /**
-     * Get the backupItemId value.
+     * Get the backupId value.
      *
-     * @return the backupItemId value
+     * @return the backupId value
      */
-    public Integer backupItemId() {
-        return this.backupItemId;
-    }
-
-    /**
-     * Set the backupItemId value.
-     *
-     * @param backupItemId the backupItemId value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withBackupItemId(Integer backupItemId) {
-        this.backupItemId = backupItemId;
-        return this;
+    public Integer backupId() {
+        return this.backupId;
     }
 
     /**
@@ -138,34 +127,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the storageAccountUrl value.
-     *
-     * @param storageAccountUrl the storageAccountUrl value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withStorageAccountUrl(String storageAccountUrl) {
-        this.storageAccountUrl = storageAccountUrl;
-        return this;
-    }
-
-    /**
      * Get the blobName value.
      *
      * @return the blobName value
      */
     public String blobName() {
         return this.blobName;
-    }
-
-    /**
-     * Set the blobName value.
-     *
-     * @param blobName the blobName value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withBlobName(String blobName) {
-        this.blobName = blobName;
-        return this;
     }
 
     /**
@@ -178,34 +145,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the backupItemName value.
-     *
-     * @param backupItemName the backupItemName value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withBackupItemName(String backupItemName) {
-        this.backupItemName = backupItemName;
-        return this;
-    }
-
-    /**
      * Get the status value.
      *
      * @return the status value
      */
     public BackupItemStatus status() {
         return this.status;
-    }
-
-    /**
-     * Set the status value.
-     *
-     * @param status the status value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withStatus(BackupItemStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -218,34 +163,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the sizeInBytes value.
-     *
-     * @param sizeInBytes the sizeInBytes value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withSizeInBytes(Long sizeInBytes) {
-        this.sizeInBytes = sizeInBytes;
-        return this;
-    }
-
-    /**
      * Get the created value.
      *
      * @return the created value
      */
     public DateTime created() {
         return this.created;
-    }
-
-    /**
-     * Set the created value.
-     *
-     * @param created the created value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withCreated(DateTime created) {
-        this.created = created;
-        return this;
     }
 
     /**
@@ -258,34 +181,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the log value.
-     *
-     * @param log the log value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withLog(String log) {
-        this.log = log;
-        return this;
-    }
-
-    /**
      * Get the databases value.
      *
      * @return the databases value
      */
     public List<DatabaseBackupSetting> databases() {
         return this.databases;
-    }
-
-    /**
-     * Set the databases value.
-     *
-     * @param databases the databases value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withDatabases(List<DatabaseBackupSetting> databases) {
-        this.databases = databases;
-        return this;
     }
 
     /**
@@ -298,34 +199,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the scheduled value.
-     *
-     * @param scheduled the scheduled value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withScheduled(Boolean scheduled) {
-        this.scheduled = scheduled;
-        return this;
-    }
-
-    /**
      * Get the lastRestoreTimeStamp value.
      *
      * @return the lastRestoreTimeStamp value
      */
     public DateTime lastRestoreTimeStamp() {
         return this.lastRestoreTimeStamp;
-    }
-
-    /**
-     * Set the lastRestoreTimeStamp value.
-     *
-     * @param lastRestoreTimeStamp the lastRestoreTimeStamp value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withLastRestoreTimeStamp(DateTime lastRestoreTimeStamp) {
-        this.lastRestoreTimeStamp = lastRestoreTimeStamp;
-        return this;
     }
 
     /**
@@ -338,17 +217,6 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the finishedTimeStamp value.
-     *
-     * @param finishedTimeStamp the finishedTimeStamp value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withFinishedTimeStamp(DateTime finishedTimeStamp) {
-        this.finishedTimeStamp = finishedTimeStamp;
-        return this;
-    }
-
-    /**
      * Get the correlationId value.
      *
      * @return the correlationId value
@@ -358,34 +226,12 @@ public class BackupItemInner extends Resource {
     }
 
     /**
-     * Set the correlationId value.
-     *
-     * @param correlationId the correlationId value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withCorrelationId(String correlationId) {
-        this.correlationId = correlationId;
-        return this;
-    }
-
-    /**
      * Get the websiteSizeInBytes value.
      *
      * @return the websiteSizeInBytes value
      */
     public Long websiteSizeInBytes() {
         return this.websiteSizeInBytes;
-    }
-
-    /**
-     * Set the websiteSizeInBytes value.
-     *
-     * @param websiteSizeInBytes the websiteSizeInBytes value to set
-     * @return the BackupItemInner object itself.
-     */
-    public BackupItemInner withWebsiteSizeInBytes(Long websiteSizeInBytes) {
-        this.websiteSizeInBytes = websiteSizeInBytes;
-        return this;
     }
 
 }

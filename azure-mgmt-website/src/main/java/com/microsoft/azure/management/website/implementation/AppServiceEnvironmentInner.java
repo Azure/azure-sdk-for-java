@@ -21,70 +21,64 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of an hostingEnvironment (App Service Environment).
+ * Description of an App Service Environment.
  */
 @JsonFlatten
 public class AppServiceEnvironmentInner extends Resource {
     /**
-     * Name of the hostingEnvironment (App Service Environment).
+     * Name of the App Service Environment.
      */
     @JsonProperty(value = "properties.name")
     private String appServiceEnvironmentName;
 
     /**
-     * Location of the hostingEnvironment (App Service Environment), e.g.
-     * "West US".
+     * Location of the App Service Environment, e.g. "West US".
      */
     @JsonProperty(value = "properties.location")
     private String appServiceEnvironmentLocation;
 
     /**
-     * Provisioning state of the hostingEnvironment (App Service Environment).
-     * Possible values include: 'Succeeded', 'Failed', 'Canceled',
-     * 'InProgress', 'Deleting'.
+     * Provisioning state of the App Service Environment. Possible values
+     * include: 'Succeeded', 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * Current status of the hostingEnvironment (App Service Environment).
-     * Possible values include: 'Preparing', 'Ready', 'Scaling', 'Deleting'.
+     * Current status of the App Service Environment. Possible values include:
+     * 'Preparing', 'Ready', 'Scaling', 'Deleting'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private HostingEnvironmentStatus status;
 
     /**
-     * Name of the hostingEnvironment's (App Service Environment) virtual
-     * network.
+     * Name of the Virtual Network for the App Service Environment.
      */
     @JsonProperty(value = "properties.vnetName")
     private String vnetName;
 
     /**
-     * Resource group of the hostingEnvironment's (App Service Environment)
-     * virtual network.
+     * Resource group of the Virtual Network.
      */
     @JsonProperty(value = "properties.vnetResourceGroupName")
     private String vnetResourceGroupName;
 
     /**
-     * Subnet of the hostingEnvironment's (App Service Environment) virtual
-     * network.
+     * Subnet of the Virtual Network.
      */
     @JsonProperty(value = "properties.vnetSubnetName")
     private String vnetSubnetName;
 
     /**
-     * Description of the hostingEnvironment's (App Service Environment)
-     * virtual network.
+     * Description of the Virtual Network.
      */
     @JsonProperty(value = "properties.virtualNetwork")
     private VirtualNetworkProfile virtualNetwork;
 
     /**
-     * Specifies which endpoints to serve internally in the
-     * hostingEnvironment's (App Service Environment) VNET. Possible values
-     * include: 'None', 'Web', 'Publishing'.
+     * Specifies which endpoints to serve internally in the Virtual Network
+     * for the App Service Environment. Possible values include: 'None',
+     * 'Web', 'Publishing'.
      */
     @JsonProperty(value = "properties.internalLoadBalancingMode")
     private InternalLoadBalancingMode internalLoadBalancingMode;
@@ -102,159 +96,160 @@ public class AppServiceEnvironmentInner extends Resource {
     private Integer multiRoleCount;
 
     /**
-     * Description of worker pools with worker size ids, VM sizes, and number
+     * Description of worker pools with worker size IDs, VM sizes, and number
      * of workers in each pool.
      */
     @JsonProperty(value = "properties.workerPools")
     private List<WorkerPoolInner> workerPools;
 
     /**
-     * Number of IP SSL addresses reserved for this hostingEnvironment (App
-     * Service Environment).
+     * Number of IP SSL addresses reserved for the App Service Environment.
      */
     @JsonProperty(value = "properties.ipsslAddressCount")
     private Integer ipsslAddressCount;
 
     /**
-     * Edition of the metadata database for the hostingEnvironment (App
-     * Service Environment) e.g. "Standard".
+     * Edition of the metadata database for the App Service Environment, e.g.
+     * "Standard".
      */
-    @JsonProperty(value = "properties.databaseEdition")
+    @JsonProperty(value = "properties.databaseEdition", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseEdition;
 
     /**
-     * Service objective of the metadata database for the hostingEnvironment
-     * (App Service Environment) e.g. "S0".
+     * Service objective of the metadata database for the App Service
+     * Environment, e.g. "S0".
      */
-    @JsonProperty(value = "properties.databaseServiceObjective")
+    @JsonProperty(value = "properties.databaseServiceObjective", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseServiceObjective;
 
     /**
-     * Number of upgrade domains of this hostingEnvironment (App Service
-     * Environment).
+     * Number of upgrade domains of the App Service Environment.
      */
-    @JsonProperty(value = "properties.upgradeDomains")
+    @JsonProperty(value = "properties.upgradeDomains", access = JsonProperty.Access.WRITE_ONLY)
     private Integer upgradeDomains;
 
     /**
-     * Subscription of the hostingEnvironment (App Service Environment).
+     * Subscription of the App Service Environment.
      */
-    @JsonProperty(value = "properties.subscriptionId")
+    @JsonProperty(value = "properties.subscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
-     * DNS suffix of the hostingEnvironment (App Service Environment).
+     * DNS suffix of the App Service Environment.
      */
     @JsonProperty(value = "properties.dnsSuffix")
     private String dnsSuffix;
 
     /**
-     * Last deployment action on this hostingEnvironment (App Service
-     * Environment).
+     * Last deployment action on the App Service Environment.
      */
-    @JsonProperty(value = "properties.lastAction")
+    @JsonProperty(value = "properties.lastAction", access = JsonProperty.Access.WRITE_ONLY)
     private String lastAction;
 
     /**
-     * Result of the last deployment action on this hostingEnvironment (App
-     * Service Environment).
+     * Result of the last deployment action on the App Service Environment.
      */
-    @JsonProperty(value = "properties.lastActionResult")
+    @JsonProperty(value = "properties.lastActionResult", access = JsonProperty.Access.WRITE_ONLY)
     private String lastActionResult;
 
     /**
      * List of comma separated strings describing which VM sizes are allowed
      * for front-ends.
      */
-    @JsonProperty(value = "properties.allowedMultiSizes")
+    @JsonProperty(value = "properties.allowedMultiSizes", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedMultiSizes;
 
     /**
      * List of comma separated strings describing which VM sizes are allowed
      * for workers.
      */
-    @JsonProperty(value = "properties.allowedWorkerSizes")
+    @JsonProperty(value = "properties.allowedWorkerSizes", access = JsonProperty.Access.WRITE_ONLY)
     private String allowedWorkerSizes;
 
     /**
-     * Maximum number of VMs in this hostingEnvironment (App Service
-     * Environment).
+     * Maximum number of VMs in the App Service Environment.
      */
-    @JsonProperty(value = "properties.maximumNumberOfMachines")
+    @JsonProperty(value = "properties.maximumNumberOfMachines", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maximumNumberOfMachines;
 
     /**
-     * Description of IP SSL mapping for this hostingEnvironment (App Service
-     * Environment).
+     * Description of IP SSL mapping for the App Service Environment.
      */
-    @JsonProperty(value = "properties.vipMappings")
+    @JsonProperty(value = "properties.vipMappings", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualIPMapping> vipMappings;
 
     /**
      * Current total, used, and available worker capacities.
      */
-    @JsonProperty(value = "properties.environmentCapacities")
+    @JsonProperty(value = "properties.environmentCapacities", access = JsonProperty.Access.WRITE_ONLY)
     private List<StampCapacityInner> environmentCapacities;
 
     /**
-     * Access control list for controlling traffic to the hostingEnvironment
-     * (App Service Environment).
+     * Access control list for controlling traffic to the App Service
+     * Environment.
      */
     @JsonProperty(value = "properties.networkAccessControlList")
     private List<NetworkAccessControlEntry> networkAccessControlList;
 
     /**
-     * True/false indicating whether the hostingEnvironment (App Service
-     * Environment) is healthy.
+     * True/false indicating whether the App Service Environment is healthy.
      */
-    @JsonProperty(value = "properties.environmentIsHealthy")
+    @JsonProperty(value = "properties.environmentIsHealthy", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean environmentIsHealthy;
 
     /**
-     * Detailed message about with results of the last check of the
-     * hostingEnvironment (App Service Environment).
+     * Detailed message about with results of the last check of the App
+     * Service Environment.
      */
-    @JsonProperty(value = "properties.environmentStatus")
+    @JsonProperty(value = "properties.environmentStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String environmentStatus;
 
     /**
-     * Resource group of the hostingEnvironment (App Service Environment).
+     * Resource group of the App Service Environment.
      */
-    @JsonProperty(value = "properties.resourceGroup")
+    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /**
-     * Scale Factor for FrontEnds.
+     * Scale factor for front-ends.
      */
     @JsonProperty(value = "properties.frontEndScaleFactor")
     private Integer frontEndScaleFactor;
 
     /**
-     * The apiManagementAccountId property.
+     * Default Scale Factor for FrontEnds.
+     */
+    @JsonProperty(value = "properties.defaultFrontEndScaleFactor")
+    private Integer defaultFrontEndScaleFactor;
+
+    /**
+     * API Management Account associated with the App Service Environment.
      */
     @JsonProperty(value = "properties.apiManagementAccountId")
     private String apiManagementAccountId;
 
     /**
-     * True/false indicating whether the hostingEnvironment is suspended. The
-     * environment can be suspended e.g. when the management endpoint is no
-     * longer available
+     * &lt;code&gt;true&lt;/code&gt; if the App Service Environment is
+     * suspended; otherwise, &lt;code&gt;false&lt;/code&gt;. The environment
+     * can be suspended, e.g. when the management endpoint is no longer
+     * available
      * (most likely because NSG blocked the incoming traffic).
      */
     @JsonProperty(value = "properties.suspended")
     private Boolean suspended;
 
     /**
-     * True/false indicating whether the hostingEnvironment is suspended. The
-     * environment can be suspended e.g. when the management endpoint is no
-     * longer available
+     * True/false indicating whether the App Service Environment is suspended.
+     * The environment can be suspended e.g. when the management endpoint is
+     * no longer available
      * (most likely because NSG blocked the incoming traffic).
      */
     @JsonProperty(value = "properties.dynamicCacheEnabled")
     private Boolean dynamicCacheEnabled;
 
     /**
-     * Custom settings for changing the behavior of the hosting environment.
+     * Custom settings for changing the behavior of the App Service
+     * Environment.
      */
     @JsonProperty(value = "properties.clusterSettings")
     private List<NameValuePair> clusterSettings;
@@ -309,34 +304,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the status value.
      *
      * @return the status value
      */
     public HostingEnvironmentStatus status() {
         return this.status;
-    }
-
-    /**
-     * Set the status value.
-     *
-     * @param status the status value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withStatus(HostingEnvironmentStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -529,34 +502,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the databaseEdition value.
-     *
-     * @param databaseEdition the databaseEdition value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withDatabaseEdition(String databaseEdition) {
-        this.databaseEdition = databaseEdition;
-        return this;
-    }
-
-    /**
      * Get the databaseServiceObjective value.
      *
      * @return the databaseServiceObjective value
      */
     public String databaseServiceObjective() {
         return this.databaseServiceObjective;
-    }
-
-    /**
-     * Set the databaseServiceObjective value.
-     *
-     * @param databaseServiceObjective the databaseServiceObjective value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withDatabaseServiceObjective(String databaseServiceObjective) {
-        this.databaseServiceObjective = databaseServiceObjective;
-        return this;
     }
 
     /**
@@ -569,34 +520,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the upgradeDomains value.
-     *
-     * @param upgradeDomains the upgradeDomains value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withUpgradeDomains(Integer upgradeDomains) {
-        this.upgradeDomains = upgradeDomains;
-        return this;
-    }
-
-    /**
      * Get the subscriptionId value.
      *
      * @return the subscriptionId value
      */
     public String subscriptionId() {
         return this.subscriptionId;
-    }
-
-    /**
-     * Set the subscriptionId value.
-     *
-     * @param subscriptionId the subscriptionId value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
     }
 
     /**
@@ -629,34 +558,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the lastAction value.
-     *
-     * @param lastAction the lastAction value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withLastAction(String lastAction) {
-        this.lastAction = lastAction;
-        return this;
-    }
-
-    /**
      * Get the lastActionResult value.
      *
      * @return the lastActionResult value
      */
     public String lastActionResult() {
         return this.lastActionResult;
-    }
-
-    /**
-     * Set the lastActionResult value.
-     *
-     * @param lastActionResult the lastActionResult value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withLastActionResult(String lastActionResult) {
-        this.lastActionResult = lastActionResult;
-        return this;
     }
 
     /**
@@ -669,34 +576,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the allowedMultiSizes value.
-     *
-     * @param allowedMultiSizes the allowedMultiSizes value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withAllowedMultiSizes(String allowedMultiSizes) {
-        this.allowedMultiSizes = allowedMultiSizes;
-        return this;
-    }
-
-    /**
      * Get the allowedWorkerSizes value.
      *
      * @return the allowedWorkerSizes value
      */
     public String allowedWorkerSizes() {
         return this.allowedWorkerSizes;
-    }
-
-    /**
-     * Set the allowedWorkerSizes value.
-     *
-     * @param allowedWorkerSizes the allowedWorkerSizes value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withAllowedWorkerSizes(String allowedWorkerSizes) {
-        this.allowedWorkerSizes = allowedWorkerSizes;
-        return this;
     }
 
     /**
@@ -709,17 +594,6 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the maximumNumberOfMachines value.
-     *
-     * @param maximumNumberOfMachines the maximumNumberOfMachines value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withMaximumNumberOfMachines(Integer maximumNumberOfMachines) {
-        this.maximumNumberOfMachines = maximumNumberOfMachines;
-        return this;
-    }
-
-    /**
      * Get the vipMappings value.
      *
      * @return the vipMappings value
@@ -729,34 +603,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the vipMappings value.
-     *
-     * @param vipMappings the vipMappings value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withVipMappings(List<VirtualIPMapping> vipMappings) {
-        this.vipMappings = vipMappings;
-        return this;
-    }
-
-    /**
      * Get the environmentCapacities value.
      *
      * @return the environmentCapacities value
      */
     public List<StampCapacityInner> environmentCapacities() {
         return this.environmentCapacities;
-    }
-
-    /**
-     * Set the environmentCapacities value.
-     *
-     * @param environmentCapacities the environmentCapacities value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withEnvironmentCapacities(List<StampCapacityInner> environmentCapacities) {
-        this.environmentCapacities = environmentCapacities;
-        return this;
     }
 
     /**
@@ -789,17 +641,6 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the environmentIsHealthy value.
-     *
-     * @param environmentIsHealthy the environmentIsHealthy value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withEnvironmentIsHealthy(Boolean environmentIsHealthy) {
-        this.environmentIsHealthy = environmentIsHealthy;
-        return this;
-    }
-
-    /**
      * Get the environmentStatus value.
      *
      * @return the environmentStatus value
@@ -809,34 +650,12 @@ public class AppServiceEnvironmentInner extends Resource {
     }
 
     /**
-     * Set the environmentStatus value.
-     *
-     * @param environmentStatus the environmentStatus value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withEnvironmentStatus(String environmentStatus) {
-        this.environmentStatus = environmentStatus;
-        return this;
-    }
-
-    /**
      * Get the resourceGroup value.
      *
      * @return the resourceGroup value
      */
     public String resourceGroup() {
         return this.resourceGroup;
-    }
-
-    /**
-     * Set the resourceGroup value.
-     *
-     * @param resourceGroup the resourceGroup value to set
-     * @return the AppServiceEnvironmentInner object itself.
-     */
-    public AppServiceEnvironmentInner withResourceGroup(String resourceGroup) {
-        this.resourceGroup = resourceGroup;
-        return this;
     }
 
     /**
@@ -856,6 +675,26 @@ public class AppServiceEnvironmentInner extends Resource {
      */
     public AppServiceEnvironmentInner withFrontEndScaleFactor(Integer frontEndScaleFactor) {
         this.frontEndScaleFactor = frontEndScaleFactor;
+        return this;
+    }
+
+    /**
+     * Get the defaultFrontEndScaleFactor value.
+     *
+     * @return the defaultFrontEndScaleFactor value
+     */
+    public Integer defaultFrontEndScaleFactor() {
+        return this.defaultFrontEndScaleFactor;
+    }
+
+    /**
+     * Set the defaultFrontEndScaleFactor value.
+     *
+     * @param defaultFrontEndScaleFactor the defaultFrontEndScaleFactor value to set
+     * @return the AppServiceEnvironmentInner object itself.
+     */
+    public AppServiceEnvironmentInner withDefaultFrontEndScaleFactor(Integer defaultFrontEndScaleFactor) {
+        this.defaultFrontEndScaleFactor = defaultFrontEndScaleFactor;
         return this;
     }
 

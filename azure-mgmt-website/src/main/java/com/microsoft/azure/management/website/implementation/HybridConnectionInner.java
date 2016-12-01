@@ -18,19 +18,19 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class HybridConnectionInner extends Resource {
     /**
-     * The name of the Service Bus Namespace.
+     * The name of the Service Bus namespace.
      */
     @JsonProperty(value = "properties.serviceBusNamespace")
     private String serviceBusNamespace;
 
     /**
-     * The name of the Service Bus Relay.
+     * The name of the Service Bus relay.
      */
     @JsonProperty(value = "properties.relayName")
     private String relayName;
 
     /**
-     * The ARM URI to the Service Bus Relay.
+     * The ARM URI to the Service Bus relay.
      */
     @JsonProperty(value = "properties.relayArmUri")
     private String relayArmUri;

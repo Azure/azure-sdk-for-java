@@ -12,26 +12,26 @@ import java.util.List;
 import com.microsoft.azure.management.website.implementation.CapabilityInner;
 
 /**
- * Describes a sku for a scalable resource.
+ * Description of a SKU for a scalable resource.
  */
 public class SkuDescription {
     /**
-     * Name of the resource sku.
+     * Name of the resource SKU.
      */
     private String name;
 
     /**
-     * Service Tier of the resource sku.
+     * Service tier of the resource SKU.
      */
     private String tier;
 
     /**
-     * Size specifier of the resource sku.
+     * Size specifier of the resource SKU.
      */
     private String size;
 
     /**
-     * Family code of the resource sku.
+     * Family code of the resource SKU.
      */
     private String family;
 
@@ -41,17 +41,17 @@ public class SkuDescription {
     private Integer capacity;
 
     /**
-     * Min, max, and default scale values of the sku.
+     * Min, max, and default scale values of the SKU.
      */
     private SkuCapacity skuCapacity;
 
     /**
-     * Locations of the sku.
+     * Locations of the SKU.
      */
     private List<String> locations;
 
     /**
-     * Capabilities of the sku, eg., is traffic manager enabled?.
+     * Capabilities of the SKU, e.g., is traffic manager enabled?.
      */
     private List<CapabilityInner> capabilities;
 

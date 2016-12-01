@@ -11,27 +11,27 @@ package com.microsoft.azure.management.website;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Description of the App Service Plan scale options.
+ * Description of the App Service plan scale options.
  */
 public class SkuCapacity {
     /**
-     * Minimum number of Workers for this App Service Plan SKU.
+     * Minimum number of workers for this App Service plan SKU.
      */
     private Integer minimum;
 
     /**
-     * Maximum number of Workers for this App Service Plan SKU.
+     * Maximum number of workers for this App Service plan SKU.
      */
     private Integer maximum;
 
     /**
-     * Default number of Workers for this App Service Plan SKU.
+     * Default number of workers for this App Service plan SKU.
      */
     @JsonProperty(value = "default")
     private Integer defaultProperty;
 
     /**
-     * Available scale configurations for an App Service Plan.
+     * Available scale configurations for an App Service plan.
      */
     private String scaleType;
 

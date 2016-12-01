@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import java.util.List;
 
 /**
- * Class containing metric information.
+ * Metric information.
  */
 public class PerfMonSet {
     /**

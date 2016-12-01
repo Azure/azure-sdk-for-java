@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * AutoHealCustomAction - Describes the custom action to be executed
+ * Custom action to be executed
  * when an auto heal rule is triggered.
  */
 public class AutoHealCustomAction {

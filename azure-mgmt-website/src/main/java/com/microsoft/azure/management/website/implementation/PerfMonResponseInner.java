@@ -11,21 +11,21 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.website.PerfMonSet;
 
 /**
- * Represents the perf monitor api reponse.
+ * Performance monitor API response.
  */
 public class PerfMonResponseInner {
     /**
-     * Gets or sets the response code.
+     * The response code.
      */
     private String code;
 
     /**
-     * Gets or sets the message.
+     * The message.
      */
     private String message;
 
     /**
-     * Gets or sets the perf mon counters.
+     * The performance monitor counters.
      */
     private PerfMonSet data;
 

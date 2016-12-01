@@ -18,7 +18,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Certificate purchase order.
+ * SSL certificate purchase order.
  */
 @JsonFlatten
 public class AppServiceCertificateOrderInner extends Resource {
@@ -35,9 +35,9 @@ public class AppServiceCertificateOrderInner extends Resource {
     private String distinguishedName;
 
     /**
-     * Domain Verification Token.
+     * Domain verification token.
      */
-    @JsonProperty(value = "properties.domainVerificationToken")
+    @JsonProperty(value = "properties.domainVerificationToken", access = JsonProperty.Access.WRITE_ONLY)
     private String domainVerificationToken;
 
     /**
@@ -47,7 +47,7 @@ public class AppServiceCertificateOrderInner extends Resource {
     private Integer validityInYears;
 
     /**
-     * Certificate Key Size.
+     * Certificate key size.
      */
     @JsonProperty(value = "properties.keySize")
     private Integer keySize;
@@ -60,7 +60,9 @@ public class AppServiceCertificateOrderInner extends Resource {
     private CertificateProductType productType;
 
     /**
-     * Auto renew.
+     * &lt;code&gt;true&lt;/code&gt; if the certificate should be
+     * automatically renewed when it expires; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.autoRenew")
     private Boolean autoRenew;
@@ -69,7 +71,7 @@ public class AppServiceCertificateOrderInner extends Resource {
      * Status of certificate order. Possible values include: 'Succeeded',
      * 'Failed', 'Canceled', 'InProgress', 'Deleting'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
@@ -77,13 +79,13 @@ public class AppServiceCertificateOrderInner extends Resource {
      * 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation',
      * 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'.
      */
-    @JsonProperty(value = "properties.status")
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateOrderStatus status;
 
     /**
      * Signed certificate.
      */
-    @JsonProperty(value = "properties.signedCertificate")
+    @JsonProperty(value = "properties.signedCertificate", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetailsInner signedCertificate;
 
     /**
@@ -95,35 +97,36 @@ public class AppServiceCertificateOrderInner extends Resource {
     /**
      * Intermediate certificate.
      */
-    @JsonProperty(value = "properties.intermediate")
+    @JsonProperty(value = "properties.intermediate", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetailsInner intermediate;
 
     /**
      * Root certificate.
      */
-    @JsonProperty(value = "properties.root")
+    @JsonProperty(value = "properties.root", access = JsonProperty.Access.WRITE_ONLY)
     private CertificateDetailsInner root;
 
     /**
      * Current serial number of the certificate.
      */
-    @JsonProperty(value = "properties.serialNumber")
+    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /**
      * Certificate last issuance time.
      */
-    @JsonProperty(value = "properties.lastCertificateIssuanceTime")
+    @JsonProperty(value = "properties.lastCertificateIssuanceTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastCertificateIssuanceTime;
 
     /**
      * Certificate expiration time.
      */
-    @JsonProperty(value = "properties.expirationTime")
+    @JsonProperty(value = "properties.expirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime expirationTime;
 
     /**
-     * Is Private Key External.
+     * &lt;code&gt;true&lt;/code&gt; if private key is external; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.isPrivateKeyExternal")
     private Boolean isPrivateKeyExternal;
@@ -175,17 +178,6 @@ public class AppServiceCertificateOrderInner extends Resource {
      */
     public String domainVerificationToken() {
         return this.domainVerificationToken;
-    }
-
-    /**
-     * Set the domainVerificationToken value.
-     *
-     * @param domainVerificationToken the domainVerificationToken value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withDomainVerificationToken(String domainVerificationToken) {
-        this.domainVerificationToken = domainVerificationToken;
-        return this;
     }
 
     /**
@@ -278,17 +270,6 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withProvisioningState(ProvisioningState provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the status value.
      *
      * @return the status value
@@ -298,34 +279,12 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the status value.
-     *
-     * @param status the status value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withStatus(CertificateOrderStatus status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
      * Get the signedCertificate value.
      *
      * @return the signedCertificate value
      */
     public CertificateDetailsInner signedCertificate() {
         return this.signedCertificate;
-    }
-
-    /**
-     * Set the signedCertificate value.
-     *
-     * @param signedCertificate the signedCertificate value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withSignedCertificate(CertificateDetailsInner signedCertificate) {
-        this.signedCertificate = signedCertificate;
-        return this;
     }
 
     /**
@@ -358,34 +317,12 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the intermediate value.
-     *
-     * @param intermediate the intermediate value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withIntermediate(CertificateDetailsInner intermediate) {
-        this.intermediate = intermediate;
-        return this;
-    }
-
-    /**
      * Get the root value.
      *
      * @return the root value
      */
     public CertificateDetailsInner root() {
         return this.root;
-    }
-
-    /**
-     * Set the root value.
-     *
-     * @param root the root value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withRoot(CertificateDetailsInner root) {
-        this.root = root;
-        return this;
     }
 
     /**
@@ -398,17 +335,6 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the serialNumber value.
-     *
-     * @param serialNumber the serialNumber value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-        return this;
-    }
-
-    /**
      * Get the lastCertificateIssuanceTime value.
      *
      * @return the lastCertificateIssuanceTime value
@@ -418,34 +344,12 @@ public class AppServiceCertificateOrderInner extends Resource {
     }
 
     /**
-     * Set the lastCertificateIssuanceTime value.
-     *
-     * @param lastCertificateIssuanceTime the lastCertificateIssuanceTime value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withLastCertificateIssuanceTime(DateTime lastCertificateIssuanceTime) {
-        this.lastCertificateIssuanceTime = lastCertificateIssuanceTime;
-        return this;
-    }
-
-    /**
      * Get the expirationTime value.
      *
      * @return the expirationTime value
      */
     public DateTime expirationTime() {
         return this.expirationTime;
-    }
-
-    /**
-     * Set the expirationTime value.
-     *
-     * @param expirationTime the expirationTime value to set
-     * @return the AppServiceCertificateOrderInner object itself.
-     */
-    public AppServiceCertificateOrderInner withExpirationTime(DateTime expirationTime) {
-        this.expirationTime = expirationTime;
-        return this;
     }
 
     /**

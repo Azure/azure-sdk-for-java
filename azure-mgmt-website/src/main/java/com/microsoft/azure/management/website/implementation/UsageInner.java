@@ -15,63 +15,63 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Class that represents usage of the quota resource.
+ * Usage of the quota resource.
  */
 @JsonFlatten
 public class UsageInner extends Resource {
     /**
      * Friendly name shown in the UI.
      */
-    @JsonProperty(value = "properties.displayName")
+    @JsonProperty(value = "properties.displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
      * Name of the quota.
      */
-    @JsonProperty(value = "properties.name")
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
     private String usageName;
 
     /**
      * Name of the quota resource.
      */
-    @JsonProperty(value = "properties.resourceName")
+    @JsonProperty(value = "properties.resourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceName;
 
     /**
      * Units of measurement for the quota resource.
      */
-    @JsonProperty(value = "properties.unit")
+    @JsonProperty(value = "properties.unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
      * The current value of the resource counter.
      */
-    @JsonProperty(value = "properties.currentValue")
+    @JsonProperty(value = "properties.currentValue", access = JsonProperty.Access.WRITE_ONLY)
     private Long currentValue;
 
     /**
      * The resource limit.
      */
-    @JsonProperty(value = "properties.limit")
+    @JsonProperty(value = "properties.limit", access = JsonProperty.Access.WRITE_ONLY)
     private Long limit;
 
     /**
      * Next reset time for the resource counter.
      */
-    @JsonProperty(value = "properties.nextResetTime")
+    @JsonProperty(value = "properties.nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime nextResetTime;
 
     /**
-     * ComputeMode used for this usage. Possible values include: 'Shared',
+     * Compute mode used for this usage. Possible values include: 'Shared',
      * 'Dedicated', 'Dynamic'.
      */
-    @JsonProperty(value = "properties.computeMode")
+    @JsonProperty(value = "properties.computeMode", access = JsonProperty.Access.WRITE_ONLY)
     private ComputeModeOptions computeMode;
 
     /**
-     * SiteMode used for this usage.
+     * Site mode used for this usage.
      */
-    @JsonProperty(value = "properties.siteMode")
+    @JsonProperty(value = "properties.siteMode", access = JsonProperty.Access.WRITE_ONLY)
     private String siteMode;
 
     /**
@@ -84,34 +84,12 @@ public class UsageInner extends Resource {
     }
 
     /**
-     * Set the displayName value.
-     *
-     * @param displayName the displayName value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get the usageName value.
      *
      * @return the usageName value
      */
     public String usageName() {
         return this.usageName;
-    }
-
-    /**
-     * Set the usageName value.
-     *
-     * @param usageName the usageName value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withUsageName(String usageName) {
-        this.usageName = usageName;
-        return this;
     }
 
     /**
@@ -124,34 +102,12 @@ public class UsageInner extends Resource {
     }
 
     /**
-     * Set the resourceName value.
-     *
-     * @param resourceName the resourceName value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withResourceName(String resourceName) {
-        this.resourceName = resourceName;
-        return this;
-    }
-
-    /**
      * Get the unit value.
      *
      * @return the unit value
      */
     public String unit() {
         return this.unit;
-    }
-
-    /**
-     * Set the unit value.
-     *
-     * @param unit the unit value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withUnit(String unit) {
-        this.unit = unit;
-        return this;
     }
 
     /**
@@ -164,34 +120,12 @@ public class UsageInner extends Resource {
     }
 
     /**
-     * Set the currentValue value.
-     *
-     * @param currentValue the currentValue value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withCurrentValue(Long currentValue) {
-        this.currentValue = currentValue;
-        return this;
-    }
-
-    /**
      * Get the limit value.
      *
      * @return the limit value
      */
     public Long limit() {
         return this.limit;
-    }
-
-    /**
-     * Set the limit value.
-     *
-     * @param limit the limit value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withLimit(Long limit) {
-        this.limit = limit;
-        return this;
     }
 
     /**
@@ -204,17 +138,6 @@ public class UsageInner extends Resource {
     }
 
     /**
-     * Set the nextResetTime value.
-     *
-     * @param nextResetTime the nextResetTime value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withNextResetTime(DateTime nextResetTime) {
-        this.nextResetTime = nextResetTime;
-        return this;
-    }
-
-    /**
      * Get the computeMode value.
      *
      * @return the computeMode value
@@ -224,34 +147,12 @@ public class UsageInner extends Resource {
     }
 
     /**
-     * Set the computeMode value.
-     *
-     * @param computeMode the computeMode value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withComputeMode(ComputeModeOptions computeMode) {
-        this.computeMode = computeMode;
-        return this;
-    }
-
-    /**
      * Get the siteMode value.
      *
      * @return the siteMode value
      */
     public String siteMode() {
         return this.siteMode;
-    }
-
-    /**
-     * Set the siteMode value.
-     *
-     * @param siteMode the siteMode value to set
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withSiteMode(String siteMode) {
-        this.siteMode = siteMode;
-        return this;
     }
 
 }

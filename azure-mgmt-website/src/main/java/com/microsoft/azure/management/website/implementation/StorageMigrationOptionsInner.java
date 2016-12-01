@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of a backup which will be performed.
+ * Options for app content migration.
  */
 @JsonFlatten
 public class StorageMigrationOptionsInner extends Resource {
@@ -30,13 +30,15 @@ public class StorageMigrationOptionsInner extends Resource {
     private String azurefilesShare;
 
     /**
-     * Indicate if site should be switched over.
+     * &lt;code&gt;true&lt;/code&gt;if the app should be switched over;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.switchSiteAfterMigration")
     private Boolean switchSiteAfterMigration;
 
     /**
-     * Indicate if the site should be read only during copy operation.
+     * &lt;code&gt;true&lt;/code&gt; if the app should be read only during
+     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.blockWriteAccessToSite")
     private Boolean blockWriteAccessToSite;

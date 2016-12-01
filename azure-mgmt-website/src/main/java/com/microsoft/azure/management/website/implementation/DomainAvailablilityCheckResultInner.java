@@ -20,12 +20,16 @@ public class DomainAvailablilityCheckResultInner {
     private String name;
 
     /**
-     * If true then domain can be purchased using CreateDomain Api.
+     * &lt;code&gt;true&lt;/code&gt; if domain can be purchased using
+     * CreateDomain API; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean available;
 
     /**
-     * Domain type. Possible values include: 'Regular', 'SoftDeleted'.
+     * Valid values are Regular domain: Azure will charge the full price of
+     * domain registration, SoftDeleted: Purchasing this domain will simply
+     * restore it and this operation will not cost anything. Possible values
+     * include: 'Regular', 'SoftDeleted'.
      */
     private DomainType domainType;
 

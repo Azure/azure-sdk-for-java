@@ -20,15 +20,15 @@ public class HostName {
     private String name;
 
     /**
-     * List of sites the hostname is assigned to. This list will have more
-     * than one site only if the hostname is pointing to a Traffic Manager.
+     * List of apps the hostname is assigned to. This list will have more than
+     * one app only if the hostname is pointing to a Traffic Manager.
      */
     private List<String> siteNames;
 
     /**
      * Name of the Azure resource the hostname is assigned to. If it is
-     * assigned to a traffic manager then it will be the traffic manager name
-     * otherwise it will be the website name.
+     * assigned to a Traffic Manager then it will be the Traffic Manager name
+     * otherwise it will be the app name.
      */
     private String azureResourceName;
 
@@ -39,7 +39,7 @@ public class HostName {
     private AzureResourceType azureResourceType;
 
     /**
-     * Type of the Dns record. Possible values include: 'CName', 'A'.
+     * Type of the DNS record. Possible values include: 'CName', 'A'.
      */
     private CustomHostNameDnsRecordType customHostNameDnsRecordType;
 

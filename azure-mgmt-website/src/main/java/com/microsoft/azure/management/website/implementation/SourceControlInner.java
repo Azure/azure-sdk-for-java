@@ -14,36 +14,36 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Describes the Source Control OAuth Token.
+ * The source control OAuth token.
  */
 @JsonFlatten
 public class SourceControlInner extends Resource {
     /**
-     * Name or Source Control Type.
+     * Name or source control type.
      */
     @JsonProperty(value = "properties.name")
     private String sourceControlName;
 
     /**
-     * OAuth Access Token.
+     * OAuth access token.
      */
     @JsonProperty(value = "properties.token")
     private String token;
 
     /**
-     * OAuth Access Token Secret.
+     * OAuth access token secret.
      */
     @JsonProperty(value = "properties.tokenSecret")
     private String tokenSecret;
 
     /**
-     * OAuth Refresh Token.
+     * OAuth refresh token.
      */
     @JsonProperty(value = "properties.refreshToken")
     private String refreshToken;
 
     /**
-     * OAuth Token Expiration.
+     * OAuth token expiration.
      */
     @JsonProperty(value = "properties.expirationTime")
     private DateTime expirationTime;

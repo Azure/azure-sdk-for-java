@@ -14,8 +14,9 @@ package com.microsoft.azure.management.website;
  */
 public class TopLevelDomainAgreementOption {
     /**
-     * If true then the list of agreements will inclue agreements for domain
-     * privacy as well.
+     * If &lt;code&gt;true&lt;/code&gt;, then the list of agreements will
+     * include agreements for domain privacy as well; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean includePrivacy;
 

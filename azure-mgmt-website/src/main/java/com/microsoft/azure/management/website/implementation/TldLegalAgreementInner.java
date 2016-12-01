@@ -8,28 +8,32 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a legal agreement for top level domain.
+ * Legal agreement for a top level domain.
  */
 public class TldLegalAgreementInner {
     /**
      * Unique identifier for the agreement.
      */
+    @JsonProperty(required = true)
     private String agreementKey;
 
     /**
      * Agreement title.
      */
+    @JsonProperty(required = true)
     private String title;
 
     /**
      * Agreement details.
      */
+    @JsonProperty(required = true)
     private String content;
 
     /**
-     * Url where a copy of the agreement details is hosted.
+     * URL where a copy of the agreement details is hosted.
      */
     private String url;
 

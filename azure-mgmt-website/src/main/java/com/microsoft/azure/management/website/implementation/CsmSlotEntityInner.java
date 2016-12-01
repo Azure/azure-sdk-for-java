@@ -8,21 +8,24 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Class containing deployment slot parameters.
+ * Deployment slot parameters.
  */
 public class CsmSlotEntityInner {
     /**
-     * Set the destination deployment slot during swap operation.
+     * Destination deployment slot during swap operation.
      */
+    @JsonProperty(required = true)
     private String targetSlot;
 
     /**
-     * Get or set the flag indicating it should preserve VNet to the slot
-     * during swap.
+     * &lt;code&gt;true&lt;/code&gt; to preserve Virtual Network to the slot
+     * during swap; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    private Boolean preserveVnet;
+    @JsonProperty(required = true)
+    private boolean preserveVnet;
 
     /**
      * Get the targetSlot value.
@@ -49,7 +52,7 @@ public class CsmSlotEntityInner {
      *
      * @return the preserveVnet value
      */
-    public Boolean preserveVnet() {
+    public boolean preserveVnet() {
         return this.preserveVnet;
     }
 
@@ -59,7 +62,7 @@ public class CsmSlotEntityInner {
      * @param preserveVnet the preserveVnet value to set
      * @return the CsmSlotEntityInner object itself.
      */
-    public CsmSlotEntityInner withPreserveVnet(Boolean preserveVnet) {
+    public CsmSlotEntityInner withPreserveVnet(boolean preserveVnet) {
         this.preserveVnet = preserveVnet;
         return this;
     }

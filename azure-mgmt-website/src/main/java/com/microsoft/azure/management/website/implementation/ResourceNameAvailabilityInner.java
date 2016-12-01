@@ -8,27 +8,34 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.microsoft.azure.management.website.InAvailabilityReasonType;
 
 /**
- * Describes if a resource name is available.
+ * Information regarding availbility of a resource name.
  */
 public class ResourceNameAvailabilityInner {
     /**
-     * True indicates name is valid and available.  False indicates the name
-     * is invalid, unavailable, or both.
+     * &lt;code&gt;true&lt;/code&gt; indicates name is valid and available.
+     * &lt;code&gt;false&lt;/code&gt; indicates the name is invalid,
+     * unavailable, or both.
      */
     private Boolean nameAvailable;
 
     /**
-     * Required if nameAvailable is false. 'Invalid' indicates the name
-     * provided does not match Azure WebApp service’s naming requirements.
-     * 'AlreadyExists' indicates that the name is already in use and is
-     * therefore unavailable.
+     * &lt;code&gt;Invalid&lt;/code&gt; indicates the name provided does not
+     * match Azure App Service naming requirements.
+     * &lt;code&gt;AlreadyExists&lt;/code&gt; indicates that the name is
+     * already in use and is therefore unavailable. Possible values include:
+     * 'Invalid', 'AlreadyExists'.
      */
-    private String reason;
+    private InAvailabilityReasonType reason;
 
     /**
-     * The message property.
+     * If reason == invalid, provide the user with the reason why the given
+     * name is invalid, and provide the resource naming requirements so that
+     * the user can select a valid name. If reason == AlreadyExists, explain
+     * that resource name is already in use, and direct them to select a
+     * different name.
      */
     private String message;
 
@@ -57,7 +64,7 @@ public class ResourceNameAvailabilityInner {
      *
      * @return the reason value
      */
-    public String reason() {
+    public InAvailabilityReasonType reason() {
         return this.reason;
     }
 
@@ -67,7 +74,7 @@ public class ResourceNameAvailabilityInner {
      * @param reason the reason value to set
      * @return the ResourceNameAvailabilityInner object itself.
      */
-    public ResourceNameAvailabilityInner withReason(String reason) {
+    public ResourceNameAvailabilityInner withReason(InAvailabilityReasonType reason) {
         this.reason = reason;
         return this;
     }

@@ -8,18 +8,18 @@
 
 package com.microsoft.azure.management.website;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Note: properties are serialized in JSON format and stored in DB.
- * if new properties are added they might not be in the previous
- * data rows
- * so please handle nulls.
+ * Database backup settings.
  */
 public class DatabaseBackupSetting {
     /**
-     * SqlAzure / MySql.
+     * Database type (e.g. SqlAzure / MySql). Possible values include:
+     * 'SqlAzure', 'MySql', 'LocalMySql'.
      */
-    private String databaseType;
+    @JsonProperty(required = true)
+    private DatabaseType databaseType;
 
     /**
      * The name property.
@@ -29,15 +29,14 @@ public class DatabaseBackupSetting {
     /**
      * Contains a connection string name that is linked to the
      * SiteConfig.ConnectionStrings.
-     * This is used during restore with overwrite connection
-     * strings options.
+     * This is used during restore with overwrite connection strings options.
      */
     private String connectionStringName;
 
     /**
-     * Contains a connection string to a database which is being backed
-     * up/restored. If the restore should happen to a new database, the
-     * database name inside is the new one.
+     * Contains a connection string to a database which is being backed up or
+     * restored. If the restore should happen to a new database, the database
+     * name inside is the new one.
      */
     private String connectionString;
 
@@ -46,7 +45,7 @@ public class DatabaseBackupSetting {
      *
      * @return the databaseType value
      */
-    public String databaseType() {
+    public DatabaseType databaseType() {
         return this.databaseType;
     }
 
@@ -56,7 +55,7 @@ public class DatabaseBackupSetting {
      * @param databaseType the databaseType value to set
      * @return the DatabaseBackupSetting object itself.
      */
-    public DatabaseBackupSetting withDatabaseType(String databaseType) {
+    public DatabaseBackupSetting withDatabaseType(DatabaseType databaseType) {
         this.databaseType = databaseType;
         return this;
     }

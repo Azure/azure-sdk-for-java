@@ -10,11 +10,11 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * SlowRequestsBasedTrigger.
+ * Trigger based on request execution time.
  */
 public class SlowRequestsBasedTrigger {
     /**
-     * TimeTaken.
+     * Time taken.
      */
     private String timeTaken;
 
@@ -24,7 +24,7 @@ public class SlowRequestsBasedTrigger {
     private Integer count;
 
     /**
-     * TimeInterval.
+     * Time interval.
      */
     private String timeInterval;
 

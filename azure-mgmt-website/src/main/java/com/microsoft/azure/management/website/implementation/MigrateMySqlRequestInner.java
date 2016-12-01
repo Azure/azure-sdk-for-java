@@ -13,12 +13,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Description of a MySql migration request.
+ * MySQL migration request.
  */
 @JsonFlatten
 public class MigrateMySqlRequestInner extends Resource {
     /**
-     * Connection string to the remote MySql database to which data should be
+     * Connection string to the remote MySQL database to which data should be
      * migrated.
      */
     @JsonProperty(value = "properties.connectionString")

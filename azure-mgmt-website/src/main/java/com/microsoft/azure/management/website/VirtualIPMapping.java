@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Class that represents a VIP mapping.
+ * Virtual IP mapping.
  */
 public class VirtualIPMapping {
     /**
@@ -29,7 +29,7 @@ public class VirtualIPMapping {
     private Integer internalHttpsPort;
 
     /**
-     * Is VIP mapping in use.
+     * Is virtual IP mapping in use.
      */
     private Boolean inUse;
 

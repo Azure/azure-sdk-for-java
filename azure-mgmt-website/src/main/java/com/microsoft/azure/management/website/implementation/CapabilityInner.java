@@ -10,21 +10,21 @@ package com.microsoft.azure.management.website.implementation;
 
 
 /**
- * Description of a Sku Capability.
+ * Describes the capabilities/features allowed for a specific SKU.
  */
 public class CapabilityInner {
     /**
-     * Name of the sku capability.
+     * Name of the SKU capability.
      */
     private String name;
 
     /**
-     * Value of the sku capability.
+     * Value of the SKU capability.
      */
     private String value;
 
     /**
-     * Reason of the sku capability.
+     * Reason of the SKU capability.
      */
     private String reason;
 

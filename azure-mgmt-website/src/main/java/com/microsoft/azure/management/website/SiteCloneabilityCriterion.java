@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Represents a site cloneability criterion.
+ * An app cloneability criterion.
  */
 public class SiteCloneabilityCriterion {
     /**

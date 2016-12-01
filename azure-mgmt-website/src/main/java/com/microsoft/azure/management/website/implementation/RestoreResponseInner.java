@@ -13,15 +13,15 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Response for a restore site request.
+ * Response for an app restore request.
  */
 @JsonFlatten
 public class RestoreResponseInner extends Resource {
     /**
-     * When server starts the restore process, it will return an OperationId
+     * When server starts the restore process, it will return an operation ID
      * identifying that particular restore operation.
      */
-    @JsonProperty(value = "properties.operationId")
+    @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
@@ -31,17 +31,6 @@ public class RestoreResponseInner extends Resource {
      */
     public String operationId() {
         return this.operationId;
-    }
-
-    /**
-     * Set the operationId value.
-     *
-     * @param operationId the operationId value to set
-     * @return the RestoreResponseInner object itself.
-     */
-    public RestoreResponseInner withOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
     }
 
 }

@@ -13,19 +13,19 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * The VnetGateway contract. This is used to give the vnet gateway access to
- * the VPN package.
+ * The Virtual Network gateway contract. This is used to give the Virtual
+ * Network gateway access to the VPN package.
  */
 @JsonFlatten
 public class VnetGatewayInner extends Resource {
     /**
-     * The VNET name.
+     * The Virtual Network name.
      */
     @JsonProperty(value = "properties.vnetName")
     private String vnetName;
 
     /**
-     * The URI where the Vpn package can be downloaded.
+     * The URI where the VPN package can be downloaded.
      */
     @JsonProperty(value = "properties.vpnPackageUri")
     private String vpnPackageUri;

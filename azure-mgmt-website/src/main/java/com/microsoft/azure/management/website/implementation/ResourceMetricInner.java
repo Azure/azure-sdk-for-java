@@ -16,7 +16,7 @@ import com.microsoft.azure.management.website.ResourceMetricProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Object representing a metric for any resource.
+ * Object representing a metric for any resource .
  */
 public class ResourceMetricInner {
     /**

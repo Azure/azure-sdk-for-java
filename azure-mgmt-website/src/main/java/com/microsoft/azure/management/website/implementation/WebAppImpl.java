@@ -58,7 +58,7 @@ class WebAppImpl
     }
 
     @Override
-    Observable<Object> deleteHostNameBinding(String hostname) {
+    Observable<Void> deleteHostNameBinding(String hostname) {
         return client.deleteHostNameBindingAsync(resourceGroupName(), name(), hostname);
     }
 

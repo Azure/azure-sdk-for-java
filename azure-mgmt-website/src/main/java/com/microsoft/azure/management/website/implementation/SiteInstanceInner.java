@@ -13,14 +13,14 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Instance of a web app.
+ * Instance of an app.
  */
 @JsonFlatten
 public class SiteInstanceInner extends Resource {
     /**
      * Name of instance.
      */
-    @JsonProperty(value = "properties.name")
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
     private String siteInstanceName;
 
     /**
@@ -30,17 +30,6 @@ public class SiteInstanceInner extends Resource {
      */
     public String siteInstanceName() {
         return this.siteInstanceName;
-    }
-
-    /**
-     * Set the siteInstanceName value.
-     *
-     * @param siteInstanceName the siteInstanceName value to set
-     * @return the SiteInstanceInner object itself.
-     */
-    public SiteInstanceInner withSiteInstanceName(String siteInstanceName) {
-        this.siteInstanceName = siteInstanceName;
-        return this;
     }
 
 }

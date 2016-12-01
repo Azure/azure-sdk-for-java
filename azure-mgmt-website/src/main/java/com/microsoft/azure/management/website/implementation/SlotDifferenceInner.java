@@ -13,52 +13,51 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * An object describing the difference in setting values between two web app
- * slots.
+ * A setting difference between two deployment slots of an app.
  */
 @JsonFlatten
 public class SlotDifferenceInner extends Resource {
     /**
-     * Indicates the type of the difference: Information, Warning or Error.
+     * Type of the difference: Information, Warning or Error.
      */
-    @JsonProperty(value = "properties.type")
+    @JsonProperty(value = "properties.type", access = JsonProperty.Access.WRITE_ONLY)
     private String slotDifferenceType;
 
     /**
-     * The type of the settings: General, AppSetting or ConnectionString.
+     * The type of the setting: General, AppSetting or ConnectionString.
      */
-    @JsonProperty(value = "properties.settingType")
+    @JsonProperty(value = "properties.settingType", access = JsonProperty.Access.WRITE_ONLY)
     private String settingType;
 
     /**
-     * Rule that describes how to process the difference in settings during
-     * web app slot swap.
+     * Rule that describes how to process the setting difference during a slot
+     * swap.
      */
-    @JsonProperty(value = "properties.diffRule")
+    @JsonProperty(value = "properties.diffRule", access = JsonProperty.Access.WRITE_ONLY)
     private String diffRule;
 
     /**
      * Name of the setting.
      */
-    @JsonProperty(value = "properties.settingName")
+    @JsonProperty(value = "properties.settingName", access = JsonProperty.Access.WRITE_ONLY)
     private String settingName;
 
     /**
-     * Value of the setting in the current web app slot.
+     * Value of the setting in the current slot.
      */
-    @JsonProperty(value = "properties.valueInCurrentSlot")
+    @JsonProperty(value = "properties.valueInCurrentSlot", access = JsonProperty.Access.WRITE_ONLY)
     private String valueInCurrentSlot;
 
     /**
-     * Value of the setting in the target web app slot.
+     * Value of the setting in the target slot.
      */
-    @JsonProperty(value = "properties.valueInTargetSlot")
+    @JsonProperty(value = "properties.valueInTargetSlot", access = JsonProperty.Access.WRITE_ONLY)
     private String valueInTargetSlot;
 
     /**
-     * Description of the difference.
+     * Description of the setting difference.
      */
-    @JsonProperty(value = "properties.description")
+    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /**
@@ -71,34 +70,12 @@ public class SlotDifferenceInner extends Resource {
     }
 
     /**
-     * Set the slotDifferenceType value.
-     *
-     * @param slotDifferenceType the slotDifferenceType value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withSlotDifferenceType(String slotDifferenceType) {
-        this.slotDifferenceType = slotDifferenceType;
-        return this;
-    }
-
-    /**
      * Get the settingType value.
      *
      * @return the settingType value
      */
     public String settingType() {
         return this.settingType;
-    }
-
-    /**
-     * Set the settingType value.
-     *
-     * @param settingType the settingType value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withSettingType(String settingType) {
-        this.settingType = settingType;
-        return this;
     }
 
     /**
@@ -111,34 +88,12 @@ public class SlotDifferenceInner extends Resource {
     }
 
     /**
-     * Set the diffRule value.
-     *
-     * @param diffRule the diffRule value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withDiffRule(String diffRule) {
-        this.diffRule = diffRule;
-        return this;
-    }
-
-    /**
      * Get the settingName value.
      *
      * @return the settingName value
      */
     public String settingName() {
         return this.settingName;
-    }
-
-    /**
-     * Set the settingName value.
-     *
-     * @param settingName the settingName value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withSettingName(String settingName) {
-        this.settingName = settingName;
-        return this;
     }
 
     /**
@@ -151,17 +106,6 @@ public class SlotDifferenceInner extends Resource {
     }
 
     /**
-     * Set the valueInCurrentSlot value.
-     *
-     * @param valueInCurrentSlot the valueInCurrentSlot value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withValueInCurrentSlot(String valueInCurrentSlot) {
-        this.valueInCurrentSlot = valueInCurrentSlot;
-        return this;
-    }
-
-    /**
      * Get the valueInTargetSlot value.
      *
      * @return the valueInTargetSlot value
@@ -171,34 +115,12 @@ public class SlotDifferenceInner extends Resource {
     }
 
     /**
-     * Set the valueInTargetSlot value.
-     *
-     * @param valueInTargetSlot the valueInTargetSlot value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withValueInTargetSlot(String valueInTargetSlot) {
-        this.valueInTargetSlot = valueInTargetSlot;
-        return this;
-    }
-
-    /**
      * Get the description value.
      *
      * @return the description value
      */
     public String description() {
         return this.description;
-    }
-
-    /**
-     * Set the description value.
-     *
-     * @param description the description value to set
-     * @return the SlotDifferenceInner object itself.
-     */
-    public SlotDifferenceInner withDescription(String description) {
-        this.description = description;
-        return this;
     }
 
 }

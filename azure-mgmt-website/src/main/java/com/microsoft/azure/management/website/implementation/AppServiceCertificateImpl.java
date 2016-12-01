@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceCertificate;
@@ -60,7 +59,7 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public String pfxBlob() {
+    public byte[] pfxBlob() {
         return inner().pfxBlob();
     }
 
@@ -127,19 +126,13 @@ class AppServiceCertificateImpl
 
     @Override
     public Observable<AppServiceCertificate> createResourceAsync() {
-        Observable<String> pfxString = Observable.just(pfxBlob());
+        Observable<byte[]> pfxBytes = Observable.just(pfxBlob());
         if (pfxFileUrl != null) {
-            pfxString = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit())
-                    .map(new Func1<byte[], String>() {
-                        @Override
-                        public String call(byte[] bytes) {
-                            return BaseEncoding.base64().encode(bytes);
-                        }
-                    });
+            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit());
         }
-        return pfxString.flatMap(new Func1<String, Observable<CertificateInner>>() {
+        return pfxBytes.flatMap(new Func1<byte[], Observable<CertificateInner>>() {
             @Override
-            public Observable<CertificateInner> call(String s) {
+            public Observable<CertificateInner> call(byte[] s) {
                 inner().withPfxBlob(s);
                 return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
             }
@@ -158,8 +151,7 @@ class AppServiceCertificateImpl
 
     @Override
     public AppServiceCertificateImpl withPfxByteArray(byte[] pfxByteArray) {
-        String base64String = BaseEncoding.base64().encode(pfxByteArray);
-        inner().withPfxBlob(base64String);
+        inner().withPfxBlob(pfxByteArray);
         return this;
     }
 
@@ -176,7 +168,7 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public AppServiceCertificate.DefinitionStages.WithCreate withPfxPassword(String password) {
+    public AppServiceCertificateImpl withPfxPassword(String password) {
         inner().withPassword(password);
         return this;
     }

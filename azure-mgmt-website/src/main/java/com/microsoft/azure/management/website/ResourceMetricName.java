@@ -11,7 +11,7 @@ package com.microsoft.azure.management.website;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Name of a metric for any resource.
+ * Name of a metric for any resource .
  */
 public class ResourceMetricName {
     /**

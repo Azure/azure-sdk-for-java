@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Information about the formal API definition for the web app.
+ * Information about the formal API definition for the app.
  */
 public class ApiDefinitionInfo {
     /**

@@ -17,6 +17,7 @@ public class ConnStringValueTypePair {
     /**
      * Value of pair.
      */
+    @JsonProperty(required = true)
     private String value;
 
     /**

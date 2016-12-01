@@ -8,10 +8,10 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import java.util.UUID;
 import com.microsoft.azure.management.website.NotificationLevel;
 import com.microsoft.azure.management.website.Channels;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents a recommendation rule that the recommendation engine can perform.
@@ -37,7 +37,7 @@ public class RecommendationRuleInner {
      * rule, if exists.
      * If such an object doesn't exist, it is set to null.
      */
-    private String recommendationId;
+    private UUID recommendationId;
 
     /**
      * Localized detailed description of the rule.
@@ -50,22 +50,15 @@ public class RecommendationRuleInner {
     private String actionName;
 
     /**
-     * On/off flag indicating the rule is currently enabled or disabled.
-     */
-    private Integer enabled;
-
-    /**
      * Level of impact indicating how critical this rule is. Possible values
      * include: 'Critical', 'Warning', 'Information', 'NonUrgentSuggestion'.
      */
-    @JsonProperty(required = true)
     private NotificationLevel level;
 
     /**
      * List of available channels that this rule applies. Possible values
-     * include: 'Notification', 'Api', 'Email', 'All'.
+     * include: 'Notification', 'Api', 'Email', 'Webhook', 'All'.
      */
-    @JsonProperty(required = true)
     private Channels channels;
 
     /**
@@ -138,7 +131,7 @@ public class RecommendationRuleInner {
      *
      * @return the recommendationId value
      */
-    public String recommendationId() {
+    public UUID recommendationId() {
         return this.recommendationId;
     }
 
@@ -148,7 +141,7 @@ public class RecommendationRuleInner {
      * @param recommendationId the recommendationId value to set
      * @return the RecommendationRuleInner object itself.
      */
-    public RecommendationRuleInner withRecommendationId(String recommendationId) {
+    public RecommendationRuleInner withRecommendationId(UUID recommendationId) {
         this.recommendationId = recommendationId;
         return this;
     }
@@ -190,26 +183,6 @@ public class RecommendationRuleInner {
      */
     public RecommendationRuleInner withActionName(String actionName) {
         this.actionName = actionName;
-        return this;
-    }
-
-    /**
-     * Get the enabled value.
-     *
-     * @return the enabled value
-     */
-    public Integer enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled value.
-     *
-     * @param enabled the enabled value to set
-     * @return the RecommendationRuleInner object itself.
-     */
-    public RecommendationRuleInner withEnabled(Integer enabled) {
-        this.enabled = enabled;
         return this;
     }
 

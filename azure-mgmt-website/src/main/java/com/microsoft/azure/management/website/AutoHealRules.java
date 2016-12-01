@@ -10,17 +10,16 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * AutoHealRules - describes the rules which can be defined for auto-heal.
+ * Rules that can be defined for auto-heal.
  */
 public class AutoHealRules {
     /**
-     * Triggers - Conditions that describe when to execute the auto-heal
-     * actions.
+     * Conditions that describe when to execute the auto-heal actions.
      */
     private AutoHealTriggers triggers;
 
     /**
-     * Actions - Actions to be executed when a rule is triggered.
+     * Actions to be executed when a rule is triggered.
      */
     private AutoHealActions actions;
 

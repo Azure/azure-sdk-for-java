@@ -402,7 +402,7 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig);
 
-    abstract Observable<Object> deleteHostNameBinding(String hostname);
+    abstract Observable<Void> deleteHostNameBinding(String hostname);
 
     abstract Observable<StringDictionaryInner> listAppSettings();
 

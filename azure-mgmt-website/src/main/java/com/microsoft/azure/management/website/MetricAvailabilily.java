@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Class repesenting metrics availability and retention.
+ * Metric availability and retention.
  */
 public class MetricAvailabilily {
     /**
@@ -19,8 +19,7 @@ public class MetricAvailabilily {
     private String timeGrain;
 
     /**
-     * Retention period for the current
-     * {Microsoft.Web.Hosting.Administration.MetricAvailabilily.TimeGrain}.
+     * Retention period for the current time grain.
      */
     private String retention;
 

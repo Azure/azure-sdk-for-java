@@ -8,58 +8,68 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import com.microsoft.azure.Resource;
-import com.microsoft.rest.serializer.JsonFlatten;
 import org.joda.time.DateTime;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
- * Certificate Details.
+ * SSL certificate details.
  */
 @JsonFlatten
 public class CertificateDetailsInner extends Resource {
     /**
      * Version.
      */
+    @JsonProperty(value = "properties.version", access = JsonProperty.Access.WRITE_ONLY)
     private Integer version;
 
     /**
      * Serial Number.
      */
+    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String serialNumber;
 
     /**
      * Thumbprint.
      */
+    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
      * Subject.
      */
+    @JsonProperty(value = "properties.subject", access = JsonProperty.Access.WRITE_ONLY)
     private String subject;
 
     /**
      * Valid from.
      */
+    @JsonProperty(value = "properties.notBefore", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime notBefore;
 
     /**
      * Valid to.
      */
+    @JsonProperty(value = "properties.notAfter", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime notAfter;
 
     /**
-     * Signature Algorithm.
+     * Signature algorithm.
      */
+    @JsonProperty(value = "properties.signatureAlgorithm", access = JsonProperty.Access.WRITE_ONLY)
     private String signatureAlgorithm;
 
     /**
      * Issuer.
      */
+    @JsonProperty(value = "properties.issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /**
      * Raw certificate data.
      */
+    @JsonProperty(value = "properties.rawData", access = JsonProperty.Access.WRITE_ONLY)
     private String rawData;
 
     /**
@@ -72,34 +82,12 @@ public class CertificateDetailsInner extends Resource {
     }
 
     /**
-     * Set the version value.
-     *
-     * @param version the version value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withVersion(Integer version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
      * Get the serialNumber value.
      *
      * @return the serialNumber value
      */
     public String serialNumber() {
         return this.serialNumber;
-    }
-
-    /**
-     * Set the serialNumber value.
-     *
-     * @param serialNumber the serialNumber value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
-        return this;
     }
 
     /**
@@ -112,34 +100,12 @@ public class CertificateDetailsInner extends Resource {
     }
 
     /**
-     * Set the thumbprint value.
-     *
-     * @param thumbprint the thumbprint value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
      * Get the subject value.
      *
      * @return the subject value
      */
     public String subject() {
         return this.subject;
-    }
-
-    /**
-     * Set the subject value.
-     *
-     * @param subject the subject value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withSubject(String subject) {
-        this.subject = subject;
-        return this;
     }
 
     /**
@@ -152,34 +118,12 @@ public class CertificateDetailsInner extends Resource {
     }
 
     /**
-     * Set the notBefore value.
-     *
-     * @param notBefore the notBefore value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withNotBefore(DateTime notBefore) {
-        this.notBefore = notBefore;
-        return this;
-    }
-
-    /**
      * Get the notAfter value.
      *
      * @return the notAfter value
      */
     public DateTime notAfter() {
         return this.notAfter;
-    }
-
-    /**
-     * Set the notAfter value.
-     *
-     * @param notAfter the notAfter value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withNotAfter(DateTime notAfter) {
-        this.notAfter = notAfter;
-        return this;
     }
 
     /**
@@ -192,17 +136,6 @@ public class CertificateDetailsInner extends Resource {
     }
 
     /**
-     * Set the signatureAlgorithm value.
-     *
-     * @param signatureAlgorithm the signatureAlgorithm value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withSignatureAlgorithm(String signatureAlgorithm) {
-        this.signatureAlgorithm = signatureAlgorithm;
-        return this;
-    }
-
-    /**
      * Get the issuer value.
      *
      * @return the issuer value
@@ -212,34 +145,12 @@ public class CertificateDetailsInner extends Resource {
     }
 
     /**
-     * Set the issuer value.
-     *
-     * @param issuer the issuer value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withIssuer(String issuer) {
-        this.issuer = issuer;
-        return this;
-    }
-
-    /**
      * Get the rawData value.
      *
      * @return the rawData value
      */
     public String rawData() {
         return this.rawData;
-    }
-
-    /**
-     * Set the rawData value.
-     *
-     * @param rawData the rawData value to set
-     * @return the CertificateDetailsInner object itself.
-     */
-    public CertificateDetailsInner withRawData(String rawData) {
-        this.rawData = rawData;
-        return this;
     }
 
 }

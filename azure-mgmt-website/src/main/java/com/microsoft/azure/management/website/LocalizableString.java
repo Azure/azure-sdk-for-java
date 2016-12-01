@@ -10,11 +10,11 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * LocalizableString object containing the name and a localized value.
+ * Localizable string object containing the name and a localized value.
  */
 public class LocalizableString {
     /**
-     * Non localized name.
+     * Non-localized name.
      */
     private String value;
 

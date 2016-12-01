@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Configuration of Azure web site.
+ * Configuration of App Service site logs.
  */
 @JsonFlatten
 public class SiteLogsConfigInner extends Resource {
@@ -27,7 +27,7 @@ public class SiteLogsConfigInner extends Resource {
     private ApplicationLogsConfig applicationLogs;
 
     /**
-     * Http logs configuration.
+     * HTTP logs configuration.
      */
     @JsonProperty(value = "properties.httpLogs")
     private HttpLogsConfig httpLogs;

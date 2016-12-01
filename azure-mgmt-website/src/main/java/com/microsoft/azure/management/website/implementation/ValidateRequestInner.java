@@ -9,32 +9,64 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.website.ValidateResourceTypes;
-import com.microsoft.azure.management.website.ValidateProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Resource validation request content.
  */
+@JsonFlatten
 public class ValidateRequestInner {
     /**
      * Resource name to verify.
      */
+    @JsonProperty(required = true)
     private String name;
 
     /**
      * Resource type used for verification. Possible values include:
      * 'ServerFarm', 'Site'.
      */
+    @JsonProperty(required = true)
     private ValidateResourceTypes type;
 
     /**
      * Expected location of the resource.
      */
+    @JsonProperty(required = true)
     private String location;
 
     /**
-     * Properties of the resource to validate.
+     * ARM resource ID of an App Service plan that would host the app.
      */
-    private ValidateProperties properties;
+    @JsonProperty(value = "properties.serverFarmId")
+    private String serverFarmId;
+
+    /**
+     * Name of the target SKU for the App Service plan.
+     */
+    @JsonProperty(value = "properties.skuName")
+    private String skuName;
+
+    /**
+     * &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
+     */
+    @JsonProperty(value = "properties.needLinuxWorkers")
+    private Boolean needLinuxWorkers;
+
+    /**
+     * Target capacity of the App Service plan (number of VM's).
+     */
+    @JsonProperty(value = "properties.capacity")
+    private Integer capacity;
+
+    /**
+     * Name of App Service Environment where app or App Service plan should be
+     * created.
+     */
+    @JsonProperty(value = "properties.hostingEnvironment")
+    private String hostingEnvironment;
 
     /**
      * Get the name value.
@@ -97,22 +129,102 @@ public class ValidateRequestInner {
     }
 
     /**
-     * Get the properties value.
+     * Get the serverFarmId value.
      *
-     * @return the properties value
+     * @return the serverFarmId value
      */
-    public ValidateProperties properties() {
-        return this.properties;
+    public String serverFarmId() {
+        return this.serverFarmId;
     }
 
     /**
-     * Set the properties value.
+     * Set the serverFarmId value.
      *
-     * @param properties the properties value to set
+     * @param serverFarmId the serverFarmId value to set
      * @return the ValidateRequestInner object itself.
      */
-    public ValidateRequestInner withProperties(ValidateProperties properties) {
-        this.properties = properties;
+    public ValidateRequestInner withServerFarmId(String serverFarmId) {
+        this.serverFarmId = serverFarmId;
+        return this;
+    }
+
+    /**
+     * Get the skuName value.
+     *
+     * @return the skuName value
+     */
+    public String skuName() {
+        return this.skuName;
+    }
+
+    /**
+     * Set the skuName value.
+     *
+     * @param skuName the skuName value to set
+     * @return the ValidateRequestInner object itself.
+     */
+    public ValidateRequestInner withSkuName(String skuName) {
+        this.skuName = skuName;
+        return this;
+    }
+
+    /**
+     * Get the needLinuxWorkers value.
+     *
+     * @return the needLinuxWorkers value
+     */
+    public Boolean needLinuxWorkers() {
+        return this.needLinuxWorkers;
+    }
+
+    /**
+     * Set the needLinuxWorkers value.
+     *
+     * @param needLinuxWorkers the needLinuxWorkers value to set
+     * @return the ValidateRequestInner object itself.
+     */
+    public ValidateRequestInner withNeedLinuxWorkers(Boolean needLinuxWorkers) {
+        this.needLinuxWorkers = needLinuxWorkers;
+        return this;
+    }
+
+    /**
+     * Get the capacity value.
+     *
+     * @return the capacity value
+     */
+    public Integer capacity() {
+        return this.capacity;
+    }
+
+    /**
+     * Set the capacity value.
+     *
+     * @param capacity the capacity value to set
+     * @return the ValidateRequestInner object itself.
+     */
+    public ValidateRequestInner withCapacity(Integer capacity) {
+        this.capacity = capacity;
+        return this;
+    }
+
+    /**
+     * Get the hostingEnvironment value.
+     *
+     * @return the hostingEnvironment value
+     */
+    public String hostingEnvironment() {
+        return this.hostingEnvironment;
+    }
+
+    /**
+     * Set the hostingEnvironment value.
+     *
+     * @param hostingEnvironment the hostingEnvironment value to set
+     * @return the ValidateRequestInner object itself.
+     */
+    public ValidateRequestInner withHostingEnvironment(String hostingEnvironment) {
+        this.hostingEnvironment = hostingEnvironment;
         return this;
     }
 

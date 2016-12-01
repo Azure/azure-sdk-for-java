@@ -20,33 +20,23 @@ public class TopLevelDomainInner extends Resource {
     /**
      * Name of the top level domain.
      */
-    @JsonProperty(value = "properties.name")
-    private String topLevelDomainName;
+    @JsonProperty(value = "properties.name", access = JsonProperty.Access.WRITE_ONLY)
+    private String domainName;
 
     /**
-     * If true then the top level domain supports domain privacy.
+     * If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports
+     * domain privacy; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.privacy")
     private Boolean privacy;
 
     /**
-     * Get the topLevelDomainName value.
+     * Get the domainName value.
      *
-     * @return the topLevelDomainName value
+     * @return the domainName value
      */
-    public String topLevelDomainName() {
-        return this.topLevelDomainName;
-    }
-
-    /**
-     * Set the topLevelDomainName value.
-     *
-     * @param topLevelDomainName the topLevelDomainName value to set
-     * @return the TopLevelDomainInner object itself.
-     */
-    public TopLevelDomainInner withTopLevelDomainName(String topLevelDomainName) {
-        this.topLevelDomainName = topLevelDomainName;
-        return this;
+    public String domainName() {
+        return this.domainName;
     }
 
     /**

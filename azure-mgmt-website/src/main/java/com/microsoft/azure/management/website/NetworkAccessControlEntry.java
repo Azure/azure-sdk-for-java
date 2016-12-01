@@ -10,26 +10,26 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Network Access control entry.
+ * Network access control entry.
  */
 public class NetworkAccessControlEntry {
     /**
-     * Possible values include: 'Permit', 'Deny'.
+     * Action object. Possible values include: 'Permit', 'Deny'.
      */
     private AccessControlEntryAction action;
 
     /**
-     * The description property.
+     * Description.
      */
     private String description;
 
     /**
-     * The order property.
+     * Order of precedence.
      */
     private Integer order;
 
     /**
-     * The remoteSubnet property.
+     * Remote subnet.
      */
     private String remoteSubnet;
 

@@ -14,8 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Class representing the Key Vault container for certificate purchased
- * through Azure.
+ * Key Vault container for a certificate that is purchased through Azure.
  */
 @JsonFlatten
 public class AppServiceCertificateInner extends Resource {
@@ -39,7 +38,7 @@ public class AppServiceCertificateInner extends Resource {
      * 'KeyVaultSecretDoesNotExist', 'UnknownError', 'ExternalPrivateKey',
      * 'Unknown'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultSecretStatus provisioningState;
 
     /**
@@ -89,17 +88,6 @@ public class AppServiceCertificateInner extends Resource {
      */
     public KeyVaultSecretStatus provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the AppServiceCertificateInner object itself.
-     */
-    public AppServiceCertificateInner withProvisioningState(KeyVaultSecretStatus provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
 }

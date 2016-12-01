@@ -8,27 +8,24 @@
 
 package com.microsoft.azure.management.website;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * AutoHealActions - Describes the actions which can be
- * taken by the auto-heal module when a rule is triggered.
+ * Actions which to take by the auto-heal module when a rule is triggered.
  */
 public class AutoHealActions {
     /**
-     * ActionType - predefined action to be taken. Possible values include:
-     * 'Recycle', 'LogEvent', 'CustomAction'.
+     * Predefined action to be taken. Possible values include: 'Recycle',
+     * 'LogEvent', 'CustomAction'.
      */
-    @JsonProperty(required = true)
     private AutoHealActionType actionType;
 
     /**
-     * CustomAction - custom action to be taken.
+     * Custom action to be taken.
      */
     private AutoHealCustomAction customAction;
 
     /**
-     * MinProcessExecutionTime - minimum time the process must execute
+     * Minimum time the process must execute
      * before taking the action.
      */
     private String minProcessExecutionTime;

@@ -24,6 +24,9 @@ public enum Channels {
     /** Enum value Email. */
     EMAIL("Email"),
 
+    /** Enum value Webhook. */
+    WEBHOOK("Webhook"),
+
     /** Enum value All. */
     ALL("All");
 

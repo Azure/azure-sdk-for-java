@@ -11,29 +11,26 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.website.CloneAbilityResult;
 import java.util.List;
 import com.microsoft.azure.management.website.SiteCloneabilityCriterion;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents whether or not a web app is cloneable.
+ * Represents whether or not an app is cloneable.
  */
 public class SiteCloneabilityInner {
     /**
-     * Name of web app. Possible values include: 'Cloneable',
+     * Name of app. Possible values include: 'Cloneable',
      * 'PartiallyCloneable', 'NotCloneable'.
      */
-    @JsonProperty(required = true)
     private CloneAbilityResult result;
 
     /**
-     * List of features enabled on web app that prevent cloning.
+     * List of features enabled on app that prevent cloning.
      */
     private List<SiteCloneabilityCriterion> blockingFeatures;
 
     /**
-     * List of features enabled on web app that are non-blocking but cannot be
-     * cloned. The web app can still be cloned
-     * but the features in this list will not be set up on cloned
-     * web app.
+     * List of features enabled on app that are non-blocking but cannot be
+     * cloned. The app can still be cloned
+     * but the features in this list will not be set up on cloned app.
      */
     private List<SiteCloneabilityCriterion> unsupportedFeatures;
 

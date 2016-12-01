@@ -15,7 +15,7 @@ import com.microsoft.azure.management.website.ValidateResponseError;
  */
 public class ValidateResponseInner {
     /**
-     * Indicates the result of validation.
+     * Result of validation.
      */
     private String status;
 

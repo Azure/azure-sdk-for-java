@@ -8,25 +8,29 @@
 
 package com.microsoft.azure.management.website.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Single sign on request information for domain management.
+ * Single sign-on request information for domain management.
  */
 public class DomainControlCenterSsoRequestInner {
     /**
-     * Url where the single sign on request is to be made.
+     * URL where the single sign-on request is to be made.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /**
      * Post parameter key.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterKey;
 
     /**
      * Post parameter value. Client should use
      * 'application/x-www-form-urlencoded' encoding for this value.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterValue;
 
     /**
@@ -39,17 +43,6 @@ public class DomainControlCenterSsoRequestInner {
     }
 
     /**
-     * Set the url value.
-     *
-     * @param url the url value to set
-     * @return the DomainControlCenterSsoRequestInner object itself.
-     */
-    public DomainControlCenterSsoRequestInner withUrl(String url) {
-        this.url = url;
-        return this;
-    }
-
-    /**
      * Get the postParameterKey value.
      *
      * @return the postParameterKey value
@@ -59,34 +52,12 @@ public class DomainControlCenterSsoRequestInner {
     }
 
     /**
-     * Set the postParameterKey value.
-     *
-     * @param postParameterKey the postParameterKey value to set
-     * @return the DomainControlCenterSsoRequestInner object itself.
-     */
-    public DomainControlCenterSsoRequestInner withPostParameterKey(String postParameterKey) {
-        this.postParameterKey = postParameterKey;
-        return this;
-    }
-
-    /**
      * Get the postParameterValue value.
      *
      * @return the postParameterValue value
      */
     public String postParameterValue() {
         return this.postParameterValue;
-    }
-
-    /**
-     * Set the postParameterValue value.
-     *
-     * @param postParameterValue the postParameterValue value to set
-     * @return the DomainControlCenterSsoRequestInner object itself.
-     */
-    public DomainControlCenterSsoRequestInner withPostParameterValue(String postParameterValue) {
-        this.postParameterValue = postParameterValue;
-        return this;
     }
 
 }

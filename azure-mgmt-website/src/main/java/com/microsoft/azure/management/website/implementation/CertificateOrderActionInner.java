@@ -15,15 +15,16 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents a certificate action.
+ * Certificate order action.
  */
 @JsonFlatten
 public class CertificateOrderActionInner extends Resource {
     /**
-     * Type. Possible values include: 'CertificateIssued',
+     * Action type. Possible values include: 'CertificateIssued',
      * 'CertificateOrderCanceled', 'CertificateOrderCreated',
      * 'CertificateRevoked', 'DomainValidationComplete', 'FraudDetected',
-     * 'OrgNameChange', 'OrgValidationComplete', 'SanDrop'.
+     * 'OrgNameChange', 'OrgValidationComplete', 'SanDrop', 'FraudCleared',
+     * 'Unknown'.
      */
     @JsonProperty(value = "properties.type")
     private CertificateOrderActionType certificateOrderActionType;

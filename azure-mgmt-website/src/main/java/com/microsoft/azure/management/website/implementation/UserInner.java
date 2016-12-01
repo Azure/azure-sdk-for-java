@@ -13,12 +13,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents user crendentials used for publishing activity.
+ * User crendentials used for publishing activity.
  */
 @JsonFlatten
 public class UserInner extends Resource {
     /**
-     * Username (internal).
+     * Username.
      */
     @JsonProperty(value = "properties.name")
     private String userName;
@@ -36,13 +36,13 @@ public class UserInner extends Resource {
     private String publishingPassword;
 
     /**
-     * PasswordHash used for publishing.
+     * Password hash used for publishing.
      */
     @JsonProperty(value = "properties.publishingPasswordHash")
     private String publishingPasswordHash;
 
     /**
-     * PasswordHashSalt used for publishing.
+     * Password hash salt used for publishing.
      */
     @JsonProperty(value = "properties.publishingPasswordHashSalt")
     private String publishingPasswordHashSalt;

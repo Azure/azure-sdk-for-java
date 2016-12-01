@@ -13,15 +13,15 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Response for a migration of site content request.
+ * Response for a migration of app content request.
  */
 @JsonFlatten
 public class StorageMigrationResponseInner extends Resource {
     /**
-     * When server starts the migration process, it will return an OperationId
-     * identifying that particular migration operation.
+     * When server starts the migration process, it will return an operation
+     * ID identifying that particular migration operation.
      */
-    @JsonProperty(value = "properties.operationId")
+    @JsonProperty(value = "properties.operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
@@ -31,17 +31,6 @@ public class StorageMigrationResponseInner extends Resource {
      */
     public String operationId() {
         return this.operationId;
-    }
-
-    /**
-     * Set the operationId value.
-     *
-     * @param operationId the operationId value to set
-     * @return the StorageMigrationResponseInner object itself.
-     */
-    public StorageMigrationResponseInner withOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
     }
 
 }

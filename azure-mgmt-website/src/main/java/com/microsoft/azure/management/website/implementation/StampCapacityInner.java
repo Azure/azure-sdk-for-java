@@ -12,7 +12,7 @@ import com.microsoft.azure.management.website.ComputeModeOptions;
 import com.microsoft.azure.management.website.WorkerSizeOptions;
 
 /**
- * Class containing stamp capacity information.
+ * Stamp capacity information.
  */
 public class StampCapacityInner {
     /**
@@ -36,7 +36,7 @@ public class StampCapacityInner {
     private String unit;
 
     /**
-     * Shared/Dedicated workers. Possible values include: 'Shared',
+     * Shared/dedicated workers. Possible values include: 'Shared',
      * 'Dedicated', 'Dynamic'.
      */
     private ComputeModeOptions computeMode;
@@ -48,7 +48,7 @@ public class StampCapacityInner {
     private WorkerSizeOptions workerSize;
 
     /**
-     * Size Id of machines:
+     * Size ID of machines:
      * 0 - Small
      * 1 - Medium
      * 2 - Large.
@@ -56,13 +56,14 @@ public class StampCapacityInner {
     private Integer workerSizeId;
 
     /**
-     * If true it includes basic sites
-     * Basic sites are not used for capacity allocation.
+     * If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     * Basic apps are not used for capacity allocation.
      */
     private Boolean excludeFromCapacityAllocation;
 
     /**
-     * Is capacity applicable for all sites?.
+     * &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all apps;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean isApplicableForAllComputeModes;
 

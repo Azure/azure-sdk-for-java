@@ -16,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * A host name binding object.
+ * A hostname binding object.
  */
 @JsonFlatten
 public class HostNameBindingInner extends Resource {
@@ -27,7 +27,7 @@ public class HostNameBindingInner extends Resource {
     private String hostNameBindingName;
 
     /**
-     * Web app name.
+     * App Service app name.
      */
     @JsonProperty(value = "properties.siteName")
     private String siteName;
@@ -58,7 +58,7 @@ public class HostNameBindingInner extends Resource {
     private CustomHostNameDnsRecordType customHostNameDnsRecordType;
 
     /**
-     * Host name type. Possible values include: 'Verified', 'Managed'.
+     * Hostname type. Possible values include: 'Verified', 'Managed'.
      */
     @JsonProperty(value = "properties.hostNameType")
     private HostNameType hostNameType;

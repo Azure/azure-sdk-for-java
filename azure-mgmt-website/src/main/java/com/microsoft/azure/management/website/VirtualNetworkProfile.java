@@ -11,28 +11,28 @@ package com.microsoft.azure.management.website;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specification for using a virtual network.
+ * Specification for using a Virtual Network.
  */
 public class VirtualNetworkProfile {
     /**
-     * Resource id of the virtual network.
+     * Resource id of the Virtual Network.
      */
     private String id;
 
     /**
-     * Name of the virtual network (read-only).
+     * Name of the Virtual Network (read-only).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Resource type of the virtual network (read-only).
+     * Resource type of the Virtual Network (read-only).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Subnet within the virtual network.
+     * Subnet within the Virtual Network.
      */
     private String subnet;
 

@@ -21,13 +21,13 @@ public class HybridConnectionKeyInner extends Resource {
     /**
      * The name of the send key.
      */
-    @JsonProperty(value = "properties.sendKeyName")
+    @JsonProperty(value = "properties.sendKeyName", access = JsonProperty.Access.WRITE_ONLY)
     private String sendKeyName;
 
     /**
      * The value of the send key.
      */
-    @JsonProperty(value = "properties.sendKeyValue")
+    @JsonProperty(value = "properties.sendKeyValue", access = JsonProperty.Access.WRITE_ONLY)
     private String sendKeyValue;
 
     /**
@@ -40,34 +40,12 @@ public class HybridConnectionKeyInner extends Resource {
     }
 
     /**
-     * Set the sendKeyName value.
-     *
-     * @param sendKeyName the sendKeyName value to set
-     * @return the HybridConnectionKeyInner object itself.
-     */
-    public HybridConnectionKeyInner withSendKeyName(String sendKeyName) {
-        this.sendKeyName = sendKeyName;
-        return this;
-    }
-
-    /**
      * Get the sendKeyValue value.
      *
      * @return the sendKeyValue value
      */
     public String sendKeyValue() {
         return this.sendKeyValue;
-    }
-
-    /**
-     * Set the sendKeyValue value.
-     *
-     * @param sendKeyValue the sendKeyValue value to set
-     * @return the HybridConnectionKeyInner object itself.
-     */
-    public HybridConnectionKeyInner withSendKeyValue(String sendKeyValue) {
-        this.sendKeyValue = sendKeyValue;
-        return this;
     }
 
 }

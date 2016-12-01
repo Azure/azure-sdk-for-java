@@ -10,16 +10,16 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * MachineKey of Azure web site.
+ * MachineKey of an app.
  */
 public class SiteMachineKey {
     /**
-     * MachineKeyValidation.
+     * MachineKey validation.
      */
     private String validation;
 
     /**
-     * ValidationKey.
+     * Validation key.
      */
     private String validationKey;
 
@@ -29,7 +29,7 @@ public class SiteMachineKey {
     private String decryption;
 
     /**
-     * DecryptionKey.
+     * Decryption key.
      */
     private String decryptionKey;
 

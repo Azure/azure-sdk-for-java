@@ -16,53 +16,47 @@ package com.microsoft.azure.management.website;
 public class RampUpRule {
     /**
      * Hostname of a slot to which the traffic will be redirected if decided
-     * to. E.g. mysite-stage.azurewebsites.net.
+     * to. E.g. myapp-stage.azurewebsites.net.
      */
     private String actionHostName;
 
     /**
      * Percentage of the traffic which will be redirected to
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.ActionHostName}.
+     * &lt;code&gt;ActionHostName&lt;/code&gt;.
      */
     private Double reroutePercentage;
 
     /**
-     * [Optional] In auto ramp up scenario this is the step to to add/remove
-     * from
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.ReroutePercentage}
-     * until it reaches
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.MinReroutePercentage}
-     * or
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.MaxReroutePercentage}.
-     * Site metrics are checked every N minutes specificed in
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeIntervalInMinutes}.
-     * Custom decision algorithm can be provided in TiPCallback
-     * site extension which Url can be specified in
-     * {Microsoft.Web.Hosting.Administration.RampUpRule.ChangeDecisionCallbackUrl}.
+     * In auto ramp up scenario this is the step to to add/remove from
+     * &lt;code&gt;ReroutePercentage&lt;/code&gt; until it reaches
+     * &lt;code&gt;MinReroutePercentage&lt;/code&gt; or
+     * &lt;code&gt;MaxReroutePercentage&lt;/code&gt;. Site metrics are
+     * checked every N minutes specificed in
+     * &lt;code&gt;ChangeIntervalInMinutes&lt;/code&gt;.
+     * Custom decision algorithm can be provided in TiPCallback site
+     * extension which URL can be specified in
+     * &lt;code&gt;ChangeDecisionCallbackUrl&lt;/code&gt;.
      */
     private Double changeStep;
 
     /**
-     * [Optional] Specifies interval in mimuntes to reevaluate
-     * ReroutePercentage.
+     * Specifies interval in mimuntes to reevaluate ReroutePercentage.
      */
     private Integer changeIntervalInMinutes;
 
     /**
-     * [Optional] Specifies lower boundary above which ReroutePercentage will
-     * stay.
+     * Specifies lower boundary above which ReroutePercentage will stay.
      */
     private Double minReroutePercentage;
 
     /**
-     * [Optional] Specifies upper boundary below which ReroutePercentage will
-     * stay.
+     * Specifies upper boundary below which ReroutePercentage will stay.
      */
     private Double maxReroutePercentage;
 
     /**
      * Custom decision algorithm can be provided in TiPCallback site extension
-     * which Url can be specified. See TiPCallback site extension for the
+     * which URL can be specified. See TiPCallback site extension for the
      * scaffold and contracts.
      * https://www.siteextensions.net/packages/TiPCallback/.
      */

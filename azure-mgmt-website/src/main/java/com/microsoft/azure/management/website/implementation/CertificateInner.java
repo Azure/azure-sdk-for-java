@@ -8,29 +8,29 @@
 
 package com.microsoft.azure.management.website.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.Resource;
-import com.microsoft.azure.management.website.HostingEnvironmentProfile;
-import com.microsoft.rest.serializer.JsonFlatten;
-import org.joda.time.DateTime;
-
 import java.util.List;
+import org.joda.time.DateTime;
+import com.microsoft.azure.management.website.HostingEnvironmentProfile;
+import com.microsoft.azure.management.website.KeyVaultSecretStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
- * App certificate.
+ * SSL certificate for an app.
  */
 @JsonFlatten
 public class CertificateInner extends Resource {
     /**
      * Friendly name of the certificate.
      */
-    @JsonProperty(value = "properties.friendlyName")
+    @JsonProperty(value = "properties.friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;
 
     /**
      * Subject name of the certificate.
      */
-    @JsonProperty(value = "properties.subjectName")
+    @JsonProperty(value = "properties.subjectName", access = JsonProperty.Access.WRITE_ONLY)
     private String subjectName;
 
     /**
@@ -43,36 +43,36 @@ public class CertificateInner extends Resource {
      * Pfx blob.
      */
     @JsonProperty(value = "properties.pfxBlob")
-    private String pfxBlob;
+    private byte[] pfxBlob;
 
     /**
      * App name.
      */
-    @JsonProperty(value = "properties.siteName")
+    @JsonProperty(value = "properties.siteName", access = JsonProperty.Access.WRITE_ONLY)
     private String siteName;
 
     /**
      * Self link.
      */
-    @JsonProperty(value = "properties.selfLink")
+    @JsonProperty(value = "properties.selfLink", access = JsonProperty.Access.WRITE_ONLY)
     private String selfLink;
 
     /**
      * Certificate issuer.
      */
-    @JsonProperty(value = "properties.issuer")
+    @JsonProperty(value = "properties.issuer", access = JsonProperty.Access.WRITE_ONLY)
     private String issuer;
 
     /**
      * Certificate issue Date.
      */
-    @JsonProperty(value = "properties.issueDate")
+    @JsonProperty(value = "properties.issueDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime issueDate;
 
     /**
      * Certificate expriration date.
      */
-    @JsonProperty(value = "properties.expirationDate")
+    @JsonProperty(value = "properties.expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime expirationDate;
 
     /**
@@ -84,13 +84,13 @@ public class CertificateInner extends Resource {
     /**
      * Certificate thumbprint.
      */
-    @JsonProperty(value = "properties.thumbprint")
+    @JsonProperty(value = "properties.thumbprint", access = JsonProperty.Access.WRITE_ONLY)
     private String thumbprint;
 
     /**
      * Is the certificate valid?.
      */
-    @JsonProperty(value = "properties.valid")
+    @JsonProperty(value = "properties.valid", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean valid;
 
     /**
@@ -102,39 +102,45 @@ public class CertificateInner extends Resource {
     /**
      * Public key hash.
      */
-    @JsonProperty(value = "properties.publicKeyHash")
+    @JsonProperty(value = "properties.publicKeyHash", access = JsonProperty.Access.WRITE_ONLY)
     private String publicKeyHash;
 
-    public String keyVaultId() {
-        return keyVaultId;
-    }
+    /**
+     * Specification for the App Service Environment to use for the
+     * certificate.
+     */
+    @JsonProperty(value = "properties.hostingEnvironmentProfile", access = JsonProperty.Access.WRITE_ONLY)
+    private HostingEnvironmentProfile hostingEnvironmentProfile;
 
-    public CertificateInner withKeyVaultId(String keyVaultId) {
-        this.keyVaultId = keyVaultId;
-        return this;
-    }
-
-    public String keyVaultSecretName() {
-        return keyVaultSecretName;
-    }
-
-    public CertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
-        this.keyVaultSecretName = keyVaultSecretName;
-        return this;
-    }
-
+    /**
+     * Key Vault Csm resource Id.
+     */
     @JsonProperty(value = "properties.keyVaultId")
     private String keyVaultId;
 
+    /**
+     * Key Vault secret name.
+     */
     @JsonProperty(value = "properties.keyVaultSecretName")
     private String keyVaultSecretName;
 
     /**
-     * Specification for the hosting environment (App Service Environment) to
-     * use for the certificate.
+     * Status of the Key Vault secret. Possible values include: 'Initialized',
+     * 'WaitingOnCertificateOrder', 'Succeeded', 'CertificateOrderFailed',
+     * 'OperationNotPermittedOnKeyVault',
+     * 'AzureServiceUnauthorizedToAccessKeyVault', 'KeyVaultDoesNotExist',
+     * 'KeyVaultSecretDoesNotExist', 'UnknownError', 'ExternalPrivateKey',
+     * 'Unknown'.
      */
-    @JsonProperty(value = "properties.hostingEnvironmentProfile")
-    private HostingEnvironmentProfile hostingEnvironmentProfile;
+    @JsonProperty(value = "properties.keyVaultSecretStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private KeyVaultSecretStatus keyVaultSecretStatus;
+
+    /**
+     * Resource ID of the associated App Service plan, formatted as:
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
+     */
+    @JsonProperty(value = "properties.serverFarmId")
+    private String serverFarmId;
 
     /**
      * Get the friendlyName value.
@@ -146,34 +152,12 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the friendlyName value.
-     *
-     * @param friendlyName the friendlyName value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
-        return this;
-    }
-
-    /**
      * Get the subjectName value.
      *
      * @return the subjectName value
      */
     public String subjectName() {
         return this.subjectName;
-    }
-
-    /**
-     * Set the subjectName value.
-     *
-     * @param subjectName the subjectName value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-        return this;
     }
 
     /**
@@ -201,7 +185,7 @@ public class CertificateInner extends Resource {
      *
      * @return the pfxBlob value
      */
-    public String pfxBlob() {
+    public byte[] pfxBlob() {
         return this.pfxBlob;
     }
 
@@ -211,7 +195,7 @@ public class CertificateInner extends Resource {
      * @param pfxBlob the pfxBlob value to set
      * @return the CertificateInner object itself.
      */
-    public CertificateInner withPfxBlob(String pfxBlob) {
+    public CertificateInner withPfxBlob(byte[] pfxBlob) {
         this.pfxBlob = pfxBlob;
         return this;
     }
@@ -226,34 +210,12 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the siteName value.
-     *
-     * @param siteName the siteName value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withSiteName(String siteName) {
-        this.siteName = siteName;
-        return this;
-    }
-
-    /**
      * Get the selfLink value.
      *
      * @return the selfLink value
      */
     public String selfLink() {
         return this.selfLink;
-    }
-
-    /**
-     * Set the selfLink value.
-     *
-     * @param selfLink the selfLink value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withSelfLink(String selfLink) {
-        this.selfLink = selfLink;
-        return this;
     }
 
     /**
@@ -266,17 +228,6 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the issuer value.
-     *
-     * @param issuer the issuer value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withIssuer(String issuer) {
-        this.issuer = issuer;
-        return this;
-    }
-
-    /**
      * Get the issueDate value.
      *
      * @return the issueDate value
@@ -286,34 +237,12 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the issueDate value.
-     *
-     * @param issueDate the issueDate value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withIssueDate(DateTime issueDate) {
-        this.issueDate = issueDate;
-        return this;
-    }
-
-    /**
      * Get the expirationDate value.
      *
      * @return the expirationDate value
      */
     public DateTime expirationDate() {
         return this.expirationDate;
-    }
-
-    /**
-     * Set the expirationDate value.
-     *
-     * @param expirationDate the expirationDate value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withExpirationDate(DateTime expirationDate) {
-        this.expirationDate = expirationDate;
-        return this;
     }
 
     /**
@@ -346,34 +275,12 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the thumbprint value.
-     *
-     * @param thumbprint the thumbprint value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
      * Get the valid value.
      *
      * @return the valid value
      */
     public Boolean valid() {
         return this.valid;
-    }
-
-    /**
-     * Set the valid value.
-     *
-     * @param valid the valid value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withValid(Boolean valid) {
-        this.valid = valid;
-        return this;
     }
 
     /**
@@ -406,17 +313,6 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the publicKeyHash value.
-     *
-     * @param publicKeyHash the publicKeyHash value to set
-     * @return the CertificateInner object itself.
-     */
-    public CertificateInner withPublicKeyHash(String publicKeyHash) {
-        this.publicKeyHash = publicKeyHash;
-        return this;
-    }
-
-    /**
      * Get the hostingEnvironmentProfile value.
      *
      * @return the hostingEnvironmentProfile value
@@ -426,13 +322,71 @@ public class CertificateInner extends Resource {
     }
 
     /**
-     * Set the hostingEnvironmentProfile value.
+     * Get the keyVaultId value.
      *
-     * @param hostingEnvironmentProfile the hostingEnvironmentProfile value to set
+     * @return the keyVaultId value
+     */
+    public String keyVaultId() {
+        return this.keyVaultId;
+    }
+
+    /**
+     * Set the keyVaultId value.
+     *
+     * @param keyVaultId the keyVaultId value to set
      * @return the CertificateInner object itself.
      */
-    public CertificateInner withHostingEnvironmentProfile(HostingEnvironmentProfile hostingEnvironmentProfile) {
-        this.hostingEnvironmentProfile = hostingEnvironmentProfile;
+    public CertificateInner withKeyVaultId(String keyVaultId) {
+        this.keyVaultId = keyVaultId;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultSecretName value.
+     *
+     * @return the keyVaultSecretName value
+     */
+    public String keyVaultSecretName() {
+        return this.keyVaultSecretName;
+    }
+
+    /**
+     * Set the keyVaultSecretName value.
+     *
+     * @param keyVaultSecretName the keyVaultSecretName value to set
+     * @return the CertificateInner object itself.
+     */
+    public CertificateInner withKeyVaultSecretName(String keyVaultSecretName) {
+        this.keyVaultSecretName = keyVaultSecretName;
+        return this;
+    }
+
+    /**
+     * Get the keyVaultSecretStatus value.
+     *
+     * @return the keyVaultSecretStatus value
+     */
+    public KeyVaultSecretStatus keyVaultSecretStatus() {
+        return this.keyVaultSecretStatus;
+    }
+
+    /**
+     * Get the serverFarmId value.
+     *
+     * @return the serverFarmId value
+     */
+    public String serverFarmId() {
+        return this.serverFarmId;
+    }
+
+    /**
+     * Set the serverFarmId value.
+     *
+     * @param serverFarmId the serverFarmId value to set
+     * @return the CertificateInner object itself.
+     */
+    public CertificateInner withServerFarmId(String serverFarmId) {
+        this.serverFarmId = serverFarmId;
         return this;
     }
 

@@ -15,230 +15,237 @@ import com.microsoft.azure.management.website.SiteAvailabilityState;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import com.microsoft.azure.management.website.CloningInfo;
+import com.microsoft.azure.management.website.SlotSwapStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Reports deleted site including the timestamp of operation.
+ * A deleted app.
  */
 @JsonFlatten
 public class DeletedSiteInner extends Resource {
     /**
-     * Time when the site was deleted.
+     * Time in UTC when the app was deleted.
      */
-    @JsonProperty(value = "properties.deletedTimestamp")
+    @JsonProperty(value = "properties.deletedTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime deletedTimestamp;
 
     /**
-     * State of the web app.
+     * Current state of the app.
      */
-    @JsonProperty(value = "properties.state")
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /**
-     * Hostnames associated with web app.
+     * Hostnames associated with the app.
      */
-    @JsonProperty(value = "properties.hostNames")
+    @JsonProperty(value = "properties.hostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> hostNames;
 
     /**
-     * Name of repository site.
+     * Name of the repository site.
      */
-    @JsonProperty(value = "properties.repositorySiteName")
+    @JsonProperty(value = "properties.repositorySiteName", access = JsonProperty.Access.WRITE_ONLY)
     private String repositorySiteName;
 
     /**
-     * State indicating whether web app has exceeded its quota usage. Possible
-     * values include: 'Normal', 'Exceeded'.
+     * State indicating whether the app has exceeded its quota usage.
+     * Read-only. Possible values include: 'Normal', 'Exceeded'.
      */
-    @JsonProperty(value = "properties.usageState")
+    @JsonProperty(value = "properties.usageState", access = JsonProperty.Access.WRITE_ONLY)
     private UsageState usageState;
 
     /**
-     * True if the site is enabled; otherwise, false. Setting this  value to
-     * false disables the site (takes the site off line).
+     * &lt;code&gt;true&lt;/code&gt; if the app is enabled; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;. Setting this value to false disables
+     * the app (takes the app offline).
      */
     @JsonProperty(value = "properties.enabled")
     private Boolean enabled;
 
     /**
-     * Hostnames for the web app that are enabled. Hostnames need to be
-     * assigned and enabled. If some hostnames are assigned but not enabled
+     * Enabled hostnames for the app.Hostnames need to be assigned (see
+     * HostNames) AND enabled. Otherwise,
      * the app is not served on those hostnames.
      */
-    @JsonProperty(value = "properties.enabledHostNames")
+    @JsonProperty(value = "properties.enabledHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> enabledHostNames;
 
     /**
-     * Management information availability state for the web app. Possible
-     * values are Normal or Limited.
-     * Normal means that the site is running correctly and that
-     * management information for the site is available.
-     * Limited means that only partial management information for
-     * the site is available and that detailed site information is
-     * unavailable. Possible values include: 'Normal', 'Limited',
-     * 'DisasterRecoveryMode'.
+     * Management information availability state for the app. Possible values
+     * include: 'Normal', 'Limited', 'DisasterRecoveryMode'.
      */
-    @JsonProperty(value = "properties.availabilityState")
+    @JsonProperty(value = "properties.availabilityState", access = JsonProperty.Access.WRITE_ONLY)
     private SiteAvailabilityState availabilityState;
 
     /**
-     * Hostname SSL states are  used to manage the SSL bindings for site's
+     * Hostname SSL states are used to manage the SSL bindings for app's
      * hostnames.
      */
     @JsonProperty(value = "properties.hostNameSslStates")
     private List<HostNameSslState> hostNameSslStates;
 
     /**
-     * The serverFarmId property.
+     * Resource ID of the associated App Service plan, formatted as:
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      */
     @JsonProperty(value = "properties.serverFarmId")
     private String serverFarmId;
 
     /**
-     * Reserved.
+     * &lt;code&gt;true&lt;/code&gt; if reserved; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.reserved")
     private Boolean reserved;
 
     /**
-     * Last time web app was modified in UTC.
+     * Last time the app was modified, in UTC. Read-only.
      */
-    @JsonProperty(value = "properties.lastModifiedTimeUtc")
+    @JsonProperty(value = "properties.lastModifiedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime lastModifiedTimeUtc;
 
     /**
-     * Configuration of web app.
+     * Configuration of the app.
      */
     @JsonProperty(value = "properties.siteConfig")
     private SiteConfigInner siteConfig;
 
     /**
-     * Read-only list of Azure Traffic manager hostnames associated with web
-     * app.
+     * Azure Traffic Manager hostnames associated with the app. Read-only.
      */
-    @JsonProperty(value = "properties.trafficManagerHostNames")
+    @JsonProperty(value = "properties.trafficManagerHostNames", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> trafficManagerHostNames;
 
     /**
-     * If set indicates whether web app is deployed as a premium app.
+     * Indicates whether app is deployed as a premium app.
      */
-    @JsonProperty(value = "properties.premiumAppDeployed")
+    @JsonProperty(value = "properties.premiumAppDeployed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean premiumAppDeployed;
 
     /**
-     * If set indicates whether to stop SCM (KUDU) site when the web app is
-     * stopped. Default is false.
+     * &lt;code&gt;true&lt;/code&gt; to stop SCM (KUDU) site when the app is
+     * stopped; otherwise, &lt;code&gt;false&lt;/code&gt;. The default is
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.scmSiteAlsoStopped")
     private Boolean scmSiteAlsoStopped;
 
     /**
-     * Read-only property that specifies which slot this app will swap into.
+     * Specifies which deployment slot this app will swap into. Read-only.
      */
-    @JsonProperty(value = "properties.targetSwapSlot")
+    @JsonProperty(value = "properties.targetSwapSlot", access = JsonProperty.Access.WRITE_ONLY)
     private String targetSwapSlot;
 
     /**
-     * Specification for the hosting environment (App Service Environment) to
-     * use for the web app.
+     * App Service Environment to use for the app.
      */
     @JsonProperty(value = "properties.hostingEnvironmentProfile")
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /**
-     * Micro services like WebSites, Logic Apps.
+     * Micro services like apps, logic apps.
      */
     @JsonProperty(value = "properties.microService")
     private String microService;
 
     /**
-     * Name of gateway app associated with web app.
+     * Name of gateway app associated with the app.
      */
     @JsonProperty(value = "properties.gatewaySiteName")
     private String gatewaySiteName;
 
     /**
-     * Specifies if the client affinity is enabled when load balancing http
-     * request for multiple instances of the web app.
+     * &lt;code&gt;true&lt;/code&gt; to enable client affinity;
+     * &lt;code&gt;false&lt;/code&gt; to stop sending session affinity
+     * cookies, which route client requests in the same session to the same
+     * instance. Default is &lt;code&gt;true&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.clientAffinityEnabled")
     private Boolean clientAffinityEnabled;
 
     /**
-     * Specifies if the client certificate is enabled for the web app.
+     * &lt;code&gt;true&lt;/code&gt; to enable client certificate
+     * authentication (TLS mutual authentication); otherwise,
+     * &lt;code&gt;false&lt;/code&gt;. Default is
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     @JsonProperty(value = "properties.clientCertEnabled")
     private Boolean clientCertEnabled;
 
     /**
-     * Specifies if the public hostnames are disabled the web app.
-     * If set to true the app is only accessible via API
-     * Management process.
+     * &lt;code&gt;true&lt;/code&gt; to disable the public hostnames of the
+     * app; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * If &lt;code&gt;true&lt;/code&gt;, the app is only accessible via API
+     * management process.
      */
     @JsonProperty(value = "properties.hostNamesDisabled")
     private Boolean hostNamesDisabled;
 
     /**
-     * List of comma separated IP addresses that this web app uses for
-     * outbound connections. Those can be used when configuring firewall
-     * rules for databases accessed by this web app.
+     * List of IP addresses that the app uses for outbound connections (e.g.
+     * database access). Read-only.
      */
-    @JsonProperty(value = "properties.outboundIpAddresses")
+    @JsonProperty(value = "properties.outboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private String outboundIpAddresses;
 
     /**
-     * Size of a function container.
+     * Size of the function container.
      */
     @JsonProperty(value = "properties.containerSize")
     private Integer containerSize;
 
     /**
-     * Maximum allowed daily memory-time quota (applicable on dynamic sites
+     * Maximum allowed daily memory-time quota (applicable on dynamic apps
      * only).
      */
     @JsonProperty(value = "properties.dailyMemoryTimeQuota")
     private Integer dailyMemoryTimeQuota;
 
     /**
-     * Site suspended till in case memory-time quota is exceeded.
+     * App suspended till in case memory-time quota is exceeded.
      */
-    @JsonProperty(value = "properties.suspendedTill")
+    @JsonProperty(value = "properties.suspendedTill", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime suspendedTill;
 
     /**
-     * Maximum number of workers
-     * This only applies to function container.
+     * Maximum number of workers.
+     * This only applies to Functions container.
      */
-    @JsonProperty(value = "properties.maxNumberOfWorkers")
+    @JsonProperty(value = "properties.maxNumberOfWorkers", access = JsonProperty.Access.WRITE_ONLY)
     private Integer maxNumberOfWorkers;
 
     /**
-     * This is only valid for web app creation. If specified, web app is
-     * cloned from
-     * a source web app.
+     * If specified during app creation, the app is cloned from a source app.
      */
     @JsonProperty(value = "properties.cloningInfo")
     private CloningInfo cloningInfo;
 
     /**
-     * Resource group web app belongs to.
+     * Name of the resource group the app belongs to. Read-only.
      */
-    @JsonProperty(value = "properties.resourceGroup")
+    @JsonProperty(value = "properties.resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGroup;
 
     /**
-     * Site is a default container.
+     * &lt;code&gt;true&lt;/code&gt; if the app is a default container;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.isDefaultContainer")
+    @JsonProperty(value = "properties.isDefaultContainer", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefaultContainer;
 
     /**
-     * Default hostname of the web app.
+     * Default hostname of the app. Read-only.
      */
-    @JsonProperty(value = "properties.defaultHostName")
+    @JsonProperty(value = "properties.defaultHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultHostName;
+
+    /**
+     * Status of the last deployment slot swap operation.
+     */
+    @JsonProperty(value = "properties.slotSwapStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private SlotSwapStatus slotSwapStatus;
 
     /**
      * Get the deletedTimestamp value.
@@ -247,17 +254,6 @@ public class DeletedSiteInner extends Resource {
      */
     public DateTime deletedTimestamp() {
         return this.deletedTimestamp;
-    }
-
-    /**
-     * Set the deletedTimestamp value.
-     *
-     * @param deletedTimestamp the deletedTimestamp value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withDeletedTimestamp(DateTime deletedTimestamp) {
-        this.deletedTimestamp = deletedTimestamp;
-        return this;
     }
 
     /**
@@ -270,34 +266,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the state value.
-     *
-     * @param state the state value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withState(String state) {
-        this.state = state;
-        return this;
-    }
-
-    /**
      * Get the hostNames value.
      *
      * @return the hostNames value
      */
     public List<String> hostNames() {
         return this.hostNames;
-    }
-
-    /**
-     * Set the hostNames value.
-     *
-     * @param hostNames the hostNames value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withHostNames(List<String> hostNames) {
-        this.hostNames = hostNames;
-        return this;
     }
 
     /**
@@ -310,34 +284,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the repositorySiteName value.
-     *
-     * @param repositorySiteName the repositorySiteName value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withRepositorySiteName(String repositorySiteName) {
-        this.repositorySiteName = repositorySiteName;
-        return this;
-    }
-
-    /**
      * Get the usageState value.
      *
      * @return the usageState value
      */
     public UsageState usageState() {
         return this.usageState;
-    }
-
-    /**
-     * Set the usageState value.
-     *
-     * @param usageState the usageState value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withUsageState(UsageState usageState) {
-        this.usageState = usageState;
-        return this;
     }
 
     /**
@@ -370,34 +322,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the enabledHostNames value.
-     *
-     * @param enabledHostNames the enabledHostNames value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withEnabledHostNames(List<String> enabledHostNames) {
-        this.enabledHostNames = enabledHostNames;
-        return this;
-    }
-
-    /**
      * Get the availabilityState value.
      *
      * @return the availabilityState value
      */
     public SiteAvailabilityState availabilityState() {
         return this.availabilityState;
-    }
-
-    /**
-     * Set the availabilityState value.
-     *
-     * @param availabilityState the availabilityState value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withAvailabilityState(SiteAvailabilityState availabilityState) {
-        this.availabilityState = availabilityState;
-        return this;
     }
 
     /**
@@ -470,17 +400,6 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the lastModifiedTimeUtc value.
-     *
-     * @param lastModifiedTimeUtc the lastModifiedTimeUtc value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withLastModifiedTimeUtc(DateTime lastModifiedTimeUtc) {
-        this.lastModifiedTimeUtc = lastModifiedTimeUtc;
-        return this;
-    }
-
-    /**
      * Get the siteConfig value.
      *
      * @return the siteConfig value
@@ -510,34 +429,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the trafficManagerHostNames value.
-     *
-     * @param trafficManagerHostNames the trafficManagerHostNames value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withTrafficManagerHostNames(List<String> trafficManagerHostNames) {
-        this.trafficManagerHostNames = trafficManagerHostNames;
-        return this;
-    }
-
-    /**
      * Get the premiumAppDeployed value.
      *
      * @return the premiumAppDeployed value
      */
     public Boolean premiumAppDeployed() {
         return this.premiumAppDeployed;
-    }
-
-    /**
-     * Set the premiumAppDeployed value.
-     *
-     * @param premiumAppDeployed the premiumAppDeployed value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withPremiumAppDeployed(Boolean premiumAppDeployed) {
-        this.premiumAppDeployed = premiumAppDeployed;
-        return this;
     }
 
     /**
@@ -567,17 +464,6 @@ public class DeletedSiteInner extends Resource {
      */
     public String targetSwapSlot() {
         return this.targetSwapSlot;
-    }
-
-    /**
-     * Set the targetSwapSlot value.
-     *
-     * @param targetSwapSlot the targetSwapSlot value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withTargetSwapSlot(String targetSwapSlot) {
-        this.targetSwapSlot = targetSwapSlot;
-        return this;
     }
 
     /**
@@ -710,17 +596,6 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the outboundIpAddresses value.
-     *
-     * @param outboundIpAddresses the outboundIpAddresses value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withOutboundIpAddresses(String outboundIpAddresses) {
-        this.outboundIpAddresses = outboundIpAddresses;
-        return this;
-    }
-
-    /**
      * Get the containerSize value.
      *
      * @return the containerSize value
@@ -770,34 +645,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the suspendedTill value.
-     *
-     * @param suspendedTill the suspendedTill value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withSuspendedTill(DateTime suspendedTill) {
-        this.suspendedTill = suspendedTill;
-        return this;
-    }
-
-    /**
      * Get the maxNumberOfWorkers value.
      *
      * @return the maxNumberOfWorkers value
      */
     public Integer maxNumberOfWorkers() {
         return this.maxNumberOfWorkers;
-    }
-
-    /**
-     * Set the maxNumberOfWorkers value.
-     *
-     * @param maxNumberOfWorkers the maxNumberOfWorkers value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withMaxNumberOfWorkers(Integer maxNumberOfWorkers) {
-        this.maxNumberOfWorkers = maxNumberOfWorkers;
-        return this;
     }
 
     /**
@@ -830,34 +683,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the resourceGroup value.
-     *
-     * @param resourceGroup the resourceGroup value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withResourceGroup(String resourceGroup) {
-        this.resourceGroup = resourceGroup;
-        return this;
-    }
-
-    /**
      * Get the isDefaultContainer value.
      *
      * @return the isDefaultContainer value
      */
     public Boolean isDefaultContainer() {
         return this.isDefaultContainer;
-    }
-
-    /**
-     * Set the isDefaultContainer value.
-     *
-     * @param isDefaultContainer the isDefaultContainer value to set
-     * @return the DeletedSiteInner object itself.
-     */
-    public DeletedSiteInner withIsDefaultContainer(Boolean isDefaultContainer) {
-        this.isDefaultContainer = isDefaultContainer;
-        return this;
     }
 
     /**
@@ -870,14 +701,12 @@ public class DeletedSiteInner extends Resource {
     }
 
     /**
-     * Set the defaultHostName value.
+     * Get the slotSwapStatus value.
      *
-     * @param defaultHostName the defaultHostName value to set
-     * @return the DeletedSiteInner object itself.
+     * @return the slotSwapStatus value
      */
-    public DeletedSiteInner withDefaultHostName(String defaultHostName) {
-        this.defaultHostName = defaultHostName;
-        return this;
+    public SlotSwapStatus slotSwapStatus() {
+        return this.slotSwapStatus;
     }
 
 }

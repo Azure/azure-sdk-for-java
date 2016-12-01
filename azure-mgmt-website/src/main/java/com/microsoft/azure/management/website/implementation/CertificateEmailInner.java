@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Certificate Email.
+ * SSL certificate email.
  */
 @JsonFlatten
 public class CertificateEmailInner extends Resource {

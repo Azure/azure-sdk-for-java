@@ -14,14 +14,14 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * A snapshot of a web app.
+ * A snapshot of an app.
  */
 @JsonFlatten
 public class SnapshotInner extends Resource {
     /**
      * The time the snapshot was taken.
      */
-    @JsonProperty(value = "properties.time")
+    @JsonProperty(value = "properties.time", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime time;
 
     /**
@@ -31,17 +31,6 @@ public class SnapshotInner extends Resource {
      */
     public DateTime time() {
         return this.time;
-    }
-
-    /**
-     * Set the time value.
-     *
-     * @param time the time value to set
-     * @return the SnapshotInner object itself.
-     */
-    public SnapshotInner withTime(DateTime time) {
-        this.time = time;
-        return this;
     }
 
 }

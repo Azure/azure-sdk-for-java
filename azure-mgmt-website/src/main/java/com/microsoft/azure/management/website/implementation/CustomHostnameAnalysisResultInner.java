@@ -16,74 +16,77 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents a custom domain analysis.
+ * Custom domain analysis.
  */
 @JsonFlatten
 public class CustomHostnameAnalysisResultInner extends Resource {
     /**
-     * Is hostname already verified?.
+     * &lt;code&gt;true&lt;/code&gt; if hostname is already verified;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.isHostnameAlreadyVerified")
+    @JsonProperty(value = "properties.isHostnameAlreadyVerified", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isHostnameAlreadyVerified;
 
     /**
-     * Dns verification test result. Possible values include: 'Passed',
+     * DNS verification test result. Possible values include: 'Passed',
      * 'Failed', 'Skipped'.
      */
-    @JsonProperty(value = "properties.customDomainVerificationTest")
+    @JsonProperty(value = "properties.customDomainVerificationTest", access = JsonProperty.Access.WRITE_ONLY)
     private DnsVerificationTestResult customDomainVerificationTest;
 
     /**
-     * Raw failure info if Dns verification fails.
+     * Raw failure information if DNS verification fails.
      */
-    @JsonProperty(value = "properties.customDomainVerificationFailureInfo")
+    @JsonProperty(value = "properties.customDomainVerificationFailureInfo", access = JsonProperty.Access.WRITE_ONLY)
     private ErrorEntity customDomainVerificationFailureInfo;
 
     /**
-     * Does it have conflict on scale unit?.
+     * &lt;code&gt;true&lt;/code&gt; if there is a conflict on a scale unit;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.hasConflictOnScaleUnit")
+    @JsonProperty(value = "properties.hasConflictOnScaleUnit", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictOnScaleUnit;
 
     /**
-     * Does it have conflict across subscription?.
+     * &lt;code&gt;true&lt;/code&gt; if htere is a conflict across
+     * subscriptions; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
-    @JsonProperty(value = "properties.hasConflictAcrossSubscription")
+    @JsonProperty(value = "properties.hasConflictAcrossSubscription", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasConflictAcrossSubscription;
 
     /**
-     * Name of the conflicting App on scale unit if it's within the same
+     * Name of the conflicting app on scale unit if it's within the same
      * subscription.
      */
-    @JsonProperty(value = "properties.conflictingAppResourceId")
+    @JsonProperty(value = "properties.conflictingAppResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String conflictingAppResourceId;
 
     /**
-     * CName records controller could see for this hostname.
+     * CName records controller can see for this hostname.
      */
     @JsonProperty(value = "properties.cNameRecords")
     private List<String> cNameRecords;
 
     /**
-     * TxT records controller could see for this hostname.
+     * TXT records controller can see for this hostname.
      */
     @JsonProperty(value = "properties.txtRecords")
     private List<String> txtRecords;
 
     /**
-     * A records controller could see for this hostname.
+     * A records controller can see for this hostname.
      */
     @JsonProperty(value = "properties.aRecords")
     private List<String> aRecords;
 
     /**
-     * Alternate CName records controller could see for this hostname.
+     * Alternate CName records controller can see for this hostname.
      */
     @JsonProperty(value = "properties.alternateCNameRecords")
     private List<String> alternateCNameRecords;
 
     /**
-     * Alternate TxT records controller could see for this hostname.
+     * Alternate TXT records controller can see for this hostname.
      */
     @JsonProperty(value = "properties.alternateTxtRecords")
     private List<String> alternateTxtRecords;
@@ -98,34 +101,12 @@ public class CustomHostnameAnalysisResultInner extends Resource {
     }
 
     /**
-     * Set the isHostnameAlreadyVerified value.
-     *
-     * @param isHostnameAlreadyVerified the isHostnameAlreadyVerified value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withIsHostnameAlreadyVerified(Boolean isHostnameAlreadyVerified) {
-        this.isHostnameAlreadyVerified = isHostnameAlreadyVerified;
-        return this;
-    }
-
-    /**
      * Get the customDomainVerificationTest value.
      *
      * @return the customDomainVerificationTest value
      */
     public DnsVerificationTestResult customDomainVerificationTest() {
         return this.customDomainVerificationTest;
-    }
-
-    /**
-     * Set the customDomainVerificationTest value.
-     *
-     * @param customDomainVerificationTest the customDomainVerificationTest value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withCustomDomainVerificationTest(DnsVerificationTestResult customDomainVerificationTest) {
-        this.customDomainVerificationTest = customDomainVerificationTest;
-        return this;
     }
 
     /**
@@ -138,34 +119,12 @@ public class CustomHostnameAnalysisResultInner extends Resource {
     }
 
     /**
-     * Set the customDomainVerificationFailureInfo value.
-     *
-     * @param customDomainVerificationFailureInfo the customDomainVerificationFailureInfo value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withCustomDomainVerificationFailureInfo(ErrorEntity customDomainVerificationFailureInfo) {
-        this.customDomainVerificationFailureInfo = customDomainVerificationFailureInfo;
-        return this;
-    }
-
-    /**
      * Get the hasConflictOnScaleUnit value.
      *
      * @return the hasConflictOnScaleUnit value
      */
     public Boolean hasConflictOnScaleUnit() {
         return this.hasConflictOnScaleUnit;
-    }
-
-    /**
-     * Set the hasConflictOnScaleUnit value.
-     *
-     * @param hasConflictOnScaleUnit the hasConflictOnScaleUnit value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withHasConflictOnScaleUnit(Boolean hasConflictOnScaleUnit) {
-        this.hasConflictOnScaleUnit = hasConflictOnScaleUnit;
-        return this;
     }
 
     /**
@@ -178,34 +137,12 @@ public class CustomHostnameAnalysisResultInner extends Resource {
     }
 
     /**
-     * Set the hasConflictAcrossSubscription value.
-     *
-     * @param hasConflictAcrossSubscription the hasConflictAcrossSubscription value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withHasConflictAcrossSubscription(Boolean hasConflictAcrossSubscription) {
-        this.hasConflictAcrossSubscription = hasConflictAcrossSubscription;
-        return this;
-    }
-
-    /**
      * Get the conflictingAppResourceId value.
      *
      * @return the conflictingAppResourceId value
      */
     public String conflictingAppResourceId() {
         return this.conflictingAppResourceId;
-    }
-
-    /**
-     * Set the conflictingAppResourceId value.
-     *
-     * @param conflictingAppResourceId the conflictingAppResourceId value to set
-     * @return the CustomHostnameAnalysisResultInner object itself.
-     */
-    public CustomHostnameAnalysisResultInner withConflictingAppResourceId(String conflictingAppResourceId) {
-        this.conflictingAppResourceId = conflictingAppResourceId;
-        return this;
     }
 
     /**

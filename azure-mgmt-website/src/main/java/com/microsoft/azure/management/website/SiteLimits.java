@@ -10,7 +10,7 @@ package com.microsoft.azure.management.website;
 
 
 /**
- * Represents metric limits set on a web app.
+ * Metric limits set on an app.
  */
 public class SiteLimits {
     /**

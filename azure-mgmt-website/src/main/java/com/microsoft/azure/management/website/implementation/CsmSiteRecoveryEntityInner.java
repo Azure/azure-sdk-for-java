@@ -11,29 +11,28 @@ package com.microsoft.azure.management.website.implementation;
 import org.joda.time.DateTime;
 
 /**
- * Class containting details about site recovery operation.
+ * Details about app recovery operation.
  */
 public class CsmSiteRecoveryEntityInner {
     /**
-     * Point in time in which the site recover should be attempted.
+     * Point in time in which the app recovery should be attempted.
      */
     private DateTime snapshotTime;
 
     /**
-     * If true, then the website's configuration will be reverted to its state
-     * at SnapshotTime.
+     * If &lt;code&gt;true&lt;/code&gt;, then the app's configuration will be
+     * reverted to its state at &lt;code&gt;SnapshotTime&lt;/code&gt;.
      */
     private Boolean recoverConfig;
 
     /**
-     * [Optional] Destination web app name into which web app should be
-     * recovered. This is case when new web app should be created instead.
+     * [Optional] Destination app name into which app should be recovered.
+     * This is case when new app should be created instead.
      */
     private String siteName;
 
     /**
-     * [Optional] Destination web app slot name into which web app should be
-     * recovered.
+     * [Optional] Destination app slot name into which app should be recovered.
      */
     private String slotName;
 

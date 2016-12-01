@@ -15,8 +15,7 @@ package com.microsoft.azure.management.website;
 public class FileSystemHttpLogsConfig {
     /**
      * Maximum size in megabytes that http log files can use.
-     * When reached old log files will be removed to make space
-     * for new ones.
+     * When reached old log files will be removed to make space for new ones.
      * Value can range between 25 and 100.
      */
     private Integer retentionInMb;

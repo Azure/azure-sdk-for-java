@@ -12,34 +12,36 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents information needed for cloning operation.
+ * Information needed for cloning operation.
  */
 public class CloningInfo {
     /**
-     * Correlation Id of cloning operation. This id ties multiple cloning
+     * Correlation ID of cloning operation. This ID ties multiple cloning
      * operations
      * together to use the same snapshot.
      */
     private String correlationId;
 
     /**
-     * Overwrite destination web app.
+     * &lt;code&gt;true&lt;/code&gt; to overwrite destination app; otherwise,
+     * &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean overwrite;
 
     /**
-     * If true, clone custom hostnames from source web app.
+     * &lt;code&gt;true&lt;/code&gt; to clone custom hostnames from source
+     * app; otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean cloneCustomHostNames;
 
     /**
-     * Clone source control from source web app.
+     * &lt;code&gt;true&lt;/code&gt; to clone source control from source app;
+     * otherwise, &lt;code&gt;false&lt;/code&gt;.
      */
     private Boolean cloneSourceControl;
 
     /**
-     * ARM resource id of the source web app. Web app resource id is of the
-     * form
+     * ARM resource ID of the source app. App resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}
      * for production slots and
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName}
@@ -49,33 +51,34 @@ public class CloningInfo {
     private String sourceWebAppId;
 
     /**
-     * Hosting environment.
+     * App Service Environment.
      */
     private String hostingEnvironment;
 
     /**
-     * Application settings overrides for cloned web app. If specified these
-     * settings will override the settings cloned
-     * from source web app. If not specified, application settings
-     * from source web app are retained.
+     * Application setting overrides for cloned app. If specified, these
+     * settings override the settings cloned
+     * from source app. Otherwise, application settings from source app are
+     * retained.
      */
     private Map<String, String> appSettingsOverrides;
 
     /**
-     * If specified configure load balancing for source and clone site.
+     * &lt;code&gt;true&lt;/code&gt; to configure load balancing for source
+     * and destination app.
      */
     private Boolean configureLoadBalancing;
 
     /**
-     * ARM resource id of the traffic manager profile to use if it exists.
-     * Traffic manager resource id is of the form
+     * ARM resource ID of the Traffic Manager profile to use, if it exists.
+     * Traffic Manager resource ID is of the form
      * /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
      */
     private String trafficManagerProfileId;
 
     /**
-     * Name of traffic manager profile to create. This is only needed if
-     * traffic manager profile does not already exist.
+     * Name of Traffic Manager profile to create. This is only needed if
+     * Traffic Manager profile does not already exist.
      */
     private String trafficManagerProfileName;
 
