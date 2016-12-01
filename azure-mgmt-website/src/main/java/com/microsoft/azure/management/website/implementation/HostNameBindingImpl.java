@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.website.WebAppBase;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
+import org.apache.commons.lang3.NotImplementedException;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -155,6 +157,11 @@ class HostNameBindingImpl<
                 return new ServiceResponse<>(hostNameBinding, null);
             }
         }), callback);
+    }
+
+    @Override
+    public Observable<Indexable> createAsync(boolean enableStreaming) {
+        throw new NotImplementedException("HostNameBindingImpl::createAsync(boolean a)");
     }
 
     @Override

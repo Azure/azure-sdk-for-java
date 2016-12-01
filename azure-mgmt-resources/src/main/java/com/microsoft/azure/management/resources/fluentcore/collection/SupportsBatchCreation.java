@@ -6,6 +6,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -19,7 +20,7 @@ import java.util.List;
  * @param <ResourceT> the top level Azure resource type
  */
 @LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsBatchCreation<ResourceT extends HasId> {
+public interface SupportsBatchCreation<ResourceT extends Indexable> {
     /**
      * Executes the create requests on a collection (batch) of resources.
      *

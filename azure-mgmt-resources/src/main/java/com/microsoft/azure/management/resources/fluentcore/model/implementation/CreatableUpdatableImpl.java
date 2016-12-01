@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -24,7 +24,7 @@ import rx.functions.Func1;
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
 public abstract class CreatableUpdatableImpl<
-            FluentModelT,
+            FluentModelT extends Indexable,
             InnerModelT,
             FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
@@ -86,7 +86,7 @@ public abstract class CreatableUpdatableImpl<
      * @param creatable the creatable dependency.
      */
     @SuppressWarnings("unchecked")
-    protected void addCreatableDependency(Creatable<? extends HasId> creatable) {
+    protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
         CreateUpdateTaskGroup<FluentModelT> childGroup =
                 ((CreateUpdateTaskGroup.ResourceCreatorUpdator<FluentModelT>) creatable).creatorUpdatorTaskGroup();
         childGroup.merge(this.createUpdateTaskGroup);
@@ -126,6 +126,16 @@ public abstract class CreatableUpdatableImpl<
     @Override
     public Observable<FluentModelT> createAsync() {
         return this.executeTaskGroupAsync();
+    }
+
+    /**
+     * Default implementation of createAsync(boolean).
+     *
+     * @return the observable that emit the created resources.
+     */
+    @Override
+    public Observable<Indexable> createAsync(boolean enableStreaming) {
+        return this.executeTaskGroupAsync(enableStreaming);
     }
 
     /**
@@ -199,6 +209,37 @@ public abstract class CreatableUpdatableImpl<
         }
         throw new IllegalStateException("Internal Error: executeTaskGroupAsync can be called only on preparer");
     }
+
+    @SuppressWarnings("unchecked")
+    protected Observable<Indexable> executeTaskGroupAsync(boolean enableStreaming) {
+        if (createUpdateTaskGroup.isPreparer()) {
+            createUpdateTaskGroup.prepare();
+            if (enableStreaming) {
+                return createUpdateTaskGroup.executeAsync()
+                        .distinct(new Func1<FluentModelT, String>() {
+                            @Override
+                            public String call(FluentModelT fluentModelT) {
+                                return fluentModelT.key();
+                            }
+                        })
+                        .map(new Func1<FluentModelT, Indexable>() {
+                    @Override
+                    public Indexable call(FluentModelT fluentModelT) {
+                        return fluentModelT;
+                    }
+                });
+            } else {
+                return createUpdateTaskGroup.executeAsync().last().map(new Func1<FluentModelT, Indexable>() {
+                    @Override
+                    public Indexable call(FluentModelT fluentModelT) {
+                        return fluentModelT;
+                    }
+                });
+            }
+        }
+        throw new IllegalStateException("Internal Error: executeTaskGroupAsync can be called only on preparer");
+    }
+
 
     @SuppressWarnings("unchecked")
     protected Func1<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {

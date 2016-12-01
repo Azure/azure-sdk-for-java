@@ -75,7 +75,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.BODY)
+                .withLogLevel(Level.NONE)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -84,7 +84,7 @@ public class AzureTests {
         File authFile = new File("my.azureauth");
         if (authFile.exists()) {
             this.azure = Azure.configure()
-                    .withLogLevel(Level.BODY)
+                    .withLogLevel(Level.NONE)
                     .withUserAgent("AzureTests")
                     .withReadTimeout(60, TimeUnit.SECONDS)
                     .authenticate(new File("my.azureauth"))
@@ -454,5 +454,9 @@ public class AzureTests {
     @Test
     public void testSqlServer() throws Exception {
         new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
+    }
+
+    @Test public void testResourceStreaming() throws Exception {
+        new TestResourceStreaming(azure.storageAccounts(), azure.resourceGroups()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 }
