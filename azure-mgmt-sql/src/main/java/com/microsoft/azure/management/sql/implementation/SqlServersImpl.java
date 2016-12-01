@@ -40,7 +40,7 @@ class SqlServersImpl
     @Override
     protected SqlServerImpl wrapModel(String name) {
         ServerInner inner = new ServerInner();
-        inner.withVersion(ServerVersion.TWO_FULL_STOP_ZERO);
+        inner.withVersion(ServerVersion.ONE_TWO_FULL_STOP_ZERO);
         return new SqlServerImpl(
                 name,
                 inner,

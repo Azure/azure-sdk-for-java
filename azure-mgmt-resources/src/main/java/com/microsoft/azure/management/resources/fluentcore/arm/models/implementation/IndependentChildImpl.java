@@ -93,8 +93,8 @@ public abstract class IndependentChildImpl<
 
     @Override
     public void setInner(InnerModelT inner) {
-        this.setParentName(inner);
         super.setInner(inner);
+        this.setParentName(inner);
     }
 
     @Override

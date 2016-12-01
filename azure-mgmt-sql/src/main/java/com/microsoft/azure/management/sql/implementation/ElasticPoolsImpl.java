@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlElasticPools;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Implementation of SqlServer.ElasticPools, which enables the creating the elastic pools from the SQLServer directly.
  */
+@LangDefinition
 public class ElasticPoolsImpl implements SqlServer.ElasticPools {
 
     private final String resourceGroupName;
