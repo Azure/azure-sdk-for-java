@@ -98,11 +98,10 @@ abstract class NetworkGroupableParentResourceImpl<
                 .withRegion(this.regionName());
         Creatable<PublicIpAddress> creatablePip;
         if (super.creatableGroup == null) {
-            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName());
+            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName()).withLeafDomainLabel(dnsLeafLabel);
         } else {
-            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup);
+            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup).withLeafDomainLabel(dnsLeafLabel);
         }
-
         return withNewPublicIpAddress(creatablePip);
     }
 }
