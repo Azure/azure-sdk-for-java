@@ -236,7 +236,7 @@ public class TestApplicationGateway {
 
                             // Private frontend
                             .withPrivateFrontend())
-                    .withContainingSubnet(vnet, "subnet1")
+                    .withExistingSubnet(vnet, "subnet1")
                     .withPrivateIpAddressStatic("10.0.0.4")
                     .create();
                     }

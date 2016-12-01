@@ -310,15 +310,15 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to specify the subnet the app gateway is getting
          * its private IP address from.
          */
-        interface WithContainingSubnet {
+        interface WithExistingSubnet extends HasSubnet.DefinitionStages.WithSubnet<WithCreate> {
             /**
-             * Specifies the default subnet the application gateway gets its private IP address from.
+             * Specifies the default existing subnet the application gateway gets its private IP address from.
              * <p>
              * This will create an IP configuration named "default", if it does not already exist.
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
-            WithCreate withContainingSubnet(Subnet subnet);
+            WithCreate withExistingSubnet(Subnet subnet);
 
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
@@ -328,17 +328,7 @@ public interface ApplicationGateway extends
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
-            WithCreate withContainingSubnet(Network network, String subnetName);
-
-            /**
-             * Specifies the default subnet the application gateway gets its private IP address from.
-             * <p>
-             * This will create an IP configuration named "default", if it does not already exist.
-             * @param networkResourceId the resource ID of the virtual network the subnet is part of
-             * @param subnetName the name of a subnet within the selected network
-             * @return the next stage of the definition
-             */
-            WithCreate withContainingSubnet(String networkResourceId, String subnetName);
+            WithCreate withExistingSubnet(Network network, String subnetName);
         }
 
         /**
@@ -361,7 +351,7 @@ public interface ApplicationGateway extends
             WithListener,
             WithBackendHttpConfig,
             WithBackend,
-            WithContainingSubnet,
+            WithExistingSubnet,
             WithPrivateIpAddress {
         }
     }
@@ -370,6 +360,31 @@ public interface ApplicationGateway extends
      * Grouping of application gateway update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an application gateway update allowing to specify the subnet the app gateway is getting
+         * its private IP address from.
+         */
+        interface WithExistingSubnet extends HasSubnet.UpdateStages.WithSubnet<Update> {
+            /**
+             * Specifies the default existing subnet the application gateway gets its private IP address from.
+             * <p>
+             * This will create an IP configuration named "default", if it does not already exist.
+             * @param subnet an existing subnet
+             * @return the next stage of the update
+             */
+            Update withExistingSubnet(Subnet subnet);
+
+            /**
+             * Specifies the default subnet the application gateway gets its private IP address from.
+             * <p>
+             * This will create an IP configuration named "default", if it does not already exist.
+             * @param network the virtual network the subnet is part of
+             * @param subnetName the name of a subnet within the selected network
+             * @return the next stage of the update
+             */
+            Update withExistingSubnet(Network network, String subnetName);
+        }
+
         /**
          * The stage of an application gateway update allowing to modify IP configurations.
          */
@@ -603,6 +618,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithFrontendPort,
         UpdateStages.WithSslCert,
         UpdateStages.WithListener,
-        UpdateStages.WithRequestRoutingRule {
+        UpdateStages.WithRequestRoutingRule,
+        UpdateStages.WithExistingSubnet {
     }
 }

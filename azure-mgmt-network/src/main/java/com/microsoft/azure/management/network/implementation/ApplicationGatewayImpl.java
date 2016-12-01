@@ -463,7 +463,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withContainingSubnet(Subnet subnet) {
+    public ApplicationGatewayImpl withExistingSubnet(Subnet subnet) {
         this.defineIpConfiguration(DEFAULT)
             .withContainingSubnet(subnet)
             .attach();
@@ -471,7 +471,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withContainingSubnet(Network network, String subnetName) {
+    public ApplicationGatewayImpl withExistingSubnet(Network network, String subnetName) {
         this.defineIpConfiguration(DEFAULT)
             .withContainingSubnet(network, subnetName)
             .attach();
@@ -479,7 +479,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withContainingSubnet(String networkResourceId, String subnetName) {
+    public ApplicationGatewayImpl withExistingSubnet(String networkResourceId, String subnetName) {
         this.defineIpConfiguration(DEFAULT)
             .withContainingSubnet(networkResourceId, subnetName)
             .attach();
