@@ -176,6 +176,24 @@ class AppServiceDomainImpl
     }
 
     @Override
+    public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+    }
+
+    @Override
+    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+        DomainOwnershipIdentifierInner identifierInner = new DomainOwnershipIdentifierInner().withOwnershipId(domainVerificationToken);
+        identifierInner.withLocation("global");
+        return client.createOrUpdateOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
+                .map(new Func1<DomainOwnershipIdentifierInner, Void>() {
+                    @Override
+                    public Void call(DomainOwnershipIdentifierInner domainOwnershipIdentifierInner) {
+                        return null;
+                    }
+                });
+    }
+
+    @Override
     public AppServiceDomainImpl withAdminContact(Contact contact) {
         inner().withContactAdmin(contact);
         return this;

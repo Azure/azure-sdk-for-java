@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.website.implementation.DomainInner;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,9 @@ public interface AppServiceDomain extends
      */
     DomainPurchaseConsent consent();
 
+    void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken);
+
+    Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**************************************************************
      * Fluent interfaces to provision a domain

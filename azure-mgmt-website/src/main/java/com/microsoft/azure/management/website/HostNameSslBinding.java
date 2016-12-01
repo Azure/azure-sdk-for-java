@@ -91,7 +91,7 @@ public interface HostNameSslBinding extends
              * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
+            WithKeyVault<ParentT> withNewStandardAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 
             /**
              * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.
@@ -207,7 +207,7 @@ public interface HostNameSslBinding extends
              * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithKeyVault<ParentT> withNewAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
+            WithKeyVault<ParentT> withNewStandardAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
 
             /**
              * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.

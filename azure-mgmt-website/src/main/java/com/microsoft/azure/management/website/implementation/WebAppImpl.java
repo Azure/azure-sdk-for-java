@@ -143,6 +143,24 @@ class WebAppImpl
     }
 
     @Override
+    public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+    }
+
+    @Override
+    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+        IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
+        identifierInner.withLocation("global");
+        return client.createOrUpdateDomainOwnershipIdentifierAsync(resourceGroupName(), name(), certificateOrderName, identifierInner)
+                .map(new Func1<IdentifierInner, Void>() {
+                    @Override
+                    public Void call(IdentifierInner identifierInner) {
+                        return null;
+                    }
+                });
+    }
+
+    @Override
     public void start() {
         client.start(resourceGroupName(), name());
     }

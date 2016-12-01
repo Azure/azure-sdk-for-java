@@ -12,15 +12,13 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.website.AppServiceCertificateOrder;
+import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
 import com.microsoft.azure.management.website.CertificateProductType;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * The implementation for {@link AppServicePlan}.
@@ -38,28 +36,16 @@ class AppServiceCertificateOrderImpl
         AppServiceCertificateOrder.Update {
 
     final AppServiceCertificateOrdersInner client;
-    private Map<String, AppServiceCertificateKeyVaultBinding> keyVaultBindings;
 
     AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
         this.withRegion("global");
-        keyVaultBindings = new HashMap<>();
-        if (inner().certificates() != null) {
-            for (Map.Entry<String, AppServiceCertificateInner> binding: inner().certificates().entrySet()) {
-                keyVaultBindings.put(binding.getKey(), new AppServiceCertificateKeyVaultBindingImpl(binding.getValue(), this));
-            }
-        }
     }
 
     @Override
     public AppServiceCertificateOrder refresh() {
         this.setInner(client.get(resourceGroupName(), name()));
-        if (inner().certificates() != null) {
-            for (Map.Entry<String, AppServiceCertificateInner> binding: inner().certificates().entrySet()) {
-                keyVaultBindings.put(binding.getKey(), new AppServiceCertificateKeyVaultBindingImpl(binding.getValue(), this));
-            }
-        }
         return this;
     }
 
@@ -83,6 +69,16 @@ class AppServiceCertificateOrderImpl
                         }
                     }
                 });
+    }
+
+    @Override
+    public void verifyDomainOwnership(AppServiceDomain domain) {
+        verifyDomainOwnershipAsync(domain).toBlocking().subscribe();
+    }
+
+    @Override
+    public Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain) {
+        return domain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
     }
 
     @Override

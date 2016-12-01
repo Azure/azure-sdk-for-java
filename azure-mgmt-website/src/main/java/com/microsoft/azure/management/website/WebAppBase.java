@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.website.implementation.SiteInner;
 import org.joda.time.DateTime;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
@@ -237,6 +238,10 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     PublishingCredentials getPublishingCredentials();
 
     WebAppSourceControl getSourceControl();
+
+    void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken);
+
+    Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**
      * Starts the web app or deployment slot.

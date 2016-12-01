@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CertificateOrdersTests extends AppServiceTestBase {
     private static final String RG_NAME = "javacsmrg319";
-    private static final String CERTIFICATE_NAME = "javawildcert319";
+    private static final String CERTIFICATE_NAME = "graphwildcert319";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -33,7 +33,7 @@ public class CertificateOrdersTests extends AppServiceTestBase {
         AppServiceCertificateOrder certificateOrder = appServiceManager.certificateOrders()
                 .define(CERTIFICATE_NAME)
                 .withExistingResourceGroup(RG_NAME)
-                .withHostName("javatest319.com")
+                .withHostName("*.graph-webapp-319.com")
                 .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL)
                 .withValidYears(1)
                 .create();

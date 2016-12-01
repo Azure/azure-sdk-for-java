@@ -202,4 +202,22 @@ class DeploymentSlotImpl
         SiteSourceControlInner siteSourceControlInner = client.getSourceControlSlot(resourceGroupName(), parent().name(), name());
         return new WebAppSourceControlImpl<>(siteSourceControlInner, this, myManager);
     }
+
+    @Override
+    public void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken) {
+        verifyDomainOwnershipAsync(certificateOrderName, domainVerificationToken).toBlocking().subscribe();
+    }
+
+    @Override
+    public Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken) {
+        IdentifierInner identifierInner = new IdentifierInner().withIdentifierId(domainVerificationToken);
+        identifierInner.withLocation("global");
+        return client.createOrUpdateDomainOwnershipIdentifierSlotAsync(resourceGroupName(), parent().name(), name(), certificateOrderName, identifierInner)
+                .map(new Func1<IdentifierInner, Void>() {
+                    @Override
+                    public Void call(IdentifierInner identifierInner) {
+                        return null;
+                    }
+                });
+    }
 }

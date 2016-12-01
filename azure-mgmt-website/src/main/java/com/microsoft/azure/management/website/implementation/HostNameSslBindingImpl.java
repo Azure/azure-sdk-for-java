@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.website.implementation;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Maps;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.SecretPermissions;
@@ -19,12 +18,6 @@ import com.microsoft.azure.management.website.HostNameSslBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.SslState;
 import com.microsoft.azure.management.website.WebAppBase;
-import com.microsoft.rest.serializer.JsonFlatten;
-import retrofit2.http.Body;
-import retrofit2.http.Headers;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -50,13 +43,11 @@ class HostNameSslBindingImpl<
     private Observable<AppServiceCertificateOrder> newCertificateOrder;
     private final AppServiceManager manager;
     private final FluentImplT parent;
-    private final VerifyDomainOwnershipService verifyDomainOwnershipService;
 
     HostNameSslBindingImpl(HostNameSslState inner, FluentImplT parent, AppServiceManager manager) {
         super(inner);
         this.parent = parent;
         this.manager = manager;
-        this.verifyDomainOwnershipService = manager.restClient().retrofit().create(VerifyDomainOwnershipService.class);
     }
 
     @Override
@@ -97,7 +88,7 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withNewAppServiceCertificateOrder(final String certificateOrderName, CertificateProductType productType) {
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withNewStandardAppServiceCertificateOrder(final String certificateOrderName, CertificateProductType productType) {
         this.newCertificateOrder = manager.certificateOrders().define(certificateOrderName)
                 .withExistingResourceGroup(parent().resourceGroupName())
                 .withHostName(name())
@@ -107,13 +98,10 @@ class HostNameSslBindingImpl<
                 .flatMap(new Func1<AppServiceCertificateOrder, Observable<AppServiceCertificateOrder>>() {
                     @Override
                     public Observable<AppServiceCertificateOrder> call(final AppServiceCertificateOrder appServiceCertificateOrder) {
-                        return verifyDomainOwnershipService.verifyDomainOwnership(
-                                manager.subscriptionId(), parent().resourceGroupName(), parent().name(),
-                                certificateOrderName, new DomainOwnershipIdentifier().withOwnershipId(appServiceCertificateOrder.domainVerificationToken()),
-                                "2016-08-01")
-                                .map(new Func1<DomainOwnershipIdentifier, AppServiceCertificateOrder>() {
+                        return parent().verifyDomainOwnershipAsync(appServiceCertificateOrder.name(), appServiceCertificateOrder.domainVerificationToken())
+                                .map(new Func1<Void, AppServiceCertificateOrder>() {
                                     @Override
-                                    public AppServiceCertificateOrder call(DomainOwnershipIdentifier domainOwnershipIdentifier) {
+                                    public AppServiceCertificateOrder call(Void aVoid) {
                                         return appServiceCertificateOrder;
                                     }
                                 });
@@ -227,22 +215,5 @@ class HostNameSslBindingImpl<
             }
         });
         return this;
-    }
-
-    private interface VerifyDomainOwnershipService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/domainOwnershipIdentifiers/{domainOwnershipIdentifierName}")
-        Observable<DomainOwnershipIdentifier> verifyDomainOwnership(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("name") String siteName, @Path("domainOwnershipIdentifierName") String domainOwnershipIdentifierName, @Body DomainOwnershipIdentifier domainOwnershipIdentifier, @Query("api-version") String apiVersion);
-    }
-
-    @JsonFlatten
-    private static class DomainOwnershipIdentifier {
-        @JsonProperty(value = "properties.id")
-        private String ownershipId;
-
-        private DomainOwnershipIdentifier withOwnershipId(String ownershipId) {
-            this.ownershipId = ownershipId;
-            return this;
-        }
     }
 }

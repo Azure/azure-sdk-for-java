@@ -10,11 +10,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.WebAppBase;
 import com.microsoft.azure.management.website.WebAppSourceControl;
-import retrofit2.http.Body;
-import retrofit2.http.Headers;
-import retrofit2.http.PUT;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -30,14 +25,14 @@ class WebAppSourceControlImpl<
         WebAppSourceControl.Definition<WebAppBase.DefinitionStages.WithCreate<FluentT>>,
         WebAppSourceControl.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
-    private WebAppBaseImpl<FluentT, FluentImplT> parent;
+    private final WebAppBaseImpl<FluentT, FluentImplT> parent;
+    private final WebSiteManagementClientImpl serviceClient;
     private String githubAccessToken;
-    private SourceControlService sourceControlService;
 
-    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent, AppServiceManager manager) {
+    WebAppSourceControlImpl(SiteSourceControlInner inner, WebAppBaseImpl<FluentT, FluentImplT> parent, WebSiteManagementClientImpl serviceClient) {
         super(inner);
         this.parent = parent;
-        this.sourceControlService = manager.restClient().retrofit().create(SourceControlService.class);
+        this.serviceClient = serviceClient;
     }
 
     @Override
@@ -137,12 +132,6 @@ class WebAppSourceControlImpl<
         if (githubAccessToken == null) {
             return Observable.just(null);
         }
-        return sourceControlService.updateSourceControl("Github", new SourceControlInner().withToken(githubAccessToken), "2016-03-01");
-    }
-
-    private interface SourceControlService {
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @PUT("/providers/Microsoft.Web/sourcecontrols/{sourceControlIdentifier}")
-        Observable<SourceControlInner> updateSourceControl(@Path("sourceControlIdentifier") String sourceControlIdentifier,  @Body SourceControlInner sourceControl, @Query("api-version") String apiVersion);
+        return serviceClient.updateSourceControlAsync("Github", new SourceControlInner().withToken(githubAccessToken));
     }
 }

@@ -122,6 +122,10 @@ public interface AppServiceCertificateOrder extends
      */
     Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
+    void verifyDomainOwnership(AppServiceDomain domain);
+
+    Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain);
+
     /**************************************************************
      * Fluent interfaces to provision a App service certificate order
      **************************************************************/
