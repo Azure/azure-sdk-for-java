@@ -161,7 +161,8 @@ class HostNameBindingImpl<
 
     @Override
     public Observable<Indexable> createAsync(boolean enableStreaming) {
-        throw new NotImplementedException("HostNameBindingImpl::createAsync(boolean a)");
+        // Note: This type is not inheriting from CreatableImpl hence default streaming is not available.
+        return createAsync();
     }
 
     @Override
