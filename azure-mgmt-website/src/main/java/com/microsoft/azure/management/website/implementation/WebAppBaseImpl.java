@@ -82,6 +82,8 @@ abstract class WebAppBaseImpl<
     private Map<String, ConnStringValueTypePair> connectionStringsToAdd;
     private List<String> connectionStringsToRemove;
     private Map<String, Boolean> connectionStringStickiness;
+    private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
+    private boolean sourceControlToDelete;
 
     WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -94,12 +96,14 @@ abstract class WebAppBaseImpl<
     private FluentT normalizeProperties() {
         this.hostNameBindingsToCreate = new HashMap<>();
         this.hostNameBindingsToDelete = new ArrayList<>();
-        appSettingsToAdd = new HashMap<>();
-        appSettingsToRemove = new ArrayList<>();
-        appSettingStickiness = new HashMap<>();
-        connectionStringsToAdd = new HashMap<>();
-        connectionStringsToRemove = new ArrayList<>();
-        connectionStringStickiness = new HashMap<>();
+        this.appSettingsToAdd = new HashMap<>();
+        this.appSettingsToRemove = new ArrayList<>();
+        this.appSettingStickiness = new HashMap<>();
+        this.connectionStringsToAdd = new HashMap<>();
+        this.connectionStringsToRemove = new ArrayList<>();
+        this.connectionStringStickiness = new HashMap<>();
+        this.sourceControl = null;
+        this.sourceControlToDelete = false;
         this.sslBindingsToCreate = new HashMap<>();
         if (inner().hostNames() != null) {
             this.hostNamesSet = Sets.newHashSet(inner().hostNames());
@@ -412,6 +416,10 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SlotConfigNamesResourceInner> updateSlotConfigurations(SlotConfigNamesResourceInner inner);
 
+    abstract Observable<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner);
+
+    abstract Observable<Void> deleteSourceControl();
+
     @Override
     public Observable<FluentT> createResourceAsync() {
         if (hostNameSslStateMap.size() > 0) {
@@ -423,11 +431,23 @@ abstract class WebAppBaseImpl<
                     .map(new Func1<AppServicePlan, String>() {
                         @Override
                         public String call(AppServicePlan appServicePlan) {
-                            inner().withLocation(appServicePlan.regionName());
                             return appServicePlan.regionName();
                         }
                     });
         }
+        locationObs = locationObs.map(new Func1<String, String>() {
+            @Override
+            public String call(String s) {
+                inner().withLocation(s);
+                if (sourceControl != null) {
+                    sourceControl.inner().withLocation(s);
+                }
+                if (inner().siteConfig() != null) {
+                    inner().siteConfig().withLocation(s);
+                }
+                return s;
+            }
+        });
         // Construct web app observable
         return locationObs.flatMap(new Func1<String, Observable<SiteInner>>() {
             @Override
@@ -441,8 +461,6 @@ abstract class WebAppBaseImpl<
             public Observable<SiteInner> call(final SiteInner siteInner) {
                 if (inner().siteConfig() == null) {
                     return Observable.just(siteInner);
-                } else if (inner().siteConfig().location() == null) {
-                    inner().siteConfig().withLocation(inner().location());
                 }
                 return createOrUpdateSiteConfig(inner().siteConfig())
                         .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
@@ -629,6 +647,43 @@ abstract class WebAppBaseImpl<
                             });
                 }
                 return observable;
+            }
+        })
+        // create source control
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner inner) {
+                if (sourceControl == null || sourceControlToDelete) {
+                    return Observable.just(inner);
+                }
+                return sourceControl.registerGithubAccessToken()
+                .flatMap(new Func1<SourceControlInner, Observable<SiteSourceControlInner>>() {
+                    @Override
+                    public Observable<SiteSourceControlInner> call(SourceControlInner sourceControlInner) {
+                        return createOrUpdateSourceControl(sourceControl.inner());
+                    }
+                })
+                .map(new Func1<SiteSourceControlInner, SiteInner>() {
+                    @Override
+                    public SiteInner call(SiteSourceControlInner siteSourceControlInner) {
+                        return inner;
+                    }
+                });
+            }
+        })
+        // delete source control
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner inner) {
+                if (!sourceControlToDelete) {
+                    return Observable.just(inner);
+                }
+                return deleteSourceControl().map(new Func1<Void, SiteInner>() {
+                    @Override
+                    public SiteInner call(Void aVoid) {
+                        return inner;
+                    }
+                });
             }
         })
         // convert from inner
@@ -988,6 +1043,24 @@ abstract class WebAppBaseImpl<
     @SuppressWarnings("unchecked")
     public FluentImplT withConnectionStringStickiness(String name, boolean stickiness) {
         connectionStringStickiness.put(name, stickiness);
+        return (FluentImplT) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    FluentImplT withSourceControl(WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl) {
+        this.sourceControl = sourceControl;
+        return (FluentImplT) this;
+    }
+
+    @Override
+    public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
+        return new WebAppSourceControlImpl<>(new SiteSourceControlInner(), this, myManager);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT withoutSourceControl() {
+        sourceControlToDelete = true;
         return (FluentImplT) this;
     }
 }

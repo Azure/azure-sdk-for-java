@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public final class JavaVersion {
     /** Static value 'Off' for JavaVersion. */
-    public static final JavaVersion OFF = null;
+    public static final JavaVersion OFF = new JavaVersion("");
 
     /** Static value Java 7 newest for JavaVersion. */
     public static final JavaVersion JAVA_7_NEWEST = new JavaVersion("1.7");

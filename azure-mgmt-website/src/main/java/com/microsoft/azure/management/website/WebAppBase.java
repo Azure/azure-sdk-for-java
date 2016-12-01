@@ -234,6 +234,10 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
 
     Map<String, ConnectionString> getConnectionStrings();
 
+    PublishingCredentials getPublishingCredentials();
+
+    WebAppSourceControl getSourceControl();
+
     /**
      * Starts the web app or deployment slot.
      */
@@ -560,6 +564,18 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
+         * A web app definition stage allowing source control to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithSourceControl<FluentT> {
+            /**
+             * Starts the definition of a new source control.
+             * @return the first stage of a source control definition
+             */
+            WebAppSourceControl.DefinitionStages.Blank<WithCreate<FluentT>> defineSourceControl();
+        }
+
+        /**
          * A site definition with sufficient inputs to create a new web app /
          * deployments slot in the cloud, but exposing additional optional
          * inputs to specify.
@@ -573,7 +589,8 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
                 WithClientCertEnabled<FluentT>,
                 WithSiteConfigs<FluentT>,
                 WithAppSettings<FluentT>,
-                WithConnectionString<FluentT> {
+                WithConnectionString<FluentT>,
+                WithSourceControl<FluentT> {
         }
     }
 
@@ -891,6 +908,24 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              */
             Update<FluentT> withConnectionStringStickiness(String name, boolean sticky);
         }
+
+        /**
+         * A web app update stage allowing source control to be set.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithSourceControl<FluentT> {
+            /**
+             * Starts the definition of a new source control.
+             * @return the first stage of a source control definition
+             */
+            WebAppSourceControl.UpdateDefinitionStages.Blank<Update<FluentT>> defineSourceControl();
+
+            /**
+             * Removes source control for deployment from the web app.
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withoutSourceControl();
+        }
     }
 
     /**
@@ -906,6 +941,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             UpdateStages.WithSiteEnabled<FluentT>,
             UpdateStages.WithSiteConfigs<FluentT>,
             UpdateStages.WithAppSettings<FluentT>,
-            UpdateStages.WithConnectionString<FluentT> {
+            UpdateStages.WithConnectionString<FluentT>,
+            UpdateStages.WithSourceControl<FluentT> {
     }
 }

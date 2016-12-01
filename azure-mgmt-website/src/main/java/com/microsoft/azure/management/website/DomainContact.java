@@ -290,4 +290,4 @@ public interface DomainContact extends
             Contact build();
         }
     }
- }
+}

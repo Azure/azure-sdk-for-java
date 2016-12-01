@@ -10,8 +10,11 @@ import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.microsoft.azure.management.website.DeploymentSlot;
 import com.microsoft.azure.management.website.HostNameBinding;
+import com.microsoft.azure.management.website.PublishingCredentials;
 import com.microsoft.azure.management.website.WebApp;
+import com.microsoft.azure.management.website.WebAppSourceControl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -159,6 +162,11 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
+        return client.createOrUpdateSourceControlSlotAsync(resourceGroupName(), parent().name(), name(), inner);
+    }
+
+    @Override
     public void swap(String slotName) {
         client.swapSlotsSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
     }
@@ -171,5 +179,27 @@ class DeploymentSlotImpl
     @Override
     public void resetSlotConfigurations() {
         client.resetSlotConfigurationSlot(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
+    Observable<Void> deleteSourceControl() {
+        return client.deleteSourceControlSlotAsync(resourceGroupName(), parent().name(), name()).map(new Func1<Object, Void>() {
+            @Override
+            public Void call(Object o) {
+                return null;
+            }
+        });
+    }
+
+    @Override
+    public PublishingCredentials getPublishingCredentials() {
+        UserInner inner = client.listPublishingCredentialsSlot(resourceGroupName(), parent().name(), name());
+        return new PublishingCredentialsImpl(inner);
+    }
+
+    @Override
+    public WebAppSourceControl getSourceControl() {
+        SiteSourceControlInner siteSourceControlInner = client.getSourceControlSlot(resourceGroupName(), parent().name(), name());
+        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, myManager);
     }
 }

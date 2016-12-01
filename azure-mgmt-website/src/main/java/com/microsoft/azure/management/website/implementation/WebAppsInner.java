@@ -19670,7 +19670,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<SiteSourceControlInner> updateSourceControlSlotDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
+                .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -21588,7 +21588,7 @@ public final class WebAppsInner {
 
     private ServiceResponse<SiteSourceControlInner> createOrUpdateSourceControlDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<SiteSourceControlInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<SiteSourceControlInner>() { }.getType())
+                .register(201, new TypeToken<SiteSourceControlInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

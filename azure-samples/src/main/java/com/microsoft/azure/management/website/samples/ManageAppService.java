@@ -66,6 +66,15 @@ public final class ManageAppService {
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
+            azure.webApps().getByGroup("javacsmrg319", "java-webapp-319")
+                    .update()
+                    .defineSourceControl()
+                        .withPublicExternalRepository()
+                        .withGit("https://github.com/jianghaolu/azure-site-test")
+                        .withBranch("master")
+                        .attach()
+                    .apply();
+
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
             try {

@@ -13,8 +13,11 @@ import com.microsoft.azure.management.resources.implementation.ResourceGroupInne
 import com.microsoft.azure.management.website.AppServicePricingTier;
 import com.microsoft.azure.management.website.DeploymentSlots;
 import com.microsoft.azure.management.website.HostNameBinding;
+import com.microsoft.azure.management.website.PublishingCredentials;
 import com.microsoft.azure.management.website.WebApp;
+import com.microsoft.azure.management.website.WebAppSourceControl;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -90,6 +93,21 @@ class WebAppImpl
     }
 
     @Override
+    Observable<SiteSourceControlInner> createOrUpdateSourceControl(SiteSourceControlInner inner) {
+        return client.createOrUpdateSourceControlAsync(resourceGroupName(), name(), inner);
+    }
+
+    @Override
+    Observable<Void> deleteSourceControl() {
+        return client.deleteSourceControlAsync(resourceGroupName(), name()).map(new Func1<Object, Void>() {
+            @Override
+            public Void call(Object o) {
+                return null;
+            }
+        });
+    }
+
+    @Override
     public DeploymentSlots deploymentSlots() {
         if (deploymentSlots == null) {
             deploymentSlots = new DeploymentSlotsImpl(this, client, myManager);
@@ -110,6 +128,18 @@ class WebAppImpl
                 return input.name().replace(name() + "/", "");
             }
         }));
+    }
+
+    @Override
+    public PublishingCredentials getPublishingCredentials() {
+        UserInner inner = client.listPublishingCredentials(resourceGroupName(), name());
+        return new PublishingCredentialsImpl(inner);
+    }
+
+    @Override
+    public WebAppSourceControl getSourceControl() {
+        SiteSourceControlInner siteSourceControlInner = client.getSourceControl(resourceGroupName(), name());
+        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, myManager);
     }
 
     @Override
