@@ -99,9 +99,7 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubResource subnetRef = new SubResource()
                 .withId(parentNetworkResourceId + "/subnets/" + subnetName);
-        this.inner()
-            .withSubnet(subnetRef)
-            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+        this.inner().withSubnet(subnetRef);
         return this;
     }
 
@@ -133,10 +131,7 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withPrivateIpAddressDynamic() {
         this.inner()
             .withPrivateIPAddress(null)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
-
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         return this;
     }
 
@@ -144,10 +139,7 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
         this.inner()
             .withPrivateIPAddress(ipAddress)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
-
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
         return this;
     }
 
