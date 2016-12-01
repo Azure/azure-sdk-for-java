@@ -13,7 +13,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
+import org.junit.Assert;
 import rx.functions.Func1;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualMachines> {
     private final StorageAccounts storageAccounts;
@@ -38,26 +41,32 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
             .withRegion(Region.US_EAST)
             .withNewResourceGroup(rgCreatable);
 
-         VirtualMachine virtualMachine = (VirtualMachine) virtualMachines.define(vmName)
+        final AtomicInteger resourceCount = new AtomicInteger(0);
+
+        VirtualMachine virtualMachine = (VirtualMachine) virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgCreatable)
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
-                .withoutPrimaryPublicIpAddress()
+                .withNewPrimaryPublicIpAddress(ResourceNamer.randomResourceName("pip", 20))
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
                 .withAdminPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                 .withNewStorageAccount(storageCreatable)
+                .withNewStorageAccount(storageCreatable)
+                .withNewAvailabilitySet(ResourceNamer.randomResourceName("avset", 10))
                 .createAsync(true)
                 .map(new Func1<Indexable, Resource>() {
                     @Override
                     public Resource call(Indexable resource) {
+                        resourceCount.incrementAndGet();
                         Resource createdResource = (Resource) resource;
                         System.out.println("Created :" + createdResource.id());
                         return createdResource;
                     }
                 }).toBlocking().last();
+
+        Assert.assertTrue(resourceCount.get() == 7);
         return virtualMachine;
     }
 

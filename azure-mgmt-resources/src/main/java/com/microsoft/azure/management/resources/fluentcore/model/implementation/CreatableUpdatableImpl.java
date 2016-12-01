@@ -216,12 +216,6 @@ public abstract class CreatableUpdatableImpl<
             createUpdateTaskGroup.prepare();
             if (enableStreaming) {
                 return createUpdateTaskGroup.executeAsync()
-                        .distinct(new Func1<FluentModelT, String>() {
-                            @Override
-                            public String call(FluentModelT fluentModelT) {
-                                return fluentModelT.key();
-                            }
-                        })
                         .map(new Func1<FluentModelT, Indexable>() {
                     @Override
                     public Indexable call(FluentModelT fluentModelT) {
