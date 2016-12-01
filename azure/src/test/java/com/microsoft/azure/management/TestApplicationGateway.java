@@ -103,7 +103,6 @@ public class TestApplicationGateway {
                             .withRegion(REGION)
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                            .withContainingSubnet(vnet.subnets().get("subnet1"))
                             .withoutPublicFrontend()            // No public frontend
                             .withPrivateFrontend()              // Private frontend
 
@@ -240,13 +239,6 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             //VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestApplicationGateway.VM_IDS);
-            final Network vnet = this.networks.define("net" + this.testId)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
 
             Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
                 public void uncaughtException(Thread th, Throwable ex) {
@@ -264,9 +256,6 @@ public class TestApplicationGateway {
                             .withRegion(REGION)
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-
-                            // IP configuration for the app gateway (which subnet is it contained in)
-                            .withContainingSubnet(vnet, "subnet1")
 
                             // Public frontend
                             .withoutPublicFrontend()
@@ -289,14 +278,6 @@ public class TestApplicationGateway {
             ApplicationGateway appGateway = resources.getById(resourceId);
             Assert.assertTrue(appGateway != null);
 
-            // Verify IP configs
-            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
-            ApplicationGatewayIpConfiguration ipConfig = appGateway.ipConfigurations().values().iterator().next();
-            Assert.assertTrue(ipConfig != null);
-            Subnet subnet = ipConfig.getSubnet();
-            Assert.assertTrue(subnet != null);
-            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
-
             // Verify frontends
             Assert.assertTrue(appGateway.frontends().size() == 1);
             ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
@@ -304,7 +285,6 @@ public class TestApplicationGateway {
             Assert.assertTrue(!frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
             ApplicationGatewayFrontend privateFrontend = frontend;
-            Assert.assertTrue(privateFrontend.networkId().equalsIgnoreCase(vnet.id()));
             Assert.assertTrue(privateFrontend.subnetName().equalsIgnoreCase("subnet1"));
             Assert.assertTrue(privateFrontend.privateIpAllocationMethod().equals(IPAllocationMethod.DYNAMIC));
 
@@ -406,14 +386,6 @@ public class TestApplicationGateway {
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
             //VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestApplicationGateway.VM_IDS);
             final List<PublicIpAddress> existingPips = ensurePIPs(pips);
-            final Network vnet = this.networks.define("net" + this.testId)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
-
             Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
                 public void uncaughtException(Thread th, Throwable ex) {
                     System.out.println("Uncaught exception: " + ex);
@@ -431,14 +403,11 @@ public class TestApplicationGateway {
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
 
-                            // IP configuration for the app gateway (which subnet is it contained in)
-                            .withContainingSubnet(vnet, "subnet1")
-
                             // Public frontend
-                            .withNewPublicIpAddress()
+                            .withNewPublicIpAddress() // TODO Make optional
 
                             // Private frontend
-                            .withoutPrivateFrontend())
+                            .withoutPrivateFrontend()) // TODO Make optional (enable by default)
                     .create();
                     }
                 });
@@ -454,14 +423,6 @@ public class TestApplicationGateway {
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
             Assert.assertTrue(appGateway != null);
-
-            // Verify IP configs
-            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
-            ApplicationGatewayIpConfiguration ipConfig = appGateway.ipConfigurations().values().iterator().next();
-            Assert.assertTrue(ipConfig != null);
-            Subnet subnet = ipConfig.getSubnet();
-            Assert.assertTrue(subnet != null);
-            Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
 
             // Verify frontends
             Assert.assertTrue(appGateway.frontends().size() == 1);
@@ -585,7 +546,6 @@ public class TestApplicationGateway {
                             .withRegion(REGION)
                             .withExistingResourceGroup(GROUP_NAME)
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                            .withContainingSubnet(vnet, "subnet1")
                             .withNewPublicIpAddress()                           // Public default frontend
                             .withoutPrivateFrontend()                           // No private frontend
 
@@ -704,7 +664,16 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(ApplicationGateway.DefinitionStages.WithRequestRoutingRule agDefinition) {
+    private static Creatable<ApplicationGateway> restOfComplexDefinition(
+            ApplicationGateway.DefinitionStages.WithRequestRoutingRule agDefinition) {
+        final Network vnet = ((ApplicationGateway) agDefinition).manager().networks().define("net" + TEST_ID)
+                .withRegion(REGION)
+                .withNewResourceGroup(GROUP_NAME)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/29")
+                .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
+
         return agDefinition
             // Request routing rules
             .defineRequestRoutingRule("rule80")
@@ -753,11 +722,23 @@ public class TestApplicationGateway {
             // Backends
             .defineBackend("backend2")
                 .withFqdn("www.microsoft.com")
-                .attach();
+                .attach()
+
+            // Specify a specific VNet
+            .withContainingSubnet(vnet, "subnet1");
     }
 
     // Verifies the settings of the common rest of a complex application gateway
     private static void assertRestOfComplexDefinition(ApplicationGateway appGateway) {
+        // Verify IP configs
+        Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
+        ApplicationGatewayIpConfiguration ipConfig = appGateway.ipConfigurations().values().iterator().next();
+        Assert.assertTrue(ipConfig != null);
+        Assert.assertTrue("default".equalsIgnoreCase(ipConfig.name()));
+        Subnet subnet = ipConfig.getSubnet();
+        Assert.assertTrue(subnet != null);
+        Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
+
         // Verify frontend ports
         Assert.assertTrue(appGateway.frontendPorts().size() == 4);
 

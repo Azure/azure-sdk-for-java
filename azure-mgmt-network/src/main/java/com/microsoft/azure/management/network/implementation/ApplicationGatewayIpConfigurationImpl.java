@@ -22,7 +22,7 @@ class ApplicationGatewayIpConfigurationImpl
     extends ChildResourceImpl<ApplicationGatewayIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayIpConfiguration,
-        ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithPublicFrontend>,
+        ApplicationGatewayIpConfiguration.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayIpConfiguration.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayIpConfiguration.Update {
 

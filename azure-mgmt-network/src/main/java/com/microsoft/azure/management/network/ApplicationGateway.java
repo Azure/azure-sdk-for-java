@@ -10,8 +10,10 @@ import java.util.Map;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
+import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -29,7 +31,8 @@ public interface ApplicationGateway extends
         Refreshable<ApplicationGateway>,
         Wrapper<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
-        HasSubnet {
+        HasSubnet,
+        HasManager<NetworkManager> {
 
     // Getters
 
@@ -110,7 +113,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
         DefinitionStages.WithSku,
-        DefinitionStages.WithContainingSubnet,
         DefinitionStages.WithPrivateFrontend,
         DefinitionStages.WithPrivateFrontendOptional,
         DefinitionStages.WithPublicFrontend,
@@ -295,7 +297,7 @@ public interface ApplicationGateway extends
              * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the definition
              */
-            WithContainingSubnet withSku(ApplicationGatewaySkuName skuName, int capacity);
+            WithPublicFrontend withSku(ApplicationGatewaySkuName skuName, int capacity);
         }
 
         /**
@@ -310,7 +312,7 @@ public interface ApplicationGateway extends
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
-            WithPublicFrontend withContainingSubnet(Subnet subnet);
+            WithCreate withContainingSubnet(Subnet subnet);
 
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
@@ -320,7 +322,7 @@ public interface ApplicationGateway extends
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
-            WithPublicFrontend withContainingSubnet(Network network, String subnetName);
+            WithCreate withContainingSubnet(Network network, String subnetName);
 
             /**
              * Specifies the default subnet the application gateway gets its private IP address from.
@@ -330,14 +332,14 @@ public interface ApplicationGateway extends
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
              */
-            WithPublicFrontend withContainingSubnet(String networkResourceId, String subnetName);
+            WithCreate withContainingSubnet(String networkResourceId, String subnetName);
 
             /**
              * Begins the definition of a new IP configuration to add to this application gateway.
              * @param name a name to assign to the IP configuration
              * @return the first stage of the IP configuration definition
              */
-            ApplicationGatewayIpConfiguration.DefinitionStages.Blank<WithPublicFrontend> defineIpConfiguration(String name);
+            ApplicationGatewayIpConfiguration.DefinitionStages.Blank<WithCreate> defineIpConfiguration(String name);
         }
 
         /**
@@ -352,7 +354,8 @@ public interface ApplicationGateway extends
             WithFrontendPort,
             WithListener,
             WithBackendHttpConfig,
-            WithBackend {
+            WithBackend,
+            WithContainingSubnet {
         }
     }
 
