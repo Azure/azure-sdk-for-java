@@ -162,7 +162,12 @@ class HostNameBindingImpl<
     @Override
     public Observable<Indexable> createAsync(boolean enableStreaming) {
         // Note: This type is not inheriting from CreatableImpl hence default streaming is not available.
-        return createAsync();
+        return createAsync().map(new Func1<HostNameBinding, Indexable>() {
+            @Override
+            public Indexable call(HostNameBinding hostNameBinding) {
+                return hostNameBinding;
+            }
+        });
     }
 
     @Override
