@@ -8,6 +8,7 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AzureResourceType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
@@ -145,6 +146,17 @@ class HostNameBindingImpl<
     public HostNameBinding create() {
         createAsync().toBlocking().subscribe();
         return this;
+    }
+
+    @Override
+    public Observable<Indexable> createAsyncStreaming(boolean enableStreaming) {
+        // Note: This type is not inheriting from CreatableImpl hence default streaming is not available.
+        return createAsync().map(new Func1<HostNameBinding, Indexable>() {
+            @Override
+            public Indexable call(HostNameBinding hostNameBinding) {
+                return hostNameBinding;
+            }
+        });
     }
 
     @Override

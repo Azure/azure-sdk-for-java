@@ -9,6 +9,7 @@ package com.microsoft.azure.management.graphrbac;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.graphrbac.implementation.UserInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 /**
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent(ContainerName = "/Microsoft.Azure.Management.Fluent.Graph.RBAC")
 public interface User extends
+        Indexable,
         Wrapper<UserInner> {
 
     /**

@@ -455,4 +455,8 @@ public class AzureTests {
     public void testSqlServer() throws Exception {
         new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
     }
+
+    @Test public void testResourceStreaming() throws Exception {
+        new TestResourceStreaming(azure.storageAccounts(), azure.resourceGroups()).runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
 }

@@ -4,6 +4,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
@@ -28,7 +29,7 @@ import java.util.ListIterator;
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
-public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, InnerT>
+public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>
         extends CreatableWrappersImpl<T, ImplT, InnerT>
         implements
             SupportsBatchCreation<T> {
@@ -103,7 +104,7 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
      * Implements {@link CreatedResources}.
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends HasId> implements CreatedResources<ResourceT> {
+    private class CreatedResourcesImpl<ResourceT extends Indexable> implements CreatedResources<ResourceT> {
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
         private final List<ResourceT> list;
 
@@ -113,7 +114,7 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
         }
 
         @Override
-        public HasId createdRelatedResource(String key) {
+        public Indexable createdRelatedResource(String key) {
             return this.creatableUpdatableResourcesRoot.createdRelatedResource(key);
         }
 
@@ -239,9 +240,9 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    interface CreatableUpdatableResourcesRoot<ResourceT extends HasId> extends HasId {
+    interface CreatableUpdatableResourcesRoot<ResourceT extends Indexable> extends Indexable {
         List<ResourceT> createdTopLevelResources();
-        HasId createdRelatedResource(String key);
+         Indexable createdRelatedResource(String key);
     }
 
     /**
@@ -249,7 +250,7 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatableUpdatableResourcesRootImpl<ResourceT extends HasId>
+    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable>
             extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
             implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
@@ -272,7 +273,7 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
         }
 
         @Override
-        public HasId createdRelatedResource(String key) {
+        public Indexable createdRelatedResource(String key) {
             return creatorUpdatorTaskGroup().createdResource(key);
         }
 
@@ -311,11 +312,6 @@ public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, I
 
         @Override
         public CreatableUpdatableResourcesRoot<ResourceT> refresh() {
-            return null;
-        }
-
-        @Override
-        public String id() {
             return null;
         }
     }
