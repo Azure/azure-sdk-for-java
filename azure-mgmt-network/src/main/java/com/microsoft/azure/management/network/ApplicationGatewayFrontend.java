@@ -42,18 +42,19 @@ public interface ApplicationGatewayFrontend extends
     Subnet getSubnet();
 
     /**
-     * Grouping of private frontend definition stages.
+     * Grouping of application gateway frontend definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a private frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * The first stage of an application gateway frontend definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }
 
         /**
-         * The stage of a private frontend definition allowing to specify a subnet from the selected network.
+         * The stage of an application gateway frontend definition allowing to specify a subnet from the selected network to make this
+         * application gateway visible to.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithSubnet<ParentT> extends HasSubnet.DefinitionStages.WithSubnet<WithAttach<ParentT>> {
@@ -67,43 +68,53 @@ public interface ApplicationGatewayFrontend extends
         }
 
         /**
-         * The stage of a public frontend definition allowing to specify an existing public IP address.
+         * The stage of an application gateway frontend definition allowing to specify the private IP address this application gateway
+         * should be available at within the selected subnet.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+        }
+
+        /**
+         * The stage of an application gateway frontend definition allowing to specify an existing public IP address to make
+         * the application gateway available at as Internet-facing.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.DefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /**
-         * The final stage of a private frontend definition.
+         * The final stage of an application gateway frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent application gateway definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinitionAlt<ParentT>,
-            HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            WithSubnet<ParentT>,
+            WithPrivateIp<ParentT> {
         }
     }
 
-    /** The entirety of a private frontend definition.
-     * @param <ParentT> the return type of the final {@link DefinitionStages.WithAttach#attach()}
+    /** The entirety of an application gateway frontend definition.
+     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
-        DefinitionStages.WithSubnet<ParentT>,
         DefinitionStages.WithPublicIpAddress<ParentT> {
     }
 
     /**
-     * Grouping of private frontend update stages.
+     * Grouping of application gateway frontend update stages.
      */
     interface UpdateStages {
         /**
-         * The stage of a private frontend update allowing to specify a subnet from the selected network.
+         * The stage of an application gateway frontend update allowing to specify a subnet from the selected network to make this
+         * application gateway visible to.
          */
-        interface WithSubnet {
+        interface WithSubnet extends HasSubnet.UpdateStages.WithSubnet<Update> {
             /**
              * Assigns the specified subnet to this private frontend.
              * @param network the virtual network the subnet exists in
@@ -114,45 +125,55 @@ public interface ApplicationGatewayFrontend extends
         }
 
         /**
-         * The stage of a public frontend update allowing to specify an existing public IP address.
+         * The stage of an application gateway frontend update allowing to specify the private IP address this application gateway should be available at
+         * within the selected virtual network.
+         */
+        interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+        }
+
+        /**
+         * The stage of an application gateway frontend definition allowing to specify an existing public IP address to make
+         * the application gateway available at as Internet-facing.
          */
         interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithExistingPublicIpAddress<Update> {
         }
     }
 
     /**
-     * The entirety of a private frontend update as part of a load balancer update.
+     * The entirety of an application gateway frontend update as part of an application gateway update.
      */
     interface Update extends
         Settable<ApplicationGateway.Update>,
         UpdateStages.WithSubnet,
         UpdateStages.WithPublicIpAddress,
-        HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
+        UpdateStages.WithPrivateIp {
     }
 
     /**
-     * Grouping of private frontend definition stages applicable as part of an application gateway update.
+     * Grouping of application gateway frontend definition stages applicable as part of an application gateway update.
      */
     interface UpdateDefinitionStages {
         /**
-         * The first stage of a private frontend definition.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         * The first stage of an application gatewway frontend definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithSubnet<ParentT> {
         }
 
         /**
-         * The stage of a public frontend definition allowing to specify an existing public IP address.
+         * The stage of an application gateway frontend definition allowing to specify an existing public IP address to make
+         * the application gateway available at as Internet-facing.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
         interface WithPublicIpAddress<ParentT> extends HasPublicIpAddress.UpdateDefinitionStages.WithExistingPublicIpAddress<WithAttach<ParentT>> {
         }
 
         /**
-         * The stage of a private frontend definition allowing to specify a subnet from the selected network.
-         * @param <ParentT> the next stage of the parent definition
+         * The stage of an application gateway frontend definition allowing to specify a subnet from the selected network to make this
+         * application gateway visible to.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithSubnet<ParentT> {
+        interface WithSubnet<ParentT> extends HasSubnet.UpdateDefinitionStages.WithSubnet<WithAttach<ParentT>> {
             /**
              * Assigns the specified subnet to this private frontend.
              * @param network the virtual network the subnet exists in
@@ -162,25 +183,33 @@ public interface ApplicationGatewayFrontend extends
             WithAttach<ParentT> withExistingSubnet(Network network, String subnetName);
         }
 
-        /** The final stage of an internal frontend definition.
+        /**
+         * The stage of an application gateway frontend definition allowing to specify the private IP address this application gateway
+         * should be available at within the selected virtual network.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithPrivateIp<ParentT> extends HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+        }
+
+        /** The final stage of an application gateway frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
-         * can be attached to the parent application gateway  definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the return type of {@link WithAttach#attach()}
+         * can be attached to the parent application gateway definition.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdateAlt<ParentT>,
             WithPublicIpAddress<ParentT>,
-            HasPrivateIpAddress.UpdateDefinitionStages.WithPrivateIpAddress<WithAttach<ParentT>> {
+            WithSubnet<ParentT>,
+            WithPrivateIp<ParentT> {
         }
     }
 
-    /** The entirety of a private frontend definition as part of an application gateway update.
-     * @param <ParentT> the return type of the final {@link UpdateDefinitionStages.WithAttach#attach()}
+    /** The entirety of an application gateway frontend definition as part of an application gateway update.
+     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
      */
     interface UpdateDefinition<ParentT> extends
         UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT>,
-        UpdateDefinitionStages.WithSubnet<ParentT> {
+        UpdateDefinitionStages.WithAttach<ParentT> {
     }
 }

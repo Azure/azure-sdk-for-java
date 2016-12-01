@@ -11,6 +11,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -32,9 +33,20 @@ public interface ApplicationGateway extends
         Wrapper<ApplicationGatewayInner>,
         Updatable<ApplicationGateway.Update>,
         HasSubnet,
+        HasPrivateIpAddress,
         HasManager<NetworkManager> {
 
     // Getters
+
+    /**
+     * @return true if the application gateway has at least one internally load balanced frontend accessible within the virtual network
+     */
+    boolean isPrivate();
+
+    /**
+     * @return true if the application gateway has at least one Internet-facing frontend
+     */
+    boolean isPublic();
 
     /**
      * @return the SKU of this application gateway
@@ -60,6 +72,16 @@ public interface ApplicationGateway extends
      * @return backend address pools of this application gateway, indexed by name
      */
     Map<String, ApplicationGatewayBackend> backends();
+
+    /**
+     * @return the frontend named "default" if it exists, or the one existing frontend if only one exists, else null
+     */
+    ApplicationGatewayFrontend defaultFrontend();
+
+    /**
+     * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
+     */
+    ApplicationGatewayIpConfiguration defaultIpConfiguration();
 
     /**
      * @return frontend IP configurations of this application gateway, indexed by name
@@ -162,14 +184,6 @@ public interface ApplicationGateway extends
          */
         interface WithPrivateFrontend {
             /**
-             * Begins the definition of a private, or internal, application gateway frontend IP configuration.
-             * @param name the name for the frontend
-             * @return the first stage of a private frontend IP configuration definition
-             */
-            /* TODO Multiple frontends are not yet supported by Azure, so this should be revisited when they are
-            ApplicationGatewayPrivateFrontend.DefinitionStages.Blank<WithHttpListener> definePrivateFrontend(String name); */
-
-            /**
              * Enables a private default frontend in the subnet containing the application gateway.
              * <p>
              * A frontend with the name "default" will be created if needed.
@@ -177,14 +191,6 @@ public interface ApplicationGateway extends
              */
             @Method
             WithRequestRoutingRule withPrivateFrontend();
-
-            /**
-             * Enables a private frontend in the subnet containing the application gateway.
-             * @param frontendName the name for the frontend to create
-             * @return the next stage of the definition
-             */
-            /* Multiple frontends are not yet supported by Azure, so this should be revisited when they are
-            WithHttpListener withPrivateFrontend(String frontendName); */
         }
 
         /**
@@ -333,13 +339,13 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             WithCreate withContainingSubnet(String networkResourceId, String subnetName);
+        }
 
-            /**
-             * Begins the definition of a new IP configuration to add to this application gateway.
-             * @param name a name to assign to the IP configuration
-             * @return the first stage of the IP configuration definition
-             */
-            ApplicationGatewayIpConfiguration.DefinitionStages.Blank<WithCreate> defineIpConfiguration(String name);
+        /**
+         * The stage of an application gateway definition allowing to specify the default IP address the app gateway will be internally available at,
+         * if the default private frontend has been enabled.
+         */
+        interface WithPrivateIpAddress extends HasPrivateIpAddress.DefinitionStages.WithPrivateIpAddress<WithCreate> {
         }
 
         /**
@@ -355,7 +361,8 @@ public interface ApplicationGateway extends
             WithListener,
             WithBackendHttpConfig,
             WithBackend,
-            WithContainingSubnet {
+            WithContainingSubnet,
+            WithPrivateIpAddress {
         }
     }
 

@@ -101,6 +101,33 @@ public interface ApplicationGatewayIpConfiguration extends
      * Grouping of application gateway IP configuration update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an application gateway IP configuration update allowing to modify the subnet the application gateway is part of.
+         */
+        interface WithContainingSubnet {
+            /**
+             * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
+             * @param subnet an existing subnet
+             * @return the next stage of the update
+             */
+            Update withContainingSubnet(Subnet subnet);
+
+            /**
+             * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
+             * @param network an existing virtual network
+             * @param subnetName the name of a subnet within the selected network
+             * @return the next stage of the update
+             */
+            Update withContainingSubnet(Network network, String subnetName);
+
+            /**
+             * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
+             * @param networkId the resource ID of an existing virtual network
+             * @param subnetName the name of a subset within the selected network
+             * @return the next stage of the definition
+             */
+            Update withContainingSubnet(String networkId, String subnetName);
+        }
     }
 
     /**
@@ -129,9 +156,25 @@ public interface ApplicationGatewayIpConfiguration extends
             /**
              * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
              * @param subnet an existing subnet
-             * @return the next stage of the subnet definition
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withContainingSubnet(Subnet subnet);
+
+            /**
+             * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
+             * @param network an existing virtual network
+             * @param subnetName the name of a subnet within the selected network
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withContainingSubnet(Network network, String subnetName);
+
+            /**
+             * Specifies an existing subnet the application gateway should be part of and get its private IP address from.
+             * @param networkId the resource ID of an existing virtual network
+             * @param subnetName the name of a subset within the selected network
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withContainingSubnet(String networkId, String subnetName);
         }
 
         /** The final stage of an application gateway IP configuration definition.

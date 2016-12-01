@@ -12,10 +12,6 @@ import java.util.Map;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
-import com.microsoft.azure.management.compute.VirtualMachine;
-import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
-import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
@@ -35,7 +31,6 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 /**
@@ -64,21 +59,6 @@ public class TestApplicationGateway {
      * Minimalistic internal (private) app gateway test.
      */
     public static class PrivateMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final Networks networks;
-
-        /**
-         * Tests minimal internal app gateways.
-         * @param pips public IPs
-         * @param vms virtual machines
-         * @param networks networks
-         */
-        public PrivateMinimal(
-                PublicIpAddresses pips,
-                VirtualMachines vms,
-                Networks networks) {
-            this.networks = networks;
-        }
-
         @Override
         public void print(ApplicationGateway resource) {
             TestApplicationGateway.printAppGateway(resource);
@@ -86,34 +66,26 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            final Network vnet = this.networks.define("net" + this.testId)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
-
             // Prepare a separate thread for resource creation
             Thread creationThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     // Create an application gateway
-                    ApplicationGateway ag = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                            .withRegion(REGION)
-                            .withExistingResourceGroup(GROUP_NAME)
-                            .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                            .withoutPublicFrontend()            // No public frontend
-                            .withPrivateFrontend()              // Private frontend
+                    resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                        .withRegion(REGION)
+                        .withNewResourceGroup(GROUP_NAME)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withoutPublicFrontend()            // No public frontend
+                        .withPrivateFrontend()              // Private frontend
 
-                            // Request routing rules
-                            .defineRequestRoutingRule("rule1")
-                                .fromFrontendHttpPort(80)
-                                .toBackendHttpPort(8080)
-                                .withBackendIpAddress("11.1.1.1")
-                                .withBackendIpAddress("11.1.1.2")
-                                .attach()
-                            .create();
+                        // Request routing rules
+                        .defineRequestRoutingRule("rule1")
+                            .fromFrontendHttpPort(80)
+                            .toBackendHttpPort(8080)
+                            .withBackendIpAddress("11.1.1.1")
+                            .withBackendIpAddress("11.1.1.2")
+                            .attach()
+                        .create();
                 }
             });
 
@@ -128,9 +100,11 @@ public class TestApplicationGateway {
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
 
             // Verify frontends
+            Assert.assertTrue(appGateway.isPrivate());
+            Assert.assertTrue(!appGateway.isPublic());
             Assert.assertTrue(appGateway.frontends().size() == 1);
-            Assert.assertTrue(appGateway.frontends().containsKey("default"));
-            ApplicationGatewayFrontend frontend = appGateway.frontends().get("default");
+            ApplicationGatewayFrontend frontend = appGateway.defaultFrontend();
+            Assert.assertTrue(frontend != null);
             Assert.assertTrue(frontend.isPrivate());
             Assert.assertTrue(!frontend.isPublic());
 
@@ -219,15 +193,9 @@ public class TestApplicationGateway {
 
         /**
          * Tests minimal internal app gateways.
-         * @param pips public IPs
-         * @param vms virtual machines
          * @param networks networks
          */
-        public PrivateComplex(
-                PublicIpAddresses pips,
-                VirtualMachines vms,
-                Networks networks) {
-            //this.vms = vms;
+        public PrivateComplex(Networks networks) {
             this.networks = networks;
         }
 
@@ -238,7 +206,13 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            //VirtualMachine[] existingVMs = ensureVMs(this.networks, this.vms, TestApplicationGateway.VM_IDS);
+            final Network vnet = this.networks.define("net" + TEST_ID)
+                    .withRegion(REGION)
+                    .withNewResourceGroup(GROUP_NAME)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnet1", "10.0.0.0/29")
+                    .withSubnet("subnet2", "10.0.0.8/29")
+                    .create();
 
             Thread.UncaughtExceptionHandler threadException = new Thread.UncaughtExceptionHandler() {
                 public void uncaughtException(Thread th, Throwable ex) {
@@ -262,6 +236,8 @@ public class TestApplicationGateway {
 
                             // Private frontend
                             .withPrivateFrontend())
+                    .withContainingSubnet(vnet, "subnet1")
+                    .withPrivateIpAddressStatic("10.0.0.4")
                     .create();
                     }
                 });
@@ -279,14 +255,18 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway != null);
 
             // Verify frontends
+            Assert.assertTrue(appGateway.isPrivate());
+            Assert.assertTrue(!appGateway.isPublic());
             Assert.assertTrue(appGateway.frontends().size() == 1);
-            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            ApplicationGatewayFrontend frontend;
+
+            frontend = appGateway.defaultFrontend();
             Assert.assertTrue(frontend != null);
             Assert.assertTrue(!frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
-            ApplicationGatewayFrontend privateFrontend = frontend;
-            Assert.assertTrue(privateFrontend.subnetName().equalsIgnoreCase("subnet1"));
-            Assert.assertTrue(privateFrontend.privateIpAllocationMethod().equals(IPAllocationMethod.DYNAMIC));
+            Assert.assertTrue(frontend.subnetName().equalsIgnoreCase("subnet1"));
+            Assert.assertTrue(IPAllocationMethod.STATIC.equals(frontend.privateIpAllocationMethod()));
+            Assert.assertTrue("10.0.0.4".equalsIgnoreCase(frontend.privateIpAddress()));
 
             assertRestOfComplexDefinition(appGateway);
 
@@ -359,22 +339,13 @@ public class TestApplicationGateway {
      */
     public static class PublicComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         private final PublicIpAddresses pips;
-        //private final VirtualMachines vms;
-        private final Networks networks;
 
         /**
          * Tests minimal internal app gateways.
          * @param pips public IPs
-         * @param vms virtual machines
-         * @param networks networks
          */
-        public PublicComplex(
-                PublicIpAddresses pips,
-                VirtualMachines vms,
-                Networks networks) {
+        public PublicComplex(PublicIpAddresses pips) {
             this.pips = pips;
-            //this.vms = vms;
-            this.networks = networks;
         }
 
         @Override
@@ -404,7 +375,7 @@ public class TestApplicationGateway {
                             .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
 
                             // Public frontend
-                            .withNewPublicIpAddress() // TODO Make optional
+                            .withExistingPublicIpAddress(existingPips.get(0)) // TODO Make optional
 
                             // Private frontend
                             .withoutPrivateFrontend()) // TODO Make optional (enable by default)
@@ -425,13 +396,15 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway != null);
 
             // Verify frontends
+            Assert.assertTrue(appGateway.isPublic());
+            Assert.assertTrue(!appGateway.isPrivate());
             Assert.assertTrue(appGateway.frontends().size() == 1);
-            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            ApplicationGatewayFrontend frontend = appGateway.defaultFrontend();
             Assert.assertTrue(frontend != null);
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
             ApplicationGatewayFrontend publicFrontend = frontend;
-            Assert.assertTrue(publicFrontend.publicIpAddressId() != null);
+            Assert.assertTrue(publicFrontend.publicIpAddressId().equalsIgnoreCase(existingPips.get(0).id()));
 
             assertRestOfComplexDefinition(appGateway);
 
@@ -507,20 +480,6 @@ public class TestApplicationGateway {
      * Internet-facing LB test with NAT pool test.
      */
     public static class PublicMinimal extends TestTemplate<ApplicationGateway, ApplicationGateways> {
-        private final Networks networks;
-
-        /**
-         * Tests minimal Internet-facing app gateways.
-         * @param pips public IPs
-         * @param vms virtual machines
-         * @param networks networks
-         */
-        public PublicMinimal(
-                PublicIpAddresses pips,
-                VirtualMachines vms,
-                Networks networks) {
-            this.networks = networks;
-        }
 
         @Override
         public void print(ApplicationGateway resource) {
@@ -529,36 +488,28 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway createResource(final ApplicationGateways resources) throws Exception {
-            final Network vnet = this.networks.define("net" + this.testId)
-                    .withRegion(REGION)
-                    .withNewResourceGroup(GROUP_NAME)
-                    .withAddressSpace("10.0.0.0/28")
-                    .withSubnet("subnet1", "10.0.0.0/29")
-                    .withSubnet("subnet2", "10.0.0.8/29")
-                    .create();
-
             // Prepare a separate thread for resource creation
             Thread creationThread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     // Create an application gateway
-                    ApplicationGateway ag = resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                            .withRegion(REGION)
-                            .withExistingResourceGroup(GROUP_NAME)
-                            .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
-                            .withNewPublicIpAddress()                           // Public default frontend
-                            .withoutPrivateFrontend()                           // No private frontend
+                    resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                        .withRegion(REGION)
+                        .withNewResourceGroup(GROUP_NAME)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withNewPublicIpAddress()                           // Public default frontend
+                        .withoutPrivateFrontend()                           // No private frontend
 
-                            // Request routing rules
-                            .defineRequestRoutingRule("rule1")
-                                .fromFrontendHttpsPort(443)
-                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                                .withSslCertificatePassword("Abc123")
-                                .toBackendHttpPort(8080)
-                                .withBackendIpAddress("11.1.1.1")
-                                .withBackendIpAddress("11.1.1.2")
-                                .attach()
-                            .create();
+                        // Request routing rules
+                        .defineRequestRoutingRule("rule1")
+                            .fromFrontendHttpsPort(443)
+                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                            .withSslCertificatePassword("Abc123")
+                            .toBackendHttpPort(8080) // TODO: toBackendHttpsPort(...)
+                            .withBackendIpAddress("11.1.1.1")
+                            .withBackendIpAddress("11.1.1.2")
+                            .attach()
+                        .create();
                 }
             });
 
@@ -573,8 +524,10 @@ public class TestApplicationGateway {
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
 
             // Verify frontends
+            Assert.assertTrue(appGateway.isPublic());
+            Assert.assertTrue(!appGateway.isPrivate());
             Assert.assertTrue(appGateway.frontends().size() == 1);
-            ApplicationGatewayFrontend frontend = appGateway.frontends().values().iterator().next();
+            ApplicationGatewayFrontend frontend = appGateway.defaultFrontend();
             Assert.assertTrue(frontend != null);
             Assert.assertTrue(frontend.isPublic());
             Assert.assertTrue(!frontend.isPrivate());
@@ -584,7 +537,6 @@ public class TestApplicationGateway {
 
             // Verify backends
             Assert.assertTrue(appGateway.backends().size() == 1);
-            ApplicationGatewayBackend backend;
 
             // Verify backend HTTP configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 1);
@@ -664,16 +616,8 @@ public class TestApplicationGateway {
     }
 
     // Defines the common rest unrelated to the Internet-facing vs internal nature of application gateway for the complex tests
-    private static Creatable<ApplicationGateway> restOfComplexDefinition(
+    private static ApplicationGateway.DefinitionStages.WithCreate restOfComplexDefinition(
             ApplicationGateway.DefinitionStages.WithRequestRoutingRule agDefinition) {
-        final Network vnet = ((ApplicationGateway) agDefinition).manager().networks().define("net" + TEST_ID)
-                .withRegion(REGION)
-                .withNewResourceGroup(GROUP_NAME)
-                .withAddressSpace("10.0.0.0/28")
-                .withSubnet("subnet1", "10.0.0.0/29")
-                .withSubnet("subnet2", "10.0.0.8/29")
-                .create();
-
         return agDefinition
             // Request routing rules
             .defineRequestRoutingRule("rule80")
@@ -722,10 +666,7 @@ public class TestApplicationGateway {
             // Backends
             .defineBackend("backend2")
                 .withFqdn("www.microsoft.com")
-                .attach()
-
-            // Specify a specific VNet
-            .withContainingSubnet(vnet, "subnet1");
+                .attach();
     }
 
     // Verifies the settings of the common rest of a complex application gateway
@@ -737,7 +678,6 @@ public class TestApplicationGateway {
         Assert.assertTrue("default".equalsIgnoreCase(ipConfig.name()));
         Subnet subnet = ipConfig.getSubnet();
         Assert.assertTrue(subnet != null);
-        Assert.assertTrue(subnet.name().equalsIgnoreCase("subnet1"));
 
         // Verify frontend ports
         Assert.assertTrue(appGateway.frontendPorts().size() == 4);
@@ -826,69 +766,10 @@ public class TestApplicationGateway {
             creatablePips.add(
                     pips.define(PIP_NAMES[i])
                         .withRegion(REGION)
-                        .withNewResourceGroup(GROUP_NAME)
-                        .withLeafDomainLabel(PIP_NAMES[i]));
+                        .withNewResourceGroup(GROUP_NAME));
         }
 
         return pips.create(creatablePips);
-    }
-
-    // Ensure VMs for the app gateway
-    private static VirtualMachine[] ensureVMs(Networks networks, VirtualMachines vms, String...vmIds) throws Exception {
-        ArrayList<VirtualMachine> createdVMs = new ArrayList<>();
-        Network network = null;
-        Region region = Region.US_WEST;
-        String userName = "testuser" + TEST_ID;
-        String availabilitySetName = "as" + TEST_ID;
-
-        for (String vmId : vmIds) {
-            String groupName = ResourceUtils.groupFromResourceId(vmId);
-            String vmName = ResourceUtils.nameFromResourceId(vmId);
-            VirtualMachine vm = null;
-
-            if (groupName == null) {
-                // Creating a new VM
-                vm = null;
-                groupName = "rg" + TEST_ID;
-                vmName = "vm" + TEST_ID;
-
-                if (network == null) {
-                    // Create a VNet for the VM
-                    network = networks.define("net" + TEST_ID)
-                        .withRegion(region)
-                        .withNewResourceGroup(groupName)
-                        .withAddressSpace("10.0.0.0/28")
-                        .create();
-                }
-
-                vm = vms.define(vmName)
-                        .withRegion(Region.US_WEST)
-                        .withNewResourceGroup(groupName)
-                        .withExistingPrimaryNetwork(network)
-                        .withSubnet("subnet1")
-                        .withPrimaryPrivateIpAddressDynamic()
-                        .withoutPrimaryPublicIpAddress()
-                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                        .withRootUsername(userName)
-                        .withRootPassword("Abcdef.123456")
-                        .withNewAvailabilitySet(availabilitySetName)
-                        .withSize(VirtualMachineSizeTypes.STANDARD_A1)
-                        .create();
-            } else {
-                // Getting an existing VM
-                try {
-                    vm = vms.getById(vmId);
-                } catch (Exception e) {
-                    vm = null;
-                }
-            }
-
-            if (vm != null) {
-                createdVMs.add(vm);
-            }
-        }
-
-        return createdVMs.toArray(new VirtualMachine[createdVMs.size()]);
     }
 
     // Print app gateway info
@@ -901,7 +782,11 @@ public class TestApplicationGateway {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tSKU: ").append(resource.sku().toString())
                 .append("\n\tOperational state: ").append(resource.operationalState())
-                .append("\n\tSSL policy: ").append(resource.sslPolicy());
+                .append("\n\tSSL policy: ").append(resource.sslPolicy())
+                .append("\n\tInternet-facing? ").append(resource.isPublic())
+                .append("\n\tInternal? ").append(resource.isPrivate())
+                .append("\n\tDefault private IP address: ").append(resource.privateIpAddress())
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIpAllocationMethod());
 
         // Show IP configs
         Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();

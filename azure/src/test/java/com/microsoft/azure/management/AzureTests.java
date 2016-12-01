@@ -228,10 +228,7 @@ public class AzureTests {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway.PrivateComplex(
-                azure.publicIpAddresses(),
-                azure.virtualMachines(),
-                azure.networks())
+        new TestApplicationGateway.PrivateComplex(azure.networks())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -241,10 +238,7 @@ public class AzureTests {
      */
     @Test
     public void testAppGatewaysInternalMinimal() throws Exception {
-        new TestApplicationGateway.PrivateMinimal(
-                azure.publicIpAddresses(),
-                azure.virtualMachines(),
-                azure.networks())
+        new TestApplicationGateway.PrivateMinimal()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -254,10 +248,7 @@ public class AzureTests {
      */
     @Test
     public void testAppGatewaysInternetFacingMinimal() throws Exception {
-        new TestApplicationGateway.PublicMinimal(
-                azure.publicIpAddresses(),
-                azure.virtualMachines(),
-                azure.networks())
+        new TestApplicationGateway.PublicMinimal()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 
@@ -268,9 +259,7 @@ public class AzureTests {
     @Test
     public void testAppGatewaysInternetFacingComplex() throws Exception {
         new TestApplicationGateway.PublicComplex(
-                azure.publicIpAddresses(),
-                azure.virtualMachines(),
-                azure.networks())
+                azure.publicIpAddresses())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 

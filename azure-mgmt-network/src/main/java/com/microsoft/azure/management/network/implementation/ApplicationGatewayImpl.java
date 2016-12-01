@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithCreate;
 import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithPrivateFrontendOptional;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
@@ -18,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
@@ -266,12 +268,23 @@ class ApplicationGatewayImpl
     }
 
     private ApplicationGatewayIpConfigurationImpl ensureDefaultIpConfig() {
-        ApplicationGatewayIpConfigurationImpl ipConfig = (ApplicationGatewayIpConfigurationImpl) defaultIpConfig();
+        ApplicationGatewayIpConfigurationImpl ipConfig = (ApplicationGatewayIpConfigurationImpl) defaultIpConfiguration();
         if (ipConfig == null) {
             ipConfig = this.defineIpConfiguration(DEFAULT);
             ipConfig.attach();
         }
         return ipConfig;
+    }
+
+    private ApplicationGatewayFrontendImpl ensureDefaultFrontend() {
+        ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) defaultFrontend();
+        if (frontend != null) {
+            return frontend;
+        } else {
+            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(DEFAULT);
+            frontend.attach();
+            return frontend;
+        }
     }
 
     private Creatable<Network> creatableNetwork = null;
@@ -293,12 +306,15 @@ class ApplicationGatewayImpl
             boolean enablePrivateFrontend,
             ApplicationGatewayIpConfigurationImpl ipConfig,
             ApplicationGatewayFrontendImpl frontend) {
-        if (!enablePrivateFrontend) {
-            return frontend;
-        } else {
-            return frontend.withExistingSubnet(ipConfig.networkId(), ipConfig.subnetName())
-                .withPrivateIpAddressDynamic();
+        if (enablePrivateFrontend) {
+            frontend.withExistingSubnet(ipConfig.networkId(), ipConfig.subnetName());
+            if (frontend.privateIpAddress() == null) {
+                frontend.withPrivateIpAddressDynamic();
+            } else if (frontend.privateIpAllocationMethod() == null) {
+                frontend.withPrivateIpAddressDynamic();
+            }
         }
+        return frontend;
     }
 
     @Override
@@ -370,6 +386,18 @@ class ApplicationGatewayImpl
     }
 
      // Withers (fluent)
+
+    @Override
+    public WithCreate withPrivateIpAddressDynamic() {
+        ensureDefaultFrontend().withPrivateIpAddressDynamic();
+        return this;
+    }
+
+    @Override
+    public WithCreate withPrivateIpAddressStatic(String ipAddress) {
+        ensureDefaultFrontend().withPrivateIpAddressStatic(ipAddress);
+        return this;
+    }
 
     ApplicationGatewayImpl withFrontend(ApplicationGatewayFrontendImpl frontend) {
         if (frontend == null) {
@@ -479,8 +507,8 @@ class ApplicationGatewayImpl
         }
     }
 
-    @Override
-    public ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
+    //TODO @Override - since app gateways don't support more than one today, no need to expose this
+    private ApplicationGatewayIpConfigurationImpl defineIpConfiguration(String name) {
         ApplicationGatewayIpConfiguration config = this.ipConfigs.get(name);
         if (config == null) {
             ApplicationGatewayIPConfigurationInner inner = new ApplicationGatewayIPConfigurationInner()
@@ -491,6 +519,7 @@ class ApplicationGatewayImpl
         }
     }
 
+    //TODO @Override - since app gateways don't support more than one today, no need to expose this
     private ApplicationGatewayFrontendImpl defineFrontend(String name) {
         ApplicationGatewayFrontend frontend = this.frontends.get(name);
         if (frontend == null) {
@@ -555,7 +584,7 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withoutPrivateFrontend() {
         // Ensure no frontend is private
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            frontend.inner().withSubnet(null).withPrivateIPAddress(null);
+            frontend.inner().withSubnet(null).withPrivateIPAddress(null).withPrivateIPAllocationMethod(null);
         }
 
         return this;
@@ -635,36 +664,6 @@ class ApplicationGatewayImpl
         ensureDefaultFrontend();
         this.enablePrivateFrontend = true;
         return this;
-    }
-
-    private ApplicationGatewayIpConfiguration defaultIpConfig() {
-        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
-        if (ipConfig != null) {
-            return ipConfig;
-        } else if (this.ipConfigs.size() == 0) {
-            return null;
-        }
-
-        // No default config, so get the first IP config that exists
-        ipConfig = this.ipConfigs.values().iterator().next();
-        if (ipConfig == null) {
-            return null;
-        } else {
-            return ipConfig;
-        }
-    }
-
-    private ApplicationGatewayFrontendImpl ensureDefaultFrontend() {
-        ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) this.frontends.get(DEFAULT);
-        if (frontend != null) {
-            return frontend;
-        } else if (this.frontends.size() == 1) {
-            return (ApplicationGatewayFrontendImpl) this.frontends.values().iterator().next();
-        } else {
-            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(DEFAULT);
-            frontend.attach();
-            return frontend;
-        }
     }
 
     // Withers
@@ -806,6 +805,32 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
+    public ApplicationGatewayFrontend defaultFrontend() {
+        // Default means the one named "default" or the only one in the collection
+        ApplicationGatewayFrontend frontend = this.frontends.get(DEFAULT);
+        if (frontend != null) {
+            return frontend;
+        } else if (this.frontends.size() != 1) {
+            return null;
+        } else {
+            return this.frontends.values().iterator().next();
+        }
+    }
+
+    @Override
+    public ApplicationGatewayIpConfiguration defaultIpConfiguration() {
+        // Default means the one named "default" or the only one in the collection
+        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
+        if (ipConfig != null) {
+            return ipConfig;
+        } else if (this.ipConfigs.size() != 1) {
+            return null;
+        } else {
+            return this.ipConfigs.values().iterator().next();
+        }
+    }
+
+    @Override
     public ApplicationGatewayFrontendListener getFrontendListenerByPortNumber(int portNumber) {
         ApplicationGatewayFrontendListener listener = null;
         for (ApplicationGatewayFrontendListener l : this.httpListeners.values()) {
@@ -891,7 +916,7 @@ class ApplicationGatewayImpl
     }
 
     private SubResource defaultSubnetRef() {
-        ApplicationGatewayIpConfiguration ipConfig = defaultIpConfig();
+        ApplicationGatewayIpConfiguration ipConfig = defaultIpConfiguration();
         if (ipConfig == null) {
             return null;
         } else {
@@ -922,5 +947,45 @@ class ApplicationGatewayImpl
     @Override
     public NetworkManager manager() {
         return super.myManager;
+    }
+
+    @Override
+    public String privateIpAddress() {
+        ApplicationGatewayFrontend frontend = defaultFrontend();
+        if (frontend == null) {
+            return null;
+        } else {
+            return frontend.privateIpAddress();
+        }
+    }
+
+    @Override
+    public IPAllocationMethod privateIpAllocationMethod() {
+        ApplicationGatewayFrontend frontend = defaultFrontend();
+        if (frontend == null) {
+            return null;
+        } else {
+            return frontend.privateIpAllocationMethod();
+        }
+    }
+
+    @Override
+    public boolean isPrivate() {
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
+            if (frontend.isPrivate()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isPublic() {
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
+            if (frontend.isPublic()) {
+                return true;
+            }
+        }
+        return false;
     }
 }
