@@ -7,7 +7,9 @@
 package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
@@ -16,6 +18,7 @@ import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.CertificateOrderStatus;
 import com.microsoft.azure.management.website.CertificateProductType;
+import com.microsoft.azure.management.website.WebAppBase;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -37,10 +40,14 @@ class AppServiceCertificateOrderImpl
 
     final AppServiceCertificateOrdersInner client;
 
+    private WebAppBase<?> domainVerifyWebApp;
+    private AppServiceDomain domainVerifyDomain;
+    private Observable<Vault> bindingVault;
+
     AppServiceCertificateOrderImpl(String key, AppServiceCertificateOrderInner innerObject, final AppServiceCertificateOrdersInner client, AppServiceManager manager) {
         super(key, innerObject, manager);
         this.client = client;
-        this.withRegion("global");
+        this.withRegion("global").withValidYears(1);
     }
 
     @Override
@@ -118,6 +125,9 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public CertificateDetailsImpl signedCertificate() {
+        if (inner().signedCertificate() == null) {
+            return null;
+        }
         return new CertificateDetailsImpl(inner().signedCertificate());
     }
 
@@ -128,11 +138,17 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public CertificateDetailsImpl intermediate() {
+        if (inner().intermediate() == null) {
+            return null;
+        }
         return new CertificateDetailsImpl(inner().intermediate());
     }
 
     @Override
     public CertificateDetailsImpl root() {
+        if (inner().root() == null) {
+            return null;
+        }
         return new CertificateDetailsImpl(inner().root());
     }
 
@@ -179,8 +195,14 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public AppServiceCertificateOrderImpl withSku(CertificateProductType sku) {
-        inner().withProductType(sku);
+    public AppServiceCertificateOrderImpl withStandardSku() {
+        inner().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL);
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withWildcardSku() {
+        inner().withProductType(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL);
         return this;
     }
 
@@ -192,13 +214,80 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public Observable<AppServiceCertificateOrder> createResourceAsync() {
+        final AppServiceCertificateOrder self = this;
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .flatMap(new Func1<AppServiceCertificateOrder, Observable<Void>>() {
+                    @Override
+                    public Observable<Void> call(AppServiceCertificateOrder certificateOrder) {
+                        if (domainVerifyWebApp != null) {
+                            return domainVerifyWebApp.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                        } else if (domainVerifyDomain != null) {
+                            return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Please specify a non-null web app or domain to verify the domain ownership " +
+                                            "for hostname " + distinguishedName());
+                        }
+                    }
+                })
+                .flatMap(new Func1<Void, Observable<AppServiceCertificateKeyVaultBinding>>() {
+                    @Override
+                    public Observable<AppServiceCertificateKeyVaultBinding> call(Void aVoid) {
+                        return bindingVault.flatMap(new Func1<Vault, Observable<AppServiceCertificateKeyVaultBinding>>() {
+                            @Override
+                            public Observable<AppServiceCertificateKeyVaultBinding> call(Vault vault) {
+                                return createKeyVaultBindingAsync(name(), vault);
+                            }
+                        });
+                    }
+                })
+                .map(new Func1<AppServiceCertificateKeyVaultBinding, AppServiceCertificateOrder>() {
+                    @Override
+                    public AppServiceCertificateOrder call(AppServiceCertificateKeyVaultBinding appServiceCertificateKeyVaultBinding) {
+                        return self;
+                    }
+                });
     }
 
     @Override
     public AppServiceCertificateOrderImpl withAutoRenew(boolean enabled) {
         inner().withAutoRenew(enabled);
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withDomainVerification(AppServiceDomain domain) {
+        this.domainVerifyDomain = domain;
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withWebAppVerification(WebAppBase<?> webApp) {
+        this.domainVerifyWebApp = webApp;
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withExistingKeyVault(Vault vault) {
+        this.bindingVault = Observable.just(vault);
+        return this;
+    }
+
+    @Override
+    public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
+        this.bindingVault = myManager.keyVaultManager().vaults().define(vaultName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroupName())
+                .defineAccessPolicy()
+                    .forServicePrincipal("f3c21649-0979-4721-ac85-b0216b2cf413")
+                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
+                    .attach()
+                .defineAccessPolicy()
+                    .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
+                    .allowSecretPermissions(SecretPermissions.GET)
+                    .attach()
+                .createAsync();
         return this;
     }
 }

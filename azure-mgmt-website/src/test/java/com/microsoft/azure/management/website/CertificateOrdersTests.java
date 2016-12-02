@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.website;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -34,7 +35,9 @@ public class CertificateOrdersTests extends AppServiceTestBase {
                 .define(CERTIFICATE_NAME)
                 .withExistingResourceGroup(RG_NAME)
                 .withHostName("*.graph-webapp-319.com")
-                .withSku(CertificateProductType.STANDARD_DOMAIN_VALIDATED_WILD_CARD_SSL)
+                .withWildcardSku()
+                .withDomainVerification(appServiceManager.domains().getByGroup(RG_NAME, "graph-webapp-319.com"))
+                .withNewKeyVault("graphvault", Region.US_WEST)
                 .withValidYears(1)
                 .create();
         Assert.assertNotNull(certificateOrder);

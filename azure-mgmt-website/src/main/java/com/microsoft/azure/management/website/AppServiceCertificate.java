@@ -156,13 +156,11 @@ public interface AppServiceCertificate extends
             WithPfxFilePassword withPfxFileFromUrl(String url);
 
             /**
-             * Specifies the PFX certificate - key vault binding generated from
-             * an app service certificate order purchase.
-             * @param vaultId the id of the vault
-             * @param secretName the name of the key vault secret
+             * Specifies the app service certificate.
+             * @param certificateOrder the app service certificate order
              * @return the next stage of the app service certificate definition
              */
-            WithCreate withCertificateOrderKeyVaultBinding(String vaultId, String secretName);
+            WithCreate withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
         /**
          * An app service certificate definition allowing PFX certificate password to be set.

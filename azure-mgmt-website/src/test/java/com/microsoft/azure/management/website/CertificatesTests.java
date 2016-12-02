@@ -35,7 +35,7 @@ public class CertificatesTests extends AppServiceTestBase {
         AppServiceCertificate certificate = appServiceManager.certificates().define("bananacert")
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(RG_NAME)
-                .withCertificateOrderKeyVaultBinding(vault.id(), "bananagraphwebapp319com")
+                .withExistingCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwebapp319"))
                 .create();
         Assert.assertNotNull(certificate);
 

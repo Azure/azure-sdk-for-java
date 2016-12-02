@@ -32,8 +32,8 @@ class DeploymentSlotImpl
     private final WebAppImpl parent;
     private final String name;
 
-    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent, final WebAppsInner client, AppServiceManager manager) {
-        super(name.replaceAll(".*/", ""), innerObject, configObject, client, manager);
+    DeploymentSlotImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppImpl parent, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
+        super(name.replaceAll(".*/", ""), innerObject, configObject, client, manager, serviceClient);
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
     }
@@ -200,7 +200,7 @@ class DeploymentSlotImpl
     @Override
     public WebAppSourceControl getSourceControl() {
         SiteSourceControlInner siteSourceControlInner = client.getSourceControlSlot(resourceGroupName(), parent().name(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, myManager);
+        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, serviceClient);
     }
 
     @Override

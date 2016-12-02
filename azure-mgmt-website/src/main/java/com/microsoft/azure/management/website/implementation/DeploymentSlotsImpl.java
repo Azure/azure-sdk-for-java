@@ -30,9 +30,11 @@ class DeploymentSlotsImpl
 
     private final PagedListConverter<SiteInner, DeploymentSlot> converter;
     private final WebAppImpl parent;
+    private final WebSiteManagementClientImpl serviceClient;
 
-    DeploymentSlotsImpl(final WebAppImpl parent, final WebAppsInner innerCollection, AppServiceManager manager) {
+    DeploymentSlotsImpl(final WebAppImpl parent, final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
         super(innerCollection, manager);
+        this.serviceClient = serviceClient;
 
         this.parent = parent;
         converter = new PagedListConverter<SiteInner, DeploymentSlot>() {
@@ -46,7 +48,7 @@ class DeploymentSlotsImpl
 
     @Override
     protected DeploymentSlotImpl wrapModel(String name) {
-        return new DeploymentSlotImpl(name, new SiteInner(), null, parent, innerCollection, super.manager)
+        return new DeploymentSlotImpl(name, new SiteInner(), null, parent, innerCollection, super.manager, serviceClient)
                 .withRegion(parent.regionName())
                 .withExistingResourceGroup(parent.resourceGroupName());
     }
@@ -61,7 +63,7 @@ class DeploymentSlotsImpl
             configInner = new SiteConfigInner();
             configInner.withLocation(inner.location());
         }
-        return new DeploymentSlotImpl(inner.name(), inner, configInner, parent, innerCollection, super.manager);
+        return new DeploymentSlotImpl(inner.name(), inner, configInner, parent, innerCollection, super.manager, serviceClient);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {

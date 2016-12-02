@@ -27,9 +27,11 @@ class WebAppsImpl
         implements WebApps {
 
     private final PagedListConverter<SiteInner, WebApp> converter;
+    private final WebSiteManagementClientImpl serviceClient;
 
-    WebAppsImpl(final WebAppsInner innerCollection, AppServiceManager manager) {
+    WebAppsImpl(final WebAppsInner innerCollection, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
         super(innerCollection, manager);
+        this.serviceClient = serviceClient;
 
         converter = new PagedListConverter<SiteInner, WebApp>() {
             @Override
@@ -57,7 +59,7 @@ class WebAppsImpl
 
     @Override
     protected WebAppImpl wrapModel(String name) {
-        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager);
+        return new WebAppImpl(name, new SiteInner(), null, innerCollection, super.myManager, serviceClient);
     }
 
     @Override
@@ -70,7 +72,7 @@ class WebAppsImpl
             configInner = new SiteConfigInner();
             configInner.withLocation(inner.location());
         }
-        return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager);
+        return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager, serviceClient);
     }
 
     protected PagedList<WebApp> wrapList(PagedList<SiteInner> pagedList) {

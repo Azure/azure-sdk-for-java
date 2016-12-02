@@ -9,6 +9,8 @@ package com.microsoft.azure.management.website.implementation;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.website.AppServiceCertificate;
+import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
 import com.microsoft.azure.management.website.AppServicePlan;
 import com.microsoft.azure.management.website.HostingEnvironmentProfile;
 import org.joda.time.DateTime;
@@ -37,6 +39,7 @@ class AppServiceCertificateImpl
 
     private final CertificatesInner client;
     private String pfxFileUrl;
+    private AppServiceCertificateOrder certificateOrder;
 
     AppServiceCertificateImpl(String name, CertificateInner innerObject, final CertificatesInner client, AppServiceManager manager) {
         super(name, innerObject, manager);
@@ -126,17 +129,35 @@ class AppServiceCertificateImpl
 
     @Override
     public Observable<AppServiceCertificate> createResourceAsync() {
-        Observable<byte[]> pfxBytes = Observable.just(pfxBlob());
+        Observable<Void> pfxBytes = Observable.just(null);
         if (pfxFileUrl != null) {
-            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit());
+            pfxBytes = Utils.downloadFileAsync(pfxFileUrl, myManager.restClient().retrofit())
+                    .map(new Func1<byte[], Void>() {
+                        @Override
+                        public Void call(byte[] bytes) {
+                            inner().withPfxBlob(bytes);
+                            return null;
+                        }
+                    });
         }
-        return pfxBytes.flatMap(new Func1<byte[], Observable<CertificateInner>>() {
-            @Override
-            public Observable<CertificateInner> call(byte[] s) {
-                inner().withPfxBlob(s);
-                return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
-            }
-        }).map(innerToFluentMap(this));
+        Observable<Void> keyVaultBinding = Observable.just(null);
+        if (certificateOrder != null) {
+            keyVaultBinding = certificateOrder.getKeyVaultBindingAsync()
+                    .map(new Func1<AppServiceCertificateKeyVaultBinding, Void>() {
+                        @Override
+                        public Void call(AppServiceCertificateKeyVaultBinding keyVaultBinding) {
+                            inner().withKeyVaultId(keyVaultBinding.keyVaultId()).withKeyVaultSecretName(keyVaultBinding.keyVaultSecretName());
+                            return null;
+                        }
+                    });
+        }
+        return pfxBytes.concatWith(keyVaultBinding).last()
+                .flatMap(new Func1<Void, Observable<CertificateInner>>() {
+                    @Override
+                    public Observable<CertificateInner> call(Void aVoid) {
+                        return client.createOrUpdateAsync(resourceGroupName(), name(), inner());
+                    }
+                }).map(innerToFluentMap(this));
     }
 
     @Override
@@ -162,8 +183,8 @@ class AppServiceCertificateImpl
     }
 
     @Override
-    public AppServiceCertificateImpl withCertificateOrderKeyVaultBinding(String vaultId, String secretName) {
-        inner().withKeyVaultId(vaultId).withKeyVaultSecretName(secretName);
+    public AppServiceCertificateImpl withExistingCertificateOrder(AppServiceCertificateOrder certificateOrder) {
+        this.certificateOrder = certificateOrder;
         return this;
     }
 

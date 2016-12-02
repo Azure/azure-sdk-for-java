@@ -66,6 +66,7 @@ abstract class WebAppBaseImpl<
             WebAppBase.Update<FluentT> {
 
     final WebAppsInner client;
+    final WebSiteManagementClientImpl serviceClient;
 
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
@@ -85,9 +86,10 @@ abstract class WebAppBaseImpl<
     private WebAppSourceControlImpl<FluentT, FluentImplT> sourceControl;
     private boolean sourceControlToDelete;
 
-    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
+    WebAppBaseImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
         super(name, innerObject, manager);
         this.client = client;
+        this.serviceClient = serviceClient;
         this.inner().withSiteConfig(configObject);
         normalizeProperties();
     }
@@ -455,23 +457,6 @@ abstract class WebAppBaseImpl<
                 return createOrUpdateInner(inner());
             }
         })
-        // submit config
-        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
-            @Override
-            public Observable<SiteInner> call(final SiteInner siteInner) {
-                if (inner().siteConfig() == null) {
-                    return Observable.just(siteInner);
-                }
-                return createOrUpdateSiteConfig(inner().siteConfig())
-                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
-                            @Override
-                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
-                                siteInner.withSiteConfig(siteConfigInner);
-                                return Observable.just(siteInner);
-                            }
-                        });
-            }
-        })
         // Submit hostname bindings
         .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
             @Override
@@ -512,10 +497,18 @@ abstract class WebAppBaseImpl<
             @Override
             public Observable<SiteInner> call(final SiteInner siteInner) {
                 List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
+                Map<String, HostNameSslState> sslMap = new HashMap<>(
+                        Maps.uniqueIndex(siteInner.hostNameSslStates(), new Function<HostNameSslState, String>() {
+                    @Override
+                    public String apply(HostNameSslState input) {
+                        return input.name();
+                    }
+                }));
                 for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
                     certs.add(binding.newCertificate());
-                    siteInner.hostNameSslStates().add(binding.inner().withToUpdate(true));
+                    sslMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
                 }
+                siteInner.withHostNameSslStates(new ArrayList<>(sslMap.values()));
                 if (certs.isEmpty()) {
                     return Observable.just(siteInner);
                 } else {
@@ -531,6 +524,23 @@ abstract class WebAppBaseImpl<
                         }
                     });
                 }
+            }
+        })
+        // submit config
+        .flatMap(new Func1<SiteInner, Observable<SiteInner>>() {
+            @Override
+            public Observable<SiteInner> call(final SiteInner siteInner) {
+                if (inner().siteConfig() == null) {
+                    return Observable.just(siteInner);
+                }
+                return createOrUpdateSiteConfig(inner().siteConfig())
+                        .flatMap(new Func1<SiteConfigInner, Observable<SiteInner>>() {
+                            @Override
+                            public Observable<SiteInner> call(SiteConfigInner siteConfigInner) {
+                                siteInner.withSiteConfig(siteConfigInner);
+                                return Observable.just(siteInner);
+                            }
+                        });
             }
         })
         // app settings
@@ -1054,7 +1064,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
-        return new WebAppSourceControlImpl<>(new SiteSourceControlInner(), this, myManager);
+        return new WebAppSourceControlImpl<>(new SiteSourceControlInner(), this, serviceClient);
     }
 
     @Override

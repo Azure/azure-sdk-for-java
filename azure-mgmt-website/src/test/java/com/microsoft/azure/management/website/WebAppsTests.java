@@ -37,7 +37,7 @@ public class WebAppsTests extends AppServiceTestBase {
                 .withManagedHostnameBindings(domain, "pineapple")
                 .defineSslBinding()
                     .forHostname("pineapple.graph-webapp-319.com")
-                    .withReadyToUseAppServiceCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwildcert"))
+                    .withExistingAppServiceCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwildcert"))
 //                    .withNewKeyVault("orangecertvault")
                     .withSniBasedSsl()
                     .attach()

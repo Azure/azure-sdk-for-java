@@ -88,17 +88,16 @@ public interface HostNameSslBinding extends
             /**
              * Places a new App Service certificate order to use for the hostname
              * @param certificateOrderName the name of the certificate order
-             * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithKeyVault<ParentT> withNewStandardAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
+            WithKeyVault<ParentT> withNewStandardSslCertificateOrder(String certificateOrderName);
 
             /**
              * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.
              * @param certificateOrder the ready-to-use certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithSslType<ParentT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
+            WithSslType<ParentT> withExistingAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
 
         /**
@@ -204,17 +203,16 @@ public interface HostNameSslBinding extends
             /**
              * Places a new App Service certificate order to use for the hostname
              * @param certificateOrderName the name of the certificate order
-             * @param productType the sku of the certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithKeyVault<ParentT> withNewStandardAppServiceCertificateOrder(String certificateOrderName, CertificateProductType productType);
+            WithKeyVault<ParentT> withNewStandardSslCertificateOrder(String certificateOrderName);
 
             /**
              * Specifies a ready-to-use certificate order to use. This is usually useful for reusing wildcard certificates.
              * @param certificateOrder the ready-to-use certificate order
              * @return the next stage of the hostname SSL binding definition
              */
-            WithSslType<ParentT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
+            WithSslType<ParentT> withExistingAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder);
         }
 
         /**

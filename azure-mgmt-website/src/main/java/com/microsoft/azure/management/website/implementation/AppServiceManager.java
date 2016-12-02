@@ -116,7 +116,7 @@ public final class AppServiceManager extends Manager<AppServiceManager, WebSiteM
      */
     public WebApps webApps() {
         if (webApps == null) {
-            webApps = new WebAppsImpl(innerManagementClient.webApps(), this);
+            webApps = new WebAppsImpl(innerManagementClient.webApps(), this, innerManagementClient);
         }
         return webApps;
     }

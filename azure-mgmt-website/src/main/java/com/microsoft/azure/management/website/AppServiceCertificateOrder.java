@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -137,7 +138,8 @@ public interface AppServiceCertificateOrder extends
             DefinitionStages.Blank,
             DefinitionStages.WithHostName,
             DefinitionStages.WithCertificateSku,
-            DefinitionStages.WithValidYears,
+            DefinitionStages.WithDomainVerificationFromWebApp,
+            DefinitionStages.WithKeyVault,
             DefinitionStages.WithCreate {
     }
 
@@ -168,13 +170,75 @@ public interface AppServiceCertificateOrder extends
          */
         interface WithCertificateSku {
             /**
-             * Specifies the SKU of the certificate. Standard type will only provide
+             * Specifies the SKU of the certificate to be standard. It will only provide
              * SSL support to the hostname, and www.hostname. Wildcard type will provide
              * SSL support to any sub-domain under the hostname.
-             * @param sku the SKU of the certificate
              * @return the next stage of the app service certificate definition
              */
-            WithValidYears withSku(CertificateProductType sku);
+            WithDomainVerificationFromWebApp withStandardSku();
+
+            /**
+             * Specifies the SKU of the certificate to be wildcard. It will provide
+             * SSL support to any sub-domain under the hostname.
+             * @return the next stage of the app service certificate definition
+             */
+            WithDomainVerification withWildcardSku();
+        }
+
+        /**
+         * An app service certificate order definition allowing domain verification method to be set.
+         */
+        interface WithDomainVerification {
+            /**
+             * Specifies the Azure managed domain to verify the ownership of the domain.
+             * @param domain the Azure managed domain
+             * @return the next stage of the app service certificate definition
+             */
+            WithKeyVault withDomainVerification(AppServiceDomain domain);
+        }
+
+        /**
+         * An app service certificate order definition allowing more domain verification methods to be set.
+         */
+        interface WithDomainVerificationFromWebApp extends WithDomainVerification {
+            /**
+             * Specifies the web app to verify the ownership of the domain. The web app needs to
+             * be bound to the hostname for the certificate.
+             * @param webApp the web app bound to the hostname
+             * @return the next stage of the app service certificate definition
+             */
+            WithKeyVault withWebAppVerification(WebAppBase<?> webApp);
+        }
+
+        /**
+         * An app service certificate order definition allowing more domain verification methods to be set.
+         */
+        interface WithKeyVault {
+            /**
+             * Specifies an existing key vault to store the certificate private key.
+             *
+             * The vault MUST allow 2 service principals to read/write secrets:
+             * f3c21649-0979-4721-ac85-b0216b2cf413 and abfa0a7c-a6b6-4736-8310-5855508787cd.
+             * If they don't have access, an attempt will be made to grant access. If you are
+             * logged in from an identity without access to the Active Directory Graph, this
+             * attempt will fail.
+             *
+             * @param vault the vault to store the private key
+             * @return the next stage of the app service certificate definition
+             */
+            WithCreate withExistingKeyVault(Vault vault);
+
+            /**
+             * Creates a new key vault to store the certificate private key.
+             *
+             * DO NOT use this method if you are logged in from an identity without access
+             * to the Active Directory Graph.
+             *
+             * @param vaultName the name of the new key vault
+             * @param region the region to create the vault
+             * @return the next stage of the app service certificate definition
+             */
+            WithCreate withNewKeyVault(String vaultName, Region region);
         }
 
         /**
@@ -208,6 +272,7 @@ public interface AppServiceCertificateOrder extends
          */
         interface WithCreate extends
                 Creatable<AppServiceCertificateOrder>,
+                WithValidYears,
                 WithAutoRenew,
                 GroupableResource.DefinitionWithTags<WithCreate> {
         }

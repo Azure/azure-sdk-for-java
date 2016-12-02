@@ -38,8 +38,8 @@ class WebAppImpl
     private DeploymentSlots deploymentSlots;
     private AppServicePlanImpl appServicePlan;
 
-    WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager) {
-        super(name, innerObject, configObject, client, manager);
+    WebAppImpl(String name, SiteInner innerObject, SiteConfigInner configObject, final WebAppsInner client, AppServiceManager manager, WebSiteManagementClientImpl serviceClient) {
+        super(name, innerObject, configObject, client, manager, serviceClient);
     }
 
     @Override
@@ -110,7 +110,7 @@ class WebAppImpl
     @Override
     public DeploymentSlots deploymentSlots() {
         if (deploymentSlots == null) {
-            deploymentSlots = new DeploymentSlotsImpl(this, client, myManager);
+            deploymentSlots = new DeploymentSlotsImpl(this, client, myManager, serviceClient);
         }
         return deploymentSlots;
     }
@@ -139,7 +139,7 @@ class WebAppImpl
     @Override
     public WebAppSourceControl getSourceControl() {
         SiteSourceControlInner siteSourceControlInner = client.getSourceControl(resourceGroupName(), name());
-        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, myManager);
+        return new WebAppSourceControlImpl<>(siteSourceControlInner, this, serviceClient);
     }
 
     @Override

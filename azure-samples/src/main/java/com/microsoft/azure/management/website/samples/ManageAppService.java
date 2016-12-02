@@ -8,15 +8,17 @@
 package com.microsoft.azure.management.website.samples;
 
 import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.azure.management.website.AppServiceCertificateOrder;
 import com.microsoft.azure.management.website.AppServiceDomain;
 import com.microsoft.azure.management.website.AppServicePricingTier;
-import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.CustomHostNameDnsRecordType;
+import com.microsoft.azure.management.website.DeploymentSlot;
 import com.microsoft.azure.management.website.WebApp;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -27,14 +29,23 @@ import java.io.IOException;
 
 /**
  * Azure App Service sample for managing web apps -
- *  - Create 2 web apps under the same new app service plan
- *  - Authorize an application
- *  - Update a key vault
- *    - alter configurations
- *    - change permissions
- *  - Create another key vault
- *  - List key vaults
- *  - Delete a key vault.
+ *  - app service plan, web app
+ *    - Create 2 web apps under the same new app service plan
+ *  - domain
+ *    - Create a domain
+ *  - certificate
+ *    - Create a Wildcard SSL certificate for the domain
+ *    - update 1st web app to use the domain and a new standard SSL certificate
+ *    - update 2nd web app to use the domain and the created wildcard SSL certificate
+ *  - slots
+ *    - create 2 slots under 2nd web app and bind to the domain and the wildcard SSL certificate
+ *    - turn on auto-swap for 2nd slot
+ *    - set connection strings to a storage account on production slot and make them sticky
+ *  - source control
+ *    - bind a simple web app in a public GitHub repo to 2nd slot and have it auto-swapped to production
+ *    - Verify the web app has access to the storage account
+ *  - Delete a slot
+ *  - Delete a web app
  */
 public final class ManageAppService {
 
@@ -47,9 +58,12 @@ public final class ManageAppService {
     public static void main(String[] args) {
         final String app1Name       = ResourceNamer.randomResourceName("webapp1", 20);
         final String app2Name       = ResourceNamer.randomResourceName("webapp2", 20);
+        final String slot1Name      = ResourceNamer.randomResourceName("slot1", 20);
+        final String slot2Name      = ResourceNamer.randomResourceName("slot2", 20);
         final String planName       = ResourceNamer.randomResourceName("jplan", 15);
         final String domainName     = ResourceNamer.randomResourceName("jsdk", 10) + ".com";
-        final String certName       = ResourceNamer.randomResourceName("democrt", 20);
+        final String cert1Name      = ResourceNamer.randomResourceName("std1crt", 20);
+        final String cert2Name      = ResourceNamer.randomResourceName("wild2crt", 20);
         final String vaultName      = ResourceNamer.randomResourceName("demovault", 20);
         final String rgName         = ResourceNamer.randomResourceName("rgNEMV", 24);
 
@@ -65,15 +79,6 @@ public final class ManageAppService {
                     .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
-
-//            azure.webApps().getByGroup("javacsmrg319", "java-webapp-319")
-//                    .update()
-//                    .defineSourceControl()
-//                        .withPublicExternalRepository()
-//                        .withGit("https://github.com/jianghaolu/azure-site-test")
-//                        .withBranch("master")
-//                        .attach()
-//                    .apply();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
@@ -130,6 +135,7 @@ public final class ManageAppService {
                             .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
                             .withPhoneNumber("4258828080")
                             .attach()
+                        .withDomainPrivacyEnabled(true)
                         .create();
 
                 System.out.println("Purchased domain " + domain.name());
@@ -138,32 +144,138 @@ public final class ManageAppService {
                 //============================================================
                 // Bind domain to web app 1
 
-                System.out.println("Binding https://app1." + domainName + " to web app " + app1Name + "...");
+                System.out.println("Binding http://app1." + domainName + " to web app " + app1Name + "...");
 
-                app1.update()
+                app1 = app1.update()
                         .defineHostnameBinding()
                             .withAzureManagedDomain(domain)
                             .withSubDomain("app1")
                             .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                             .attach()
+                        .apply();
+
+                System.out.println("Finish binding http://app1." + domainName + " to web app " + app1Name + "...");
+                Utils.print(app1);
+
+                System.out.println("CURLing http://app1." + domainName);
+                System.out.println(curl("http://app1." + domainName));
+
+                //============================================================
+                // Purchase a wild card SSL certificate (will be canceled for a full refund)
+
+                System.out.println("Purchasing a wildcard SSL certificate " + cert2Name + "...");
+
+                Vault vault = azure.vaults().getByGroup("javatestrg", "javatestautovault");
+                AppServiceCertificateOrder certificateOrder = azure.appServices().certificateOrders()
+                        .define(cert2Name)
+                        .withExistingResourceGroup(rgName)
+                        .withHostName("*." + domainName)
+                        .withWildcardSku()
+                        .withDomainVerification(domain)
+                        .withExistingKeyVault(vault)
+                        .withValidYears(1)
+                        .create();
+
+                System.out.println("Wildcard Certificate " + cert2Name + " is ready to use.");
+                Utils.print(certificateOrder);
+
+                //============================================================
+                // Bind domain to web app 2 and turn on wild card SSL
+
+                System.out.println("Binding @/www/app2." + domainName + " to web app " + app2Name + "...");
+                app2 = app2.update()
+                        .withManagedHostnameBindings(domain, "app2", "@", "www")
                         .defineSslBinding()
-                            .forHostname("app1." + domainName)
-                            .withNewAppServiceCertificateOrder(certName, CertificateProductType.STANDARD_DOMAIN_VALIDATED_SSL)
-                            .withNewKeyVault(vaultName)
+                            .forHostname(domainName)
+                            .withExistingAppServiceCertificateOrder(certificateOrder)
+                            .withSniBasedSsl()
+                            .attach()
+                        .defineSslBinding()
+                            .forHostname("www." + domainName)
+                            .withExistingAppServiceCertificateOrder(certificateOrder)
+                            .withSniBasedSsl()
+                            .attach()
+                        .defineSslBinding()
+                            .forHostname("app2." + domainName)
+                            .withExistingAppServiceCertificateOrder(certificateOrder)
                             .withSniBasedSsl()
                             .attach()
                         .apply();
 
-                System.out.println("Finish binding https://app1." + domainName + " to web app " + app1Name + "...");
-                Utils.print(app1);
+                System.out.println("Finished binding @/www/app2." + domainName + " to web app " + app2Name + "...");
+                Utils.print(app2);
 
-                System.out.println("CURLing https://app1." + domainName);
-                System.out.println(curl("https://app1." + domainName));
+                System.out.println("CURLing https://www." + domainName);
+                System.out.println(curl("https://www." + domainName));
 
                 //============================================================
-                // Bind domain to web app 2 and also purchase a certificate
+                // Create 2 slots under web app 2
 
-                System.out.println("Binding www." + domainName + " to web app " + app1Name + "...");
+                // slot1.domainName.com - SSL off - autoswap on
+                System.out.println("Creating slot " + slot1Name + "...");
+
+                DeploymentSlot slot1 = app2.deploymentSlots().define(slot1Name)
+                        .withBrandNewConfiguration()
+                        .withManagedHostnameBindings(domain, "slot1")
+                        .withAutoSwapSlotName("production")
+                        .create();
+
+                System.out.println("Created slot " + slot1Name + "...");
+                Utils.print(slot1);
+
+                // slot2.domainName.com - SSL on - autoswap on - storage account info
+                System.out.println("Creating another slot " + slot2Name + "...");
+
+                DeploymentSlot slot2 = app2.deploymentSlots().define(slot2Name)
+                        .withConfigurationFromDeploymentSlot(slot1)
+                        .withManagedHostnameBindings(domain, "slot2")
+                        .defineSslBinding()
+                            .forHostname("slot2." + domainName)
+                            .withExistingAppServiceCertificateOrder(certificateOrder)
+                            .withSniBasedSsl()
+                            .attach()
+                        .withStickyAppSetting("storageaccount", "account1")
+                        .withStickyAppSetting("storageaccountkey", "key1")
+                        .create();
+
+                System.out.println("Created slot " + slot2Name + "...");
+                Utils.print(slot2);
+
+                //============================================================
+                // Update slot 1
+
+                System.out.println("Turning on SSL for slot " + slot1Name + "...");
+
+                slot1 = slot1.update()
+                        .withAutoSwapSlotName(null) // this will not affect slot 2
+                        .defineSslBinding()
+                            .forHostname("slot1." + domainName)
+                            .withExistingAppServiceCertificateOrder(certificateOrder)
+                            .withSniBasedSsl()
+                            .attach()
+                        .apply();
+
+                System.out.println("SSL turned on for slot " + slot1Name + "...");
+                Utils.print(slot1);
+
+                //============================================================
+                // Deploy public GitHub repo to slot 2
+
+                System.out.println("Deploying public GitHub repo to slot " + slot2Name);
+
+                slot2 = slot2.update()
+                        .defineSourceControl()
+                            .withPublicExternalRepository()
+                            .withGit("https://github.com/jianghaolu/azure-site-test")
+                            .withBranch("master")
+                            .attach()
+                        .apply();
+
+                System.out.println("Finished deploying public GitHub repo to slot " + slot2Name);
+                Utils.print(slot2);
+
+                System.out.println("CURLing https://www." + domainName + ". Should contain auto-swapped slot 2 content.");
+                System.out.println(curl("https://www." + domainName));
 
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -195,7 +307,7 @@ public final class ManageAppService {
         }
     }
 
-    private ManageAppService() {
+    static {
         httpClient = new OkHttpClient.Builder().build();
     }
 }

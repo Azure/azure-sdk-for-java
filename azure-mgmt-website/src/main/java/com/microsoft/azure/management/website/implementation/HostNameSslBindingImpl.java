@@ -5,15 +5,11 @@
  */
 package com.microsoft.azure.management.website.implementation;
 
-import com.google.common.collect.Maps;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AppServiceCertificate;
-import com.microsoft.azure.management.website.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.website.AppServiceCertificateOrder;
-import com.microsoft.azure.management.website.CertificateProductType;
 import com.microsoft.azure.management.website.HostNameSslBinding;
 import com.microsoft.azure.management.website.HostNameSslState;
 import com.microsoft.azure.management.website.SslState;
@@ -21,10 +17,8 @@ import com.microsoft.azure.management.website.WebAppBase;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.functions.Func1;
-import rx.functions.Func2;
 
 import java.io.File;
-import java.util.Map;
 
 /**
  *  Implementation for {@link HostNameSslBinding} and its create and update interfaces.
@@ -40,7 +34,7 @@ class HostNameSslBindingImpl<
         HostNameSslBinding.UpdateDefinition<WebAppBase.Update<FluentT>> {
 
     private Observable<AppServiceCertificate> newCertificate;
-    private Observable<AppServiceCertificateOrder> newCertificateOrder;
+    private AppServiceCertificateOrder.DefinitionStages.WithKeyVault certificateInDefinition;
     private final AppServiceManager manager;
     private final FluentImplT parent;
 
@@ -88,41 +82,22 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withNewStandardAppServiceCertificateOrder(final String certificateOrderName, CertificateProductType productType) {
-        this.newCertificateOrder = manager.certificateOrders().define(certificateOrderName)
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withNewStandardSslCertificateOrder(final String certificateOrderName) {
+        this.certificateInDefinition = manager.certificateOrders().define(certificateOrderName)
                 .withExistingResourceGroup(parent().resourceGroupName())
                 .withHostName(name())
-                .withSku(productType)
-                .withValidYears(1)
-                .createAsync()
-                .flatMap(new Func1<AppServiceCertificateOrder, Observable<AppServiceCertificateOrder>>() {
-                    @Override
-                    public Observable<AppServiceCertificateOrder> call(final AppServiceCertificateOrder appServiceCertificateOrder) {
-                        return parent().verifyDomainOwnershipAsync(appServiceCertificateOrder.name(), appServiceCertificateOrder.domainVerificationToken())
-                                .map(new Func1<Void, AppServiceCertificateOrder>() {
-                                    @Override
-                                    public AppServiceCertificateOrder call(Void aVoid) {
-                                        return appServiceCertificateOrder;
-                                    }
-                                });
-                    }
-                });
+                .withStandardSku()
+                .withWebAppVerification(parent());
         return this;
     }
 
     @Override
-    public HostNameSslBindingImpl<FluentT, FluentImplT> withReadyToUseAppServiceCertificateOrder(AppServiceCertificateOrder certificateOrder) {
-        newCertificate = certificateOrder.getKeyVaultBindingAsync()
-                .flatMap(new Func1<AppServiceCertificateKeyVaultBinding, Observable<AppServiceCertificate>>() {
-                    @Override
-                    public Observable<AppServiceCertificate> call(AppServiceCertificateKeyVaultBinding binding) {
-                        return manager.certificates().define(name() + "cert")
-                                .withRegion(parent().region())
-                                .withExistingResourceGroup(parent().resourceGroupName())
-                                .withCertificateOrderKeyVaultBinding(binding.keyVaultId(), binding.keyVaultSecretName())
-                                .createAsync();
-                    }
-                });
+    public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingAppServiceCertificateOrder(final AppServiceCertificateOrder certificateOrder) {
+        newCertificate = manager.certificates().define(name() + "cert")
+                .withRegion(parent().region())
+                .withExistingResourceGroup(parent().resourceGroupName())
+                .withExistingCertificateOrder(certificateOrder)
+                .createAsync();
         return this;
     }
 
@@ -163,27 +138,17 @@ class HostNameSslBindingImpl<
         return this;
     }
 
-    private Observable<AppServiceCertificate> createBindingAndCertificate(final AppServiceCertificateOrder order, final Vault vault) {
-        return order.createKeyVaultBindingAsync(order.name(), vault)
-        .flatMap(new Func1<AppServiceCertificateKeyVaultBinding, Observable<AppServiceCertificate>>() {
-            @Override
-            public Observable<AppServiceCertificate> call(AppServiceCertificateKeyVaultBinding binding) {
-                return manager.certificates().define(order.name())
-                        .withRegion(parent().regionName())
-                        .withExistingResourceGroup(parent().resourceGroupName())
-                        .withCertificateOrderKeyVaultBinding(vault.id(), order.name())
-                        .createAsync();
-            }
-        });
-    }
-
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingKeyVault(final Vault vault) {
-        newCertificate = newCertificateOrder
+        newCertificate = certificateInDefinition.withExistingKeyVault(vault).createAsync()
                 .flatMap(new Func1<AppServiceCertificateOrder, Observable<AppServiceCertificate>>() {
                     @Override
                     public Observable<AppServiceCertificate> call(AppServiceCertificateOrder appServiceCertificateOrder) {
-                        return createBindingAndCertificate(appServiceCertificateOrder, vault);
+                        return manager.certificates().define(appServiceCertificateOrder.name())
+                                .withRegion(parent().regionName())
+                                .withExistingResourceGroup(parent().resourceGroupName())
+                                .withExistingCertificateOrder(appServiceCertificateOrder)
+                                .createAsync();
                     }
                 });
         return this;
@@ -191,29 +156,17 @@ class HostNameSslBindingImpl<
 
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withNewKeyVault(String vaultName) {
-        Observable<Vault> vaultObservable = manager.keyVaultManager().vaults().define(vaultName)
-                .withRegion(parent().region())
-                .withExistingResourceGroup(parent().resourceGroupName())
-                .defineAccessPolicy()
-                    .forServicePrincipal("f3c21649-0979-4721-ac85-b0216b2cf413")
-                    .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
-                    .attach()
-                .defineAccessPolicy()
-                    .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
-                    .allowSecretPermissions(SecretPermissions.GET)
-                    .attach()
-                .createAsync();
-        newCertificate = Observable.zip(newCertificateOrder, vaultObservable, new Func2<AppServiceCertificateOrder, Vault, Map.Entry<AppServiceCertificateOrder, Vault>>() {
-            @Override
-            public Map.Entry<AppServiceCertificateOrder, Vault> call(AppServiceCertificateOrder appServiceCertificateOrder, Vault vault) {
-                return Maps.immutableEntry(appServiceCertificateOrder, vault);
-            }
-        }).flatMap(new Func1<Map.Entry<AppServiceCertificateOrder, Vault>, Observable<AppServiceCertificate>>() {
-            @Override
-            public Observable<AppServiceCertificate> call(final Map.Entry<AppServiceCertificateOrder, Vault> entry) {
-                return createBindingAndCertificate(entry.getKey(), entry.getValue());
-            }
-        });
+        newCertificate = certificateInDefinition.withNewKeyVault(vaultName, parent().region()).createAsync()
+                .flatMap(new Func1<AppServiceCertificateOrder, Observable<AppServiceCertificate>>() {
+                    @Override
+                    public Observable<AppServiceCertificate> call(AppServiceCertificateOrder appServiceCertificateOrder) {
+                        return manager.certificates().define(appServiceCertificateOrder.name())
+                                .withRegion(parent().regionName())
+                                .withExistingResourceGroup(parent().resourceGroupName())
+                                .withExistingCertificateOrder(appServiceCertificateOrder)
+                                .createAsync();
+                    }
+                });
         return this;
     }
 }
