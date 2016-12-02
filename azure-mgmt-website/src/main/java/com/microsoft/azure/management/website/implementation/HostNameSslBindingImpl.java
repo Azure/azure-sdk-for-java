@@ -5,8 +5,10 @@
  */
 package com.microsoft.azure.management.website.implementation;
 
+import com.google.common.io.BaseEncoding;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.website.AppServiceCertificate;
 import com.microsoft.azure.management.website.AppServiceCertificateOrder;
@@ -19,6 +21,15 @@ import rx.functions.Action1;
 import rx.functions.Func1;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  *  Implementation for {@link HostNameSslBinding} and its create and update interfaces.
@@ -35,6 +46,7 @@ class HostNameSslBindingImpl<
 
     private Observable<AppServiceCertificate> newCertificate;
     private AppServiceCertificateOrder.DefinitionStages.WithKeyVault certificateInDefinition;
+
     private final AppServiceManager manager;
     private final FluentImplT parent;
 
@@ -72,7 +84,8 @@ class HostNameSslBindingImpl<
 
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withPfxCertificateToUpload(final File pfxFile, final String password) {
-        newCertificate = manager.certificates().define(name() + "cert")
+        String thumbprint = getCertificateThumbprint(pfxFile.getPath(), password);
+        newCertificate = manager.certificates().define(getCertificateUniqueName(thumbprint, parent().region()))
                 .withRegion(parent().region())
                 .withExistingResourceGroup(parent().resourceGroupName())
                 .withPfxFile(pfxFile)
@@ -93,7 +106,7 @@ class HostNameSslBindingImpl<
 
     @Override
     public HostNameSslBindingImpl<FluentT, FluentImplT> withExistingAppServiceCertificateOrder(final AppServiceCertificateOrder certificateOrder) {
-        newCertificate = manager.certificates().define(name() + "cert")
+        newCertificate = manager.certificates().define(getCertificateUniqueName(certificateOrder.signedCertificate().thumbprint(), parent().region()))
                 .withRegion(parent().region())
                 .withExistingResourceGroup(parent().resourceGroupName())
                 .withExistingCertificateOrder(certificateOrder)
@@ -121,8 +134,8 @@ class HostNameSslBindingImpl<
     Observable<AppServiceCertificate> newCertificate() {
         return newCertificate.doOnNext(new Action1<AppServiceCertificate>() {
             @Override
-            public void call(AppServiceCertificate appServiceCertificateOrder) {
-                withCertificateThumbprint(appServiceCertificateOrder.thumbprint());
+            public void call(AppServiceCertificate appServiceCertificate) {
+                withCertificateThumbprint(appServiceCertificate.thumbprint());
             }
         });
     }
@@ -168,5 +181,26 @@ class HostNameSslBindingImpl<
                     }
                 });
         return this;
+    }
+
+    private String getCertificateThumbprint(String pfxPath, String password) {
+        try {
+            InputStream inStream = new FileInputStream(pfxPath);
+
+            KeyStore ks = KeyStore.getInstance("PKCS12");
+            ks.load(inStream, password.toCharArray());
+
+            String alias = ks.aliases().nextElement();
+            X509Certificate certificate = (X509Certificate) ks.getCertificate(alias);
+            inStream.close();
+            MessageDigest sha = MessageDigest.getInstance("SHA-1");
+            return BaseEncoding.base16().encode(sha.digest(certificate.getEncoded()));
+        } catch (KeyStoreException | CertificateException | NoSuchAlgorithmException | IOException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private String getCertificateUniqueName(String thumbprint, Region region) {
+        return String.format("%s##%s#", thumbprint, region.label());
     }
 }

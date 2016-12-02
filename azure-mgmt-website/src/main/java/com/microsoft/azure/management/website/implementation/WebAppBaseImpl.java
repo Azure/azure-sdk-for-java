@@ -497,18 +497,11 @@ abstract class WebAppBaseImpl<
             @Override
             public Observable<SiteInner> call(final SiteInner siteInner) {
                 List<Observable<AppServiceCertificate>> certs = new ArrayList<>();
-                Map<String, HostNameSslState> sslMap = new HashMap<>(
-                        Maps.uniqueIndex(siteInner.hostNameSslStates(), new Function<HostNameSslState, String>() {
-                    @Override
-                    public String apply(HostNameSslState input) {
-                        return input.name();
-                    }
-                }));
                 for (final HostNameSslBindingImpl<FluentT, FluentImplT> binding : sslBindingsToCreate.values()) {
                     certs.add(binding.newCertificate());
-                    sslMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
+                    hostNameSslStateMap.put(binding.inner().name(), binding.inner().withToUpdate(true));
                 }
-                siteInner.withHostNameSslStates(new ArrayList<>(sslMap.values()));
+                siteInner.withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
                 if (certs.isEmpty()) {
                     return Observable.just(siteInner);
                 } else {
