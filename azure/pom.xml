@@ -106,7 +106,7 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-mgmt-website</artifactId>
+      <artifactId>azure-mgmt-appservice</artifactId>
       <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
     <dependency>

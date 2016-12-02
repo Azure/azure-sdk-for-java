@@ -57,8 +57,8 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
-import com.microsoft.azure.management.website.WebApps;
-import com.microsoft.azure.management.website.implementation.AppServiceManager;
+import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
 import java.io.File;
 import java.io.IOException;
