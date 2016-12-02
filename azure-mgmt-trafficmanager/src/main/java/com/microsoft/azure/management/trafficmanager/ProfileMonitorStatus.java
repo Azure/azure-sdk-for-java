@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * Traffic manager profile statuses.
  */
+@LangDefinition
 public class ProfileMonitorStatus {
     /** Static value Inactive for ProfileMonitorStatus. */
     public static final ProfileMonitorStatus INACTIVE = new ProfileMonitorStatus("Inactive");

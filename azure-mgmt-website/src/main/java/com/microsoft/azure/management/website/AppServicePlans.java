@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 
 /**
- * Entry point for storage accounts management API.
+ * Entry point for app service plan management API.
  */
 public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,

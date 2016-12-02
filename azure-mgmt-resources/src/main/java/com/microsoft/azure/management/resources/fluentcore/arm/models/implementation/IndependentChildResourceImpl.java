@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 
@@ -24,6 +24,7 @@ import java.util.TreeMap;
  * @param <InnerModelT> Azure inner resource class type
  * @param <FluentModelImplT> the implementation type of the fluent model type
  */
+@LangDefinition
 public abstract class IndependentChildResourceImpl<
             FluentModelT extends IndependentChildResource,
             FluentParentModelT extends GroupableResource,
@@ -68,7 +69,11 @@ public abstract class IndependentChildResourceImpl<
 
     @Override
     public String id() {
-        return this.inner().id();
+        if (this.inner() != null) {
+            return this.inner().id();
+        }
+
+        return null;
     }
 
     @Override
@@ -135,12 +140,5 @@ public abstract class IndependentChildResourceImpl<
     public FluentModelImplT withExistingParentResource(FluentParentModelT existingParentResource) {
         this.inner().withLocation(existingParentResource.regionName());
         return super.withExistingParentResource(existingParentResource);
-    }
-
-    @Override
-    protected void setParentName(InnerModelT inner) {
-        if (inner.id() != null) {
-            this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
-        }
     }
 }

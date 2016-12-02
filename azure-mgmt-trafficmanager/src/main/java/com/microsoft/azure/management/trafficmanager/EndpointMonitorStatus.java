@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * Traffic manager profile endpoint monitor statuses.
  */
+@LangDefinition
 public class EndpointMonitorStatus {
     /** Static value Inactive for EndpointMonitorStatus. */
     public static final EndpointMonitorStatus INACTIVE = new EndpointMonitorStatus("Inactive");

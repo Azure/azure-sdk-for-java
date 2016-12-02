@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * The reason for unavailability of traffic manager profile DNS name.
  */
+@LangDefinition
 public class ProfileDnsNameUnavailableReason {
     /** Static value Invalid for ProfileDnsNameUnavailableReason. */
     public static final ProfileDnsNameUnavailableReason INVALID = new ProfileDnsNameUnavailableReason("Invalid");

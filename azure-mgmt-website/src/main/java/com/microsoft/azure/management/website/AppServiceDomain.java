@@ -24,13 +24,13 @@ import java.util.Map;
  *
  * Domains in Azure are purchased from 3rd party domain providers. By calling
  * {@link Creatable#create()} or {@link Creatable#createAsync()} you agree to
- * the agreements listed in {@link Domains#listAgreements(String)}.
+ * the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
  */
-public interface Domain extends
+public interface AppServiceDomain extends
         GroupableResource,
         HasName,
-        Refreshable<Domain>,
-        Updatable<Domain.Update>,
+        Refreshable<AppServiceDomain>,
+        Updatable<AppServiceDomain.Update>,
         Wrapper<DomainInner> {
 
     /**
@@ -232,7 +232,7 @@ public interface Domain extends
                 WithAdminContact,
                 WithBillingContact,
                 WithTechContact,
-                Creatable<Domain>,
+                Creatable<AppServiceDomain>,
                 DefinitionWithTags<WithCreate> {
         }
     }
@@ -314,7 +314,7 @@ public interface Domain extends
      * The template for a domain update operation, containing all the settings that can be modified.
      */
     interface Update extends
-            Appliable<Domain>,
+            Appliable<AppServiceDomain>,
             UpdateStages.WithAdminContact,
             UpdateStages.WithBillingContact,
             UpdateStages.WithTechContact,

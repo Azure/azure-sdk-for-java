@@ -9,6 +9,7 @@ package com.microsoft.azure.management.website;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
+import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.website.implementation.AppServiceManager;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class AppServiceTestBase {
     protected static ResourceManager resourceManager;
+    protected static KeyVaultManager keyVaultManager;
     protected static AppServiceManager appServiceManager;
 
     protected static void createClients() {
@@ -43,6 +45,9 @@ public abstract class AppServiceTestBase {
         resourceManager = ResourceManager
                 .authenticate(restClient)
                 .withSubscription(System.getenv("subscription-id"));
+
+        keyVaultManager = KeyVaultManager
+                .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));
 
         appServiceManager = AppServiceManager
                 .authenticate(restClient, System.getenv("domain"), System.getenv("subscription-id"));

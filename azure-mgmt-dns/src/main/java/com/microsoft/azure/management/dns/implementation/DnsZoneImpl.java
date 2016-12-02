@@ -1,5 +1,11 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.ARecordSets;
 import com.microsoft.azure.management.dns.AaaaRecordSets;
 import com.microsoft.azure.management.dns.CnameRecordSets;
@@ -20,6 +26,7 @@ import java.util.List;
 /**
  * Implementation for {@link DnsZone}.
  */
+@LangDefinition
 public class DnsZoneImpl
         extends GroupableResourceImpl<
         DnsZone,

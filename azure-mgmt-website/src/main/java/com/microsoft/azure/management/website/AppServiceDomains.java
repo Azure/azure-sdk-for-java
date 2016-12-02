@@ -18,14 +18,14 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for domain management API.
  */
-public interface Domains extends
-        SupportsCreating<Domain.DefinitionStages.Blank>,
-        SupportsListing<Domain>,
-        SupportsListingByGroup<Domain>,
+public interface AppServiceDomains extends
+        SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
+        SupportsListing<AppServiceDomain>,
+        SupportsListingByGroup<AppServiceDomain>,
         SupportsDeletingById,
         SupportsDeletingByGroup,
-        SupportsGettingByGroup<Domain>,
-        SupportsGettingById<Domain>{
+        SupportsGettingByGroup<AppServiceDomain>,
+        SupportsGettingById<AppServiceDomain>{
     /**
      * List the agreements for purchasing a domain with a specific top level extension.
      *

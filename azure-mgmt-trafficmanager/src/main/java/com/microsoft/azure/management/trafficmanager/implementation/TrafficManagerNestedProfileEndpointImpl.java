@@ -5,12 +5,14 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 
 /**
  * Implementation for {@link TrafficManagerNestedProfileEndpoint}.
  */
+@LangDefinition
 class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
     implements TrafficManagerNestedProfileEndpoint {
     TrafficManagerNestedProfileEndpointImpl(String name,

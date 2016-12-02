@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to traffic manager profile management API in Azure.
  */
-@Fluent()
+@Fluent
 public interface TrafficManagerProfiles extends
         SupportsCreating<TrafficManagerProfile.DefinitionStages.Blank>,
         SupportsListing<TrafficManagerProfile>,

@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildImpl;
 import com.microsoft.azure.management.sql.SqlFirewallRule;
@@ -19,6 +19,7 @@ import rx.functions.Func1;
 /**
  * Implementation for SqlFirewallRule and its parent interfaces.
  */
+@LangDefinition
 class SqlFirewallRuleImpl
         extends IndependentChildImpl<
                                     SqlFirewallRule,
@@ -75,21 +76,14 @@ class SqlFirewallRuleImpl
     }
 
     @Override
-    protected void setParentName(ServerFirewallRuleInner inner) {
-        if (inner.id() != null) {
-            this.parentName = ResourceId.parseResourceId(inner.id()).parent().name();
-        }
-    }
-
-    @Override
     protected Observable<SqlFirewallRule> createChildResourceAsync() {
         final SqlFirewallRule self = this;
 
         return this.innerCollection.createOrUpdateFirewallRuleAsync(this.resourceGroupName(), this.sqlServerName(), this.name(), this.inner())
                 .map(new Func1<ServerFirewallRuleInner, SqlFirewallRule>() {
             @Override
-            public SqlFirewallRule call(ServerFirewallRuleInner databaseInner) {
-                setInner(databaseInner);
+            public SqlFirewallRule call(ServerFirewallRuleInner serverFirewallRuleInner) {
+                setInner(serverFirewallRuleInner);
 
                 return self;
             }
@@ -110,12 +104,16 @@ class SqlFirewallRuleImpl
 
     @Override
     public String id() {
-        return this.inner().id();
+        if (this.inner() != null) {
+            return this.inner().id();
+        }
+
+        return null;
     }
 
     @Override
     public SqlFirewallRuleImpl withIpAddressRange(String startIpAddress, String endIpAddress) {
-        this.inner().withStartIpAddress(startIpAddress).withEndIpAddress(endIpAddress);
+        this.withStartIpAddress(startIpAddress).withEndIpAddress(endIpAddress);
         return this;
     }
 
