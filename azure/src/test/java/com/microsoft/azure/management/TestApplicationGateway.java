@@ -147,7 +147,7 @@ public class TestApplicationGateway {
                             .withoutBackendIpAddress("11.1.1.1")
                             .withoutBackendHttpConfiguration("httpConfig2")
                             .updateBackendHttpConfiguration("httpConfig1")
-                                .withBackendPort(83)
+                                .withPort(83)
                                 .withoutCookieBasedAffinity()
                                 .withRequestTimeout(20)
                                 .parent()
@@ -180,7 +180,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
             Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
             ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.backendPort() == 83);
+            Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
 
@@ -261,7 +261,7 @@ public class TestApplicationGateway {
 
                         // Additional/explicit backend HTTP setting configs
                         .defineBackendHttpConfiguration("config1")
-                            .withBackendPort(8081)
+                            .withPort(8081)
                             .withRequestTimeout(45)
                             .attach()
 
@@ -331,7 +331,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
             Assert.assertTrue(config != null);
-            Assert.assertTrue(config.backendPort() == 8081);
+            Assert.assertTrue(config.port() == 8081);
             Assert.assertTrue(config.requestTimeout() == 45);
 
             // Verify backends
@@ -394,7 +394,7 @@ public class TestApplicationGateway {
                         .withoutBackendIpAddress("11.1.1.1")
                         .withoutBackendHttpConfiguration("httpConfig2")
                         .updateBackendHttpConfiguration("httpConfig1")
-                            .withBackendPort(83)
+                            .withPort(83)
                             .withProtocol(ApplicationGatewayProtocol.HTTPS)
                             .withoutCookieBasedAffinity()
                             .withRequestTimeout(20)
@@ -429,7 +429,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
             Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
             ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.backendPort() == 83);
+            Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
 
@@ -504,7 +504,7 @@ public class TestApplicationGateway {
 
                         // Additional/explicit backend HTTP setting configs
                         .defineBackendHttpConfiguration("config1")
-                            .withBackendPort(8081)
+                            .withPort(8081)
                             .withRequestTimeout(45)
                             .attach()
 
@@ -580,7 +580,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
             Assert.assertTrue(config != null);
-            Assert.assertTrue(config.backendPort() == 8081);
+            Assert.assertTrue(config.port() == 8081);
             Assert.assertTrue(config.requestTimeout() == 45);
 
             // Verify backends
@@ -641,7 +641,7 @@ public class TestApplicationGateway {
                         .withoutBackendIpAddress("11.1.1.1")
                         .withoutBackendHttpConfiguration("httpConfig2")
                         .updateBackendHttpConfiguration("httpConfig1")
-                            .withBackendPort(83)
+                            .withPort(83)
                             .withProtocol(ApplicationGatewayProtocol.HTTPS)
                             .withoutCookieBasedAffinity()
                             .withRequestTimeout(20)
@@ -680,7 +680,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
             Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
             ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.backendPort() == 83);
+            Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
 
@@ -788,7 +788,7 @@ public class TestApplicationGateway {
                             .withoutBackendIpAddress("11.1.1.1")
                             .withoutBackendHttpConfiguration("httpConfig2")
                             .updateBackendHttpConfiguration("httpConfig1")
-                                .withBackendPort(83)
+                                .withPort(83)
                                 .withoutCookieBasedAffinity()
                                 .withRequestTimeout(20)
                                 .parent()
@@ -825,7 +825,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
             Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
             ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.backendPort() == 83);
+            Assert.assertTrue(httpConfig1.port() == 83);
             Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
             Assert.assertTrue(httpConfig1.requestTimeout() == 20);
 
@@ -915,7 +915,7 @@ public class TestApplicationGateway {
         for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
             info.append("\n\t\tName: ").append(httpConfig.name())
                 .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
-                .append("\n\t\t\tPort: ").append(httpConfig.backendPort())
+                .append("\n\t\t\tPort: ").append(httpConfig.port())
                 .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
                 .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
         }

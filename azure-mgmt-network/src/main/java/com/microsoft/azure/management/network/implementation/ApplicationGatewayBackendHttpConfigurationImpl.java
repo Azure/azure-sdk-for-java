@@ -44,13 +44,13 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfigurationImpl withBackendPort(int port) {
+    public ApplicationGatewayBackendHttpConfigurationImpl withPort(int port) {
         this.inner().withPort(port);
         return this;
     }
 
     @Override
-    public int backendPort() {
+    public int port() {
         return this.inner().port() != null ? this.inner().port().intValue() : 0;
     }
 
