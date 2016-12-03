@@ -47,7 +47,7 @@ public interface HostNameBinding
     /**
      * @return custom DNS record type
      */
-    CustomHostNameDnsRecordType DnsRecordType();
+    CustomHostNameDnsRecordType dnsRecordType();
 
     /**
      * @return the host name type

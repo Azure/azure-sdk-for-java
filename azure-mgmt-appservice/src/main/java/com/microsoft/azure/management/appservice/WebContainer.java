@@ -16,7 +16,7 @@ public final class WebContainer {
     public static final WebContainer TOMCAT_7_0_NEWEST = new WebContainer("tomcat 7.0");
 
     /** Static value tomcat 7.0.50 for WebContainer. */
-    public static final WebContainer TOMCAT_7_0_50= new WebContainer("tomcat 7.0.50");
+    public static final WebContainer TOMCAT_7_0_50 = new WebContainer("tomcat 7.0.50");
 
     /** Static value tomcat 7.0.62 for WebContainer. */
     public static final WebContainer TOMCAT_7_0_62 = new WebContainer("tomcat 7.0.62");

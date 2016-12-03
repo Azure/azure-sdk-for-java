@@ -123,8 +123,17 @@ public interface AppServiceCertificateOrder extends
      */
     Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
+    /**
+     * Verifies the ownership of the domain by providing the Azure purchased domain.
+     * @param domain the Azure managed domain
+     */
     void verifyDomainOwnership(AppServiceDomain domain);
 
+    /**
+     * Verifies the ownership of the domain by providing the Azure purchased domain.
+     * @param domain the Azure managed domain
+     * @return an Observable to the result
+     */
     Observable<Void> verifyDomainOwnershipAsync(AppServiceDomain domain);
 
     /**************************************************************

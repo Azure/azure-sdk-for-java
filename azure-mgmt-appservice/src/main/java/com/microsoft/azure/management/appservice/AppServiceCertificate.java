@@ -167,7 +167,7 @@ public interface AppServiceCertificate extends
          */
         interface WithPfxFilePassword {
             /**
-             * Specifies the password to the PFX certificate
+             * Specifies the password to the PFX certificate.
              * @param password the PFX certificate password
              * @return the next stage of the app service certificate definition
              */

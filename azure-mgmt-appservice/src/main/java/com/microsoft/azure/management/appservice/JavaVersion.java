@@ -19,7 +19,7 @@ public final class JavaVersion {
     public static final JavaVersion JAVA_7_NEWEST = new JavaVersion("1.7");
 
     /** Static value 1.7.0_51 for JavaVersion. */
-    public static final JavaVersion JAVA_1_7_0_51= new JavaVersion("1.7.0_51");
+    public static final JavaVersion JAVA_1_7_0_51 = new JavaVersion("1.7.0_51");
 
     /** Static value 1.7.0_71 for JavaVersion. */
     public static final JavaVersion JAVA_1_7_0_71 = new JavaVersion("1.7.0_71");

@@ -28,7 +28,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Azure App Service sample for managing web apps -
+ * Azure App Service sample for managing web apps.
  *  - app service plan, web app
  *    - Create 2 web apps under the same new app service plan
  *  - domain

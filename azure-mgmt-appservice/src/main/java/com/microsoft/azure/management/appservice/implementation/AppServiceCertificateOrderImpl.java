@@ -226,8 +226,8 @@ class AppServiceCertificateOrderImpl
                             return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
                         } else {
                             throw new IllegalArgumentException(
-                                    "Please specify a non-null web app or domain to verify the domain ownership " +
-                                            "for hostname " + distinguishedName());
+                                    "Please specify a non-null web app or domain to verify the domain ownership "
+                                            + "for hostname " + distinguishedName());
                         }
                     }
                 })

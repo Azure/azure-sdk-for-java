@@ -48,6 +48,11 @@ public class AppServicePricingTier {
     /** The actual serialized value for a SiteAvailabilityState instance. */
     private SkuDescription skuDescription;
 
+    /**
+     * Creates a custom app service pricing tier.
+     * @param tier the tier name
+     * @param size the size of the plan
+     */
     public AppServicePricingTier(String tier, String size) {
         this.skuDescription = new SkuDescription()
                 .withName(size)

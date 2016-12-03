@@ -51,6 +51,8 @@ import java.util.Set;
 
 /**
  * The implementation for {@link WebAppBase}.
+ *  @param <FluentT> the fluent interface of the web app or deployment slot
+ *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
  */
 abstract class WebAppBaseImpl<
         FluentT extends WebAppBase<FluentT>,
@@ -709,7 +711,7 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withManagedHostnameBindings(AppServiceDomain domain, String... hostnames) {
-        for(String hostname : hostnames) {
+        for (String hostname : hostnames) {
             if (hostname.equals("@") || hostname.equalsIgnoreCase(domain.name())) {
                 defineHostnameBinding()
                         .withAzureManagedDomain(domain)
@@ -742,7 +744,7 @@ abstract class WebAppBaseImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withThirdPartyHostnameBinding(String domain, String... hostnames) {
-        for(String hostname : hostnames) {
+        for (String hostname : hostnames) {
             defineHostnameBinding()
                     .withThirdPartyDomain(domain)
                     .withSubDomain(hostname)

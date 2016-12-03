@@ -14,6 +14,8 @@ import rx.Observable;
 
 /**
  *  Implementation for {@link WebAppSourceControl} and its create and update interfaces.
+ *  @param <FluentT> the fluent interface of the parent web app
+ *  @param <FluentImplT> the fluent implementation of the parent web app
  */
 @LangDefinition
 class WebAppSourceControlImpl<

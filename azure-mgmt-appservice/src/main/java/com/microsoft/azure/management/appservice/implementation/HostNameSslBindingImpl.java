@@ -33,6 +33,8 @@ import java.security.cert.X509Certificate;
 
 /**
  *  Implementation for {@link HostNameSslBinding} and its create and update interfaces.
+ *  @param <FluentT> the fluent interface of the parent web app
+ *  @param <FluentImplT> the fluent implementation of the parent web app
  */
 @Fluent
 class HostNameSslBindingImpl<

@@ -26,7 +26,7 @@ class AppServiceDomainsImpl
         DomainsInner,
         AppServiceManager>
         implements AppServiceDomains {
-    TopLevelDomainsInner topLevelDomainsInner;
+    private final TopLevelDomainsInner topLevelDomainsInner;
 
     AppServiceDomainsImpl(DomainsInner innerCollection, TopLevelDomainsInner topLevelDomainsInner, AppServiceManager manager) {
         super(innerCollection, manager);

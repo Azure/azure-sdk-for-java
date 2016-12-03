@@ -25,7 +25,7 @@ public interface AppServiceDomains extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsGettingByGroup<AppServiceDomain>,
-        SupportsGettingById<AppServiceDomain>{
+        SupportsGettingById<AppServiceDomain> {
     /**
      * List the agreements for purchasing a domain with a specific top level extension.
      *

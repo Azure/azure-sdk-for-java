@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 
 /**
  *  Implementation for {@link HostNameBinding} and its create and update interfaces.
+ *  @param <FluentT> the fluent interface of the parent web app
+ *  @param <FluentImplT> the fluent implementation of the parent web app
  */
 class HostNameBindingImpl<
             FluentT extends WebAppBase<FluentT>,
@@ -105,7 +107,7 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public CustomHostNameDnsRecordType DnsRecordType() {
+    public CustomHostNameDnsRecordType dnsRecordType() {
         return inner().customHostNameDnsRecordType();
     }
 
@@ -134,7 +136,7 @@ class HostNameBindingImpl<
     @Override
     public HostNameBindingImpl<FluentT, FluentImplT> refresh() {
         if (parent instanceof DeploymentSlot) {
-            this.setInner(client.getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot)parent).parent().name(), parent().name(), name()));
+            this.setInner(client.getHostNameBindingSlot(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), parent().name(), name()));
         } else {
             this.setInner(client.getHostNameBinding(parent().resourceGroupName(), parent().name(), name()));
         }
@@ -207,7 +209,7 @@ class HostNameBindingImpl<
         } else {
             suffix = ".azurewebsites.net";
         }
-        return name + ": " + DnsRecordType() + " " + azureResourceName() + suffix;
+        return name + ": " + dnsRecordType() + " " + azureResourceName() + suffix;
     }
 
     @Override

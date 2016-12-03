@@ -257,6 +257,11 @@ public interface WebAppSourceControl extends
             WithAttach<ParentT> withLocalGitRepository();
         }
 
+        /**
+         * A web app source control definition allowing an external Git or
+         * Mercurial repository to be specified.
+         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
+         */
         interface WithExternalRepository<ParentT> {
             /**
              * Specifies the repository to be a GIT repository.

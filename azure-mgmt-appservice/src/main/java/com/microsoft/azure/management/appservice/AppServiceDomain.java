@@ -106,8 +106,19 @@ public interface AppServiceDomain extends
      */
     DomainPurchaseConsent consent();
 
+    /**
+     * Verifies the ownership of the domain for a certificate order bound to this domain.
+     * @param certificateOrderName the name of the certificate order
+     * @param domainVerificationToken the domain verification token for the certificate order
+     */
     void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken);
 
+    /**
+     * Verifies the ownership of the domain for a certificate order bound to this domain.
+     * @param certificateOrderName the name of the certificate order
+     * @param domainVerificationToken the domain verification token for the certificate order
+     * @return the Observable to the result
+     */
     Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**************************************************************

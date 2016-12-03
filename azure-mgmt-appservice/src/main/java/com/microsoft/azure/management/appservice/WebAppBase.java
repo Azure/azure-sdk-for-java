@@ -22,6 +22,7 @@ import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure Web App or deployment slot.
+ * @param <T> the fluent interface of the web app or deployment slot
  */
 public interface WebAppBase<T extends WebAppBase<T>> extends
         HasName,
@@ -231,16 +232,41 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     Map<String, HostNameBinding> getHostNameBindings();
 
+    /**
+     * @return the app settings defined on the web app
+     */
     Map<String, AppSetting> getAppSettings();
 
+    /**
+     * @return the connection strings defined on the web app
+     */
     Map<String, ConnectionString> getConnectionStrings();
 
+    /**
+     * @return the FTP and Git publishing credentials
+     */
     PublishingCredentials getPublishingCredentials();
 
+    /**
+     * @return the source control information for the web app
+     */
     WebAppSourceControl getSourceControl();
 
+    /**
+     * Verifies the ownership of the domain for a certificate order by verifying a hostname
+     * of the domain is bound to this web app.
+     * @param certificateOrderName the name of the certificate order
+     * @param domainVerificationToken the domain verification token for the certificate order
+     */
     void verifyDomainOwnership(String certificateOrderName, String domainVerificationToken);
 
+    /**
+     * Verifies the ownership of the domain for a certificate order by verifying a hostname
+     * of the domain is bound to this web app.
+     * @param certificateOrderName the name of the certificate order
+     * @param domainVerificationToken the domain verification token for the certificate order
+     * @return the Observable to the result
+     */
     Observable<Void> verifyDomainOwnershipAsync(String certificateOrderName, String domainVerificationToken);
 
     /**
@@ -284,6 +310,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
 
     /**
      * Container interface for all the definitions that need to be implemented.
+     * @param <FluentT> the fluent interface of the web app or deployment slot
      */
     interface Definition<FluentT> extends
             DefinitionStages.WithHostNameSslBinding<FluentT>,
@@ -935,6 +962,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
 
     /**
      * The template for a web app update operation, containing all the settings that can be modified.
+     * @param <FluentT> the fluent interface of the web app or deployment slot
      */
     interface Update<FluentT> extends
             Appliable<FluentT>,
