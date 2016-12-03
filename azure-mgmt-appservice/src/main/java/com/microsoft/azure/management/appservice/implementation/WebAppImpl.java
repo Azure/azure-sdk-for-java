@@ -8,6 +8,8 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.microsoft.azure.management.appservice.AppServicePlan;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
@@ -199,7 +201,9 @@ class WebAppImpl
     @Override
     public WebAppImpl withNewAppServicePlan(String name) {
         appServicePlan = (AppServicePlanImpl) myManager.appServicePlans().define(name);
-        inner().withServerFarmId(name);
+        String id = ResourceUtils.constructResourceId(myManager.subscriptionId(),
+                resourceGroupName(), "Microsoft.Web", "serverFarms", name, "");
+        inner().withServerFarmId(id);
         return this;
     }
 
@@ -226,7 +230,19 @@ class WebAppImpl
 
     @Override
     public WebAppImpl withExistingAppServicePlan(String appServicePlanName) {
-        inner().withServerFarmId(appServicePlanName);
+        String id = ResourceUtils.constructResourceId(myManager.subscriptionId(),
+                resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanName, "");
+        inner().withServerFarmId(id);
+        return this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public WebAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
+        inner().withServerFarmId(appServicePlan.id());
+        if (super.creatableGroup != null) {
+            ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
+        }
         return this;
     }
 }

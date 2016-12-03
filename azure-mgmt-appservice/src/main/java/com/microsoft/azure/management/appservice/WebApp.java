@@ -62,11 +62,18 @@ public interface WebApp extends
             WithRegion withNewAppServicePlan(String name);
 
             /**
-             * Uses an existing app service plan for the web app.
+             * Uses an existing app service plan in the same resource group for the web app.
              * @param appServicePlanName the name of the existing app service plan
              * @return the next stage of the web app definition
              */
             WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(String appServicePlanName);
+
+            /**
+             * Uses an existing app service plan for the web app.
+             * @param appServicePlan the existing app service plan
+             * @return the next stage of the web app definition
+             */
+            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
         /**

@@ -7,9 +7,10 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePlans;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -31,7 +32,7 @@ class AppServicePlansImpl
 
     @Override
     public AppServicePlan getByGroup(String groupName, String name) {
-        return getByGroupAsync(groupName, name).toBlocking().single();
+        return wrapModel(innerCollection.get(groupName, name));
     }
 
     @Override
@@ -69,8 +70,10 @@ class AppServicePlansImpl
     }
 
     @Override
-    public Observable<AppServicePlan> getByGroupAsync(String resourceGroupName, String name) {
-        return innerCollection.getAsync(resourceGroupName, name)
+    public Observable<AppServicePlan> getByIdAsync(String id) {
+        return innerCollection.getAsync(
+                ResourceUtils.groupFromResourceId(id),
+                ResourceUtils.nameFromResourceId(id))
                 .map(new Func1<AppServicePlanInner, AppServicePlan>() {
                     @Override
                     public AppServicePlan call(AppServicePlanInner appServicePlanInner) {

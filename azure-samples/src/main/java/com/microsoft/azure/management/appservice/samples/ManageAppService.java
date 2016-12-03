@@ -8,18 +8,15 @@
 package com.microsoft.azure.management.appservice.samples;
 
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.keyvault.Vault;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
-import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.samples.Utils;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -56,15 +53,17 @@ public final class ManageAppService {
      * @param args the parameters
      */
     public static void main(String[] args) {
+        // Existing resources
+        final String domainName     = "jsdk79877.com";
+        final String certName       = "wild2crt8b42374211";
+        final String domainCertRg   = "rgnemv24d683784f51d";
+
+        // New resources
         final String app1Name       = ResourceNamer.randomResourceName("webapp1", 20);
         final String app2Name       = ResourceNamer.randomResourceName("webapp2", 20);
         final String slot1Name      = ResourceNamer.randomResourceName("slot1", 20);
         final String slot2Name      = ResourceNamer.randomResourceName("slot2", 20);
         final String planName       = ResourceNamer.randomResourceName("jplan", 15);
-        final String domainName     = ResourceNamer.randomResourceName("jsdk", 10) + ".com";
-        final String cert1Name      = ResourceNamer.randomResourceName("std1crt", 20);
-        final String cert2Name      = ResourceNamer.randomResourceName("wild2crt", 20);
-        final String vaultName      = ResourceNamer.randomResourceName("demovault", 20);
         final String rgName         = ResourceNamer.randomResourceName("rgNEMV", 24);
 
         try {
@@ -76,7 +75,7 @@ public final class ManageAppService {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -121,22 +120,7 @@ public final class ManageAppService {
                 System.out.println("Purchasing a domain " + domainName + "...");
 
                 AppServiceDomain domain = azure.appServices().domains()
-                        .define(domainName)
-                        .withExistingResourceGroup(rgName)
-                        .defineRegistrantContact()
-                            .withFirstName("Microsoft")
-                            .withLastName("Azure")
-                            .withEmail("azure@outlook.com")
-                            .withAddressLine1("1 Microsoft Way")
-                            .withCity("Redmond")
-                            .withStateOrProvince("Washington")
-                            .withCountry(CountryISOCode.UNITED_STATES)
-                            .withPostalCode("98052")
-                            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                            .withPhoneNumber("4258828080")
-                            .attach()
-                        .withDomainPrivacyEnabled(true)
-                        .create();
+                        .getByGroup(domainCertRg, domainName);
 
                 System.out.println("Purchased domain " + domain.name());
                 Utils.print(domain);
@@ -144,69 +128,51 @@ public final class ManageAppService {
                 //============================================================
                 // Bind domain to web app 1
 
-                System.out.println("Binding http://app1." + domainName + " to web app " + app1Name + "...");
+                System.out.println("Binding http://" + app1Name + "." + domainName + " to web app " + app1Name + "...");
 
                 app1 = app1.update()
                         .defineHostnameBinding()
                             .withAzureManagedDomain(domain)
-                            .withSubDomain("app1")
+                            .withSubDomain(app1Name)
                             .withDnsRecordType(CustomHostNameDnsRecordType.CNAME)
                             .attach()
                         .apply();
 
-                System.out.println("Finish binding http://app1." + domainName + " to web app " + app1Name + "...");
+                System.out.println("Finish binding http://" + app1Name + "." + domainName + " to web app " + app1Name + "...");
                 Utils.print(app1);
 
-                System.out.println("CURLing http://app1." + domainName);
-                System.out.println(curl("http://app1." + domainName));
+                System.out.println("CURLing http://" + app1Name + "." + domainName);
+                System.out.println(curl("http://" + app1Name + "." + domainName));
 
                 //============================================================
                 // Purchase a wild card SSL certificate (will be canceled for a full refund)
 
-                System.out.println("Purchasing a wildcard SSL certificate " + cert2Name + "...");
-
-                Vault vault = azure.vaults().getByGroup("javatestrg", "javatestautovault");
                 AppServiceCertificateOrder certificateOrder = azure.appServices().certificateOrders()
-                        .define(cert2Name)
-                        .withExistingResourceGroup(rgName)
-                        .withHostName("*." + domainName)
-                        .withWildcardSku()
-                        .withDomainVerification(domain)
-                        .withExistingKeyVault(vault)
-                        .withValidYears(1)
-                        .create();
+                        .getByGroup(domainCertRg, certName);
 
-                System.out.println("Wildcard Certificate " + cert2Name + " is ready to use.");
                 Utils.print(certificateOrder);
 
                 //============================================================
                 // Bind domain to web app 2 and turn on wild card SSL
 
-                System.out.println("Binding @/www/app2." + domainName + " to web app " + app2Name + "...");
+                System.out.println("Binding https://" + app2Name + "." + domainName + " to web app " + app2Name + "...");
                 app2 = app2.update()
-                        .withManagedHostnameBindings(domain, "app2", "@", "www")
+                        .withManagedHostnameBindings(domain, app2Name)
                         .defineSslBinding()
-                            .forHostname(domainName)
-                            .withExistingAppServiceCertificateOrder(certificateOrder)
-                            .withSniBasedSsl()
-                            .attach()
-                        .defineSslBinding()
-                            .forHostname("www." + domainName)
-                            .withExistingAppServiceCertificateOrder(certificateOrder)
-                            .withSniBasedSsl()
-                            .attach()
-                        .defineSslBinding()
-                            .forHostname("app2." + domainName)
+                            .forHostname(app2Name + "." + domainName)
                             .withExistingAppServiceCertificateOrder(certificateOrder)
                             .withSniBasedSsl()
                             .attach()
                         .apply();
 
-                System.out.println("Finished binding @/www/app2." + domainName + " to web app " + app2Name + "...");
+                System.out.println("Finished binding http://" + app2Name + "." + domainName + " to web app " + app2Name + "...");
                 Utils.print(app2);
 
-                System.out.println("CURLing https://www." + domainName);
-                System.out.println(curl("https://www." + domainName));
+                // Make a call to warm up with web app
+                curl("https://" + app2Name + "." + domainName);
+
+                System.out.println("CURLing https://" + app2Name + "." + domainName);
+                System.out.println(curl("https://" + app2Name + "." + domainName));
 
                 //============================================================
                 // Create 2 slots under web app 2
@@ -216,7 +182,7 @@ public final class ManageAppService {
 
                 DeploymentSlot slot1 = app2.deploymentSlots().define(slot1Name)
                         .withBrandNewConfiguration()
-                        .withManagedHostnameBindings(domain, "slot1")
+                        .withManagedHostnameBindings(domain, slot1Name)
                         .withAutoSwapSlotName("production")
                         .create();
 
@@ -228,9 +194,9 @@ public final class ManageAppService {
 
                 DeploymentSlot slot2 = app2.deploymentSlots().define(slot2Name)
                         .withConfigurationFromDeploymentSlot(slot1)
-                        .withManagedHostnameBindings(domain, "slot2")
+                        .withManagedHostnameBindings(domain, slot2Name)
                         .defineSslBinding()
-                            .forHostname("slot2." + domainName)
+                            .forHostname(slot2Name + "." + domainName)
                             .withExistingAppServiceCertificateOrder(certificateOrder)
                             .withSniBasedSsl()
                             .attach()
@@ -249,7 +215,7 @@ public final class ManageAppService {
                 slot1 = slot1.update()
                         .withAutoSwapSlotName(null) // this will not affect slot 2
                         .defineSslBinding()
-                            .forHostname("slot1." + domainName)
+                            .forHostname(slot1Name + "." + domainName)
                             .withExistingAppServiceCertificateOrder(certificateOrder)
                             .withSniBasedSsl()
                             .attach()
@@ -274,8 +240,11 @@ public final class ManageAppService {
                 System.out.println("Finished deploying public GitHub repo to slot " + slot2Name);
                 Utils.print(slot2);
 
-                System.out.println("CURLing https://www." + domainName + ". Should contain auto-swapped slot 2 content.");
-                System.out.println(curl("https://www." + domainName));
+                // Make a call to warm up with web app
+                curl("https://" + app2Name + "." + domainName);
+
+                System.out.println("CURLing https://" + app2Name + "." + domainName + ". Should contain auto-swapped slot 2 content.");
+                System.out.println(curl("https://" + app2Name + "." + domainName));
 
             } catch (Exception e) {
                 System.err.println(e.getMessage());

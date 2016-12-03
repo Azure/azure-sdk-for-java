@@ -431,7 +431,7 @@ abstract class WebAppBaseImpl<
         }
         Observable<String> locationObs = Observable.just(inner().location());
         if (inner().location() == null) {
-            locationObs = myManager.appServicePlans().getByGroupAsync(resourceGroupName(), inner().serverFarmId())
+            locationObs = myManager.appServicePlans().getByIdAsync(inner().serverFarmId())
                     .map(new Func1<AppServicePlan, String>() {
                         @Override
                         public String call(AppServicePlan appServicePlan) {

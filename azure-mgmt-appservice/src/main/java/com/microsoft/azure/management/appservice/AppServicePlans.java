@@ -27,9 +27,8 @@ public interface AppServicePlans extends
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.
      *
-     * @param resourceGroupName the name of the resource group the resource is in
-     * @param name the name of the resource. (Note, this is not the ID)
+     * @param id the app service plan resource ID
      * @return an immutable representation of the resource
      */
-    Observable<AppServicePlan> getByGroupAsync(String resourceGroupName, String name);
+    Observable<AppServicePlan> getByIdAsync(String id);
 }

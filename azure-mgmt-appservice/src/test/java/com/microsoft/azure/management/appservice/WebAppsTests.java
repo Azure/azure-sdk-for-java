@@ -38,7 +38,6 @@ public class WebAppsTests extends AppServiceTestBase {
                 .defineSslBinding()
                     .forHostname("pineapple.graph-webapp-319.com")
                     .withExistingAppServiceCertificateOrder(appServiceManager.certificateOrders().getByGroup(RG_NAME, "graphwildcert"))
-//                    .withNewKeyVault("orangecertvault")
                     .withSniBasedSsl()
                     .attach()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2013)
