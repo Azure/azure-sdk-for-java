@@ -64,6 +64,21 @@ public interface ApplicationGateway extends
     ApplicationGatewaySku sku();
 
     /**
+     * @return number of instances
+     */
+    int instanceCount();
+
+    /**
+     * @return the size of the application gateway
+     */
+    ApplicationGatewaySkuName size();
+
+    /**
+     * @return the tier of the application gateway
+     */
+    ApplicationGatewayTier tier();
+
+    /**
      * @return the operational state of the application gateway
      */
     ApplicationGatewayOperationalState operationalState();
@@ -149,8 +164,6 @@ public interface ApplicationGateway extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithSize,
-        DefinitionStages.WithInstanceCount,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -170,7 +183,7 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithSize> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithRequestRoutingRule> {
         }
 
         /**
@@ -306,6 +319,8 @@ public interface ApplicationGateway extends
         interface WithSize {
             /**
              * Specifies the size of the application gateway to create.
+             * <p>
+             * By default, the smallest size is used.
              * @param size an application gateway SKU name
              * @return the next stage of the definition
              */
@@ -313,7 +328,7 @@ public interface ApplicationGateway extends
               * The API refers to this as the "SKU"/"SkuName", the docs refer to this as the "size" (and docs call Standard vs WAF as the "SKU"),
               * while the portal refers to this as the "SKU size"... The documentation naming sounds the most correct, so following that here.
               */
-            WithInstanceCount withSize(ApplicationGatewaySkuName size);
+            WithCreate withSize(ApplicationGatewaySkuName size);
         }
 
         /**
@@ -322,13 +337,15 @@ public interface ApplicationGateway extends
         interface WithInstanceCount {
             /**
              * Specifies the capacity (number of instances) for the application gateway.
+             * <p>
+             * By default, 1 instance is used.
              * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by the selected applicatiob gateway size
              * @return the next stage of the definition
              */
             /*
              * The API refers to this as "Capacity", but the portal and the docs refer to this as "instance count", so using that naming here
              */
-            WithRequestRoutingRule withInstanceCount(int instanceCount);
+            WithCreate withInstanceCount(int instanceCount);
         }
 
         /**
@@ -371,6 +388,8 @@ public interface ApplicationGateway extends
         interface WithCreate extends
             Creatable<ApplicationGateway>,
             Resource.DefinitionWithTags<WithCreate>,
+            WithSize,
+            WithInstanceCount,
             WithSslCert,
             WithFrontendPort,
             WithListener,

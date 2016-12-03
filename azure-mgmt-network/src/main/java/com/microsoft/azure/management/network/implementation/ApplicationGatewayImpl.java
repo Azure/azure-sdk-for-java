@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
+import com.microsoft.azure.management.network.ApplicationGatewayTier;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -1078,5 +1079,32 @@ class ApplicationGatewayImpl
         }
 
         return Collections.unmodifiableMap(privateFrontends);
+    }
+
+    @Override
+    public int instanceCount() {
+        if (this.sku() != null && this.sku().capacity() != null) {
+            return this.sku().capacity();
+        } else {
+            return 1;
+        }
+    }
+
+    @Override
+    public ApplicationGatewaySkuName size() {
+        if (this.sku() != null && this.sku().name() != null) {
+            return this.sku().name();
+        } else {
+            return ApplicationGatewaySkuName.STANDARD_SMALL;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayTier tier() {
+        if (this.sku() != null && this.sku().tier() != null) {
+            return this.sku().tier();
+        } else {
+            return ApplicationGatewayTier.STANDARD;
+        }
     }
 }

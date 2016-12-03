@@ -23,6 +23,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.network.ApplicationGatewayTier;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.Networks;
@@ -72,8 +73,6 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withNewResourceGroup(GROUP_NAME)
-                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
-                        .withInstanceCount(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")
@@ -96,6 +95,9 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
+            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(appGateway.size()));
+            Assert.assertTrue(appGateway.instanceCount() == 1);
             Assert.assertTrue(appGateway != null);
 
             // Verify frontend ports
@@ -235,8 +237,6 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withExistingResourceGroup(GROUP_NAME)
-                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
-                        .withInstanceCount(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
@@ -281,6 +281,8 @@ public class TestApplicationGateway {
                             .attach()
 
                         .withExistingSubnet(vnet, "subnet1")
+                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withInstanceCount(2)
                         .create();
                     }
                 });
@@ -295,6 +297,9 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
+            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(appGateway.size()));
+            Assert.assertTrue(appGateway.instanceCount() == 2);
             Assert.assertTrue(appGateway != null);
             Assert.assertTrue(!appGateway.isPublic());
             Assert.assertTrue(appGateway.isPrivate());
@@ -478,8 +483,6 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withExistingResourceGroup(GROUP_NAME)
-                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
-                        .withInstanceCount(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
@@ -530,6 +533,8 @@ public class TestApplicationGateway {
                             .attach()
 
                         .withExistingPublicIpAddress(existingPips.get(0))
+                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                        .withInstanceCount(2)
                         .create();
                     }
                 });
@@ -547,6 +552,9 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway != null);
             Assert.assertTrue(appGateway.isPublic());
             Assert.assertTrue(!appGateway.isPrivate());
+            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(appGateway.size()));
+            Assert.assertTrue(appGateway.instanceCount() == 2);
             Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
 
             // Verify frontend ports
@@ -714,8 +722,6 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withNewResourceGroup(GROUP_NAME)
-                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
-                        .withInstanceCount(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")
@@ -741,6 +747,9 @@ public class TestApplicationGateway {
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
             Assert.assertTrue(appGateway != null);
+            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(appGateway.size()));
+            Assert.assertTrue(appGateway.instanceCount() == 1);
 
             // Verify frontend ports
             Assert.assertTrue(appGateway.frontendPorts().size() == 1);
