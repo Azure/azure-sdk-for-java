@@ -78,7 +78,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         if (backendConfig == null) {
             return 0;
         } else {
-            return backendConfig.backendPort();
+            return backendConfig.port();
         }
     }
 
@@ -294,7 +294,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     public ApplicationGatewayRequestRoutingRuleImpl toBackendHttpPort(int portNumber) {
         String name = ResourceNamer.randomResourceName("backcfg", 12);
         this.parent().defineBackendHttpConfiguration(name)
-            .withBackendPort(portNumber)
+            .withPort(portNumber)
             .attach();
         return this.toBackendHttpConfiguration(name);
     }

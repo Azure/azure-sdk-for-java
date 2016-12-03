@@ -121,6 +121,7 @@ public class TestApplicationGateway {
             ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
             Assert.assertTrue(rule != null);
             Assert.assertTrue(rule.frontendPort() == 80);
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.listener() != null);
             Assert.assertTrue(rule.listener().frontend() != null);
             Assert.assertTrue(!rule.listener().frontend().isPublic());
@@ -128,7 +129,6 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().subnetName() != null);
             Assert.assertTrue(rule.listener().networkId() != null);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
 
