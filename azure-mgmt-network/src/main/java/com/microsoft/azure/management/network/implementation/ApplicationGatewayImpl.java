@@ -10,7 +10,7 @@ import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStage
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
@@ -61,7 +61,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayBackend> backends;
     private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
-    private Map<String, ApplicationGatewayFrontendListener> httpListeners;
+    private Map<String, ApplicationGatewayListener> httpListeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
 
@@ -154,7 +154,7 @@ class ApplicationGatewayImpl
         List<ApplicationGatewayHttpListenerInner> inners = this.inner().httpListeners();
         if (inners != null) {
             for (ApplicationGatewayHttpListenerInner inner : inners) {
-                ApplicationGatewayFrontendListenerImpl httpListener = new ApplicationGatewayFrontendListenerImpl(inner, this);
+                ApplicationGatewayListenerImpl httpListener = new ApplicationGatewayListenerImpl(inner, this);
                 this.httpListeners.put(inner.name(), httpListener);
             }
         }
@@ -207,7 +207,7 @@ class ApplicationGatewayImpl
 
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.httpListeners.values()));
-        for (ApplicationGatewayFrontendListener listener : this.httpListeners.values()) {
+        for (ApplicationGatewayListener listener : this.httpListeners.values()) {
             SubResource ref;
 
             // Clear deleted frontend references
@@ -254,7 +254,7 @@ class ApplicationGatewayImpl
             // Clear deleted frontend HTTP listeners
             ref = rule.inner().httpListener();
             if (ref != null
-                    && !this.frontendListeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                    && !this.listeners().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withHttpListener(null);
             }
         }
@@ -490,7 +490,7 @@ class ApplicationGatewayImpl
         }
     }
 
-    ApplicationGatewayImpl withHttpListener(ApplicationGatewayFrontendListenerImpl httpListener) {
+    ApplicationGatewayImpl withHttpListener(ApplicationGatewayListenerImpl httpListener) {
         if (httpListener == null) {
             return null;
         } else {
@@ -602,14 +602,14 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl defineFrontendListener(String name) {
-        ApplicationGatewayFrontendListener httpListener = this.httpListeners.get(name);
+    public ApplicationGatewayListenerImpl defineListener(String name) {
+        ApplicationGatewayListener httpListener = this.httpListeners.get(name);
         if (httpListener == null) {
             ApplicationGatewayHttpListenerInner inner = new ApplicationGatewayHttpListenerInner()
                     .withName(name);
-            return new ApplicationGatewayFrontendListenerImpl(inner, this);
+            return new ApplicationGatewayListenerImpl(inner, this);
         } else {
-            return (ApplicationGatewayFrontendListenerImpl) httpListener;
+            return (ApplicationGatewayListenerImpl) httpListener;
         }
     }
 
@@ -889,9 +889,9 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListener getFrontendListenerByPortNumber(int portNumber) {
-        ApplicationGatewayFrontendListener listener = null;
-        for (ApplicationGatewayFrontendListener l : this.httpListeners.values()) {
+    public ApplicationGatewayListener listenerByPortNumber(int portNumber) {
+        ApplicationGatewayListener listener = null;
+        for (ApplicationGatewayListener l : this.httpListeners.values()) {
             if (l.frontendPortNumber() == portNumber) {
                 listener = l;
                 break;
@@ -926,7 +926,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public Map<String, ApplicationGatewayFrontendListener> frontendListeners() {
+    public Map<String, ApplicationGatewayListener> listeners() {
         return Collections.unmodifiableMap(this.httpListeners);
     }
 

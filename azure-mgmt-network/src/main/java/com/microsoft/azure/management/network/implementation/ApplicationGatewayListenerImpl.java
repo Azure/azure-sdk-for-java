@@ -11,7 +11,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -20,18 +20,18 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 /**
- *  Implementation for ApplicationGatewayFrontendListener.
+ *  Implementation for ApplicationGatewayListener.
  */
 @LangDefinition
-class ApplicationGatewayFrontendListenerImpl
+class ApplicationGatewayListenerImpl
     extends ChildResourceImpl<ApplicationGatewayHttpListenerInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
-        ApplicationGatewayFrontendListener,
-        ApplicationGatewayFrontendListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayFrontendListener.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayFrontendListener.Update {
+        ApplicationGatewayListener,
+        ApplicationGatewayListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+        ApplicationGatewayListener.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayListener.Update {
 
-    ApplicationGatewayFrontendListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
@@ -149,7 +149,7 @@ class ApplicationGatewayFrontendListenerImpl
     // Withers
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withFrontend(String name) {
+    public ApplicationGatewayListenerImpl withFrontend(String name) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.inner().withFrontendIPConfiguration(frontendRef);
@@ -157,7 +157,7 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withFrontendPort(String name) {
+    public ApplicationGatewayListenerImpl withFrontendPort(String name) {
         SubResource portRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
@@ -165,7 +165,7 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withFrontendPort(int portNumber) {
+    public ApplicationGatewayListenerImpl withFrontendPort(int portNumber) {
         // Attempt to find an existing port referencing this port number
         String portName = this.parent().frontendPortNameFromNumber(portNumber);
         if (portName == null) {
@@ -178,7 +178,7 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withSslCertificate(String name) {
+    public ApplicationGatewayListenerImpl withSslCertificate(String name) {
         SubResource certRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
         this.inner().withSslCertificate(certRef);
@@ -188,19 +188,19 @@ class ApplicationGatewayFrontendListenerImpl
     private ApplicationGatewaySslCertificateImpl sslCert = null;
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
         String name = ResourceNamer.randomResourceName("cert", 10);
         return withSslCertificateFromPfxFile(pfxFile, name);
     }
 
-    private ApplicationGatewayFrontendListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
         this.sslCert = this.parent().defineSslCertificate(name)
             .withPfxFromFile(pfxFile);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withSslCertificatePassword(String password) {
+    public ApplicationGatewayListenerImpl withSslCertificatePassword(String password) {
         if (this.sslCert != null) {
             this.sslCert.withPfxPassword(password).attach();
             this.withSslCertificate(sslCert.name());
@@ -212,31 +212,31 @@ class ApplicationGatewayFrontendListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withHttp() {
+    public ApplicationGatewayListenerImpl withHttp() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTP);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withHttps() {
+    public ApplicationGatewayListenerImpl withHttps() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withHostName(String hostname) {
+    public ApplicationGatewayListenerImpl withHostName(String hostname) {
         this.inner().withHostName(hostname);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withServerNameIndication() {
+    public ApplicationGatewayListenerImpl withServerNameIndication() {
         this.inner().withRequireServerNameIndication(true);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendListenerImpl withoutServerNameIndication() {
+    public ApplicationGatewayListenerImpl withoutServerNameIndication() {
         this.inner().withRequireServerNameIndication(false);
         return this;
     }

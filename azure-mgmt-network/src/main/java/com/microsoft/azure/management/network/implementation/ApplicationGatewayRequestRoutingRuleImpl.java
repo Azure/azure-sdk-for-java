@@ -17,7 +17,7 @@ import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStage
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendListener;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule.DefinitionStages.WithAttach;
@@ -84,7 +84,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public boolean requiresServerNameIndication() {
-        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        final ApplicationGatewayListener listener = this.listener();
         if (listener == null) {
             return false;
         } else {
@@ -94,7 +94,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public String hostName() {
-        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        final ApplicationGatewayListener listener = this.listener();
         if (listener == null) {
             return null;
         } else {
@@ -104,7 +104,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public int frontendPort() {
-        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        final ApplicationGatewayListener listener = this.listener();
         if (listener == null) {
             return 0;
         } else {
@@ -114,25 +114,25 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewaySslCertificate sslCertificate() {
-        if (this.frontendListener() == null) {
+        if (this.listener() == null) {
             return null;
         } else {
-            return this.frontendListener().sslCertificate();
+            return this.listener().sslCertificate();
         }
     }
 
     @Override
     public ApplicationGatewayProtocol protocol() {
-        if (this.frontendListener() == null) {
+        if (this.listener() == null) {
             return null;
         } else {
-            return this.frontendListener().protocol();
+            return this.listener().protocol();
         }
     }
 
     @Override
     public String publicIpAddressId() {
-        final ApplicationGatewayFrontendListener listener = this.frontendListener();
+        final ApplicationGatewayListener listener = this.listener();
         if (listener == null) {
             return null;
         } else {
@@ -183,11 +183,11 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendListener frontendListener() {
+    public ApplicationGatewayListener listener() {
         SubResource listenerRef = this.inner().httpListener();
         if (listenerRef != null) {
             String listenerName = ResourceUtils.nameFromResourceId(listenerRef.id());
-            return this.parent().frontendListeners().get(listenerName);
+            return this.parent().listeners().get(listenerName);
         } else {
             return null;
         }
@@ -202,7 +202,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl fromFrontendListener(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl fromListener(String name) {
         SubResource listenerRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/HTTPListeners/" + name);
         this.inner().withHttpListener(listenerRef);
@@ -233,11 +233,11 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     private ApplicationGatewayRequestRoutingRuleImpl fromFrontendPort(int portNumber, ApplicationGatewayProtocol protocol, String name) {
         // Verify no conflicting listener exists
-        ApplicationGatewayFrontendListenerImpl listenerByPort =
-                (ApplicationGatewayFrontendListenerImpl) this.parent().getFrontendListenerByPortNumber(portNumber);
-        ApplicationGatewayFrontendListenerImpl listenerByName = null;
+        ApplicationGatewayListenerImpl listenerByPort =
+                (ApplicationGatewayListenerImpl) this.parent().listenerByPortNumber(portNumber);
+        ApplicationGatewayListenerImpl listenerByName = null;
         if (name != null) {
-            listenerByName = (ApplicationGatewayFrontendListenerImpl) this.parent().frontendListeners().get(name);
+            listenerByName = (ApplicationGatewayListenerImpl) this.parent().listeners().get(name);
         }
 
         Boolean needToCreate = this.parent().needToCreate(listenerByName, listenerByPort, name);
@@ -247,7 +247,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
                 name = ResourceNamer.randomResourceName("listener", 13);
             }
 
-            listenerByPort = this.parent().defineFrontendListener(name)
+            listenerByPort = this.parent().defineListener(name)
                     .withFrontendPort(portNumber);
 
             // Determine protocol
@@ -267,7 +267,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.associateWithPublicFrontend = null;
 
             listenerByPort.attach();
-            return this.fromFrontendListener(listenerByPort.name());
+            return this.fromListener(listenerByPort.name());
         } else {
             // If matching listener already exists then fail
             return null;
@@ -315,8 +315,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withSslCertificate(String name) {
-        // TODO do this with this.parent().updateFrontendListener(...).withSslCertificate...
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withSslCertificate...
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withSslCertificate(name);
         }
@@ -325,8 +325,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile) {
-        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withSslCertificate...
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withSslCertificateFromPfxFile(pfxFile);
         }
@@ -335,8 +335,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withSslCertificatePassword(String password) {
-        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withSslCertificate...
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withSslCertificatePassword(password);
         }
@@ -345,8 +345,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withHostName(String hostName) {
-        // TODO do this with this.parent().frontendListener(...).update().withHostName()
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withHostName()
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withHostName(hostName);
         }
@@ -355,8 +355,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withServerNameIndication() {
-        // TODO do this with this.parent().frontendListener(...).update().withHostName()
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withHostName()
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withServerNameIndication();
         }
@@ -365,8 +365,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl withoutServerNameIndication() {
-        // TODO do this with this.parent().frontendListener(...).update().withHostName()
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
+        // TODO do this with this.parent().updateListener(...).withHostName()
+        ApplicationGatewayListenerImpl listener = (ApplicationGatewayListenerImpl) this.listener();
         if (listener != null) {
             listener.withoutServerNameIndication();
         }

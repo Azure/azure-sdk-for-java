@@ -57,7 +57,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
     /**
      * @return the associated frontend HTTP listener
      */
-    ApplicationGatewayFrontendListener frontendListener();
+    ApplicationGatewayListener listener();
 
     /**
      * @return the addresses assigned to the associated backend
@@ -74,7 +74,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The first stage of an application gateway request routing rule definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithFrontendListenerOrFrontend<ParentT> {
+        interface Blank<ParentT> extends WithListenerOrFrontend<ParentT> {
         }
 
         /** The final stage of an application gateway request routing rule definition.
@@ -94,7 +94,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithFrontendListener<ParentT> {
+        interface WithListener<ParentT> {
             /**
              * Associates the request routing rule with a frontend listener.
              * <p>
@@ -103,7 +103,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendListener(String name);
+            WithBackendHttpConfiguration<ParentT> fromListener(String name);
         }
 
         /**
@@ -111,8 +111,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * with the request routing rule, or create a new one implicitly by specifying the frontend to listen to.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithFrontendListenerOrFrontend<ParentT> extends
-            WithFrontendListener<ParentT>,
+        interface WithListenerOrFrontend<ParentT> extends
+            WithListener<ParentT>,
             WithFrontend<ParentT> {
         }
 
@@ -314,9 +314,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
         DefinitionStages.WithFrontend<ParentT>,
-        DefinitionStages.WithFrontendListener<ParentT>,
+        DefinitionStages.WithListener<ParentT>,
         DefinitionStages.WithFrontendPort<ParentT>,
-        DefinitionStages.WithFrontendListenerOrFrontend<ParentT>,
+        DefinitionStages.WithListenerOrFrontend<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
         DefinitionStages.WithBackendAddress<ParentT>,
         DefinitionStages.WithBackendOrAddress<ParentT>,

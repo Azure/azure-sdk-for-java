@@ -121,7 +121,7 @@ public interface ApplicationGateway extends
     /**
      * @return Frontend listeners, indexed by name
      */
-    Map<String, ApplicationGatewayFrontendListener> frontendListeners();
+    Map<String, ApplicationGatewayListener> listeners();
 
     /**
      * @return request routing rules, indexed by name
@@ -140,7 +140,7 @@ public interface ApplicationGateway extends
      * @param portNumber a used port number
      * @return a frontend listener, or null if none found
      */
-    ApplicationGatewayFrontendListener getFrontendListenerByPortNumber(int portNumber);
+    ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
     /**
      * The entirety of the application gateway definition.
@@ -221,7 +221,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the listener
              * @return the first stage of the listener definition
              */
-            ApplicationGatewayFrontendListener.DefinitionStages.Blank<WithCreate> defineFrontendListener(String name);
+            ApplicationGatewayListener.DefinitionStages.Blank<WithCreate> defineListener(String name);
         }
 
         /**
@@ -570,7 +570,7 @@ public interface ApplicationGateway extends
              * @param name a unique name for the listener
              * @return the first stage of the listener definition
              */
-            ApplicationGatewayFrontendListener.UpdateDefinitionStages.Blank<Update> defineFrontendListener(String name);
+            ApplicationGatewayListener.UpdateDefinitionStages.Blank<Update> defineListener(String name);
 
             /**
              * Removes a frontend listener from the application gateway.
