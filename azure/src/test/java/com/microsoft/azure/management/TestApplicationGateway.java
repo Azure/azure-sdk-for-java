@@ -281,7 +281,7 @@ public class TestApplicationGateway {
                             .attach()
 
                         .withExistingSubnet(vnet, "subnet1")
-                        .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                         .withInstanceCount(2)
                         .create();
                     }
