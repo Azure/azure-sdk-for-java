@@ -299,7 +299,7 @@ public interface ApplicationGateway extends
          */
         interface WithRequestRoutingRule {
             /**
-             * Begins the definition of a new application gateway request routing rule to be attached to the gateway.
+             * Begins the definition of a request routing rule for this application gateway.
              * @param name a unique name for the request routing rule
              * @return the first stage of the request routing rule
              */
@@ -318,7 +318,7 @@ public interface ApplicationGateway extends
          */
         interface WithSize {
             /**
-             * Specifies the size of the application gateway to create.
+             * Specifies the size of the application gateway to create within the context of the selected tier.
              * <p>
              * By default, the smallest size is used.
              * @param size an application gateway SKU name
@@ -354,18 +354,22 @@ public interface ApplicationGateway extends
          */
         interface WithExistingSubnet extends HasSubnet.DefinitionStages.WithSubnet<WithCreate> {
             /**
-             * Specifies the default existing subnet the application gateway gets its private IP address from.
+             * Specifies the subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default", if it does not already exist.
+             * This will create a new IP configuration, if it does not already exist.
+             * <p>
+             * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
             WithCreate withExistingSubnet(Subnet subnet);
 
             /**
-             * Specifies the default subnet the application gateway gets its private IP address from.
+             * Specifies the subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default", if it does not already exist.
+             * This will create a new IP configuration, if it does not already exist.
+             * <p>
+             * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
              * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the definition
@@ -435,18 +439,22 @@ public interface ApplicationGateway extends
          */
         interface WithExistingSubnet extends HasSubnet.UpdateStages.WithSubnet<Update> {
             /**
-             * Specifies the default existing subnet the application gateway gets its private IP address from.
+             * Specifies the subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default", if it does not already exist.
+             * This will create a new IP configuration, if it does not already exist.
+             * <p>
+             * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
              * @param subnet an existing subnet
              * @return the next stage of the update
              */
             Update withExistingSubnet(Subnet subnet);
 
             /**
-             * Specifies the default subnet the application gateway gets its private IP address from.
+             * Specifies the subnet the application gateway gets its private IP address from.
              * <p>
-             * This will create an IP configuration named "default", if it does not already exist.
+             * This will create a new IP configuration, if it does not already exist.
+             * <p>
+             * Private (internal) frontends, if any have been enabled, will be configured to use this subnet as well.
              * @param network the virtual network the subnet is part of
              * @param subnetName the name of a subnet within the selected network
              * @return the next stage of the update
@@ -570,7 +578,7 @@ public interface ApplicationGateway extends
          */
         interface WithSize {
             /**
-             * Specifies the size of the application gateway to create.
+             * Specifies the size of the application gateway to use within the context of the selected tier.
              * @param size an application gateway size name
              * @return the next stage of the update
              */
@@ -665,7 +673,7 @@ public interface ApplicationGateway extends
          */
         interface WithRequestRoutingRule {
             /**
-             * Begins the definition of a new application gateway request routing rule to be attached to the gateway.
+             * Begins the definition of a request routing rule for this application gateway.
              * @param name a unique name for the request routing rule
              * @return the first stage of the request routing rule
              */

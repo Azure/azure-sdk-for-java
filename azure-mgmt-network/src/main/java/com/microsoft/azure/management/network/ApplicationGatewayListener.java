@@ -79,7 +79,7 @@ public interface ApplicationGatewayListener extends
          */
         interface WithFrontend<ParentT> {
             /**
-             * Associates the HTTP listener with the application gateway's private (internal) frontend.
+             * Associates the listener with the application gateway's private (internal) frontend.
              * <p>
              * If the private frontend does not exist yet, it will be created under an auto-generated name
              * and associated with the application gateway's subnet.
@@ -88,7 +88,7 @@ public interface ApplicationGatewayListener extends
             WithFrontendPort<ParentT> withPrivateFrontend();
 
             /**
-             * Associates the HTTP listener with the application gateway's public (Internet-facing) frontend.
+             * Associates the listener with the application gateway's public (Internet-facing) frontend.
              * <p>
              * If the public frontend does not exist yet, it will be created under an auto-generated name
              * and associated with the application gateway's public IP address.

@@ -101,8 +101,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a frontend listener.
              * <p>
-             * If the listener with the specified name does not yeyt exist, it must be defined separately in a later part of the application gateway definition.
-             * This only adds a reference to the listener by its name.
+             * If the listener with the specified name does not yet exist, it must be defined separately in the optional part
+             * of the application gateway definition, using {@code defineListener(...)}. This only adds a reference to the listener by its name.
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
@@ -125,24 +125,26 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithFrontend<ParentT> {
             /**
-             * Uses the application gateway's public (Internet-facing) frontend as the frontend for the rule to apply to.
+             * Enables the rule to apply to the application gateway's public (Internet-facing) frontend.
              * <p>
-             * If the public frontend does not yet exist, it will be created under an auto-generated name.
+             * If the public frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
-             * If the application gateway does not have a public IP address specified for its public frontend, one will be created automatically.
-             * A specific public IP address can be specified in the application gateway definition's optional settings.
+             * If the application gateway does not have a public IP address specified for its public frontend, one will be created
+             * automatically, unless a specific public IP address is specified in the application gateway definition's optional settings using
+             * {@code withExistingPublicIpAddress(...)} or {@code withNewPublicIpAddress(...)}.
              * @return the next stage of the definition
              */
             @Method
             WithFrontendPort<ParentT> fromPublicFrontend();
 
             /**
-             * Uses the application gateway's private (internal) frontend as the frontend for the rule to apply to.
+             * Enables the rule to apply to the application gateway's private (internal) frontend.
              * <p>
-             * If the private frontend does not yet exist, it will be created under an auto-generated name.
+             * If the private frontend IP configuration does not yet exist, it will be created under an auto-generated name.
              * <p>
-             * If the application gateway does not have a subnet specified for its private frontend, one will be created automatically.
-             * A specific subnet can be specified in the application gateway definition's optional settings.
+             * If the application gateway does not have a subnet specified for its private frontend, one will be created automatically,
+             * unless a specific subnet is specified in the application gateway definition's optional settings using
+             * {@code withExistingSubnet(...)}.
              * @return the next stage of the definition
              */
             @Method
@@ -155,16 +157,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithFrontendPort<ParentT> {
             /**
-             * Creates a new frontend and a frontend listener on this application gateway for the specified port number and the HTTP protocol
-             * and associates it with this rule.
+             * Associates a new listener for the specified port number and the HTTP protocol with this rule.
              * @param portNumber the port number to listen to
              * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
             WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
 
             /**
-             * Creates a new frontend and a frontend listener on this application gateway for the specified port number and the HTTPS protocol
-             * and associates it with this rule.
+             * Associates a new listener for the specified port number and the HTTPS protocol with this rule.
              * @param portNumber the port number to listen to
              * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
@@ -201,8 +201,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a backend on this application gateway.
              * <p>
-             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
-             * The request routing rule references it only by name.
+             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition,
+             * using {@code defineBackend(...)}. The request routing rule references it only by name.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
@@ -221,7 +221,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * <p>
              * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
              * <p>
-             * This call can be used in a sequence to add multiple FQDNs.
+             * This call can be used in a sequence to add multiple IP addresses.
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
@@ -274,8 +274,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the specified backend HTTP settings configuration with this request routing rule.
              * <p>
-             * If the backend configuration does not exist yet, it must be defined in the optional part of the application gateway definition.
-             * The request routing rule references it only by name.
+             * If the backend configuration does not exist yet, it must be defined in the optional part of the application gateway
+             * definition, using {@code defineBackendHttpConfiguration(...)}. The request routing rule references it only by name.
              * @param name the name of a backend HTTP settings configuration
              * @return the next stage of the definition
              */
@@ -285,7 +285,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Creates a backend HTTP settings configuration for the specified backend port and the HTTP protocol, and associates it with this
              * request routing rule.
              * <p>
-             * An auto-generated name will be uses for this newly created configuration.
+             * An auto-generated name will be used for this newly created configuration.
              * @param portNumber the port number for a new backend HTTP settings configuration
              * @return the next stage of the definition
              */

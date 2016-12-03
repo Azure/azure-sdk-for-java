@@ -47,6 +47,8 @@ public interface ApplicationGatewayBackend extends
         interface WithAddress<ParentT> {
             /**
              * Adds the specified existing IP address to the backend.
+             * <p>
+             * This call can be made in a sequence to add multiple IP addresses.
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
@@ -54,6 +56,8 @@ public interface ApplicationGatewayBackend extends
 
             /**
              * Adds the specified existing fully qualified domain name (FQDN) to the backend.
+             * <p>
+             * This call can be made in a sequence to add multiple FQDNs.
              * @param fqdn a fully qualified domain name (FQDN)
              * @return the next stage of the definition
              */
