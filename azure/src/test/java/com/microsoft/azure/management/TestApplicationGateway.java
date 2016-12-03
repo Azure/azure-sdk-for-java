@@ -125,6 +125,8 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().frontend() != null);
             Assert.assertTrue(!rule.listener().frontend().isPublic());
             Assert.assertTrue(rule.listener().frontend().isPrivate());
+            Assert.assertTrue(rule.listener().subnetName() != null);
+            Assert.assertTrue(rule.listener().networkId() != null);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(rule.protocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
@@ -362,6 +364,8 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule != null);
             Assert.assertTrue(rule.listener() != null);
             Assert.assertTrue(rule.listener().name().equalsIgnoreCase("listener1"));
+            Assert.assertTrue(rule.listener().subnetName() != null);
+            Assert.assertTrue(rule.listener().networkId() != null);
             Assert.assertTrue(rule.backendHttpConfiguration() != null);
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
             Assert.assertTrue(rule.backend() != null);

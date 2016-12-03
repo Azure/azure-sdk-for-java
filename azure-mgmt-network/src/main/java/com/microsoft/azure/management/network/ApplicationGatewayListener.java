@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -29,7 +30,8 @@ public interface ApplicationGatewayListener extends
     HasPublicIpAddress,
     HasProtocol<ApplicationGatewayProtocol>,
     HasHostName,
-    HasServerNameIndication {
+    HasServerNameIndication,
+    HasSubnet {
 
     /**
      * @return the frontend IP configuration this listener is associated with.

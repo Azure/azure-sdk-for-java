@@ -36,6 +36,25 @@ class ApplicationGatewayListenerImpl
     }
 
     // Getters
+    @Override
+    public String networkId() {
+        ApplicationGatewayFrontend frontend = this.frontend();
+        if (frontend != null) {
+            return frontend.networkId();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String subnetName() {
+        ApplicationGatewayFrontend frontend = this.frontend();
+        if (frontend != null) {
+            return frontend.subnetName();
+        } else {
+            return null;
+        }
+    }
 
     @Override
     public boolean requiresServerNameIndication() {
