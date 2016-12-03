@@ -149,8 +149,8 @@ public interface ApplicationGateway extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
-        DefinitionStages.WithSku,
-        DefinitionStages.WithCapacity,
+        DefinitionStages.WithSize,
+        DefinitionStages.WithInstanceCount,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -170,7 +170,7 @@ public interface ApplicationGateway extends
          * The stage of an application gateway definition allowing to specify the resource group.
          */
         interface WithGroup
-            extends GroupableResource.DefinitionStages.WithGroup<WithSku> {
+            extends GroupableResource.DefinitionStages.WithGroup<WithSize> {
         }
 
         /**
@@ -301,27 +301,34 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition allowing to specify the SKU.
+         * The stage of an application gateway update allowing to specify the size.
          */
-        interface WithSku {
+        interface WithSize {
             /**
-             * Specifies the SKU of the application gateway to create.
-             * @param skuName an application gateway SKU name
+             * Specifies the size of the application gateway to create.
+             * @param size an application gateway SKU name
              * @return the next stage of the definition
              */
-            WithCapacity withSku(ApplicationGatewaySkuName skuName);
+             /*
+              * The API refers to this as the "SKU"/"SkuName", the docs refer to this as the "size" (and docs call Standard vs WAF as the "SKU"),
+              * while the portal refers to this as the "SKU size"... The documentation naming sounds the most correct, so following that here.
+              */
+            WithInstanceCount withSize(ApplicationGatewaySkuName size);
         }
 
         /**
          * The stage of an application gateway definition allowing to specify the capacity (number of instances) of the application gateway.
          */
-        interface WithCapacity {
+        interface WithInstanceCount {
             /**
-             * Specifies the capacity (number of instances) for the applicatioon gateway.
-             * @param capacity the capacity as a number between 1 and 10
+             * Specifies the capacity (number of instances) for the application gateway.
+             * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by the selected applicatiob gateway size
              * @return the next stage of the definition
              */
-            WithRequestRoutingRule withCapacity(int capacity);
+            /*
+             * The API refers to this as "Capacity", but the portal and the docs refer to this as "instance count", so using that naming here
+             */
+            WithRequestRoutingRule withInstanceCount(int instanceCount);
         }
 
         /**
@@ -540,28 +547,28 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway update allowing to specify the SKU.
+         * The stage of an application gateway update allowing to specify the size.
          */
-        interface WithSku {
+        interface WithSize {
             /**
-             * Specifies the SKU of the application gateway to create.
-             * @param skuName an application gateway SKU name
+             * Specifies the size of the application gateway to create.
+             * @param size an application gateway size name
              * @return the next stage of the update
              */
-            Update withSku(ApplicationGatewaySkuName skuName);
+            Update withSize(ApplicationGatewaySkuName size);
         }
 
         /**
          * The stage of an application gateway update allowing to specify the capacity (number of instances) of
          * the application gateway.
          */
-        interface WithCapacity {
+        interface WithInstanceCount {
             /**
              * Specifies the capacity (number of instances) for the application gateway.
-             * @param capacity the capacity as a number between 1 and 10
+             * @param instanceCount the capacity as a number between 1 and 10 but also based on the limits imposed by the selected applicatiob gateway size
              * @return the next stage of the update
              */
-            Update withCapacity(int capacity);
+            Update withInstanceCount(int instanceCount);
         }
 
         /**
@@ -663,8 +670,8 @@ public interface ApplicationGateway extends
     interface Update extends
         Appliable<ApplicationGateway>,
         Resource.UpdateWithTags<Update>,
-        UpdateStages.WithSku,
-        UpdateStages.WithCapacity,
+        UpdateStages.WithSize,
+        UpdateStages.WithInstanceCount,
         UpdateStages.WithBackend,
         UpdateStages.WithBackendHttpConfig,
         UpdateStages.WithIpConfig,

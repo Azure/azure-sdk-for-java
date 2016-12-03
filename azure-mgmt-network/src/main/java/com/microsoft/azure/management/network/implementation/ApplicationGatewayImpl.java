@@ -451,9 +451,9 @@ class ApplicationGatewayImpl
      // Withers (fluent)
 
     @Override
-    public ApplicationGatewayImpl withCapacity(int capacity) {
+    public ApplicationGatewayImpl withInstanceCount(int capacity) {
         if (this.inner().sku() == null) {
-            this.withSku(ApplicationGatewaySkuName.STANDARD_SMALL);
+            this.withSize(ApplicationGatewaySkuName.STANDARD_SMALL);
         }
 
         this.inner().sku().withCapacity(capacity);
@@ -527,7 +527,7 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withSku(ApplicationGatewaySkuName skuName) {
+    public ApplicationGatewayImpl withSize(ApplicationGatewaySkuName skuName) {
         ApplicationGatewaySku sku = new ApplicationGatewaySku()
                 .withName(skuName)
                 .withCapacity(1);
