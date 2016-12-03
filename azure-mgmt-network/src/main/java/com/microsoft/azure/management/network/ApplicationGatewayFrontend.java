@@ -27,7 +27,7 @@ public interface ApplicationGatewayFrontend extends
     HasPublicIpAddress {
 
     /**
-     * @return true if the frontend is accessible via a public IP address
+     * @return true if the frontend is accessible via a public IP address, else false
      */
     boolean isPublic();
 

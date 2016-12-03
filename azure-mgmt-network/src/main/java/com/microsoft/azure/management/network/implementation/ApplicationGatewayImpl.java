@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithCreate;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithPrivateFrontendOptional;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -68,9 +67,10 @@ class ApplicationGatewayImpl
 
     private static final String DEFAULT = "default";
     private final ApplicationGatewaysInner innerCollection;
+    private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
+    private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
     private Map<String, String> creatablePipsByFrontend = new HashMap<>();
-    private boolean enablePrivateFrontend = false;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -101,6 +101,8 @@ class ApplicationGatewayImpl
         initializeHttpListenersFromInner();
         initializeRequestRoutingRulesFromInner();
         initializeSslCertificatesFromInner();
+        this.defaultPrivateFrontend = null;
+        this.defaultPublicFrontend = null;
     }
 
     private void initializeSslCertificatesFromInner() {
@@ -195,8 +197,6 @@ class ApplicationGatewayImpl
         ensureDefaultIpConfig();
         this.inner().withGatewayIPConfigurations(innersFromWrappers(this.ipConfigs.values()));
 
-        // Reset and update frontends
-        ensureDefaultFrontend();
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
 
         // Reset and update backends
@@ -270,19 +270,35 @@ class ApplicationGatewayImpl
     private ApplicationGatewayIpConfigurationImpl ensureDefaultIpConfig() {
         ApplicationGatewayIpConfigurationImpl ipConfig = (ApplicationGatewayIpConfigurationImpl) defaultIpConfiguration();
         if (ipConfig == null) {
-            ipConfig = this.defineIpConfiguration(DEFAULT);
+            String name = ResourceNamer.randomResourceName("ipcfg", 11);
+            ipConfig = this.defineIpConfiguration(name);
             ipConfig.attach();
         }
         return ipConfig;
     }
 
-    private ApplicationGatewayFrontendImpl ensureDefaultFrontend() {
-        ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) defaultFrontend();
+    protected ApplicationGatewayFrontendImpl ensureDefaultPrivateFrontend() {
+        ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
         if (frontend != null) {
             return frontend;
         } else {
-            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(DEFAULT);
+            String name = ResourceNamer.randomResourceName("frontend", 14);
+            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(name);
             frontend.attach();
+            this.defaultPrivateFrontend = frontend;
+            return frontend;
+        }
+    }
+
+    protected ApplicationGatewayFrontendImpl ensureDefaultPublicFrontend() {
+        ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) defaultPublicFrontend();
+        if (frontend != null) {
+            return frontend;
+        } else {
+            String name = ResourceNamer.randomResourceName("frontend", 14);
+            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(name);
+            frontend.attach();
+            this.defaultPublicFrontend = frontend;
             return frontend;
         }
     }
@@ -302,11 +318,22 @@ class ApplicationGatewayImpl
         return this.creatableNetwork;
     }
 
+    private Creatable<PublicIpAddress> creatablePip = null;
+    private Creatable<PublicIpAddress> ensureDefaultPipDefinition() {
+        if (this.creatablePip == null) {
+            final String pipName = ResourceNamer.randomResourceName("pip", 9);
+            this.creatablePip = this.manager().publicIpAddresses().define(pipName)
+                    .withRegion(this.regionName())
+                    .withExistingResourceGroup(this.resourceGroupName());
+        }
+
+        return this.creatablePip;
+    }
+
     private static ApplicationGatewayFrontendImpl useSubnetFromIpConfigForFrontend(
-            boolean enablePrivateFrontend,
             ApplicationGatewayIpConfigurationImpl ipConfig,
             ApplicationGatewayFrontendImpl frontend) {
-        if (enablePrivateFrontend) {
+        if (frontend != null) {
             frontend.withExistingSubnet(ipConfig.networkId(), ipConfig.subnetName());
             if (frontend.privateIpAddress() == null) {
                 frontend.withPrivateIpAddressDynamic();
@@ -319,30 +346,67 @@ class ApplicationGatewayImpl
 
     @Override
     protected Observable<ApplicationGatewayInner> createInner() {
-        // Ensure default IP config exists
-        final ApplicationGatewayIpConfigurationImpl defaultIpConfig = ensureDefaultIpConfig();
-        final ApplicationGatewayFrontendImpl defaultFrontend = ensureDefaultFrontend();
-        final boolean enablePrivateFrontend = this.enablePrivateFrontend;
-        this.enablePrivateFrontend = false;
-
-        // Ensure default IP config has a subnet associated with it
-        if (defaultIpConfig.subnetName() != null) {
-            useSubnetFromIpConfigForFrontend(enablePrivateFrontend, defaultIpConfig, defaultFrontend);
-            return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner());
-        } else {
-            // If no subnet, then create a default virtual network with a subnet for the app gateway
-            final Creatable<Network> networkDefinition = ensureDefaultNetworkDefinition();
-
-            return networkDefinition.createAsync()
-                    .flatMap(new Func1<Network, Observable<ApplicationGatewayInner>>() {
+        // Determine if a default public frontend PIP should be created
+        final ApplicationGatewayFrontendImpl defaultPublicFrontend = (ApplicationGatewayFrontendImpl) defaultPublicFrontend();
+        final Observable<Resource> pipObservable;
+        if (defaultPublicFrontend != null && defaultPublicFrontend.publicIpAddressId() == null) {
+            // If public frontend requested but no PIP specified, then create a default PIP
+            pipObservable = ensureDefaultPipDefinition()
+                    .createAsync().map(new Func1<PublicIpAddress, Resource>() {
                         @Override
-                        public Observable<ApplicationGatewayInner> call(Network n) {
-                            defaultIpConfig.withContainingSubnet(n, DEFAULT);
-                            useSubnetFromIpConfigForFrontend(enablePrivateFrontend, defaultIpConfig, defaultFrontend);
-                            return innerCollection.createOrUpdateAsync(n.resourceGroupName(), name(), inner());
+                        public Resource call(PublicIpAddress publicIpAddress) {
+                            defaultPublicFrontend.withExistingPublicIpAddress(publicIpAddress);
+                            return publicIpAddress;
                         }
                     });
+        } else {
+            // If no public frontend requested, skip creating the PIP
+            pipObservable = Observable.empty();
         }
+
+        // Determine if default VNet should be created
+        final ApplicationGatewayIpConfigurationImpl defaultIpConfig = ensureDefaultIpConfig();
+        final ApplicationGatewayFrontendImpl defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
+        final Observable<Resource> networkObservable;
+        if (defaultIpConfig.subnetName() != null) {
+            // If default IP config already has a subnet assigned to it...
+            if (defaultPrivateFrontend != null) {
+                // ...and a private frontend is requested, then use the same vnet for the private frontend
+                useSubnetFromIpConfigForFrontend(defaultIpConfig, defaultPrivateFrontend);
+            }
+            // ...and no need to create a default VNet
+            networkObservable = Observable.empty(); // ...and don't create another VNet
+        } else {
+            // But if default IP config does not have a subnet specified, then create a default VNet
+            networkObservable = ensureDefaultNetworkDefinition()
+                .createAsync().map(new Func1<Network, Resource>() {
+                    @Override
+                    public Resource call(Network network) {
+                        //... and assign the created VNet to the default IP config
+                        defaultIpConfig.withContainingSubnet(network, DEFAULT);
+                        if (defaultPrivateFrontend != null) {
+                            // If a private frontend is also requested, then use the same VNet for the private frontend as for the IP config
+                            /* TODO: Not sure if the assumption of the same subnet for the frontend and the IP config will hold in
+                             * the future, but the existing ARM template for App Gateway for some reason uses the same subnet for the
+                             * IP config and the private frontend. Also, trying to use different subnets results in server error today saying they
+                             * have to be the same. This may need to be revisited in the future however, as this is somewhat inconsistent
+                             * with what the documentation says.
+                             */
+                            useSubnetFromIpConfigForFrontend(defaultIpConfig, defaultPrivateFrontend);
+                        }
+                        return network;
+                    }
+                });
+        }
+
+        return Observable.merge(networkObservable, pipObservable)
+                .defaultIfEmpty(null)
+                .last().flatMap(new Func1<Resource, Observable<ApplicationGatewayInner>>() {
+                    @Override
+                    public Observable<ApplicationGatewayInner> call(Resource resource) {
+                        return innerCollection.createOrUpdateAsync(resourceGroupName(), name(), inner());
+                    }
+                });
     }
 
     /**
@@ -389,13 +453,13 @@ class ApplicationGatewayImpl
 
     @Override
     public WithCreate withPrivateIpAddressDynamic() {
-        ensureDefaultFrontend().withPrivateIpAddressDynamic();
+        ensureDefaultPrivateFrontend().withPrivateIpAddressDynamic();
         return this;
     }
 
     @Override
     public WithCreate withPrivateIpAddressStatic(String ipAddress) {
-        ensureDefaultFrontend().withPrivateIpAddressStatic(ipAddress);
+        ensureDefaultPrivateFrontend().withPrivateIpAddressStatic(ipAddress);
         return this;
     }
 
@@ -464,25 +528,19 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(Subnet subnet) {
-        this.defineIpConfiguration(DEFAULT)
-            .withContainingSubnet(subnet)
-            .attach();
+        ensureDefaultIpConfig().withContainingSubnet(subnet);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(Network network, String subnetName) {
-        this.defineIpConfiguration(DEFAULT)
-            .withContainingSubnet(network, subnetName)
-            .attach();
+        ensureDefaultIpConfig().withContainingSubnet(network, subnetName);
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withExistingSubnet(String networkResourceId, String subnetName) {
-        this.defineIpConfiguration(DEFAULT)
-            .withContainingSubnet(networkResourceId, subnetName)
-            .attach();
+        ensureDefaultIpConfig().withContainingSubnet(networkResourceId, subnetName);
         return this;
     }
 
@@ -586,7 +644,7 @@ class ApplicationGatewayImpl
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
             frontend.inner().withSubnet(null).withPrivateIPAddress(null).withPrivateIPAllocationMethod(null);
         }
-
+        this.defaultPrivateFrontend = null;
         return this;
     }
 
@@ -596,6 +654,7 @@ class ApplicationGatewayImpl
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
             frontend.inner().withPublicIPAddress(null);
         }
+        this.defaultPublicFrontend = null;
         return this;
     }
 
@@ -661,45 +720,36 @@ class ApplicationGatewayImpl
          * TODO: When the underlying Azure API is reworked to make more sense, or the app gateway service starts supporting the functionality
          * that the underlying API implies is supported, this model and implementation should be revisited.
          */
-        ensureDefaultFrontend();
-        this.enablePrivateFrontend = true;
+        ensureDefaultPrivateFrontend();
         return this;
     }
 
     // Withers
 
     @Override
-    public WithPrivateFrontendOptional withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
-        ((ApplicationGatewayFrontendImpl) ensureDefaultFrontend()).withExistingPublicIpAddress(publicIpAddress);
+    public ApplicationGatewayImpl withExistingPublicIpAddress(PublicIpAddress publicIpAddress) {
+        ensureDefaultPublicFrontend().withExistingPublicIpAddress(publicIpAddress);
         return this;
     }
 
     @Override
-    public WithPrivateFrontendOptional withExistingPublicIpAddress(String resourceId) {
-        ((ApplicationGatewayFrontendImpl) ensureDefaultFrontend()).withExistingPublicIpAddress(resourceId);
+    public ApplicationGatewayImpl withExistingPublicIpAddress(String resourceId) {
+        ensureDefaultPublicFrontend().withExistingPublicIpAddress(resourceId);
         return this;
     }
 
     @Override
-    public WithPrivateFrontendOptional withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
-        ensureDefaultFrontend();
-        this.creatablePipsByFrontend.put(DEFAULT, creatable.key());
+    public ApplicationGatewayImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatable) {
+        final String name = ensureDefaultPublicFrontend().name();
+        this.creatablePipsByFrontend.put(name, creatable.key());
         this.addCreatableDependency(creatable);
         return this;
     }
 
     @Override
-    public WithPrivateFrontendOptional withNewPublicIpAddress() {
-        final String pipName = ResourceNamer.randomResourceName("pip", 9);
-        final Creatable<PublicIpAddress> pipDefinition;
-        final PublicIpAddress.DefinitionStages.WithGroup preCreatable = this.manager().publicIpAddresses().define(pipName)
-                .withRegion(this.regionName());
-        if (this.creatableGroup != null) {
-            pipDefinition = preCreatable.withNewResourceGroup(this.creatableGroup);
-        } else {
-            pipDefinition = preCreatable.withExistingResourceGroup(this.resourceGroupName());
-        }
-        return withNewPublicIpAddress(pipDefinition);
+    public ApplicationGatewayImpl withNewPublicIpAddress() {
+        ensureDefaultPublicFrontend();
+        return this;
     }
 
     @Override
@@ -805,28 +855,36 @@ class ApplicationGatewayImpl
     // Getters
 
     @Override
-    public ApplicationGatewayFrontend defaultFrontend() {
-        // Default means the one named "default" or the only one in the collection
-        ApplicationGatewayFrontend frontend = this.frontends.get(DEFAULT);
-        if (frontend != null) {
-            return frontend;
-        } else if (this.frontends.size() != 1) {
-            return null;
-        } else {
-            return this.frontends.values().iterator().next();
+    public ApplicationGatewayFrontend defaultPrivateFrontend() {
+        // Default means the only private one or the one tracked as default, if more than one private present
+        if (this.privateFrontends().size() == 1) {
+            this.defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) this.privateFrontends().values().iterator().next();
+        } else if (this.frontends().size() == 0) {
+            this.defaultPrivateFrontend = null;
         }
+
+        return this.defaultPrivateFrontend;
+    }
+
+    @Override
+    public ApplicationGatewayFrontend defaultPublicFrontend() {
+        // Default means the only public one or the one tracked as default, if more than one public present
+        if (this.publicFrontends().size() == 1) {
+            this.defaultPublicFrontend = (ApplicationGatewayFrontendImpl) this.publicFrontends().values().iterator().next();
+        } else if (this.frontends().size() == 0) {
+            this.defaultPublicFrontend = null;
+        }
+
+        return this.defaultPublicFrontend;
     }
 
     @Override
     public ApplicationGatewayIpConfiguration defaultIpConfiguration() {
-        // Default means the one named "default" or the only one in the collection
-        ApplicationGatewayIpConfiguration ipConfig = this.ipConfigs.get(DEFAULT);
-        if (ipConfig != null) {
-            return ipConfig;
-        } else if (this.ipConfigs.size() != 1) {
-            return null;
-        } else {
+        // Default means the only one
+        if (this.ipConfigs.size() == 1) {
             return this.ipConfigs.values().iterator().next();
+        } else {
+            return null;
         }
     }
 
@@ -951,7 +1009,7 @@ class ApplicationGatewayImpl
 
     @Override
     public String privateIpAddress() {
-        ApplicationGatewayFrontend frontend = defaultFrontend();
+        ApplicationGatewayFrontend frontend = defaultPrivateFrontend();
         if (frontend == null) {
             return null;
         } else {
@@ -961,7 +1019,7 @@ class ApplicationGatewayImpl
 
     @Override
     public IPAllocationMethod privateIpAllocationMethod() {
-        ApplicationGatewayFrontend frontend = defaultFrontend();
+        ApplicationGatewayFrontend frontend = defaultPrivateFrontend();
         if (frontend == null) {
             return null;
         } else {
@@ -972,7 +1030,7 @@ class ApplicationGatewayImpl
     @Override
     public boolean isPrivate() {
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            if (frontend.isPrivate()) {
+            if (!frontend.isPublic()) {
                 return true;
             }
         }
@@ -987,5 +1045,29 @@ class ApplicationGatewayImpl
             }
         }
         return false;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayFrontend> publicFrontends() {
+        Map<String, ApplicationGatewayFrontend> publicFrontends = new TreeMap<>();
+        for (ApplicationGatewayFrontend frontend : this.frontends().values()) {
+            if (frontend.isPublic()) {
+                publicFrontends.put(frontend.name(), frontend);
+            }
+        }
+
+        return Collections.unmodifiableMap(publicFrontends);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayFrontend> privateFrontends() {
+        Map<String, ApplicationGatewayFrontend> privateFrontends = new TreeMap<>();
+        for (ApplicationGatewayFrontend frontend : this.frontends().values()) {
+            if (frontend.isPrivate()) {
+                privateFrontends.put(frontend.name(), frontend);
+            }
+        }
+
+        return Collections.unmodifiableMap(privateFrontends);
     }
 }

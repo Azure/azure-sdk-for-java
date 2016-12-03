@@ -49,6 +49,16 @@ public interface ApplicationGateway extends
     boolean isPublic();
 
     /**
+     * @return the frontend IP configuration associated with a public IP address, if any, that frontend listeners and request routing rules can reference implicitly
+     */
+    ApplicationGatewayFrontend defaultPublicFrontend();
+
+    /**
+     * @return the frontend IP configuration associated with a private IP address, if any, that frontend listeners and request routing rules can reference implicitly
+     */
+    ApplicationGatewayFrontend defaultPrivateFrontend();
+
+    /**
      * @return the SKU of this application gateway
      */
     ApplicationGatewaySku sku();
@@ -74,19 +84,24 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayBackend> backends();
 
     /**
-     * @return the frontend named "default" if it exists, or the one existing frontend if only one exists, else null
-     */
-    ApplicationGatewayFrontend defaultFrontend();
-
-    /**
      * @return the IP configuration named "default" if it exists, or the one existing IP configuration if only one exists, else null
      */
     ApplicationGatewayIpConfiguration defaultIpConfiguration();
 
     /**
-     * @return frontend IP configurations of this application gateway, indexed by name
+     * @return frontend IP configurations, indexed by name
      */
     Map<String, ApplicationGatewayFrontend> frontends();
+
+    /**
+     * @return frontend IP configurations with a public IP address, indexed by name
+     */
+    Map<String, ApplicationGatewayFrontend> publicFrontends();
+
+    /**
+     * @return frontend IP configurations with a private IP address on a subnet, indexed by name
+     */
+    Map<String, ApplicationGatewayFrontend> privateFrontends();
 
     /**
      * @return named frontend ports of this application gateway, indexed by name
@@ -135,9 +150,6 @@ public interface ApplicationGateway extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
         DefinitionStages.WithSku,
-        DefinitionStages.WithPrivateFrontend,
-        DefinitionStages.WithPrivateFrontendOptional,
-        DefinitionStages.WithPublicFrontend,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -161,49 +173,43 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition allowing to add a public IP address as the default public frontend.
-         * @param <ReturnT> the next stage of the definition
+         * The stage of an application gateway definition allowing to add a new Internet-facing frontend with a public IP address.
          */
-        interface WithPublicIpAddress<ReturnT> extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddressNoDnsLabel<ReturnT> {
+        interface WithPublicIpAddress extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddressNoDnsLabel<WithCreate> {
         }
 
         /**
          * The stage of an application gateway definition allowing to define one or more public, or Internet-facing, frontends.
          */
-        interface WithPublicFrontend extends WithPublicIpAddress<WithPrivateFrontendOptional> {
+        interface WithPublicFrontend extends WithPublicIpAddress {
             /**
              * Specifies that the application gateway should not be Internet-facing.
              * @return the next stage of the definition
              */
             @Method
-            WithPrivateFrontend withoutPublicFrontend();
+            WithCreate withoutPublicFrontend();
         }
 
         /**
-         * The stage of an internal application gateway definition allowing to define a private frontend.
+         * The stage of an internal application gateway definition allowing to make the application gateway accessible to its
+         * virtual network.
          */
         interface WithPrivateFrontend {
             /**
-             * Enables a private default frontend in the subnet containing the application gateway.
+             * Enables a private (internal) default frontend in the subnet containing the application gateway.
              * <p>
              * A frontend with the name "default" will be created if needed.
              * @return the next stage of the definition
              */
             @Method
-            WithRequestRoutingRule withPrivateFrontend();
-        }
+            WithCreate withPrivateFrontend();
 
-        /**
-         * The stage of an internal application gateway definition allowing to optionally define a private,
-         * or internal, frontend IP configuration.
-         */
-        interface WithPrivateFrontendOptional extends WithPrivateFrontend {
             /**
-             * Specifies that no private, or internal, frontend should be enabled.
+             * Specifies that no private (internal) frontend should be enabled.
              * @return the next stage of the definition
              */
             @Method
-            WithRequestRoutingRule withoutPrivateFrontend();
+            WithCreate withoutPrivateFrontend();
         }
 
         /**
@@ -303,7 +309,7 @@ public interface ApplicationGateway extends
              * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the definition
              */
-            WithPublicFrontend withSku(ApplicationGatewaySkuName skuName, int capacity);
+            WithRequestRoutingRule withSku(ApplicationGatewaySkuName skuName, int capacity);
         }
 
         /**
@@ -352,7 +358,10 @@ public interface ApplicationGateway extends
             WithBackendHttpConfig,
             WithBackend,
             WithExistingSubnet,
-            WithPrivateIpAddress {
+            WithPrivateIpAddress,
+            WithPrivateFrontend,
+            WithPublicFrontend,
+            WithPublicIpAddress {
         }
     }
 
@@ -360,6 +369,28 @@ public interface ApplicationGateway extends
      * Grouping of application gateway update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an internal application gateway update allowing to make the application gateway accessible to its
+         * virtual network.
+         */
+        interface WithPrivateFrontend {
+            /**
+             * Enables a private (internal) default frontend in the subnet containing the application gateway.
+             * <p>
+             * A frontend with the name "default" will be created if needed.
+             * @return the next stage of the update
+             */
+            @Method
+            Update withPrivateFrontend();
+
+            /**
+             * Specifies that no private, or internal, frontend should be enabled.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithRequestRoutingRule withoutPrivateFrontend();
+        }
+
         /**
          * The stage of an application gateway update allowing to specify the subnet the app gateway is getting
          * its private IP address from.
@@ -456,8 +487,6 @@ public interface ApplicationGateway extends
              * @return the next stage of the update
              */
             Update withoutFrontend(String frontendName);
-
-            // TODO Other frontend updates...
         }
 
         /**

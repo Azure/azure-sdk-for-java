@@ -100,6 +100,9 @@ class ApplicationGatewayFrontendImpl
         SubResource subnetRef = new SubResource()
                 .withId(parentNetworkResourceId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
+
+        // Ensure this frontend is not public
+        this.inner().withPublicIPAddress(null);
         return this;
     }
 

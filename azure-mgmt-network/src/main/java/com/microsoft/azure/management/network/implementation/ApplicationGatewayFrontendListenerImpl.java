@@ -193,8 +193,7 @@ class ApplicationGatewayFrontendListenerImpl
         return withSslCertificateFromPfxFile(pfxFile, name);
     }
 
-    @Override
-    public ApplicationGatewayFrontendListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    private ApplicationGatewayFrontendListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
         this.sslCert = this.parent().defineSslCertificate(name)
             .withPfxFromFile(pfxFile);
         return this;

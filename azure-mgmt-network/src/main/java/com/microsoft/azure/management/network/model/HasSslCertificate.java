@@ -30,28 +30,22 @@ public interface HasSslCertificate<T>  {
          */
         interface WithSslCertificate<ReturnT> {
             /**
-             * Specifies an SSL certificate to associate with this listener, if its protocol is HTTPS.
-             * @param name the name of an existing SSL certificate associated with this application gateway
+             * Specifies an SSL certificate to associate with this resource.
+             * <p>
+             * If the certificate does not exist yet, it must be defined in the optional part of the parent resource definition.
+             * @param name the name of an existing SSL certificate.
              * @return the next stage of the definition
              */
             ReturnT withSslCertificate(String name);
 
             /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this resource.
+             * Specifies the PFX file to import the SSL certificate from to associated with this resource.
              * <p>
              * The certificate will be named using an auto-generated name.
              * @param pfxFile an existing PFX file
              * @return the next stage of the definition
              */
             WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
-
-            /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this resource.
-             * @param pfxFile an existing PFX file
-             * @param name a new name for the certificate that will be used to reference this certificate
-             * @return the next stage of the definition
-             */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile, String name);
         }
 
         /**
@@ -78,9 +72,11 @@ public interface HasSslCertificate<T>  {
          */
         interface WithSslCertificate<ReturnT> {
             /**
-             * Specifies an SSL certificate to associate with this listener, if its protocol is HTTPS.
+             * Specifies an SSL certificate to associate with this resource.
+             * <p>
+             * If the certificate does not exist yet, it must be defined in the parent resource update.
              * @param name the name of an existing SSL certificate associated with this application gateway
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
             ReturnT withSslCertificate(String name);
 
@@ -92,14 +88,6 @@ public interface HasSslCertificate<T>  {
              * @return the next stage of the definition
              */
             WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
-
-            /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this resource.
-             * @param pfxFile an existing PFX file
-             * @param name a new name for the certificate that will be used to reference this certificate
-             * @return the next stage of the definition
-             */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile, String name);
         }
 
         /**
@@ -126,28 +114,22 @@ public interface HasSslCertificate<T>  {
          */
         interface WithSslCertificate<ReturnT> {
             /**
-             * Specifies an SSL certificate to associate with this listener, if its protocol is HTTPS.
-             * @param name the name of an existing SSL certificate associated with this application gateway
+             * Specifies an SSL certificate to associate with this resource.
+             * <p>
+             * If the certificate does not exist yet, it must be defined in the optional part of the parent resource definition.
+             * @param name the name of an existing SSL certificate.
              * @return the next stage of the definition
              */
             ReturnT withSslCertificate(String name);
 
             /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this resource.
+             * Specifies the PFX file to import the SSL certificate from to associated with this resource.
              * <p>
              * The certificate will be named using an auto-generated name.
              * @param pfxFile an existing PFX file
              * @return the next stage of the definition
              */
             WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
-
-            /**
-             * Specifies the PFX file to import the SSL certificate from to associate with this resource.
-             * @param pfxFile an existing PFX file
-             * @param name a new name for the certificate that will be used to reference this certificate
-             * @return the next stage of the definition
-             */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile, String name);
         }
 
         /**

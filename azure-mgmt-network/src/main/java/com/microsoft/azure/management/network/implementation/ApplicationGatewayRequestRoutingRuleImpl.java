@@ -44,6 +44,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
         super(inner, parent);
     }
 
+    private Boolean associateWithPublicFrontend = null;
+
     // Getters
 
     @Override
@@ -208,6 +210,18 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
+    public ApplicationGatewayRequestRoutingRuleImpl fromDefaultPublicFrontend() {
+        this.associateWithPublicFrontend = true;
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl fromDefaultPrivateFrontend() {
+        this.associateWithPublicFrontend = false;
+        return this;
+    }
+
+    @Override
     public ApplicationGatewayRequestRoutingRuleImpl fromFrontendHttpPort(int portNumber) {
         return this.fromFrontendPort(portNumber, ApplicationGatewayProtocol.HTTP, null);
     }
@@ -235,11 +249,22 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
             listenerByPort = this.parent().defineFrontendListener(name)
                     .withFrontendPort(portNumber);
+
+            // Determine protocol
             if (ApplicationGatewayProtocol.HTTP.equals(protocol)) {
                 listenerByPort.withHttp();
             } else if (ApplicationGatewayProtocol.HTTPS.equals(protocol)) {
                 listenerByPort.withHttps();
             }
+
+            // Determine frontend
+            if (Boolean.TRUE.equals(this.associateWithPublicFrontend)) {
+                listenerByPort.withFrontend(this.parent().ensureDefaultPublicFrontend().name());
+                this.parent().withNewPublicIpAddress();
+            } else if (Boolean.FALSE.equals(this.associateWithPublicFrontend)) {
+                listenerByPort.withFrontend(this.parent().ensureDefaultPrivateFrontend().name());
+            }
+            this.associateWithPublicFrontend = null;
 
             listenerByPort.attach();
             return this.fromFrontendListener(listenerByPort.name());
@@ -250,7 +275,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withBackend(String name) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackend(String name) {
         SubResource backendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
         this.inner().withBackendAddressPool(backendRef);
@@ -309,16 +334,6 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
-        // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
-        ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
-        if (listener != null) {
-            listener.withSslCertificateFromPfxFile(pfxFile, name);
-        }
-        return this;
-    }
-
-    @Override
     public ApplicationGatewayRequestRoutingRuleImpl withSslCertificatePassword(String password) {
         // TODO do this with this.parent().frontendListener(...).update().withSslCertificate...
         ApplicationGatewayFrontendListenerImpl listener = (ApplicationGatewayFrontendListenerImpl) this.frontendListener();
@@ -364,20 +379,20 @@ class ApplicationGatewayRequestRoutingRuleImpl
             String name = ResourceNamer.randomResourceName("backend", 12);
             backend = this.parent().defineBackend(name);
             backend.attach();
-            this.withBackend(name);
+            this.toBackend(name);
         }
 
         return backend;
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withBackendIpAddress(String ipAddress) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendIpAddress(String ipAddress) {
         this.parent().updateBackend(ensureBackend().name()).withIpAddress(ipAddress);
         return this;
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withBackendFqdn(String fqdn) {
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendFqdn(String fqdn) {
         this.parent().updateBackend(ensureBackend().name()).withFqdn(fqdn);
         return this;
     }

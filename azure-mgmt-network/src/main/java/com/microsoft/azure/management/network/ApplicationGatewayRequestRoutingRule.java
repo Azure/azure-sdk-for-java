@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasCookieBasedAffinity;
@@ -73,7 +74,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * The first stage of an application gateway request routing rule definition.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithFrontendListenerOrPort<ParentT> {
+        interface Blank<ParentT> extends WithFrontendListenerOrFrontend<ParentT> {
         }
 
         /** The final stage of an application gateway request routing rule definition.
@@ -97,7 +98,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a frontend listener.
              * <p>
-             * A listener with the referenced name must be defined separately but as part of the same application gateway creation process.
+             * If the listener with the specified name does not yeyt exist, it must be defined separately in a later part of the application gateway definition.
+             * This only adds a reference to the listener by its name.
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
@@ -105,13 +107,38 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
-         * The stage of an application gateway request routing rule definition allowing to associate a new or existing listener
-         * to associate the routing rule with.
-         * @param <ParentT>
+         * The stage of an application gateway request routing rule definition allowing to associate an existing listener
+         * with the request routing rule, or create a new one implicitly by specifying the frontend to listen to.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
-        interface WithFrontendListenerOrPort<ParentT> extends
+        interface WithFrontendListenerOrFrontend<ParentT> extends
             WithFrontendListener<ParentT>,
-            WithFrontendPort<ParentT> {
+            WithFrontend<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to specify the frontend for the rule to apply to.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithFrontend<ParentT> {
+            /**
+             * Uses the application gateway's public (Internet-facing) frontend as the frontend for the rule to apply to.
+             * <p>
+             * If the public frontend does not yet exist, it will be created under an auto-generated name.
+             * <p>
+             * If the application gateway does not have a public IP address specified for its public frontend, one will be created automatically.
+             * A specific public IP address can be specified in the application gateway definition's optional settings.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithFrontendPort<ParentT> fromDefaultPublicFrontend();
+
+            /**
+             * Selects the default private frontend as the frontend for the rule to apply to.
+             * @return the next stage of the definition
+             */
+            @Method
+            WithFrontendPort<ParentT> fromDefaultPrivateFrontend();
         }
 
         /** The stage of an application gateway request routing rule definition allowing to create an associate listener and frontend
@@ -164,11 +191,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithBackend<ParentT> {
             /**
-             * Associates the request routing rule with an existing backend on this application gateway.
+             * Associates the request routing rule with a backend on this application gateway.
+             * <p>
+             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
+             * The request routing rule references it only by name.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withBackend(String name);
+            WithAttach<ParentT> toBackend(String name);
         }
 
         /**
@@ -182,19 +212,23 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Adds an IP address to the backend associated with this rule.
              * <p>
              * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
+             * <p>
+             * This call can be used in a sequence to add multiple FQDNs.
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
-            WithBackendAddressOrAttach<ParentT> withBackendIpAddress(String ipAddress);
+            WithBackendAddressOrAttach<ParentT> toBackendIpAddress(String ipAddress);
 
             /**
              * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.
              * <p>
              * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
+             * <p>
+             * This call can be used in a sequence to add multiple FQDNs.
              * @param fqdn a fully qualified domain name
              * @return the next stage of the definition
              */
-            WithBackendAddressOrAttach<ParentT> withBackendFqdn(String fqdn);
+            WithBackendAddressOrAttach<ParentT> toBackendFqdn(String fqdn);
         }
 
         /**
@@ -230,15 +264,20 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithBackendHttpConfiguration<ParentT> {
             /**
-             * Associates the request routing rule with an existing backend HTTP settings configuration on this application gateway.
-             * @param name the name of an existing backend HTTP settings configuration
+             * Associates the specified backend HTTP settings configuration with this request routing rule.
+             * <p>
+             * If the backend configuration does not exist yet, it must be defined in the optional part of the application gateway definition.
+             * The request routing rule references it only by name.
+             * @param name the name of a backend HTTP settings configuration
              * @return the next stage of the definition
              */
             WithBackendOrAddress<ParentT> toBackendHttpConfiguration(String name);
 
             /**
-             * Creates a backend settings configuration for the specified backend port and the HTTP protocol to associate with this
+             * Creates a backend HTTP settings configuration for the specified backend port and the HTTP protocol, and associates it with this
              * request routing rule.
+             * <p>
+             * An auto-generated name will be uses for this newly created configuration.
              * @param portNumber the port number for a new backend HTTP settings configuration
              * @return the next stage of the definition
              */
@@ -269,9 +308,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
         DefinitionStages.WithAttach<ParentT>,
+        DefinitionStages.WithFrontend<ParentT>,
         DefinitionStages.WithFrontendListener<ParentT>,
         DefinitionStages.WithFrontendPort<ParentT>,
-        DefinitionStages.WithFrontendListenerOrPort<ParentT>,
+        DefinitionStages.WithFrontendListenerOrFrontend<ParentT>,
         DefinitionStages.WithBackend<ParentT>,
         DefinitionStages.WithBackendAddress<ParentT>,
         DefinitionStages.WithBackendOrAddress<ParentT>,
