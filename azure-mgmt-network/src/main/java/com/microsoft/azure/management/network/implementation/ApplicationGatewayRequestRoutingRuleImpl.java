@@ -122,7 +122,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayProtocol protocol() {
+    public ApplicationGatewayProtocol frontendProtocol() {
         if (this.listener() == null) {
             return null;
         } else {

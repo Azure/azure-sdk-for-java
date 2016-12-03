@@ -128,7 +128,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().subnetName() != null);
             Assert.assertTrue(rule.listener().networkId() != null);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(rule.protocol()));
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
 
@@ -353,7 +353,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule != null);
             Assert.assertTrue(vnet.id().equalsIgnoreCase(rule.listener().frontend().networkId()));
             Assert.assertTrue(rule.frontendPort() == 443);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.protocol()));
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.sslCertificate() != null);
             Assert.assertTrue(rule.backendHttpConfiguration() != null);
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
@@ -598,7 +598,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule != null);
             Assert.assertTrue(existingPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 443);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.protocol()));
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.sslCertificate() != null);
             Assert.assertTrue(rule.backendHttpConfiguration() != null);
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
@@ -710,7 +710,7 @@ public class TestApplicationGateway {
                             .fromFrontendHttpsPort(443)
                             .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                             .withSslCertificatePassword("Abc123")
-                            .toBackendHttpPort(8080) // TODO: toBackendHttpsPort(...)
+                            .toBackendHttpPort(8080) // TODO: toBackendHttpsPort(...) when supported
                             .toBackendIpAddress("11.1.1.1")
                             .toBackendIpAddress("11.1.1.2")
                             .attach()
@@ -758,7 +758,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().frontend().isPublic());
             Assert.assertTrue(!rule.listener().frontend().isPrivate());
             Assert.assertTrue(rule.backendAddresses().size() == 2);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.protocol()));
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(rule.sslCertificate() != null);
@@ -947,7 +947,7 @@ public class TestApplicationGateway {
                 .append("\n\t\t\tHost name: ").append(rule.hostName())
                 .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
                 .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tProtocol: ").append(rule.protocol().toString())
+                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
                 .append("\n\t\t\tBackend port: ").append(rule.backendPort())
                 .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
 

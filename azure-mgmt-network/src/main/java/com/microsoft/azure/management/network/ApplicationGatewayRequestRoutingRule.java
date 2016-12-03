@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasCookieBasedAffinity;
 import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasHostName;
-import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.network.model.HasServerNameIndication;
 import com.microsoft.azure.management.network.model.HasSslCertificate;
@@ -31,13 +30,17 @@ public interface ApplicationGatewayRequestRoutingRule extends
     Wrapper<ApplicationGatewayRequestRoutingRuleInner>,
     ChildResource<ApplicationGateway>,
     HasPublicIpAddress,
-    HasProtocol<ApplicationGatewayProtocol>,
     HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasFrontendPort,
     HasBackendPort,
     HasHostName,
     HasCookieBasedAffinity,
     HasServerNameIndication {
+
+    /**
+     * @return the frontend protocol
+     */
+    ApplicationGatewayProtocol frontendProtocol();
 
     /**
      * @return rule type
