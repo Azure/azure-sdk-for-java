@@ -129,13 +129,13 @@ public abstract class CreatableUpdatableImpl<
     }
 
     /**
-     * Default implementation of createAsyncStreaming(boolean).
+     * Default implementation of createAsyncStreaming().
      *
      * @return the observable that emit the created resources.
      */
     @Override
-    public Observable<Indexable> createAsyncStreaming(boolean enableStreaming) {
-        return this.executeTaskGroupAsync(enableStreaming);
+    public Observable<Indexable> createAsyncStreaming() {
+        return this.executeTaskGroupAsyncStreaming();
     }
 
     /**
@@ -211,25 +211,16 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @SuppressWarnings("unchecked")
-    protected Observable<Indexable> executeTaskGroupAsync(boolean enableStreaming) {
+    protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
         if (createUpdateTaskGroup.isPreparer()) {
             createUpdateTaskGroup.prepare();
-            if (enableStreaming) {
-                return createUpdateTaskGroup.executeAsync()
-                        .map(new Func1<FluentModelT, Indexable>() {
+            return createUpdateTaskGroup.executeAsync()
+                    .map(new Func1<FluentModelT, Indexable>() {
                             @Override
                             public Indexable call(FluentModelT fluentModelT) {
                                 return fluentModelT;
                             }
                         });
-            } else {
-                return createUpdateTaskGroup.executeAsync().last().map(new Func1<FluentModelT, Indexable>() {
-                    @Override
-                    public Indexable call(FluentModelT fluentModelT) {
-                        return fluentModelT;
-                    }
-                });
-            }
         }
         throw new IllegalStateException("Internal Error: executeTaskGroupAsync can be called only on preparer");
     }

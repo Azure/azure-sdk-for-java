@@ -54,10 +54,7 @@ public interface Creatable<T> extends
      * Puts the request into the queue and allow the HTTP client to execute
      * it when system resources are available.
      *
-     * @param enableStreaming true if the resources needs to be emitted in the order
-     *                        they gets created, false if only the root resource needs
-     *                        be streamed
      * @return an observable where the resource and all it's dependencies gets emitted
      */
-    Observable<Indexable> createAsyncStreaming(boolean enableStreaming);
+    Observable<Indexable> createAsyncStreaming();
 }

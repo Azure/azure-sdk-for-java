@@ -55,7 +55,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .withNewStorageAccount(storageCreatable)
                 .withNewAvailabilitySet(ResourceNamer.randomResourceName("avset", 10))
-                .createAsyncStreaming(true)
+                .createAsyncStreaming()
                 .map(new Func1<Indexable, Resource>() {
                     @Override
                     public Resource call(Indexable resource) {
