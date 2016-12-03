@@ -11,6 +11,7 @@ public class WorkItem<T>
 {
 	private final TimeoutTracker tracker;
 	private final CompletableFuture<T> work;
+	private ScheduledFuture<?> timeoutTask;
 
 	public WorkItem(final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
@@ -28,8 +29,26 @@ public class WorkItem<T>
 		return this.tracker;
 	}
 
+	// TODO; remove this method. Synchronize calls to complete on the future so two different threads don't attempt to complete at the same time.
+	// Also group complete and canceling timeout task in one method so calling code doesn't have to call both of them one after the other.
 	public CompletableFuture<T> getWork()
 	{
 		return this.work;
+	}
+	
+	public ScheduledFuture<?> getTimeoutTask()
+	{
+		return this.timeoutTask;
+	}
+	
+	public void setTimeoutTask(final ScheduledFuture<?> timeoutTask)
+	{
+		this.timeoutTask = timeoutTask;
+	}
+	
+	public void cancelTimeoutTask(boolean mayInterruptIfRunning)
+	{
+		if(this.timeoutTask != null)
+			this.timeoutTask.cancel(mayInterruptIfRunning);
 	}
 }

@@ -66,7 +66,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private final RetryPolicy retryPolicy;
 	private final CompletableFuture<Void> linkClose;
 	private final Object pendingSendLock;
-	private final ConcurrentHashMap<String, ReplayableWorkItem<Void>> pendingSendsData;
+	private final ConcurrentHashMap<String, SendWorkItem<Void>> pendingSendsData;
 	private final PriorityQueue<WeightedDeliveryTag> pendingSends;
 	private final DispatchHandler sendWork;
 
@@ -119,7 +119,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		this.retryPolicy = factory.getRetryPolicy();
 
 		this.pendingSendLock = new Object();
-		this.pendingSendsData = new ConcurrentHashMap<String, ReplayableWorkItem<Void>>();
+		this.pendingSendsData = new ConcurrentHashMap<String, SendWorkItem<Void>>();
 		this.pendingSends = new PriorityQueue<WeightedDeliveryTag>(1000, new DeliveryTagComparator());
 		this.linkCredit = 0;
 
@@ -143,6 +143,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	private CompletableFuture<Void> send(byte[] bytes, int arrayOffset, int messageFormat)
 	{
 		return this.send(bytes, arrayOffset, messageFormat, null, null);
+	}
+	
+	private CompletableFuture<Void> send(
+			final byte[] bytes,
+			final int arrayOffset,
+			final int messageFormat,
+			final CompletableFuture<Void> onSend,
+			final TimeoutTracker tracker)
+	{
+		return this.sendCore(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
 	}
 
 	private CompletableFuture<Void> sendCore(
@@ -180,9 +190,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		
 		final CompletableFuture<Void> onSendFuture = (onSend == null) ? new CompletableFuture<Void>() : onSend;
 		
-		final ReplayableWorkItem<Void> sendWaiterData = (tracker == null) ?
-				new ReplayableWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) : 
-				new ReplayableWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
+		final SendWorkItem<Void> sendWaiterData = (tracker == null) ?
+				new SendWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, this.operationTimeout) : 
+				new SendWorkItem<Void>(bytes, arrayOffset, messageFormat, onSendFuture, tracker);
 
 		if (lastKnownError != null)
 		{
@@ -206,17 +216,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 
 		return onSendFuture;
-	}
-
-	private CompletableFuture<Void> send(
-			final byte[] bytes,
-			final int arrayOffset,
-			final int messageFormat,
-			final CompletableFuture<Void> onSend,
-			final TimeoutTracker tracker)
-	{
-		return this.sendCore(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
-	}
+	}	
 
 	private int getPayloadSize(Message msg)
 	{
@@ -424,7 +424,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		{
 			synchronized (this.pendingSendLock)
 			{
-				for (Map.Entry<String, ReplayableWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
+				for (Map.Entry<String, SendWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
 				{
 					ExceptionUtil.completeExceptionally(pendingSend.getValue().getWork(),
 							completionException == null
@@ -452,7 +452,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			{
 				synchronized (this.pendingSendLock)
 				{
-					for (Map.Entry<String, ReplayableWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
+					for (Map.Entry<String, SendWorkItem<Void>> pendingSend: this.pendingSendsData.entrySet())
 					{
 						this.cleanupFailedSend(pendingSend.getValue(), completionException);					
 					}
@@ -463,7 +463,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			}
 			else
 			{
-				final Map.Entry<String, ReplayableWorkItem<Void>> pendingSendEntry = IteratorUtil.getFirst(this.pendingSendsData.entrySet());
+				final Map.Entry<String, SendWorkItem<Void>> pendingSendEntry = IteratorUtil.getFirst(this.pendingSendsData.entrySet());
 				if (pendingSendEntry != null && pendingSendEntry.getValue() != null)
 				{
 					final TimeoutTracker tracker = pendingSendEntry.getValue().getTimeoutTracker();
@@ -506,7 +506,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			TRACE_LOGGER.log(Level.FINEST,
 				String.format(Locale.US, "path[%s], linkName[%s], deliveryTag[%s]", MessageSender.this.sendPath, this.sendLink.getName(), deliveryTag));
 
-		final ReplayableWorkItem<Void> pendingSendWorkItem = this.pendingSendsData.remove(deliveryTag);
+		final SendWorkItem<Void> pendingSendWorkItem = this.pendingSendsData.remove(deliveryTag);
 
 		if (pendingSendWorkItem != null)
 		{
@@ -515,7 +515,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				this.lastKnownLinkError = null;
 				this.retryPolicy.resetRetryCount(this.getClientId());
 
-				pendingSendWorkItem.getTimeoutTask().cancel(false);
+				pendingSendWorkItem.cancelTimeoutTask(false);
 				pendingSendWorkItem.getWork().complete(null);
 			}
 			else if (outcome instanceof Rejected)
@@ -577,7 +577,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 	}
 
-	private void reSend(final String deliveryTag, final ReplayableWorkItem<Void> pendingSend, boolean reuseDeliveryTag)
+	private void reSend(final String deliveryTag, final SendWorkItem<Void> pendingSend, boolean reuseDeliveryTag)
 	{
 		if (pendingSend != null)
 		{
@@ -592,10 +592,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 	}
 	
-	private void cleanupFailedSend(final ReplayableWorkItem<Void> failedSend, final Exception exception)
+	private void cleanupFailedSend(final SendWorkItem<Void> failedSend, final Exception exception)
 	{
-		if (failedSend.getTimeoutTask() != null)
-			failedSend.getTimeoutTask().cancel(false);
+		failedSend.cancelTimeoutTask(false);
 		
 		ExceptionUtil.completeExceptionally(failedSend.getWork(), exception, this);
 	}
@@ -679,7 +678,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				? this.sendLink.getRemoteProperties().get(ClientConstants.TRACKING_ID_PROPERTY).toString()
 						: ((this.sendLink != null) ? this.sendLink.getName() : null);
 
-		SenderContext errorContext = new SenderContext(
+		SenderErrorContext errorContext = new SenderErrorContext(
 				this.underlyingFactory!=null ? this.underlyingFactory.getHostName() : null,
 						this.sendPath,
 						referenceId,
@@ -728,7 +727,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				&& this.linkCredit > 0)
 		{
 			final WeightedDeliveryTag deliveryTag;
-			final ReplayableWorkItem<Void> sendData;
+			final SendWorkItem<Void> sendData;
 			synchronized (this.pendingSendLock)
 			{
 				deliveryTag = this.pendingSends.poll();
@@ -782,7 +781,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 								MessageSender.this.throwSenderTimeout(sendData.getWork(), sendData.getLastKnownException());
 							}
 						}
-					}, this.operationTimeout, TimerType.OneTimeRun);
+					},
+					this.operationTimeout, 
+					TimerType.OneTimeRun);
 					
 					sendData.setTimeoutTask(timeoutTask);
 					sendData.setWaitingForAck();

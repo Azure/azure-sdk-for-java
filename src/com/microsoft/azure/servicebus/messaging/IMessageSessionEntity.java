@@ -9,27 +9,27 @@ public interface IMessageSessionEntity {
 	
 	void setPrefetchCount(int prefetchCount);
 
-    IMessageSession AcceptMessageSession();
+    IMessageSession acceptMessageSession();
 
-    IMessageSession AcceptMessageSession(Duration serverWaitTime);
+    IMessageSession acceptMessageSession(Duration serverWaitTime);
 
-    IMessageSession AcceptMessageSession(String sessionId);
+    IMessageSession acceptMessageSession(String sessionId);
 
-    IMessageSession AcceptMessageSession(String sessionId, Duration serverWaitTime);
+    IMessageSession acceptMessageSession(String sessionId, Duration serverWaitTime);
 
-    Iterable<IMessageSession> GetMessageSessions();
+    Iterable<IMessageSession> getMessageSessions();
 
-    Iterable<IMessageSession> GetMessageSessions(Instant lastUpdatedTime);
+    Iterable<IMessageSession> getMessageSessions(Instant lastUpdatedTime);
 
-    CompletableFuture<IMessageSession> AcceptMessageSessionAsync();
+    CompletableFuture<IMessageSession> acceptMessageSessionAsync();
 
-    CompletableFuture<IMessageSession> AcceptMessageSessionAsync(Duration serverWaitTime);
+    CompletableFuture<IMessageSession> acceptMessageSessionAsync(Duration serverWaitTime);
 
-    CompletableFuture<IMessageSession> AcceptMessageSessionAsync(String sessionId);
+    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId);
 
-    CompletableFuture<IMessageSession> AcceptMessageSessionAsync(String sessionId, Duration serverWaitTime);
+    CompletableFuture<IMessageSession> acceptMessageSessionAsync(String sessionId, Duration serverWaitTime);
 
-    CompletableFuture<Iterable<IMessageSession>> GetMessageSessionsAsync();
+    CompletableFuture<Iterable<IMessageSession>> getMessageSessionsAsync();
 
-    CompletableFuture<Iterable<IMessageSession>> GetMessageSessionsAsync(Instant lastUpdatedTime);
+    CompletableFuture<Iterable<IMessageSession>> getMessageSessionsAsync(Instant lastUpdatedTime);
 }

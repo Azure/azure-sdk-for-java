@@ -24,7 +24,6 @@ final class ExceptionUtil
 		{
 			throw new IllegalArgumentException("'null' errorCondition cannot be translated to ServiceBusException");
 		}
-
 		if (errorCondition.getCondition() == ClientConstants.TIMEOUT_ERROR)
 		{
 			return new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT, new TimeoutException(errorCondition.getDescription()));

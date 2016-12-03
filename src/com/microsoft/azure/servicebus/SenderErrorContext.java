@@ -6,13 +6,13 @@ package com.microsoft.azure.servicebus;
 
 import java.util.Locale;
 
-public class SenderContext extends ErrorContext
+public class SenderErrorContext extends ErrorContext
 {
 	final String sendPath;
 	final String referenceId;
 	final Integer currentLinkCredit;
 
-	SenderContext(
+	SenderErrorContext(
 			final String namespaceName, 
 			final String sendPath, 
 			final String referenceId,

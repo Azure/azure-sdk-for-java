@@ -1,6 +1,8 @@
 package com.microsoft.azure.servicebus.messaging;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.qpid.proton.message.Message;
@@ -39,7 +41,7 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 		this(messagingFactory, entityPath, false);
 	}
 			
-	BrokeredMessageSender(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory)
+	private BrokeredMessageSender(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory)
 	{		
 		this();
 		
@@ -60,7 +62,7 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 			CompletableFuture<Void> factoryFuture;
 			if(this.messagingFactory == null)
 			{
-				factoryFuture = MessagingFactory.createFromConnectionStringBuilder(amqpConnectionStringBuilder).thenAccept((f) -> {BrokeredMessageSender.this.messagingFactory = f;});
+				factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAccept((f) -> {BrokeredMessageSender.this.messagingFactory = f;});
 			}
 			else
 			{
@@ -77,59 +79,40 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 				});
 			});
 		}
-	}
-	
-	/*
-	static CompletableFuture<BrokeredMessageSender> createInstanceFromConnectionStringBuilderAsync(ConnectionStringBuilder amqpConnectionStringBuilder) throws IOException
-	{
-		return MessagingFactory.createFromConnectionStringBuilder(amqpConnectionStringBuilder).thenComposeAsync((f) -> createInstanceFromMessagingFactoryAsync(f, true));
-	}
-	
-	static CompletableFuture<BrokeredMessageSender> createInstanceFromMessagingFactoryAsync(MessagingFactory messagingFactory)
-	{
-		return createInstanceFromMessagingFactoryAsync(messagingFactory, false);
-	}
-	
-	static CompletableFuture<BrokeredMessageSender> createInstanceFromMessagingFactoryAsync(MessagingFactory messagingFactory, boolean ownsMessagingFactory)
-	{
-		
-	}
-	*/	
-		
+	}		
 	
 	@Override
 	public void send(BrokeredMessage message) throws InterruptedException, ServiceBusException {
-		Utils.completeFuture(this.sendAsync(message));
-		
+		Utils.completeFuture(this.sendAsync(message));		
 	}
 
 	@Override
-	public void sendBatch(Iterable<BrokeredMessage> message) {
-		// TODO Auto-generated method stub
-		
+	public void sendBatch(Collection<BrokeredMessage> message) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.sendBatchAsync(message));
 	}
 
 	@Override
 	public CompletableFuture<Void> sendAsync(BrokeredMessage message) {
-		Message amqpMessage = message.toAmqpMessage();
+		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage(message);
 		return this.internalSender.send(amqpMessage);
 	}
 
 	@Override
-	public CompletableFuture<Void> sendBatchAsync(Iterable<BrokeredMessage> message) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompletableFuture<Void> sendBatchAsync(Collection<BrokeredMessage> messages) {
+		ArrayList<Message> convertedMessages = new ArrayList<Message>();
+		for(BrokeredMessage message : messages)
+		{
+			convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage(message));
+		}
+		
+		return this.internalSender.send(convertedMessages);
 	}
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
 		if(this.isInitialized)
 		{
-			return CompletableFuture.completedFuture(null);
-		}
-		else
-		{
-			return this.internalSender.close().thenCompose((v) -> 
+			return this.internalSender.close().thenComposeAsync((v) -> 
 			{
 				if(BrokeredMessageSender.this.ownsMessagingFactory)
 				{
@@ -140,6 +123,10 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 					return CompletableFuture.completedFuture(null);
 				}				
 			});
+		}
+		else
+		{
+			return CompletableFuture.completedFuture(null);			
 		}
 	}
 

@@ -6,9 +6,8 @@ package com.microsoft.azure.servicebus;
 
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ScheduledFuture;
 
-public class ReplayableWorkItem<T> extends WorkItem<T>
+public class SendWorkItem<T> extends WorkItem<T>
 {
 	private byte[] amqpMessage;
 	private int messageFormat;
@@ -16,15 +15,14 @@ public class ReplayableWorkItem<T> extends WorkItem<T>
 	private boolean waitingForAck;
 	
 	private Exception lastKnownException;
-	private ScheduledFuture<?> timeoutTask;
 	
-	public ReplayableWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final Duration timeout)
+	public SendWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
 		super(completableFuture, timeout);
 		this.initialize(amqpMessage, encodedMessageSize, messageFormat);
 	}
 
-	public ReplayableWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final TimeoutTracker timeout)
+	public SendWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final TimeoutTracker timeout)
 	{
 		super(completableFuture, timeout);
 		this.initialize(amqpMessage, encodedMessageSize, messageFormat);
@@ -60,17 +58,7 @@ public class ReplayableWorkItem<T> extends WorkItem<T>
 	public void setLastKnownException(Exception exception)
 	{
 		this.lastKnownException = exception;
-	}
-	
-	public ScheduledFuture<?> getTimeoutTask()
-	{
-		return this.timeoutTask;
-	}
-	
-	public void setTimeoutTask(final ScheduledFuture<?> timeoutTask)
-	{
-		this.timeoutTask = timeoutTask;
-	}
+	}	
 	
 	public void setWaitingForAck()
 	{

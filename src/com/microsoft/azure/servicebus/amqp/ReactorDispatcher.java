@@ -134,7 +134,8 @@ public final class ReactorDispatcher
 	
 	private final class CloseHandler implements Callback
 	{
-		@Override public void run(Selectable selectable)
+		@Override
+		public void run(Selectable selectable)
 		{
 			try
 			{

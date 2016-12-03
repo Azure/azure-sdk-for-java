@@ -4,11 +4,13 @@
  */
 package com.microsoft.azure.servicebus;
 
+import java.nio.charset.Charset;
 import java.util.UUID;
 
 public final class StringUtil
 {
 	public final static String EMPTY = "";
+	private final static Charset UTF8CharSet = Charset.forName("UTF-8");
 
 	public static boolean isNullOrEmpty(String string)
 	{
@@ -34,5 +36,15 @@ public final class StringUtil
 	public static String getRandomString()
 	{
 		return UUID.randomUUID().toString().substring(0, 6);
+	}
+	
+	static String convertBytesToString(byte[] bytes)
+	{
+		return new String(bytes, UTF8CharSet);
+	}
+	
+	static byte[] convertStringToBytes(String string)
+	{
+		return string.getBytes(UTF8CharSet);
 	}
 }

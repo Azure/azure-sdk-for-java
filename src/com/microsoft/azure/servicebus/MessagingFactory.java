@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,7 +150,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return this.retryPolicy;
 	}
 
-	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws IOException
+	public static CompletableFuture<MessagingFactory> createFromConnectionStringBuilderAsync(final ConnectionStringBuilder builder) throws IOException
 	{		
 		MessagingFactory messagingFactory = new MessagingFactory(builder);
 
@@ -157,10 +158,20 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		return messagingFactory.open;
 	}
 	
-	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
+	public static CompletableFuture<MessagingFactory> createFromConnectionStringAsync(final String connectionString) throws IOException
 	{
 		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		return createFromConnectionStringBuilder(builder);
+		return createFromConnectionStringBuilderAsync(builder);
+	}
+	
+	public static MessagingFactory createFromConnectionStringBuilder(final ConnectionStringBuilder builder) throws IOException, InterruptedException, ExecutionException
+	{		
+		return createFromConnectionStringBuilderAsync(builder).get();
+	}
+	
+	public static MessagingFactory createFromConnectionString(final String connectionString) throws IOException, InterruptedException, ExecutionException
+	{		
+		return createFromConnectionStringAsync(connectionString).get();
 	}
 
 	@Override
@@ -300,7 +311,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 					}
 				},
 				this.operationTimeout, TimerType.OneTimeRun);
-			} else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
+			}
+			else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
 			{
 				this.closeTask.complete(null);
 			}

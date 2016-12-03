@@ -91,6 +91,8 @@ public final class ReceiveLinkHandler extends BaseLinkHandler
 		Delivery delivery = event.getDelivery();
 		Receiver receiveLink = (Receiver) delivery.getLink();
 
+		//TODO: What happens when a delivery has no message, but only disposition from the remote link? Like when ServiceBus service sends just a disposition to the receiver?"
+		
 		// If a message spans across deliveries (for ex: 200k message will be 4 frames (deliveries) 64k 64k 64k 8k), 
 		// all until "last-1" deliveries will be partial
 		// reactor will raise onDelivery event for all of these - we only need the last one
