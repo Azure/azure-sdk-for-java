@@ -273,7 +273,7 @@ public class TestApplicationGateway {
 
                         // Additional/explicit frontend listeners
                         .defineListener("listener1")
-                            // TODO: Where is the frontend?
+                            .withPrivateFrontend()
                             .withFrontendPort(9000)
                             .withHttp()
                             .attach()
@@ -318,6 +318,9 @@ public class TestApplicationGateway {
             Assert.assertTrue(listener != null);
             Assert.assertTrue(listener.frontendPortNumber() == 9000);
             Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(listener.protocol()));
+            Assert.assertTrue(listener.frontend() != null);
+            Assert.assertTrue(listener.frontend().isPrivate());
+            Assert.assertTrue(!listener.frontend().isPublic());
             Assert.assertTrue(appGateway.listenerByPortNumber(80) != null);
             Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);
 
@@ -513,6 +516,7 @@ public class TestApplicationGateway {
 
                         // Additional/explicit frontend listeners
                         .defineListener("listener1")
+                            .withPublicFrontend()
                             .withFrontendPort(9000)
                             .withHttps()
                             .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
@@ -562,6 +566,9 @@ public class TestApplicationGateway {
             Assert.assertTrue(listener.frontendPortNumber() == 9000);
             Assert.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostName()));
             Assert.assertTrue(listener.requiresServerNameIndication());
+            Assert.assertTrue(listener.frontend() != null);
+            Assert.assertTrue(!listener.frontend().isPrivate());
+            Assert.assertTrue(listener.frontend().isPublic());
             Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(listener.protocol()));
             Assert.assertTrue(appGateway.listenerByPortNumber(80) != null);
             Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);

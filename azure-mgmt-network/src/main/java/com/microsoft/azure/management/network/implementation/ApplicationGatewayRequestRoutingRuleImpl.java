@@ -259,10 +259,10 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
             // Determine frontend
             if (Boolean.TRUE.equals(this.associateWithPublicFrontend)) {
-                listenerByPort.withFrontend(this.parent().ensureDefaultPublicFrontend().name());
+                listenerByPort.withPublicFrontend();
                 this.parent().withNewPublicIpAddress();
             } else if (Boolean.FALSE.equals(this.associateWithPublicFrontend)) {
-                listenerByPort.withFrontend(this.parent().ensureDefaultPrivateFrontend().name());
+                listenerByPort.withPrivateFrontend();
             }
             this.associateWithPublicFrontend = null;
 

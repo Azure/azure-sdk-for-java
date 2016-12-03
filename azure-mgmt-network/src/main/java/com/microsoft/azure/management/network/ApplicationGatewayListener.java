@@ -56,7 +56,7 @@ public interface ApplicationGatewayListener extends
          * The first stage of an application gateway HTTP listener.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface Blank<ParentT> extends WithFrontendPort<ParentT> {
+        interface Blank<ParentT> extends WithFrontend<ParentT> {
         }
 
         /**
@@ -77,14 +77,24 @@ public interface ApplicationGatewayListener extends
          * The stage of an application gateway frontend listener definition allowing to specify the frontend IP configuration to associate the listener with.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching
          */
-        // TODO Since Azure does not yet support multiple frontends, this needs to be revisited when it does
         interface WithFrontend<ParentT> {
             /**
-             * Associates the HTTP listener with a frontend existing on this application gateway.
-             * @param name the name of an existing frontend
+             * Associates the HTTP listener with the application gateway's private (internal) frontend.
+             * <p>
+             * If the private frontend does not exist yet, it will be created under an auto-generated name
+             * and associated with the application gateway's subnet.
              * @return the next stage of the definition
              */
-            WithFrontendPort<ParentT> withFrontend(String name);
+            WithFrontendPort<ParentT> withPrivateFrontend();
+
+            /**
+             * Associates the HTTP listener with the application gateway's public (Internet-facing) frontend.
+             * <p>
+             * If the public frontend does not exist yet, it will be created under an auto-generated name
+             * and associated with the application gateway's public IP address.
+             * @return the next stage of the definition
+             */
+            WithFrontendPort<ParentT> withPublicFrontend();
         }
 
         /**

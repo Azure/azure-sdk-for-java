@@ -10,8 +10,10 @@ import java.io.File;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayListener.DefinitionStages.WithFrontendPort;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -145,35 +147,20 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        if (this.frontend() == null) {
-            // If not hooked up to a frontend, hook up to the first or default frontend
-            ApplicationGatewayFrontend frontend = this.parent().frontends().get(NetworkGroupableParentResourceImpl.DEFAULT);
-            if (frontend == null && !this.parent().frontends().isEmpty()) {
-                // If no default frontend, hook up to the first one, if available
-                frontend = this.parent().frontends().values().iterator().next();
-            }
-
-            if (frontend == null) {
-                // If no frontend to hook up to, fail fast
-                return null;
-            } else {
-                this.withFrontend(frontend.name());
-            }
-        }
-
         this.parent().withHttpListener(this);
         return this.parent();
     }
 
-    // Withers
+    // Helpers
 
-    @Override
-    public ApplicationGatewayListenerImpl withFrontend(String name) {
+    private ApplicationGatewayListenerImpl withFrontend(String name) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.inner().withFrontendIPConfiguration(frontendRef);
         return this;
     }
+
+    // Withers
 
     @Override
     public ApplicationGatewayListenerImpl withFrontendPort(String name) {
@@ -257,6 +244,18 @@ class ApplicationGatewayListenerImpl
     @Override
     public ApplicationGatewayListenerImpl withoutServerNameIndication() {
         this.inner().withRequireServerNameIndication(false);
+        return this;
+    }
+
+    @Override
+    public WithFrontendPort<WithCreate> withPrivateFrontend() {
+        this.withFrontend(this.parent().ensureDefaultPrivateFrontend().name());
+        return this;
+    }
+
+    @Override
+    public WithFrontendPort<WithCreate> withPublicFrontend() {
+        this.withFrontend(this.parent().ensureDefaultPublicFrontend().name());
         return this;
     }
 }
