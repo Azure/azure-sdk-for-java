@@ -210,13 +210,13 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl fromDefaultPublicFrontend() {
+    public ApplicationGatewayRequestRoutingRuleImpl fromPublicFrontend() {
         this.associateWithPublicFrontend = true;
         return this;
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl fromDefaultPrivateFrontend() {
+    public ApplicationGatewayRequestRoutingRuleImpl fromPrivateFrontend() {
         this.associateWithPublicFrontend = false;
         return this;
     }

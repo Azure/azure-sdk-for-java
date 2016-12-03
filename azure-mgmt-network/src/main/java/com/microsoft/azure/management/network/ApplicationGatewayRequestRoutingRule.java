@@ -131,14 +131,19 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @return the next stage of the definition
              */
             @Method
-            WithFrontendPort<ParentT> fromDefaultPublicFrontend();
+            WithFrontendPort<ParentT> fromPublicFrontend();
 
             /**
-             * Selects the default private frontend as the frontend for the rule to apply to.
+             * Uses the application gateway's private (internal) frontend as the frontend for the rule to apply to.
+             * <p>
+             * If the private frontend does not yet exist, it will be created under an auto-generated name.
+             * <p>
+             * If the application gateway does not have a subnet specified for its private frontend, one will be created automatically.
+             * A specific subnet can be specified in the application gateway definition's optional settings.
              * @return the next stage of the definition
              */
             @Method
-            WithFrontendPort<ParentT> fromDefaultPrivateFrontend();
+            WithFrontendPort<ParentT> fromPrivateFrontend();
         }
 
         /** The stage of an application gateway request routing rule definition allowing to create an associate listener and frontend

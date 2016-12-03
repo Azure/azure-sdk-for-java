@@ -76,7 +76,7 @@ public class TestApplicationGateway {
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")
-                            .fromDefaultPrivateFrontend()
+                            .fromPrivateFrontend()
                             .fromFrontendHttpPort(80)
                             .toBackendHttpPort(8080)
                             .toBackendIpAddress("11.1.1.1")
@@ -236,7 +236,7 @@ public class TestApplicationGateway {
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
-                            .fromDefaultPrivateFrontend()
+                            .fromPrivateFrontend()
                             .fromFrontendHttpPort(80)
                             .toBackendHttpPort(8080)
                             .toBackendIpAddress("11.1.1.1")
@@ -244,7 +244,7 @@ public class TestApplicationGateway {
                             .withCookieBasedAffinity()
                             .attach()
                         .defineRequestRoutingRule("rule443")
-                            .fromDefaultPrivateFrontend()
+                            .fromPrivateFrontend()
                             .fromFrontendHttpsPort(443)
                             .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                             .withSslCertificatePassword("Abc123")
@@ -472,7 +472,7 @@ public class TestApplicationGateway {
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
-                            .fromDefaultPublicFrontend()
+                            .fromPublicFrontend()
                             .fromFrontendHttpPort(80)
                             .toBackendHttpPort(8080)
                             .toBackendFqdn("www.microsoft.com")
@@ -482,7 +482,7 @@ public class TestApplicationGateway {
                             .withCookieBasedAffinity()
                             .attach()
                         .defineRequestRoutingRule("rule443")
-                            .fromDefaultPublicFrontend()
+                            .fromPublicFrontend()
                             .fromFrontendHttpsPort(443)
                             .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                             .withSslCertificatePassword("Abc123")
@@ -702,7 +702,7 @@ public class TestApplicationGateway {
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")
-                            .fromDefaultPublicFrontend()
+                            .fromPublicFrontend()
                             .fromFrontendHttpsPort(443)
                             .withSslCertificateFromPfxFile(new File("myTest.pfx"))
                             .withSslCertificatePassword("Abc123")
