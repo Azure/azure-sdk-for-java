@@ -6,5 +6,5 @@ jdk:
 - openjdk7
 script:
 - mvn install -DskipTests=true
-- mvn -pl !azure-batch,!azure-mgmt-website checkstyle:check
+- mvn -pl !azure-batch checkstyle:check
 - mvn -pl !azure-keyvault-cryptography,!azure-samples package javadoc:aggregate -DskipTests=true

@@ -57,6 +57,8 @@ import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
 import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
+import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +77,7 @@ public final class Azure {
     private final RedisManager redisManager;
     private final CdnManager cdnManager;
     private final DnsZoneManager dnsZoneManager;
+    private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     private final String subscriptionId;
 
@@ -282,6 +285,7 @@ public final class Azure {
         this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
         this.cdnManager = CdnManager.authenticate(restClient, subscriptionId);
         this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
+        this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
@@ -487,6 +491,20 @@ public final class Azure {
      */
     public DnsZones dnsZones() {
         return dnsZoneManager.zones();
+    }
+
+    /**
+     * @return entry point to managing web apps.
+     */
+    public WebApps webApps() {
+        return appServiceManager.webApps();
+    }
+
+    /**
+     * @return entry point to managing app services.
+     */
+    public AppServiceManager appServices() {
+        return appServiceManager;
     }
 
     /**
