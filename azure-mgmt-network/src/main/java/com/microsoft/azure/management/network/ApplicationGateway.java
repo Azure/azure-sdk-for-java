@@ -150,6 +150,7 @@ public interface ApplicationGateway extends
         DefinitionStages.WithGroup,
         DefinitionStages.WithCreate,
         DefinitionStages.WithSku,
+        DefinitionStages.WithCapacity,
         DefinitionStages.WithRequestRoutingRule,
         DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
@@ -306,10 +307,21 @@ public interface ApplicationGateway extends
             /**
              * Specifies the SKU of the application gateway to create.
              * @param skuName an application gateway SKU name
-             * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the definition
              */
-            WithRequestRoutingRule withSku(ApplicationGatewaySkuName skuName, int capacity);
+            WithCapacity withSku(ApplicationGatewaySkuName skuName);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to specify the capacity (number of instances) of the application gateway.
+         */
+        interface WithCapacity {
+            /**
+             * Specifies the capacity (number of instances) for the applicatioon gateway.
+             * @param capacity the capacity as a number between 1 and 10
+             * @return the next stage of the definition
+             */
+            WithRequestRoutingRule withCapacity(int capacity);
         }
 
         /**
@@ -490,7 +502,7 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway definition allowing to modify frontend ports.
+         * The stage of an application gateway update allowing to modify frontend ports.
          */
         interface WithFrontendPort {
             /**
@@ -528,16 +540,28 @@ public interface ApplicationGateway extends
         }
 
         /**
-         * The stage of an application gateway update allowing to modify the SKU.
+         * The stage of an application gateway update allowing to specify the SKU.
          */
         interface WithSku {
             /**
-             * Specifies the SKU of the application gateway.
+             * Specifies the SKU of the application gateway to create.
              * @param skuName an application gateway SKU name
-             * @param capacity the capacity of the SKU, between 1 and 10
              * @return the next stage of the update
              */
-            Update withSku(ApplicationGatewaySkuName skuName, int capacity);
+            Update withSku(ApplicationGatewaySkuName skuName);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to specify the capacity (number of instances) of
+         * the application gateway.
+         */
+        interface WithCapacity {
+            /**
+             * Specifies the capacity (number of instances) for the application gateway.
+             * @param capacity the capacity as a number between 1 and 10
+             * @return the next stage of the update
+             */
+            Update withCapacity(int capacity);
         }
 
         /**
@@ -640,6 +664,7 @@ public interface ApplicationGateway extends
         Appliable<ApplicationGateway>,
         Resource.UpdateWithTags<Update>,
         UpdateStages.WithSku,
+        UpdateStages.WithCapacity,
         UpdateStages.WithBackend,
         UpdateStages.WithBackendHttpConfig,
         UpdateStages.WithIpConfig,

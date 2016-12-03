@@ -72,7 +72,8 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withNewResourceGroup(GROUP_NAME)
-                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withCapacity(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")
@@ -234,7 +235,8 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withExistingResourceGroup(GROUP_NAME)
-                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withCapacity(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
@@ -388,7 +390,8 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     resource.update()
-                        .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                        .withCapacity(2)
                         .withoutFrontendHttpListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
@@ -475,7 +478,8 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withExistingResourceGroup(GROUP_NAME)
-                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withCapacity(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule80")
@@ -635,7 +639,8 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     resource.update()
-                        .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                        .withCapacity(2)
                         .withoutFrontendHttpListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
@@ -709,7 +714,8 @@ public class TestApplicationGateway {
                     resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
                         .withRegion(REGION)
                         .withNewResourceGroup(GROUP_NAME)
-                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL, 1)
+                        .withSku(ApplicationGatewaySkuName.STANDARD_SMALL)
+                        .withCapacity(1)
 
                         // Request routing rules
                         .defineRequestRoutingRule("rule1")

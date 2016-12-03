@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -452,13 +451,23 @@ class ApplicationGatewayImpl
      // Withers (fluent)
 
     @Override
-    public WithCreate withPrivateIpAddressDynamic() {
+    public ApplicationGatewayImpl withCapacity(int capacity) {
+        if (this.inner().sku() == null) {
+            this.withSku(ApplicationGatewaySkuName.STANDARD_SMALL);
+        }
+
+        this.inner().sku().withCapacity(capacity);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withPrivateIpAddressDynamic() {
         ensureDefaultPrivateFrontend().withPrivateIpAddressDynamic();
         return this;
     }
 
     @Override
-    public WithCreate withPrivateIpAddressStatic(String ipAddress) {
+    public ApplicationGatewayImpl withPrivateIpAddressStatic(String ipAddress) {
         ensureDefaultPrivateFrontend().withPrivateIpAddressStatic(ipAddress);
         return this;
     }
@@ -518,10 +527,10 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withSku(ApplicationGatewaySkuName skuName, int capacity) {
+    public ApplicationGatewayImpl withSku(ApplicationGatewaySkuName skuName) {
         ApplicationGatewaySku sku = new ApplicationGatewaySku()
                 .withName(skuName)
-                .withCapacity(capacity);
+                .withCapacity(1);
         this.inner().withSku(sku);
         return this;
     }
