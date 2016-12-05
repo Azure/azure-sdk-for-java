@@ -149,10 +149,11 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public boolean containsIpAddress(String ipAddress) {
-        if (ipAddress!= null) {
-            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses())
-            if (ipAddress.equalsIgnoreCase(address.ipAddress())) {
-                return true;
+        if (ipAddress != null) {
+            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+                if (ipAddress.equalsIgnoreCase(address.ipAddress())) {
+                    return true;
+                }
             }
         }
         return false;
@@ -160,10 +161,11 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public boolean containsFqdn(String fqdn) {
-        if (fqdn!= null) {
-            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses())
-            if (fqdn.equalsIgnoreCase(address.fqdn())) {
-                return true;
+        if (fqdn != null) {
+            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+                if (fqdn.equalsIgnoreCase(address.fqdn())) {
+                    return true;
+                }
             }
         }
         return false;
