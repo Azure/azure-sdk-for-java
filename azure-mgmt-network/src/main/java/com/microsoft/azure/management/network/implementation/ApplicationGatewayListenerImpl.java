@@ -11,30 +11,84 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayFrontendHttpListener;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
+import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 
 /**
- *  Implementation for ApplicationGatewayHttpListener.
+ *  Implementation for ApplicationGatewayListener.
  */
 @LangDefinition
-class ApplicationGatewayFrontendHttpListenerImpl
+class ApplicationGatewayListenerImpl
     extends ChildResourceImpl<ApplicationGatewayHttpListenerInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
-        ApplicationGatewayFrontendHttpListener,
-        ApplicationGatewayFrontendHttpListener.Definition<ApplicationGateway.DefinitionStages.WithHttpListenerOrBackend>,
-        ApplicationGatewayFrontendHttpListener.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayFrontendHttpListener.Update {
+        ApplicationGatewayListener,
+        ApplicationGatewayListener.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+        ApplicationGatewayListener.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayListener.Update {
 
-    ApplicationGatewayFrontendHttpListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
+    ApplicationGatewayListenerImpl(ApplicationGatewayHttpListenerInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
     }
 
     // Getters
+    @Override
+    public String networkId() {
+        ApplicationGatewayFrontend frontend = this.frontend();
+        if (frontend != null) {
+            return frontend.networkId();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String subnetName() {
+        ApplicationGatewayFrontend frontend = this.frontend();
+        if (frontend != null) {
+            return frontend.subnetName();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public boolean requiresServerNameIndication() {
+        if (this.inner().requireServerNameIndication() != null) {
+            return this.inner().requireServerNameIndication();
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public String hostName() {
+        return this.inner().hostName();
+    }
+
+    @Override
+    public String publicIpAddressId() {
+        final ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) this.frontend();
+        if (frontend == null) {
+            return null;
+        } else {
+            return frontend.publicIpAddressId();
+        }
+    }
+
+    @Override
+    public PublicIpAddress getPublicIpAddress() {
+        final String pipId = this.publicIpAddressId();
+        if (pipId == null) {
+            return null;
+        } else {
+            return this.parent().manager().publicIpAddresses().getById(pipId);
+        }
+    }
 
     @Override
     public String name() {
@@ -91,38 +145,23 @@ class ApplicationGatewayFrontendHttpListenerImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        if (this.frontend() == null) {
-            // If not hooked up to a frontend, hook up to the first or default frontend
-            ApplicationGatewayFrontend frontend = this.parent().frontends().get(NetworkGroupableParentResourceImpl.DEFAULT);
-            if (frontend == null) {
-                // If no default frontend, hook up to the first one
-                frontend = this.parent().frontends().values().iterator().next();
-            }
-
-            if (frontend == null) {
-                // If no frontend to hook up to, fail fast
-                return null;
-            } else {
-                this.withFrontend(frontend.name());
-            }
-        }
-
         this.parent().withHttpListener(this);
         return this.parent();
     }
 
-    // Withers
+    // Helpers
 
-    @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withFrontend(String name) {
+    private ApplicationGatewayListenerImpl withFrontend(String name) {
         SubResource frontendRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendIPConfigurations/" + name);
         this.inner().withFrontendIPConfiguration(frontendRef);
         return this;
     }
 
+    // Withers
+
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withFrontendPort(String name) {
+    public ApplicationGatewayListenerImpl withFrontendPort(String name) {
         SubResource portRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/frontendPorts/" + name);
         this.inner().withFrontendPort(portRef);
@@ -130,7 +169,20 @@ class ApplicationGatewayFrontendHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificate(String name) {
+    public ApplicationGatewayListenerImpl withFrontendPort(int portNumber) {
+        // Attempt to find an existing port referencing this port number
+        String portName = this.parent().frontendPortNameFromNumber(portNumber);
+        if (portName == null) {
+            // Existing frontend port with this number not found so create one
+            portName = ResourceNamer.randomResourceName("port", 9);
+            this.parent().withFrontendPort(portNumber, portName);
+        }
+
+        return this.withFrontendPort(portName);
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withSslCertificate(String name) {
         SubResource certRef = new SubResource()
                 .withId(this.parent().futureResourceId() + "/sslCertificates/" + name);
         this.inner().withSslCertificate(certRef);
@@ -140,22 +192,21 @@ class ApplicationGatewayFrontendHttpListenerImpl
     private ApplicationGatewaySslCertificateImpl sslCert = null;
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
         String name = ResourceNamer.randomResourceName("cert", 10);
         return withSslCertificateFromPfxFile(pfxFile, name);
     }
 
-    @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
         this.sslCert = this.parent().defineSslCertificate(name)
-            .withPfxFile(pfxFile);
+            .withPfxFromFile(pfxFile);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withSslCertificatePassword(String password) {
+    public ApplicationGatewayListenerImpl withSslCertificatePassword(String password) {
         if (this.sslCert != null) {
-            this.sslCert.withPassword(password).attach();
+            this.sslCert.withPfxPassword(password).attach();
             this.withSslCertificate(sslCert.name());
             this.sslCert = null;
             return this;
@@ -165,27 +216,44 @@ class ApplicationGatewayFrontendHttpListenerImpl
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withHttp() {
+    public ApplicationGatewayListenerImpl withHttp() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTP);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withHttps() {
+    public ApplicationGatewayListenerImpl withHttps() {
         this.inner().withProtocol(ApplicationGatewayProtocol.HTTPS);
         return this;
     }
 
     @Override
-    public ApplicationGatewayFrontendHttpListenerImpl withFrontendPort(int portNumber) {
-        // Attempt to find an existing port referencing this port number
-        String portName = this.parent().frontendPortNameFromNumber(portNumber);
-        if (portName == null) {
-            // Existing frontend port with this number not found so create one
-            portName = ResourceNamer.randomResourceName("port", 10);
-            this.parent().withFrontendPort(portNumber, portName);
-        }
+    public ApplicationGatewayListenerImpl withHostName(String hostname) {
+        this.inner().withHostName(hostname);
+        return this;
+    }
 
-        return this.withFrontendPort(portName);
+    @Override
+    public ApplicationGatewayListenerImpl withServerNameIndication() {
+        this.inner().withRequireServerNameIndication(true);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withoutServerNameIndication() {
+        this.inner().withRequireServerNameIndication(false);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withPrivateFrontend() {
+        this.withFrontend(this.parent().ensureDefaultPrivateFrontend().name());
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayListenerImpl withPublicFrontend() {
+        this.withFrontend(this.parent().ensureDefaultPublicFrontend().name());
+        return this;
     }
 }

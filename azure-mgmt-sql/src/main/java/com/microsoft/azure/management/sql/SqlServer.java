@@ -125,6 +125,7 @@ public interface SqlServer extends
          * Delete specified firewall rule in the server.
          *
          * @param firewallRuleName name of the firewall rule to delete
+         * @return observable for the delete operation
          */
         Observable<Void> deleteAsync(String firewallRuleName);
     }
@@ -167,6 +168,7 @@ public interface SqlServer extends
          * Delete specified elastic pool in the server.
          *
          * @param elasticPoolName name of the elastic pool to delete
+         * @return observable for the delete operation
          */
         Observable<Void> deleteAsync(String elasticPoolName);
     }
@@ -209,6 +211,7 @@ public interface SqlServer extends
          * Delete specified database in the server.
          *
          * @param databaseName name of the database to delete
+         * @return observable for the delete operation
          */
         Observable<Void> deleteAsync(String databaseName);
     }

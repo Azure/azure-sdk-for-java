@@ -68,10 +68,14 @@ abstract class NetworkGroupableParentResourceImpl<
         return this.myManager;
     }
 
-    @SuppressWarnings("unchecked")
     public FluentImplT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePIP) {
-        this.creatablePIPKeys.put(creatablePIP.key(), DEFAULT);
-        this.addCreatableDependency(creatablePIP);
+        return withNewPublicIpAddress(creatablePIP, DEFAULT);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected FluentImplT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePip, String configName) {
+        this.creatablePIPKeys.put(creatablePip.key(), configName);
+        this.addCreatableDependency(creatablePip);
         return (FluentImplT) this;
     }
 
@@ -94,11 +98,10 @@ abstract class NetworkGroupableParentResourceImpl<
                 .withRegion(this.regionName());
         Creatable<PublicIpAddress> creatablePip;
         if (super.creatableGroup == null) {
-            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName());
+            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName()).withLeafDomainLabel(dnsLeafLabel);
         } else {
-            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup);
+            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup).withLeafDomainLabel(dnsLeafLabel);
         }
-
         return withNewPublicIpAddress(creatablePip);
     }
 }

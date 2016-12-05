@@ -56,7 +56,7 @@ public interface HasBackendPort  {
     }
 
     /**
-     * Grouping of definition stages applicable as part of a load balancer update, involving modifying the backend port.
+     * Grouping of definition stages applicable as part of a resource update, involving modifying the backend port.
      */
     interface UpdateDefinitionStages {
         /**

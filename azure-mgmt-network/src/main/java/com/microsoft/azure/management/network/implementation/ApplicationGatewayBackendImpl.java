@@ -26,7 +26,7 @@ class ApplicationGatewayBackendImpl
     extends ChildResourceImpl<ApplicationGatewayBackendAddressPoolInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayBackend,
-        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithBackendOrHttpConfig>,
+        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackend.Update {
 
@@ -93,7 +93,13 @@ class ApplicationGatewayBackendImpl
     public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withIpAddress(ipAddress);
-        ensureAddresses().add(address);
+        List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
+        for (ApplicationGatewayBackendAddress a : addresses) {
+            if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
+                return this; // Address already included, so skip
+            }
+        }
+        addresses.add(address);
         return this;
     }
 
@@ -107,6 +113,10 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+        if (this.inner().backendAddresses() == null) {
+            return this;
+        }
+
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
             String curIpAddress = addresses.get(i).ipAddress();
