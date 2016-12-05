@@ -788,7 +788,7 @@ public interface ApplicationGateway extends
      * The template for an application gateway update operation, containing all the settings that
      * can be modified.
      * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
+     * Call {@code apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
         Appliable<ApplicationGateway>,
