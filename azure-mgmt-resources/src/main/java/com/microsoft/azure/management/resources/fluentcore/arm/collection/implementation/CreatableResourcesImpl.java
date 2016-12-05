@@ -11,7 +11,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.observables.BlockingObservable;
 
 import java.util.ArrayList;
 import java.util.Collection;

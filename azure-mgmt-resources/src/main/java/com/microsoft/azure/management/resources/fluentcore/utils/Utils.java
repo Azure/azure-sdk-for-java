@@ -62,8 +62,8 @@ public final class Utils {
     public static <U extends Indexable> Observable<U> rootResource(Observable<Indexable> stream) {
         return stream.last().map(new Func1<Indexable, U>() {
             @Override
-            public U call(Indexable T) {
-                return (U) T;
+            public U call(Indexable indexable) {
+                return (U) indexable;
             }
         });
     }
