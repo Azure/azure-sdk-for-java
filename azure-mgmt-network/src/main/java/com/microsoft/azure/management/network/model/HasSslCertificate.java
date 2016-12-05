@@ -67,8 +67,8 @@ public interface HasSslCertificate<T>  {
      */
     interface UpdateStages {
         /**
-         * The stage of a resource definition allowing to specify the SSL certificate to associate with it.
-         * @param <ReturnT> the next stage of the definition
+         * The stage of a resource update allowing to specify the SSL certificate to associate with it.
+         * @param <ReturnT> the next stage of the update
          */
         interface WithSslCertificate<ReturnT> {
             /**
@@ -91,8 +91,8 @@ public interface HasSslCertificate<T>  {
         }
 
         /**
-         * The stage of a resource definition allowing to specify the password for the private key of the imported SSL certificate.
-         * @param <ReturnT> the next stage of the definition
+         * The stage of a resource update allowing to specify the password for the private key of the imported SSL certificate.
+         * @param <ReturnT> the next stage of the update
          */
         interface WithSslPassword<ReturnT> {
             /**
