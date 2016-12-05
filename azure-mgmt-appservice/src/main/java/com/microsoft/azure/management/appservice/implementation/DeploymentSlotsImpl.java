@@ -58,12 +58,7 @@ class DeploymentSlotsImpl
         if (inner == null) {
             return null;
         }
-        SiteConfigInner configInner = inner.siteConfig();
-        if (configInner == null) {
-            configInner = new SiteConfigInner();
-            configInner.withLocation(inner.location());
-        }
-        return new DeploymentSlotImpl(inner.name(), inner, configInner, parent, innerCollection, super.manager, serviceClient);
+        return new DeploymentSlotImpl(inner.name(), inner, null, parent, innerCollection, super.manager, serviceClient);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {

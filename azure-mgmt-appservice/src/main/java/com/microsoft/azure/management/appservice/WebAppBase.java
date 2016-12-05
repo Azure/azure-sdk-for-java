@@ -235,12 +235,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     /**
      * @return the app settings defined on the web app
      */
-    Map<String, AppSetting> getAppSettings();
+    Map<String, AppSetting> appSettings();
 
     /**
      * @return the connection strings defined on the web app
      */
-    Map<String, ConnectionString> getConnectionStrings();
+    Map<String, ConnectionString> connectionStrings();
 
     /**
      * @return the FTP and Git publishing credentials
@@ -447,6 +447,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of the web app definition
              */
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
+
+            /**
+             * Turn off PHP support.
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withoutPhp();
 
             /**
              * Specifies the Java version.
@@ -738,6 +744,20 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
+         * The stage of the web app update allowing Java web container to be set. This is required
+         * after specifying Java version.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithWebContainer<FluentT> {
+            /**
+             * Specifies the Java web container.
+             * @param webContainer the Java web container
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withWebContainer(WebContainer webContainer);
+        }
+
+        /**
          * The stage of the web app update allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
@@ -762,14 +782,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param version the Java version
              * @return the next stage of web app update
              */
-            Update<FluentT> withJavaVersion(JavaVersion version);
+            WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
-             * Specifies the Java web container.
-             * @param webContainer the Java web container
+             * Turn off Java support.
              * @return the next stage of web app update
              */
-            Update<FluentT> withWebContainer(WebContainer webContainer);
+            Update<FluentT> withoutJava();
 
             /**
              * Specifies the Python version.
@@ -777,6 +796,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of web app update
              */
             Update<FluentT> withPythonVersion(PythonVersion version);
+
+            /**
+             * Turn off Python support.
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withoutPython();
 
             /**
              * Specifies the platform architecture to use.

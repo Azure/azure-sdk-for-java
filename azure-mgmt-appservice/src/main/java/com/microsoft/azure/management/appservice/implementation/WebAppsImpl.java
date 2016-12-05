@@ -37,7 +37,8 @@ class WebAppsImpl
             @Override
             public WebApp typeConvert(SiteInner siteInner) {
                 siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                return wrapModel(siteInner);
+                WebAppImpl impl = wrapModel(siteInner);
+                return impl.cacheAppSettingsAndConnectionStrings().toBlocking().single();
             }
         };
     }
@@ -54,7 +55,7 @@ class WebAppsImpl
             return null;
         }
         siteInner.withSiteConfig(innerCollection.getConfiguration(groupName, name));
-        return wrapModel(siteInner);
+        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override
@@ -68,10 +69,6 @@ class WebAppsImpl
             return null;
         }
         SiteConfigInner configInner = inner.siteConfig();
-        if (configInner == null) {
-            configInner = new SiteConfigInner();
-            configInner.withLocation(inner.location());
-        }
         return new WebAppImpl(inner.name(), inner, configInner, innerCollection, super.myManager, serviceClient);
     }
 

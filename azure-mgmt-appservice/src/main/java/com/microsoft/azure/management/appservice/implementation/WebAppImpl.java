@@ -218,21 +218,17 @@ class WebAppImpl
         appServicePlan = appServicePlan
                 .withRegion(region())
                 .withPricingTier(pricingTier);
-        if (super.creatableGroup != null) {
+        if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
-        addCreatableDependency(appServicePlan);
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withExistingAppServicePlan(String appServicePlanName) {
-        String id = ResourceUtils.constructResourceId(myManager.subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanName, "");
-        inner().withServerFarmId(id);
+        if (isInCreateMode()) {
+            addCreatableDependency(appServicePlan);
+        } else {
+            addAppliableDependency(appServicePlan);
+        }
         return this;
     }
 
@@ -240,7 +236,7 @@ class WebAppImpl
     @SuppressWarnings("unchecked")
     public WebAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
-        if (super.creatableGroup != null) {
+        if (super.creatableGroup != null && isInCreateMode()) {
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
         }
         return this;

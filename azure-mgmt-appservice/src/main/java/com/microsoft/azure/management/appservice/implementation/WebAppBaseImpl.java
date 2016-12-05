@@ -9,8 +9,6 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
@@ -36,9 +34,12 @@ import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.UsageState;
 import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.appservice.WebContainer;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
+import rx.functions.Func3;
 import rx.functions.FuncN;
 
 import java.util.ArrayList;
@@ -65,10 +66,13 @@ abstract class WebAppBaseImpl<
         implements
             WebAppBase<FluentT>,
             WebAppBase.Definition<FluentT>,
-            WebAppBase.Update<FluentT> {
+            WebAppBase.Update<FluentT>,
+            WebAppBase.UpdateStages.WithWebContainer<FluentT> {
 
     final WebAppsInner client;
     final WebSiteManagementClientImpl serviceClient;
+    Map<String, AppSetting> cachedAppSettings;
+    Map<String, ConnectionString> cachedConnectionStrings;
 
     private Set<String> hostNamesSet;
     private Set<String> enabledHostNamesSet;
@@ -275,16 +279,16 @@ abstract class WebAppBaseImpl<
 
     @Override
     public PhpVersion phpVersion() {
-        if (inner().siteConfig() == null) {
-            return null;
+        if (inner().siteConfig() == null || inner().siteConfig().phpVersion() == null) {
+            return PhpVersion.OFF;
         }
         return new PhpVersion(inner().siteConfig().phpVersion());
     }
 
     @Override
     public PythonVersion pythonVersion() {
-        if (inner().siteConfig() == null) {
-            return null;
+        if (inner().siteConfig() == null || inner().siteConfig().pythonVersion() == null) {
+            return PythonVersion.OFF;
         }
         return new PythonVersion(inner().siteConfig().pythonVersion());
     }
@@ -331,8 +335,8 @@ abstract class WebAppBaseImpl<
 
     @Override
     public JavaVersion javaVersion() {
-        if (inner().siteConfig() == null) {
-            return null;
+        if (inner().siteConfig() == null || inner().siteConfig().javaVersion() == null) {
+            return JavaVersion.OFF;
         }
         return new JavaVersion(inner().siteConfig().javaVersion());
     }
@@ -370,32 +374,41 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
-    public Map<String, AppSetting> getAppSettings() {
-        final StringDictionaryInner inner = listAppSettings().toBlocking().single();
-        final SlotConfigNamesResourceInner slotConfigs = listSlotConfigurations().toBlocking().single();
-        if (inner == null || inner.properties() == null) {
-            return null;
-        }
-        return Maps.asMap(inner.properties().keySet(), new Function<String, AppSetting>() {
-            @Override
-            public AppSetting apply(String input) {
-                return new AppSettingImpl(input, inner.properties().get(input),
-                        slotConfigs.appSettingNames() != null && slotConfigs.appSettingNames().contains(input));
-            }
-        });
+    public Map<String, AppSetting> appSettings() {
+        return cachedAppSettings;
     }
 
     @Override
-    public Map<String, ConnectionString> getConnectionStrings() {
-        final ConnectionStringDictionaryInner inner = listConnectionStrings().toBlocking().single();
-        final SlotConfigNamesResourceInner slotConfigs = listSlotConfigurations().toBlocking().single();
-        if (inner == null || inner.properties() == null) {
-            return null;
-        }
-        return Maps.asMap(inner.properties().keySet(), new Function<String, ConnectionString>() {
+    public Map<String, ConnectionString> connectionStrings() {
+        return cachedConnectionStrings;
+    }
+
+    @SuppressWarnings("unchecked")
+    Observable<FluentT> cacheAppSettingsAndConnectionStrings() {
+        final FluentT self = (FluentT) this;
+        return Observable.zip(listAppSettings(), listConnectionStrings(), listSlotConfigurations(), new Func3<StringDictionaryInner, ConnectionStringDictionaryInner, SlotConfigNamesResourceInner, FluentT>() {
             @Override
-            public ConnectionString apply(String input) {
-                return new ConnectionStringImpl(input, inner.properties().get(input), slotConfigs.connectionStringNames().contains(input));
+            public FluentT call(final StringDictionaryInner appSettingsInner, final ConnectionStringDictionaryInner connectionStringsInner, final SlotConfigNamesResourceInner slotConfigs) {
+                cachedAppSettings = new HashMap<>();
+                cachedConnectionStrings = new HashMap<>();
+                if (appSettingsInner != null && appSettingsInner.properties() != null) {
+                    cachedAppSettings = Maps.asMap(appSettingsInner.properties().keySet(), new Function<String, AppSetting>() {
+                        @Override
+                        public AppSetting apply(String input) {
+                            return new AppSettingImpl(input, appSettingsInner.properties().get(input),
+                                    slotConfigs.appSettingNames() != null && slotConfigs.appSettingNames().contains(input));
+                        }
+                    });
+                }
+                if (connectionStringsInner != null && connectionStringsInner.properties() != null) {
+                    cachedConnectionStrings = Maps.asMap(connectionStringsInner.properties().keySet(), new Function<String, ConnectionString>() {
+                        @Override
+                        public ConnectionString apply(String input) {
+                            return new ConnectionStringImpl(input, connectionStringsInner.properties().get(input), slotConfigs.connectionStringNames().contains(input));
+                        }
+                    });
+                }
+                return self;
             }
         });
     }
@@ -456,7 +469,23 @@ abstract class WebAppBaseImpl<
         return locationObs.flatMap(new Func1<String, Observable<SiteInner>>() {
             @Override
             public Observable<SiteInner> call(String s) {
-                return createOrUpdateInner(inner());
+                // Need to send an empty config object for deployment slot
+                // creation, otherwise the parent configs are copied
+                final boolean emptyConfig = inner().siteConfig() == null;
+                if (emptyConfig) {
+                    inner().withSiteConfig(new SiteConfigInner());
+                    inner().siteConfig().withLocation(regionName());
+                }
+                return createOrUpdateInner(inner())
+                        .map(new Func1<SiteInner, SiteInner>() {
+                            @Override
+                            public SiteInner call(SiteInner siteInner) {
+                                if (emptyConfig) {
+                                    inner().withSiteConfig(null);
+                                }
+                                return siteInner;
+                            }
+                        });
             }
         })
         // Submit hostname bindings
@@ -698,6 +727,11 @@ abstract class WebAppBaseImpl<
                 setInner(siteInner);
                 return normalizeProperties();
             }
+        }).flatMap(new Func1<FluentT, Observable<FluentT>>() {
+            @Override
+            public Observable<FluentT> call(FluentT fluentT) {
+                return cacheAppSettingsAndConnectionStrings();
+            }
         });
     }
 
@@ -833,6 +867,11 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
+    public FluentImplT withoutPhp() {
+        return withPhpVersion(new PhpVersion(""));
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withJavaVersion(JavaVersion version) {
         if (inner().siteConfig() == null) {
@@ -843,14 +882,24 @@ abstract class WebAppBaseImpl<
     }
 
     @Override
+    public FluentImplT withoutJava() {
+        return withJavaVersion(new JavaVersion("")).withWebContainer(null);
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT withWebContainer(WebContainer webContainer) {
         if (inner().siteConfig() == null) {
             inner().withSiteConfig(new SiteConfigInner());
         }
-        String[] containerInfo = webContainer.toString().split(" ");
-        inner().siteConfig().withJavaContainer(containerInfo[0]);
-        inner().siteConfig().withJavaContainerVersion(containerInfo[1]);
+        if (webContainer == null) {
+            inner().siteConfig().withJavaContainer(null);
+            inner().siteConfig().withJavaContainerVersion(null);
+        } else {
+            String[] containerInfo = webContainer.toString().split(" ");
+            inner().siteConfig().withJavaContainer(containerInfo[0]);
+            inner().siteConfig().withJavaContainerVersion(containerInfo[1]);
+        }
         return (FluentImplT) this;
     }
 
@@ -862,6 +911,11 @@ abstract class WebAppBaseImpl<
         }
         inner().siteConfig().withPythonVersion(version.toString());
         return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentImplT withoutPython() {
+        return withPythonVersion(new PythonVersion(""));
     }
 
     @Override
