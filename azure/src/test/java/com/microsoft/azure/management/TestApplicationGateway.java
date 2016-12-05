@@ -150,6 +150,11 @@ public class TestApplicationGateway {
                         .withFrontendPort(81, "port81")         // Add a new port
                         .withoutBackendIpAddress("11.1.1.1")    // Remove from all existing backends
                         .defineListener("listener2")
+                            .withPrivateFrontend()
+                            .withFrontendPort(81)
+                            .withHttps()
+                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                            .withSslCertificatePassword("Abc123")
                             .attach()
                         .defineBackend("backend2")
                             .withIpAddress("11.1.1.3")
@@ -168,7 +173,7 @@ public class TestApplicationGateway {
             updateThread.start();
 
             // ...But bail out after 30 sec as it should be enough to test the results
-            Thread.sleep(1000 * 30);
+            updateThread.join();
 
             resource.refresh();
 
@@ -182,10 +187,13 @@ public class TestApplicationGateway {
             Assert.assertTrue(resource.frontendPorts().containsKey("port81"));
             Assert.assertTrue("port81".equalsIgnoreCase(resource.frontendPortNameFromNumber(81)));
 
-            // Veify listeners
+            // Verify listeners
             Assert.assertTrue(resource.listeners().size() == 2);
             ApplicationGatewayListener listener = resource.listeners().get("listener2");
             Assert.assertTrue(listener != null);
+            Assert.assertTrue(listener.frontend().isPrivate());
+            Assert.assertTrue(!listener.frontend().isPublic());
+            Assert.assertTrue("port81".equalsIgnoreCase(listener.frontendPortName()));
 
             // Verify backends
             Assert.assertTrue(resource.backends().size() == 2);
@@ -203,7 +211,6 @@ public class TestApplicationGateway {
             ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule2");
             Assert.assertTrue(rule != null);
 
-            updateThread.join(5 * 1000);
             return resource;
         }
     }
