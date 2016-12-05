@@ -93,7 +93,13 @@ class ApplicationGatewayBackendImpl
     public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withIpAddress(ipAddress);
-        ensureAddresses().add(address);
+        List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
+        for (ApplicationGatewayBackendAddress a : addresses) {
+            if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
+                return this; // Address already included, so skip
+            }
+        }
+        addresses.add(address);
         return this;
     }
 
