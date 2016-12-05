@@ -160,9 +160,15 @@ public class TestApplicationGateway {
                             .withIpAddress("11.1.1.3")
                             .attach()
                         .defineBackendHttpConfiguration("config2")
-                            .attach()   // TODO: More tests
+                            .withCookieBasedAffinity()
+                            .withPort(8081)
+                            .withRequestTimeout(33)
+                            .attach()
                         .defineRequestRoutingRule("rule2")
-                            .attach()   // TODO: More tests
+                            .fromListener("listener2")
+                            .toBackendHttpConfiguration("config2")
+                            .toBackend("backend2")
+                            .attach()
                         .withTag("tag1", "value1")
                         .withTag("tag2", "value2")
                         .apply();
@@ -194,22 +200,34 @@ public class TestApplicationGateway {
             Assert.assertTrue(listener.frontend().isPrivate());
             Assert.assertTrue(!listener.frontend().isPublic());
             Assert.assertTrue("port81".equalsIgnoreCase(listener.frontendPortName()));
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(listener.protocol()));
+            Assert.assertTrue(listener.sslCertificate() != null);
 
             // Verify backends
             Assert.assertTrue(resource.backends().size() == 2);
             ApplicationGatewayBackend backend = resource.backends().get("backend2");
             Assert.assertTrue(backend != null);
             Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertTrue("11.1.1.3".equalsIgnoreCase(backend.addresses().get(0).ipAddress()));
 
             // Verify HTTP configs
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 2);
             ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config2");
             Assert.assertTrue(config != null);
+            Assert.assertTrue(config.cookieBasedAffinity());
+            Assert.assertTrue(config.port() == 8081);
+            Assert.assertTrue(config.requestTimeout() == 33);
 
             // Verify request routing rules
             Assert.assertTrue(resource.requestRoutingRules().size() == 2);
             ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule2");
             Assert.assertTrue(rule != null);
+            Assert.assertTrue(rule.listener() != null);
+            Assert.assertTrue("listener2".equals(rule.listener().name()));
+            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertTrue("config2".equalsIgnoreCase(rule.backendHttpConfiguration().name()));
+            Assert.assertTrue(rule.backend() != null);
+            Assert.assertTrue("backend2".equalsIgnoreCase(rule.backend().name()));
 
             return resource;
         }

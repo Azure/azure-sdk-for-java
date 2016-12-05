@@ -13,14 +13,12 @@ import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithRequestRoutingRuleOrCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
-import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule.DefinitionStages.WithAttach;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -265,7 +263,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public WithAttach<WithRequestRoutingRuleOrCreate> withoutCookieBasedAffinity() {
+    public ApplicationGatewayRequestRoutingRuleImpl withoutCookieBasedAffinity() {
         this.parent().updateBackendHttpConfiguration(ensureBackendHttpConfig().name())
             .withoutCookieBasedAffinity();
         return this;
