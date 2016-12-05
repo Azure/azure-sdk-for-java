@@ -107,6 +107,10 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+        if (this.inner().backendAddresses() == null) {
+            return this;
+        }
+
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
             String curIpAddress = addresses.get(i).ipAddress();
