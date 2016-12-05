@@ -132,8 +132,10 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().subnetName() != null);
             Assert.assertTrue(rule.listener().networkId() != null);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
+            Assert.assertTrue(rule.backend() != null);
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.1"));
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.2"));
             Assert.assertTrue(rule.backendPort() == 8080);
-            Assert.assertTrue(rule.backendAddresses().size() == 2);
 
             creationThread.join();
             return appGateway;
@@ -208,7 +210,7 @@ public class TestApplicationGateway {
             ApplicationGatewayBackend backend = resource.backends().get("backend2");
             Assert.assertTrue(backend != null);
             Assert.assertTrue(backend.addresses().size() == 1);
-            Assert.assertTrue("11.1.1.3".equalsIgnoreCase(backend.addresses().get(0).ipAddress()));
+            Assert.assertTrue(backend.containsIpAddress("11.1.1.3"));
 
             // Verify HTTP configs
             Assert.assertTrue(resource.backendHttpConfigurations().size() == 2);
@@ -386,6 +388,8 @@ public class TestApplicationGateway {
             ApplicationGatewayBackend backend = appGateway.backends().get("backend1");
             Assert.assertTrue(backend != null);
             Assert.assertTrue(backend.addresses().size() == 2);
+            Assert.assertTrue(backend.containsIpAddress("11.1.1.3"));
+            Assert.assertTrue(backend.containsIpAddress("11.1.1.4"));
 
             // Verify request routing rules
             Assert.assertTrue(appGateway.requestRoutingRules().size() == 3);
@@ -396,8 +400,10 @@ public class TestApplicationGateway {
             Assert.assertTrue(vnet.id().equalsIgnoreCase(rule.listener().frontend().networkId()));
             Assert.assertTrue(rule.frontendPort() == 80);
             Assert.assertTrue(rule.backendPort() == 8080);
-            Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(rule.cookieBasedAffinity());
+            Assert.assertTrue(rule.backendAddresses().size() == 2);
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.1"));
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.2"));
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assert.assertTrue(rule != null);
@@ -650,8 +656,12 @@ public class TestApplicationGateway {
             Assert.assertTrue(existingPips.get(0).id().equalsIgnoreCase(rule.publicIpAddressId()));
             Assert.assertTrue(rule.frontendPort() == 80);
             Assert.assertTrue(rule.backendPort() == 8080);
-            Assert.assertTrue(rule.backendAddresses().size() == 4);
             Assert.assertTrue(rule.cookieBasedAffinity());
+            Assert.assertTrue(rule.backendAddresses().size() == 4);
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.2"));
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.1"));
+            Assert.assertTrue(rule.backend().containsFqdn("www.microsoft.com"));
+            Assert.assertTrue(rule.backend().containsFqdn("www.example.com"));
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assert.assertTrue(rule != null);
@@ -673,7 +683,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.backend() != null);
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
-            creationThread.join(5 * 1000);
+            creationThread.join();
 
             return appGateway;
         }
@@ -819,16 +829,18 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.listener().frontend() != null);
             Assert.assertTrue(rule.listener().frontend().isPublic());
             Assert.assertTrue(!rule.listener().frontend().isPrivate());
-            Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(rule.sslCertificate() != null);
+            Assert.assertTrue(rule.backendAddresses().size() == 2);
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.1"));
+            Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.2"));
 
             // Verify certificates
             Assert.assertTrue(appGateway.sslCertificates().size() == 1);
 
-            creationThread.join(5 * 1000);
+            creationThread.join();
             return appGateway;
         }
 
