@@ -11,11 +11,11 @@ package com.microsoft.azure.batch.protocol.models;
 import java.util.List;
 
 /**
- * Response to a CloudTaskOperations.ListSubtasks request.
+ * The result of listing the subtasks of a task.
  */
 public class CloudTaskListSubtasksResult {
     /**
-     * The list of information of subtasks.
+     * The list of subtasks.
      */
     private List<SubtaskInformation> value;
 

@@ -11,7 +11,9 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A reference to an Azure Virtual Machines Marketplace image.
+ * A reference to an Azure Virtual Machines Marketplace image. To get the list
+ * of all imageReferences verified by Azure Batch, see the 'List supported
+ * node agent SKUs' operation.
  */
 public class ImageReference {
     /**

@@ -11,19 +11,21 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A range of task ids that a task can depend on. All tasks with ids in the
+ * A range of task IDs that a task can depend on. All tasks with IDs in the
  * range must complete successfully before the dependent task can be
  * scheduled.
+ * The start and end of the range are inclusive. For example, if a range has
+ * start 9 and end 12, then it represents tasks '9', '10', '11' and '12'.
  */
 public class TaskIdRange {
     /**
-     * The first task id in the range.
+     * The first task ID in the range.
      */
     @JsonProperty(required = true)
     private int start;
 
     /**
-     * The last task id in the range.
+     * The last task ID in the range.
      */
     @JsonProperty(required = true)
     private int end;

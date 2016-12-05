@@ -17,13 +17,14 @@ import java.util.List;
  */
 public class TaskDependencies {
     /**
-     * The list of task ids that must complete before this task can be
-     * scheduled.
+     * The list of task IDs that this task depends on. All tasks in this list
+     * must complete successfully before the dependent task can be scheduled.
      */
     private List<String> taskIds;
 
     /**
-     * The list of task ranges that must complete before this task can be
+     * The list of task ID ranges that this task depends on. All tasks in all
+     * ranges must complete successfully before the dependent task can be
      * scheduled.
      */
     private List<TaskIdRange> taskIdRanges;

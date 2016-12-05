@@ -30,8 +30,11 @@ public class JobReleaseTaskExecutionInformation {
     private DateTime endTime;
 
     /**
-     * The current state of the Job Release task.
-     * Possible values include: 'running', 'completed'.
+     * The current state of the Job Release task on the compute node.
+     * Possible values are: running – the task is currently running (including
+     * retrying). completed – the task has exited, or the Batch service was
+     * unable to start the task due to scheduling errors. Possible values
+     * include: 'running', 'completed'.
      */
     @JsonProperty(required = true)
     private JobReleaseTaskState state;
@@ -61,8 +64,7 @@ public class JobReleaseTaskExecutionInformation {
     private Integer exitCode;
 
     /**
-     * The scheduling error encountered by the Batch service when starting the
-     * task.
+     * The error encountered by the Batch service when starting the task.
      */
     private TaskSchedulingError schedulingError;
 

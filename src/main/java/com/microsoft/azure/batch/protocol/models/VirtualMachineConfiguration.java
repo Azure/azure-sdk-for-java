@@ -22,11 +22,16 @@ public class VirtualMachineConfiguration {
     private ImageReference imageReference;
 
     /**
-     * The SKU of Batch Node Agent to be provisioned on the compute node.
+     * The SKU of the Batch node agent to be provisioned on compute nodes in
+     * the pool.
      * The Batch node agent is a program that runs on each node in the pool,
      * and provides the command-and-control interface between the node and
      * the Batch service. There are different implementations of the node
-     * agent, known as SKUs, for different operating systems.
+     * agent, known as SKUs, for different operating systems. You must
+     * specify a node agent SKU which matches the selected image reference.
+     * To get the list of supported node agent SKUs along with their list of
+     * verified image references, see the 'List supported node agent SKUs'
+     * operation.
      */
     @JsonProperty(required = true)
     private String nodeAgentSKUId;

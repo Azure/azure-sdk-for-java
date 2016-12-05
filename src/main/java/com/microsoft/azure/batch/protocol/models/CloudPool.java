@@ -18,7 +18,7 @@ import java.util.List;
 public class CloudPool {
     /**
      * A string that uniquely identifies the pool within the account.
-     * The id can contain any combination of alphanumeric characters including
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      * It is common to use a GUID for the id.
      */
@@ -26,6 +26,8 @@ public class CloudPool {
 
     /**
      * The display name for the pool.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
     private String displayName;
 
@@ -36,11 +38,18 @@ public class CloudPool {
 
     /**
      * The ETag of the pool.
+     * This is an opaque string. You can use it to detect whether the pool has
+     * changed between requests. In particular, you can be pass the ETag when
+     * updating a pool to specify that your changes should take effect only
+     * if nobody else has modified the pool in the meantime.
      */
     private String eTag;
 
     /**
      * The last modified time of the pool.
+     * This is the last time at which the pool level data, such as the
+     * targetDedicated or enableAutoscale settings, changed. It does not
+     * factor in node-level changes such as a compute node changing state.
      */
     private DateTime lastModified;
 
@@ -51,7 +60,15 @@ public class CloudPool {
 
     /**
      * The current state of the pool.
-     * Possible values include: 'active', 'deleting', 'upgrading'.
+     * Possible values are: active – The pool is available to run tasks
+     * subject to the availability of compute nodes. deleting – The user has
+     * requested that the pool be deleted, but the delete operation has not
+     * yet completed. upgrading – The user has requested that the operating
+     * system of the pool's nodes be upgraded, but the upgrade operation has
+     * not yet completed (that is, some nodes in the pool have not yet been
+     * upgraded). While upgrading, the pool may be able to run tasks (with
+     * reduced capacity) but this is not guaranteed. Possible values include:
+     * 'active', 'deleting', 'upgrading'.
      */
     private PoolState state;
 
@@ -62,7 +79,15 @@ public class CloudPool {
 
     /**
      * Whether the pool is resizing.
-     * Possible values include: 'steady', 'resizing', 'stopping'.
+     * Possible values are: steady – The pool is not resizing. There are no
+     * changes to the number of nodes in the pool in progress. A pool enters
+     * this state when it is created and when no operations are being
+     * performed on the pool to change the number of dedicated nodes.
+     * resizing - The pool is resizing; that is, compute nodes are being
+     * added to or removed from the pool. stopping - The pool was resizing,
+     * but the user has requested that the resize be stopped, but the stop
+     * request has not yet been completed. Possible values include: 'steady',
+     * 'resizing', 'stopping'.
      */
     private AllocationState allocationState;
 
@@ -74,6 +99,19 @@ public class CloudPool {
     /**
      * The size of virtual machines in the pool. All virtual machines in a
      * pool are the same size.
+     * For information about available sizes of virtual machines for Cloud
+     * Services pools (pools created with cloudServiceConfiguration), see
+     * Sizes for Cloud Services
+     * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
+     * Batch supports all Cloud Services VM sizes except ExtraSmall. For
+     * information about available VM sizes for pools using images from the
+     * Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration) see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/)
+     * or Sizes for Virtual Machines (Windows)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/).
+     * Batch supports all Azure VM sizes except STANDARD_A0 and those with
+     * premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
      */
     private String vmSize;
 
@@ -93,8 +131,9 @@ public class CloudPool {
 
     /**
      * The timeout for allocation of compute nodes to the pool.
-     * This is the timeout for the most recent resize operation. The default
-     * value is 10 minutes.
+     * This is the timeout for the most recent resize operation. (The initial
+     * sizing when the pool is created counts as a resize.) The default value
+     * is 15 minutes.
      */
     private Period resizeTimeout;
 
@@ -113,8 +152,8 @@ public class CloudPool {
 
     /**
      * The desired number of compute nodes in the pool.
-     * This property must have the default value if enableAutoScale is true.
-     * It is required if enableAutoScale is false.
+     * This property is not set if enableAutoScale is true. It is required if
+     * enableAutoScale is false.
      */
     private Integer targetDedicated;
 
@@ -127,21 +166,31 @@ public class CloudPool {
 
     /**
      * A formula for the desired number of compute nodes in the pool.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
     private String autoScaleFormula;
 
     /**
-     * A time interval for the desired AutoScale evaluation period in the pool.
+     * The time interval at which to automatically adjust the pool size
+     * according to the autoscale formula.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
     private Period autoScaleEvaluationInterval;
 
     /**
      * The results and errors from the last execution of the autoscale formula.
+     * This property is set only if the pool automatically scales, i.e.
+     * enableAutoScale is true.
      */
     private AutoScaleRun autoScaleRun;
 
     /**
      * Whether the pool permits direct communication between nodes.
+     * This imposes restrictions on which nodes can be assigned to the pool.
+     * Specifying this value can reduce the chance of the requested number of
+     * nodes to be allocated in the pool.
      */
     private Boolean enableInterNodeCommunication;
 
@@ -158,6 +207,14 @@ public class CloudPool {
     /**
      * The list of certificates to be installed on each compute node in the
      * pool.
+     * For Windows compute nodes, the Batch service installs the certificates
+     * to the specified certificate store and location. For Linux compute
+     * nodes, the certificates are stored in a directory inside the task
+     * working directory and an environment variable
+     * AZ_BATCH_CERTIFICATES_DIR is supplied to the task to query for this
+     * location. For certificates with visibility of remoteuser, a certs
+     * directory is created in the user's home directory (e.g.,
+     * /home/&lt;user-name&gt;/certs) where certificates are placed.
      */
     private List<CertificateReference> certificateReferences;
 

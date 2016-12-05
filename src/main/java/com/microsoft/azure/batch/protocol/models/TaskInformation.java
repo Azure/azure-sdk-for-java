@@ -20,17 +20,17 @@ public class TaskInformation {
     private String taskUrl;
 
     /**
-     * The id of the job to which the task belongs.
+     * The ID of the job to which the task belongs.
      */
     private String jobId;
 
     /**
-     * The id of the task.
+     * The ID of the task.
      */
     private String taskId;
 
     /**
-     * The id of the subtask if the task is a multi-instance task.
+     * The ID of the subtask if the task is a multi-instance task.
      */
     private Integer subtaskId;
 

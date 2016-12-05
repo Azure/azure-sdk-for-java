@@ -17,14 +17,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class MultiInstanceSettings {
     /**
-     * The number of compute nodes required by the multi-instance task.
+     * The number of compute nodes required by the task.
      */
     @JsonProperty(required = true)
     private int numberOfInstances;
 
     /**
-     * The command to run on the compute node instances for coordinating among
-     * the subtasks.
+     * The command line to run on all the compute nodes to enable them to
+     * coordinate when the primary runs the main task command.
+     * A typical coordination command line launches a background service and
+     * verifies that the service is ready to process inter-node messages.
      */
     private String coordinationCommandLine;
 

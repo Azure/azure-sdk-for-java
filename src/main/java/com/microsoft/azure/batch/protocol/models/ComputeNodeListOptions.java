@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class ComputeNodeListOptions {
     /**
-     * An OData $filter clause.
+     * An OData $filter clause..
      */
     @JsonProperty(value = "")
     private String filter;
@@ -29,7 +29,8 @@ public class ComputeNodeListOptions {
     private String select;
 
     /**
-     * The maximum number of items to return in the response.
+     * The maximum number of items to return in the response. A maximum of
+     * 1000 nodes can be returned.
      */
     @JsonProperty(value = "")
     private Integer maxResults;
@@ -50,8 +51,7 @@ public class ComputeNodeListOptions {
     private String clientRequestId;
 
     /**
-     * Whether the server should return the client-request-id identifier in
-     * the response.
+     * Whether the server should return the client-request-id in the response.
      */
     @JsonProperty(value = "")
     private Boolean returnClientRequestId;

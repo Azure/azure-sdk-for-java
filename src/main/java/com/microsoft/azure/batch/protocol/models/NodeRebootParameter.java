@@ -10,7 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 
 /**
- * Parameters for a ComputeNodeOperations.Reboot request.
+ * Options for rebooting a compute node.
  */
 public class NodeRebootParameter {
     /**

@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudJobScheduleOperations.Update request.
+ * The set of changes to be made to a job schedule.
  */
 public class JobScheduleUpdateParameter {
     /**
@@ -25,6 +25,8 @@ public class JobScheduleUpdateParameter {
 
     /**
      * Details of the jobs to be created on this schedule.
+     * Updates affect only jobs that are started after the update has taken
+     * place. Any currently active job continues with the older specification.
      */
     @JsonProperty(required = true)
     private JobSpecification jobSpecification;

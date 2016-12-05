@@ -11,6 +11,7 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.ComputeNodes;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.ComputeNode;
@@ -53,7 +54,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
@@ -61,7 +61,6 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
-import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -72,8 +71,9 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
-import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.functions.Func1;
+import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -103,67 +103,109 @@ public final class ComputeNodesImpl implements ComputeNodes {
     interface ComputeNodesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/users")
-        Call<ResponseBody> addUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body ComputeNodeUser user, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Body ComputeNodeUser user, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "pools/{poolId}/nodes/{nodeId}/users/{userName}", method = "DELETE", hasBody = true)
-        Call<ResponseBody> deleteUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @PUT("pools/{poolId}/nodes/{nodeId}/users/{userName}")
-        Call<ResponseBody> updateUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Body NodeUpdateUserParameter nodeUpdateUserParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateUser(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("userName") String userName, @Body NodeUpdateUserParameter nodeUpdateUserParameter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}")
-        Call<ResponseBody> get(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/reboot")
-        Call<ResponseBody> reboot(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeRebootParameter nodeRebootParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> reboot(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeRebootParameter nodeRebootParameter, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/reimage")
-        Call<ResponseBody> reimage(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeReimageParameter nodeReimageParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> reimage(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeReimageParameter nodeReimageParameter, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/disablescheduling")
-        Call<ResponseBody> disableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeDisableSchedulingParameter nodeDisableSchedulingParameter, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> disableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Body NodeDisableSchedulingParameter nodeDisableSchedulingParameter, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("pools/{poolId}/nodes/{nodeId}/enablescheduling")
-        Call<ResponseBody> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> enableScheduling(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/remoteloginsettings")
-        Call<ResponseBody> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRemoteLoginSettings(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/rdp")
         @Streaming
-        Call<ResponseBody> getRemoteDesktop(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getRemoteDesktop(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes")
-        Call<ResponseBody> list(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> list(@Path("poolId") String poolId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET
-        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET("{nextLink}")
+        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void addUser(String poolId, String nodeId, ComputeNodeUser user) {
+        addUserWithServiceResponseAsync(poolId, nodeId, user).toBlocking().single().getBody();
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(addUserWithServiceResponseAsync(poolId, nodeId, user), serviceCallback);
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> addUser(String poolId, String nodeId, ComputeNodeUser user) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user) {
+        return addUserWithServiceResponseAsync(poolId, nodeId, user).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>> addUserWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeUser user) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -186,78 +228,78 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addUserDelegate(call.execute());
-    }
-
-    /**
-     * Adds a user account to the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
-     * @param user The user account to be created.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (user == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter user is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(user, serviceCallback);
-        final ComputeNodeAddUserOptions computeNodeAddUserOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> clientResponse = addUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param computeNodeAddUserOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void addUser(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions) {
+        addUserWithServiceResponseAsync(poolId, nodeId, user, computeNodeAddUserOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @param computeNodeAddUserOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(addUserWithServiceResponseAsync(poolId, nodeId, user, computeNodeAddUserOptions), serviceCallback);
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @param computeNodeAddUserOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> addUser(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions) {
+        return addUserWithServiceResponseAsync(poolId, nodeId, user, computeNodeAddUserOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
+     * @param user The user account to be created.
+     * @param computeNodeAddUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>> addUserWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -292,76 +334,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return addUserDelegate(call.execute());
-    }
-
-    /**
-     * Adds a user account to the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
-     * @param user The user account to be created.
-     * @param computeNodeAddUserOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall addUserAsync(String poolId, String nodeId, ComputeNodeUser user, ComputeNodeAddUserOptions computeNodeAddUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (user == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter user is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(user, serviceCallback);
-        Validator.validate(computeNodeAddUserOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeAddUserOptions != null) {
-            timeout = computeNodeAddUserOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeAddUserOptions != null) {
-            clientRequestId = computeNodeAddUserOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeAddUserOptions != null) {
-            returnClientRequestId = computeNodeAddUserOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeAddUserOptions != null) {
-            ocpDate = computeNodeAddUserOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(addUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.addUser(poolId, nodeId, user, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> clientResponse = addUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeAddUserHeaders> addUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -373,16 +357,58 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void deleteUser(String poolId, String nodeId, String userName) {
+        deleteUserWithServiceResponseAsync(poolId, nodeId, userName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(deleteUserWithServiceResponseAsync(poolId, nodeId, userName), serviceCallback);
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> deleteUser(String poolId, String nodeId, String userName) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteUserAsync(String poolId, String nodeId, String userName) {
+        return deleteUserWithServiceResponseAsync(poolId, nodeId, userName).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>> deleteUserWithServiceResponseAsync(String poolId, String nodeId, String userName) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -404,77 +430,78 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return deleteUserDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a user account from the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
-     * @param userName The name of the user account to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> clientResponse = deleteUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param computeNodeDeleteUserOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void deleteUser(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions) {
+        deleteUserWithServiceResponseAsync(poolId, nodeId, userName, computeNodeDeleteUserOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @param computeNodeDeleteUserOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(deleteUserWithServiceResponseAsync(poolId, nodeId, userName, computeNodeDeleteUserOptions), serviceCallback);
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @param computeNodeDeleteUserOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> deleteUser(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions) {
+        return deleteUserWithServiceResponseAsync(poolId, nodeId, userName, computeNodeDeleteUserOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
+     * @param userName The name of the user account to delete.
+     * @param computeNodeDeleteUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>> deleteUserWithServiceResponseAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -508,75 +535,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return deleteUserDelegate(call.execute());
-    }
-
-    /**
-     * Deletes a user account from the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
-     * @param userName The name of the user account to delete.
-     * @param computeNodeDeleteUserOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall deleteUserAsync(String poolId, String nodeId, String userName, ComputeNodeDeleteUserOptions computeNodeDeleteUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeDeleteUserOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeDeleteUserOptions != null) {
-            timeout = computeNodeDeleteUserOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeDeleteUserOptions != null) {
-            clientRequestId = computeNodeDeleteUserOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeDeleteUserOptions != null) {
-            returnClientRequestId = computeNodeDeleteUserOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeDeleteUserOptions != null) {
-            ocpDate = computeNodeDeleteUserOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(deleteUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.deleteUser(poolId, nodeId, userName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> clientResponse = deleteUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeDeleteUserHeaders> deleteUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -588,17 +558,62 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updateUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter) {
+        updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter), serviceCallback);
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> updateUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter) {
+        return updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>> updateUserWithServiceResponseAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -624,84 +639,82 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return updateUserDelegate(call.execute());
-    }
-
-    /**
-     * Updates the password or expiration time of a user account on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
-     * @param userName The name of the user account to update.
-     * @param nodeUpdateUserParameter The parameters for the request.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
-        }
-        if (nodeUpdateUserParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(nodeUpdateUserParameter, serviceCallback);
-        final ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> clientResponse = updateUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param computeNodeUpdateUserOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void updateUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions) {
+        updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter, computeNodeUpdateUserOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param computeNodeUpdateUserOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter, computeNodeUpdateUserOptions), serviceCallback);
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param computeNodeUpdateUserOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> updateUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions) {
+        return updateUserWithServiceResponseAsync(poolId, nodeId, userName, nodeUpdateUserParameter, computeNodeUpdateUserOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The parameters for the request.
+     * @param computeNodeUpdateUserOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>> updateUserWithServiceResponseAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -739,81 +752,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return updateUserDelegate(call.execute());
-    }
-
-    /**
-     * Updates the password or expiration time of a user account on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
-     * @param userName The name of the user account to update.
-     * @param nodeUpdateUserParameter The parameters for the request.
-     * @param computeNodeUpdateUserOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, ComputeNodeUpdateUserOptions computeNodeUpdateUserOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (userName == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter userName is required and cannot be null."));
-            return null;
-        }
-        if (nodeUpdateUserParameter == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeUpdateUserParameter is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(nodeUpdateUserParameter, serviceCallback);
-        Validator.validate(computeNodeUpdateUserOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeUpdateUserOptions != null) {
-            timeout = computeNodeUpdateUserOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeUpdateUserOptions != null) {
-            clientRequestId = computeNodeUpdateUserOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeUpdateUserOptions != null) {
-            returnClientRequestId = computeNodeUpdateUserOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeUpdateUserOptions != null) {
-            ocpDate = computeNodeUpdateUserOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(updateUserDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.updateUser(poolId, nodeId, userName, nodeUpdateUserParameter, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> clientResponse = updateUserDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeUpdateUserHeaders> updateUserDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -826,14 +776,50 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ComputeNode object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @return the ComputeNode object if successful.
      */
-    public ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> get(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public ComputeNode get(String poolId, String nodeId) {
+        return getWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback) {
+        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @return the observable to the ComputeNode object
+     */
+    public Observable<ComputeNode> getAsync(String poolId, String nodeId) {
+        return getWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>, ComputeNode>() {
+            @Override
+            public ComputeNode call(ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @return the observable to the ComputeNode object
+     */
+    public Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>> getWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -853,72 +839,71 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getDelegate(call.execute());
+        return service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @param computeNodeGetOptions Additional parameters for the operation
+     * @return the ComputeNode object if successful.
      */
-    public ServiceCall getAsync(String poolId, String nodeId, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeGetOptions computeNodeGetOptions = null;
-        String select = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ComputeNode>(serviceCallback) {
+    public ComputeNode get(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions) {
+        return getWithServiceResponseAsync(poolId, nodeId, computeNodeGetOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @param computeNodeGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ComputeNode> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback) {
+        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(poolId, nodeId, computeNodeGetOptions), serviceCallback);
+    }
+
+    /**
+     * Gets information about the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
+     * @param computeNodeGetOptions Additional parameters for the operation
+     * @return the observable to the ComputeNode object
+     */
+    public Observable<ComputeNode> getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions) {
+        return getWithServiceResponseAsync(poolId, nodeId, computeNodeGetOptions).map(new Func1<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>, ComputeNode>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public ComputeNode call(ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
     }
 
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
      * @param computeNodeGetOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ComputeNode object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the observable to the ComputeNode object
      */
-    public ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> get(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>> getWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -953,74 +938,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getDelegate(call.execute());
-    }
-
-    /**
-     * Gets information about the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
-     * @param computeNodeGetOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getAsync(String poolId, String nodeId, ComputeNodeGetOptions computeNodeGetOptions, final ServiceCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeGetOptions, serviceCallback);
-        String select = null;
-        if (computeNodeGetOptions != null) {
-            select = computeNodeGetOptions.select();
-        }
-        Integer timeout = null;
-        if (computeNodeGetOptions != null) {
-            timeout = computeNodeGetOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeGetOptions != null) {
-            clientRequestId = computeNodeGetOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeGetOptions != null) {
-            returnClientRequestId = computeNodeGetOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeGetOptions != null) {
-            ocpDate = computeNodeGetOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ComputeNode>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.get(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<ComputeNode, ComputeNodeGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1032,15 +961,54 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     */
+    public void reboot(String poolId, String nodeId) {
+        rebootWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(rebootWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> reboot(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> rebootAsync(String poolId, String nodeId) {
+        return rebootWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>> rebootWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1062,75 +1030,78 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        return rebootDelegate(call.execute());
-    }
-
-    /**
-     * Restarts the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeRebootOption nodeRebootOption = null;
-        final ComputeNodeRebootOptions computeNodeRebootOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        NodeRebootParameter nodeRebootParameter = new NodeRebootParameter();
-        nodeRebootParameter.withNodeRebootOption(null);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(rebootDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> clientResponse = rebootDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeRebootOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void reboot(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions) {
+        rebootWithServiceResponseAsync(poolId, nodeId, nodeRebootOption, computeNodeRebootOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeRebootOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(rebootWithServiceResponseAsync(poolId, nodeId, nodeRebootOption, computeNodeRebootOptions), serviceCallback);
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeRebootOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> reboot(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions) {
+        return rebootWithServiceResponseAsync(poolId, nodeId, nodeRebootOption, computeNodeRebootOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeRebootOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>> rebootWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1166,76 +1137,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        return rebootDelegate(call.execute());
-    }
-
-    /**
-     * Restarts the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
-     * @param computeNodeRebootOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall rebootAsync(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, ComputeNodeRebootOptions computeNodeRebootOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeRebootOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeRebootOptions != null) {
-            timeout = computeNodeRebootOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeRebootOptions != null) {
-            clientRequestId = computeNodeRebootOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeRebootOptions != null) {
-            returnClientRequestId = computeNodeRebootOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeRebootOptions != null) {
-            ocpDate = computeNodeRebootOptions.ocpDate();
-        }
-        NodeRebootParameter nodeRebootParameter = null;
-        if (nodeRebootOption != null) {
-            nodeRebootParameter = new NodeRebootParameter();
-            nodeRebootParameter.withNodeRebootOption(nodeRebootOption);
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(rebootDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.reboot(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeRebootParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> clientResponse = rebootDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeRebootHeaders> rebootDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1247,15 +1160,54 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     */
+    public void reimage(String poolId, String nodeId) {
+        reimageWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(reimageWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> reimage(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> reimageAsync(String poolId, String nodeId) {
+        return reimageWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> reimageWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1277,75 +1229,78 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        return reimageDelegate(call.execute());
-    }
-
-    /**
-     * Reinstalls the operating system on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeReimageOption nodeReimageOption = null;
-        final ComputeNodeReimageOptions computeNodeReimageOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        NodeReimageParameter nodeReimageParameter = new NodeReimageParameter();
-        nodeReimageParameter.withNodeReimageOption(null);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(reimageDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> clientResponse = reimageDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeReimageOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void reimage(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions) {
+        reimageWithServiceResponseAsync(poolId, nodeId, nodeReimageOption, computeNodeReimageOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeReimageOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(reimageWithServiceResponseAsync(poolId, nodeId, nodeReimageOption, computeNodeReimageOptions), serviceCallback);
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeReimageOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> reimage(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions) {
+        return reimageWithServiceResponseAsync(poolId, nodeId, nodeReimageOption, computeNodeReimageOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
+     * @param computeNodeReimageOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> reimageWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1381,76 +1336,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        return reimageDelegate(call.execute());
-    }
-
-    /**
-     * Reinstalls the operating system on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
-     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
-     * @param computeNodeReimageOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall reimageAsync(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, ComputeNodeReimageOptions computeNodeReimageOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeReimageOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeReimageOptions != null) {
-            timeout = computeNodeReimageOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeReimageOptions != null) {
-            clientRequestId = computeNodeReimageOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeReimageOptions != null) {
-            returnClientRequestId = computeNodeReimageOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeReimageOptions != null) {
-            ocpDate = computeNodeReimageOptions.ocpDate();
-        }
-        NodeReimageParameter nodeReimageParameter = null;
-        if (nodeReimageOption != null) {
-            nodeReimageParameter = new NodeReimageParameter();
-            nodeReimageParameter.withNodeReimageOption(nodeReimageOption);
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(reimageDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.reimage(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeReimageParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> clientResponse = reimageDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeReimageHeaders> reimageDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1463,14 +1360,49 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     */
+    public void disableScheduling(String poolId, String nodeId) {
+        disableSchedulingWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(disableSchedulingWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> disableScheduling(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableSchedulingAsync(String poolId, String nodeId) {
+        return disableSchedulingWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>> disableSchedulingWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1492,75 +1424,74 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        return disableSchedulingDelegate(call.execute());
-    }
-
-    /**
-     * Disables task scheduling on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final DisableComputeNodeSchedulingOption nodeDisableSchedulingOption = null;
-        final ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
-        nodeDisableSchedulingParameter.withNodeDisableSchedulingOption(null);
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableSchedulingDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> clientResponse = disableSchedulingDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void disableScheduling(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions) {
+        disableSchedulingWithServiceResponseAsync(poolId, nodeId, nodeDisableSchedulingOption, computeNodeDisableSchedulingOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(disableSchedulingWithServiceResponseAsync(poolId, nodeId, nodeDisableSchedulingOption, computeNodeDisableSchedulingOptions), serviceCallback);
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> disableScheduling(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions) {
+        return disableSchedulingWithServiceResponseAsync(poolId, nodeId, nodeDisableSchedulingOption, computeNodeDisableSchedulingOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Disables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>> disableSchedulingWithServiceResponseAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1596,76 +1527,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        return disableSchedulingDelegate(call.execute());
-    }
-
-    /**
-     * Disables task scheduling on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
-     * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall disableSchedulingAsync(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, ComputeNodeDisableSchedulingOptions computeNodeDisableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeDisableSchedulingOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeDisableSchedulingOptions != null) {
-            timeout = computeNodeDisableSchedulingOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeDisableSchedulingOptions != null) {
-            clientRequestId = computeNodeDisableSchedulingOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeDisableSchedulingOptions != null) {
-            returnClientRequestId = computeNodeDisableSchedulingOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeDisableSchedulingOptions != null) {
-            ocpDate = computeNodeDisableSchedulingOptions.ocpDate();
-        }
-        NodeDisableSchedulingParameter nodeDisableSchedulingParameter = null;
-        if (nodeDisableSchedulingOption != null) {
-            nodeDisableSchedulingParameter = new NodeDisableSchedulingParameter();
-            nodeDisableSchedulingParameter.withNodeDisableSchedulingOption(nodeDisableSchedulingOption);
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(disableSchedulingDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.disableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, nodeDisableSchedulingParameter, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> clientResponse = disableSchedulingDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeDisableSchedulingHeaders> disableSchedulingDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1678,14 +1551,49 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     */
+    public void enableScheduling(String poolId, String nodeId) {
+        enableSchedulingWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(enableSchedulingWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> enableScheduling(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableSchedulingAsync(String poolId, String nodeId) {
+        return enableSchedulingWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> enableSchedulingWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1704,71 +1612,70 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return enableSchedulingDelegate(call.execute());
-    }
-
-    /**
-     * Enables task scheduling on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableSchedulingAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableSchedulingDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> clientResponse = enableSchedulingDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
+     */
+    public void enableScheduling(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions) {
+        enableSchedulingWithServiceResponseAsync(poolId, nodeId, computeNodeEnableSchedulingOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.createWithHeaders(enableSchedulingWithServiceResponseAsync(poolId, nodeId, computeNodeEnableSchedulingOptions), serviceCallback);
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> enableScheduling(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<Void> enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions) {
+        return enableSchedulingWithServiceResponseAsync(poolId, nodeId, computeNodeEnableSchedulingOptions).map(new Func1<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>, Void>() {
+            @Override
+            public Void call(ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Enables task scheduling on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
+     * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
+     * @return the {@link ServiceResponseWithHeaders} object if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> enableSchedulingWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1799,70 +1706,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return enableSchedulingDelegate(call.execute());
-    }
-
-    /**
-     * Enables task scheduling on the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
-     * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall enableSchedulingAsync(String poolId, String nodeId, ComputeNodeEnableSchedulingOptions computeNodeEnableSchedulingOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeEnableSchedulingOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeEnableSchedulingOptions != null) {
-            timeout = computeNodeEnableSchedulingOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeEnableSchedulingOptions != null) {
-            clientRequestId = computeNodeEnableSchedulingOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeEnableSchedulingOptions != null) {
-            returnClientRequestId = computeNodeEnableSchedulingOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeEnableSchedulingOptions != null) {
-            ocpDate = computeNodeEnableSchedulingOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(enableSchedulingDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.enableScheduling(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> clientResponse = enableSchedulingDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<Void, ComputeNodeEnableSchedulingHeaders> enableSchedulingDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1874,15 +1729,55 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object if successful.
      */
-    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) {
+        return getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) {
+        return ServiceCall.createWithHeaders(getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
+     */
+    public Observable<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId) {
+        return getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>, ComputeNodeGetRemoteLoginSettingsResult>() {
+            @Override
+            public ComputeNodeGetRemoteLoginSettingsResult call(ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
+     */
+    public Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> getRemoteLoginSettingsWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1901,71 +1796,75 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getRemoteLoginSettingsDelegate(call.execute());
+        return service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> clientResponse = getRemoteLoginSettingsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @return the ComputeNodeGetRemoteLoginSettingsResult object if successful.
      */
-    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
+    public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) {
+        return getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteLoginSettingsOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) {
+        return ServiceCall.createWithHeaders(getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteLoginSettingsOptions), serviceCallback);
+    }
+
+    /**
+     * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
+     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
+     * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
+     */
+    public Observable<ComputeNodeGetRemoteLoginSettingsResult> getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) {
+        return getRemoteLoginSettingsWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteLoginSettingsOptions).map(new Func1<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>, ComputeNodeGetRemoteLoginSettingsResult>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public ComputeNodeGetRemoteLoginSettingsResult call(ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
     }
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
      * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the ComputeNodeGetRemoteLoginSettingsResult object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the observable to the ComputeNodeGetRemoteLoginSettingsResult object
      */
-    public ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettings(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> getRemoteLoginSettingsWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1996,70 +1895,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getRemoteLoginSettingsDelegate(call.execute());
-    }
-
-    /**
-     * Gets the settings required for remote login to a compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
-     * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, ComputeNodeGetRemoteLoginSettingsOptions computeNodeGetRemoteLoginSettingsOptions, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeGetRemoteLoginSettingsOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeGetRemoteLoginSettingsOptions != null) {
-            timeout = computeNodeGetRemoteLoginSettingsOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeGetRemoteLoginSettingsOptions != null) {
-            clientRequestId = computeNodeGetRemoteLoginSettingsOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeGetRemoteLoginSettingsOptions != null) {
-            returnClientRequestId = computeNodeGetRemoteLoginSettingsOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeGetRemoteLoginSettingsOptions != null) {
-            ocpDate = computeNodeGetRemoteLoginSettingsOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<ComputeNodeGetRemoteLoginSettingsResult>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRemoteLoginSettingsDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getRemoteLoginSettings(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> clientResponse = getRemoteLoginSettingsDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<ComputeNodeGetRemoteLoginSettingsResult, ComputeNodeGetRemoteLoginSettingsHeaders> getRemoteLoginSettingsDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -2071,15 +1918,55 @@ public final class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @return the InputStream object if successful.
      */
-    public ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> getRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public InputStream getRemoteDesktop(String poolId, String nodeId) {
+        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceCall.createWithHeaders(getRemoteDesktopWithServiceResponseAsync(poolId, nodeId), serviceCallback);
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @return the observable to the InputStream object
+     */
+    public Observable<InputStream> getRemoteDesktopAsync(String poolId, String nodeId) {
+        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId).map(new Func1<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>, InputStream>() {
+            @Override
+            public InputStream call(ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @return the observable to the InputStream object
+     */
+    public Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> getRemoteDesktopWithServiceResponseAsync(String poolId, String nodeId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2098,71 +1985,75 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getRemoteDesktopDelegate(call.execute());
+        return service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> clientResponse = getRemoteDesktopDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
     }
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
+     * @return the InputStream object if successful.
      */
-    public ServiceCall getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+    public InputStream getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions) {
+        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteDesktopOptions).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback) {
+        return ServiceCall.createWithHeaders(getRemoteDesktopWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteDesktopOptions), serviceCallback);
+    }
+
+    /**
+     * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
+     * @return the observable to the InputStream object
+     */
+    public Observable<InputStream> getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions) {
+        return getRemoteDesktopWithServiceResponseAsync(poolId, nodeId, computeNodeGetRemoteDesktopOptions).map(new Func1<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>, InputStream>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRemoteDesktopDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
+            public InputStream call(ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> response) {
+                return response.getBody();
             }
         });
-        return serviceCall;
     }
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the observable to the InputStream object
      */
-    public ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> getRemoteDesktop(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> getRemoteDesktopWithServiceResponseAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2193,70 +2084,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return getRemoteDesktopDelegate(call.execute());
-    }
-
-    /**
-     * Gets the Remote Desktop Protocol file for the specified compute node.
-     *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
-     * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall getRemoteDesktopAsync(String poolId, String nodeId, ComputeNodeGetRemoteDesktopOptions computeNodeGetRemoteDesktopOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (nodeId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeGetRemoteDesktopOptions, serviceCallback);
-        Integer timeout = null;
-        if (computeNodeGetRemoteDesktopOptions != null) {
-            timeout = computeNodeGetRemoteDesktopOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeGetRemoteDesktopOptions != null) {
-            clientRequestId = computeNodeGetRemoteDesktopOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeGetRemoteDesktopOptions != null) {
-            returnClientRequestId = computeNodeGetRemoteDesktopOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeGetRemoteDesktopOptions != null) {
-            ocpDate = computeNodeGetRemoteDesktopOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    serviceCallback.success(getRemoteDesktopDelegate(response));
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
+        return service.getRemoteDesktop(poolId, nodeId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> clientResponse = getRemoteDesktopDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<InputStream, ComputeNodeGetRemoteDesktopHeaders> getRemoteDesktopDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -2269,13 +2108,81 @@ public final class ComputeNodesImpl implements ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @return the PagedList&lt;ComputeNode&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> list(final String poolId) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<ComputeNode> list(final String poolId) {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listSinglePageAsync(poolId).toBlocking().single();
+        return new PagedList<ComputeNode>(response.getBody()) {
+            @Override
+            public Page<ComputeNode> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) {
+        return AzureServiceCall.createWithHeaders(
+            listSinglePageAsync(poolId),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<Page<ComputeNode>> listAsync(final String poolId) {
+        return listWithServiceResponseAsync(poolId)
+            .map(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Page<ComputeNode>>() {
+                @Override
+                public Page<ComputeNode> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listWithServiceResponseAsync(final String poolId) {
+        return listSinglePageAsync(poolId)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listSinglePageAsync(final String poolId) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2294,82 +2201,124 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> response = listDelegate(call.execute());
-        PagedList<ComputeNode> result = new PagedList<ComputeNode>(response.getBody()) {
+        return service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @param computeNodeListOptions Additional parameters for the operation
+     * @return the PagedList&lt;ComputeNode&gt; object if successful.
+     */
+    public PagedList<ComputeNode> list(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listSinglePageAsync(poolId, computeNodeListOptions).toBlocking().single();
+        return new PagedList<ComputeNode>(response.getBody()) {
             @Override
-            public Page<ComputeNode> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                return listNext(nextPageLink, null).getBody();
+            public Page<ComputeNode> nextPage(String nextPageLink) {
+                ComputeNodeListNextOptions computeNodeListNextOptions = null;
+                if (computeNodeListOptions != null) {
+                    computeNodeListNextOptions = new ComputeNodeListNextOptions();
+                    computeNodeListNextOptions.withClientRequestId(computeNodeListOptions.clientRequestId());
+                    computeNodeListNextOptions.withReturnClientRequestId(computeNodeListOptions.returnClientRequestId());
+                    computeNodeListNextOptions.withOcpDate(computeNodeListOptions.ocpDate());
+                }
+                return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single().getBody();
             }
         };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final String poolId, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeListOptions computeNodeListOptions = null;
-        String filter = null;
-        String select = null;
-        Integer maxResults = null;
-        Integer timeout = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
-                    }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
-                }
-            }
-        });
-        return serviceCall;
-    }
-
-    /**
-     * Lists the compute nodes in the specified pool.
-     *
-     * @param poolId The id of the pool from which you want to list nodes.
+     * @param poolId The ID of the pool from which you want to list nodes.
      * @param computeNodeListOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
      */
-    public ServiceResponseWithHeaders<PagedList<ComputeNode>, ComputeNodeListHeaders> list(final String poolId, final ComputeNodeListOptions computeNodeListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public ServiceCall<List<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) {
+        return AzureServiceCall.createWithHeaders(
+            listSinglePageAsync(poolId, computeNodeListOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
+                    ComputeNodeListNextOptions computeNodeListNextOptions = null;
+                    if (computeNodeListOptions != null) {
+                        computeNodeListNextOptions = new ComputeNodeListNextOptions();
+                        computeNodeListNextOptions.withClientRequestId(computeNodeListOptions.clientRequestId());
+                        computeNodeListNextOptions.withReturnClientRequestId(computeNodeListOptions.returnClientRequestId());
+                        computeNodeListNextOptions.withOcpDate(computeNodeListOptions.ocpDate());
+                    }
+                    return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @param computeNodeListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<Page<ComputeNode>> listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
+        return listWithServiceResponseAsync(poolId, computeNodeListOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Page<ComputeNode>>() {
+                @Override
+                public Page<ComputeNode> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @param computeNodeListOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listWithServiceResponseAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
+        return listSinglePageAsync(poolId, computeNodeListOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    ComputeNodeListNextOptions computeNodeListNextOptions = null;
+                    if (computeNodeListOptions != null) {
+                        computeNodeListNextOptions = new ComputeNodeListNextOptions();
+                        computeNodeListNextOptions.withClientRequestId(computeNodeListOptions.clientRequestId());
+                        computeNodeListNextOptions.withReturnClientRequestId(computeNodeListOptions.returnClientRequestId());
+                        computeNodeListNextOptions.withOcpDate(computeNodeListOptions.ocpDate());
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, computeNodeListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param poolId The ID of the pool from which you want to list nodes.
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListOptions Additional parameters for the operation
+     * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listSinglePageAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions) {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -2409,105 +2358,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> response = listDelegate(call.execute());
-        PagedList<ComputeNode> result = new PagedList<ComputeNode>(response.getBody()) {
-            @Override
-            public Page<ComputeNode> nextPage(String nextPageLink) throws BatchErrorException, IOException {
-                ComputeNodeListNextOptions computeNodeListNextOptions = null;
-                if (computeNodeListOptions != null) {
-                    computeNodeListNextOptions = new ComputeNodeListNextOptions();
-                    computeNodeListNextOptions.withClientRequestId(computeNodeListOptions.clientRequestId());
-                    computeNodeListNextOptions.withReturnClientRequestId(computeNodeListOptions.returnClientRequestId());
-                    computeNodeListNextOptions.withOcpDate(computeNodeListOptions.ocpDate());
-                }
-                return listNext(nextPageLink, computeNodeListNextOptions).getBody();
-            }
-        };
-        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
-    }
-
-    /**
-     * Lists the compute nodes in the specified pool.
-     *
-     * @param poolId The id of the pool from which you want to list nodes.
-     * @param computeNodeListOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listAsync(final String poolId, final ComputeNodeListOptions computeNodeListOptions, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (poolId == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
-            return null;
-        }
-        if (this.client.apiVersion() == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeListOptions, serviceCallback);
-        String filter = null;
-        if (computeNodeListOptions != null) {
-            filter = computeNodeListOptions.filter();
-        }
-        String select = null;
-        if (computeNodeListOptions != null) {
-            select = computeNodeListOptions.select();
-        }
-        Integer maxResults = null;
-        if (computeNodeListOptions != null) {
-            maxResults = computeNodeListOptions.maxResults();
-        }
-        Integer timeout = null;
-        if (computeNodeListOptions != null) {
-            timeout = computeNodeListOptions.timeout();
-        }
-        String clientRequestId = null;
-        if (computeNodeListOptions != null) {
-            clientRequestId = computeNodeListOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeListOptions != null) {
-            returnClientRequestId = computeNodeListOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeListOptions != null) {
-            ocpDate = computeNodeListOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        final ServiceCall serviceCall = new ServiceCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        ComputeNodeListNextOptions computeNodeListNextOptions = null;
-                        if (computeNodeListOptions != null) {
-                            computeNodeListNextOptions = new ComputeNodeListNextOptions();
-                            computeNodeListNextOptions.withClientRequestId(computeNodeListOptions.clientRequestId());
-                            computeNodeListNextOptions.withReturnClientRequestId(computeNodeListOptions.returnClientRequestId());
-                            computeNodeListNextOptions.withOcpDate(computeNodeListOptions.ocpDate());
-                        }
-                        listNextAsync(result.getBody().getNextPageLink(), computeNodeListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.list(poolId, this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -2521,12 +2383,81 @@ public final class ComputeNodesImpl implements ComputeNodes {
      * Lists the compute nodes in the specified pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ComputeNode&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<ComputeNode> listNext(final String nextPageLink) {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<ComputeNode>(response.getBody()) {
+            @Override
+            public Page<ComputeNode> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
+        return AzureServiceCall.createWithHeaders(
+            listNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, null);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<Page<ComputeNode>> listNextAsync(final String nextPageLink) {
+        return listNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Page<ComputeNode>>() {
+                @Override
+                public Page<ComputeNode> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
+        return listNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2538,55 +2469,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the compute nodes in the specified pool.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        final ComputeNodeListNextOptions computeNodeListNextOptions = null;
-        String clientRequestId = null;
-        Boolean returnClientRequestId = null;
-        DateTime ocpDate = null;
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     /**
@@ -2594,12 +2488,85 @@ public final class ComputeNodesImpl implements ComputeNodes {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param computeNodeListNextOptions Additional parameters for the operation
-     * @throws BatchErrorException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @return the PagedList&lt;ComputeNode&gt; object if successful.
      */
-    public ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
+    public PagedList<ComputeNode> listNext(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
+        ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response = listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single();
+        return new PagedList<ComputeNode>(response.getBody()) {
+            @Override
+            public Page<ComputeNode> nextPage(String nextPageLink) {
+                return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions).toBlocking().single().getBody();
+            }
+        };
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param computeNodeListNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<List<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall<List<ComputeNode>> serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) {
+        return AzureServiceCall.createWithHeaders(
+            listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions),
+            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(String nextPageLink) {
+                    return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param computeNodeListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<Page<ComputeNode>> listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
+        return listNextWithServiceResponseAsync(nextPageLink, computeNodeListNextOptions)
+            .map(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Page<ComputeNode>>() {
+                @Override
+                public Page<ComputeNode> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> response) {
+                    return response.getBody();
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param computeNodeListNextOptions Additional parameters for the operation
+     * @return the observable to the PagedList&lt;ComputeNode&gt; object
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
+        return listNextSinglePageAsync(nextPageLink, computeNodeListNextOptions)
+            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders> page) {
+                    String nextPageLink = page.getBody().getNextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, computeNodeListNextOptions));
+                }
+            });
+    }
+
+    /**
+     * Lists the compute nodes in the specified pool.
+     *
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListNextOptions Additional parameters for the operation
+     * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     */
+    public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> listNextSinglePageAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2620,65 +2587,18 @@ public final class ComputeNodesImpl implements ComputeNodes {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        return listNextDelegate(call.execute());
-    }
-
-    /**
-     * Lists the compute nodes in the specified pool.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param computeNodeListNextOptions Additional parameters for the operation
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if callback is null
-     * @return the {@link Call} object
-     */
-    public ServiceCall listNextAsync(final String nextPageLink, final ComputeNodeListNextOptions computeNodeListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ComputeNode> serviceCallback) throws IllegalArgumentException {
-        if (serviceCallback == null) {
-            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
-        }
-        if (nextPageLink == null) {
-            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
-            return null;
-        }
-        Validator.validate(computeNodeListNextOptions, serviceCallback);
-        String clientRequestId = null;
-        if (computeNodeListNextOptions != null) {
-            clientRequestId = computeNodeListNextOptions.clientRequestId();
-        }
-        Boolean returnClientRequestId = null;
-        if (computeNodeListNextOptions != null) {
-            returnClientRequestId = computeNodeListNextOptions.returnClientRequestId();
-        }
-        DateTime ocpDate = null;
-        if (computeNodeListNextOptions != null) {
-            ocpDate = computeNodeListNextOptions.ocpDate();
-        }
-        DateTimeRfc1123 ocpDateConverted = null;
-        if (ocpDate != null) {
-            ocpDateConverted = new DateTimeRfc1123(ocpDate);
-        }
-        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
-        serviceCall.newCall(call);
-        call.enqueue(new ServiceResponseCallback<List<ComputeNode>>(serviceCallback) {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                try {
-                    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
-                    serviceCallback.load(result.getBody().getItems());
-                    if (result.getBody().getNextPageLink() != null
-                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
-                        listNextAsync(result.getBody().getNextPageLink(), computeNodeListNextOptions, serviceCall, serviceCallback);
-                    } else {
-                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>>>() {
+                @Override
+                public Observable<ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponseWithHeaders<Page<ComputeNode>, ComputeNodeListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
                     }
-                } catch (BatchErrorException | IOException exception) {
-                    serviceCallback.failure(exception);
                 }
-            }
-        });
-        return serviceCall;
+            });
     }
 
     private ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {

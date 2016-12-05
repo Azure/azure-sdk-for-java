@@ -26,12 +26,12 @@ public class ComputeNodeInformation {
     private String nodeUrl;
 
     /**
-     * The id of the pool on which the task ran.
+     * The ID of the pool on which the task ran.
      */
     private String poolId;
 
     /**
-     * The id of the node on which the task ran.
+     * The ID of the node on which the task ran.
      */
     private String nodeId;
 

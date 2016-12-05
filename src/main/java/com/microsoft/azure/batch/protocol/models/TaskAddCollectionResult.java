@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import java.util.List;
 
 /**
- * Response to a TaskOperations.AddCollection request.
+ * The result of adding a collection of tasks to a job.
  */
 public class TaskAddCollectionResult {
     /**

@@ -17,27 +17,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskAddParameter {
     /**
      * A string that uniquely identifies the task within the job.
-     * The id can contain any combination of alphanumeric characters including
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
-     * It is common to use a GUID for the id.
+     * The ID is case-preserving and case-insensitive (that is, you may not
+     * have two IDs within a job that differ only by case).
      */
     @JsonProperty(required = true)
     private String id;
 
     /**
      * A display name for the task.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
     private String displayName;
 
     /**
-     * The command line of the task. For multi-instance tasks, the command
-     * line is executed on the primary subtask after all the subtasks have
-     * finished executing the coordianation command line.
-     * The command line does not run under a shell, and therefore cannot take
-     * advantage of shell features such as environment variable expansion. If
-     * you want to take advantage of such features, you should invoke the
-     * shell in the command line, for example using "cmd /c MyCommand" in
-     * Windows or "/bin/sh -c MyCommand" in Linux.
+     * The command line of the task.
+     * For multi-instance tasks, the command line is executed as the primary
+     * task, after the primary task and all subtasks have finished executing
+     * the coordination command line. The command line does not run under a
+     * shell, and therefore cannot take advantage of shell features such as
+     * environment variable expansion. If you want to take advantage of such
+     * features, you should invoke the shell in the command line, for example
+     * using "cmd /c MyCommand" in Windows or "/bin/sh -c MyCommand" in Linux.
      */
     @JsonProperty(required = true)
     private String commandLine;
@@ -51,7 +54,7 @@ public class TaskAddParameter {
      * A list of files that the Batch service will download to the compute
      * node before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
-     * the compute node on which the primary subtask is executed.
+     * the compute node on which the primary task is executed.
      */
     private List<ResourceFile> resourceFiles;
 
@@ -68,21 +71,32 @@ public class TaskAddParameter {
 
     /**
      * The execution constraints that apply to this task.
+     * If you do not specify constraints, the maxTaskRetryCount is the
+     * maxTaskRetryCount specified for the job, and the maxWallClockTime and
+     * retentionTime are infinite.
      */
     private TaskConstraints constraints;
 
     /**
      * Whether to run the task in elevated mode.
+     * The default value is false.
      */
     private Boolean runElevated;
 
     /**
-     * Information about how to run the multi-instance task.
+     * An object that indicates that the task is a multi-instance task, and
+     * contains information about how to run the multi-instance task.
      */
     private MultiInstanceSettings multiInstanceSettings;
 
     /**
-     * Any other tasks that this task depends on.
+     * The tasks that this task depends on.
+     * The task will not be scheduled until all depended-on tasks have
+     * completed successfully. (If any depended-on tasks fail and exhaust
+     * their retry counts, the task will never be scheduled.) If the job does
+     * not have usesTaskDependencies set to true, and this element is
+     * present, the request fails with error code
+     * TaskDependenciesNotSpecifiedOnJob.
      */
     private TaskDependencies dependsOn;
 

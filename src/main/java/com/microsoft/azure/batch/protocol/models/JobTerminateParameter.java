@@ -10,7 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 
 /**
- * Parameters for a CloudJobOperations.Terminate request.
+ * Options when terminating a job.
  */
 public class JobTerminateParameter {
     /**

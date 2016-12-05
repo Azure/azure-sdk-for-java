@@ -29,6 +29,10 @@ public class DeleteCertificateError {
     /**
      * A list of additional error details related to the certificate deletion
      * error.
+     * This list includes details such as the active pools and nodes
+     * referencing this certificate. However, if a large number of resources
+     * reference the certificate, the list contains only about the first
+     * hundred.
      */
     private List<NameValuePair> values;
 
