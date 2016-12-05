@@ -39,6 +39,7 @@ import java.util.Map.Entry;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -349,8 +350,8 @@ class ApplicationGatewayImpl
         final Observable<Resource> pipObservable;
         if (defaultPublicFrontend != null && defaultPublicFrontend.publicIpAddressId() == null) {
             // If public frontend requested but no PIP specified, then create a default PIP
-            pipObservable = ensureDefaultPipDefinition()
-                    .createAsync().map(new Func1<PublicIpAddress, Resource>() {
+            pipObservable = Utils.<PublicIpAddress>rootResource(ensureDefaultPipDefinition()
+                    .createAsync()).map(new Func1<PublicIpAddress, Resource>() {
                         @Override
                         public Resource call(PublicIpAddress publicIpAddress) {
                             defaultPublicFrontend.withExistingPublicIpAddress(publicIpAddress);
@@ -376,8 +377,8 @@ class ApplicationGatewayImpl
             networkObservable = Observable.empty(); // ...and don't create another VNet
         } else {
             // But if default IP config does not have a subnet specified, then create a default VNet
-            networkObservable = ensureDefaultNetworkDefinition()
-                .createAsync().map(new Func1<Network, Resource>() {
+            networkObservable = Utils.<Network>rootResource(ensureDefaultNetworkDefinition()
+                .createAsync()).map(new Func1<Network, Resource>() {
                     @Override
                     public Resource call(Network network) {
                         //... and assign the created VNet to the default IP config
