@@ -57,14 +57,14 @@ class ApplicationGatewaySslCertificateImpl
     // Withers
 
     @Override
-    public ApplicationGatewaySslCertificateImpl withPfxContent(byte[] pfxData) {
+    public ApplicationGatewaySslCertificateImpl withPfxFromBytes(byte[] pfxData) {
         String encoded = new String(BaseEncoding.base64().encode(pfxData));
         this.inner().withData(encoded);
         return this;
     }
 
     @Override
-    public ApplicationGatewaySslCertificateImpl withPfxFile(File pfxFile) {
+    public ApplicationGatewaySslCertificateImpl withPfxFromFile(File pfxFile) {
         if (pfxFile == null) {
             return null;
         }
@@ -72,7 +72,7 @@ class ApplicationGatewaySslCertificateImpl
         byte[] content;
         try {
             content = Files.readAllBytes(pfxFile.toPath());
-            return withPfxContent(content);
+            return withPfxFromBytes(content);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -80,7 +80,7 @@ class ApplicationGatewaySslCertificateImpl
     }
 
     @Override
-    public ApplicationGatewaySslCertificateImpl withPassword(String password) {
+    public ApplicationGatewaySslCertificateImpl withPfxPassword(String password) {
         this.inner().withPassword(password);
         return this;
     }

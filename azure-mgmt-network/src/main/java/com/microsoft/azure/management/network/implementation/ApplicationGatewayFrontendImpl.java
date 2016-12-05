@@ -9,11 +9,10 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayPrivateFrontend;
-import com.microsoft.azure.management.network.ApplicationGatewayPublicFrontend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -25,14 +24,9 @@ class ApplicationGatewayFrontendImpl
     extends ChildResourceImpl<ApplicationGatewayFrontendIPConfigurationInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayFrontend,
-        ApplicationGatewayPrivateFrontend,
-        ApplicationGatewayPrivateFrontend.Definition<ApplicationGateway.DefinitionStages.WithHttpListener>,
-        ApplicationGatewayPrivateFrontend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayPrivateFrontend.Update,
-        ApplicationGatewayPublicFrontend,
-        ApplicationGatewayPublicFrontend.Definition<ApplicationGateway.DefinitionStages.WithPrivateFrontendOptional>,
-        ApplicationGatewayPublicFrontend.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayPublicFrontend.Update {
+        ApplicationGatewayFrontend.Definition<ApplicationGateway.DefinitionStages.WithListener>,
+        ApplicationGatewayFrontend.UpdateDefinition<ApplicationGateway.Update>,
+        ApplicationGatewayFrontend.Update {
 
     ApplicationGatewayFrontendImpl(ApplicationGatewayFrontendIPConfigurationInner inner, ApplicationGatewayImpl parent) {
         super(inner, parent);
@@ -77,7 +71,11 @@ class ApplicationGatewayFrontendImpl
 
     @Override
     public String publicIpAddressId() {
-        return this.inner().publicIPAddress().id();
+        if (this.inner().publicIPAddress() != null) {
+            return this.inner().publicIPAddress().id();
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -85,6 +83,10 @@ class ApplicationGatewayFrontendImpl
         return (this.inner().publicIPAddress() != null);
     }
 
+    @Override
+    public boolean isPrivate() {
+        return (this.inner().subnet() != null);
+    }
 
     // Fluent setters
 
@@ -97,9 +99,10 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withExistingSubnet(String parentNetworkResourceId, String subnetName) {
         SubResource subnetRef = new SubResource()
                 .withId(parentNetworkResourceId + "/subnets/" + subnetName);
-        this.inner()
-            .withSubnet(subnetRef)
-            .withPublicIPAddress(null); // Ensure no conflicting public and private settings
+        this.inner().withSubnet(subnetRef);
+
+        // Ensure this frontend is not public
+        this.inner().withPublicIPAddress(null);
         return this;
     }
 
@@ -131,10 +134,7 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withPrivateIpAddressDynamic() {
         this.inner()
             .withPrivateIPAddress(null)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC)
-
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+            .withPrivateIPAllocationMethod(IPAllocationMethod.DYNAMIC);
         return this;
     }
 
@@ -142,14 +142,16 @@ class ApplicationGatewayFrontendImpl
     public ApplicationGatewayFrontendImpl withPrivateIpAddressStatic(String ipAddress) {
         this.inner()
             .withPrivateIPAddress(ipAddress)
-            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC)
-
-            // Ensure no conflicting public and private settings
-            .withPublicIPAddress(null);
+            .withPrivateIPAllocationMethod(IPAllocationMethod.STATIC);
         return this;
     }
 
     // Verbs
+
+    @Override
+    public Subnet getSubnet() {
+        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
+    }
 
     @Override
     public ApplicationGatewayImpl attach() {

@@ -9,7 +9,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 
 /**
- * An interface representing a model's ability to references a load balancer frontend.
+ * An interface representing a model's ability to references a frontend.
  */
 @Fluent
 public interface HasFrontend  {
@@ -55,17 +55,17 @@ public interface HasFrontend  {
     }
 
     /**
-     * Grouping of definition stages applicable as part of a load balancer update.
+     * Grouping of definition stages applicable as part of a resource update involving modifying the frontend.
      */
     interface UpdateDefinitionStages {
         /**
-         * The stage of a definition allowing to specify a frontend from this load balancer to associate.
+         * The stage of a definition allowing to specify a frontend from to associate.
          * @param <ReturnT> the next stage of the definition
          */
         interface WithFrontend<ReturnT> {
             /**
              * Specifies the frontend to associate.
-             * @param frontendName an existing frontend name on this load balancer
+             * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
             ReturnT withFrontend(String frontendName);
