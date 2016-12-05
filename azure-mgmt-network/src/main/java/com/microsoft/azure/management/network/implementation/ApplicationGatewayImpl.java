@@ -527,9 +527,17 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withSize(ApplicationGatewaySkuName skuName) {
+        final int count;
+        // Preserve instance count if already set
+        if (this.sku() != null) {
+            count = this.sku().capacity();
+        } else {
+            count = 1; // Default instance count
+        }
+
         ApplicationGatewaySku sku = new ApplicationGatewaySku()
                 .withName(skuName)
-                .withCapacity(1);
+                .withCapacity(count);
         this.inner().withSku(sku);
         return this;
     }
@@ -639,7 +647,7 @@ class ApplicationGatewayImpl
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
-                    .withPort(80);
+                    .withPort(80); // Default port
             return new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
         } else {
             return (ApplicationGatewayBackendHttpConfigurationImpl) httpConfig;
