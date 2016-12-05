@@ -5,6 +5,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -39,47 +40,37 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     @Override
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T> ... creatables) {
-        return BlockingObservable.from(createAsync(creatables)).single();
+        return createAsyncNonStream(creatables)
+                .toBlocking()
+                .single();
     }
 
     @Override
     public final CreatedResources<T> create(List<Creatable<T>> creatables) {
-        return BlockingObservable.from(createAsync(creatables)).single();
+        return createAsyncNonStream(creatables)
+                .toBlocking()
+                .single();
     }
 
     @Override
     @SafeVarargs
-    public final Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
+    public final Observable<Indexable> createAsync(Creatable<T> ... creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-
-        return rootResource.createAsync()
-                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
-                    @Override
-                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
-                    }
-                });
+        return rootResource.createAsync();
     }
 
     @Override
-    public final Observable<CreatedResources<T>> createAsync(List<Creatable<T>> creatables) {
+    public final Observable<Indexable> createAsync(List<Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-
-        return rootResource.createAsync()
-                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
-                    @Override
-                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
-                    }
-                });
+        return rootResource.createAsync();
     }
 
     @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
-        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
                 // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
@@ -90,13 +81,34 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
 
     @Override
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, List<Creatable<T>> creatables) {
-        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
                 // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
                 return new ServiceResponse<>(ts, null);
             }
         }), callback);
+    }
+
+
+    private Observable<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
+        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot);
+                    }
+                });
+    }
+
+    private Observable<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
+        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot);
+                    }
+                });
     }
 
     /**

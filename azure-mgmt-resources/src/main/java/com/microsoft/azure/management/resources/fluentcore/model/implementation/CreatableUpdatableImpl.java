@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -124,17 +125,7 @@ public abstract class CreatableUpdatableImpl<
      * @return the observable that emit the created resource.
      */
     @Override
-    public Observable<FluentModelT> createAsync() {
-        return this.executeTaskGroupAsync();
-    }
-
-    /**
-     * Default implementation of createAsyncStreaming().
-     *
-     * @return the observable that emit the created resources.
-     */
-    @Override
-    public Observable<Indexable> createAsyncStreaming() {
+    public Observable<Indexable> createAsync() {
         return this.executeTaskGroupAsyncStreaming();
     }
 
@@ -145,7 +136,7 @@ public abstract class CreatableUpdatableImpl<
      * @return a handle to cancel the request
      */
     public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(createAsync(), callback);
+        return observableToFuture(Utils.<FluentModelT>rootResource(createAsync()), callback);
     }
 
     /**
@@ -155,7 +146,7 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     public FluentModelT create() {
-        return createAsync().toBlocking().single();
+        return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
     }
 
     /**

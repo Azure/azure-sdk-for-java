@@ -9,11 +9,14 @@ package com.microsoft.azure.management.batch;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.List;
 
@@ -35,11 +38,13 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
     @Test
     public void canCRUDBatchAccount() throws Exception {
         // Create
-        BatchAccount batchAccount = batchManager.batchAccounts()
+        Observable<Indexable> resourceStream = batchManager.batchAccounts()
                 .define(BATCH_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
-                .createAsync()
+                .createAsync();
+
+        BatchAccount batchAccount = Utils.<BatchAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, batchAccount.resourceGroupName());
         Assert.assertNull(batchAccount.autoStorage());
@@ -177,16 +182,18 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         boolean allowUpdates = true;
 
         // Create
-        BatchAccount batchAccount = batchManager.batchAccounts()
+        Observable<Indexable> resourceStream = batchManager.batchAccounts()
                 .define(BATCH_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .defineNewApplication(applicationId)
-                    .withDisplayName(applicationDisplayName)
-                    .withAllowUpdates(allowUpdates)
-                    .attach()
+                .withDisplayName(applicationDisplayName)
+                .withAllowUpdates(allowUpdates)
+                .attach()
                 .withNewStorageAccount(SA_NAME)
-                .createAsync()
+                .createAsync();
+
+        BatchAccount batchAccount = Utils.<BatchAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, batchAccount.resourceGroupName());
         Assert.assertNotNull(batchAccount.autoStorage());

@@ -32,7 +32,7 @@ public abstract class AppliableImpl<
     }
 
     @Override
-    public final Observable<FluentModelT> createAsync() {
+    public final Observable<Indexable> createAsync() {
         throw new IllegalStateException("Internal Error: createAsyncStreaming cannot be called from UpdatableImpl");
     }
 

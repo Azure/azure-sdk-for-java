@@ -43,7 +43,7 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the creatables in the batch
      * @return an observable for the resources
      */
-    Observable<CreatedResources<ResourceT>> createAsync(Creatable<ResourceT>... creatables);
+    Observable<Indexable> createAsync(Creatable<ResourceT>... creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when
@@ -52,7 +52,7 @@ public interface SupportsBatchCreation<ResourceT extends Indexable> {
      * @param creatables the list of creatables in the batch
      * @return an observable for the resources
      */
-    Observable<CreatedResources<ResourceT>> createAsync(List<Creatable<ResourceT>> creatables);
+    Observable<Indexable> createAsync(List<Creatable<ResourceT>> creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when

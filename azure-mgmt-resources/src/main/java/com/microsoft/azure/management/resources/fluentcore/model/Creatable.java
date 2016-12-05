@@ -48,13 +48,5 @@ public interface Creatable<T> extends
      * @return an observable of the request
      */
     @Method
-    Observable<T> createAsync();
-
-    /**
-     * Puts the request into the queue and allow the HTTP client to execute
-     * it when system resources are available.
-     *
-     * @return an observable where the resource and all it's dependencies gets emitted
-     */
-    Observable<Indexable> createAsyncStreaming();
+    Observable<Indexable> createAsync();
 }

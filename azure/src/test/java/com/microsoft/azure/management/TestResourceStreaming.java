@@ -36,7 +36,6 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
         Creatable<ResourceGroup> rgCreatable = this.resourceGroups.define(ResourceNamer.randomResourceName("rg" + vmName, 20))
                 .withRegion(Region.US_EAST);
 
-
         Creatable<StorageAccount> storageCreatable = this.storageAccounts.define(ResourceNamer.randomResourceName("stg", 20))
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup(rgCreatable);
@@ -55,7 +54,7 @@ public class TestResourceStreaming extends TestTemplate<VirtualMachine, VirtualM
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .withNewStorageAccount(storageCreatable)
                 .withNewAvailabilitySet(ResourceNamer.randomResourceName("avset", 10))
-                .createAsyncStreaming()
+                .createAsync()
                 .map(new Func1<Indexable, Resource>() {
                     @Override
                     public Resource call(Indexable resource) {
