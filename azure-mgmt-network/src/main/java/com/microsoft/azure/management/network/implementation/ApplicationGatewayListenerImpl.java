@@ -10,10 +10,8 @@ import java.io.File;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGateway.DefinitionStages.WithCreate;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
-import com.microsoft.azure.management.network.ApplicationGatewayListener.DefinitionStages.WithFrontendPort;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -248,13 +246,13 @@ class ApplicationGatewayListenerImpl
     }
 
     @Override
-    public WithFrontendPort<WithCreate> withPrivateFrontend() {
+    public ApplicationGatewayListenerImpl withPrivateFrontend() {
         this.withFrontend(this.parent().ensureDefaultPrivateFrontend().name());
         return this;
     }
 
     @Override
-    public WithFrontendPort<WithCreate> withPublicFrontend() {
+    public ApplicationGatewayListenerImpl withPublicFrontend() {
         this.withFrontend(this.parent().ensureDefaultPublicFrontend().name());
         return this;
     }
