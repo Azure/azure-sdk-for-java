@@ -39,17 +39,17 @@ class ApplicationGatewayIpConfigurationImpl
     // Fluent setters
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withContainingSubnet(Subnet subnet) {
-        return this.withContainingSubnet(subnet.parent().id(), subnet.name());
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Subnet subnet) {
+        return this.withExistingSubnet(subnet.parent().id(), subnet.name());
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withContainingSubnet(Network network, String subnetName) {
-        return this.withContainingSubnet(network.id(), subnetName);
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(Network network, String subnetName) {
+        return this.withExistingSubnet(network.id(), subnetName);
     }
 
     @Override
-    public ApplicationGatewayIpConfigurationImpl withContainingSubnet(String networkId, String subnetName) {
+    public ApplicationGatewayIpConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;

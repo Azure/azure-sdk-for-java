@@ -135,7 +135,7 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.backendPort() == 8080);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
 
-            creationThread.join(5 * 1000);
+            creationThread.join();
             return appGateway;
         }
 
@@ -145,19 +145,22 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     resource.update()
-                            //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
-                            .withoutBackendFqdn("www.microsoft.com")
-                            .withoutBackendIpAddress("11.1.1.1")
-                            .withoutBackendHttpConfiguration("httpConfig2")
-                            .updateBackendHttpConfiguration("httpConfig1")
-                                .withPort(83)
-                                .withoutCookieBasedAffinity()
-                                .withRequestTimeout(20)
-                                .parent()
-                            .withoutBackend("backend3")
-                            .withTag("tag1", "value1")
-                            .withTag("tag2", "value2")
-                            .apply();
+                        .withInstanceCount(2)
+                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                        .withFrontendPort(81, "port81")         // Add a new port
+                        .withoutBackendIpAddress("11.1.1.1")    // Remove from all existing backends
+                        .defineListener("listener2")
+                            .attach()
+                        .defineBackend("backend2")
+                            .withIpAddress("11.1.1.3")
+                            .attach()
+                        .defineBackendHttpConfiguration("config2")
+                            .attach()   // TODO: More tests
+                        .defineRequestRoutingRule("rule2")
+                            .attach()   // TODO: More tests
+                        .withTag("tag1", "value1")
+                        .withTag("tag2", "value2")
+                        .apply();
                 }
             });
 
@@ -170,24 +173,36 @@ public class TestApplicationGateway {
             resource.refresh();
 
             Assert.assertTrue(resource.tags().containsKey("tag1"));
-            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
-            Assert.assertTrue(resource.sku().capacity() == 2);
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(resource.size()));
+            Assert.assertTrue(resource.instanceCount() == 2);
+
+            // Verify frontend ports
+            Assert.assertTrue(resource.frontendPorts().size() == 2);
+            Assert.assertTrue(resource.frontendPorts().containsKey("port81"));
+            Assert.assertTrue("port81".equalsIgnoreCase(resource.frontendPortNameFromNumber(81)));
+
+            // Veify listeners
+            Assert.assertTrue(resource.listeners().size() == 2);
+            ApplicationGatewayListener listener = resource.listeners().get("listener2");
+            Assert.assertTrue(listener != null);
 
             // Verify backends
-            ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
-            Assert.assertTrue(backend2.addresses().size() == 1);
-            Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
-            Assert.assertTrue(!resource.backends().containsKey("backend3"));
+            Assert.assertTrue(resource.backends().size() == 2);
+            ApplicationGatewayBackend backend = resource.backends().get("backend2");
+            Assert.assertTrue(backend != null);
+            Assert.assertTrue(backend.addresses().size() == 1);
 
             // Verify HTTP configs
-            Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
-            Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.port() == 83);
-            Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
-            Assert.assertTrue(httpConfig1.requestTimeout() == 20);
+            Assert.assertTrue(resource.backendHttpConfigurations().size() == 2);
+            ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config2");
+            Assert.assertTrue(config != null);
 
-            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("httpConfig2"));
+            // Verify request routing rules
+            Assert.assertTrue(resource.requestRoutingRules().size() == 2);
+            ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule2");
+            Assert.assertTrue(rule != null);
+
             updateThread.join(5 * 1000);
             return resource;
         }
@@ -397,7 +412,7 @@ public class TestApplicationGateway {
                     resource.update()
                         .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                         .withInstanceCount(2)
-                        .withoutFrontendHttpListener("listener1")
+                        .withoutListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
                         .withoutBackendHttpConfiguration("httpConfig2")
@@ -649,7 +664,7 @@ public class TestApplicationGateway {
                     resource.update()
                         .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                         .withInstanceCount(2)
-                        .withoutFrontendHttpListener("listener1")
+                        .withoutListener("listener1")
                         .withoutBackendFqdn("www.microsoft.com")
                         .withoutBackendIpAddress("11.1.1.1")
                         .withoutBackendHttpConfiguration("httpConfig2")

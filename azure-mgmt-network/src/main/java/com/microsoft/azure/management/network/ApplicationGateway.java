@@ -430,7 +430,7 @@ public interface ApplicationGateway extends
              * @return the next stage of the definition
              */
             @Method
-            WithRequestRoutingRule withoutPrivateFrontend();
+            Update withoutPrivateFrontend();
         }
 
         /**
@@ -476,7 +476,141 @@ public interface ApplicationGateway extends
              */
             Update withoutIpConfiguration(String ipConfigurationName);
 
-            // TODO Other IP config updates...
+            /**
+             * Begins the update of an existing IP configuration.
+             * @param ipConfigurationName the name of an existing IP configuration
+             * @return the first stage of an IP configuration update
+             */
+            ApplicationGatewayIpConfiguration.Update updateIpConfiguration(String ipConfigurationName);
+
+            /**
+             * Begins the update of the default IP configuration i.e. the only one IP configuration that exists, assuming only one exists.
+             * @return the first stage of an IP configuration update.
+             */
+            @Method
+            ApplicationGatewayIpConfiguration.Update updateDefaultIpConfiguration();
+
+            /**
+             * Begins the definition of the default IP configuration.
+             * <p>
+             * If a default IP configuration already exists, it will be this is equivalent to {@code updateDefaultIpConfiguration()}.
+             * @param name the name for the IP configuration
+             * @return the first stage of an IP configuration update
+             */
+            @Method
+            ApplicationGatewayIpConfiguration.UpdateDefinitionStages.Blank<Update> defineDefaultIpConfiguration();
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify frontend ports.
+         */
+        interface WithFrontendPort {
+            /**
+             * Creates a frontend port with an auto-generated name and the specified port number, unless one already exists.
+             * @param portNumber a port number
+             * @return the next stage of the definition
+             */
+            Update withFrontendPort(int portNumber);
+
+            /**
+             * Creates a frontend port with the specified name and port number, unless a port matching this name and/or number already exists.
+             * @param portNumber a port number
+             * @param name the name to assign to the port
+             * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
+             */
+            Update withFrontendPort(int portNumber, String name);
+
+            /**
+             * Removes the specified frontend port.
+             * <p>
+             * Note that removing a frontend port referenced by other settings may break the application gateway.
+             * @param name the name of the frontend port to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontendPort(String name);
+
+            /**
+             * Removes the specified frontend port.
+             * <p>
+             * Note that removing a frontend port referenced by other settings may break the application gateway.
+             * @param portNumber the port number of the frontend port to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontendPort(int portNumber);
+        }
+
+        /**
+         * The stage of an application gateway update allowing to specify a public IP address for the public frontend.
+         */
+        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateStages.WithPublicIpAddressNoDnsLabel<Update> {
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify frontend IP configurations.
+         */
+        interface WithFrontend {
+            /**
+             * Removes the specified frontend IP configuration.
+             * <p>
+             * Note that removing a frontend referenced by other settings may break the application gateway.
+             * @param frontendName the name of the frontend IP configuration to remove
+             * @return the next stage of the update
+             */
+            Update withoutFrontend(String frontendName);
+
+            /**
+             * Begins the update of an existing frontend IP configuration.
+             * @param frontendName the name of an existing frontend IP configuration
+             * @return the first stage of the frontend IP configuration update
+             */
+            ApplicationGatewayFrontend.Update updateFrontend(String frontendName);
+
+            /**
+             * Specifies that the application gateway should not be Internet-facing.
+             * <p>
+             * Note that if there are any other settings referencing the public frontend, removing it may break the application gateway.
+             * @return the next stage of the update
+             */
+            @Method
+            Update withoutPublicFrontend();
+
+            /**
+             * Specifies that the application gateway should not be private, i.e. its endponts should not be internally accessible
+             * from within the virtual network.
+             * <p>
+             * Note that if there are any other settings referencing the private frontend, removing it may break the application gateway.
+             * @return the next stage of the update
+             */
+            @Method
+            Update withoutPrivateFrontend();
+
+            /**
+             * Begins the update of the public frontend IP configuration, if it exists.
+             * @return the first stage of a frontend update or null if no public frontend exists
+             */
+            @Method
+            ApplicationGatewayFrontend.Update updatePublicFrontend();
+
+            /**
+             * Begins the update of the private frontend IP configuration, if it exists.
+             * @return the first stage of a frontend update or null if no private frontend exists
+             */
+            @Method
+            ApplicationGatewayFrontend.Update updatePrivateFrontend();
+
+            /**
+             * Begins the definition of the default public frontend IP configuration, creating one if it does not already exist.
+             * @return the first stage of a frontend definition
+             */
+            @Method
+            ApplicationGatewayFrontend.UpdateDefinitionStages.Blank<Update> definePublicFrontend();
+
+            /**
+             * Begins the definition of the default private frontend IP configuration, creating one if it does not already exist.
+             * @return the first stage of a frontend definition
+             */
+            @Method
+            ApplicationGatewayFrontend.UpdateDefinitionStages.Blank<Update> definePrivateFrontend();
         }
 
         /**
@@ -519,58 +653,6 @@ public interface ApplicationGateway extends
              * @return the first stage of an update of the backend
              */
             ApplicationGatewayBackend.Update updateBackend(String name);
-        }
-
-        /**
-         * The stage of an application gateway update allowing to modify frontends.
-         */
-        interface WithFrontend {
-            /**
-             * Removes the specified frontend IP configuration.
-             * <p>
-             * Note that removing a frontend referenced by other settings may break the application gateway.
-             * @param frontendName the name of the frontend IP configuration to remove
-             * @return the next stage of the update
-             */
-            Update withoutFrontend(String frontendName);
-        }
-
-        /**
-         * The stage of an application gateway update allowing to modify frontend ports.
-         */
-        interface WithFrontendPort {
-            /**
-             * Creates a frontend port with an auto-generated name and the specified port number, unless one already exists.
-             * @param portNumber a port number
-             * @return the next stage of the definition
-             */
-            Update withFrontendPort(int portNumber);
-
-            /**
-             * Creates a frontend port with the specified name and port number, unless a port matching this name and/or number already exists.
-             * @param portNumber a port number
-             * @param name the name to assign to the port
-             * @return the next stage of the definition, or null if a port matching either the name or the number, but not both, already exists.
-             */
-            Update withFrontendPort(int portNumber, String name);
-
-            /**
-             * Removes the specified frontend port.
-             * <p>
-             * Note that removing a frontend port referenced by other settings may break the application gateway.
-             * @param name the name of the frontend port to remove
-             * @return the next stage of the update
-             */
-            Update withoutFrontendPort(String name);
-
-            /**
-             * Removes the specified frontend port.
-             * <p>
-             * Note that removing a frontend port referenced by other settings may break the application gateway.
-             * @param portNumber the port number of the frontend port to remove
-             * @return the next stage of the update
-             */
-            Update withoutFrontendPort(int portNumber);
         }
 
         /**
@@ -637,7 +719,14 @@ public interface ApplicationGateway extends
              * @param name the name of the listener to remove
              * @return the next stage of the update
              */
-            Update withoutFrontendHttpListener(String name);
+            Update withoutListener(String name);
+
+            /**
+             * Begins the update of a listener.
+             * @param name the name of an existing listener to update
+             * @return the next stage of the definition or null if the requested listener does not exist
+             */
+            ApplicationGatewayListener.Update updateListener(String name);
         }
 
         /**
@@ -685,6 +774,13 @@ public interface ApplicationGateway extends
              * @return the next stage of the update
              */
             Update withoutRequestRoutingRule(String name);
+
+            /**
+             * Begins the update of a request routing rule.
+             * @param name the name of an existing request routing rule
+             * @return the first stage of a request routing rule update or null if the requested rule does not exist
+             */
+            ApplicationGatewayRequestRoutingRule.Update updateRequestRoutingRule(String name);
         }
     }
 
@@ -703,6 +799,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithBackendHttpConfig,
         UpdateStages.WithIpConfig,
         UpdateStages.WithFrontend,
+        UpdateStages.WithPublicIpAddress,
         UpdateStages.WithFrontendPort,
         UpdateStages.WithSslCert,
         UpdateStages.WithListener,

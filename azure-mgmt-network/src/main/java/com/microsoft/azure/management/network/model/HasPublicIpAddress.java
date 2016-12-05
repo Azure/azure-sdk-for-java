@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.model;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
@@ -146,6 +147,7 @@ public interface HasPublicIpAddress  {
              *
              * @return the next stage of the update.
              */
+            @Method
             ReturnT withoutPublicIpAddress();
         }
 
