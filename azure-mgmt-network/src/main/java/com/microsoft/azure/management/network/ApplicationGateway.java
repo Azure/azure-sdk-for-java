@@ -494,7 +494,6 @@ public interface ApplicationGateway extends
              * Begins the definition of the default IP configuration.
              * <p>
              * If a default IP configuration already exists, it will be this is equivalent to {@code updateDefaultIpConfiguration()}.
-             * @param name the name for the IP configuration
              * @return the first stage of an IP configuration update
              */
             @Method
