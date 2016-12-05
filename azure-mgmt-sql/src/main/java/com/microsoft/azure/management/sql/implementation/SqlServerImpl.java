@@ -10,9 +10,11 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ListToMapConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.RecommendedElasticPool;
 import com.microsoft.azure.management.sql.ServerMetric;
@@ -306,13 +308,20 @@ public class SqlServerImpl
     }
 
     private Observable createOrUpdateFirewallRulesAsync() {
-        Observable<CreatedResources<SqlFirewallRule>> createTask = null;
-
+        final SqlServerImpl self = this;
         if (this.firewallRuleCreatableMap.size() > 0) {
-            createTask = this.firewallRulesImpl.sqlFirewallRules().createAsync(new ArrayList(this.firewallRuleCreatableMap.values()));
-            this.firewallRuleCreatableMap.clear();
+            return Utils.rootResource(this.firewallRulesImpl
+                    .sqlFirewallRules()
+                    .createAsync(new ArrayList(this.firewallRuleCreatableMap.values())))
+                    .map(new Func1<Indexable, Indexable>() {
+                        @Override
+                        public Indexable call(Indexable indexable) {
+                            self.firewallRuleCreatableMap.clear();
+                            return indexable;
+                        }
+                    });
         }
-        return createTask;
+        return Observable.empty();
     }
 
     private Observable createOrUpdateElasticPoolsAndDatabasesAsync() {
@@ -321,20 +330,26 @@ public class SqlServerImpl
             this.elasticPoolCreatableMap.clear();
         }
 
-        Observable createTasks = null;
+        final SqlServerImpl self = this;
         if (this.databaseCreatableMap.size() > 0) {
-            createTasks = this.databasesImpl.databases().createAsync(new ArrayList(this.databaseCreatableMap.values()));
-            this.databaseCreatableMap.clear();
+            return Utils.rootResource(this.databasesImpl
+                    .databases()
+                    .createAsync(new ArrayList(this.databaseCreatableMap.values())))
+                    .map(new Func1<Indexable, Indexable>() {
+                        @Override
+                        public Indexable call(Indexable indexable) {
+                            self.databaseCreatableMap.clear();
+                            return indexable;
+                        }
+                    });
         }
-
-        return createTasks;
+        return Observable.empty();
     }
 
     private void createOrUpdateChildResources() {
         Observable createFirewallRules = createOrUpdateFirewallRulesAsync();
         Observable createDatabases = createOrUpdateElasticPoolsAndDatabasesAsync();
-
-        Observable.merge(createFirewallRules, createDatabases).toBlocking().lastOrDefault(null);
+        Observable.merge(createFirewallRules, createDatabases).defaultIfEmpty(null).toBlocking().last();
     }
 
     private void deleteChildResources() {
