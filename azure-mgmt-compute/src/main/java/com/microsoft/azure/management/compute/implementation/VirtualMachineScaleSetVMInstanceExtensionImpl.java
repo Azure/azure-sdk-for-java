@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionInstanceView;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Implementation of {@link VirtualMachineScaleSetVMInstanceExtension}.
  */
+@LangDefinition
 class VirtualMachineScaleSetVMInstanceExtensionImpl extends
         ChildResourceImpl<VirtualMachineExtensionInner, VirtualMachineScaleSetVMImpl, VirtualMachineScaleSetVM>
         implements VirtualMachineScaleSetVMInstanceExtension {
