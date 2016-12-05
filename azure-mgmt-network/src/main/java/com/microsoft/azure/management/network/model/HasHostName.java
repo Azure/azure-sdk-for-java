@@ -49,7 +49,7 @@ public interface HasHostName  {
              * @param hostName an existing host name
              * @return the next stage of the update
              */
-            ReturnT withHostname(String hostName);
+            ReturnT withHostName(String hostName);
         }
     }
 
@@ -61,13 +61,13 @@ public interface HasHostName  {
          * The stage of a definition allowing to specify a host name.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithFrontend<ReturnT> {
+        interface WithHostName<ReturnT> {
             /**
              * Specifies the host name to reference.
              * @param hostName an existing host name
              * @return the next stage of the definition
              */
-            ReturnT withHostname(String hostName);
+            ReturnT withHostName(String hostName);
         }
     }
 }
