@@ -143,45 +143,34 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            Thread updateThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    resource.update()
-                        .withInstanceCount(2)
-                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                        .withFrontendPort(81, "port81")         // Add a new port
-                        .withoutBackendIpAddress("11.1.1.1")    // Remove from all existing backends
-                        .defineListener("listener2")
-                            .withPrivateFrontend()
-                            .withFrontendPort(81)
-                            .withHttps()
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .attach()
-                        .defineBackend("backend2")
-                            .withIpAddress("11.1.1.3")
-                            .attach()
-                        .defineBackendHttpConfiguration("config2")
-                            .withCookieBasedAffinity()
-                            .withPort(8081)
-                            .withRequestTimeout(33)
-                            .attach()
-                        .defineRequestRoutingRule("rule2")
-                            .fromListener("listener2")
-                            .toBackendHttpConfiguration("config2")
-                            .toBackend("backend2")
-                            .attach()
-                        .withTag("tag1", "value1")
-                        .withTag("tag2", "value2")
-                        .apply();
-                }
-            });
-
-            // Start the update thread...
-            updateThread.start();
-
-            // ...But bail out after 30 sec as it should be enough to test the results
-            updateThread.join();
+            resource.update()
+                .withInstanceCount(2)
+                .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                .withFrontendPort(81, "port81")         // Add a new port
+                .withoutBackendIpAddress("11.1.1.1")    // Remove from all existing backends
+                .defineListener("listener2")
+                    .withPrivateFrontend()
+                    .withFrontendPort(81)
+                    .withHttps()
+                    .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                    .withSslCertificatePassword("Abc123")
+                    .attach()
+                .defineBackend("backend2")
+                    .withIpAddress("11.1.1.3")
+                    .attach()
+                .defineBackendHttpConfiguration("config2")
+                    .withCookieBasedAffinity()
+                    .withPort(8081)
+                    .withRequestTimeout(33)
+                    .attach()
+                .defineRequestRoutingRule("rule2")
+                    .fromListener("listener2")
+                    .toBackendHttpConfiguration("config2")
+                    .toBackend("backend2")
+                    .attach()
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
+                .apply();
 
             resource.refresh();
 
@@ -846,57 +835,78 @@ public class TestApplicationGateway {
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            Thread updateThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    resource.update()
-                            //.withSku(ApplicationGatewaySkuName.STANDARD_MEDIUM, 2)
-                            .withoutBackendFqdn("www.microsoft.com")
-                            .withoutBackendIpAddress("11.1.1.1")
-                            .withoutBackendHttpConfiguration("httpConfig2")
-                            .updateBackendHttpConfiguration("httpConfig1")
-                                .withPort(83)
-                                .withoutCookieBasedAffinity()
-                                .withRequestTimeout(20)
-                                .parent()
-                            .withoutBackend("backend3")
-                            .withTag("tag1", "value1")
-                            .withTag("tag2", "value2")
-                            .apply();
-                }
-            });
-
-            // Start the update thread...
-            updateThread.start();
-
-            // ...But bail out after 30 sec as it should be enough to test the results
-            updateThread.join(1000 * 30);
+            resource.update()
+                .withInstanceCount(2)
+                .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                .withoutBackendIpAddress("11.1.1.1")
+                .defineListener("listener2")
+                    .withPublicFrontend()
+                    .withFrontendPort(80)
+                    .attach()
+                .defineBackend("backend2")
+                    .withIpAddress("11.1.1.3")
+                    .attach()
+                .defineBackendHttpConfiguration("config2")
+                    .withCookieBasedAffinity()
+                    .withPort(8081)
+                    .withRequestTimeout(33)
+                    .attach()
+                .defineRequestRoutingRule("rule2")
+                    .fromListener("listener2")
+                    .toBackendHttpConfiguration("config2")
+                    .toBackend("backend2")
+                    .attach()
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
+                .apply();
 
             resource.refresh();
 
             Assert.assertTrue(resource.tags().containsKey("tag1"));
-            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
-            Assert.assertTrue(resource.sku().capacity() == 2);
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(resource.size()));
+            Assert.assertTrue(resource.instanceCount() == 2);
+
+            // Verify frontend ports
+            Assert.assertTrue(resource.frontendPorts().size() == 2);
+            Assert.assertTrue(resource.frontendPortNameFromNumber(80) != null);
+
+            // Verify listeners
+            Assert.assertTrue(resource.listeners().size() == 2);
+            ApplicationGatewayListener listener = resource.listeners().get("listener2");
+            Assert.assertTrue(listener != null);
+            Assert.assertTrue(!listener.frontend().isPrivate());
+            Assert.assertTrue(listener.frontend().isPublic());
+            Assert.assertTrue(listener.frontendPortNumber() == 80);
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(listener.protocol()));
+            Assert.assertTrue(listener.sslCertificate() == null);
 
             // Verify backends
-            ApplicationGatewayBackend defaultBackend = resource.backends().get("default");
-            Assert.assertTrue(defaultBackend.addresses().size() == 1);
-            Assert.assertTrue(defaultBackend.addresses().get(0).ipAddress().equalsIgnoreCase("11.1.1.2"));
-
-            ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
-            Assert.assertTrue(backend2.addresses().size() == 1);
-            Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
-            Assert.assertTrue(!resource.backends().containsKey("backend3"));
+            Assert.assertTrue(resource.backends().size() == 2);
+            ApplicationGatewayBackend backend = resource.backends().get("backend2");
+            Assert.assertTrue(backend != null);
+            Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertTrue(backend.containsIpAddress("11.1.1.3"));
 
             // Verify HTTP configs
-            Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
-            Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.port() == 83);
-            Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
-            Assert.assertTrue(httpConfig1.requestTimeout() == 20);
+            Assert.assertTrue(resource.backendHttpConfigurations().size() == 2);
+            ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config2");
+            Assert.assertTrue(config != null);
+            Assert.assertTrue(config.cookieBasedAffinity());
+            Assert.assertTrue(config.port() == 8081);
+            Assert.assertTrue(config.requestTimeout() == 33);
 
-            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("httpConfig2"));
+            // Verify request routing rules
+            Assert.assertTrue(resource.requestRoutingRules().size() == 2);
+            ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule2");
+            Assert.assertTrue(rule != null);
+            Assert.assertTrue(rule.listener() != null);
+            Assert.assertTrue("listener2".equals(rule.listener().name()));
+            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertTrue("config2".equalsIgnoreCase(rule.backendHttpConfiguration().name()));
+            Assert.assertTrue(rule.backend() != null);
+            Assert.assertTrue("backend2".equalsIgnoreCase(rule.backend().name()));
+
             return resource;
         }
     }
