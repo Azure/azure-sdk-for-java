@@ -417,6 +417,8 @@ abstract class WebAppBaseImpl<
 
     abstract Observable<SiteInner> getInner();
 
+    abstract Observable<SiteConfigInner> getConfigInner();
+
     abstract Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig);
 
     abstract Observable<Void> deleteHostNameBinding(String hostname);
@@ -1121,5 +1123,13 @@ abstract class WebAppBaseImpl<
     public FluentImplT withoutSourceControl() {
         sourceControlToDelete = true;
         return (FluentImplT) this;
+    }
+
+    @Override
+    public FluentT refresh() {
+        SiteInner inner = getInner().toBlocking().single();
+        inner.withSiteConfig(getConfigInner().toBlocking().single());
+        setInner(inner);
+        return this.cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 }

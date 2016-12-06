@@ -55,6 +55,11 @@ class WebAppImpl
     }
 
     @Override
+    Observable<SiteConfigInner> getConfigInner() {
+        return client.getConfigurationAsync(resourceGroupName(), name());
+    }
+
+    @Override
     Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
         return client.createOrUpdateConfigurationAsync(resourceGroupName(), name(), siteConfig);
     }
@@ -180,22 +185,18 @@ class WebAppImpl
     @Override
     public void swap(String slotName) {
         client.swapSlotWithProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
         client.applySlotConfigToProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void resetSlotConfigurations() {
         client.resetProductionSlotConfig(resourceGroupName(), name());
-    }
-
-    @Override
-    public WebAppImpl refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
-        return this;
     }
 
     @Override

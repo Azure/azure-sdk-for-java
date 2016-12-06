@@ -621,6 +621,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithCreate<FluentT> extends
                 Creatable<FluentT>,
+                GroupableResource.DefinitionWithTags<WithCreate<FluentT>>,
                 WithSiteEnabled<FluentT>,
                 WithScmSiteAlsoStopped<FluentT>,
                 WithClientAffinityEnabled<FluentT>,
@@ -991,6 +992,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     interface Update<FluentT> extends
             Appliable<FluentT>,
+            GroupableResource.UpdateWithTags<Update<FluentT>>,
             UpdateStages.WithHostNameBinding<FluentT>,
             UpdateStages.WithHostNameSslBinding<FluentT>,
             UpdateStages.WithClientAffinityEnabled<FluentT>,

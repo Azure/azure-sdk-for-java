@@ -35,7 +35,7 @@ public class DeploymentSlotsTests extends AppServiceTestBase {
     }
 
     @Test
-    public void canCRUDWebApp() throws Exception {
+    public void canCRUDSwapSlots() throws Exception {
         // Create web app
         WebApp webApp = appServiceManager.webApps().define(WEBAPP_NAME)
                 .withNewResourceGroup(RG_NAME)
@@ -55,9 +55,11 @@ public class DeploymentSlotsTests extends AppServiceTestBase {
         // Create a deployment slot with empty config
         DeploymentSlot slot1 = webApp.deploymentSlots().define(SLOT_NAME_1)
                 .withBrandNewConfiguration()
+                .withPythonVersion(PythonVersion.PYTHON_27)
                 .create();
         Assert.assertNotNull(slot1);
         Assert.assertNotEquals(JavaVersion.JAVA_1_7_0_51, slot1.javaVersion());
+        Assert.assertEquals(PythonVersion.PYTHON_27, slot1.pythonVersion());
         Map<String, AppSetting> appSettingMap = slot1.appSettings();
         Assert.assertFalse(appSettingMap.containsKey("appkey"));
         Assert.assertFalse(appSettingMap.containsKey("stickykey"));
@@ -86,7 +88,8 @@ public class DeploymentSlotsTests extends AppServiceTestBase {
         slot2.update()
                 .withoutJava()
                 .withPythonVersion(PythonVersion.PYTHON_34)
-                .withStickyAppSetting("slot2key", "slot2value")
+                .withAppSetting("slot2key", "slot2value")
+                .withStickyAppSetting("sticky2key", "sticky2value")
                 .apply();
         Assert.assertNotNull(slot2);
         Assert.assertEquals(JavaVersion.OFF, slot2.javaVersion());
@@ -111,5 +114,16 @@ public class DeploymentSlotsTests extends AppServiceTestBase {
         // List
         List<DeploymentSlot> deploymentSlots = webApp.deploymentSlots().list();
         Assert.assertEquals(3, deploymentSlots.size());
+
+        // Swap
+        slot3.swap(slot1.name());
+        slot1 = webApp.deploymentSlots().getByName(SLOT_NAME_1);
+        Assert.assertEquals(JavaVersion.OFF, slot1.javaVersion());
+        Assert.assertEquals(PythonVersion.PYTHON_34, slot1.pythonVersion());
+        Assert.assertEquals(PythonVersion.PYTHON_27, slot3.pythonVersion());
+        Assert.assertEquals("appvalue", slot1.appSettings().get("appkey").value());
+        Assert.assertEquals("slot2value", slot1.appSettings().get("slot2key").value());
+        Assert.assertEquals("sticky2value", slot3.appSettings().get("sticky2key").value());
+        Assert.assertEquals("stickyvalue", slot3.appSettings().get("stickykey").value());
     }
 }

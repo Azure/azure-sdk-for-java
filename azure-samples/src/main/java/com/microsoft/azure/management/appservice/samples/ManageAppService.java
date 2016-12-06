@@ -10,6 +10,7 @@ package com.microsoft.azure.management.appservice.samples;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
@@ -104,11 +105,11 @@ public final class ManageAppService {
                 // Create a second web app with the same app service plan
 
                 System.out.println("Creating another web app " + app2Name + "...");
-
+                AppServicePlan plan = azure.appServices().appServicePlans().getByGroup(rgName, planName);
                 WebApp app2 = azure.webApps()
                         .define(app2Name)
                         .withExistingResourceGroup(rgName)
-                        .withExistingAppServicePlan(planName)
+                        .withExistingAppServicePlan(plan)
                         .create();
 
                 System.out.println("Created web app " + app2.name());

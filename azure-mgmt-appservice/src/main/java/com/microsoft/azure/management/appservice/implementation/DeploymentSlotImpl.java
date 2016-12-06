@@ -48,14 +48,6 @@ class DeploymentSlotImpl
     }
 
     @Override
-    public DeploymentSlotImpl refresh() {
-        SiteInner inner = client.getSlot(resourceGroupName(), parent.name(), name());
-        inner.withSiteConfig(client.getConfigurationSlot(resourceGroupName(), parent.name(), name()));
-        setInner(inner);
-        return this;
-    }
-
-    @Override
     public Map<String, HostNameBinding> getHostNameBindings() {
         List<HostNameBindingInner> collectionInner = client.listHostNameBindingsSlot(resourceGroupName(), parent.name(), name());
         List<HostNameBinding> hostNameBindings = new ArrayList<>();
@@ -144,6 +136,11 @@ class DeploymentSlotImpl
     }
 
     @Override
+    Observable<SiteConfigInner> getConfigInner() {
+        return client.getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
+    }
+
+    @Override
     Observable<SiteConfigInner> createOrUpdateSiteConfig(SiteConfigInner siteConfig) {
         return client.createOrUpdateConfigurationSlotAsync(resourceGroupName(), parent.name(), name(), siteConfig);
     }
@@ -191,11 +188,13 @@ class DeploymentSlotImpl
     @Override
     public void swap(String slotName) {
         client.swapSlotSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
         client.applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
