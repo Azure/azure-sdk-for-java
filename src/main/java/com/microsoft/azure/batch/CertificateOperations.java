@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Performs certificate related operations on an Azure Batch account.
+ * Performs certificate-related operations on an Azure Batch account.
  */
 public class CertificateOperations implements IInheritedBehaviors {
 
@@ -54,9 +54,9 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -64,9 +64,9 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
      * @return The current instance
      */
     @Override
@@ -97,10 +97,10 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Creates a new {@link Certificate} from .cer format data in stream.
+     * Adds a certificate to the Batch account.
      *
      * @param certStream The certificate data in .cer format.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      * @throws CertificateException Exception thrown on parsing errors
      * @throws NoSuchAlgorithmException Exception thrown if the X509 provider is not registered in the security provider list.
@@ -110,11 +110,11 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Creates a new {@link Certificate} from .cer format data in stream.
+     * Adds a certificate to the Batch account.
      *
      * @param certStream The certificate data in .cer format.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      * @throws CertificateException Exception thrown on parsing errors
      * @throws NoSuchAlgorithmException Exception thrown if the X509 provider is not registered in the security provider list.
@@ -133,10 +133,10 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Creates a new {@link Certificate} by {@link CertificateAddParameter}
+     * Adds a certificate to the Batch account.
      *
-     * @param certificate The parameter to create certificate
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param certificate The certificate to be added
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createCertificate(CertificateAddParameter certificate) throws BatchErrorException, IOException {
@@ -144,11 +144,11 @@ public class CertificateOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Creates a new {@link Certificate} by {@link CertificateAddParameter}
+     * Adds a certificate to the Batch account.
      *
-     * @param certificate The parameter to create certificate
+     * @param certificate The certificate to be added
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createCertificate(CertificateAddParameter certificate, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -161,11 +161,12 @@ public class CertificateOperations implements IInheritedBehaviors {
 
     /**
      * Cancels a failed deletion of the specified certificate.  This can be done only when
-     * the certificate is in the DeleteFailed state, and restores the certificate to the Active state.
+     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED delete failed} state, and restores 
+	 * the certificate to the {@link com.microsoft.azure.batch.protocol.models.CertificateState#ACTIVE active} state.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate that failed to delete.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void cancelDeleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -174,12 +175,13 @@ public class CertificateOperations implements IInheritedBehaviors {
 
     /**
      * Cancels a failed deletion of the specified certificate.  This can be done only when
-     * the certificate is in the DeleteFailed state, and restores the certificate to the Active state.
+     * the certificate is in the {@link com.microsoft.azure.batch.protocol.models.CertificateState#DELETEFAILED delete failed} state, and restores 
+	 * the certificate to the {@link com.microsoft.azure.batch.protocol.models.CertificateState#ACTIVE active} state.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate that failed to delete.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void cancelDeleteCertificate(String thumbprintAlgorithm, String thumbprint, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -195,7 +197,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to delete.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -208,7 +210,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to delete.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteCertificate(String thumbprintAlgorithm, String thumbprint, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -225,7 +227,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @return A {@link Certificate} containing information about the specified certificate in the Azure Batch account.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException {
@@ -239,7 +241,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @param thumbprint The thumbprint of the certificate to get.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @return A {@link Certificate} containing information about the specified certificate in the Azure Batch account.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -254,7 +256,7 @@ public class CertificateOperations implements IInheritedBehaviors {
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A {@link Certificate} containing information about the specified certificate in the Azure Batch account.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public Certificate getCertificate(String thumbprintAlgorithm, String thumbprint, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -270,8 +272,8 @@ public class CertificateOperations implements IInheritedBehaviors {
     /**
      * Enumerates the {@link Certificate certificates} in the Batch account.
      *
-     * @return A collection of {@link Certificate certificates}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link Certificate certificates}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<Certificate> listCertificates() throws BatchErrorException, IOException {
@@ -282,8 +284,8 @@ public class CertificateOperations implements IInheritedBehaviors {
      * Enumerates the {@link Certificate certificates} in the Batch account.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link Certificate certificates}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link Certificate certificates}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<Certificate> listCertificates(DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -295,8 +297,8 @@ public class CertificateOperations implements IInheritedBehaviors {
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link Certificate certificates}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link Certificate certificates}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<Certificate> listCertificates(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {

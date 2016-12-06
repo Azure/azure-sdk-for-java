@@ -21,30 +21,27 @@ public class CreateTasksTerminatedException extends BatchErrorException {
      * Initializes a new instance of the CreateTasksTerminatedException class.
      *
      * @param message The exception message
-     * @param failureTasks The list of failed tasks
-     * @param pendingList The list of pending tasks
+     * @param failureTasks The list of {@link TaskAddResult} instances containing failure details of tasks that were not successfully created.
+     * @param pendingList The list of {@link TaskAddParameter} instances containing the tasks that were not added but can be retried.
      */
     public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
         super(message);
         this.failureTasks = failureTasks;
     }
 
-    /**
-     * The actual response Result.
-     */
     private List<TaskAddResult> failureTasks;
 
     private List<TaskAddParameter> pendingTaskList;
 
     /**
-     * @return The list of failed tasks
+     * @return The list of {@link TaskAddResult} instances containing failure details of tasks that were not successfully created.
      */
     public List<TaskAddResult> failureTasks() {
         return failureTasks;
     }
 
     /**
-     * @return The list of pending tasks
+     * @return The list of {@link TaskAddParameter} instances containing the tasks that were not added but can be retried.
      */
     public List<TaskAddParameter> pendingTaskList() {
         return pendingTaskList;

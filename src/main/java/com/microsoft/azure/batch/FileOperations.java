@@ -32,7 +32,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Performs file related operations on an Azure Batch account.
+ * Performs file-related operations on an Azure Batch account.
  */
 public class FileOperations implements IInheritedBehaviors {
 
@@ -48,9 +48,9 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -58,9 +58,9 @@ public class FileOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
      * @return The current instance
      */
     @Override
@@ -74,8 +74,8 @@ public class FileOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job.
      * @param taskId The ID of the task.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -89,8 +89,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param recursive If true, performs a recursive list of all files of the task. If false, returns only the files in the root task directory.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -105,8 +105,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param recursive If true, performs a recursive list of all files of the task. If false, returns only the files in the root task directory.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromTask(String jobId, String taskId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -125,8 +125,8 @@ public class FileOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
@@ -140,8 +140,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param nodeId The ID of the compute node.
      * @param recursive If true, recursively enumerates all files on the compute node. If false, enumerates only the files in the compute node root directory.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -156,8 +156,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param recursive If true, recursively enumerates all files on the compute node. If false, enumerates only the files in the compute node root directory.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link NodeFile}
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeFile node files}
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeFile> listFilesFromComputeNode(String poolId, String nodeId, Boolean recursive, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -177,7 +177,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param fileName The name of the file to delete.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException {
@@ -191,7 +191,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param fileName The name of the file to delete.
      * @param recursive If the file-path parameter represents a directory instead of a file, you can set the optional recursive parameter to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromTask(String jobId, String taskId, String fileName, Boolean recursive) throws BatchErrorException, IOException {
@@ -206,7 +206,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param fileName The name of the file to delete.
      * @param recursive If the file-path parameter represents a directory instead of a file, you can set the optional recursive parameter to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromTask(String jobId, String taskId, String fileName, Boolean recursive, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -223,7 +223,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node.
      * @param fileName The name of the file to delete.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException {
@@ -237,7 +237,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param nodeId The ID of the compute node.
      * @param fileName The name of the file to delete.
      * @param recursive If the file-path parameter represents a directory instead of a file, you can set the optional recursive parameter to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromComputeNode(String poolId, String nodeId, String fileName, Boolean recursive) throws BatchErrorException, IOException {
@@ -252,7 +252,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param fileName The name of the file to delete.
      * @param recursive If the file-path parameter represents a directory instead of a file, you can set the optional recursive parameter to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteFileFromComputeNode(String poolId, String nodeId, String fileName, Boolean recursive, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -270,7 +270,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param fileName The name of the file to download.
      * @return A stream into which the file contents will be written.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public InputStream getFileFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException {
@@ -285,7 +285,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param fileName The name of the file to download.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A stream into which the file contents will be written.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public InputStream getFileFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -305,7 +305,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param nodeId The ID of the compute node.
      * @param fileName The name of the file to download.
      * @return A stream into which the file contents will be written.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public InputStream getFileFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException {
@@ -320,7 +320,7 @@ public class FileOperations implements IInheritedBehaviors {
      * @param fileName The name of the file to download.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A stream into which the file contents will be written.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public InputStream getFileFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -339,8 +339,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param fileName The name of the file to retrieve.
-     * @return A {@link NodeFile} containing information about the file.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A {@link FileProperties} instance containing information about the file.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public FileProperties getFilePropertiesFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException {
@@ -354,8 +354,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param fileName The name of the file to retrieve.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A {@link NodeFile} containing information about the file.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A {@link FileProperties} instance containing information about the file.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public FileProperties getFilePropertiesFromTask(String jobId, String taskId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -379,8 +379,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId the ID of the compute node.
      * @param fileName The name of the file to retrieve.
-     * @return A {@link NodeFile} containing information about the file.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A {@link FileProperties} instance containing information about the file.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public FileProperties getFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException {
@@ -394,8 +394,8 @@ public class FileOperations implements IInheritedBehaviors {
      * @param nodeId the ID of the compute node.
      * @param fileName The name of the file to retrieve.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A {@link NodeFile} containing information about the file.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A {@link FileProperties} instance containing information about the file.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public FileProperties getFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {

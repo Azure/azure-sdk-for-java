@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Performs account related operations on an Azure Batch account.
+ * Performs account-related operations on an Azure Batch account.
  */
 public class AccountOperations implements IInheritedBehaviors {
 
@@ -34,9 +34,9 @@ public class AccountOperations implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -44,9 +44,9 @@ public class AccountOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
      * @return The current instance
      */
     @Override
@@ -56,10 +56,10 @@ public class AccountOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the node agent SKU values supported by Batch Service.
+     * Enumerates the node agent SKU values supported by the Batch service.
      *
-     * @return A collection of {@link NodeAgentSku} that can be used to enumerate node agent SKU values
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeAgentSku node agent SKU values}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
@@ -67,11 +67,11 @@ public class AccountOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the node agent SKU values supported by Batch Service.
+     * Enumerates the node agent SKU values supported by the Batch service.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return An collection of {@link NodeAgentSku} that can be used to enumerate node agent SKU values
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeAgentSku node agent SKU values}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -79,12 +79,12 @@ public class AccountOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the node agent SKU values supported by Batch Service.
+     * Enumerates the node agent SKU values supported by the Batch service.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link NodeAgentSku} that can be used to enumerate node agent SKU values
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link NodeAgentSku node agent SKU values}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {

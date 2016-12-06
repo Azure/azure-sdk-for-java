@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Performs pool related operations on an Azure Batch account.
+ * Performs pool-related operations on an Azure Batch account.
  */
 public class PoolOperations implements IInheritedBehaviors {
     PoolOperations(BatchClient batchClient, Collection<BatchClientBehavior> customBehaviors) {
@@ -33,9 +33,9 @@ public class PoolOperations implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -43,9 +43,9 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
      * @return The current instance
      */
     @Override
@@ -57,8 +57,8 @@ public class PoolOperations implements IInheritedBehaviors {
     /**
      * Enumerates the {@link CloudPool pools} in the Batch account.
      *
-     * @return A collection of {@link CloudPool pools}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudPool pools}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudPool> listPools() throws BatchErrorException, IOException {
@@ -69,8 +69,8 @@ public class PoolOperations implements IInheritedBehaviors {
      * Enumerates the {@link CloudPool pools} in the Batch account.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link CloudPool pools}.     *
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudPool pools}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudPool> listPools(DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -82,8 +82,8 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link CloudPool pools}.     *
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudPool pools}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudPool> listPools(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -103,7 +103,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool to get.
      * @return A {@link CloudPool} containing information about the specified Azure Batch pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudPool getPool(String poolId) throws BatchErrorException, IOException {
@@ -116,7 +116,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool to get.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @return A {@link CloudPool} containing information about the specified Azure Batch pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudPool getPool(String poolId, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -130,7 +130,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A {@link CloudPool} containing information about the specified Azure Batch pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudPool getPool(String poolId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -148,7 +148,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * Deletes the specified pool.
      *
      * @param poolId The ID of the pool to delete.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deletePool(String poolId) throws BatchErrorException, IOException {
@@ -160,7 +160,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool to delete.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deletePool(String poolId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -172,13 +172,13 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
      * @param poolId The ID of the pool.
-     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-size-specs/ for sizes.
+     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/ for sizes.
      * @param cloudServiceConfiguration The {@link CloudServiceConfiguration} for the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, int targetDedicated) throws BatchErrorException, IOException {
@@ -186,14 +186,14 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
      * @param poolId The ID of the pool.
-     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-size-specs/ for sizes.
+     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/ for sizes.
      * @param cloudServiceConfiguration The {@link CloudServiceConfiguration} for the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(String poolId, String virtualMachineSize, CloudServiceConfiguration cloudServiceConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -207,13 +207,13 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
      * @param poolId The ID of the pool.
-     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-size-specs/ for sizes.
+     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/ for sizes.
      * @param virtualMachineConfiguration The {@link VirtualMachineConfiguration} for the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, int targetDedicated) throws BatchErrorException, IOException {
@@ -221,14 +221,14 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
      * @param poolId The ID of the pool.
-     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/en-us/documentation/articles/virtual-machines-size-specs/ for sizes.
+     * @param virtualMachineSize The size of virtual machines in the pool.  See https://azure.microsoft.com/documentation/articles/virtual-machines-size-specs/ for sizes.
      * @param virtualMachineConfiguration The {@link VirtualMachineConfiguration} for the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(String poolId, String virtualMachineSize, VirtualMachineConfiguration virtualMachineConfiguration, Integer targetDedicated, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -242,10 +242,10 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
-     * @param parameter The parameter to create the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param parameter The pool to be added.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(PoolAddParameter parameter) throws BatchErrorException, IOException {
@@ -253,11 +253,11 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a specified pool to the Batch account.
+     * Adds a pool to the Batch account.
      *
-     * @param parameter The parameter to create the pool.
+     * @param parameter The pool to be added.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createPool(PoolAddParameter parameter, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -273,7 +273,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void resizePool(String poolId, int targetDedicated) throws BatchErrorException, IOException {
@@ -286,7 +286,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param targetDedicated The desired number of compute nodes in the pool.
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void resizePool(String poolId, int targetDedicated, Period resizeTimeout) throws BatchErrorException, IOException {
@@ -300,7 +300,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param targetDedicated The desired number of compute nodes in the pool.
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
      * @param deallocationOption Specifies when nodes may be removed from the pool, if the pool size is decreasing.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void resizePool(String poolId, int targetDedicated, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption) throws BatchErrorException, IOException {
@@ -315,7 +315,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param resizeTimeout The timeout for allocation of compute nodes to the pool or removal of compute nodes from the pool. If the pool has not reached the target size after this time, the resize is stopped.
      * @param deallocationOption Specifies when nodes may be removed from the pool, if the pool size is decreasing.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void resizePool(String poolId, int targetDedicated, Period resizeTimeout, ComputeNodeDeallocationOption deallocationOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -335,7 +335,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * Stops a pool resize operation.
      *
      * @param poolId The ID of the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void stopResizePool(String poolId) throws BatchErrorException, IOException {
@@ -347,7 +347,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void stopResizePool(String poolId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -362,7 +362,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * Enables automatic scaling on the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void enableAutoScale(String poolId) throws BatchErrorException, IOException {
@@ -374,7 +374,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void enableAutoScale(String poolId, String autoScaleFormula) throws BatchErrorException, IOException {
@@ -386,8 +386,8 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool.
-     * @param autoScaleEvaluationInterval the Time interval at which to automatically adjust the pool size according to the AutoScale formula.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param autoScaleEvaluationInterval The time interval at which to automatically adjust the pool size according to the AutoScale formula.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void enableAutoScale(String poolId, String autoScaleFormula, Period autoScaleEvaluationInterval) throws BatchErrorException, IOException {
@@ -401,7 +401,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param autoScaleFormula The formula for the desired number of compute nodes in the pool.
      * @param autoScaleEvaluationInterval The time interval at which to automatically adjust the pool size according to the AutoScale formula.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void enableAutoScale(String poolId, String autoScaleFormula, Period autoScaleEvaluationInterval, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -421,7 +421,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * Disables automatic scaling on the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void disableAutoScale(String poolId) throws BatchErrorException, IOException {
@@ -433,7 +433,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void disableAutoScale(String poolId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -452,7 +452,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param autoScaleFormula The formula to be evaluated on the pool.
      * @return The result of evaluating the formula on the specified pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula) throws BatchErrorException, IOException {
@@ -468,7 +468,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param autoScaleFormula The formula to be evaluated on the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return The result of evaluating the formula on the specified pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public AutoScaleRun evaluateAutoScale(String poolId, String autoScaleFormula, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -485,7 +485,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void changeOSVersion(String poolId, String targetOSVersion) throws BatchErrorException, IOException {
@@ -498,7 +498,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param targetOSVersion The Azure Guest OS version to be installed on the virtual machines in the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void changeOSVersion(String poolId, String targetOSVersion, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -514,7 +514,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param computeNodeId The ID of the compute node to remove from the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodeFromPool(String poolId, String computeNodeId) throws BatchErrorException, IOException {
@@ -527,7 +527,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param computeNodeId The ID of the compute node to remove from the pool.
      * @param deallocationOption Specifies when nodes may be removed from the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodeFromPool(String poolId, String computeNodeId, ComputeNodeDeallocationOption deallocationOption) throws BatchErrorException, IOException {
@@ -542,7 +542,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param deallocationOption Specifies when nodes may be removed from the pool.
      * @param resizeTimeout Specifies the timeout for removal of compute nodes from the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodeFromPool(String poolId, String computeNodeId, ComputeNodeDeallocationOption deallocationOption, Period resizeTimeout, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -556,8 +556,8 @@ public class PoolOperations implements IInheritedBehaviors {
      * Removes the specified compute nodes from the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param computeNodes The ids of the compute nodes to remove from the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param computeNodes The IDs of the compute nodes to remove from the pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodesFromPool(String poolId, Collection<ComputeNode> computeNodes) throws BatchErrorException, IOException {
@@ -568,9 +568,9 @@ public class PoolOperations implements IInheritedBehaviors {
      * Removes the specified compute nodes from the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param computeNodes The ids of the compute nodes to remove from the pool.
+     * @param computeNodes The IDs of the compute nodes to remove from the pool.
      * @param deallocationOption Specifies when nodes may be removed from the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodesFromPool(String poolId, Collection<ComputeNode> computeNodes, ComputeNodeDeallocationOption deallocationOption) throws BatchErrorException, IOException {
@@ -581,11 +581,11 @@ public class PoolOperations implements IInheritedBehaviors {
      * Removes the specified compute nodes from the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param computeNodes The ids of the compute nodes to remove from the pool.
+     * @param computeNodes The IDs of the compute nodes to remove from the pool.
      * @param deallocationOption Specifies when nodes may be removed from the pool.
      * @param resizeTimeout Specifies the timeout for removal of compute nodes from the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void removeNodesFromPool(String poolId, Collection<ComputeNode> computeNodes, ComputeNodeDeallocationOption deallocationOption, Period resizeTimeout, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -611,11 +611,11 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Checks existence of the specified pool.
+     * Checks the existence of the specified pool.
      *
-     * @param poolId The ID of the pool.
-     * @return True if pool exists, otherwise, return false
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param poolId The if of the pool.
+     * @return True if the pool exists; otherwise, false.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public boolean existsPool(String poolId) throws BatchErrorException, IOException {
@@ -623,12 +623,12 @@ public class PoolOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Checks existence of the specified pool.
+     * Checks the existence of the specified pool.
      *
      * @param poolId The ID of the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return True if pool exists, otherwise, return false
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return True if the pool exists; otherwise, false.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public boolean existsPool(String poolId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -647,10 +647,10 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param startTask A task to run on each compute node as it joins the pool. If omitted, any existing start task is removed from the pool.
-     * @param certificateReferences A list of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are removed from the pool.
-     * @param applicationPackageReferences a list of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are removed from the pool.
-     * @param metadata A list of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is removed from the pool.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param certificateReferences A collection of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are removed from the pool.
+     * @param applicationPackageReferences A collection of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are removed from the pool.
+     * @param metadata A collection of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is removed from the pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
@@ -663,11 +663,11 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param startTask A task to run on each compute node as it joins the pool. If omitted, any existing start task is removed from the pool.
-     * @param certificateReferences A list of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are removed from the pool.
-     * @param applicationPackageReferences A list of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are removed from the pool.
-     * @param metadata A list of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is removed from the pool.
+     * @param certificateReferences A collection of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are removed from the pool.
+     * @param applicationPackageReferences A collection of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are removed from the pool.
+     * @param metadata A collection of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is removed from the pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void updatePoolProperties(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
@@ -694,10 +694,10 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param startTask A task to run on each compute node as it joins the pool. If omitted, any existing start task is left unchanged.
-     * @param certificateReferences A list of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are left unchanged.
-     * @param applicationPackageReferences A list of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are left unchanged.
-     * @param metadata A list of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is left unchanged.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param certificateReferences A collection of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are left unchanged.
+     * @param applicationPackageReferences A collection of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are left unchanged.
+     * @param metadata A collection of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is left unchanged.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
@@ -710,11 +710,11 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param startTask A task to run on each compute node as it joins the pool. If omitted, any existing start task is left unchanged.
-     * @param certificateReferences A list of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are left unchanged.
-     * @param applicationPackageReferences A list of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are left unchanged.
-     * @param metadata A list of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is left unchanged.
+     * @param certificateReferences A collection of certificates to be installed on each compute node in the pool. If omitted, any existing certificate references are left unchanged.
+     * @param applicationPackageReferences A collection of application packages to be installed on each compute node in the pool. If omitted, any existing application packages references are left unchanged.
+     * @param metadata A collection of name-value pairs associated with the pool as metadata. If omitted, any existing metadata is left unchanged.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void patchPool(String poolId, StartTask startTask, Collection<CertificateReference> certificateReferences,
@@ -744,8 +744,8 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param startTime The start time of the aggregation interval covered by this entry.
      * @param endTime The end time of the aggregation interval for this entry.
-     * @return A collection of {@link PoolUsageMetrics pool usage metrics}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link PoolUsageMetrics pool usage metrics}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime) throws BatchErrorException, IOException {
@@ -758,8 +758,8 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param startTime The start time of the aggregation interval covered by this entry.
      * @param endTime The end time of the aggregation interval for this entry.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link PoolUsageMetrics pool usage metrics}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link PoolUsageMetrics pool usage metrics}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -773,8 +773,8 @@ public class PoolOperations implements IInheritedBehaviors {
      * @param endTime The end time of the aggregation interval for this entry.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link PoolUsageMetrics pool usage metrics}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link PoolUsageMetrics pool usage metrics}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<PoolUsageMetrics> listPoolUsageMetrics(DateTime startTime, DateTime endTime, DetailLevel detailLevel,
@@ -796,7 +796,7 @@ public class PoolOperations implements IInheritedBehaviors {
      * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
      *
      * @return The aggregated pool statistics.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public PoolStatistics getAllPoolsLifetimeStatistics() throws BatchErrorException, IOException {
@@ -809,7 +809,7 @@ public class PoolOperations implements IInheritedBehaviors {
      *
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return The aggregated pool statistics.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public PoolStatistics getAllPoolsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {

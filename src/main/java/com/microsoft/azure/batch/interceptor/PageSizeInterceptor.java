@@ -20,7 +20,7 @@ public class PageSizeInterceptor extends RequestInterceptor {
     /**
      * Initializes a new {@link PageSizeInterceptor} for setting maximum page size of a request.
      *
-     * @param pageSize the maximum items will return in a request
+     * @param pageSize The maximum number of items which will be returned in a request
      */
     public PageSizeInterceptor(int pageSize) {
         this.maxResults = pageSize;

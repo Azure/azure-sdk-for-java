@@ -61,7 +61,7 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
     }
 
     /**
-     * Apply the credential to the request
+     * Apply the credential to the Batch service request
      *
      * @param clientBuilder The client builder
      */

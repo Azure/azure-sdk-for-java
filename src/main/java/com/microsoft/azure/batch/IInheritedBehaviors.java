@@ -10,7 +10,7 @@ import java.util.Collection;
 
 /**
  * Methods and properties that are inherited from the instantiating parent object.
- * This collection is initially populated by instantiation or by copying from the instantiating parent object (inheritance).
+ * The custom behaviors collection is initially populated by instantiation or by copying from the instantiating parent object (inheritance).
  * In this model, the collections are independent but the members are shared references.
  * Members of this collection alter or customize various behaviors of Azure Batch Service client objects.
  * These behaviors are generally inherited by any child class instances.
@@ -20,17 +20,17 @@ import java.util.Collection;
 public interface IInheritedBehaviors {
 
     /**
-     * Gets the collection of BatchClientBehavior
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return The collection of BatchClientBehavior classes
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     Collection<BatchClientBehavior> customBehaviors();
 
     /**
-     * Sets the collection of BatchClientBehavior
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
-     * @return The original instance
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
+     * @return The current instance
      */
     IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors);
 

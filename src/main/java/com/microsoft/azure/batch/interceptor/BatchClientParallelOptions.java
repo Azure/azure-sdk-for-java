@@ -42,7 +42,7 @@ public class BatchClientParallelOptions extends BatchClientBehavior {
     }
 
     /**
-     * Initializes a new instance of the {@link BatchClientParallelOptions} class with default value.
+     * Initializes a new instance of the {@link BatchClientParallelOptions} class with default values.
      */
     public BatchClientParallelOptions() {
         this.maxDegreeOfParallelism = 1;

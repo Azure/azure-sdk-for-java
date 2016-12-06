@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Performs task related operations on an Azure Batch account.
+ * Performs task-related operations on an Azure Batch account.
  */
 public class TaskOperations implements IInheritedBehaviors {
     TaskOperations(BatchClient batchClient, Collection<BatchClientBehavior> customBehaviors) {
@@ -32,9 +32,9 @@ public class TaskOperations implements IInheritedBehaviors {
     private BatchClient _parentBatchClient;
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -42,9 +42,9 @@ public class TaskOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
+     * @param behaviors The collection of {@link BatchClientBehavior} instances
      * @return The current instance
      */
     @Override
@@ -57,8 +57,8 @@ public class TaskOperations implements IInheritedBehaviors {
      * Adds a single task to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskToAdd The {@link CloudTask} to add.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param taskToAdd The {@link TaskAddParameter} to add.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createTask(String jobId, TaskAddParameter taskToAdd) throws BatchErrorException, IOException {
@@ -69,9 +69,9 @@ public class TaskOperations implements IInheritedBehaviors {
      * Adds a single task to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskToAdd The {@link CloudTask} to add.
+     * @param taskToAdd The {@link TaskAddParameter} to add.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void createTask(String jobId, TaskAddParameter taskToAdd, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -86,10 +86,10 @@ public class TaskOperations implements IInheritedBehaviors {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A collection of {@link CloudTask tasks} to add.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @param taskList A list of {@link TaskAddParameter tasks} to add.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown if any thread has interrupted the current thread.
+     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      */
     public void createTasks(String jobId, List<TaskAddParameter> taskList) throws BatchErrorException, IOException, InterruptedException {
         createTasks(jobId, taskList, null);
@@ -183,11 +183,11 @@ public class TaskOperations implements IInheritedBehaviors {
      * Adds multiple tasks to a job.
      *
      * @param jobId The ID of the job to which to add the task.
-     * @param taskList A collection of {@link CloudTask tasks} to add.
+     * @param taskList A list of {@link TaskAddParameter tasks} to add.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
-     * @throws InterruptedException exception thrown if any thread has interrupted the current thread.
+     * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      */
     public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, InterruptedException {
 
@@ -288,8 +288,8 @@ public class TaskOperations implements IInheritedBehaviors {
      * Enumerates the {@link CloudTask tasks} of the specified job.
      *
      * @param jobId The ID of the job.
-     * @return A collection of {@link CloudTask tasks}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudTask tasks}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudTask> listTasks(String jobId) throws BatchErrorException, IOException {
@@ -301,8 +301,8 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link CloudTask tasks}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudTask tasks}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudTask> listTasks(String jobId, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -315,8 +315,8 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link CloudTask tasks}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link CloudTask tasks}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<CloudTask> listTasks(String jobId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -335,8 +335,8 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
-     * @return A collection of {@link SubtaskInformation subtask information}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link SubtaskInformation subtask information}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<SubtaskInformation> listSubtasks(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -349,8 +349,8 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link SubtaskInformation subtask information}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link SubtaskInformation subtask information}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<SubtaskInformation> listSubtasks(String jobId, String taskId, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -364,8 +364,8 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link SubtaskInformation subtask information}.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @return A list of {@link SubtaskInformation subtask information}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public List<SubtaskInformation> listSubtasks(String jobId, String taskId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -389,7 +389,7 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -402,7 +402,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void deleteTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -419,7 +419,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @return A {@link CloudTask} containing information about the specified Azure Batch task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudTask getTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -433,7 +433,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @return A {@link CloudTask} containing information about the specified Azure Batch task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudTask getTask(String jobId, String taskId, DetailLevel detailLevel) throws BatchErrorException, IOException {
@@ -448,7 +448,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A {@link CloudTask} containing information about the specified Azure Batch task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public CloudTask getTask(String jobId, String taskId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -468,7 +468,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void updateTask(String jobId, String taskId, TaskConstraints constraints) throws BatchErrorException, IOException {
@@ -482,7 +482,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param taskId The ID of the task.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void updateTask(String jobId, String taskId, TaskConstraints constraints, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -498,7 +498,7 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void terminateTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -511,7 +511,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void terminateTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -527,7 +527,7 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void  reactivateTask(String jobId, String taskId) throws BatchErrorException, IOException {
@@ -540,7 +540,7 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service
      * @throws IOException Exception thrown from serialization/deserialization
      */
     public void reactivateTask(String jobId, String taskId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
