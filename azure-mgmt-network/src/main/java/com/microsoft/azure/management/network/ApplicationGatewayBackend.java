@@ -30,6 +30,20 @@ public interface ApplicationGatewayBackend extends
     List<ApplicationGatewayBackendAddress> addresses();
 
     /**
+     * Checks whether the specified IP address is referenced by this backend address pool.
+     * @param ipAddress an IP address
+     * @return true if the specified IP address is referenced by this backend, else false
+     */
+    boolean containsIpAddress(String ipAddress);
+
+    /**
+     * Checks whether the specified FQDN is referenced by this backend address pool.
+     * @param fqdn a fully qualified domain name (FQDN)
+     * @return true if the specified FQDN is referenced by this backend, else false
+     */
+    boolean containsFqdn(String fqdn);
+
+    /**
      * Grouping of application gateway backend definition stages.
      */
     interface DefinitionStages {

@@ -111,27 +111,6 @@ public interface ApplicationGatewayFrontend extends
      */
     interface UpdateStages {
         /**
-         * The stage of an application gateway frontend update allowing to specify a subnet from the selected network to make this
-         * application gateway visible to.
-         */
-        interface WithSubnet extends HasSubnet.UpdateStages.WithSubnet<Update> {
-            /**
-             * Assigns the specified subnet to this private frontend.
-             * @param network the virtual network the subnet exists in
-             * @param subnetName the name of a subnet
-             * @return the next stage of the definition
-             */
-            Update withExistingSubnet(Network network, String subnetName);
-        }
-
-        /**
-         * The stage of an application gateway frontend update allowing to specify the private IP address this application gateway should be available at
-         * within the selected virtual network.
-         */
-        interface WithPrivateIp extends HasPrivateIpAddress.UpdateStages.WithPrivateIpAddress<Update> {
-        }
-
-        /**
          * The stage of an application gateway frontend definition allowing to specify an existing public IP address to make
          * the application gateway available at as Internet-facing.
          */
@@ -144,9 +123,7 @@ public interface ApplicationGatewayFrontend extends
      */
     interface Update extends
         Settable<ApplicationGateway.Update>,
-        UpdateStages.WithSubnet,
-        UpdateStages.WithPublicIpAddress,
-        UpdateStages.WithPrivateIp {
+        UpdateStages.WithPublicIpAddress {
     }
 
     /**

@@ -863,10 +863,12 @@ class ApplicationGatewayImpl
         return (ApplicationGatewayFrontendImpl) defaultPublicFrontend();
     }
 
+    /* TODO: Not possible to change any subnet/private IP settings today
     @Override
     public ApplicationGatewayFrontendImpl updatePrivateFrontend() {
         return (ApplicationGatewayFrontendImpl) defaultPrivateFrontend();
     }
+    */
 
     @Override
     public ApplicationGatewayListenerImpl updateListener(String name) {
