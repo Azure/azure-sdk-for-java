@@ -298,10 +298,16 @@ public class TestApplicationGateway {
                             .withRequestTimeout(45)
                             .attach()
 
+                        .defineBackendHttpConfiguration("config2")
+                            .attach()
+
                         // Additional/explicit backends
                         .defineBackend("backend1")
                             .withIpAddress("11.1.1.3")
                             .withIpAddress("11.1.1.4")
+                            .attach()
+
+                        .defineBackend("backend2")
                             .attach()
 
                         // Additional/explicit frontend listeners
@@ -309,6 +315,12 @@ public class TestApplicationGateway {
                             .withPrivateFrontend()
                             .withFrontendPort(9000)
                             .withHttp()
+                            .attach()
+
+                        // Additional/explicit certificates
+                        .defineSslCertificate("cert1")
+                            .withPfxFromFile(new File("myTest2.pfx"))
+                            .withPfxPassword("Abc123")
                             .attach()
 
                         .withExistingSubnet(vnet, "subnet1")
@@ -363,22 +375,25 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);
 
             // Verify certificates
-            Assert.assertTrue(appGateway.sslCertificates().size() == 1);
+            Assert.assertTrue(appGateway.sslCertificates().size() == 2);
+            Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
 
             // Verify backend HTTP settings configs
-            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 2);
+            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 3);
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
             Assert.assertTrue(config != null);
             Assert.assertTrue(config.port() == 8081);
             Assert.assertTrue(config.requestTimeout() == 45);
+            Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("config2"));
 
             // Verify backends
-            Assert.assertTrue(appGateway.backends().size() == 2);
+            Assert.assertTrue(appGateway.backends().size() == 3);
             ApplicationGatewayBackend backend = appGateway.backends().get("backend1");
             Assert.assertTrue(backend != null);
             Assert.assertTrue(backend.addresses().size() == 2);
             Assert.assertTrue(backend.containsIpAddress("11.1.1.3"));
             Assert.assertTrue(backend.containsIpAddress("11.1.1.4"));
+            Assert.assertTrue(appGateway.backends().containsKey("backend2"));
 
             // Verify request routing rules
             Assert.assertTrue(appGateway.requestRoutingRules().size() == 3);
@@ -416,67 +431,113 @@ public class TestApplicationGateway {
             Assert.assertTrue(rule.backend() != null);
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
-            creationThread.join(5 * 1000);
+            creationThread.join();
 
             return appGateway;
         }
 
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
-            // TODO: Fix this - this test doesn't work yet
+            final int portCount = resource.frontendPorts().size();
+            final int frontendCount = resource.frontends().size();
+            final int listenerCount = resource.listeners().size();
+            final int ruleCount = resource.requestRoutingRules().size();
+            final int backendCount = resource.backends().size();
+            final int configCount = resource.backendHttpConfigurations().size();
+            final int certCount = resource.sslCertificates().size();
 
-            // Prepare a separate thread for running the update to make the test go faster
-            Thread updateThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    resource.update()
-                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                        .withInstanceCount(2)
-                        .withoutListener("listener1")
-                        .withoutBackendFqdn("www.microsoft.com")
-                        .withoutBackendIpAddress("11.1.1.1")
-                        .withoutBackendHttpConfiguration("httpConfig2")
-                        .updateBackendHttpConfiguration("httpConfig1")
-                            .withPort(83)
-                            .withProtocol(ApplicationGatewayProtocol.HTTPS)
-                            .withoutCookieBasedAffinity()
-                            .withRequestTimeout(20)
-                            .parent()
-                        .withoutBackend("backend3")
-                        .withTag("tag1", "value1")
-                        .withTag("tag2", "value2")
-                        .apply();
-                }
-            });
-
-            // Start the update thread...
-            updateThread.start();
-
-            // ...But kill it after 30 sec as that should be enough for the test
-            updateThread.join(30 * 1000);
+            resource.update()
+                .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
+                .withInstanceCount(1)
+                .withoutFrontendPort(9000)
+                .withoutListener("listener1")
+                .withoutBackendIpAddress("11.1.1.4")
+                .withoutBackendHttpConfiguration("config2")
+                .withoutBackend("backend2")
+                .withoutRequestRoutingRule("rule9000")
+                .withoutCertificate("cert1")
+                .updateListener(resource.requestRoutingRules().get("rule443").listener().name())
+                    .withHostName("foobar")
+                    .parent()
+                .updateBackendHttpConfiguration("config1")
+                    .withPort(8082)
+                    .withCookieBasedAffinity()
+                    .withRequestTimeout(20)
+                    .parent()
+                .updateBackend("backend1")
+                    .withoutIpAddress("11.1.1.3")
+                    .withIpAddress("11.1.1.5")
+                    .parent()
+                .updateRequestRoutingRule("rule80")
+                    .toBackend("backend1")
+                    .toBackendHttpConfiguration("config1")
+                    .parent()
+                .withTag("tag1", "value1")
+                .withTag("tag2", "value2")
+                .apply();
 
             resource.refresh();
 
             // Get the resource created so far
             Assert.assertTrue(resource.tags().containsKey("tag1"));
-            Assert.assertTrue(resource.sku().name().equals(ApplicationGatewaySkuName.STANDARD_MEDIUM));
-            Assert.assertTrue(resource.sku().capacity() == 2);
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(resource.size()));
+            Assert.assertTrue(resource.instanceCount() == 1);
+
+            // Verify frontend ports
+            Assert.assertTrue(resource.frontendPorts().size() == portCount - 1);
+            Assert.assertTrue(resource.frontendPortNameFromNumber(9000) == null);
+
+            // Verify frontends
+            Assert.assertTrue(resource.frontends().size() == frontendCount);
+            Assert.assertTrue(resource.publicFrontends().size() == 0);
+            Assert.assertTrue(resource.privateFrontends().size() == 1);
+            ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
+            Assert.assertTrue(!frontend.isPublic());
+            Assert.assertTrue(frontend.isPrivate());
+
+            // Verify listeners
+            Assert.assertTrue(resource.listeners().size() == listenerCount - 1);
+            Assert.assertTrue(!resource.listeners().containsKey("listener1"));
 
             // Verify backends
-            ApplicationGatewayBackend backend2 = resource.backends().get("backend2");
-            Assert.assertTrue(backend2.addresses().size() == 1);
-            Assert.assertTrue(backend2.addresses().get(0).ipAddress().equals("11.1.1.3"));
-            Assert.assertTrue(!resource.backends().containsKey("backend3"));
+            Assert.assertTrue(resource.backends().size() == backendCount - 1);
+            Assert.assertTrue(!resource.backends().containsKey("backend2"));
+            ApplicationGatewayBackend backend = resource.backends().get("backend1");
+            Assert.assertTrue(backend != null);
+            Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertTrue(backend.containsIpAddress("11.1.1.5"));
+            Assert.assertTrue(!backend.containsIpAddress("11.1.1.3"));
+            Assert.assertTrue(!backend.containsIpAddress("11.1.1.4"));
 
             // Verify HTTP configs
-            Assert.assertTrue(resource.backendHttpConfigurations().size() == 1);
-            Assert.assertTrue(resource.backendHttpConfigurations().containsKey("httpConfig1"));
-            ApplicationGatewayBackendHttpConfiguration httpConfig1 = resource.backendHttpConfigurations().get("httpConfig1");
-            Assert.assertTrue(httpConfig1.port() == 83);
-            Assert.assertTrue(!httpConfig1.cookieBasedAffinity());
-            Assert.assertTrue(httpConfig1.requestTimeout() == 20);
+            Assert.assertTrue(resource.backendHttpConfigurations().size() == configCount - 1);
+            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("config2"));
+            ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config1");
+            Assert.assertTrue(config.port() == 8082);
+            Assert.assertTrue(config.requestTimeout() == 20);
+            Assert.assertTrue(config.cookieBasedAffinity());
 
-            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("httpConfig2"));
+            // Verify rules
+            Assert.assertTrue(resource.requestRoutingRules().size() == ruleCount - 1);
+            Assert.assertTrue(!resource.requestRoutingRules().containsKey("rule9000"));
+
+            ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule80");
+            Assert.assertTrue(rule != null);
+            Assert.assertTrue(rule.backend() != null);
+            Assert.assertTrue("backend1".equalsIgnoreCase(rule.backend().name()));
+            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertTrue("config1".equalsIgnoreCase(rule.backendHttpConfiguration().name()));
+
+            rule = resource.requestRoutingRules().get("rule443");
+            Assert.assertTrue(rule != null);
+            Assert.assertTrue(rule.listener() != null);
+            Assert.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostName()));
+
+            // Verify certificates
+            Assert.assertTrue(resource.sslCertificates().size() == certCount - 1);
+            Assert.assertTrue(!resource.sslCertificates().containsKey("cert1"));
+
             return resource;
         }
     }

@@ -594,8 +594,10 @@ public interface ApplicationGateway extends
              * Begins the update of the private frontend IP configuration, if it exists.
              * @return the first stage of a frontend update or null if no private frontend exists
              */
-            @Method
-            ApplicationGatewayFrontend.Update updatePrivateFrontend();
+            /* TODO: Nothing to update in the private frontend today - changing Subnet and/or private IP not supported
+             * @Method
+             * ApplicationGatewayFrontend.Update updatePrivateFrontend();
+             */
 
             /**
              * Begins the definition of the default public frontend IP configuration, creating one if it does not already exist.
