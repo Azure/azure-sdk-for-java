@@ -61,7 +61,7 @@ class AvailabilitySetsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -79,6 +79,9 @@ class AvailabilitySetsImpl
 
     @Override
     protected AvailabilitySetImpl wrapModel(AvailabilitySetInner availabilitySetInner) {
+        if (availabilitySetInner == null) {
+            return null;
+        }
         return new AvailabilitySetImpl(availabilitySetInner.name(),
                 availabilitySetInner,
                 this.innerCollection,

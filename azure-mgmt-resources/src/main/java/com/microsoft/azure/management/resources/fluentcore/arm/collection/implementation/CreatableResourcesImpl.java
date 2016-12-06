@@ -1,9 +1,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
@@ -20,7 +18,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 /**
  * Base class for creatable resource collection, i.e. those where the member of the collection is of Resource
@@ -31,12 +28,10 @@ import java.util.Map;
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
-public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T, InnerT>
+public abstract class CreatableResourcesImpl<T extends HasId, ImplT extends T, InnerT>
         extends CreatableWrappersImpl<T, ImplT, InnerT>
         implements
-            SupportsBatchCreation<T>,
-            // Assume anything creatable is deletable
-            SupportsDeleting {
+            SupportsBatchCreation<T> {
 
     protected CreatableResourcesImpl() {
     }
@@ -104,26 +99,11 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }), callback);
     }
 
-    @Override
-    public void delete(String id) {
-        deleteAsync(id).toBlocking().subscribe();
-    }
-
-    @Override
-    public ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
-    }
-
     /**
      * Implements {@link CreatedResources}.
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends Resource> implements CreatedResources<ResourceT> {
+    private class CreatedResourcesImpl<ResourceT extends HasId> implements CreatedResources<ResourceT> {
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
         private final List<ResourceT> list;
 
@@ -133,7 +113,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public Resource createdRelatedResource(String key) {
+        public HasId createdRelatedResource(String key) {
             return this.creatableUpdatableResourcesRoot.createdRelatedResource(key);
         }
 
@@ -259,9 +239,9 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    interface CreatableUpdatableResourcesRoot<ResourceT extends Resource> extends Resource {
+    interface CreatableUpdatableResourcesRoot<ResourceT extends HasId> extends HasId {
         List<ResourceT> createdTopLevelResources();
-        Resource createdRelatedResource(String key);
+        HasId createdRelatedResource(String key);
     }
 
     /**
@@ -269,7 +249,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Resource>
+    private class CreatableUpdatableResourcesRootImpl<ResourceT extends HasId>
             extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
             implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
@@ -292,7 +272,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public Resource createdRelatedResource(String key) {
+        public HasId createdRelatedResource(String key) {
             return creatorUpdatorTaskGroup().createdResource(key);
         }
 
@@ -336,26 +316,6 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
         @Override
         public String id() {
-            return null;
-        }
-
-        @Override
-        public String type() {
-            return null;
-        }
-
-        @Override
-        public String regionName() {
-            return null;
-        }
-
-        @Override
-        public Region region() {
-            return null;
-        }
-
-        @Override
-        public Map<String, String> tags() {
             return null;
         }
     }

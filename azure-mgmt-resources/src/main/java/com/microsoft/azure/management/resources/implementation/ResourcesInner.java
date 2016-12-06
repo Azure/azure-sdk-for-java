@@ -84,12 +84,44 @@ public final class ResourcesInner {
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HEAD("{resourceId}")
+        Observable<Response<Void>> checkExistenceById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "{resourceId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> deleteById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @HTTP(path = "{resourceId}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDeleteById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("{resourceId}")
+        Observable<Response<ResponseBody>> createOrUpdateById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @PUT("{resourceId}")
+        Observable<Response<ResponseBody>> beginCreateOrUpdateById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Body GenericResourceInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @GET("{resourceId}")
+        Observable<Response<ResponseBody>> getById(@Path(value = "resourceId", encoded = true) String resourceId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
@@ -459,7 +491,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the boolean object if successful.
      */
     public boolean checkExistence(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -474,7 +506,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -490,7 +522,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the observable to the boolean object
      */
     public Observable<Boolean> checkExistenceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -510,7 +542,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the observable to the boolean object
      */
     public Observable<ServiceResponse<Boolean>> checkExistenceWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -558,28 +590,28 @@ public final class ResourcesInner {
     }
 
     /**
-     * Delete resource and all of its resources.
+     * Deletes a resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace Resource identity.
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      */
     public void delete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
-        deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
+        deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().last().getBody();
     }
 
     /**
-     * Delete resource and all of its resources.
+     * Deletes a resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace Resource identity.
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -588,15 +620,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Delete resource and all of its resources.
+     * Deletes a resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace Resource identity.
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
-     * @return the {@link ServiceResponse} object if successful.
+     * @param apiVersion Api version to use.
+     * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         return deleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -608,15 +640,15 @@ public final class ResourcesInner {
     }
 
     /**
-     * Delete resource and all of its resources.
+     * Deletes a resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceProviderNamespace Resource identity.
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
-     * @return the {@link ServiceResponse} object if successful.
+     * @param apiVersion Api version to use.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
         if (resourceGroupName == null) {
@@ -640,12 +672,99 @@ public final class ResourcesInner {
         if (apiVersion == null) {
             throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
         }
-        return service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     */
+    public void beginDelete(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), serviceCallback);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (parentResourcePath == null) {
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
+        }
+        if (resourceType == null) {
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        return service.beginDelete(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -654,7 +773,7 @@ public final class ResourcesInner {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
@@ -670,12 +789,12 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param parameters Create or update resource parameters.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner createOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().single().getBody();
+        return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().last().getBody();
     }
 
     /**
@@ -686,7 +805,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param parameters Create or update resource parameters.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -703,9 +822,9 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param parameters Create or update resource parameters.
-     * @return the observable to the GenericResourceInner object
+     * @return the observable for the request
      */
     public Observable<GenericResourceInner> createOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
         return createOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
@@ -724,9 +843,9 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param parameters Create or update resource parameters.
-     * @return the observable to the GenericResourceInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<GenericResourceInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
         if (resourceGroupName == null) {
@@ -754,12 +873,108 @@ public final class ResourcesInner {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<GenericResourceInner>() { }.getType());
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the GenericResourceInner object if successful.
+     */
+    public GenericResourceInner beginCreateOrUpdate(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters), serviceCallback);
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<GenericResourceInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
+        return beginCreateOrUpdateWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
+            @Override
+            public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceProviderNamespace Resource identity.
+     * @param parentResourcePath Resource identity.
+     * @param resourceType Resource identity.
+     * @param resourceName Resource identity.
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<ServiceResponse<GenericResourceInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, GenericResourceInner parameters) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (resourceProviderNamespace == null) {
+            throw new IllegalArgumentException("Parameter resourceProviderNamespace is required and cannot be null.");
+        }
+        if (parentResourcePath == null) {
+            throw new IllegalArgumentException("Parameter parentResourcePath is required and cannot be null.");
+        }
+        if (resourceType == null) {
+            throw new IllegalArgumentException("Parameter resourceType is required and cannot be null.");
+        }
+        if (resourceName == null) {
+            throw new IllegalArgumentException("Parameter resourceName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreateOrUpdate(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GenericResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<GenericResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<GenericResourceInner> clientResponse = createOrUpdateDelegate(response);
+                        ServiceResponse<GenericResourceInner> clientResponse = beginCreateOrUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -768,10 +983,11 @@ public final class ResourcesInner {
             });
     }
 
-    private ServiceResponse<GenericResourceInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<GenericResourceInner> beginCreateOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
                 .register(201, new TypeToken<GenericResourceInner>() { }.getType())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -784,7 +1000,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the GenericResourceInner object if successful.
      */
     public GenericResourceInner get(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -799,7 +1015,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -815,7 +1031,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<GenericResourceInner> getAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -835,7 +1051,7 @@ public final class ResourcesInner {
      * @param parentResourcePath Resource identity.
      * @param resourceType Resource identity.
      * @param resourceName Resource identity.
-     * @param apiVersion the String value
+     * @param apiVersion Api version to use.
      * @return the observable to the GenericResourceInner object
      */
     public Observable<ServiceResponse<GenericResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion) {
@@ -875,6 +1091,434 @@ public final class ResourcesInner {
     }
 
     private ServiceResponse<GenericResourceInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<GenericResourceInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Checks whether resource exists.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the boolean object if successful.
+     */
+    public boolean checkExistenceById(String resourceId, String apiVersion) {
+        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+    }
+
+    /**
+     * Checks whether resource exists.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Boolean> serviceCallback) {
+        return ServiceCall.create(checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+    }
+
+    /**
+     * Checks whether resource exists.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable to the boolean object
+     */
+    public Observable<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
+        return checkExistenceByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Boolean>, Boolean>() {
+            @Override
+            public Boolean call(ServiceResponse<Boolean> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Checks whether resource exists.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable to the boolean object
+     */
+    public Observable<ServiceResponse<Boolean>> checkExistenceByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        return service.checkExistenceById(resourceId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<Void>, Observable<ServiceResponse<Boolean>>>() {
+                @Override
+                public Observable<ServiceResponse<Boolean>> call(Response<Void> response) {
+                    try {
+                        ServiceResponse<Boolean> clientResponse = checkExistenceByIdDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Boolean> checkExistenceByIdDelegate(Response<Void> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Boolean, CloudException>(this.client.mapperAdapter())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(404, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .buildEmpty(response);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     */
+    public void deleteById(String resourceId, String apiVersion) {
+        deleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().last().getBody();
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> deleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(deleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable for the request
+     */
+    public Observable<Void> deleteByIdAsync(String resourceId, String apiVersion) {
+        return deleteByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<Void>> deleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        Observable<Response<ResponseBody>> observable = service.deleteById(resourceId, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     */
+    public void beginDeleteById(String resourceId, String apiVersion) {
+        beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<Void> beginDeleteByIdAsync(String resourceId, String apiVersion, final ServiceCallback<Void> serviceCallback) {
+        return ServiceCall.create(beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
+        return beginDeleteByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Deletes a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        return service.beginDeleteById(resourceId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = beginDeleteByIdDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> beginDeleteByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .build(response);
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the GenericResourceInner object if successful.
+     */
+    public GenericResourceInner createOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().last().getBody();
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
+        return ServiceCall.create(createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable for the request
+     */
+    public Observable<GenericResourceInner> createOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return createOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
+            @Override
+            public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<GenericResourceInner>> createOrUpdateByIdWithServiceResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        Observable<Response<ResponseBody>> observable = service.createOrUpdateById(resourceId, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<GenericResourceInner>() { }.getType());
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the GenericResourceInner object if successful.
+     */
+    public GenericResourceInner beginCreateOrUpdateById(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).toBlocking().single().getBody();
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters, final ServiceCallback<GenericResourceInner> serviceCallback) {
+        return ServiceCall.create(beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters), serviceCallback);
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<GenericResourceInner> beginCreateOrUpdateByIdAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        return beginCreateOrUpdateByIdWithServiceResponseAsync(resourceId, apiVersion, parameters).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
+            @Override
+            public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Create a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param parameters Create or update resource parameters.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<ServiceResponse<GenericResourceInner>> beginCreateOrUpdateByIdWithServiceResponseAsync(String resourceId, String apiVersion, GenericResourceInner parameters) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
+        Validator.validate(parameters);
+        return service.beginCreateOrUpdateById(resourceId, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GenericResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GenericResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GenericResourceInner> clientResponse = beginCreateOrUpdateByIdDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GenericResourceInner> beginCreateOrUpdateByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
+                .register(201, new TypeToken<GenericResourceInner>() { }.getType())
+                .register(200, new TypeToken<GenericResourceInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the GenericResourceInner object if successful.
+     */
+    public GenericResourceInner getById(String resourceId, String apiVersion) {
+        return getByIdWithServiceResponseAsync(resourceId, apiVersion).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion, final ServiceCallback<GenericResourceInner> serviceCallback) {
+        return ServiceCall.create(getByIdWithServiceResponseAsync(resourceId, apiVersion), serviceCallback);
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
+        return getByIdWithServiceResponseAsync(resourceId, apiVersion).map(new Func1<ServiceResponse<GenericResourceInner>, GenericResourceInner>() {
+            @Override
+            public GenericResourceInner call(ServiceResponse<GenericResourceInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets a resource.
+     *
+     * @param resourceId The fully qualified Id of the resource, including the resource name and resource type. For example, /subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myGroup/Microsoft.Web/sites/mySite
+     * @param apiVersion Api version to use.
+     * @return the observable to the GenericResourceInner object
+     */
+    public Observable<ServiceResponse<GenericResourceInner>> getByIdWithServiceResponseAsync(String resourceId, String apiVersion) {
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (apiVersion == null) {
+            throw new IllegalArgumentException("Parameter apiVersion is required and cannot be null.");
+        }
+        return service.getById(resourceId, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GenericResourceInner>>>() {
+                @Override
+                public Observable<ServiceResponse<GenericResourceInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<GenericResourceInner> clientResponse = getByIdDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<GenericResourceInner> getByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<GenericResourceInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<GenericResourceInner>() { }.getType())
                 .registerError(CloudException.class)

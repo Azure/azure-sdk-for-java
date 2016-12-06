@@ -22,12 +22,12 @@ import java.util.List;
 import static org.junit.Assert.fail;
 
 public class RedisCacheOperationsTests extends RedisManagementTestBase {
-    private static final String RG_NAME = "javacsmrg375";
-    private static final String RG_NAME_SECOND = "javacsmrg375Second";
-    private static final String RR_NAME = "javacsmrc375";
-    private static final String RR_NAME_SECOND = "javacsmrc375Second";
-    private static final String RR_NAME_THIRD = "javacsmrc375Third";
-    private static final String SA_NAME = "javacsmsa375";
+    private static final String RG_NAME = "javacsmrg3751";
+    private static final String RG_NAME_SECOND = "javacsmrg3751Second";
+    private static final String RR_NAME = "javacsmrc3751";
+    private static final String RR_NAME_SECOND = "javacsmrc3751Second";
+    private static final String RR_NAME_THIRD = "javacsmrc3751Third";
+    private static final String SA_NAME = "javacsmsa3751";
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -36,8 +36,8 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
-        resourceManager.resourceGroups().delete(RG_NAME_SECOND);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME_SECOND);
     }
 
     @Test
@@ -148,7 +148,7 @@ public class RedisCacheOperationsTests extends RedisManagementTestBase {
         redisCache.refresh();
 
         // delete
-        redisManager.redisCaches().delete(redisCache.id());
+        redisManager.redisCaches().deleteById(redisCache.id());
 
         // Premium SKU Functionality
         RedisCachePremium premiumCache = redisCachePremium.asPremium();

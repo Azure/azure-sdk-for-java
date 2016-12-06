@@ -27,7 +27,8 @@ public abstract class KeyVaultManagementTestBase {
                 System.getenv("secret"),
                 AzureEnvironment.AZURE);
 
-        RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
+        RestClient restClient = new RestClient.Builder()
+                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();

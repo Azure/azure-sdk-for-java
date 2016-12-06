@@ -7,12 +7,13 @@ package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 
 /**
  * Represents a virtual machine image SKU.
  */
 @Fluent
-public interface VirtualMachineSku {
+public interface VirtualMachineSku extends HasName {
     /**
      * @return the region where this virtual machine image offer SKU is available
      */
@@ -27,11 +28,6 @@ public interface VirtualMachineSku {
      * @return the virtual machine offer name that this SKU belongs to
      */
     VirtualMachineOffer offer();
-
-    /**
-     * @return the commercial name of the virtual machine image (SKU)
-     */
-    String name();
 
     /**
      * @return virtual machine images in the SKU

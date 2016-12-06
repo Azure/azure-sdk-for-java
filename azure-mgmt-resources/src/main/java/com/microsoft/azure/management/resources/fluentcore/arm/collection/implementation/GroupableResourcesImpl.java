@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -37,7 +38,8 @@ public abstract class GroupableResourcesImpl<
     implements
         SupportsGettingById<T>,
         SupportsGettingByGroup<T>,
-        SupportsDeletingByGroup {
+        SupportsDeletingByGroup,
+        HasManager<ManagerT> {
 
     protected final InnerCollectionT innerCollection;
     protected final ManagerT myManager;
@@ -49,7 +51,9 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public abstract T getByGroup(String groupName, String name);
+    public ManagerT manager() {
+        return this.myManager;
+    }
 
     @Override
     public T getById(String id) {
@@ -59,13 +63,13 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public void delete(String groupName, String name) {
-        deleteAsync(groupName, name).toBlocking().subscribe();
+    public void deleteByGroup(String groupName, String name) {
+        deleteByGroupAsync(groupName, name).toBlocking().subscribe();
     }
 
     @Override
-    public ServiceCall<Void> deleteAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
+    public ServiceCall<Void> deleteByGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
+        return ServiceCall.create(deleteByGroupAsync(groupName, name).map(new Func1<Void, ServiceResponse<Void>>() {
             @Override
             public ServiceResponse<Void> call(Void aVoid) {
                 return new ServiceResponse<>(aVoid, null);
@@ -74,7 +78,7 @@ public abstract class GroupableResourcesImpl<
     }
 
     @Override
-    public Observable<Void> deleteAsync(String id) {
-        return deleteAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    public Observable<Void> deleteByIdAsync(String id) {
+        return deleteByGroupAsync(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
     }
 }

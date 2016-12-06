@@ -41,9 +41,9 @@ public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualM
                 .withPrimaryPrivateIpAddressDynamic()
                 .withExistingPrimaryPublicIpAddress(pip)
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                .withRootUserName("testuser")
+                .withRootUsername("testuser")
+                .withRootPassword("12NewPA$$w0rd!")
                 .withSsh(sshKey)
-                .withPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 .create();
 

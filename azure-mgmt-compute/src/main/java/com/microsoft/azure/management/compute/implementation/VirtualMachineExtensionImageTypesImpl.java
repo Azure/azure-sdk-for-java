@@ -27,6 +27,9 @@ class VirtualMachineExtensionImageTypesImpl
 
     @Override
     protected VirtualMachineExtensionImageTypeImpl wrapModel(VirtualMachineExtensionImageInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineExtensionImageTypeImpl(this.client, this.publisher, inner);
     }
 }

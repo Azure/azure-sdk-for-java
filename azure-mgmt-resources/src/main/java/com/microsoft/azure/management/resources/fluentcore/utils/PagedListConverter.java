@@ -40,6 +40,14 @@ public abstract class PagedListConverter<U, V> {
      * @return the converted list
      */
     public PagedList<V> convert(final PagedList<U> uList) {
+        if (uList == null || uList.isEmpty()) {
+            return new PagedList<V>() {
+                @Override
+                public Page<V> nextPage(String s) throws RestException, IOException {
+                    return null;
+                }
+            };
+        }
         Page<U> uPage = uList.currentPage();
         PageImpl<V> vPage = new PageImpl<>();
         vPage.setNextPageLink(uPage.getNextPageLink());

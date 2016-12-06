@@ -12,6 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LoadBalancerInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
+import com.microsoft.azure.management.network.model.HasPublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -40,32 +41,32 @@ public interface LoadBalancer extends
     /**
      * @return TCP probes of this load balancer, indexed by the name
      */
-    Map<String, TcpProbe> tcpProbes();
+    Map<String, LoadBalancerTcpProbe> tcpProbes();
 
     /**
      * @return HTTP probes of this load balancer, indexed by the name
      */
-    Map<String, HttpProbe> httpProbes();
+    Map<String, LoadBalancerHttpProbe> httpProbes();
 
     /**
      * @return backends for this load balancer to load balance the incoming traffic among, indexed by name
      */
-    Map<String, Backend> backends();
+    Map<String, LoadBalancerBackend> backends();
 
     /**
      * @return inbound NAT rules for this balancer
      */
-    Map<String, InboundNatRule> inboundNatRules();
+    Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 
     /**
      * @return frontends for this load balancer, for the incoming traffic to come from.
      */
-    Map<String, Frontend> frontends();
+    Map<String, LoadBalancerFrontend> frontends();
 
     /**
      * @return inbound NAT pools, indexed by name
      */
-    Map<String, InboundNatPool> inboundNatPools();
+    Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
     /**
      * The entirety of the load balancer definition.
@@ -120,7 +121,7 @@ public interface LoadBalancer extends
          * The stage of an internal load balancer definition allowing to define one or more private frontends.
          */
         interface WithPrivateFrontend extends WithNetworkSubnet {
-            PrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrBackend> definePrivateFrontend(String name);
+            LoadBalancerPrivateFrontend.DefinitionStages.Blank<WithPrivateFrontendOrBackend> definePrivateFrontend(String name);
         }
 
         /**
@@ -136,11 +137,11 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new load public balancer frontend.
              * <p>
-             * The definition must be completed with a call to {@link PublicFrontend.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerPublicFrontend.DefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            PublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrBackend> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.DefinitionStages.Blank<WithPublicFrontendOrBackend> definePublicFrontend(String name);
         }
 
         /**
@@ -159,7 +160,7 @@ public interface LoadBalancer extends
              * @param name the name to assign to the backend
              * @return the next stage of the update
              */
-            Backend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
+            LoadBalancerBackend.DefinitionStages.Blank<WithBackendOrProbe> defineBackend(String name);
         }
 
         /**
@@ -193,20 +194,20 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            TcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
+            LoadBalancerTcpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineTcpProbe(String name);
 
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the probe
              * @return the first stage of the new probe definition
              */
-            HttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
+            LoadBalancerHttpProbe.DefinitionStages.Blank<WithProbeOrLoadBalancingRule> defineHttpProbe(String name);
         }
 
         /**
@@ -244,48 +245,8 @@ public interface LoadBalancer extends
          * The stage of a load balancer definition allowing to add a public IP address as the default public frontend.
          * @param <ReturnT> the next stage of the definition
          */
-        interface WithPublicIpAddress<ReturnT> {
-            /**
-             * Assigns the provided public IP address to the default public frontend to the load balancer,
-             * making it an Internet-facing load balancer.
-             * <p>
-             * This will create a new default frontend for the load balancer under the name "default".
-             * <p>
-             * Once the first public frontend is specified, only public frontends can be added, not private.
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the definition
-             */
-            ReturnT withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
-
-            /**
-             * Creates a new public IP address as the default public frontend of the load balancer,
-             * using an automatically generated name and leaf DNS label
-             * derived from the load balancer's name, in the same resource group and region.
-             * <p>
-             * This will create a new default frontend for the load balancer under the name "default".
-             * <p>
-             * Once the first public frontend is specified, only public frontends can be added, not private.
-             * @return the next stage of the definition
-             */
-            ReturnT withNewPublicIpAddress();
-
-            /**
-             * Adds a new public IP address as the default public frontend of the load balancer,
-             * using the specified DNS leaf label, an automatically generated frontend name derived from the DNS label,
-             * in the same resource group and region as the load balancer.
-             * @param dnsLeafLabel a DNS leaf label
-             * @return the next stage of the definition
-             */
-            ReturnT withNewPublicIpAddress(String dnsLeafLabel);
-
-            /**
-             * Adds a new public IP address to the front end of the load balancer,
-             * creating the public IP based on the provided {@link Creatable}
-             * stage of a public IP endpoint's definition.
-             * @param creatablePublicIpAddress the creatable stage of a public IP address definition
-             * @return the next stage of the definition
-             */
-            ReturnT withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
+        interface WithPublicIpAddress<ReturnT>
+            extends HasPublicIpAddress.DefinitionStages.WithPublicIpAddress<ReturnT> {
         }
 
         /**
@@ -301,7 +262,7 @@ public interface LoadBalancer extends
              * @param subnetName the name of an existing subnet on the specified network
              * @return the next stage of the definition
              */
-            WithPrivateFrontendOrBackend withExistingSubnet(Network network, String subnetName);
+            WithPrivateFrontendOrBackend withFrontendSubnet(Network network, String subnetName);
         }
 
         /**
@@ -387,11 +348,11 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbound NAT rule to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatRule.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatRule.DefinitionStages.WithAttach#attach()}
              * @param name the name of the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
+            LoadBalancerInboundNatRule.DefinitionStages.Blank<WithCreateAndInboundNatRule> defineInboundNatRule(String name);
         }
 
         /**
@@ -401,11 +362,11 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbount NAT pool to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatPool.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatPool.DefinitionStages.WithAttach#attach()}
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
+            LoadBalancerInboundNatPool.DefinitionStages.Blank<WithCreateAndInboundNatPool> defineInboundNatPool(String name);
         }
     }
 
@@ -429,14 +390,14 @@ public interface LoadBalancer extends
              * @param name the name for the new backend
              * @return the first stage of the backend definition
              */
-            Backend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
+            LoadBalancerBackend.UpdateDefinitionStages.Blank<Update> defineBackend(String name);
 
             /**
              * Begins the description of an update to an existing backend of this load balancer.
              * @param name the name of the backend to update
              * @return the first stage of the update
              */
-            Backend.Update updateBackend(String name);
+            LoadBalancerBackend.Update updateBackend(String name);
         }
 
         /**
@@ -464,20 +425,20 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new HTTP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the new probe
              * @return the next stage of the definition
              */
-            HttpProbe.UpdateDefinitionStages.Blank<Update> defineHttpProbe(String name);
+            LoadBalancerHttpProbe.UpdateDefinitionStages.Blank<Update> defineHttpProbe(String name);
 
             /**
              * Begins the definition of a new TCP probe to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link HttpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerHttpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the new probe
              * @return the next stage of the definition
              */
-            TcpProbe.UpdateDefinitionStages.Blank<Update> defineTcpProbe(String name);
+            LoadBalancerTcpProbe.UpdateDefinitionStages.Blank<Update> defineTcpProbe(String name);
 
             /**
              * Removes the specified probe from the load balancer, if present.
@@ -491,14 +452,14 @@ public interface LoadBalancer extends
              * @param name the name of the probe to update
              * @return the first stage of the probe update
              */
-            TcpProbe.Update updateTcpProbe(String name);
+            LoadBalancerTcpProbe.Update updateTcpProbe(String name);
 
             /**
              * Begins the description of an update to an existing HTTP probe on this load balancer.
              * @param name the name of the probe to update
              * @return the first stage of the probe update
              */
-            HttpProbe.Update updateHttpProbe(String name);
+            LoadBalancerHttpProbe.Update updateHttpProbe(String name);
         }
 
         /**
@@ -529,7 +490,7 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new load balancing rule to add to the load balancer.
              * <p>
-             * The definition must be completed with a call to {@link TcpProbe.DefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerTcpProbe.DefinitionStages.WithAttach#attach()}
              * @param name the name of the load balancing rule
              * @return the first stage of the new load balancing rule definition
              */
@@ -557,11 +518,11 @@ public interface LoadBalancer extends
             /**
              * Begins the update of a load balancer frontend.
              * <p>
-             * The definition must be completed with a call to {@link PublicFrontend.UpdateDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerPublicFrontend.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            PublicFrontend.UpdateDefinitionStages.Blank<Update> definePublicFrontend(String name);
+            LoadBalancerPublicFrontend.UpdateDefinitionStages.Blank<Update> definePublicFrontend(String name);
 
             /**
              * Removes the specified frontend from the load balancer.
@@ -575,47 +536,13 @@ public interface LoadBalancer extends
              * @param name the name of the frontend to update
              * @return the first stage of the frontend update
              */
-            PublicFrontend.Update updateInternetFrontend(String name);
+            LoadBalancerPublicFrontend.Update updateInternetFrontend(String name);
         }
 
         /**
          * The stage of a load balancer update allowing to add a public IP address as the default public frontend.
          */
-        interface WithPublicIpAddress {
-            /**
-             * Assigns the provided public IP address to the default public frontend to the load balancer.
-             * <p>
-             * This will create a new default frontend for the load balancer under the name "default", if one does not already exist.
-             * @param publicIpAddress an existing public IP address
-             * @return the next stage of the update
-             */
-            Update withExistingPublicIpAddress(PublicIpAddress publicIpAddress);
-
-            /**
-             * Creates a new public IP address as the default public frontend of the load balancer,
-             * using an automatically generated name and leaf DNS label
-             * derived from the load balancer's name, in the same resource group and region.
-             * <p>
-             * This will create a new default frontend for the load balancer under the name "default", if one does not already exist.
-             * @return the next stage of the update
-             */
-            Update withNewPublicIpAddress();
-
-            /**
-             * Adds a new public IP address as the default public frontend of the load balancer,
-             * using the specified DNS leaf label, an automatically generated frontend name derived from the DNS label,
-             * in the same resource group and region as the load balancer.
-             * @param dnsLeafLabel a DNS leaf label
-             * @return the next stage of the update
-             */
-            Update withNewPublicIpAddress(String dnsLeafLabel);
-
-            /**
-             * Adds a new public IP address to the default front end of the load balancer.
-             * @param creatablePublicIpAddress the creatable stage of a public IP address definition
-             * @return the next stage of the update
-             */
-            Update withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePublicIpAddress);
+        interface WithPublicIpAddress extends HasPublicIpAddress.UpdateDefinitionStages.WithPublicIpAddress<Update> {
         }
 
         /**
@@ -627,14 +554,14 @@ public interface LoadBalancer extends
              * @param name the name for the frontend
              * @return the first stage of the new frontend definition
              */
-            PrivateFrontend.UpdateDefinitionStages.Blank<Update> definePrivateFrontend(String name);
+            LoadBalancerPrivateFrontend.UpdateDefinitionStages.Blank<Update> definePrivateFrontend(String name);
 
             /**
              * Begins the description of an update to an existing internal frontend.
              * @param name the name of an existing frontend from this load balancer
              * @return the first stage of the frontend update
              */
-            PrivateFrontend.Update updateInternalFrontend(String name);
+            LoadBalancerPrivateFrontend.Update updateInternalFrontend(String name);
         }
 
         /**
@@ -647,7 +574,7 @@ public interface LoadBalancer extends
              * @param subnetName the name of an existing subnet on the specified network
              * @return the next stage of the update
              */
-            Update withExistingSubnet(Network network, String subnetName);
+            Update withFrontendSubnet(Network network, String subnetName);
         }
 
         /**
@@ -664,18 +591,18 @@ public interface LoadBalancer extends
             /**
              * Begins the definition of a new inbound NAT rule.
              * <p>
-             * The definition must be completed with a call to {@link InboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link LoadBalancerInboundNatRule.UpdateDefinitionStages.WithAttach#attach()}
              * @param name the name for the inbound NAT rule
              * @return the first stage of the new inbound NAT rule definition
              */
-            InboundNatRule.UpdateDefinitionStages.Blank<Update> defineInboundNatRule(String name);
+            LoadBalancerInboundNatRule.UpdateDefinitionStages.Blank<Update> defineInboundNatRule(String name);
 
             /**
              * Begins the description of an update to an existing inbound NAT rule.
              * @param name the name of the inbound NAT rule to update
              * @return the first stage of the inbound NAT rule update
              */
-            InboundNatRule.Update updateInboundNatRule(String name);
+            LoadBalancerInboundNatRule.Update updateInboundNatRule(String name);
         }
 
         /**
@@ -694,14 +621,14 @@ public interface LoadBalancer extends
              * @param name the name of the inbound NAT pool
              * @return the first stage of the new inbound NAT pool definition
              */
-            InboundNatPool.UpdateDefinitionStages.Blank<Update> defineInboundNatPool(String name);
+            LoadBalancerInboundNatPool.UpdateDefinitionStages.Blank<Update> defineInboundNatPool(String name);
 
             /**
              * Begins the description of an update to an existing inbound NAT pool.
              * @param name the name of the inbound NAT pool to update
              * @return the first stage of the inbound NAT pool update
              */
-            InboundNatPool.Update updateInboundNatPool(String name);
+            LoadBalancerInboundNatPool.Update updateInboundNatPool(String name);
         }
     }
 

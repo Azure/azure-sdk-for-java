@@ -53,7 +53,7 @@ class StorageAccountsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -75,6 +75,9 @@ class StorageAccountsImpl
 
     @Override
     protected StorageAccountImpl wrapModel(StorageAccountInner storageAccountInner) {
+        if (storageAccountInner == null) {
+            return null;
+        }
         return new StorageAccountImpl(
                 storageAccountInner.name(),
                 storageAccountInner,

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
+import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -84,4 +85,12 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @return the configurable object itself for chaining
      */
     T withProxy(Proxy proxy);
+
+    /**
+     * Sets the proxy authenticator for the HTTP client.
+     *
+     * @param proxyAuthenticator the proxy authenticator to use
+     * @return the configurable object itself for chaining
+     */
+    T withProxyAuthenticator(Authenticator proxyAuthenticator);
 }

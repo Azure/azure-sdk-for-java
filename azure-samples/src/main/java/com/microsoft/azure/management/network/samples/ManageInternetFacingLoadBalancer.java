@@ -34,7 +34,7 @@ import java.util.List;
  * High-level ...
  *
  * - Create an Internet facing load balancer that receives network traffic on
- *   port 80 & 443 and sends load-balanced traffic to two virtual machines
+ *   port 80 &amp; 443 and sends load-balanced traffic to two virtual machines
  *
  * - Create NAT rules for SSH and TELNET access to virtual
  *   machines behind the load balancer
@@ -333,7 +333,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces1.get(0))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1);
@@ -346,7 +346,7 @@ public final class ManageInternetFacingLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces1.get(1))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1);
@@ -511,7 +511,7 @@ public final class ManageInternetFacingLoadBalancer {
 
                 System.out.println("Deleting load balancer " + loadBalancerName2
                         + "(" + loadBalancer2.id() + ")");
-                azure.loadBalancers().delete(loadBalancer2.id());
+                azure.loadBalancers().deleteById(loadBalancer2.id());
                 System.out.println("Deleted load balancer" + loadBalancerName2);
 
 
@@ -523,7 +523,7 @@ public final class ManageInternetFacingLoadBalancer {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

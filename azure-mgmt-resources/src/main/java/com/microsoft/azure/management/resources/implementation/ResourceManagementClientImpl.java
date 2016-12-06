@@ -243,7 +243,7 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2016-02-01";
+        this.apiVersion = "2016-09-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -265,6 +265,6 @@ public final class ResourceManagementClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "ResourceManagementClient, 2016-02-01");
+                "ResourceManagementClient, 2016-09-01");
     }
 }

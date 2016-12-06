@@ -28,6 +28,9 @@ class VirtualMachineOffersImpl
 
     @Override
     protected VirtualMachineOfferImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineOfferImpl(this.publisher, inner.name(), this.innerCollection);
     }
 

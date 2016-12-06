@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -8,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -21,7 +27,7 @@ public interface BatchAccounts extends
         SupportsListingByGroup<BatchAccount>,
         SupportsGettingByGroup<BatchAccount>,
         SupportsGettingById<BatchAccount>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<BatchAccount> {
     /**

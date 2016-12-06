@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.management.batch.implementation;
 
 import com.microsoft.azure.RestClient;
@@ -75,7 +81,7 @@ public class BatchManager extends Manager<BatchManager, BatchManagementClientImp
     /**
      * The implementation for Configurable interface.
      */
-    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements  Configurable {
+    private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         @Override
         public BatchManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
             return BatchManager.authenticate(buildRestClient(credentials), subscriptionId);

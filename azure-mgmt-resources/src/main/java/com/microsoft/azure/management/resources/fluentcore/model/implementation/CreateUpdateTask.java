@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.TaskItem;
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import rx.Observable;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;

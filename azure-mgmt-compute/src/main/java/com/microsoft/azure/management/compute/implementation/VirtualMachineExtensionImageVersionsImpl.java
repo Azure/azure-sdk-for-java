@@ -29,6 +29,9 @@ public class VirtualMachineExtensionImageVersionsImpl
 
     @Override
     protected VirtualMachineExtensionImageVersionImpl wrapModel(VirtualMachineExtensionImageInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineExtensionImageVersionImpl(this.client, this.type, inner);
     }
 }

@@ -67,4 +67,34 @@ public final class ByteExtensions {
             Arrays.fill(self, (byte)0);
         }
     }
+    
+    /**
+     * Compares two byte arrays in constant time.
+     * 
+     * @param self
+     *      The first byte array to compare 
+     * @param other
+     *      The second byte array to compare
+     * @return
+     *      True if the two byte arrays are equal.
+     */
+    public static boolean sequenceEqualConstantTime( byte[] self, byte[] other )
+    {
+        if ( self == null )
+            throw new IllegalArgumentException( "self" );
+
+        if ( other == null )
+            throw new IllegalArgumentException( "other" );
+
+        // Constant time comparison of two byte arrays
+        long difference = ( self.length & 0xffffffffl ) ^ ( other.length & 0xffffffffl );
+
+        for ( int i = 0; i < self.length && i < other.length; i++ )
+        {
+            difference |= ( self[i] ^ other[i] ) & 0xffffffffl;
+        }
+
+        return difference == 0;
+    }
+
 }

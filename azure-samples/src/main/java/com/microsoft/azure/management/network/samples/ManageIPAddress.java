@@ -93,8 +93,8 @@ public final class ManageIPAddress {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withExistingPrimaryPublicIpAddress(publicIpAddress)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(userName)
-                        .withPassword(password)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 
@@ -162,14 +162,14 @@ public final class ManageIPAddress {
                 //============================================================
                 // Delete the public ip
                 System.out.println("Deleting the public IP address");
-                azure.publicIpAddresses().delete(publicIpAddress.id());
+                azure.publicIpAddresses().deleteById(publicIpAddress.id());
                 System.out.println("Deleted the public IP address");
             } catch (Exception e) {
                 System.err.println(e.getMessage());
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

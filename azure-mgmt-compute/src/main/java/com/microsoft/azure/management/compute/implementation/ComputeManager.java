@@ -3,6 +3,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
@@ -26,6 +27,7 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     private VirtualMachineImages virtualMachineImages;
     private VirtualMachineExtensionImages virtualMachineExtensionImages;
     private VirtualMachineScaleSets virtualMachineScaleSets;
+    private ComputeUsages computeUsages;
 
     /**
      * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
@@ -126,7 +128,8 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachineImages virtualMachineImages() {
         if (virtualMachineImages == null) {
             virtualMachineImages = new VirtualMachineImagesImpl(new VirtualMachinePublishersImpl(super.innerManagementClient.virtualMachineImages(),
-                    super.innerManagementClient.virtualMachineExtensionImages()));
+                    super.innerManagementClient.virtualMachineExtensionImages()),
+                    super.innerManagementClient.virtualMachineImages());
         }
         return virtualMachineImages;
     }
@@ -148,10 +151,21 @@ public final class ComputeManager extends Manager<ComputeManager, ComputeManagem
     public VirtualMachineScaleSets virtualMachineScaleSets() {
         if (virtualMachineScaleSets == null) {
             virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(super.innerManagementClient.virtualMachineScaleSets(),
+                    this.innerManagementClient.virtualMachineScaleSetVMs(),
                     this,
                     storageManager,
                     networkManager);
         }
         return virtualMachineScaleSets;
+    }
+
+    /**
+     * @return the compute resource usage management API entry point
+     */
+    public ComputeUsages usages() {
+        if (computeUsages == null) {
+            computeUsages = new ComputeUsagesImpl(super.innerManagementClient);
+        }
+        return computeUsages;
     }
 }

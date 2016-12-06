@@ -10,6 +10,7 @@ import com.microsoft.azure.management.network.implementation.LoadBalancingRuleIn
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIp;
 import com.microsoft.azure.management.network.model.HasFrontend;
+import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -26,7 +27,8 @@ public interface LoadBalancingRule extends
     HasBackendPort,
     HasFrontend,
     HasFloatingIp,
-    HasProtocol<TransportProtocol> {
+    HasProtocol<TransportProtocol>,
+    HasFrontendPort {
 
     /**
      * @return the method of load distribution
@@ -39,19 +41,14 @@ public interface LoadBalancingRule extends
     int idleTimeoutInMinutes();
 
     /**
-     * @return the load balanced front end port
-     */
-    int frontendPort();
-
-    /**
      * @return the backend associated with the load balancing rule
      */
-    Backend backend();
+    LoadBalancerBackend backend();
 
     /**
      * @return the probe associated with the load balancing rule
      */
-    Probe probe();
+    LoadBalancerProbe probe();
 
     /**
      * Grouping of load balancing rule definition stages.
@@ -76,13 +73,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithFrontendPort<ParentT> {
-            /**
-             * Specifies the frontend port to load balance.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithProbe<ParentT> withFrontendPort(int port);
+        interface WithFrontendPort<ParentT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
 
         /**
@@ -205,13 +196,7 @@ public interface LoadBalancingRule extends
         /**
          * The stage of a load balancing rule update allowing to modify the frontend port.
          */
-        interface WithFrontendPort {
-            /**
-             * Specifies the frontend port to load balance.
-             * @param port a port number
-             * @return the next stage of the update
-             */
-            Update withFrontendPort(int port);
+        interface WithFrontendPort extends HasFrontendPort.UpdateStages.WithFrontendPort<Update> {
         }
 
         /**
@@ -296,13 +281,7 @@ public interface LoadBalancingRule extends
          * The stage of a load balancing rule definition allowing to specify the frontend port to load balance.
          * @param <ParentT> the return type of the final {@link WithAttach#attach()}
          */
-        interface WithFrontendPort<ParentT> {
-            /**
-             * Specifies the frontend port to load balance.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithProbe<ParentT> withFrontendPort(int port);
+        interface WithFrontendPort<ParentT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithProbe<ParentT>> {
         }
 
         /**

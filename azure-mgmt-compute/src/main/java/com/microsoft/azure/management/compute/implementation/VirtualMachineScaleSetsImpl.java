@@ -28,14 +28,17 @@ public class VirtualMachineScaleSetsImpl
                         VirtualMachineScaleSetsInner,
                         ComputeManager>
         implements VirtualMachineScaleSets {
+    private final VirtualMachineScaleSetVMsInner vmInstancesClient;
     private final StorageManager storageManager;
     private final NetworkManager networkManager;
 
     VirtualMachineScaleSetsImpl(VirtualMachineScaleSetsInner client,
+                        VirtualMachineScaleSetVMsInner vmInstancesClient,
                         ComputeManager computeManager,
                         StorageManager storageManager,
                         NetworkManager networkManager) {
         super(client, computeManager);
+        this.vmInstancesClient = vmInstancesClient;
         this.storageManager = storageManager;
         this.networkManager = networkManager;
     }
@@ -56,7 +59,7 @@ public class VirtualMachineScaleSetsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -126,6 +129,7 @@ public class VirtualMachineScaleSetsImpl
         return new VirtualMachineScaleSetImpl(name,
                 inner,
                 this.innerCollection,
+                this.vmInstancesClient,
                 super.myManager,
                 this.storageManager,
                 this.networkManager);
@@ -133,9 +137,13 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     protected VirtualMachineScaleSetImpl wrapModel(VirtualMachineScaleSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineScaleSetImpl(inner.name(),
                 inner,
                 this.innerCollection,
+                this.vmInstancesClient,
                 super.myManager,
                 this.storageManager,
                 this.networkManager);

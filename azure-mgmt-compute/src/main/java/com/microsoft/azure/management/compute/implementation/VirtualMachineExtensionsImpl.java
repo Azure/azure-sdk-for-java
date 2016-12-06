@@ -2,7 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,11 +14,11 @@ import java.util.Map;
  * Represents a extension collection associated with a virtual machine.
  */
 class VirtualMachineExtensionsImpl extends
-        ExternalChildResourcesImpl<VirtualMachineExtensionImpl,
-                        VirtualMachineExtension,
-                        VirtualMachineExtensionInner,
-                        VirtualMachineImpl,
-                        VirtualMachine> {
+        ExternalChildResourcesCachedImpl<VirtualMachineExtensionImpl,
+                                VirtualMachineExtension,
+                                VirtualMachineExtensionInner,
+                                VirtualMachineImpl,
+                                VirtualMachine> {
     private final VirtualMachineExtensionsInner client;
 
     /**
@@ -30,7 +30,7 @@ class VirtualMachineExtensionsImpl extends
     VirtualMachineExtensionsImpl(VirtualMachineExtensionsInner client, VirtualMachineImpl parent) {
         super(parent, "VirtualMachineExtension");
         this.client = client;
-        this.initializeCollection();
+        this.cacheCollection();
     }
 
     /**

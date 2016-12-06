@@ -9,6 +9,9 @@ package com.microsoft.azure.keyvault.cryptography;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Provider;
+import java.security.SecureRandom;
+import java.util.UUID;
+
 import org.apache.commons.lang3.NotImplementedException;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -26,38 +29,121 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw192;
 import com.microsoft.azure.keyvault.cryptography.algorithms.AesKw256;
 import com.microsoft.azure.keyvault.cryptography.Strings;
 
+/**
+ * A simple symmetric key implementation
+ *
+ */
 public class SymmetricKey implements IKey {
+    
+    private static final SecureRandom Rng = new SecureRandom();
 
     public static final int KeySize128 = 128 >> 3;
     public static final int KeySize192 = 192 >> 3;
     public static final int KeySize256 = 256 >> 3;
     public static final int KeySize384 = 384 >> 3;
     public static final int KeySize512 = 512 >> 3;
+    
+    public static final int DefaultKeySize = KeySize256;
 
     private final String   _kid;
     private final byte[]   _key;
     private final Provider _provider;
+    
+    /**
+     * Creates a SymmetricKey with a random key identifier and
+     * a random key with DefaultKeySize bits.
+     */
+    public SymmetricKey() {
+        this(UUID.randomUUID().toString());
+    }
+    
+    /**
+     * Creates a SymmetricKey with the specified key identifier and
+     * a random key with DefaultKeySize bits.
+     * @param kid
+     *      The key identifier to use.
+     */
+    public SymmetricKey(String kid) {
+        this(kid, DefaultKeySize);
+    }
+    
+    /**
+     * Creates a SymmetricKey with the specified key identifier and
+     * a random key with the specified size.
+     * @param kid
+     *      The key identifier to use.
+     * @param keySizeInBytes
+     *      The key size to use in bytes.
+     */
+    public SymmetricKey(String kid, int keySizeInBytes ) {
+        this(kid, keySizeInBytes, null);
+    }
+    
+    /**
+     * Creates a SymmetricKey with the specified key identifier and
+     * a random key with the specified size that uses the specified provider.
+     * @param kid
+     *      The key identifier to use.
+     * @param keySizeInBytes
+     *      The key size to use in bytes.
+     * @param provider
+     *      The provider to use (optional, null for default)
+     */
+    public SymmetricKey(String kid, int keySizeInBytes, Provider provider) {
+        
+        if ( Strings.isNullOrWhiteSpace(kid) ) {
+            throw new IllegalArgumentException("kid");
+        }
+        
+        if ( keySizeInBytes != KeySize128 && keySizeInBytes != KeySize192 && keySizeInBytes != KeySize256 && keySizeInBytes != KeySize384 && keySizeInBytes != KeySize512 ) {
+            throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
+        }
+        
+        _kid      = kid;
+        _key      = new byte[keySizeInBytes];
+        _provider = provider;
+        
+        // Generate a random key
+        Rng.nextBytes(_key);
+    }
 
+    /**
+     * Creates a SymmetricKey with the specified key identifier and key material.
+     * @param kid
+     *      The key identifier to use.
+     * @param keyBytes
+     *      The key material to use.
+     */
     public SymmetricKey(String kid, byte[] keyBytes) {
         this(kid, keyBytes, null);
     }
 
+    /**
+     * Creates a SymmetricKey with the specified key identifier and key material
+     * that uses the specified Provider.
+     * @param kid
+     *      The key identifier to use.
+     * @param keyBytes
+     *      The key material to use.
+     * @param provider
+     *      The Provider to use (optional, null for default)
+     */
     public SymmetricKey(String kid, byte[] keyBytes, Provider provider) {
 
-        if (Strings.isNullOrWhiteSpace(kid)) {
+        if ( Strings.isNullOrWhiteSpace(kid) ) {
             throw new IllegalArgumentException("kid");
         }
 
-        if (keyBytes == null) {
+        if ( keyBytes == null ) {
             throw new IllegalArgumentException("keyBytes");
         }
 
-        if (keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512) {
+        if ( keyBytes.length != KeySize128 && keyBytes.length != KeySize192 && keyBytes.length != KeySize256 && keyBytes.length != KeySize384 && keyBytes.length != KeySize512 ) {
             throw new IllegalArgumentException("The key material must be 128, 192, 256, 384 or 512 bits of data");
         }
 
-        _kid = kid;
-        _key = keyBytes;
+        _kid      = kid;
+        _key      = keyBytes;
         _provider = provider;
     }
 
@@ -148,7 +234,7 @@ public class SymmetricKey implements IKey {
         ICryptoTransform transform = null;
 
         try {
-            transform = algo.CreateDecryptor(_key, iv, authenticationData, _provider );
+            transform = algo.CreateDecryptor(_key, iv, authenticationData, authenticationTag, _provider );
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
         }
@@ -159,19 +245,6 @@ public class SymmetricKey implements IKey {
             result = transform.doFinal(ciphertext);
         } catch (Exception e) {
             return Futures.immediateFailedFuture(e);
-        }
-
-        if (transform instanceof IAuthenticatedCryptoTransform) {
-
-            IAuthenticatedCryptoTransform authenticatedTransform = (IAuthenticatedCryptoTransform) transform;
-
-            if (authenticationData == null || authenticationTag == null) {
-                throw new IllegalArgumentException("AuthenticatingCryptoTransform requires authenticationData and authenticationTag");
-            }
-
-            if (!sequenceEqualConstantTime(authenticationTag, authenticatedTransform.getTag())) {
-                throw new IllegalArgumentException("Data is not authentic");
-            }
         }
 
         return Futures.immediateFuture(result);
@@ -313,24 +386,4 @@ public class SymmetricKey implements IKey {
     @Override
     public void close() throws IOException {
     }
-
-    public static boolean sequenceEqualConstantTime(byte[] self, byte[] other) {
-        if (self == null) {
-            throw new IllegalArgumentException("self");
-        }
-
-        if (other == null) {
-            throw new IllegalArgumentException("other");
-        }
-
-        // Constant time comparison of two byte arrays
-        long difference = (self.length & 0xffffffffl) ^ (other.length & 0xffffffffl);
-
-        for (int i = 0; i < self.length && i < other.length; i++) {
-            difference |= (self[i] & 0xffffffffl) ^ (other[i] & 0xffffffffl);
-        }
-
-        return difference == 0;
-    }
-
 }

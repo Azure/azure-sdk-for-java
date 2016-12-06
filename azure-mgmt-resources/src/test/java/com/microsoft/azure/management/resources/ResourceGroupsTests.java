@@ -26,7 +26,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
                 .create();
         // List
         ResourceGroup groupResult = null;
-        for (ResourceGroup rg : resourceGroups.list()) {
+        for (ResourceGroup rg : resourceGroups.listByTag("department", "finance")) {
             if (rg.name().equals(rgName)) {
                 groupResult = rg;
                 break;
@@ -47,7 +47,7 @@ public class ResourceGroupsTests extends ResourceManagerTestBase {
         Assert.assertEquals("value1", updatedGroup.tags().get("tag1"));
         Assert.assertEquals(location, getGroup.regionName());
         // Delete
-        resourceGroups.delete(rgName);
+        resourceGroups.deleteByName(rgName);
         Assert.assertFalse(resourceGroups.checkExistence(rgName));
     }
 }

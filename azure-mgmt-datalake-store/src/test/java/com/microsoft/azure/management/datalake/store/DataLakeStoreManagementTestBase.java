@@ -3,7 +3,6 @@ package com.microsoft.azure.management.datalake.store;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.UserTokenCredentials;
 import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreAccountManagementClientImpl;
-import com.microsoft.azure.management.datalake.store.implementation.DataLakeStoreFileSystemManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.RestClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -11,7 +10,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 public abstract class DataLakeStoreManagementTestBase {
     protected static ResourceManagementClientImpl resourceManagementClient;
     protected static DataLakeStoreAccountManagementClientImpl dataLakeStoreAccountManagementClient;
-    protected static DataLakeStoreFileSystemManagementClientImpl dataLakeStoreFileSystemManagementClient;
 
     public static void createClients() {
         UserTokenCredentials credentials = new UserTokenCredentials(
@@ -22,7 +20,7 @@ public abstract class DataLakeStoreManagementTestBase {
                 AzureEnvironment.AZURE);
 
         RestClient restClient = new RestClient.Builder()
-                .withDefaultBaseUrl(com.microsoft.azure.AzureEnvironment.AZURE)
+                .withBaseUrl("https://management.azure.com")
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();
@@ -32,8 +30,6 @@ public abstract class DataLakeStoreManagementTestBase {
 
         dataLakeStoreAccountManagementClient = new DataLakeStoreAccountManagementClientImpl(restClient);
         dataLakeStoreAccountManagementClient.withSubscriptionId(System.getenv("arm.subscriptionid"));
-
-        dataLakeStoreFileSystemManagementClient = new DataLakeStoreFileSystemManagementClientImpl(restClient);
     }
 
     public static String generateName(String prefix) {

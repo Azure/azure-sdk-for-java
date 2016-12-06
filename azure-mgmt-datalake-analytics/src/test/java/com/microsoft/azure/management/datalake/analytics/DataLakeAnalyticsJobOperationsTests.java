@@ -1,7 +1,6 @@
 package com.microsoft.azure.management.datalake.analytics;
 
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccount;
-import com.microsoft.azure.management.datalake.analytics.models.DataLakeAnalyticsAccountProperties;
 import com.microsoft.azure.management.datalake.analytics.models.DataLakeStoreAccountInfo;
 import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
 import com.microsoft.azure.management.datalake.analytics.models.JobResult;
@@ -36,23 +35,19 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         // create storage and ADLS accounts, setting the accessKey
         DataLakeStoreAccount adlsAccount = new DataLakeStoreAccount();
         adlsAccount.withLocation(location);
-        adlsAccount.withName(adlsAcct);
         dataLakeStoreAccountManagementClient.accounts().create(rgName, adlsAcct, adlsAccount);
 
         // Create the ADLA acct to use.
-        DataLakeAnalyticsAccountProperties createProperties = new DataLakeAnalyticsAccountProperties();
         List<DataLakeStoreAccountInfo> adlsAccts = new ArrayList<DataLakeStoreAccountInfo>();
         DataLakeStoreAccountInfo adlsInfo = new DataLakeStoreAccountInfo();
         adlsInfo.withName(adlsAcct);
         adlsAccts.add(adlsInfo);
 
-        createProperties.withDataLakeStoreAccounts(adlsAccts);
-        createProperties.withDefaultDataLakeStoreAccount(adlsAcct);
-
         DataLakeAnalyticsAccount createParams = new DataLakeAnalyticsAccount();
         createParams.withLocation(location);
-        createParams.withName(adlaAcct);
-        createParams.withProperties(createProperties);
+        createParams.withDataLakeStoreAccounts(adlsAccts);
+        createParams.withDefaultDataLakeStoreAccount(adlsAcct);
+
         dataLakeAnalyticsAccountManagementClient.accounts().create(rgName, adlaAcct, createParams);
         // Sleep for two minutes to ensure the account is totally provisioned.
         Thread.sleep(180000);
@@ -81,23 +76,23 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         UUID jobId = UUID.randomUUID();
         UUID secondJobId = UUID.randomUUID();
 
-        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, jobId, jobToSubmit).getBody();
+        JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, jobId, jobToSubmit);
         Assert.assertNotNull(jobCreateResponse);
 
         // cancel the job
         dataLakeAnalyticsJobManagementClient.jobs().cancel(adlaAcct, jobId);
 
         // Get the job and ensure it was cancelled
-        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobId).getBody();
+        JobInformation cancelledJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobId);
         Assert.assertEquals(JobResult.CANCELLED, cancelledJobResponse.result());
         Assert.assertNotNull(cancelledJobResponse.errorMessage());
         Assert.assertTrue(cancelledJobResponse.errorMessage().size() >= 1);
 
         // Resubmit and wait for job to finish
-        jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, secondJobId, jobToSubmit).getBody();
+        jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(adlaAcct, secondJobId, jobToSubmit);
         Assert.assertNotNull(jobCreateResponse);
 
-        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+        JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
         Assert.assertNotNull(getJobResponse);
 
         int maxWaitInSeconds = 180; // 3 minutes should be long enough
@@ -108,7 +103,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
             // wait 5 seconds before polling again
             Thread.sleep(5000);
             curWaitInSeconds += 5;
-            getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId()).getBody();
+            getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
             Assert.assertNotNull(getJobResponse);
         }
 
@@ -120,7 +115,7 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
                 getJobResponse.jobId(), getJobResponse.state(), getJobResponse.result(), getJobResponse.errorMessage()),
                 getJobResponse.state() == JobState.ENDED && getJobResponse.result() == JobResult.SUCCEEDED);
 
-        List<JobInformation> listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct, null, null, null, null, null, null, null, null, null).getBody();
+        List<JobInformation> listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct);
         Assert.assertNotNull(listJobResponse);
         boolean foundJob = false;
         for(JobInformation eachJob : listJobResponse) {
@@ -133,12 +128,11 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         Assert.assertTrue(foundJob);
 
         // Just compile the job, which requires a jobId in the job object.
-        jobToSubmit.withJobId(getJobResponse.jobId());
-        JobInformation compileResponse = dataLakeAnalyticsJobManagementClient.jobs().build(adlaAcct, jobToSubmit).getBody();
+        JobInformation compileResponse = dataLakeAnalyticsJobManagementClient.jobs().build(adlaAcct, jobToSubmit);
         Assert.assertNotNull(compileResponse);
 
         // list the jobs both with a hand crafted query string and using the parameters
-        listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct, null, null, null, null, "jobId", null, null, null, null).getBody();
+        listJobResponse = dataLakeAnalyticsJobManagementClient.jobs().list(adlaAcct, null, null, null, null,"jobId", null);
         Assert.assertNotNull(listJobResponse);
 
         foundJob = false;

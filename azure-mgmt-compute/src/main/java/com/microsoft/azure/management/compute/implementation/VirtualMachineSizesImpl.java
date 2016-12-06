@@ -30,6 +30,9 @@ class VirtualMachineSizesImpl
 
     @Override
     protected VirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineSizeImpl(inner);
     }
 

@@ -6,17 +6,14 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -93,25 +90,7 @@ class NetworkSecurityGroupImpl
 
     @Override
     public List<Subnet> listAssociatedSubnets() {
-        final List<SubnetInner> subnetRefs = this.inner().subnets();
-        final Map<String, Network> networks = new HashMap<>();
-        final List<Subnet> subnets = new ArrayList<>();
-
-        if (subnetRefs != null) {
-            for (SubnetInner subnetRef : subnetRefs) {
-                String networkId = ResourceUtils.parentResourcePathFromResourceId(subnetRef.id());
-                Network network = networks.get(networkId);
-                if (network == null) {
-                    network = this.myManager.networks().getById(networkId);
-                    networks.put(networkId, network);
-                }
-
-                String subnetName = ResourceUtils.nameFromResourceId(subnetRef.id());
-                subnets.add(network.subnets().get(subnetName));
-            }
-        }
-
-        return Collections.unmodifiableList(subnets);
+        return this.myManager.listAssociatedSubnets(this.inner().subnets());
     }
 
     // Setters (fluent)

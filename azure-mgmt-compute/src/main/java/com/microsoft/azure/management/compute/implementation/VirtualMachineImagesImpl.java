@@ -15,9 +15,21 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
     private final VirtualMachinePublishers publishers;
+    private final VirtualMachineImagesInner client;
 
-    VirtualMachineImagesImpl(VirtualMachinePublishers publishers) {
+    VirtualMachineImagesImpl(VirtualMachinePublishers publishers, VirtualMachineImagesInner client) {
         this.publishers = publishers;
+        this.client = client;
+    }
+
+    @Override
+    public VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version) {
+        VirtualMachineImageInner innerImage = this.client.get(region.name(),
+                publisherName,
+                offerName,
+                skuName,
+                version);
+        return new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage);
     }
 
     @Override

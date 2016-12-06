@@ -293,6 +293,7 @@ public interface Vault extends
      * The template for a key vault update operation, containing all the settings that can be modified.
      */
     interface Update extends
+            GroupableResource.UpdateWithTags<Update>,
             Appliable<Vault>,
             UpdateStages.WithAccessPolicy,
             UpdateStages.WithConfigurations {

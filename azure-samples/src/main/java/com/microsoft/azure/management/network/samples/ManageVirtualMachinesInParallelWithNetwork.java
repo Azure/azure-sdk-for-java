@@ -172,7 +172,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                             .withAddressPrefix("172.16.1.0/24")
                             .withExistingNetworkSecurityGroup(frontendNSG)
                         .attach()
-                        .defineSubnet("Back-End")
+                        .defineSubnet("Back-end")
                             .withAddressPrefix("172.16.2.0/24")
                             .withExistingNetworkSecurityGroup(backendNSG)
                         .attach()
@@ -196,8 +196,8 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                             .withPrimaryPrivateIpAddressDynamic()
                             .withoutPrimaryPublicIpAddress()
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUserName(userName)
-                            .withPassword(password)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
                             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                             .withNewStorageAccount(creatableStorageAccount);
                     frontendCreatableVirtualMachines.add(creatableVirtualMachine);
@@ -211,12 +211,12 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
                             .withRegion(Region.US_EAST)
                             .withExistingResourceGroup(resourceGroup)
                             .withExistingPrimaryNetwork(network)
-                            .withSubnet("Backend-end")
+                            .withSubnet("Back-end")
                             .withPrimaryPrivateIpAddressDynamic()
                             .withoutPrimaryPublicIpAddress()
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUserName(userName)
-                            .withPassword(password)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
                             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                             .withNewStorageAccount(creatableStorageAccount);
                     backendCreatableVirtualMachines.add(creatableVirtualMachine);
@@ -248,7 +248,7 @@ public final class ManageVirtualMachinesInParallelWithNetwork {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

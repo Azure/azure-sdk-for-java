@@ -38,12 +38,12 @@ public interface NicIpConfiguration extends
     /**
      * @return the load balancer backends associated with this network interface IP configuration
      */
-    List<Backend> listAssociatedLoadBalancerBackends();
+    List<LoadBalancerBackend> listAssociatedLoadBalancerBackends();
 
     /**
      * @return the load balancer inbound NAT rules associated with this network interface IP configuration
      */
-    List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules();
+    List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules();
 
     // Setters (fluent)
 

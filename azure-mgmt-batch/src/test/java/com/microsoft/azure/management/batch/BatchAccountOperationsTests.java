@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import org.joda.time.DateTime;
@@ -30,7 +29,7 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
@@ -165,14 +164,10 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
                     .withoutApplicationPackage(applicationPackage1Name)
                 .parent()
                 .apply();
-        batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 
     @Test
@@ -217,13 +212,8 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         Assert.assertEquals(application.displayName(), applicationDisplayName);
         Assert.assertEquals(application.updatesAllowed(), allowUpdates);
 
-        batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 }

@@ -31,17 +31,22 @@ var mappings = {
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/resources/2016-02-01/swagger/resources.json',
+        'source': 'arm-resources/resources/2016-09-01/swagger/resources.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/subscriptions/2015-11-01/swagger/subscriptions.json',
+        'source': 'arm-resources/subscriptions/2016-06-01/swagger/subscriptions.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'features': {
         'dir': 'azure-mgmt-resources',
         'source': 'arm-resources/features/2015-12-01/swagger/features.json',
+        'package': 'com.microsoft.azure.management.resources'
+    },
+    'policy': {
+        'dir': 'azure-mgmt-resources',
+        'source': 'arm-resources/policy/2016-04-01/swagger/policy.json',
         'package': 'com.microsoft.azure.management.resources'
     },
     'network': {
@@ -50,10 +55,10 @@ var mappings = {
         'package': 'com.microsoft.azure.management.network',
         'args': '-FT 1'
     },
-    'website': {
-        'dir': 'azure-mgmt-website',
-        'source': 'arm-web/2015-08-01/swagger/service.json',
-        'package': 'com.microsoft.azure.management.website',
+    'appservice': {
+        'dir': 'azure-mgmt-appservice',
+        'source': 'arm-web/compositeWebAppClient.json',
+        'package': 'com.microsoft.azure.management.appservice',
         'args': '-FT 1'
     },
     'graph.rbac': {
@@ -74,33 +79,33 @@ var mappings = {
         'package': 'com.microsoft.azure.management.search',
         'args': '-FT 1'
     },
-    'datalake.store.filesystem': {
-        'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/filesystem/2015-10-01-preview/swagger/filesystem.json',
-        'package': 'com.microsoft.azure.management.datalake.store',
-        'fluent': false
+    'trafficmanager': {
+        'dir': 'azure-mgmt-trafficmanager',
+        'source': 'arm-trafficmanager/2015-11-01/swagger/trafficmanager.json',
+        'package': 'com.microsoft.azure.management.trafficmanager',
+        'args': '-FT 1'
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/account/2015-10-01-preview/swagger/account.json',
+        'source': 'arm-datalake-store/account/2016-11-01/swagger/account.json',
         'package': 'com.microsoft.azure.management.datalake.store',
         'fluent': false
     },
     'datalake.analytics.account': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/account/2015-10-01-preview/swagger/account.json',
+        'source': 'arm-datalake-analytics/account/2016-11-01/swagger/account.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/job/2016-03-20-preview/swagger/job.json',
+        'source': 'arm-datalake-analytics/job/2016-11-01/swagger/job.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.catalog': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/catalog/2015-10-01-preview/swagger/catalog.json',
+        'source': 'arm-datalake-analytics/catalog/2016-11-01/swagger/catalog.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
@@ -123,6 +128,18 @@ var mappings = {
         'source': 'arm-batch/2015-12-01/swagger/BatchManagement.json',
         'package': 'com.microsoft.azure.management.batch',
         'args': '-FT 1'
+    },
+    'sql': {
+        'dir': 'azure-mgmt-sql',
+        'source': 'arm-sql/compositeSql.json',
+        'package': 'com.microsoft.azure.management.sql',
+        'args': '-FT 1'
+    },
+    'cdn': {
+        'dir': 'azure-mgmt-cdn',
+        'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
+        'package': 'com.microsoft.azure.management.cdn',
+        'args': '-FT 2'
     }
 };
 
@@ -145,7 +162,7 @@ var isMac = (process.platform.lastIndexOf('darwin') === 0);
 
 var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
 var projects = args['projects'];
-var autoRestVersion = '0.17.0-Nightly20160830'; // default
+var autoRestVersion = '0.17.3-Nightly20161101'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
@@ -160,7 +177,14 @@ gulp.task('codegen', function(cb) {
     var nugetSource = 'https://www.myget.org/F/autorest/api/v2';
     if (autoRestVersion.match(/[0-9]+\.[0-9]+\.[0-9]+.*/)) {
         autoRestExe = 'packages\\autorest.' + autoRestVersion + '\\tools\\AutoRest.exe';
-        exec('tools\\nuget.exe install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
+        nugetExe = "tools\\nuget.exe";
+        if (process.platform !== 'win32') {
+            nugetExe = "mono tools/nuget.exe";
+            autoRestExe = autoRestExe.replace(/\\/g, "/");
+            exec('chmod +x ' + autoRestExe);
+            autoRestExe = "mono " + autoRestExe;
+        }
+        exec(nugetExe + ' install AutoRest -Source ' + nugetSource + ' -Version ' + autoRestVersion + ' -o packages', function(err, stdout, stderr) {
             console.log(stdout);
             console.error(stderr);
             handleInput(projects, cb);
@@ -200,11 +224,11 @@ var codegen = function(project, cb) {
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
         generator = 'Azure.Java';
     }
-    cmd = autoRestExe + ' -Modeler ' + modeler + 
-                        ' -CodeGenerator ' + generator + 
-                        ' -Namespace ' + mappings[project].package + 
-                        ' -Input ' + specRoot + '/' + mappings[project].source + 
-                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
+    cmd = autoRestExe + ' -Modeler ' + modeler +
+                        ' -CodeGenerator ' + generator +
+                        ' -Namespace ' + mappings[project].package +
+                        ' -Input ' + specRoot + '/' + mappings[project].source +
+                        ' -outputDirectory ' + mappings[project].dir + '/src/main/java/' + mappings[project].package.replace(/\./g, '/') +
                         ' -Header MICROSOFT_MIT_NO_CODEGEN' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
@@ -240,8 +264,8 @@ function GetAutoRestFolder() {
   }
   if( isMac ) {
 	return "src/core/AutoRest/bin/Debug/net451/osx.10.11-x64/";
-  } 
-  if( isLinux ) { 
+  }
+  if( isLinux ) {
 	return "src/core/AutoRest/bin/Debug/net451/ubuntu.14.04-x64/"
   }
    throw new Error("Unknown platform?");

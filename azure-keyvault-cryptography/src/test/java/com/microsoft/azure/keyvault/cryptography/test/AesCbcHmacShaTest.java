@@ -95,7 +95,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -171,7 +171,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }
@@ -246,7 +246,7 @@ public class AesCbcHmacShaTest {
         }
 
         try {
-            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, _provider);
+            transform = (IAuthenticatedCryptoTransform)algo.CreateDecryptor(K, IV, A, T, _provider);
         } catch (Exception e) {
             fail(e.getMessage());
         }

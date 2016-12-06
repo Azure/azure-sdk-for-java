@@ -48,7 +48,7 @@ class PublicIpAddressesImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -76,6 +76,9 @@ class PublicIpAddressesImpl
 
     @Override
     protected PublicIpAddressImpl wrapModel(PublicIPAddressInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new PublicIpAddressImpl(
                 inner.id(),
                 inner,

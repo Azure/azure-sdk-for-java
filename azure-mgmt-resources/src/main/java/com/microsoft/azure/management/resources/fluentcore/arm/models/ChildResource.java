@@ -13,11 +13,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
  * @param <ParentT> parent interface
  */
 @Fluent
-public interface ChildResource<ParentT> extends Indexable {
-    /**
-     * @return the name of this child object
-     */
-    String name();
+public interface ChildResource<ParentT> extends
+    Indexable,
+    HasName {
 
     /**
      * @return the parent of this child object

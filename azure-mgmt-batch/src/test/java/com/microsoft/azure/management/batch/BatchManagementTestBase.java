@@ -7,9 +7,6 @@ import com.microsoft.azure.management.batch.implementation.BatchManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
-import java.io.File;
-import java.io.IOException;
-
 public abstract class BatchManagementTestBase {
     protected static ResourceManager resourceManager;
     protected static BatchManager batchManager;
@@ -21,7 +18,8 @@ public abstract class BatchManagementTestBase {
                 System.getenv("secret"),
                 AzureEnvironment.AZURE);
 
-        RestClient restClient = AzureEnvironment.AZURE.newRestClientBuilder()
+        RestClient restClient = new RestClient.Builder()
+                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();

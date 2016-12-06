@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.keyvault.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.RequestIdHeaderInterceptor;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
@@ -44,7 +43,8 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      * @return the StorageManager
      */
     public static KeyVaultManager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-        return new KeyVaultManager(credentials.getEnvironment().newRestClientBuilder()
+        return new KeyVaultManager(credentials.getEnvironment()
+                .newRestClientBuilder()
                 .withCredentials(credentials)
                 .build(), credentials.getDomain(), subscriptionId);
     }
@@ -81,7 +81,9 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
      */
     private static final class ConfigurableImpl extends AzureConfigurableImpl<Configurable> implements Configurable {
         public KeyVaultManager authenticate(AzureTokenCredentials credentials, String tenantId, String subscriptionId) {
-            return KeyVaultManager.authenticate(buildRestClient(credentials), tenantId, subscriptionId);
+            return KeyVaultManager.authenticate(
+                    buildRestClient(credentials, AzureEnvironment.Endpoint.RESOURCE_MANAGER),
+                    tenantId, subscriptionId);
         }
     }
 
@@ -94,10 +96,8 @@ public final class KeyVaultManager extends Manager<KeyVaultManager, KeyVaultMana
         if (restClient.credentials() instanceof AzureTokenCredentials) {
             graphEndpoint = ((AzureTokenCredentials) restClient.credentials()).getEnvironment().getGraphEndpoint();
         }
-        graphRbacManager = GraphRbacManager.authenticate(new RestClient.Builder()
+        graphRbacManager = GraphRbacManager.authenticate(restClient.newBuilder()
                 .withBaseUrl(graphEndpoint)
-                .withInterceptor(new RequestIdHeaderInterceptor())
-                .withCredentials(restClient.credentials())
                 .build(), tenantId);
         this.tenantId = tenantId;
     }

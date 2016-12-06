@@ -6,14 +6,16 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.GenericResource;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.Provider;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -37,8 +39,19 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public PagedList<GenericResource> list() {
+        return wrapList(this.serviceClient.resources().list());
+    }
+
+    @Override
     public PagedList<GenericResource> listByGroup(String groupName) {
         return wrapList(this.serviceClient.resourceGroups().listResources(groupName));
+    }
+
+    @Override
+    public PagedList<GenericResource> listByTag(String resourceGroupName, String tagName, String tagValue) {
+        return wrapList(this.serviceClient.resourceGroups().listResources(
+                resourceGroupName, Utils.createOdataFilterForTags(tagName, tagValue), null, null));
     }
 
     @Override
@@ -47,6 +60,7 @@ final class GenericResourcesImpl
                 name,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 super.myManager);
     }
@@ -63,12 +77,16 @@ final class GenericResourcesImpl
     }
 
     @Override
+    public boolean checkExistenceById(String id) {
+        String apiVersion = getApiVersionFromId(id).toBlocking().single();
+        return innerCollection.checkExistenceById(id, apiVersion);
+    }
+
+    @Override
     public GenericResource getById(String id) {
-        return this.get(
-                ResourceUtils.groupFromResourceId(id),
-                ResourceUtils.resourceProviderFromResourceId(id),
-                ResourceUtils.resourceTypeFromResourceId(id),
-                ResourceUtils.nameFromResourceId(id));
+        Provider provider = myManager.providers().getByName(ResourceUtils.resourceProviderFromResourceId(id));
+        String apiVersion = ResourceUtils.defaultApiVersion(id, provider);
+        return wrapModel(this.innerCollection.getById(id, apiVersion)).withApiVersion(apiVersion);
     }
 
     @Override
@@ -86,7 +104,7 @@ final class GenericResourcesImpl
                 return resource;
             }
         }
-        throw new CloudException("Generic resource not found.");
+        return null;
     }
 
     @Override
@@ -114,12 +132,13 @@ final class GenericResourcesImpl
                 resourceName,
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 serviceClient,
                 this.myManager);
 
         return resource.withExistingResourceGroup(resourceGroupName)
                 .withProviderNamespace(resourceProviderNamespace)
-                .withParentResource(parentResourcePath)
+                .withParentResourcePath(parentResourcePath)
                 .withResourceType(resourceType)
                 .withApiVersion(apiVersion);
     }
@@ -143,26 +162,31 @@ final class GenericResourcesImpl
                 id,
                 new GenericResourceInner(),
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(id))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(id))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(id))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(id));
+                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(id));
     }
 
     @Override
     protected GenericResourceImpl wrapModel(GenericResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new GenericResourceImpl(
                 inner.id(),
                 inner,
                 this.innerCollection,
+                this.myManager.providers(),
                 this.serviceClient,
                 this.myManager)
                 .withExistingResourceGroup(ResourceUtils.groupFromResourceId(inner.id()))
                 .withProviderNamespace(ResourceUtils.resourceProviderFromResourceId(inner.id()))
                 .withResourceType(ResourceUtils.resourceTypeFromResourceId(inner.id()))
-                .withParentResource(ResourceUtils.parentResourcePathFromResourceId(inner.id()));
+                .withParentResourceId(ResourceUtils.parentResourceIdFromResourceId(inner.id()));
     }
 
     @Override
@@ -172,8 +196,29 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Delete just by resource group and name is not supported. Please use other overloads.");
+    }
+
+    @Override
+    public Observable<Void> deleteByIdAsync(final String id) {
+        return getApiVersionFromId(id)
+                .flatMap(new Func1<String, Observable<Void>>() {
+                    @Override
+                    public Observable<Void> call(String apiVersion) {
+                        return innerCollection.deleteByIdAsync(id, apiVersion);
+                    }
+                });
+    }
+
+    private Observable<String> getApiVersionFromId(final String id) {
+        return myManager.providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
+                .map(new Func1<Provider, String>() {
+                    @Override
+                    public String call(Provider provider) {
+                        return ResourceUtils.defaultApiVersion(id, provider);
+                    }
+                });
     }
 }

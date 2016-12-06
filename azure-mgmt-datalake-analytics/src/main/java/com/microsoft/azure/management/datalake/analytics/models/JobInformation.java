@@ -20,6 +20,7 @@ public class JobInformation {
     /**
      * the job's unique identifier (a GUID).
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private UUID jobId;
 
     /**
@@ -38,6 +39,7 @@ public class JobInformation {
     /**
      * the user or account that submitted the job.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String submitter;
 
     /**
@@ -130,17 +132,6 @@ public class JobInformation {
     }
 
     /**
-     * Set the jobId value.
-     *
-     * @param jobId the jobId value to set
-     * @return the JobInformation object itself.
-     */
-    public JobInformation withJobId(UUID jobId) {
-        this.jobId = jobId;
-        return this;
-    }
-
-    /**
      * Get the name value.
      *
      * @return the name value
@@ -187,17 +178,6 @@ public class JobInformation {
      */
     public String submitter() {
         return this.submitter;
-    }
-
-    /**
-     * Set the submitter value.
-     *
-     * @param submitter the submitter value to set
-     * @return the JobInformation object itself.
-     */
-    public JobInformation withSubmitter(String submitter) {
-        this.submitter = submitter;
-        return this;
     }
 
     /**

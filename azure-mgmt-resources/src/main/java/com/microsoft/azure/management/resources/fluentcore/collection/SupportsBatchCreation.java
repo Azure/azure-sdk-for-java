@@ -3,7 +3,7 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.rest.ServiceCall;
@@ -19,7 +19,7 @@ import java.util.List;
  * @param <ResourceT> the top level Azure resource type
  */
 @LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsBatchCreation<ResourceT extends Resource> {
+public interface SupportsBatchCreation<ResourceT extends HasId> {
     /**
      * Executes the create requests on a collection (batch) of resources.
      *

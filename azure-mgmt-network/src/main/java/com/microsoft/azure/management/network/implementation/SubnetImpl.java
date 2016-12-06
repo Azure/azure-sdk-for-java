@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
+import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -40,24 +41,45 @@ class SubnetImpl
     }
 
     @Override
-    public NetworkSecurityGroup getNetworkSecurityGroup() {
-        SubResource nsgResource = this.inner().networkSecurityGroup();
-        if (nsgResource == null) {
-            return null;
-        } else {
-            return this.parent().manager().networkSecurityGroups().getById(nsgResource.id());
-        }
+    public String networkSecurityGroupId() {
+        return (this.inner().networkSecurityGroup() != null) ? this.inner().networkSecurityGroup().id() : null;
+    }
+
+    @Override
+    public String routeTableId() {
+        return (this.inner().routeTable() != null) ? this.inner().routeTable().id() : null;
     }
 
     // Fluent setters
 
     @Override
+    public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
+        return withExistingNetworkSecurityGroup(nsg.id());
+    }
+
+    @Override
     public SubnetImpl withExistingNetworkSecurityGroup(String resourceId) {
         // Workaround for REST API's expectation of an object rather than string ID - should be fixed in Swagger specs or REST
-        SubResource reference = new SubResource();
-        reference.withId(resourceId);
-
+        SubResource reference = new SubResource().withId(resourceId);
         this.inner().withNetworkSecurityGroup(reference);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withExistingRouteTable(String resourceId) {
+        SubResource reference = new SubResource().withId(resourceId);
+        this.inner().withRouteTable(reference);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withExistingRouteTable(RouteTable routeTable) {
+        return this.withExistingRouteTable(routeTable.id());
+    }
+
+    @Override
+    public Update withoutRouteTable() {
+        this.inner().withRouteTable(null);
         return this;
     }
 
@@ -75,7 +97,16 @@ class SubnetImpl
     }
 
     @Override
-    public SubnetImpl withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg) {
-        return withExistingNetworkSecurityGroup(nsg.id());
+    public RouteTable getRouteTable() {
+        return (this.routeTableId() != null)
+                ? this.parent().manager().routeTables().getById(this.routeTableId())
+                        : null;
+    }
+
+    @Override
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
+        return (this.networkSecurityGroupId() != null)
+                ? this.parent().manager().networkSecurityGroups().getById(this.routeTableId())
+                        : null;
     }
 }

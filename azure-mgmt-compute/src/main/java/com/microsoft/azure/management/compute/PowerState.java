@@ -5,54 +5,94 @@
  */
 package com.microsoft.azure.management.compute;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Possible power states of a virtual machine.
  */
-public enum PowerState {
+public class PowerState {
     /**
-     * Enum value PowerState/running.
+     * Static value PowerState/running for PowerState.
      */
-    RUNNING("PowerState/running"),
+    public static final PowerState RUNNING = new PowerState("PowerState/running");
 
     /**
-     * Enum value PowerState/deallocating.
+     * Static value PowerState/deallocating for PowerState.
      */
-    DEALLOCATING("PowerState/deallocating"),
+    public static final PowerState DEALLOCATING = new PowerState("PowerState/deallocating");
 
     /**
-     * Enum value PowerState/deallocated.
+     * Static value PowerState/deallocated for PowerState.
      */
-    DEALLOCATED("PowerState/deallocated"),
+    public static final PowerState DEALLOCATED = new PowerState("PowerState/deallocated");
 
     /**
-     * Enum value PowerState/starting.
+     * Static value PowerState/starting for PowerState.
      */
-    STARTING("PowerState/starting");
+    public static final PowerState STARTING = new PowerState("PowerState/starting");
+
+    /**
+     * Static value PowerState/stopped for PowerState.
+     */
+    public static final PowerState STOPPED = new PowerState("PowerState/stopped");
+
+    /**
+     * Static value PowerState/unknown for PowerState.
+     */
+    public static final PowerState UNKNOWN = new PowerState("PowerState/unknown");
 
     private String value;
 
-    PowerState(String value) {
+    /**
+     * Creates a custom value for PowerState.
+     * @param value the custom value
+     */
+    public PowerState(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a string value to a PowerState instance.
+     * Creates an instance of PowerState from the virtual machine instance view status entry corresponding
+     * to the power state.
      *
-     * @param value the string value to parse.
-     * @return the parsed PowerState object, or null if unable to parse.
+     * @param virtualMachineInstanceView the virtual machine instance view
+     * @return the PowerState
      */
-    public static PowerState fromValue(String value) {
-        PowerState[] items = PowerState.values();
-        for (PowerState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
+    public static PowerState fromInstanceView(VirtualMachineInstanceView virtualMachineInstanceView) {
+        if (virtualMachineInstanceView != null && virtualMachineInstanceView.statuses() != null) {
+            for (InstanceViewStatus status : virtualMachineInstanceView.statuses()) {
+                if (status.code() != null && status.code().startsWith("PowerState")) {
+                    return new PowerState(status.code());
+                }
             }
         }
         return null;
     }
 
+    @JsonValue
     @Override
     public String toString() {
-        return this.value;
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof PowerState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        PowerState rhs = (PowerState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

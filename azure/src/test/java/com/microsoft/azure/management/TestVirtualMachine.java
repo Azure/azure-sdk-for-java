@@ -30,8 +30,8 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUserName("testuser")
-                .withPassword("12NewPA$$w0rd!")
+                .withAdminUsername("testuser")
+                .withAdminPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
                 .createAsync()
                 .subscribe(new Action1<VirtualMachine>() {

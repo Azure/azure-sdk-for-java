@@ -67,14 +67,14 @@ public final class ManageVirtualMachinesInParallel {
                         .create();
 
                 // Prepare Creatable Network definition [Where all the virtual machines get added to]
-                Network.DefinitionStages.WithCreate creatableNetwork = azure.networks()
+                Creatable<Network> creatableNetwork = azure.networks()
                         .define(networkName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup)
                         .withAddressSpace("172.16.0.0/16");
 
                 // Prepare Creatable Storage account definition [For storing VMs disk]
-                StorageAccount.DefinitionStages.WithCreate creatableStorageAccount = azure.storageAccounts()
+                Creatable<StorageAccount> creatableStorageAccount = azure.storageAccounts()
                         .define(storageAccountName)
                         .withRegion(Region.US_EAST)
                         .withExistingResourceGroup(resourceGroup);
@@ -91,8 +91,8 @@ public final class ManageVirtualMachinesInParallel {
                             .withPrimaryPrivateIpAddressDynamic()
                             .withoutPrimaryPublicIpAddress()
                             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                            .withRootUserName(userName)
-                            .withPassword(password)
+                            .withRootUsername(userName)
+                            .withRootPassword(password)
                             .withSize(VirtualMachineSizeTypes.STANDARD_DS3_V2)
                             .withNewStorageAccount(creatableStorageAccount);
                     creatableVirtualMachines.add(creatableVirtualMachine);
@@ -120,7 +120,7 @@ public final class ManageVirtualMachinesInParallel {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

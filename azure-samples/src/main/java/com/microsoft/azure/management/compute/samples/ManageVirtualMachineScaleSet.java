@@ -220,12 +220,12 @@ public final class ManageVirtualMachineScaleSet {
                         .withExistingResourceGroup(rgName)
                         .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D3_V2)
                         .withExistingPrimaryNetworkSubnet(network, "Front-end")
-                        .withPrimaryInternetFacingLoadBalancer(loadBalancer1)
+                        .withExistingPrimaryInternetFacingLoadBalancer(loadBalancer1)
                         .withPrimaryInternetFacingLoadBalancerBackends(backendPoolName1, backendPoolName2)
                         .withPrimaryInternetFacingLoadBalancerInboundNatPools(natPool50XXto22, natPool60XXto23)
                         .withoutPrimaryInternalLoadBalancer()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withNewStorageAccount(storageAccountName1)
                         .withNewStorageAccount(storageAccountName2)
@@ -299,7 +299,7 @@ public final class ManageVirtualMachineScaleSet {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

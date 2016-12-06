@@ -1,6 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
-import com.microsoft.azure.TaskGroupBase;
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroupBase;
 import rx.Observable;
 
 /**

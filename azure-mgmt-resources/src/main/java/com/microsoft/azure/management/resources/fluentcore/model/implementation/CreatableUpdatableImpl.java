@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -85,7 +86,7 @@ public abstract class CreatableUpdatableImpl<
      * @param creatable the creatable dependency.
      */
     @SuppressWarnings("unchecked")
-    protected void addCreatableDependency(Creatable<? extends Resource> creatable) {
+    protected void addCreatableDependency(Creatable<? extends HasId> creatable) {
         CreateUpdateTaskGroup<FluentModelT> childGroup =
                 ((CreateUpdateTaskGroup.ResourceCreatorUpdator<FluentModelT>) creatable).creatorUpdatorTaskGroup();
         childGroup.merge(this.createUpdateTaskGroup);
@@ -177,6 +178,7 @@ public abstract class CreatableUpdatableImpl<
     public FluentModelT apply() {
         return applyAsync().toBlocking().last();
     }
+
     /**
      * This is the default implementation of 'updateResourceAsync', it simply calls createResourceAsync()
      * since for most of the resource both create and update are handled by the same API call
@@ -209,8 +211,9 @@ public abstract class CreatableUpdatableImpl<
         };
     }
 
-    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable,
-                                                           final ServiceCallback<FluentModelT> callback) {
+    protected ServiceCall<FluentModelT> observableToFuture(
+            Observable<FluentModelT> observable,
+            final ServiceCallback<FluentModelT> callback) {
         return ServiceCall.create(
                 observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
                     @Override

@@ -19,32 +19,46 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerFrontend;
+import com.microsoft.azure.management.network.LoadBalancerHttpProbe;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerPrivateFrontend;
+import com.microsoft.azure.management.network.LoadBalancerProbe;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.Subnet;
-import com.microsoft.azure.management.network.LoadBalancer;
-import com.microsoft.azure.management.network.TcpProbe;
-import com.microsoft.azure.management.network.LoadBalancingRule;
-import com.microsoft.azure.management.network.InboundNatPool;
-import com.microsoft.azure.management.network.InboundNatRule;
-import com.microsoft.azure.management.network.Frontend;
-import com.microsoft.azure.management.network.Backend;
-import com.microsoft.azure.management.network.Probe;
-import com.microsoft.azure.management.network.HttpProbe;
-import com.microsoft.azure.management.network.PublicFrontend;
-import com.microsoft.azure.management.network.PrivateFrontend;
+import com.microsoft.azure.management.redis.RedisAccessKeys;
+import com.microsoft.azure.management.redis.RedisCache;
+import com.microsoft.azure.management.redis.RedisCachePremium;
+import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
+import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.AppServicePlan;
+import com.microsoft.azure.management.appservice.AppSetting;
+import com.microsoft.azure.management.appservice.ConnectionString;
+import com.microsoft.azure.management.appservice.Contact;
+import com.microsoft.azure.management.appservice.HostNameBinding;
+import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.SslState;
+import com.microsoft.azure.management.appservice.WebAppBase;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -116,21 +130,26 @@ public final class Utils {
         }
 
         StringBuilder osProfile = new StringBuilder().append("\n\tOSProfile: ");
-        osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
-        if (resource.osProfile().windowsConfiguration() != null) {
-            osProfile.append("\n\t\t\tWindowsConfiguration: ");
-            osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
-                    .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
-            osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
-                    .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
-            osProfile.append("\n\t\t\t\tTimeZone: ")
-                    .append(resource.osProfile().windowsConfiguration().timeZone());
-        }
+        if (resource.osProfile() != null) {
+            osProfile.append("\n\t\tComputerName:").append(resource.osProfile().computerName());
+            if (resource.osProfile().windowsConfiguration() != null) {
+                osProfile.append("\n\t\t\tWindowsConfiguration: ");
+                osProfile.append("\n\t\t\t\tProvisionVMAgent: ")
+                        .append(resource.osProfile().windowsConfiguration().provisionVMAgent());
+                osProfile.append("\n\t\t\t\tEnableAutomaticUpdates: ")
+                        .append(resource.osProfile().windowsConfiguration().enableAutomaticUpdates());
+                osProfile.append("\n\t\t\t\tTimeZone: ")
+                        .append(resource.osProfile().windowsConfiguration().timeZone());
+            }
 
-        if (resource.osProfile().linuxConfiguration() != null) {
-            osProfile.append("\n\t\t\tLinuxConfiguration: ");
-            osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
-                    .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
+            if (resource.osProfile().linuxConfiguration() != null) {
+                osProfile.append("\n\t\t\tLinuxConfiguration: ");
+                osProfile.append("\n\t\t\t\tDisablePasswordAuthentication: ")
+                        .append(resource.osProfile().linuxConfiguration().disablePasswordAuthentication());
+            }
+        } else {
+            // OSProfile will be null for a VM attached to specialized VHD.
+            osProfile.append("null");
         }
 
         StringBuilder networkProfile = new StringBuilder().append("\n\tNetworkProfile: ");
@@ -336,6 +355,57 @@ public final class Utils {
 
 
     /**
+     * Print Redis Cache.
+     * @param redisCache a Redis cache.
+     */
+    public static void print(RedisCache redisCache) {
+        StringBuilder redisInfo = new StringBuilder()
+                .append("Redis Cache Name: ").append(redisCache.name())
+                .append("\n\tResource group: ").append(redisCache.resourceGroupName())
+                .append("\n\tRegion: ").append(redisCache.region())
+                .append("\n\tSKU Name: ").append(redisCache.sku().name())
+                .append("\n\tSKU Family: ").append(redisCache.sku().family())
+                .append("\n\tHost name: ").append(redisCache.hostName())
+                .append("\n\tSSL port: ").append(redisCache.sslPort())
+                .append("\n\tNon-SSL port (6379) enabled: ").append(redisCache.nonSslPort());
+        if (redisCache.redisConfiguration() != null && !redisCache.redisConfiguration().isEmpty()) {
+            redisInfo.append("\n\tRedis Configuration:");
+            for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
+                redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
+                         .append("' : '").append(redisConfiguration.getValue()).append("'");
+            }
+        }
+        if (redisCache.isPremium()) {
+            RedisCachePremium premium = redisCache.asPremium();
+            List<ScheduleEntry> scheduleEntries = premium.listPatchSchedules();
+            if (scheduleEntries != null && !scheduleEntries.isEmpty()) {
+                redisInfo.append("\n\tRedis Patch Schedule:");
+                for (ScheduleEntry schedule : scheduleEntries) {
+                    redisInfo.append("\n\t\tDay: '").append(schedule.dayOfWeek())
+                            .append("', start at: '").append(schedule.startHourUtc())
+                            .append("', maintenance window: '").append(schedule.maintenanceWindow())
+                            .append("'");
+                }
+            }
+        }
+
+        System.out.println(redisInfo.toString());
+    }
+
+    /**
+     * Print Redis Cache access keys.
+     * @param redisAccessKeys a keys for Redis Cache
+     */
+    public static void print(RedisAccessKeys redisAccessKeys) {
+        StringBuilder redisKeys = new StringBuilder()
+                .append("Redis Access Keys: ")
+                .append("\n\tPrimary Key: '").append(redisAccessKeys.primaryKey()).append("', ")
+                .append("\n\tSecondary Key: '").append(redisAccessKeys.secondaryKey()).append("', ");
+
+        System.out.println(redisKeys.toString());
+    }
+
+    /**
      * Print load balancer.
      * @param resource a load balancer
      */
@@ -358,7 +428,7 @@ public final class Utils {
         // Show TCP probes
         info.append("\n\tTCP probes: ")
                 .append(resource.tcpProbes().size());
-        for (TcpProbe probe : resource.tcpProbes().values()) {
+        for (LoadBalancerTcpProbe probe : resource.tcpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                     .append("\n\t\t\tPort: ").append(probe.port())
                     .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -375,7 +445,7 @@ public final class Utils {
         // Show HTTP probes
         info.append("\n\tHTTP probes: ")
                 .append(resource.httpProbes().size());
-        for (HttpProbe probe : resource.httpProbes().values()) {
+        for (LoadBalancerHttpProbe probe : resource.httpProbes().values()) {
             info.append("\n\t\tProbe name: ").append(probe.name())
                     .append("\n\t\t\tPort: ").append(probe.port())
                     .append("\n\t\t\tInterval in seconds: ").append(probe.intervalInSeconds())
@@ -400,7 +470,7 @@ public final class Utils {
                     .append("\n\t\t\tIdle timeout in minutes: ").append(rule.idleTimeoutInMinutes())
                     .append("\n\t\t\tLoad distribution method: ").append(rule.loadDistribution().toString());
 
-            Frontend frontend = rule.frontend();
+            LoadBalancerFrontend frontend = rule.frontend();
             info.append("\n\t\t\tFrontend: ");
             if (frontend != null) {
                 info.append(frontend.name());
@@ -410,7 +480,7 @@ public final class Utils {
 
             info.append("\n\t\t\tFrontend port: ").append(rule.frontendPort());
 
-            Backend backend = rule.backend();
+            LoadBalancerBackend backend = rule.backend();
             info.append("\n\t\t\tBackend: ");
             if (backend != null) {
                 info.append(backend.name());
@@ -420,7 +490,7 @@ public final class Utils {
 
             info.append("\n\t\t\tBackend port: ").append(rule.backendPort());
 
-            Probe probe = rule.probe();
+            LoadBalancerProbe probe = rule.probe();
             info.append("\n\t\t\tProbe: ");
             if (probe == null) {
                 info.append("(None)");
@@ -432,29 +502,29 @@ public final class Utils {
         // Show frontends
         info.append("\n\tFrontends: ")
                 .append(resource.frontends().size());
-        for (Frontend frontend : resource.frontends().values()) {
+        for (LoadBalancerFrontend frontend : resource.frontends().values()) {
             info.append("\n\t\tFrontend name: ").append(frontend.name())
                     .append("\n\t\t\tInternet facing: ").append(frontend.isPublic());
             if (frontend.isPublic()) {
-                info.append("\n\t\t\tPublic IP Address ID: ").append(((PublicFrontend) frontend).publicIpAddressId());
+                info.append("\n\t\t\tPublic IP Address ID: ").append(((LoadBalancerPublicFrontend) frontend).publicIpAddressId());
             } else {
-                info.append("\n\t\t\tVirtual network ID: ").append(((PrivateFrontend) frontend).networkId())
-                        .append("\n\t\t\tSubnet name: ").append(((PrivateFrontend) frontend).subnetName())
-                        .append("\n\t\t\tPrivate IP address: ").append(((PrivateFrontend) frontend).privateIpAddress())
-                        .append("\n\t\t\tPrivate IP allocation method: ").append(((PrivateFrontend) frontend).privateIpAllocationMethod());
+                info.append("\n\t\t\tVirtual network ID: ").append(((LoadBalancerPrivateFrontend) frontend).networkId())
+                        .append("\n\t\t\tSubnet name: ").append(((LoadBalancerPrivateFrontend) frontend).subnetName())
+                        .append("\n\t\t\tPrivate IP address: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(((LoadBalancerPrivateFrontend) frontend).privateIpAllocationMethod());
             }
 
             // Inbound NAT pool references
             info.append("\n\t\t\tReferenced inbound NAT pools: ")
                     .append(frontend.inboundNatPools().size());
-            for (InboundNatPool pool : frontend.inboundNatPools().values()) {
+            for (LoadBalancerInboundNatPool pool : frontend.inboundNatPools().values()) {
                 info.append("\n\t\t\t\tName: ").append(pool.name());
             }
 
             // Inbound NAT rule references
             info.append("\n\t\t\tReferenced inbound NAT rules: ")
                     .append(frontend.inboundNatRules().size());
-            for (InboundNatRule rule : frontend.inboundNatRules().values()) {
+            for (LoadBalancerInboundNatRule rule : frontend.inboundNatRules().values()) {
                 info.append("\n\t\t\t\tName: ").append(rule.name());
             }
 
@@ -469,7 +539,7 @@ public final class Utils {
         // Show inbound NAT rules
         info.append("\n\tInbound NAT rules: ")
                 .append(resource.inboundNatRules().size());
-        for (InboundNatRule natRule : resource.inboundNatRules().values()) {
+        for (LoadBalancerInboundNatRule natRule : resource.inboundNatRules().values()) {
             info.append("\n\t\tInbound NAT rule name: ").append(natRule.name())
                     .append("\n\t\t\tProtocol: ").append(natRule.protocol().toString())
                     .append("\n\t\t\tFrontend: ").append(natRule.frontend().name())
@@ -484,7 +554,7 @@ public final class Utils {
         // Show inbound NAT pools
         info.append("\n\tInbound NAT pools: ")
                 .append(resource.inboundNatPools().size());
-        for (InboundNatPool natPool: resource.inboundNatPools().values()) {
+        for (LoadBalancerInboundNatPool natPool: resource.inboundNatPools().values()) {
             info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
                     .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
                     .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())
@@ -498,7 +568,7 @@ public final class Utils {
         // Show backends
         info.append("\n\tBackends: ")
                 .append(resource.backends().size());
-        for (Backend backend : resource.backends().values()) {
+        for (LoadBalancerBackend backend : resource.backends().values()) {
             info.append("\n\t\tBackend name: ").append(backend.name());
 
             // Show assigned backend NICs
@@ -577,6 +647,94 @@ public final class Utils {
                 .toString());
     }
 
+    /**
+     * Print app service domain.
+     * @param resource an app service domain
+     */
+    public static void print(AppServiceDomain resource) {
+        StringBuilder builder = new StringBuilder().append("Domain: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tCreated time: ").append(resource.createdTime())
+                .append("\n\tExpiration time: ").append(resource.expirationTime())
+                .append("\n\tContact: ");
+        Contact contact = resource.registrantContact();
+        if (contact == null) {
+            builder = builder.append("Private");
+        } else {
+            builder = builder.append("\n\t\tName: ").append(contact.nameFirst() + " " + contact.nameLast());
+        }
+        builder = builder.append("\n\tName servers: ");
+        for (String nameServer: resource.nameServers()) {
+            builder = builder.append("\n\t\t" + nameServer);
+        }
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print app service certificate order.
+     * @param resource an app service certificate order
+     */
+    public static void print(AppServiceCertificateOrder resource) {
+        StringBuilder builder = new StringBuilder().append("App service certificate order: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tDistinguished name: ").append(resource.distinguishedName())
+                .append("\n\tProduct type: ").append(resource.productType())
+                .append("\n\tValid years: ").append(resource.validityInYears())
+                .append("\n\tStatus: ").append(resource.status())
+                .append("\n\tIssuance time: ").append(resource.lastCertificateIssuanceTime())
+                .append("\n\tSigned certificate: ").append(resource.signedCertificate() == null ? null : resource.signedCertificate().thumbprint());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print app service plan.
+     * @param resource an app service plan
+     */
+    public static void print(AppServicePlan resource) {
+        StringBuilder builder = new StringBuilder().append("App service certificate order: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tPricing tier: ").append(resource.pricingTier());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Print a web app.
+     * @param resource a web app
+     */
+    public static void print(WebAppBase<?> resource) {
+        StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tDefault hostname: ").append(resource.defaultHostName())
+                .append("\n\tApp service plan: ").append(resource.appServicePlanId())
+                .append("\n\tHost name bindings: ");
+        for (HostNameBinding binding: resource.getHostNameBindings().values()) {
+            builder = builder.append("\n\t\t" + binding.toString());
+        }
+        builder = builder.append("\n\tSSL bindings: ");
+        for (HostNameSslState binding: resource.hostNameSslStates().values()) {
+            builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
+            if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
+                builder = builder.append(" - " + binding.thumbprint());
+            }
+        }
+        builder = builder.append("\n\tApp settings: ");
+        for (AppSetting setting: resource.getAppSettings().values()) {
+            builder = builder.append("\n\t\t" + setting.key() + ": " + setting.value() + (setting.sticky() ? " - slot setting" : ""));
+        }
+        builder = builder.append("\n\tConnection strings: ");
+        for (ConnectionString conn: resource.getConnectionStrings().values()) {
+            builder = builder.append("\n\t\t" + conn.name() + ": " + conn.value() + " - " + conn.type() + (conn.sticky() ? " - slot setting" : ""));
+        }
+        System.out.println(builder.toString());
+    }
 
     /**
      * Creates and returns a randomized name based on the prefix file for use by the sample.

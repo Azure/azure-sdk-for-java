@@ -7,7 +7,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsListingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
+import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 
 /**
@@ -20,7 +20,7 @@ public interface VirtualMachines extends
         SupportsGettingByGroup<VirtualMachine>,
         SupportsGettingById<VirtualMachine>,
         SupportsCreating<VirtualMachine.DefinitionStages.Blank>,
-        SupportsDeleting,
+        SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<VirtualMachine> {
 
@@ -84,8 +84,9 @@ public interface VirtualMachines extends
      * @param groupName the resource group name
      * @param name the virtual machine name
      * @param containerName destination container name to store the captured VHD
+     * @param vhdPrefix the prefix for the vhd holding captured image
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return the template as JSON string
      */
-    String capture(String groupName, String name, String containerName, boolean overwriteVhd);
+    String capture(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
 }

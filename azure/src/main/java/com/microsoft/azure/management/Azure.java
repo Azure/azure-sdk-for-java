@@ -13,22 +13,34 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.batch.implementation.BatchManager;
+import com.microsoft.azure.management.cdn.CdnProfiles;
+import com.microsoft.azure.management.cdn.implementation.CdnManager;
 import com.microsoft.azure.management.compute.AvailabilitySets;
+import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.dns.DnsZones;
+import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
+import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
+import com.microsoft.azure.management.network.NetworkUsages;
 import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.PublicIpAddresses;
+import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.redis.RedisCaches;
+import com.microsoft.azure.management.redis.implementation.RedisManager;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.PolicyAssignments;
+import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscription;
@@ -38,9 +50,15 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
+import com.microsoft.azure.management.sql.SqlServers;
+import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.azure.management.storage.Usages;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfiles;
+import com.microsoft.azure.management.trafficmanager.implementation.TrafficManager;
+import com.microsoft.azure.management.appservice.WebApps;
+import com.microsoft.azure.management.appservice.implementation.AppServiceManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,6 +73,12 @@ public final class Azure {
     private final NetworkManager networkManager;
     private final KeyVaultManager keyVaultManager;
     private final BatchManager batchManager;
+    private final TrafficManager trafficManager;
+    private final RedisManager redisManager;
+    private final CdnManager cdnManager;
+    private final DnsZoneManager dnsZoneManager;
+    private final AppServiceManager appServiceManager;
+    private final SqlServerManager sqlServerManager;
     private final String subscriptionId;
 
     /**
@@ -257,6 +281,12 @@ public final class Azure {
         this.networkManager = NetworkManager.authenticate(restClient, subscriptionId);
         this.keyVaultManager = KeyVaultManager.authenticate(restClient, tenantId, subscriptionId);
         this.batchManager = BatchManager.authenticate(restClient, subscriptionId);
+        this.trafficManager = TrafficManager.authenticate(restClient, subscriptionId);
+        this.redisManager = RedisManager.authenticate(restClient, subscriptionId);
+        this.cdnManager = CdnManager.authenticate(restClient, subscriptionId);
+        this.dnsZoneManager = DnsZoneManager.authenticate(restClient, subscriptionId);
+        this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
+        this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.subscriptionId = subscriptionId;
     }
 
@@ -303,6 +333,20 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing policy definitions.
+     */
+    public PolicyDefinitions policyDefinitions() {
+        return resourceManager.policyDefinitions();
+    }
+
+    /**
+     * @return entry point to managing policy assignments.
+     */
+    public PolicyAssignments policyAssignments() {
+        return resourceManager.policyAssignments();
+    }
+
+    /**
      * @return entry point to managing storage accounts
      */
     public StorageAccounts storageAccounts() {
@@ -331,6 +375,13 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing route tables
+     */
+    public RouteTables routeTables() {
+        return networkManager.routeTables();
+    }
+
+    /**
      * @return entry point to managing load balancers
      */
     public LoadBalancers loadBalancers() {
@@ -338,10 +389,24 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing application gateways
+     */
+    public ApplicationGateways applicationGateways() {
+        return networkManager.applicationGateways();
+    }
+
+    /**
      * @return entry point to managing network security groups
      */
     public NetworkSecurityGroups networkSecurityGroups() {
         return networkManager.networkSecurityGroups();
+    }
+
+    /**
+     * @return entry point to managing network resource usages
+     */
+    public NetworkUsages networkUsages() {
+        return networkManager.usages();
     }
 
     /**
@@ -380,6 +445,13 @@ public final class Azure {
     }
 
     /**
+     * @return entry point to managing compute resource usages
+     */
+    public ComputeUsages computeUsages() {
+        return computeManager.usages();
+    }
+
+    /**
      * @return entry point to managing key vaults
      */
     public Vaults vaults() {
@@ -393,4 +465,52 @@ public final class Azure {
         return batchManager.batchAccounts();
     }
 
+    /**
+     * @return entry point to managing traffic manager profiles.
+     */
+    public TrafficManagerProfiles trafficManagerProfiles() {
+        return trafficManager.profiles();
+    }
+
+    /**
+     * @return entry point to managing Redis Caches.
+     */
+    public RedisCaches redisCaches() {
+        return redisManager.redisCaches();
+    }
+
+    /**
+     * @return entry point to managing cdn manager profiles.
+     */
+    public CdnProfiles cdnProfiles() {
+        return cdnManager.profiles();
+    }
+
+    /**
+     * @return entry point to managing Dns zones.
+     */
+    public DnsZones dnsZones() {
+        return dnsZoneManager.zones();
+    }
+
+    /**
+     * @return entry point to managing web apps.
+     */
+    public WebApps webApps() {
+        return appServiceManager.webApps();
+    }
+
+    /**
+     * @return entry point to managing app services.
+     */
+    public AppServiceManager appServices() {
+        return appServiceManager;
+    }
+
+    /**
+     * @return entry point to managing Sql server.
+     */
+    public SqlServers sqlServers() {
+        return sqlServerManager.sqlServers();
+    }
 }

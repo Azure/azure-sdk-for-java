@@ -80,10 +80,11 @@ public interface VirtualMachine extends
      * string that can be used to create similar VMs.
      *
      * @param containerName destination container name to store the captured Vhd
+     * @param vhdPrefix the prefix for the vhd holding captured image
      * @param overwriteVhd whether to overwrites destination vhd if it exists
      * @return the template as json string
      */
-    String capture(String containerName, boolean overwriteVhd);
+    String capture(String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
      * Refreshes the virtual machine instance view to sync with Azure.
@@ -239,8 +240,11 @@ public interface VirtualMachine extends
             DefinitionStages.WithPublicIpAddress,
             DefinitionStages.WithPrimaryNetworkInterface,
             DefinitionStages.WithOS,
-            DefinitionStages.WithRootUserName,
-            DefinitionStages.WithAdminUserName,
+            DefinitionStages.WithLinuxRootUsername,
+            DefinitionStages.WithLinuxRootPasswordOrPublicKey,
+            DefinitionStages.WithWindowsAdminUsername,
+            DefinitionStages.WithWindowsAdminPassword,
+            DefinitionStages.WithFromImageCreateOptions,
             DefinitionStages.WithLinuxCreate,
             DefinitionStages.WithWindowsCreate,
             DefinitionStages.WithCreate {
@@ -405,7 +409,7 @@ public interface VirtualMachine extends
              * @param knownImage enum value indicating known market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithAdminUserName withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
+            WithWindowsAdminUsername withPopularWindowsImage(KnownWindowsVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Windows image needs to be used.
@@ -415,7 +419,7 @@ public interface VirtualMachine extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the virtual machine definition
              */
-            WithAdminUserName withLatestWindowsImage(String publisher, String offer, String sku);
+            WithWindowsAdminUsername withLatestWindowsImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the version of a marketplace Windows image needs to be used.
@@ -423,7 +427,7 @@ public interface VirtualMachine extends
              * @param imageReference describes publisher, offer, sku and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithAdminUserName withSpecificWindowsImageVersion(ImageReference imageReference);
+            WithWindowsAdminUsername withSpecificWindowsImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the user (generalized) Windows image used for the virtual machine's OS.
@@ -431,7 +435,7 @@ public interface VirtualMachine extends
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine definition
              */
-            WithAdminUserName withStoredWindowsImage(String imageUrl);
+            WithWindowsAdminUsername withStoredWindowsImage(String imageUrl);
 
             /**
              * Specifies the known marketplace Linux image used for the virtual machine's OS.
@@ -439,7 +443,7 @@ public interface VirtualMachine extends
              * @param knownImage enum value indicating known market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithRootUserName withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
+            WithLinuxRootUsername withPopularLinuxImage(KnownLinuxVirtualMachineImage knownImage);
 
             /**
              * Specifies that the latest version of a marketplace Linux image needs to be used.
@@ -449,7 +453,7 @@ public interface VirtualMachine extends
              * @param sku specifies the SKU of the image
              * @return the next stage of the virtual machine definition
              */
-            WithRootUserName withLatestLinuxImage(String publisher, String offer, String sku);
+            WithLinuxRootUsername withLatestLinuxImage(String publisher, String offer, String sku);
 
             /**
              * Specifies the version of a market-place Linux image needs to be used.
@@ -457,7 +461,7 @@ public interface VirtualMachine extends
              * @param imageReference describes publisher, offer, sku and version of the market-place image
              * @return the next stage of the virtual machine definition
              */
-            WithRootUserName withSpecificLinuxImageVersion(ImageReference imageReference);
+            WithLinuxRootUsername withSpecificLinuxImageVersion(ImageReference imageReference);
 
             /**
              * Specifies the user (generalized) Linux image used for the virtual machine's OS.
@@ -465,7 +469,7 @@ public interface VirtualMachine extends
              * @param imageUrl the url the the VHD
              * @return the next stage of the virtual machine definition
              */
-            WithRootUserName withStoredLinuxImage(String imageUrl);
+            WithLinuxRootUsername withStoredLinuxImage(String imageUrl);
 
             /**
              * Specifies the specialized operating system disk to be attached to the virtual machine.
@@ -478,29 +482,98 @@ public interface VirtualMachine extends
         }
 
         /**
-         * The stage of the Linux virtual machine definition allowing to specify root user name.
+         * The stage of the Linux virtual machine definition allowing to specify SSH root user name.
          */
-        interface WithRootUserName {
+        interface WithLinuxRootUsername {
             /**
-             * Specifies the root user name for the Linux virtual machine.
+             * Specifies the SSH root user name for the Linux virtual machine.
              *
-             * @param rootUserName the Linux root user name. This must follow the required naming convention for Linux user name
+             * @param rootUserName the Linux SSH root user name. This must follow the required naming convention for Linux user name
              * @return the next stage of the Linux virtual machine definition
              */
-            WithLinuxCreate withRootUserName(String rootUserName);
+            WithLinuxRootPasswordOrPublicKey withRootUsername(String rootUserName);
+        }
+
+        /**
+         * The stage of the Linux virtual machine definition allowing to specify SSH root password or public key.
+         */
+        interface WithLinuxRootPasswordOrPublicKey {
+            /**
+             * Specifies the SSH root password for the Linux virtual machine.
+             *
+             * @param rootPassword the SSH root password. This must follow the criteria for Azure Linux VM password.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreate withRootPassword(String rootPassword);
+
+            /**
+             * Specifies the SSH public key.
+             * <p>
+             * Each call to this method adds the given public key to the list of VM's public keys.
+             *
+             * @param publicKey the SSH public key in PEM format.
+             * @return the next stage of the Linux virtual machine definition
+             */
+            WithLinuxCreate withSsh(String publicKey);
         }
 
         /**
          * The stage of the Windows virtual machine definition allowing to specify administrator user name.
          */
-        interface WithAdminUserName {
+        interface WithWindowsAdminUsername {
             /**
              * Specifies the administrator user name for the Windows virtual machine.
              *
              * @param adminUserName the Windows administrator user name. This must follow the required naming convention for Windows user name.
              * @return the stage representing creatable Linux VM definition
              */
-            WithWindowsCreate withAdminUserName(String adminUserName);
+            WithWindowsAdminPassword withAdminUsername(String adminUserName);
+        }
+
+        /**
+         * The stage of the Windows virtual machine definition allowing to specify administrator user name.
+         */
+        interface WithWindowsAdminPassword {
+            /**
+             * Specifies the administrator password for the Windows virtual machine.
+             *
+             * @param adminPassword the administrator password. This must follow the criteria for Azure Windows VM password.
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithWindowsCreate withAdminPassword(String adminPassword);
+        }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify the custom data.
+         */
+        interface WithCustomData {
+            /**
+             * Specifies the custom data for the virtual machine.
+             *
+             * @param base64EncodedCustomData the base64 encoded custom data
+             * @return the stage representing creatable Windows VM definition
+             */
+            WithFromImageCreateOptions withCustomData(String base64EncodedCustomData);
+        }
+
+        /**
+         * The stage of the virtual machine definition allowing to specify the computer name.
+         */
+        interface WithComputerName {
+            /**
+             * Specifies the computer name for the virtual machine.
+             *
+             * @param computerName the computer name
+             * @return the stage representing creatable VM definition
+             */
+            WithFromImageCreateOptions withComputerName(String computerName);
+        }
+
+        /**
+         * The stages contains OS agnostics settings when virtual machine is created from image.
+         */
+        interface WithFromImageCreateOptions extends
+                WithCustomData, WithComputerName, WithCreate {
         }
 
         /**
@@ -508,7 +581,7 @@ public interface VirtualMachine extends
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithLinuxCreate extends WithCreate {
+        interface WithLinuxCreate extends WithFromImageCreateOptions {
             /**
              * Specifies the SSH public key.
              * <p>
@@ -525,14 +598,14 @@ public interface VirtualMachine extends
          * the resource to be created (via {@link WithCreate#create()}, but also allows
          * for any other optional settings to be specified.
          */
-        interface WithWindowsCreate extends WithCreate {
+        interface WithWindowsCreate extends WithFromImageCreateOptions {
             /**
              * Specifies that VM Agent should not be provisioned.
              *
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreate disableVmAgent();
+            WithWindowsCreate withoutVmAgent();
 
             /**
              * Specifies that automatic updates should be disabled.
@@ -540,7 +613,7 @@ public interface VirtualMachine extends
              * @return the stage representing creatable Windows VM definition
              */
             @Method
-            WithWindowsCreate disableAutoUpdate();
+            WithWindowsCreate withoutAutoUpdate();
 
             /**
              * Specifies the time-zone.
@@ -559,19 +632,6 @@ public interface VirtualMachine extends
              * @return the stage representing creatable Windows VM definition
              */
             WithWindowsCreate withWinRm(WinRMListener listener);
-        }
-
-        /**
-         * The stage of the virtual machine definition allowing to specify password.
-         */
-        interface WithPassword {
-            /**
-             * Specifies the password for the virtual machine.
-             *
-             * @param password the password. This must follow the criteria for Azure VM password.
-             * @return the stage representing creatable VM definition
-             */
-            WithCreate withPassword(String password);
         }
 
         /**
@@ -809,7 +869,6 @@ public interface VirtualMachine extends
         interface WithCreate extends
                 Creatable<VirtualMachine>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithPassword,
                 DefinitionStages.WithOsDiskSettings,
                 DefinitionStages.WithVMSize,
                 DefinitionStages.WithStorageAccount,
