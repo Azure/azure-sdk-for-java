@@ -91,7 +91,7 @@ public class ElasticPoolDatabaseActivityInner extends Resource {
     private String requestedServiceObjective;
 
     /**
-     * The name of the Azure SQL Server the Elastic Pool is in.
+     * The name of the Azure SQL server the Elastic Pool is in.
      */
     @JsonProperty(value = "properties.serverName", access = JsonProperty.Access.WRITE_ONLY)
     private String serverName;

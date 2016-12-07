@@ -153,24 +153,24 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
+     * Deletes the Azure SQL database replication link with the given ID. Cannot be done during failover.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be dropped.
-     * @param linkId The id of the replication link to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be dropped.
+     * @param linkId The ID of the replication link to be deleted.
      */
     public void deleteReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
         deleteReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
+     * Deletes the Azure SQL database replication link with the given ID. Cannot be done during failover.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be dropped.
-     * @param linkId The id of the replication link to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be dropped.
+     * @param linkId The ID of the replication link to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -179,12 +179,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
+     * Deletes the Azure SQL database replication link with the given ID. Cannot be done during failover.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be dropped.
-     * @param linkId The id of the replication link to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be dropped.
+     * @param linkId The ID of the replication link to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -197,12 +197,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Deletes the Azure SQL Database Replication Link with the given id.  Cannot be done during failover.
+     * Deletes the Azure SQL database replication link with the given ID. Cannot be done during failover.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be dropped.
-     * @param linkId The id of the replication link to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be dropped.
+     * @param linkId The ID of the replication link to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteReplicationLinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -244,12 +244,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL database replication link.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to get the link for.
-     * @param linkId The replication link id to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to get the link for.
+     * @param linkId The replication link ID to be retrieved.
      * @return the ReplicationLinkInner object if successful.
      */
     public ReplicationLinkInner getReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -257,12 +257,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL database replication link.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to get the link for.
-     * @param linkId The replication link id to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to get the link for.
+     * @param linkId The replication link ID to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -271,12 +271,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL database replication link.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to get the link for.
-     * @param linkId The replication link id to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to get the link for.
+     * @param linkId The replication link ID to be retrieved.
      * @return the observable to the ReplicationLinkInner object
      */
     public Observable<ReplicationLinkInner> getReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -289,12 +289,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Replication Link.
+     * Gets information about an Azure SQL database replication link.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to get the link for.
-     * @param linkId The replication link id to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to get the link for.
+     * @param linkId The replication link ID to be retrieved.
      * @return the observable to the ReplicationLinkInner object
      */
     public Observable<ServiceResponse<ReplicationLinkInner>> getReplicationLinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -336,24 +336,24 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      */
     public void failoverReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
         failoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().getBody();
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -362,12 +362,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the observable for the request
      */
     public Observable<Void> failoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -380,12 +380,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> failoverReplicationLinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -410,24 +410,24 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      */
     public void beginFailoverReplicationLink(String resourceGroupName, String serverName, String databaseName, String linkId) {
         beginFailoverReplicationLinkWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -436,12 +436,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginFailoverReplicationLinkAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -454,12 +454,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Failover the Azure SQL Database Replication Link with the given id.
+     * Failover the Azure SQL database replication link with the given ID.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginFailoverReplicationLinkWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -501,24 +501,24 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      */
     public void failoverReplicationLinkAllowDataLoss(String resourceGroupName, String serverName, String databaseName, String linkId) {
         failoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().last().getBody();
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -527,12 +527,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the observable for the request
      */
     public Observable<Void> failoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -545,12 +545,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> failoverReplicationLinkAllowDataLossWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -575,24 +575,24 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      */
     public void beginFailoverReplicationLinkAllowDataLoss(String resourceGroupName, String serverName, String databaseName, String linkId) {
         beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(resourceGroupName, serverName, databaseName, linkId).toBlocking().single().getBody();
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -601,12 +601,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginFailoverReplicationLinkAllowDataLossAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -619,12 +619,12 @@ public final class DatabasesInner {
     }
 
     /**
-     * Force failover the Azure SQL Database Replication Link with the given id which may result in data loss.
+     * Force failover the Azure SQL database replication link with the given ID which may result in data loss.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database that has the replication link to be failed over.
-     * @param linkId The id of the replication link to be failed over.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database that has the replication link to be failed over.
+     * @param linkId The ID of the replication link to be failed over.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginFailoverReplicationLinkAllowDataLossWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName, String linkId) {
@@ -666,11 +666,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL database replication links.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve links for.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to retrieve links for.
      * @return the List&lt;ReplicationLinkInner&gt; object if successful.
      */
     public List<ReplicationLinkInner> listReplicationLinks(String resourceGroupName, String serverName, String databaseName) {
@@ -678,11 +678,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL database replication links.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve links for.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to retrieve links for.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -691,11 +691,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL database replication links.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve links for.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to retrieve links for.
      * @return the observable to the List&lt;ReplicationLinkInner&gt; object
      */
     public Observable<List<ReplicationLinkInner>> listReplicationLinksAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -708,11 +708,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Gets information about Azure SQL Database Replication Links.
+     * Gets information about Azure SQL database replication links.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to retrieve links for.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to retrieve links for.
      * @return the observable to the List&lt;ReplicationLinkInner&gt; object
      */
     public Observable<ServiceResponse<List<ReplicationLinkInner>>> listReplicationLinksWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -754,8 +754,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      */
     public void pauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
@@ -765,8 +765,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -778,8 +778,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @return the observable for the request
      */
@@ -795,8 +795,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @return the observable for the request
      */
@@ -821,8 +821,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      */
     public void beginPauseDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
@@ -832,8 +832,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -845,8 +845,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -862,8 +862,8 @@ public final class DatabasesInner {
     /**
      * Pause an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to pause.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -905,8 +905,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      */
     public void resumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
@@ -916,8 +916,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -929,8 +929,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @return the observable for the request
      */
@@ -946,8 +946,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @return the observable for the request
      */
@@ -972,8 +972,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      */
     public void beginResumeDataWarehouse(String resourceGroupName, String serverName, String databaseName) {
@@ -983,8 +983,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -996,8 +996,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1013,8 +1013,8 @@ public final class DatabasesInner {
     /**
      * Resume an Azure SQL Data Warehouse database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of the Azure SQL Data Warehouse database to resume.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -1056,9 +1056,9 @@ public final class DatabasesInner {
     /**
      * Returns a list of Azure SQL database restore points.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database from which to retrieve available restore points.
      * @return the List&lt;RestorePointInner&gt; object if successful.
      */
     public List<RestorePointInner> listRestorePoints(String resourceGroupName, String serverName, String databaseName) {
@@ -1068,9 +1068,9 @@ public final class DatabasesInner {
     /**
      * Returns a list of Azure SQL database restore points.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database from which to retrieve available restore points.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1081,9 +1081,9 @@ public final class DatabasesInner {
     /**
      * Returns a list of Azure SQL database restore points.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
     public Observable<List<RestorePointInner>> listRestorePointsAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1098,9 +1098,9 @@ public final class DatabasesInner {
     /**
      * Returns a list of Azure SQL database restore points.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database from which to retrieve available restore points.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database from which to retrieve available restore points.
      * @return the observable to the List&lt;RestorePointInner&gt; object
      */
     public Observable<ServiceResponse<List<RestorePointInner>>> listRestorePointsWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1140,11 +1140,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the DatabaseInner object if successful.
      */
@@ -1153,11 +1153,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1167,11 +1167,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the observable for the request
      */
@@ -1185,11 +1185,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the observable for the request
      */
@@ -1216,11 +1216,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the DatabaseInner object if successful.
      */
@@ -1229,11 +1229,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1243,11 +1243,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the observable to the DatabaseInner object
      */
@@ -1261,11 +1261,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Creates a new Azure SQL database or updates an existing Azure SQL database.  Location is a required property in the request body and it must be the same as the location of the Sql Server.
+     * Creates a new Azure SQL database or updates an existing Azure SQL database. Location is a required property in the request body, and it must be the same as the location of the SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be operated on (Updated or created).
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be operated on (updated or created).
      * @param parameters The required parameters for creating or updating a database.
      * @return the observable to the DatabaseInner object
      */
@@ -1313,9 +1313,9 @@ public final class DatabasesInner {
     /**
      * Deletes an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be deleted.
      */
     public void delete(String resourceGroupName, String serverName, String databaseName) {
         deleteWithServiceResponseAsync(resourceGroupName, serverName, databaseName).toBlocking().single().getBody();
@@ -1324,9 +1324,9 @@ public final class DatabasesInner {
     /**
      * Deletes an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1337,9 +1337,9 @@ public final class DatabasesInner {
     /**
      * Deletes an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1354,9 +1354,9 @@ public final class DatabasesInner {
     /**
      * Deletes an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be deleted.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1397,9 +1397,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner get(String resourceGroupName, String serverName, String databaseName) {
@@ -1409,9 +1409,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1422,9 +1422,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
     public Observable<DatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1439,9 +1439,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
     public Observable<ServiceResponse<DatabaseInner>> getWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1476,9 +1476,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the DatabaseInner object if successful.
      */
@@ -1489,9 +1489,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1503,9 +1503,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the observable to the DatabaseInner object
      */
@@ -1521,9 +1521,9 @@ public final class DatabasesInner {
     /**
      * Gets information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param expand The comma separated list of child objects to expand in the response. Possible properties: serviceTierAdvisors, upgradeHint, transparentDataEncryption.
      * @return the observable to the DatabaseInner object
      */
@@ -1563,10 +1563,10 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database.
+     * Returns information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
     public List<DatabaseInner> listByServer(String resourceGroupName, String serverName) {
@@ -1574,10 +1574,10 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database.
+     * Returns information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1586,10 +1586,10 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database.
+     * Returns information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
     public Observable<List<DatabaseInner>> listByServerAsync(String resourceGroupName, String serverName) {
@@ -1602,10 +1602,10 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about an Azure SQL Database.
+     * Returns information about an Azure SQL database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
     public Observable<ServiceResponse<List<DatabaseInner>>> listByServerWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -1642,11 +1642,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database usages.
+     * Returns information about Azure SQL database usages.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database.
      * @return the List&lt;DatabaseMetricInner&gt; object if successful.
      */
     public List<DatabaseMetricInner> listUsages(String resourceGroupName, String serverName, String databaseName) {
@@ -1654,11 +1654,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database usages.
+     * Returns information about Azure SQL database usages.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1667,11 +1667,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database usages.
+     * Returns information about Azure SQL database usages.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database.
      * @return the observable to the List&lt;DatabaseMetricInner&gt; object
      */
     public Observable<List<DatabaseMetricInner>> listUsagesAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1684,11 +1684,11 @@ public final class DatabasesInner {
     }
 
     /**
-     * Returns information about Azure SQL Database usages.
+     * Returns information about Azure SQL database usages.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database.
      * @return the observable to the List&lt;DatabaseMetricInner&gt; object
      */
     public Observable<ServiceResponse<List<DatabaseMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -1730,8 +1730,8 @@ public final class DatabasesInner {
     /**
      * Gets information about a service tier advisor.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceTierAdvisorName The name of service tier advisor.
      * @return the ServiceTierAdvisorInner object if successful.
@@ -1743,8 +1743,8 @@ public final class DatabasesInner {
     /**
      * Gets information about a service tier advisor.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceTierAdvisorName The name of service tier advisor.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1757,8 +1757,8 @@ public final class DatabasesInner {
     /**
      * Gets information about a service tier advisor.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceTierAdvisorName The name of service tier advisor.
      * @return the observable to the ServiceTierAdvisorInner object
@@ -1775,8 +1775,8 @@ public final class DatabasesInner {
     /**
      * Gets information about a service tier advisor.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceTierAdvisorName The name of service tier advisor.
      * @return the observable to the ServiceTierAdvisorInner object
@@ -1822,8 +1822,8 @@ public final class DatabasesInner {
     /**
      * Returns information about service tier advisors for specified database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @return the List&lt;ServiceTierAdvisorInner&gt; object if successful.
      */
@@ -1834,8 +1834,8 @@ public final class DatabasesInner {
     /**
      * Returns information about service tier advisors for specified database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1847,8 +1847,8 @@ public final class DatabasesInner {
     /**
      * Returns information about service tier advisors for specified database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
      */
@@ -1864,8 +1864,8 @@ public final class DatabasesInner {
     /**
      * Returns information about service tier advisors for specified database.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param databaseName The name of database.
      * @return the observable to the List&lt;ServiceTierAdvisorInner&gt; object
      */
@@ -1908,9 +1908,9 @@ public final class DatabasesInner {
     /**
      * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the TransparentDataEncryptionInner object if successful.
      */
@@ -1921,9 +1921,9 @@ public final class DatabasesInner {
     /**
      * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1935,9 +1935,9 @@ public final class DatabasesInner {
     /**
      * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the observable to the TransparentDataEncryptionInner object
      */
@@ -1953,9 +1953,9 @@ public final class DatabasesInner {
     /**
      * Creates or updates an Azure SQL Database Transparent Data Encryption Operation.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which setting the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which setting the Transparent Data Encryption applies.
      * @param parameters The required parameters for creating or updating transparent data encryption.
      * @return the observable to the TransparentDataEncryptionInner object
      */
@@ -2002,9 +2002,9 @@ public final class DatabasesInner {
     /**
      * Gets an Azure SQL Database Transparent Data Encryption Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the TransparentDataEncryptionInner object if successful.
      */
     public TransparentDataEncryptionInner getTransparentDataEncryptionConfiguration(String resourceGroupName, String serverName, String databaseName) {
@@ -2014,9 +2014,9 @@ public final class DatabasesInner {
     /**
      * Gets an Azure SQL Database Transparent Data Encryption Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2027,9 +2027,9 @@ public final class DatabasesInner {
     /**
      * Gets an Azure SQL Database Transparent Data Encryption Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the observable to the TransparentDataEncryptionInner object
      */
     public Observable<TransparentDataEncryptionInner> getTransparentDataEncryptionConfigurationAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -2044,9 +2044,9 @@ public final class DatabasesInner {
     /**
      * Gets an Azure SQL Database Transparent Data Encryption Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the observable to the TransparentDataEncryptionInner object
      */
     public Observable<ServiceResponse<TransparentDataEncryptionInner>> getTransparentDataEncryptionConfigurationWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -2087,9 +2087,9 @@ public final class DatabasesInner {
     /**
      * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the List&lt;TransparentDataEncryptionActivityInner&gt; object if successful.
      */
     public List<TransparentDataEncryptionActivityInner> listTransparentDataEncryptionActivity(String resourceGroupName, String serverName, String databaseName) {
@@ -2099,9 +2099,9 @@ public final class DatabasesInner {
     /**
      * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -2112,9 +2112,9 @@ public final class DatabasesInner {
     /**
      * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
      */
     public Observable<List<TransparentDataEncryptionActivityInner>> listTransparentDataEncryptionActivityAsync(String resourceGroupName, String serverName, String databaseName) {
@@ -2129,9 +2129,9 @@ public final class DatabasesInner {
     /**
      * Returns an Azure SQL Database Transparent Data Encryption Activity Response.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param databaseName The name of the Azure SQL Database for which the Transparent Data Encryption applies.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param databaseName The name of the Azure SQL database for which the Transparent Data Encryption applies.
      * @return the observable to the List&lt;TransparentDataEncryptionActivityInner&gt; object
      */
     public Observable<ServiceResponse<List<TransparentDataEncryptionActivityInner>>> listTransparentDataEncryptionActivityWithServiceResponseAsync(String resourceGroupName, String serverName, String databaseName) {

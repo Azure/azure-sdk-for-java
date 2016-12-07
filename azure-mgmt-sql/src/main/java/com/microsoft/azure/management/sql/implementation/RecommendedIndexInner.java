@@ -24,16 +24,16 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RecommendedIndexInner extends Resource {
     /**
-     * The proposed index action. We suggest user to create missing index,
-     * drop unused index or to rebuild already existing index to improve its
-     * performance. Possible values are 'Create', 'Drop', 'Rebuild'. Possible
-     * values include: 'Create', 'Drop', 'Rebuild'.
+     * The proposed index action. You can create a missing index, drop an
+     * unused index, or rebuild an existing index to improve its performance.
+     * Possible values are 'Create', 'Drop', 'Rebuild'. Possible values
+     * include: 'Create', 'Drop', 'Rebuild'.
      */
     @JsonProperty(value = "properties.action", access = JsonProperty.Access.WRITE_ONLY)
     private RecommendedIndexActions action;
 
     /**
-     * The state recommendation is in. Current options are: 'Active',
+     * The current recommendation state. Current options are: 'Active',
      * 'Pending', 'Executing', 'Verifying', 'Pending Revert', 'Reverting',
      * 'Reverted', 'Ignored', 'Expired', 'Blocked', 'Success'. Possible
      * values include: 'Active', 'Pending', 'Executing', 'Verifying',

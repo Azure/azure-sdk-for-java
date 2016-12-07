@@ -451,7 +451,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertEquals(dataWarehouse.edition(), DatabaseEditions.DATA_WAREHOUSE);
 
         // List Restore points.
-        dataWarehouse.resumeDataWarehouse();
         Assert.assertNotNull(dataWarehouse.listRestorePoints());
         // Get usages.
         Assert.assertNotNull(dataWarehouse.listUsages());
@@ -460,6 +459,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         dataWarehouse.pauseDataWarehouse();
 
         // Resume warehouse
+        dataWarehouse.resumeDataWarehouse();
 
         sqlServer.databases().delete(SQL_DATABASE_NAME);
 

@@ -127,9 +127,9 @@ class SqlElasticPoolImpl
         };
         return converter.convert(ReadableWrappersImpl.convertToPagedList(
                 this.innerCollection.listDatabaseActivity(
-                        this.name(),
                         this.resourceGroupName(),
-                        this.sqlServerName())));
+                        this.sqlServerName(),
+                        this.name())));
     }
 
     @Override

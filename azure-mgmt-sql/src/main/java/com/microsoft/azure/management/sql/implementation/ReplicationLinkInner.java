@@ -16,12 +16,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
- * Represents an Azure SQL Database Replication Link.
+ * Represents an Azure SQL database replication link.
  */
 @JsonFlatten
 public class ReplicationLinkInner extends SqlSubResource {
     /**
-     * The name of the Azure SQL Server hosting the partner Azure SQL Database.
+     * The name of the Azure SQL server hosting the partner Azure SQL Database.
      */
     @JsonProperty(value = "properties.partnerServer", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerServer;
@@ -39,7 +39,7 @@ public class ReplicationLinkInner extends SqlSubResource {
     private String partnerLocation;
 
     /**
-     * The role of the Azure SQL Database in the replication link. Possible
+     * The role of the Azure SQL database in the replication link. Possible
      * values include: 'Primary', 'Secondary', 'NonReadableSecondary',
      * 'Source', 'Copy'.
      */
