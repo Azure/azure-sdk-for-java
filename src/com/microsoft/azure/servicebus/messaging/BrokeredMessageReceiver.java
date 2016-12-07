@@ -20,7 +20,7 @@ import com.microsoft.azure.servicebus.StringUtil;
 
 
 // TODO As part of receive, don't return messages whose lock is already expired. Can happen because of delay between prefetch and actual receive from client.
-public class BrokeredMessageReceiver extends InitializableEntity implements IMessageReceiver
+class BrokeredMessageReceiver extends InitializableEntity implements IMessageReceiver
 {
 	private static final int DEFAULT_PREFETCH_COUNT = 100;
 	
