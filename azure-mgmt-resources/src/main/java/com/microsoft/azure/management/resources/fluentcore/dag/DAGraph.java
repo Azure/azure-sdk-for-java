@@ -142,6 +142,15 @@ public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
     }
 
     /**
+     * Gets a node from the graph with the given key.
+     * @param key the key of the node
+     * @return the node
+     */
+    public U getNode(String key) {
+        return graph.get(key);
+    }
+
+    /**
      * Reports that a node is resolved hence other nodes depends on it can consume it.
      *
      * @param completed the node ready to be consumed

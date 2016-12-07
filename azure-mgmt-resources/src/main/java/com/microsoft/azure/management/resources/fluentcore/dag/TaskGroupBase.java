@@ -105,6 +105,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
                     nextNode = dag.getNext();
                 }
             } while (isPreparePending); // Exit only if no new dependencies were added in this iteration
+            dag.prepare();
         }
     }
 

@@ -7,8 +7,6 @@
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
-import sun.plugin.dom.exception.InvalidStateException;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -91,7 +89,7 @@ public class Node<T, U extends Node<T, U>> {
      */
     public void setOwner(Graph<T, U> ownerGraph) {
         if (this.ownerGraph != null) {
-            throw new InvalidStateException("Changing owner graph is not allowed");
+            throw new RuntimeException("Changing owner graph is not allowed");
         }
         this.ownerGraph = ownerGraph;
     }
@@ -101,7 +99,7 @@ public class Node<T, U extends Node<T, U>> {
      */
     public Graph<T, U> owner() {
         if (this.ownerGraph == null) {
-            throw new InvalidStateException("Required owner graph is not set");
+            throw new RuntimeException("Required owner graph is not set");
         }
         return this.ownerGraph;
     }
