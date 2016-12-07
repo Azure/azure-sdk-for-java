@@ -5,7 +5,7 @@
  */
 package com.microsoft.azure.management.appservice.implementation;
 
-import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.PublishingProfile;
 
 import java.util.regex.Matcher;
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * A credential for publishing to a web app.
  */
-@Fluent
+@LangDefinition
 class PublishingProfileImpl implements PublishingProfile {
 
     private String ftpUrl;

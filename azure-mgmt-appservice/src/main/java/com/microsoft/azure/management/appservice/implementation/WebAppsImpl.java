@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.appservice.WebApp;
@@ -17,6 +18,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link WebApps}.
  */
+@LangDefinition
 class WebAppsImpl
         extends GroupableResourcesImpl<
         WebApp,

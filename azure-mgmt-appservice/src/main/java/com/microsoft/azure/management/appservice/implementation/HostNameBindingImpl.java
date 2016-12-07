@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
+@LangDefinition
 class HostNameBindingImpl<
             FluentT extends WebAppBase<FluentT>,
             FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
@@ -55,6 +56,7 @@ import java.util.Set;
  *  @param <FluentT> the fluent interface of the web app or deployment slot
  *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
  */
+@LangDefinition
 abstract class WebAppBaseImpl<
         FluentT extends WebAppBase<FluentT>,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>

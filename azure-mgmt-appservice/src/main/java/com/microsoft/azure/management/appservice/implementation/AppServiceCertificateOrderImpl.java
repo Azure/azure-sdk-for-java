@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -27,6 +28,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServicePlan}.
  */
+@LangDefinition
 class AppServiceCertificateOrderImpl
         extends
         GroupableResourceImpl<

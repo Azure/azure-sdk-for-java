@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
@@ -33,6 +34,7 @@ import java.util.Map;
 /**
  * The implementation for {@link WebApp}.
  */
+@LangDefinition
 class WebAppImpl
         extends WebAppBaseImpl<WebApp, WebAppImpl>
         implements

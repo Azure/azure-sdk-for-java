@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -21,6 +22,7 @@ import rx.Observable;
 /**
  * An immutable client-side representation of an Azure App Service Certificate Order.
  */
+@Fluent
 public interface AppServiceCertificateOrder extends
         GroupableResource,
         Refreshable<AppServiceCertificateOrder>,

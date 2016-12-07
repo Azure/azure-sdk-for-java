@@ -6,17 +6,17 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.io.BaseEncoding;
-import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.keyvault.Vault;
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
-import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
 import com.microsoft.azure.management.appservice.HostNameSslBinding;
 import com.microsoft.azure.management.appservice.HostNameSslState;
 import com.microsoft.azure.management.appservice.SslState;
 import com.microsoft.azure.management.appservice.WebAppBase;
+import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Action1;
@@ -38,7 +38,7 @@ import java.security.cert.X509Certificate;
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
-@Fluent
+@LangDefinition
 class HostNameSslBindingImpl<
         FluentT extends WebAppBase<FluentT>,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>

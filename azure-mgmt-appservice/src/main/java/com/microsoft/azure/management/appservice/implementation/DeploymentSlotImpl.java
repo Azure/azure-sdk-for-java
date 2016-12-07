@@ -9,6 +9,7 @@ package com.microsoft.azure.management.appservice.implementation;
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
 import com.google.common.io.CharStreams;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
@@ -30,6 +31,7 @@ import java.util.Map;
 /**
  * The implementation for {@link DeploymentSlot}.
  */
+@LangDefinition
 class DeploymentSlotImpl
         extends WebAppBaseImpl<DeploymentSlot, DeploymentSlotImpl>
         implements
