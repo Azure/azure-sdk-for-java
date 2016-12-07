@@ -10,23 +10,23 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.website.AppServicePlans;
 import com.microsoft.azure.management.website.AppServiceCertificateOrder;
-import com.microsoft.azure.management.website.CertificateOrders;
+import com.microsoft.azure.management.website.AppServiceCertificateOrders;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
  * The implementation for {@link AppServicePlans}.
  */
-class CertificateOrdersImpl
+class AppServiceCertificateOrdersImpl
         extends GroupableResourcesImpl<
         AppServiceCertificateOrder,
         AppServiceCertificateOrderImpl,
         AppServiceCertificateOrderInner,
         AppServiceCertificateOrdersInner,
         AppServiceManager>
-        implements CertificateOrders {
+        implements AppServiceCertificateOrders {
 
-    CertificateOrdersImpl(AppServiceCertificateOrdersInner innerCollection, AppServiceManager manager) {
+    AppServiceCertificateOrdersImpl(AppServiceCertificateOrdersInner innerCollection, AppServiceManager manager) {
         super(innerCollection, manager);
     }
 
@@ -67,5 +67,16 @@ class CertificateOrdersImpl
     @Override
     public AppServiceCertificateOrderImpl define(String name) {
         return wrapModel(name);
+    }
+
+    @Override
+    public Observable<AppServiceCertificateOrder> getByGroupAsync(String resourceGroupName, String name) {
+        return innerCollection.getAsync(resourceGroupName, name)
+                .map(new Func1<AppServiceCertificateOrderInner, AppServiceCertificateOrder>() {
+                    @Override
+                    public AppServiceCertificateOrder call(AppServiceCertificateOrderInner appServiceCertificateOrderInner) {
+                        return wrapModel(appServiceCertificateOrderInner);
+                    }
+                });
     }
 }

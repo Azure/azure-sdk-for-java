@@ -820,6 +820,7 @@ public final class AppServiceCertificateOrdersInner {
     private ServiceResponse<AppServiceCertificateInner> beginCreateOrUpdateCertificateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<AppServiceCertificateInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<AppServiceCertificateInner>() { }.getType())
+                .register(201, new TypeToken<AppServiceCertificateInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

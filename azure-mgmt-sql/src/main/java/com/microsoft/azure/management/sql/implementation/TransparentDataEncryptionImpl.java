@@ -76,7 +76,7 @@ class TransparentDataEncryptionImpl
     }
 
     @Override
-    public List<TransparentDataEncryptionActivity> listActivity() {
+    public List<TransparentDataEncryptionActivity> listActivities() {
         PagedListConverter<TransparentDataEncryptionActivityInner, TransparentDataEncryptionActivity> converter
                 = new PagedListConverter<TransparentDataEncryptionActivityInner, TransparentDataEncryptionActivity>() {
             @Override

@@ -1,5 +1,11 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.dns.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.dns.AaaaRecord;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
 import com.microsoft.azure.management.dns.RecordType;
@@ -11,6 +17,7 @@ import java.util.List;
 /**
  * Implementation of {@link AaaaRecordSet}.
  */
+@LangDefinition
 class AaaaRecordSetImpl
         extends DnsRecordSetImpl
         implements AaaaRecordSet {

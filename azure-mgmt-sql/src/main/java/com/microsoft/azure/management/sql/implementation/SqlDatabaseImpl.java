@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChild;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
@@ -36,6 +37,7 @@ import java.util.UUID;
 /**
  * Implementation for SqlDatabase and its parent interfaces.
  */
+@LangDefinition
 class SqlDatabaseImpl
         extends IndependentChildResourceImpl<
                             SqlDatabase,

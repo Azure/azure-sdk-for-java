@@ -5,9 +5,12 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 /**
  * Possible routing methods supported by Traffic manager profile.
  */
+@LangDefinition
 public enum TrafficRoutingMethod {
     /**
      * Enum value Performance.

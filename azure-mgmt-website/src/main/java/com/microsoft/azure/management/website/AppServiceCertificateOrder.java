@@ -8,19 +8,17 @@ package com.microsoft.azure.management.website;
 
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.website.implementation.AppServiceCertificateInner;
 import com.microsoft.azure.management.website.implementation.AppServiceCertificateOrderInner;
 import org.joda.time.DateTime;
 import rx.Observable;
 
-import java.util.Map;
-
 /**
- * An immutable client-side representation of an Azure Web App.
+ * An immutable client-side representation of an Azure App Service Certificate Order.
  */
 public interface AppServiceCertificateOrder extends
         GroupableResource,
@@ -29,95 +27,103 @@ public interface AppServiceCertificateOrder extends
         Wrapper<AppServiceCertificateOrderInner> {
 
     /**
-     * @return State of the Key Vault secret.
-     */
-    Map<String, AppServiceCertificateInner> certificates();
-
-    /**
-     * @return Certificate distinguished name.
+     * @return certificate's distinguished name
      */
     String distinguishedName();
 
     /**
-     * @return Domain Verification Token.
+     * @return the domain verification token
      */
     String domainVerificationToken();
 
     /**
-     * @return Duration in years (must be between 1 and 3).
+     * @return duration in years (must be between 1 and 3)
      */
     int validityInYears();
 
     /**
-     * @return Certificate Key Size.
+     * @return the certificate key size
      */
     int keySize();
 
     /**
-     * @return Certificate product type. Possible values include:
-     * 'StandardDomainValidatedSsl', 'StandardDomainValidatedWildCardSsl'.
+     * @return the certificate product type
      */
     CertificateProductType productType();
 
     /**
-     * @return Auto renew.
+     * @return if the certificate should be automatically renewed upon expiration
      */
     boolean autoRenew();
 
     /**
-     * @return Status of certificate order. Possible values include: 'Succeeded',
-     * 'Failed', 'Canceled', 'InProgress', 'Deleting'.
-     */
-    ProvisioningState provisioningState();
-
-    /**
-     * @return Current order status. Possible values include: 'Pendingissuance',
-     * 'Issued', 'Revoked', 'Canceled', 'Denied', 'Pendingrevocation',
-     * 'PendingRekey', 'Unused', 'Expired', 'NotSubmitted'.
+     * @return current order status
      */
     CertificateOrderStatus status();
 
     /**
-     * @return Signed certificate.
+     * @return the signed certificate
      */
     CertificateDetails signedCertificate();
 
     /**
-     * @return Last CSR that was created for this order.
+     * @return last certificate signing request that was created for this order
      */
-    String csr();
+    String certificateSigningRequest();
 
     /**
-     * @return Intermediate certificate.
+     * @return the intermediate certificate
      */
     CertificateDetails intermediate();
 
     /**
-     * @return Root certificate.
+     * @return the root certificate
      */
     CertificateDetails root();
 
     /**
-     * @return Current serial number of the certificate.
+     * @return current serial number of the certificate
      */
     String serialNumber();
 
     /**
-     * @return Certificate last issuance time.
+     * @return last issuance time
      */
     DateTime lastCertificateIssuanceTime();
 
     /**
-     * @return Certificate expiration time.
+     * @return expiration time
      */
     DateTime expirationTime();
 
-    AppServiceCertificate createCertificate(String certificateName, Vault vault);
+    /**
+     * Bind a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * @param certificateName the name of the Key Vault Secret
+     * @param vault the key vault to store the certificate
+     * @return a binding containing the key vault information
+     */
+    AppServiceCertificateKeyVaultBinding createKeyVaultBinding(String certificateName, Vault vault);
 
-    Observable<AppServiceCertificate> createCertificateAsync(String certificateName, Vault vault);
+    /**
+     * Bind a Key Vault secret to a certificate store that will be used for storing the certificate once it's ready.
+     * @param certificateName the name of the Key Vault Secret
+     * @param vault the key vault to store the certificate
+     * @return a binding containing the key vault information
+     */
+    Observable<AppServiceCertificateKeyVaultBinding> createKeyVaultBindingAsync(String certificateName, Vault vault);
+
+    /**
+     * @return the state of the Key Vault secret
+     */
+    AppServiceCertificateKeyVaultBinding getKeyVaultBinding();
+
+    /**
+     * @return the state of the Key Vault secret
+     */
+    Observable<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync();
 
     /**************************************************************
-     * Fluent interfaces to provision a App service plan
+     * Fluent interfaces to provision a App service certificate order
      **************************************************************/
 
     /**
@@ -132,49 +138,100 @@ public interface AppServiceCertificateOrder extends
     }
 
     /**
-     * Grouping of all the site definition stages.
+     * Grouping of all the app service certificate order definition stages.
      */
     interface DefinitionStages {
         /**
-         * An app service plan definition allowing resource group to be set.
+         * An app service certificate order definition allowing resource group to be set.
          */
         interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithHostName> {
         }
 
         /**
-         * An app service plan definition allowing pricing tier to be set.
+         * An app service certificate order definition allowing hostname to be set.
          */
         interface WithHostName {
+            /**
+             * Specifies the hostname the certificate binds to.
+             * @param hostName the bare host name, without "www". Use *. prefix if it's a wild card certificate
+             * @return the next stage of the app service certificate definition
+             */
             WithCertificateSku withHostName(String hostName);
         }
 
+        /**
+         * An app service certificate order definition allowing SKU to be set.
+         */
         interface WithCertificateSku {
+            /**
+             * Specifies the SKU of the certificate. Standard type will only provide
+             * SSL support to the hostname, and www.hostname. Wildcard type will provide
+             * SSL support to any sub-domain under the hostname.
+             * @param sku the SKU of the certificate
+             * @return the next stage of the app service certificate definition
+             */
             WithValidYears withSku(CertificateProductType sku);
         }
 
+        /**
+         * An app service certificate order definition allowing valid years to be set.
+         */
         interface WithValidYears {
+            /**
+             * Specifies the valid years of the certificate.
+             * @param years minimum 1 year, and maximum 3 years
+             * @return the next stage of the app service certificate definition
+             */
             WithCreate withValidYears(int years);
         }
 
         /**
-         * An app service plan definition with sufficient inputs to create a new
-         * website in the cloud, but exposing additional optional inputs to
+         * An app service certificate order definition allowing auto-renew settings to be set.
+         */
+        interface WithAutoRenew {
+            /**
+             * Specifies if the certificate should be auto-renewed.
+             * @param enabled true if the certificate order should be auto-renewed
+             * @return the next stage of the app service certificate definition
+             */
+            WithCreate withAutoRenew(boolean enabled);
+        }
+
+        /**
+         * An app service certificate order definition with sufficient inputs to create a new
+         * app service certificate order in the cloud, but exposing additional optional inputs to
          * specify.
          */
-        interface WithCreate extends Creatable<AppServiceCertificateOrder> {
+        interface WithCreate extends
+                Creatable<AppServiceCertificateOrder>,
+                WithAutoRenew,
+                GroupableResource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /**
-     * Grouping of all the site update stages.
+     * Grouping of all the app service certificate order update stages.
      */
     interface UpdateStages {
-
+        /**
+         * An app service certificate order definition allowing auto-renew settings to be set.
+         */
+        interface WithAutoRenew {
+            /**
+             * Specifies if the certificate should be auto-renewed.
+             * @param enabled true if the certificate order should be auto-renewed
+             * @return the next stage of the app service certificate definition
+             */
+            Update withAutoRenew(boolean enabled);
+        }
     }
 
     /**
-     * The template for a site update operation, containing all the settings that can be modified.
+     * The template for an app service certificate order update operation, containing all the settings that can be modified.
      */
-    interface Update {
+    interface Update extends
+            Appliable<AppServiceCertificateOrder>,
+            UpdateStages.WithAutoRenew,
+            GroupableResource.UpdateWithTags<Update> {
     }
 }

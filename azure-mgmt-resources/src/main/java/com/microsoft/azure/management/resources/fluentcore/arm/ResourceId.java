@@ -6,12 +6,15 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+
 import java.security.InvalidParameterException;
 
 /**
  * Instantiate itself from a resource id, and give easy access to resource information like subscription, resourceGroup,
  * resource name.
  */
+@LangDefinition
 public final class ResourceId {
 
     private String subscriptionId;
@@ -40,8 +43,14 @@ public final class ResourceId {
         resourceId.id = id;
         resourceId.subscriptionId = splits[1];
         resourceId.resourceGroupName = splits[3];
-        resourceId.providerNamespace = splits[5];
 
+        // In case of a resource group Id is passed, then name is resource group name.
+        if (splits.length == 4) {
+            resourceId.name = resourceId.resourceGroupName;
+            return resourceId;
+        }
+
+        resourceId.providerNamespace = splits[5];
 
         resourceId.name = splits[splits.length - 1];
         resourceId.resourceType = splits[splits.length - 2];
@@ -50,6 +59,7 @@ public final class ResourceId {
         if (numberOfParents == 0) {
             return resourceId;
         }
+
         String resourceType = splits[splits.length - 2];
 
         resourceId.parent = ResourceId.parseResourceId(id.substring(0, id.length() - ("/" + resourceType + "/" + resourceId.name()).length()));

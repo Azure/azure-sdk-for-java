@@ -8,53 +8,53 @@ package com.microsoft.azure.management.website.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
+import com.microsoft.azure.management.website.AppServiceCertificate;
+import com.microsoft.azure.management.website.AppServiceCertificates;
 import com.microsoft.azure.management.website.AppServicePlans;
-import com.microsoft.azure.management.website.Certificate;
-import com.microsoft.azure.management.website.Certificates;
 import rx.Observable;
 import rx.functions.Func1;
 
 /**
  * The implementation for {@link AppServicePlans}.
  */
-class CertificatesImpl
+class AppServiceCertificatesImpl
         extends GroupableResourcesImpl<
-        Certificate,
-        CertificateImpl,
+        AppServiceCertificate,
+        AppServiceCertificateImpl,
         CertificateInner,
         CertificatesInner,
         AppServiceManager>
-        implements Certificates {
+        implements AppServiceCertificates {
 
-    CertificatesImpl(CertificatesInner innerCollection, AppServiceManager manager) {
+    AppServiceCertificatesImpl(CertificatesInner innerCollection, AppServiceManager manager) {
         super(innerCollection, manager);
     }
 
     @Override
-    public Certificate getByGroup(String groupName, String name) {
+    public AppServiceCertificate getByGroup(String groupName, String name) {
         return wrapModel(innerCollection.get(groupName, name));
     }
 
     @Override
-    public PagedList<Certificate> listByGroup(String resourceGroupName) {
+    public PagedList<AppServiceCertificate> listByGroup(String resourceGroupName) {
         return wrapList(innerCollection.listByResourceGroup(resourceGroupName));
     }
 
     @Override
-    protected CertificateImpl wrapModel(String name) {
-        return new CertificateImpl(name, new CertificateInner(), innerCollection, myManager);
+    protected AppServiceCertificateImpl wrapModel(String name) {
+        return new AppServiceCertificateImpl(name, new CertificateInner(), innerCollection, myManager);
     }
 
     @Override
-    protected CertificateImpl wrapModel(CertificateInner inner) {
+    protected AppServiceCertificateImpl wrapModel(CertificateInner inner) {
         if (inner == null) {
             return null;
         }
-        return new CertificateImpl(inner.name(), inner, innerCollection, myManager);
+        return new AppServiceCertificateImpl(inner.name(), inner, innerCollection, myManager);
     }
 
     @Override
-    public CertificateImpl define(String name) {
+    public AppServiceCertificateImpl define(String name) {
         return wrapModel(name);
     }
 

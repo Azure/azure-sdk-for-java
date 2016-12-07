@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.trafficmanager.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerEndpoint;
@@ -22,6 +23,7 @@ import java.util.Map;
 /**
  * Represents an endpoint collection associated with a traffic manager profile.
  */
+@LangDefinition
 class TrafficManagerEndpointsImpl extends
         ExternalChildResourcesCachedImpl<TrafficManagerEndpointImpl,
                 TrafficManagerEndpoint,
