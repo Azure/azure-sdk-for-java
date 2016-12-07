@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableR
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
@@ -29,6 +30,7 @@ import java.util.List;
  */
 @Fluent
 public interface Deployment extends
+        Indexable,
         Refreshable<Deployment>,
         Updatable<Deployment.Update>,
         Wrapper<DeploymentExtendedInner>,

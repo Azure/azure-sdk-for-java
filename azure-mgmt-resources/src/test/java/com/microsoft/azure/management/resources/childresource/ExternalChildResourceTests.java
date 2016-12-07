@@ -18,7 +18,7 @@ public class ExternalChildResourceTests {
         PulletsImpl pullets = chicken.pullets(); // Child resource collection
         final CountDownLatch monitor = new CountDownLatch(1);
         // Note that commitAsync() won't be exposed to the end-user as it's a part of child resource impl
-        // pullets.commitAsync will be called from (Applicable)chicken.applyAsync() or (Creatable)chicken.createAsync().
+        // pullets.commitAsync will be called from (Applicable)chicken.applyAsync() or (Creatable)chicken.createAsyncStreaming().
         //
         // Observable<Chicken> Chicken::ApplyAsync() {
         //      [1] update chicken

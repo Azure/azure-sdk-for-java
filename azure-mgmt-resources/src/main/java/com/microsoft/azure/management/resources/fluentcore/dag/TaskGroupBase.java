@@ -71,7 +71,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
                             @Override
                             public Observable<T> call(T t) {
                                 dag().reportedCompleted(thisNode);
-                                return executeAsync();
+                                return Observable.just(t).concatWith(executeAsync());
                             }
                         })
                 );
@@ -84,7 +84,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
                                 if (dag().isRootNode(thisNode)) {
                                     return Observable.just(t);
                                 } else {
-                                    return executeAsync();
+                                    return Observable.just(t).concatWith(executeAsync());
                                 }
                             }
                         }));

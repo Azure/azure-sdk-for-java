@@ -8,10 +8,13 @@ package com.microsoft.azure.management;
 
 import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlServers;
 import org.junit.Assert;
+import rx.Observable;
 import rx.functions.Action1;
 
 public class TestSql extends TestTemplate<SqlServer, SqlServers>  {
@@ -20,7 +23,7 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers>  {
         final String sqlServerName = "sql" + this.testId;
         final SqlServer[] sqlServers = new SqlServer[1];
         final SettableFuture<SqlServer> future = SettableFuture.create();
-        resources.define(sqlServerName)
+        Observable<Indexable> resourceStream = resources.define(sqlServerName)
                 .withRegion(Region.INDIA_CENTRAL)
                 .withNewResourceGroup()
                 .withAdministratorLogin("admin32")
@@ -29,7 +32,9 @@ public class TestSql extends TestTemplate<SqlServer, SqlServers>  {
                 .withNewElasticPool("elasticPool1", ElasticPoolEditions.STANDARD, "databaseInEP")
                 .withNewFirewallRule("10.10.10.10")
                 .withTag("mytag", "testtag")
-                .createAsync()
+                .createAsync();
+
+        Utils.<SqlServer>rootResource(resourceStream)
                 .subscribe(new Action1<SqlServer>() {
                     @Override
                     public void call(SqlServer sqlServer) {

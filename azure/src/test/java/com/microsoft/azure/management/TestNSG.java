@@ -13,12 +13,15 @@ import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import rx.Observable;
 import rx.Subscriber;
 
 /**
@@ -32,7 +35,7 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
         Region region = Region.US_WEST;
         final SettableFuture<NetworkSecurityGroup> nsgFuture = SettableFuture.create();
         // Create
-        nsgs.define(newName)
+        Observable<Indexable> resourceStream = nsgs.define(newName)
                 .withRegion(region)
                 .withNewResourceGroup()
                 .defineRule("rule1")
@@ -53,7 +56,9 @@ public class TestNSG extends TestTemplate<NetworkSecurityGroup, NetworkSecurityG
                     .withPriority(200)
                     .withDescription("foo!!")
                     .attach()
-                .createAsync()
+                .createAsync();
+
+        Utils.<NetworkSecurityGroup>rootResource(resourceStream)
                 .subscribe(new Subscriber<NetworkSecurityGroup>() {
                        @Override
                        public void onCompleted() {
