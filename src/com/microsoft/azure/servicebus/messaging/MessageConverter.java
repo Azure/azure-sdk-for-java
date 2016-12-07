@@ -17,6 +17,7 @@ import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.MessageWithDeliveryTag;
 import com.microsoft.azure.servicebus.StringUtil;
+import com.microsoft.azure.servicebus.Util;
 
 class MessageConverter
 {	
@@ -60,7 +61,7 @@ class MessageConverter
 		Map<Symbol, Object> messageAnnotationsMap = new HashMap<Symbol, Object>();
 		if(brokeredMessage.getScheduledEnqueuedTimeUtc() != null)
 		{
-			messageAnnotationsMap.put(Symbol.valueOf(SCHEDULEDENQUEUETIMENAME), Utils.convertInstantToDotNetTicks(brokeredMessage.getScheduledEnqueuedTimeUtc()));
+			messageAnnotationsMap.put(Symbol.valueOf(SCHEDULEDENQUEUETIMENAME), Date.from(brokeredMessage.getScheduledEnqueuedTimeUtc()));
 		}
 		
 		if(StringUtil.isNullOrEmpty(brokeredMessage.getPartitionKey()))
@@ -161,7 +162,7 @@ class MessageConverter
 		
 		if(deliveryTag != null && deliveryTag.length == LOCKTOKENSIZE)
 		{
-			UUID lockToken = Utils.convertDotNetBytesToUUID(deliveryTag);
+			UUID lockToken = Util.convertDotNetBytesToUUID(deliveryTag);
 			brokeredMessage.setLockToken(lockToken);
 		}
 		else

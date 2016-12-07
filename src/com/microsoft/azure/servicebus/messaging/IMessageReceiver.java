@@ -3,7 +3,6 @@ package com.microsoft.azure.servicebus.messaging;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import com.microsoft.azure.servicebus.ServiceBusException;
@@ -11,65 +10,69 @@ import com.microsoft.azure.servicebus.ServiceBusException;
 public interface IMessageReceiver extends IMessageEntity{
 	ReceiveMode getReceiveMode();
 
-    void abandon(UUID lockToken);
+    void abandon(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
 
-    void abandon(UUID lockToken, Map<String, Object> propertiesToModify);
+    void abandon(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
     
-    CompletableFuture<Void> abandonAsync(UUID lockToken);
+    CompletableFuture<Void> abandonAsync(IBrokeredMessage message);
 
-    CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> abandonAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
     
-    void complete(UUID lockToken);
+    void complete(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
 
-    void completeBatch(Collection<UUID> lockTokens);
+    void completeBatch(Collection<? extends IBrokeredMessage> messages);
 
-    CompletableFuture<Void> completeAsync(UUID lockToken);
+    CompletableFuture<Void> completeAsync(IBrokeredMessage message);
 
-    CompletableFuture<Void> completeBatchAsync(Collection<UUID> lockTokens);
+    CompletableFuture<Void> completeBatchAsync(Collection<? extends IBrokeredMessage> messages);
 
-    void defer(UUID lockToken);
+    void defer(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
 
-    void defer(UUID lockToken, Map<String, Object> propertiesToModify);
+    void defer(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<Void> deferAsync(UUID lockToken);
+    CompletableFuture<Void> deferAsync(IBrokeredMessage message);
 
-    CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify);
+    CompletableFuture<Void> deferAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
     
-    void deadLetter(UUID lockToken);
+    void deadLetter(IBrokeredMessage message) throws InterruptedException, ServiceBusException;
 
-    void deadLetter(UUID lockToken, Map<String, Object> propertiesToModify);
+    void deadLetter(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription);
-
-    CompletableFuture<Void> deadLetterAsync(UUID lockToken);
-
-    CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify);
-
-    CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription);
-
-    BrokeredMessage receive() throws InterruptedException, ServiceBusException;
+    void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription) throws InterruptedException, ServiceBusException;
     
-    BrokeredMessage receive(Duration serverWaitTime) throws InterruptedException, ServiceBusException;
+    void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException;
 
-    BrokeredMessage receive(long sequenceNumber) throws InterruptedException, ServiceBusException;
+    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message);
 
-    Collection<BrokeredMessage> receiveBatch(int messageCount) throws InterruptedException, ServiceBusException;
+    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify);
+
+    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription);
     
-    Collection<BrokeredMessage> receiveBatch(int messageCount, Duration serverWaitTime) throws InterruptedException, ServiceBusException;
+    CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify);
+
+    IBrokeredMessage receive() throws InterruptedException, ServiceBusException;
     
-    Collection<BrokeredMessage> receiveBatch(Collection<Long> sequenceNumbers) throws InterruptedException, ServiceBusException;
+    IBrokeredMessage receive(Duration serverWaitTime) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<BrokeredMessage> receiveAsync();
+    IBrokeredMessage receive(long sequenceNumber) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<BrokeredMessage> receiveAsync(Duration serverWaitTime);
+    Collection<IBrokeredMessage> receiveBatch(int maxMessageCount) throws InterruptedException, ServiceBusException;
+    
+    Collection<IBrokeredMessage> receiveBatch(int maxMessageCount, Duration serverWaitTime) throws InterruptedException, ServiceBusException;
+    
+    Collection<IBrokeredMessage> receiveBatch(Collection<Long> sequenceNumbers) throws InterruptedException, ServiceBusException;
 
-    CompletableFuture<BrokeredMessage> receiveAsync(long sequenceNumber);
+    CompletableFuture<IBrokeredMessage> receiveAsync();
 
-    CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(int messageCount);
+    CompletableFuture<IBrokeredMessage> receiveAsync(Duration serverWaitTime);
 
-    CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(int messageCount, Duration serverWaitTime);
+    CompletableFuture<IBrokeredMessage> receiveAsync(long sequenceNumber);
 
-    CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers);
+    CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(int maxMessageCount);
+
+    CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(int maxMessageCount, Duration serverWaitTime);
+
+    CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers);
     
     int getPrefetchCount();
     

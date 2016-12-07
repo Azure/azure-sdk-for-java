@@ -70,6 +70,5 @@ public interface IBrokeredMessage {
 	
 	public String getDeadLetterSource();
 	
-	public UUID getLockToken();
-	
+	public UUID getLockToken();	
 }

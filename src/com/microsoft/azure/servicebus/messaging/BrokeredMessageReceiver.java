@@ -5,7 +5,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -105,149 +104,151 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	}
 
 	@Override
-	public void abandon(UUID lockToken) {
+	public void abandon(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.abandonAsync(message));		
+	}
+
+	@Override
+	public void abandon(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.abandonAsync(message, propertiesToModify));		
+	}
+
+	@Override
+	public CompletableFuture<Void> abandonAsync(IBrokeredMessage message) {
+		return this.abandonAsync(message, null);
+	}
+
+	@Override
+	public CompletableFuture<Void> abandonAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify) {
+		this.ensurePeekLockReceiveMode();
+		return this.internalReceiver.abandonMessageAsync(((BrokeredMessage)message).getDeliveryTag(), propertiesToModify);
+	}
+
+	@Override
+	public void complete(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.completeAsync(message));
+	}
+
+	@Override
+	public void completeBatch(Collection<? extends IBrokeredMessage> messages) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void abandon(UUID lockToken, Map<String, Object> propertiesToModify) {
-		// TODO Auto-generated method stub
-		
+	public CompletableFuture<Void> completeAsync(IBrokeredMessage message) {
+		this.ensurePeekLockReceiveMode();
+		return this.internalReceiver.completeMessageAsync(((BrokeredMessage)message).getDeliveryTag());
 	}
 
 	@Override
-	public CompletableFuture<Void> abandonAsync(UUID lockToken) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
+	public CompletableFuture<Void> completeBatchAsync(Collection<? extends IBrokeredMessage> messages) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void complete(UUID lockToken) {
-		// TODO Auto-generated method stub
-		
+	public void defer(IBrokeredMessage message) throws InterruptedException, ServiceBusException
+	{
+		Utils.completeFuture(this.deferAsync(message));		
 	}
 
 	@Override
-	public void completeBatch(Collection<UUID> lockTokens) {
-		// TODO Auto-generated method stub
-		
+	public void defer(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException 
+	{
+		Utils.completeFuture(this.deferAsync(message, propertiesToModify));		
 	}
 
 	@Override
-	public CompletableFuture<Void> completeAsync(UUID lockToken) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompletableFuture<Void> deferAsync(IBrokeredMessage message)
+	{
+		return this.deferAsync(message, null);
 	}
 
 	@Override
-	public CompletableFuture<Void> completeBatchAsync(Collection<UUID> lockTokens) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompletableFuture<Void> deferAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify)
+	{
+		this.ensurePeekLockReceiveMode();
+		return this.internalReceiver.deferMessageAsync(((BrokeredMessage)message).getDeliveryTag(), propertiesToModify);
 	}
 
 	@Override
-	public void defer(UUID lockToken) {
-		// TODO Auto-generated method stub
-		
+	public void deadLetter(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.deadLetterAsync(message));
 	}
 
 	@Override
-	public void defer(UUID lockToken, Map<String, Object> propertiesToModify) {
-		// TODO Auto-generated method stub
-		
+	public void deadLetter(IBrokeredMessage message, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.deadLetterAsync(message, propertiesToModify));		
 	}
 
 	@Override
-	public CompletableFuture<Void> deferAsync(UUID lockToken) {
-		// TODO Auto-generated method stub
-		return null;
+	public void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.deadLetterAsync(message, deadLetterReason, deadLetterErrorDescription));		
+	}
+	
+	@Override
+	public void deadLetter(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
+		Utils.completeFuture(this.deadLetterAsync(message, deadLetterReason, deadLetterErrorDescription, propertiesToModify));
+	}	
+
+	@Override
+	public CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message) {
+		return this.deadLetterAsync(message, null, null, null);
 	}
 
 	@Override
-	public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-		// TODO Auto-generated method stub
-		return null;
+	public CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, Map<String, Object> propertiesToModify) {
+		return this.deadLetterAsync(message, null, null, propertiesToModify);
 	}
 
 	@Override
-	public void deadLetter(UUID lockToken) {
-		// TODO Auto-generated method stub
-		
+	public CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription)
+	{
+		return this.deadLetterAsync(message, deadLetterReason, deadLetterErrorDescription, null);
+	}
+	
+	@Override
+	public CompletableFuture<Void> deadLetterAsync(IBrokeredMessage message, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+		this.ensurePeekLockReceiveMode();
+		return this.internalReceiver.deadLetterMessageAsync(((BrokeredMessage)message).getDeliveryTag(), deadLetterReason, deadLetterErrorDescription, propertiesToModify);
 	}
 
 	@Override
-	public void deadLetter(UUID lockToken, Map<String, Object> propertiesToModify) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public CompletableFuture<Void> deadLetterAsync(UUID lockToken) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason,
-			String deadLetterErrorDescription) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public BrokeredMessage receive() throws InterruptedException, ServiceBusException {
+	public IBrokeredMessage receive() throws InterruptedException, ServiceBusException {
 		return Utils.completeFuture(this.receiveAsync());
 	}
 
 	@Override
-	public BrokeredMessage receive(Duration serverWaitTime) throws InterruptedException, ServiceBusException{
+	public IBrokeredMessage receive(Duration serverWaitTime) throws InterruptedException, ServiceBusException{
 		return Utils.completeFuture(this.receiveAsync(serverWaitTime));
 	}
 
 	@Override
-	public BrokeredMessage receive(long sequenceNumber) {
+	public IBrokeredMessage receive(long sequenceNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Collection<BrokeredMessage> receiveBatch(int messageCount) throws InterruptedException, ServiceBusException {
-		return Utils.completeFuture(this.receiveBatchAsync(messageCount));
+	public Collection<IBrokeredMessage> receiveBatch(int maxMessageCount) throws InterruptedException, ServiceBusException {
+		return Utils.completeFuture(this.receiveBatchAsync(maxMessageCount));
 	}
 
 	@Override
-	public Collection<BrokeredMessage> receiveBatch(int messageCount, Duration serverWaitTime) throws InterruptedException, ServiceBusException {
-		return Utils.completeFuture(this.receiveBatchAsync(messageCount, serverWaitTime));
+	public Collection<IBrokeredMessage> receiveBatch(int maxMessageCount, Duration serverWaitTime) throws InterruptedException, ServiceBusException {
+		return Utils.completeFuture(this.receiveBatchAsync(maxMessageCount, serverWaitTime));
 	}
 
 	@Override
-	public Collection<BrokeredMessage> receiveBatch(Collection<Long> sequenceNumbers) {
+	public Collection<IBrokeredMessage> receiveBatch(Collection<Long> sequenceNumbers) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CompletableFuture<BrokeredMessage> receiveAsync() {
-		return this.internalReceiver.receive(1).thenApply(c -> 
+	public CompletableFuture<IBrokeredMessage> receiveAsync() {
+		return this.internalReceiver.receiveAsync(1).thenApply(c -> 
 		{	
 			if(c == null)
 				return null;
@@ -259,8 +260,8 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	}
 
 	@Override
-	public CompletableFuture<BrokeredMessage> receiveAsync(Duration serverWaitTime) {
-		return this.internalReceiver.receive(1, serverWaitTime).thenApply(c -> 
+	public CompletableFuture<IBrokeredMessage> receiveAsync(Duration serverWaitTime) {
+		return this.internalReceiver.receiveAsync(1, serverWaitTime).thenApply(c -> 
 		{	
 			if(c == null)
 				return null;
@@ -272,14 +273,14 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	}
 
 	@Override
-	public CompletableFuture<BrokeredMessage> receiveAsync(long sequenceNumber) {
+	public CompletableFuture<IBrokeredMessage> receiveAsync(long sequenceNumber) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(int messageCount) {
-		return this.internalReceiver.receive(messageCount).thenApply(c -> 
+	public CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(int maxMessageCount) {
+		return this.internalReceiver.receiveAsync(maxMessageCount).thenApply(c -> 
 		{	
 			if(c == null)
 				return null;
@@ -291,8 +292,8 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	}
 
 	@Override
-	public CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(int messageCount, Duration serverWaitTime) {
-		return this.internalReceiver.receive(messageCount, serverWaitTime).thenApply(c -> 
+	public CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(int maxMessageCount, Duration serverWaitTime) {
+		return this.internalReceiver.receiveAsync(maxMessageCount, serverWaitTime).thenApply(c -> 
 		{	
 			if(c == null)
 				return null;
@@ -304,7 +305,7 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	}
 
 	@Override
-	public CompletableFuture<Collection<BrokeredMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers) {
+	public CompletableFuture<Collection<IBrokeredMessage>> receiveBatchAsync(Collection<Long> sequenceNumbers) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -313,11 +314,11 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 	protected CompletableFuture<Void> onClose() {
 		if(this.isInitialized)
 		{
-			return this.internalReceiver.close().thenComposeAsync((v) -> 
+			return this.internalReceiver.closeAsync().thenComposeAsync((v) -> 
 			{
 				if(BrokeredMessageReceiver.this.ownsMessagingFactory)
 				{
-					return BrokeredMessageReceiver.this.messagingFactory.close();
+					return BrokeredMessageReceiver.this.messagingFactory.closeAsync();
 				}
 				else
 				{
@@ -359,9 +360,9 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 		}
 	}
 	
-	private Collection<BrokeredMessage> convertAmqpMessagesToBrokeredMessages(Collection<MessageWithDeliveryTag> amqpMessages)
+	private Collection<IBrokeredMessage> convertAmqpMessagesToBrokeredMessages(Collection<MessageWithDeliveryTag> amqpMessages)
 	{
-		ArrayList<BrokeredMessage> convertedMessages = new ArrayList<BrokeredMessage>();
+		ArrayList<IBrokeredMessage> convertedMessages = new ArrayList<IBrokeredMessage>();
 		for(MessageWithDeliveryTag amqpMessageWithDeliveryTag : amqpMessages)
 		{
 			convertedMessages.add(MessageConverter.convertAmqpMessageToBrokeredMessage(amqpMessageWithDeliveryTag));
@@ -369,5 +370,12 @@ public class BrokeredMessageReceiver extends InitializableEntity implements IMes
 		
 		return convertedMessages;
 	}
-
+	
+	private void ensurePeekLockReceiveMode()
+	{
+		if(this.receiveMode != ReceiveMode.PeekLock)
+		{
+			throw new UnsupportedOperationException("Operations Complete/Abandon/DeadLetter/Defer cannot be called on a receiver opened in ReceiveAndDelete mode.");
+		}
+	}
 }

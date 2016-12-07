@@ -82,41 +82,41 @@ final class BrokeredMessageSender extends InitializableEntity implements IMessag
 	}		
 	
 	@Override
-	public void send(BrokeredMessage message) throws InterruptedException, ServiceBusException {
+	public void send(IBrokeredMessage message) throws InterruptedException, ServiceBusException {
 		Utils.completeFuture(this.sendAsync(message));		
 	}
 
 	@Override
-	public void sendBatch(Collection<BrokeredMessage> message) throws InterruptedException, ServiceBusException {
+	public void sendBatch(Collection<? extends IBrokeredMessage> message) throws InterruptedException, ServiceBusException {
 		Utils.completeFuture(this.sendBatchAsync(message));
 	}
 
 	@Override
-	public CompletableFuture<Void> sendAsync(BrokeredMessage message) {
-		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage(message);
-		return this.internalSender.send(amqpMessage);
+	public CompletableFuture<Void> sendAsync(IBrokeredMessage message) {		
+		Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message);
+		return this.internalSender.sendAsync(amqpMessage);
 	}
 
 	@Override
-	public CompletableFuture<Void> sendBatchAsync(Collection<BrokeredMessage> messages) {
+	public CompletableFuture<Void> sendBatchAsync(Collection<? extends IBrokeredMessage> messages) {
 		ArrayList<Message> convertedMessages = new ArrayList<Message>();
-		for(BrokeredMessage message : messages)
+		for(IBrokeredMessage message : messages)
 		{
-			convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage(message));
+			convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage((BrokeredMessage)message));
 		}
 		
-		return this.internalSender.send(convertedMessages);
+		return this.internalSender.sendAsync(convertedMessages);
 	}
 
 	@Override
 	protected CompletableFuture<Void> onClose() {
 		if(this.isInitialized)
 		{
-			return this.internalSender.close().thenComposeAsync((v) -> 
+			return this.internalSender.closeAsync().thenComposeAsync((v) -> 
 			{
 				if(BrokeredMessageSender.this.ownsMessagingFactory)
 				{
-					return BrokeredMessageSender.this.messagingFactory.close();
+					return BrokeredMessageSender.this.messagingFactory.closeAsync();
 				}
 				else
 				{

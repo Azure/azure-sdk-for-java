@@ -65,7 +65,7 @@ public abstract class ClientEntity
 		}
 	}
 
-	public final CompletableFuture<Void> close()
+	public final CompletableFuture<Void> closeAsync()
 	{
 		synchronized (this.syncClose)
 		{
@@ -85,11 +85,11 @@ public abstract class ClientEntity
 			}});
 	}
 
-	public final void closeSync() throws ServiceBusException
+	public final void close() throws ServiceBusException
 	{
 		try
 		{
-			this.close().get();
+			this.closeAsync().get();
 		}
 		catch (InterruptedException|ExecutionException exception)
 		{

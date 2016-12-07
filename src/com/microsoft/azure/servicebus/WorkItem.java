@@ -12,6 +12,7 @@ public class WorkItem<T>
 	private final TimeoutTracker tracker;
 	private final CompletableFuture<T> work;
 	private ScheduledFuture<?> timeoutTask;
+	private Exception lastKnownException;
 
 	public WorkItem(final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
@@ -50,5 +51,15 @@ public class WorkItem<T>
 	{
 		if(this.timeoutTask != null)
 			this.timeoutTask.cancel(mayInterruptIfRunning);
+	}
+	
+	public Exception getLastKnownException()
+	{
+		return this.lastKnownException;
+	}
+
+	public void setLastKnownException(Exception exception)
+	{
+		this.lastKnownException = exception;
 	}
 }

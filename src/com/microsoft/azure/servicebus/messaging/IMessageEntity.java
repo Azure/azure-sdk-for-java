@@ -1,5 +1,5 @@
 package com.microsoft.azure.servicebus.messaging;
 
-public interface IMessageEntity {
-	public String getEntityPath();	
+public interface IMessageEntity extends ICloseable {
+	public String getEntityPath();
 }

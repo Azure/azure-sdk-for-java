@@ -140,22 +140,22 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return this.sendPath;
 	}
 
-	private CompletableFuture<Void> send(byte[] bytes, int arrayOffset, int messageFormat)
+	private CompletableFuture<Void> sendAsync(byte[] bytes, int arrayOffset, int messageFormat)
 	{
-		return this.send(bytes, arrayOffset, messageFormat, null, null);
+		return this.sendAsync(bytes, arrayOffset, messageFormat, null, null);
 	}
 	
-	private CompletableFuture<Void> send(
+	private CompletableFuture<Void> sendAsync(
 			final byte[] bytes,
 			final int arrayOffset,
 			final int messageFormat,
 			final CompletableFuture<Void> onSend,
 			final TimeoutTracker tracker)
 	{
-		return this.sendCore(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
+		return this.sendCoreAsync(bytes, arrayOffset, messageFormat, onSend, tracker, null, null, null);
 	}
 
-	private CompletableFuture<Void> sendCore(
+	private CompletableFuture<Void> sendCoreAsync(
 			final byte[] bytes,
 			final int arrayOffset,
 			final int messageFormat,
@@ -285,7 +285,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		return annotationsSize + applicationPropertiesSize + payloadSize;
 	}
 
-	public CompletableFuture<Void> send(final Iterable<Message> messages)
+	public CompletableFuture<Void> sendAsync(final Iterable<Message> messages)
 	{
 		if (messages == null || IteratorUtil.sizeEquals(messages, 0))
 		{
@@ -295,7 +295,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		Message firstMessage = messages.iterator().next();			
 		if (IteratorUtil.sizeEquals(messages, 1))
 		{
-			return this.send(firstMessage);
+			return this.sendAsync(firstMessage);
 		}
 
 		// proton-j doesn't support multiple dataSections to be part of AmqpMessage
@@ -332,10 +332,10 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			byteArrayOffset = byteArrayOffset + encodedSize;
 		}
 
-		return this.send(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
+		return this.sendAsync(bytes, byteArrayOffset, AmqpConstants.AMQP_BATCH_MESSAGE_FORMAT);
 	}
 
-	public CompletableFuture<Void> send(Message msg)
+	public CompletableFuture<Void> sendAsync(Message msg)
 	{
 		int payloadSize = this.getDataSerializedSize(msg);
 		int allocationSize = Math.min(payloadSize + ClientConstants.MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES, ClientConstants.MAX_MESSAGE_LENGTH_BYTES);
@@ -353,7 +353,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			return sendTask;
 		}
 
-		return this.send(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
+		return this.sendAsync(bytes, encodedSize, DeliveryImpl.DEFAULT_MESSAGE_FORMAT);
 	}
 
 	@Override
@@ -524,7 +524,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 				ErrorCondition error = rejected.getError();
 				Exception exception = ExceptionUtil.toException(error);
 
-				if (ExceptionUtil.isGeneralSendError(error.getCondition()))
+				if (ExceptionUtil.isGeneralError(error.getCondition()))
 				{
 					this.lastKnownLinkError = exception;
 					this.lastKnownErrorReportedAt = Instant.now();
@@ -547,7 +547,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 									@Override
 									public void onEvent()
 									{
-										MessageSender.this.reSend(deliveryTag, pendingSendWorkItem, false);
+										MessageSender.this.reSendAsync(deliveryTag, pendingSendWorkItem, false);
 									}
 								});
 					}
@@ -577,11 +577,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 		}
 	}
 
-	private void reSend(final String deliveryTag, final SendWorkItem<Void> pendingSend, boolean reuseDeliveryTag)
+	private void reSendAsync(final String deliveryTag, final SendWorkItem<Void> pendingSend, boolean reuseDeliveryTag)
 	{
 		if (pendingSend != null)
 		{
-			this.sendCore(pendingSend.getMessage(), 
+			this.sendCoreAsync(pendingSend.getMessage(), 
 					pendingSend.getEncodedMessageSize(), 
 					pendingSend.getMessageFormat(),
 					pendingSend.getWork(),
@@ -830,12 +830,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	{
 		Exception cause = lastKnownException;
 		if (lastKnownException == null && this.lastKnownLinkError != null)
-		{
-			boolean isServerBusy = ((this.lastKnownLinkError instanceof ServerBusyException) 
-					&& (this.lastKnownErrorReportedAt.isAfter(Instant.now().minusSeconds(ClientConstants.SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS))));  
-			cause = isServerBusy || (this.lastKnownErrorReportedAt.isAfter(Instant.now().minusMillis(this.operationTimeout.toMillis()))) 
-					? this.lastKnownLinkError 
-							: null;
+		{		  
+			cause = this.lastKnownErrorReportedAt.isAfter(Instant.now().minusMillis(this.operationTimeout.toMillis())) ? this.lastKnownLinkError	: null;
 		}
 
 		boolean isClientSideTimeout = (cause == null || !(cause instanceof ServiceBusException));

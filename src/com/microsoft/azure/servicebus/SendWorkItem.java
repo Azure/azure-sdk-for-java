@@ -12,9 +12,7 @@ public class SendWorkItem<T> extends WorkItem<T>
 	private byte[] amqpMessage;
 	private int messageFormat;
 	private int encodedMessageSize;
-	private boolean waitingForAck;
-	
-	private Exception lastKnownException;
+	private boolean waitingForAck;	
 	
 	public SendWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final Duration timeout)
 	{
@@ -48,17 +46,7 @@ public class SendWorkItem<T> extends WorkItem<T>
 	public int getMessageFormat()
 	{
 		return this.messageFormat;
-	}
-
-	public Exception getLastKnownException()
-	{
-		return this.lastKnownException;
-	}
-
-	public void setLastKnownException(Exception exception)
-	{
-		this.lastKnownException = exception;
-	}	
+	}		
 	
 	public void setWaitingForAck()
 	{

@@ -6,13 +6,16 @@ package com.microsoft.azure.servicebus;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -22,6 +25,7 @@ import java.util.logging.Logger;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
 import org.apache.qpid.proton.engine.BaseHandler;
@@ -32,8 +36,12 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
+import org.apache.qpid.proton.amqp.messaging.Modified;
 import org.apache.qpid.proton.amqp.messaging.Outcome;
+import org.apache.qpid.proton.amqp.messaging.Rejected;
+import org.apache.qpid.proton.amqp.messaging.Released;
 
+import com.microsoft.azure.servicebus.amqp.AmqpConstants;
 import com.microsoft.azure.servicebus.amqp.DispatchHandler;
 import com.microsoft.azure.servicebus.amqp.IAmqpReceiver;
 import com.microsoft.azure.servicebus.amqp.ReceiveLinkHandler;
@@ -58,6 +66,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private final CompletableFuture<Void> linkClose;
 	private final Object prefetchCountSync;
 	private final SettleModePair settleModePair;
+	private final RetryPolicy retryPolicy;
 	private int prefetchCount;
 
 	private ConcurrentLinkedQueue<MessageWithDeliveryTag> prefetchedMessages;
@@ -66,7 +75,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 	private Duration factoryRceiveTimeout;
 
 	private Exception lastKnownLinkError;
+	private Instant lastKnownErrorReportedAt;
 	private int nextCreditToFlow;
+		
+	private final Runnable timedOutUpdateStateRequestsDaemon;
+	
+	// Change onReceiveComplete to handle empty deliveries. Change onError to retry updateState requests.
 	
 
 	private MessageReceiver(final MessagingFactory factory,
@@ -87,10 +101,35 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		this.lastKnownLinkError = null;
 		this.factoryRceiveTimeout = factory.getOperationTimeout();
 		this.prefetchCountSync = new Object();
+		this.retryPolicy = factory.getRetryPolicy();
 
 		this.pendingReceives = Collections.synchronizedList(new LinkedList<ReceiveWorkItem>());
 		this.pendingUpdateStateRequests = new ConcurrentHashMap<>();
 		this.tagsToDeliveriesMap = new ConcurrentHashMap<>();
+		this.lastKnownErrorReportedAt = Instant.now();
+		
+		this.timedOutUpdateStateRequestsDaemon = new Runnable() {
+			@Override
+			public void run() {
+				for(Map.Entry<String, UpdateStateWorkItem> entry : MessageReceiver.this.pendingUpdateStateRequests.entrySet())
+				{
+					Duration remainingTime = entry.getValue().getTimeoutTracker().remaining();
+					if(remainingTime.isZero() || remainingTime.isNegative())
+					{
+						MessageReceiver.this.pendingUpdateStateRequests.remove(entry.getKey());
+						Exception exception = entry.getValue().getLastKnownException();
+						if(exception == null)
+						{
+							exception = new TimeoutException("Request timed out.");
+						}
+						entry.getValue().getWork().completeExceptionally(exception);
+					}
+				}
+			}			
+		};
+		
+		// As all update state requests have the same timeout, one timer is better than having one timer per request
+		Timer.schedule(timedOutUpdateStateRequestsDaemon, Duration.ofSeconds(1), TimerType.RepeatRun);
 	}
 
 	// @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
@@ -230,12 +269,12 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 	}
 	
-	public CompletableFuture<Collection<MessageWithDeliveryTag>> receive(final int maxMessageCount)
+	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount)
 	{
-		return this.receive(maxMessageCount, this.factoryRceiveTimeout);
+		return this.receiveAsync(maxMessageCount, this.factoryRceiveTimeout);
 	}
 
-	public CompletableFuture<Collection<MessageWithDeliveryTag>> receive(final int maxMessageCount, Duration timeout)
+	public CompletableFuture<Collection<MessageWithDeliveryTag>> receiveAsync(final int maxMessageCount, Duration timeout)
 	{
 		this.throwIfClosed(this.lastKnownLinkError);
 
@@ -258,8 +297,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					final List<MessageWithDeliveryTag> messages = receiveCore(maxMessageCount);
 					if (messages != null)
 					{
-						onReceive.complete(messages);
-						
+						onReceive.complete(messages);						
 					}
 					else
 					{
@@ -284,7 +322,8 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 													{
 														//TODO: not working
 														// Make credit 0, to stop further receiving on this link
-														MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
+														//MessageReceiver.this.receiveLink.flow(-1 * MessageReceiver.this.receiveLink.getCredit());
+														MessageReceiver.this.receiveLink.flow(0);
 														
 														// See if detach stops
 //														MessageReceiver.this.receiveLink.detach();
@@ -311,7 +350,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 		catch (IOException ioException)
 		{
-			onReceive.completeExceptionally(this.generateDispatacherSchedulingFailedException("Receive", ioException));	
+			onReceive.completeExceptionally(generateDispatacherSchedulingFailedException("Receive", ioException));	
 		}
 
 		return onReceive;
@@ -353,44 +392,132 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 
 	@Override
 	public void onReceiveComplete(Delivery delivery)
-	{
-		Message message = null;
-		
-		int msgSize = delivery.pending();
-		byte[] buffer = new byte[msgSize];
-		
-		int read = receiveLink.recv(buffer, 0, msgSize);
-		
-		message = Proton.message();
-		message.decode(buffer, 0, read);
-		
-		if(this.settleModePair.getSenderSettleMode() == SenderSettleMode.SETTLED)
-		{
-			// No op. Delivery comes settled from the sender
-			delivery.disposition(Accepted.getInstance());
-			delivery.settle();
+	{		
+		byte[] deliveryTag = delivery.getTag();
+		String deliveryTagAsString  = StringUtil.convertBytesToString(delivery.getTag());
+		if(deliveryTag == null || deliveryTag.length == 0 || !this.tagsToDeliveriesMap.containsKey(deliveryTagAsString))
+		{			
+			System.out.println("new-" + Util.convertDotNetBytesToUUID(delivery.getTag()));
+			Message message = null;
+			
+			int msgSize = delivery.pending();
+			byte[] buffer = new byte[msgSize];
+			
+			int read = receiveLink.recv(buffer, 0, msgSize);;			
+			
+			message = Proton.message();
+			message.decode(buffer, 0, read);
+			
+			if(this.settleModePair.getSenderSettleMode() == SenderSettleMode.SETTLED)
+			{
+				// No op. Delivery comes settled from the sender
+				delivery.disposition(Accepted.getInstance());
+				delivery.settle();
+			}
+			else
+			{
+				this.tagsToDeliveriesMap.put(StringUtil.convertBytesToString(delivery.getTag()), delivery);
+				receiveLink.advance();
+			}
+
+			this.prefetchedMessages.add(new MessageWithDeliveryTag(message, delivery.getTag()));
+			this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
+			
+			if(!this.pendingReceives.isEmpty())
+			{
+				final ReceiveWorkItem currentReceive = this.pendingReceives.remove(0);
+				if (currentReceive != null && !currentReceive.getWork().isDone())
+				{
+					currentReceive.cancelTimeoutTask(false);
+					
+					List<MessageWithDeliveryTag> messages = this.receiveCore(currentReceive.getMaxMessageCount());
+
+					CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();
+					future.complete(messages);
+				}
+			}
 		}
 		else
 		{
-			this.tagsToDeliveriesMap.put(StringUtil.convertBytesToString(delivery.getTag()), delivery);
-		}
-
-		this.prefetchedMessages.add(new MessageWithDeliveryTag(message, delivery.getTag()));
-		this.underlyingFactory.getRetryPolicy().resetRetryCount(this.getClientId());
-		
-		if(!this.pendingReceives.isEmpty())
-		{
-			final ReceiveWorkItem currentReceive = this.pendingReceives.remove(0);
-			if (currentReceive != null && !currentReceive.getWork().isDone())
+			System.out.println("old-" + Util.convertDotNetBytesToUUID(delivery.getTag()));
+			DeliveryState remoteState = delivery.getRemoteState();
+			if(remoteState instanceof Outcome)
 			{
-				currentReceive.cancelTimeoutTask(false);
-				
-				List<MessageWithDeliveryTag> messages = this.receiveCore(currentReceive.getMaxMessageCount());
+				Outcome remoteOutcome = (Outcome)remoteState;
+				UpdateStateWorkItem matchingUpdateStateWorkItem = this.pendingUpdateStateRequests.get(deliveryTagAsString);
+				if(matchingUpdateStateWorkItem != null)
+				{
+					// This comparison is ugly. Using it for the lack of equals operation on Outcome classes
+					if(remoteOutcome.getClass().getName().equals(matchingUpdateStateWorkItem.outcome.getClass().getName()))
+					{
+						this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem, null);						
+					}
+					else
+					{
+//						if(matchingUpdateStateWorkItem.expectedOutcome instanceof Accepted)
+//						{
+							// Complete requests
+							if(remoteOutcome instanceof Rejected)
+							{
+								Rejected rejected = (Rejected) remoteOutcome;
+								ErrorCondition error = rejected.getError();
+								Exception exception = ExceptionUtil.toException(error);
 
-				CompletableFuture<Collection<MessageWithDeliveryTag>> future = currentReceive.getWork();
-				future.complete(messages);
+								if (ExceptionUtil.isGeneralError(error.getCondition()))
+								{
+									this.lastKnownLinkError = exception;
+									this.lastKnownErrorReportedAt = Instant.now();
+								}
+
+								Duration retryInterval = this.retryPolicy.getNextRetryInterval(this.getClientId(), exception, matchingUpdateStateWorkItem.getTimeoutTracker().remaining());
+								if (retryInterval == null)
+								{									
+									this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem, exception);
+								}
+								else
+								{
+									matchingUpdateStateWorkItem.setLastKnownException(exception);
+									// Retry after retry interval
+									try
+									{
+										this.underlyingFactory.scheduleOnReactorThread((int) retryInterval.toMillis(),
+												new DispatchHandler()
+												{
+													@Override
+													public void onEvent()
+													{
+														delivery.disposition((DeliveryState)matchingUpdateStateWorkItem.getOutcome());
+													}
+												});
+									}
+									catch (IOException ioException)
+									{
+										this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem,
+												new ServiceBusException(false, "Operation failed while scheduling a retry on Reactor, see cause for more details.", ioException));
+									}
+								}
+							}
+							else if (remoteOutcome instanceof Released)
+							{
+								this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem, new OperationCancelledException(remoteOutcome.toString()));									
+							}
+							else 
+							{
+								this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem, new ServiceBusException(false, remoteOutcome.toString()));									
+							}							
+//						}
+					}
+				}
+				else
+				{
+					// Should not happen. Ignore it
+				}				
 			}
-		}		
+			else
+			{
+				//Ignore it. we are only interested in terminal delivery states
+			}			
+		}				
 	}
 
 	public void onError(ErrorCondition error)
@@ -407,28 +534,7 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		if (this.getIsClosingOrClosed())
 		{
 			this.linkClose.complete(null);			
-			
-			final boolean isTransientException = exception == null ||
-					(exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient());
-			
-			Iterator<ReceiveWorkItem> iterator = this.pendingReceives.iterator();
-			while(iterator.hasNext())
-			{
-				ReceiveWorkItem workItem = iterator.next();
-				iterator.remove();
-				
-				CompletableFuture<Collection<MessageWithDeliveryTag>> future = workItem.getWork();
-				if (isTransientException)
-				{
-					future.complete(null);
-				}
-				else
-				{
-					ExceptionUtil.completeExceptionally(future, exception, this);
-				}
-				
-				workItem.cancelTimeoutTask(false);
-			}
+			this.clearAllPendingWorkItems(exception);		
 		}
 		else
 		{
@@ -438,19 +544,10 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 			if (exception != null &&
 					(!(exception instanceof ServiceBusException) || !((ServiceBusException) exception).getIsTransient()))
 			{
-				Iterator<ReceiveWorkItem> iterator = this.pendingReceives.iterator();
-				while(iterator.hasNext())
-				{
-					ReceiveWorkItem workItem = iterator.next();
-					iterator.remove();
-					
-					workItem.cancelTimeoutTask(false);
-					ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this);
-				}				
+				this.clearAllPendingWorkItems(exception);				
 			}
 			else
-			{
-				
+			{				
 				// TODO change it. Why recreating link needs to wait for retry interval of pending receive?
 				ReceiveWorkItem workItem = null;
 				if(!this.pendingReceives.isEmpty())
@@ -622,10 +719,59 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		return this.linkClose;
 	}
 	
-	public CompletableFuture<Void> completeMessage(byte[] deliveryTag)
+	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag)
+	{		
+		Outcome outcome = Accepted.getInstance();
+		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> abandonMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
+	{		
+		Modified outcome = new Modified();
+		if(propertiesToModify != null)
+		{
+			outcome.setMessageAnnotations(propertiesToModify);
+		}		
+		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> deferMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
+	{		
+		Modified outcome = new Modified();
+		outcome.setUndeliverableHere(true);
+		if(propertiesToModify != null)
+		{
+			outcome.setMessageAnnotations(propertiesToModify);
+		}
+		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	public CompletableFuture<Void> deadLetterMessageAsync(byte[] deliveryTag, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
 	{
-		this.throwIfClosed(this.lastKnownLinkError);
-		final Outcome expectedOutcome = Accepted.getInstance();
+		Rejected outcome = new Rejected();
+		ErrorCondition error = new ErrorCondition(ClientConstants.DEADLETTERNAME, null);		
+		Map<String, Object> errorInfo = new HashMap<String, Object>();
+		if(!StringUtil.isNullOrEmpty(deadLetterReason))
+		{
+			errorInfo.put(ClientConstants.DEADLETTER_REASON_HEADER, deadLetterReason);
+		}
+		if(!StringUtil.isNullOrEmpty(deadLetterErrorDescription))
+		{
+			errorInfo.put(ClientConstants.DEADLETTER_ERROR_DESCRIPTION_HEADER, deadLetterErrorDescription);
+		}
+		if(propertiesToModify != null)
+		{
+			errorInfo.putAll(propertiesToModify);
+		}
+		error.setInfo(errorInfo);
+		outcome.setError(error);
+		
+		return this.updateMessageStateAsync(deliveryTag, outcome);
+	}
+	
+	private CompletableFuture<Void> updateMessageStateAsync(byte[] deliveryTag, Outcome outcome)
+	{
+		this.throwIfClosed(this.lastKnownLinkError);		
 		CompletableFuture<Void> completeMessageFuture = new CompletableFuture<Void>();
 		
 		try
@@ -641,20 +787,20 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 					Delivery delivery = MessageReceiver.this.tagsToDeliveriesMap.get(deliveryTagAsString);
 					if(delivery == null)
 					{
-						completeMessageFuture.completeExceptionally(MessageReceiver.this.generateDeliveryNotFoundException());
+						completeMessageFuture.completeExceptionally(generateDeliveryNotFoundException());
 					}
 					else
 					{
-						final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, expectedOutcome, MessageReceiver.this.factoryRceiveTimeout);
+						final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, MessageReceiver.this.factoryRceiveTimeout);
 						MessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
-						delivery.disposition(Accepted.getInstance());						
+						delivery.disposition((DeliveryState)outcome);
 					}						
 				}
 			});
 		}
 		catch (IOException ioException)
 		{
-			completeMessageFuture.completeExceptionally(this.generateDispatacherSchedulingFailedException("completeMessage", ioException));					
+			completeMessageFuture.completeExceptionally(generateDispatacherSchedulingFailedException("completeMessage", ioException));					
 		}
 
 		return completeMessageFuture;
@@ -668,13 +814,62 @@ public class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErr
 		}
 	}
 	
-	private IllegalArgumentException generateDeliveryNotFoundException()
+	private void completePendingUpdateStateWorkItem(Delivery delivery, String deliveryTagAsString, UpdateStateWorkItem workItem, Exception exception)
+	{
+		delivery.settle();
+		if(exception == null)
+		{
+			workItem.getWork().complete(null);
+		}
+		else
+		{
+			ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this);
+		}	
+		
+		this.tagsToDeliveriesMap.remove(deliveryTagAsString);
+		this.pendingUpdateStateRequests.remove(deliveryTagAsString);
+	}
+	
+	private void clearAllPendingWorkItems(Exception exception)
+	{
+		final boolean isTransientException = exception == null ||
+				(exception instanceof ServiceBusException && ((ServiceBusException) exception).getIsTransient());
+		
+		Iterator<ReceiveWorkItem> pendingRecivesIterator = this.pendingReceives.iterator();
+		while(pendingRecivesIterator.hasNext())
+		{
+			ReceiveWorkItem workItem = pendingRecivesIterator.next();
+			pendingRecivesIterator.remove();
+			
+			CompletableFuture<Collection<MessageWithDeliveryTag>> future = workItem.getWork();
+			if (isTransientException)
+			{
+				future.complete(null);
+			}
+			else
+			{
+				ExceptionUtil.completeExceptionally(future, exception, this);
+			}
+			
+			workItem.cancelTimeoutTask(false);
+		}
+		
+		for(Map.Entry<String, UpdateStateWorkItem> pendingUpdate : this.pendingUpdateStateRequests.entrySet())
+		{
+			pendingUpdateStateRequests.remove(pendingUpdate.getKey());			
+			ExceptionUtil.completeExceptionally(pendingUpdate.getValue().getWork(), exception, this);
+		}		
+		
+		this.tagsToDeliveriesMap.clear();		
+	}
+	
+	private static IllegalArgumentException generateDeliveryNotFoundException()
 	{
 		return new IllegalArgumentException("Delivery not found on the receive link.");
 	}
 	
-	private ServiceBusException generateDispatacherSchedulingFailedException(String operation, Exception cause)
+	private static ServiceBusException generateDispatacherSchedulingFailedException(String operation, Exception cause)
 	{
 		return new ServiceBusException(false, operation + " failed while dispatching to Reactor, see cause for more details.", cause);
-	}
+	}	
 }

@@ -5,19 +5,19 @@ import java.util.concurrent.CompletableFuture;
 
 public interface IMessageBrowser extends IMessageEntity {
 	
-	BrokeredMessage Peek();
+	IBrokeredMessage Peek();
 
-    BrokeredMessage Peek(long fromSequenceNumber);
+    IBrokeredMessage Peek(long fromSequenceNumber);
 
-    Collection<BrokeredMessage> PeekBatch(int messageCount);
+    Collection<IBrokeredMessage> PeekBatch(int messageCount);
 
-    Collection<BrokeredMessage> PeekBatch(long fromSequenceNumber, int messageCount);
+    Collection<IBrokeredMessage> PeekBatch(long fromSequenceNumber, int messageCount);
 
-    CompletableFuture<BrokeredMessage> PeekAsync();
+    CompletableFuture<IBrokeredMessage> PeekAsync();
 
-    CompletableFuture<BrokeredMessage> PeekAsync(long fromSequenceNumber);
+    CompletableFuture<IBrokeredMessage> PeekAsync(long fromSequenceNumber);
 
-    CompletableFuture<Collection<BrokeredMessage>> PeekBatchAsync(int messageCount);
+    CompletableFuture<Collection<IBrokeredMessage>> PeekBatchAsync(int messageCount);
 
-    CompletableFuture<Collection<BrokeredMessage>> PeekBatchAsync(long fromSequenceNumber, int messageCount);
+    CompletableFuture<Collection<IBrokeredMessage>> PeekBatchAsync(long fromSequenceNumber, int messageCount);
 }

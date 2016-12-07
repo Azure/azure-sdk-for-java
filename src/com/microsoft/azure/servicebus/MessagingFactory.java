@@ -39,7 +39,7 @@ import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
  */
 public class MessagingFactory extends ClientEntity implements IAmqpConnection, IConnectionFactory
 {
-	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60); 
+	public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
 
 	private static final Logger TRACE_LOGGER = Logger.getLogger(ClientConstants.SERVICEBUS_CLIENT_TRACE);
 	private final String hostName;

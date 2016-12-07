@@ -104,7 +104,7 @@ final class ExceptionUtil
 	}
 
 	// not a specific message related error
-	static boolean isGeneralSendError(Symbol amqpError)
+	static boolean isGeneralError(Symbol amqpError)
 	{
 		return (amqpError == ClientConstants.SERVER_BUSY_ERROR 
 				|| amqpError == ClientConstants.TIMEOUT_ERROR 

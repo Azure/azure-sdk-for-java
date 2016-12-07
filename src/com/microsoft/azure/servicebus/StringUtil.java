@@ -46,5 +46,5 @@ public final class StringUtil
 	static byte[] convertStringToBytes(String string)
 	{
 		return string.getBytes(UTF8CharSet);
-	}
+	}	
 }
