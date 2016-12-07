@@ -11,7 +11,10 @@ import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.junit.Assert;
+import rx.Observable;
 import rx.functions.Action1;
 
 public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
@@ -20,12 +23,15 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
         final String redisName = "redis" + this.testId;
         final RedisCache[] redisCaches = new RedisCache[1];
         final SettableFuture<RedisCache> future = SettableFuture.create();
-        resources.define(redisName)
+
+        Observable<Indexable> resourceStream = resources.define(redisName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withStandardSku()
                 .withTag("mytag", "testtag")
-                .createAsync()
+                .createAsync();
+
+        Utils.<RedisCache>rootResource(resourceStream)
                 .subscribe(new Action1<RedisCache>() {
                     @Override
                     public void call(RedisCache redisCache) {

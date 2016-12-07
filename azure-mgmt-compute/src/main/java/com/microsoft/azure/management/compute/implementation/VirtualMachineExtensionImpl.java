@@ -210,7 +210,7 @@ class VirtualMachineExtensionImpl
         return this;
     }
 
-    // Implementation of ExternalChildResourceImpl createAsync,  updateAsync and deleteAsync
+    // Implementation of ExternalChildResourceImpl createAsyncStreaming,  updateAsync and deleteAsync
     //
     @Override
     public Observable<VirtualMachineExtension> createAsync() {

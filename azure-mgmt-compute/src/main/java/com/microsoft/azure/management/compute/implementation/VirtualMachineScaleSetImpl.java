@@ -40,6 +40,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
@@ -949,11 +950,11 @@ public class VirtualMachineScaleSetImpl
         if (this.isInCreateMode()
                 && this.creatableStorageAccountKeys.isEmpty()
                 && this.existingStorageAccountsToAssociate.isEmpty()) {
-            return this.storageManager.storageAccounts()
+            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync()
+                    .createAsync())
                     .map(new Func1<StorageAccount, Void>() {
                         @Override
                         public Void call(StorageAccount storageAccount) {

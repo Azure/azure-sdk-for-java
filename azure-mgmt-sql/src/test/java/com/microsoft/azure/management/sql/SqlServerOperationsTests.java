@@ -8,11 +8,14 @@ package com.microsoft.azure.management.sql;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -254,14 +257,17 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
     public void canCRUDSqlDatabase() throws Exception {
         // Create
         SqlServer sqlServer = createSqlServer();
-
-        SqlDatabase sqlDatabase = sqlServer.databases()
+        Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
@@ -330,13 +336,17 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlDatabaseNotFound(SQL_DATABASE_NAME);
 
         // Add another database to the server
-        sqlDatabase = sqlServer.databases()
+        resourceStream = sqlServer.databases()
                 .define("newDatabase")
                 .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
         sqlServer.databases().delete(sqlDatabase.name());
 
         sqlServerManager.sqlServers().deleteByGroup(sqlServer.resourceGroupName(), sqlServer.name());
@@ -350,13 +360,17 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlServer sqlServer1 = createSqlServer();
         SqlServer sqlServer2 = createSqlServer(anotherSqlServerName);
 
-        SqlDatabase databaseInServer1 = sqlServer1.databases()
+        Observable<Indexable> resourceStream = sqlServer1.databases()
                 .define(SQL_DATABASE_NAME)
                 .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        SqlDatabase databaseInServer1 = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
 
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
         SqlDatabase databaseInServer2 = sqlServer2.databases()
@@ -412,13 +426,18 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // List usages for the server.
         Assert.assertNotNull(sqlServer.listUsages());
 
-        SqlDatabase sqlDatabase = sqlServer.databases()
+        Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withoutElasticPool()
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.DATA_WAREHOUSE)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
+        Assert.assertNotNull(sqlDatabase);
 
         sqlDatabase = sqlServer.databases().get(SQL_DATABASE_NAME);
         Assert.assertNotNull(sqlDatabase);
@@ -457,14 +476,18 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD);
 
-        SqlDatabase sqlDatabase = sqlServer.databases()
+        Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withNewElasticPool(sqlElasticPoolCreatable)
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
                 .withServiceObjective(ServiceObjectiveName.S1)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
 
@@ -554,13 +577,17 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlElasticPool sqlElasticPool = sqlServer.elasticPools().get(SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server and pool.
-        sqlDatabase = sqlServer.databases()
+        resourceStream = sqlServer.databases()
                 .define("newDatabase")
                 .withExistingElasticPool(sqlElasticPool)
                 .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
+                .toBlocking()
+                .first();
         sqlServer.databases().delete(sqlDatabase.name());
         validateSqlDatabaseNotFound("newDatabase");
 
@@ -577,10 +604,13 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
-        SqlElasticPool sqlElasticPool = sqlServer.elasticPools()
+        Observable<Indexable> resourceStream = sqlServer.elasticPools()
                 .define(SQL_ELASTIC_POOL_NAME)
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+        SqlElasticPool sqlElasticPool = Utils.<SqlElasticPool>rootResource(resourceStream)
+                .toBlocking()
+                .first();
         validateSqlElasticPool(sqlElasticPool);
         Assert.assertEquals(sqlElasticPool.listDatabases().size(), 0);
 
@@ -607,10 +637,14 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlElasticPoolNotFound(sqlServer, SQL_ELASTIC_POOL_NAME);
 
         // Add another database to the server
-        sqlElasticPool = sqlServer.elasticPools()
+        resourceStream = sqlServer.elasticPools()
                 .define("newElasticPool")
                 .withEdition(ElasticPoolEditions.STANDARD)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        sqlElasticPool = Utils.<SqlElasticPool>rootResource(resourceStream)
+                .toBlocking()
+                .first();
 
         sqlServer.elasticPools().delete(sqlElasticPool.name());
         validateSqlElasticPoolNotFound(sqlServer, "newElasticPool");
@@ -627,10 +661,14 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         sqlServer =  sqlServerManager.sqlServers().getByGroup(RG_NAME, SQL_SERVER_NAME);
         validateSqlServer(sqlServer);
 
-        SqlFirewallRule sqlFirewallRule = sqlServer.firewallRules()
+        Observable<Indexable> resourceStream = sqlServer.firewallRules()
                 .define(SQL_FIREWALLRULE_NAME)
                 .withIpAddressRange(START_IPADDRESS, END_IPADDRESS)
-                .createAsync().toBlocking().first();
+                .createAsync();
+
+        SqlFirewallRule sqlFirewallRule = Utils.<SqlFirewallRule>rootResource(resourceStream)
+                .toBlocking()
+                .first();
 
         validateSqlFirewallRule(sqlFirewallRule, SQL_FIREWALLRULE_NAME);
         validateSqlFirewallRule(sqlServer.firewallRules().get(SQL_FIREWALLRULE_NAME), SQL_FIREWALLRULE_NAME);
@@ -641,9 +679,9 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
                 .define(secondFirewallRuleName)
                 .withIpAddress(START_IPADDRESS)
                 .create();
+        Assert.assertNotNull(secondFirewallRule);
 
         secondFirewallRule = sqlServer.firewallRules().get(secondFirewallRuleName);
-
         Assert.assertNotNull(secondFirewallRule);
         Assert.assertEquals(START_IPADDRESS, secondFirewallRule.endIpAddress());
 

@@ -29,6 +29,11 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
+    public void prepare() {
+        this.resourceCreatorUpdator.prepare();
+    }
+
+    @Override
     public Observable<ResourceT> executeAsync() {
         if (this.resourceCreatorUpdator.isInCreateMode()) {
             return this.resourceCreatorUpdator.createResourceAsync()

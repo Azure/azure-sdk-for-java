@@ -16,6 +16,10 @@ public class CreateUpdateTaskGroup<ResourceT> extends TaskGroupBase<ResourceT, C
      */
     interface ResourceCreatorUpdator<T> {
         /**
+         * prepare for create or update.
+         */
+        void prepare();
+        /**
          * Creates the resource asynchronously.
          *
          * @return the observable reference

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import rx.Observable;
 
 /**
@@ -17,7 +18,7 @@ import rx.Observable;
  * @param <FluentModelImplT> the fluent model implementation type
  */
 public abstract class CreatableImpl<
-        FluentModelT,
+        FluentModelT  extends Indexable,
         InnerModelT,
         FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends
