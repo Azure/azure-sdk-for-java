@@ -9,7 +9,13 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
  * @param <U> the task item type
  */
 public class TaskItemHolder<T, U extends TaskItem<T>> extends DAGNode<U, TaskItemHolder<T, U>> {
+    /**
+     * Creates TaskItemHolder.
+     *
+     * @param taskId the unique id of the task
+     * @param taskItem the task
+     */
     public TaskItemHolder(String taskId, U taskItem) {
-        super(taskId,taskItem);
+        super(taskId, taskItem);
     }
 }

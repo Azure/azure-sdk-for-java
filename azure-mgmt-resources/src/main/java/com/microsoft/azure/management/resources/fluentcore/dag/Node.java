@@ -19,19 +19,19 @@ import java.util.List;
  */
 public class Node<T, U extends Node<T, U>> {
     /**
-     * The graph that owns this node
+     * The graph that owns this node.
      */
     private Graph<T, U> ownerGraph;
     /**
-     * A key that uniquely identifies this node in the owner graph {@link this#ownerGraph}
+     * A key that uniquely identifies this node in the owner graph {@link this#ownerGraph}.
      */
     private final String key;
     /**
-     * reference to the data stored in the node
+     * reference to the data stored in the node.
      */
     private final T data;
     /**
-     * the collection of child node keys
+     * the collection of child node keys.
      */
     private List<String> children;
 
