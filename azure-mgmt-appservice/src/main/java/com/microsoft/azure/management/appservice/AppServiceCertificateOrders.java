@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -17,6 +18,7 @@ import rx.Observable;
 /**
  * Entry point for app service certificate order management API.
  */
+@Fluent
 public interface AppServiceCertificateOrders extends
         SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,

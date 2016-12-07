@@ -41,7 +41,7 @@ class DeploymentSlotsImpl
             @Override
             public DeploymentSlot typeConvert(SiteInner siteInner) {
                 siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
-                return wrapModel(siteInner);
+                return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
             }
         };
     }
@@ -58,12 +58,7 @@ class DeploymentSlotsImpl
         if (inner == null) {
             return null;
         }
-        SiteConfigInner configInner = inner.siteConfig();
-        if (configInner == null) {
-            configInner = new SiteConfigInner();
-            configInner.withLocation(inner.location());
-        }
-        return new DeploymentSlotImpl(inner.name(), inner, configInner, parent, innerCollection, super.manager, serviceClient);
+        return new DeploymentSlotImpl(inner.name(), inner, inner.siteConfig(), parent, innerCollection, super.manager, serviceClient);
     }
 
     protected PagedList<DeploymentSlot> wrapList(PagedList<SiteInner> pagedList) {
@@ -82,7 +77,7 @@ class DeploymentSlotsImpl
             return null;
         }
         siteInner.withSiteConfig(innerCollection.getConfigurationSlot(resourceGroup, parentName, name));
-        return wrapModel(siteInner);
+        return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
     }
 
     @Override

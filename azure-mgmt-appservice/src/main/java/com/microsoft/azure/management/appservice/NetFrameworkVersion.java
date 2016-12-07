@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public final class NetFrameworkVersion {
     /** Static value v3.5 for NetFrameworkVersion. */
-    public static final NetFrameworkVersion V3_5 = new NetFrameworkVersion("v3.5");
+    public static final NetFrameworkVersion V3_0 = new NetFrameworkVersion("v3.0");
 
     /** Static value v4.6 for NetFrameworkVersion. */
     public static final NetFrameworkVersion V4_6 = new NetFrameworkVersion("v4.6");

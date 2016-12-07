@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 /**
  * Entry point for web app management API.
  */
+@Fluent
 public interface WebApps extends
         SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,

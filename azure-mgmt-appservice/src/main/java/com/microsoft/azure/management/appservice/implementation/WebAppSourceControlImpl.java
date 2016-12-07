@@ -78,18 +78,6 @@ class WebAppSourceControlImpl<
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGit(String url) {
-        inner().withIsMercurial(false).withRepoUrl(url);
-        return this;
-    }
-
-    @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withMercurial(String url) {
-        inner().withIsMercurial(true).withRepoUrl(url);
-        return this;
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT parent() {
         return (FluentImplT) parent;
@@ -102,25 +90,25 @@ class WebAppSourceControlImpl<
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicExternalRepository() {
-        inner().withIsManualIntegration(true);
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicGitRepository(String url) {
+        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
         return this;
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGitHubRepository(String organization, String repository) {
-        return withGitHubRepository(String.format("https://github.com/%s/%s", organization, repository));
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicMercurialRepository(String url) {
+        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
+        return this;
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGitHubRepository(String url) {
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String organization, String repository) {
+        return withContinuouslyIntegratedGitHubRepository(String.format("https://github.com/%s/%s", organization, repository));
+    }
+
+    @Override
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String url) {
         inner().withRepoUrl(url).withIsMercurial(false).withIsManualIntegration(false);
-        return this;
-    }
-
-    @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withLocalGitRepository() {
-        inner().withRepoUrl(null).withBranch(null).withIsMercurial(false).withIsManualIntegration(false);
         return this;
     }
 

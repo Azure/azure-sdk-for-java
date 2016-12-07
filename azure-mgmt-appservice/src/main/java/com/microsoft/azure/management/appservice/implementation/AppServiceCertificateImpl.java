@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
@@ -26,6 +27,7 @@ import java.util.List;
 /**
  * The implementation for {@link AppServicePlan}.
  */
+@LangDefinition
 class AppServiceCertificateImpl
         extends
         GroupableResourceImpl<

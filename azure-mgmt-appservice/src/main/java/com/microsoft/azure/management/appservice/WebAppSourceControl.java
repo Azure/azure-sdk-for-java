@@ -52,7 +52,6 @@ public interface WebAppSourceControl extends
             DefinitionStages.WithAttach<ParentT>,
             DefinitionStages.GitHubWithAttach<ParentT>,
             DefinitionStages.WithRepositoryType<ParentT>,
-            DefinitionStages.WithExternalRepository<ParentT>,
             DefinitionStages.WithBranch<ParentT>,
             DefinitionStages.WithGitHubBranch<ParentT> {
     }
@@ -76,9 +75,18 @@ public interface WebAppSourceControl extends
             /**
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
-             * @return
+             * @param url the url of the Git repository
+             * @return the next stage of the web app source control definition
              */
-            WithExternalRepository<ParentT> withPublicExternalRepository();
+            WithBranch<ParentT> withPublicGitRepository(String url);
+
+            /**
+             * Specifies the repository to be a public external repository, either Git or Mercurial.
+             * Continuous integration will not be turned on.
+             * @param url the url of the Mercurial repository
+             * @return the next stage of the web app source control definition
+             */
+            WithBranch<ParentT> withPublicMercurialRepository(String url);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration
@@ -89,7 +97,7 @@ public interface WebAppSourceControl extends
              * @param repository the name of the repository, e.g. azure-sdk-for-java
              * @return the next stage of the web app source control definition
              */
-            WithBranch<ParentT> withGitHubRepository(String organization, String repository);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization, String repository);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration
@@ -99,34 +107,7 @@ public interface WebAppSourceControl extends
              * @param url the URL pointing to the repository, e.g. https://github.com/Azure/azure-sdk-for-java
              * @return the next stage of the web app source control definition
              */
-            WithBranch<ParentT> withGitHubRepository(String url);
-
-            /**
-             * Specifies the repository to be the implicitly created GitHub repository on
-             * the web app's hosting file system. The username / password information can
-             * be acquired from {@link WebAppBase#getPublishingCredentials()}.
-             * @return the next stage of the web app source control definition
-             */
-            WithAttach<ParentT> withLocalGitRepository();
-        }
-
-        /**
-         * A web app source control definition stage allowing external source control information
-         * to be set.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
-         */
-        interface WithExternalRepository<ParentT> {
-            /**
-             * Specifies the repository to be a GIT repository.
-             * @return the next stage of the web app source control definition
-             */
-            WithBranch<ParentT> withGit(String url);
-
-            /**
-             * Specifies the repository to be a Mercurial repository.
-             * @return the next stage of the web app source control definition
-             */
-            WithBranch<ParentT> withMercurial(String url);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String url);
         }
 
         /**
@@ -199,7 +180,6 @@ public interface WebAppSourceControl extends
             UpdateDefinitionStages.WithAttach<ParentT>,
             UpdateDefinitionStages.GitHubWithAttach<ParentT>,
             UpdateDefinitionStages.WithRepositoryType<ParentT>,
-            UpdateDefinitionStages.WithExternalRepository<ParentT>,
             UpdateDefinitionStages.WithBranch<ParentT>,
             UpdateDefinitionStages.WithGitHubBranch<ParentT> {
     }
@@ -223,9 +203,18 @@ public interface WebAppSourceControl extends
             /**
              * Specifies the repository to be a public external repository, either Git or Mercurial.
              * Continuous integration will not be turned on.
-             * @return
+             * @param url the url of the Git repository
+             * @return the next stage of the web app source control definition
              */
-            WithExternalRepository<ParentT> withPublicExternalRepository();
+            WithBranch<ParentT> withPublicGitRepository(String url);
+
+            /**
+             * Specifies the repository to be a public external repository, either Git or Mercurial.
+             * Continuous integration will not be turned on.
+             * @param url the url of the Mercurial repository
+             * @return the next stage of the web app source control definition
+             */
+            WithBranch<ParentT> withPublicMercurialRepository(String url);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration
@@ -236,7 +225,7 @@ public interface WebAppSourceControl extends
              * @param repository the name of the repository, e.g. azure-sdk-for-java
              * @return the next stage of the web app source control definition
              */
-            WithBranch<ParentT> withGitHubRepository(String organization, String repository);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String organization, String repository);
 
             /**
              * Specifies the repository to be a GitHub repository. Continuous integration
@@ -246,34 +235,7 @@ public interface WebAppSourceControl extends
              * @param url the URL pointing to the repository, e.g. https://github.com/Azure/azure-sdk-for-java
              * @return the next stage of the web app source control definition
              */
-            WithGitHubBranch<ParentT> withGitHubRepository(String url);
-
-            /**
-             * Specifies the repository to be the implicitly created GitHub repository on
-             * the web app's hosting file system. The username / password information can
-             * be acquired from {@link WebAppBase#getPublishingCredentials()}.
-             * @return the next stage of the web app source control definition
-             */
-            WithAttach<ParentT> withLocalGitRepository();
-        }
-
-        /**
-         * A web app source control definition allowing an external Git or
-         * Mercurial repository to be specified.
-         * @param <ParentT> the return type of the final {@link WithAttach#attach()}
-         */
-        interface WithExternalRepository<ParentT> {
-            /**
-             * Specifies the repository to be a GIT repository.
-             * @return the next stage of the web app source control definition
-             */
-            WithBranch<ParentT> withGit(String url);
-
-            /**
-             * Specifies the repository to be a Mercurial repository.
-             * @return the next stage of the web app source control definition
-             */
-            WithBranch<ParentT> withMercurial(String url);
+            WithGitHubBranch<ParentT> withContinuouslyIntegratedGitHubRepository(String url);
         }
 
         /**

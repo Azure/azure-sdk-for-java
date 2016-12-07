@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -24,6 +25,7 @@ import java.util.Set;
  * An immutable client-side representation of an Azure Web App or deployment slot.
  * @param <T> the fluent interface of the web app or deployment slot
  */
+@Fluent
 public interface WebAppBase<T extends WebAppBase<T>> extends
         HasName,
         Refreshable<T>,
@@ -235,17 +237,17 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     /**
      * @return the app settings defined on the web app
      */
-    Map<String, AppSetting> getAppSettings();
+    Map<String, AppSetting> appSettings();
 
     /**
      * @return the connection strings defined on the web app
      */
-    Map<String, ConnectionString> getConnectionStrings();
+    Map<String, ConnectionString> connectionStrings();
 
     /**
-     * @return the FTP and Git publishing credentials
+     * @return the URL and credentials for publishing through FTP or Git
      */
-    PublishingCredentials getPublishingCredentials();
+    PublishingProfile getPublishingProfile();
 
     /**
      * @return the source control information for the web app
@@ -449,6 +451,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
             WithCreate<FluentT> withPhpVersion(PhpVersion version);
 
             /**
+             * Turn off PHP support.
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withoutPhp();
+
+            /**
              * Specifies the Java version.
              * @param version the Java version
              * @return the next stage of the web app definition
@@ -605,6 +613,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the first stage of a source control definition
              */
             WebAppSourceControl.DefinitionStages.Blank<WithCreate<FluentT>> defineSourceControl();
+
+            /**
+             * Specifies the source control to be a local Git repository on the web app.
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withLocalGitSourceControl();
         }
 
         /**
@@ -615,6 +629,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
          */
         interface WithCreate<FluentT> extends
                 Creatable<FluentT>,
+                GroupableResource.DefinitionWithTags<WithCreate<FluentT>>,
                 WithSiteEnabled<FluentT>,
                 WithScmSiteAlsoStopped<FluentT>,
                 WithClientAffinityEnabled<FluentT>,
@@ -738,6 +753,20 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
         }
 
         /**
+         * The stage of the web app update allowing Java web container to be set. This is required
+         * after specifying Java version.
+         * @param <FluentT> the type of the resource, either a web app or a deployment slot
+         */
+        interface WithWebContainer<FluentT> {
+            /**
+             * Specifies the Java web container.
+             * @param webContainer the Java web container
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withWebContainer(WebContainer webContainer);
+        }
+
+        /**
          * The stage of the web app update allowing other configurations to be set. These configurations
          * can be cloned when creating or swapping with a deployment slot.
          * @param <FluentT> the type of the resource, either a web app or a deployment slot
@@ -762,14 +791,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @param version the Java version
              * @return the next stage of web app update
              */
-            Update<FluentT> withJavaVersion(JavaVersion version);
+            WithWebContainer<FluentT> withJavaVersion(JavaVersion version);
 
             /**
-             * Specifies the Java web container.
-             * @param webContainer the Java web container
+             * Turn off Java support.
              * @return the next stage of web app update
              */
-            Update<FluentT> withWebContainer(WebContainer webContainer);
+            Update<FluentT> withoutJava();
 
             /**
              * Specifies the Python version.
@@ -777,6 +805,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of web app update
              */
             Update<FluentT> withPythonVersion(PythonVersion version);
+
+            /**
+             * Turn off Python support.
+             * @return the next stage of web app update
+             */
+            Update<FluentT> withoutPython();
 
             /**
              * Specifies the platform architecture to use.
@@ -957,6 +991,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of the web app update
              */
             Update<FluentT> withoutSourceControl();
+
+            /**
+             * Specifies the source control to be a local Git repository on the web app.
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withLocalGitSourceControl();
+
         }
     }
 
@@ -966,6 +1007,7 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
      */
     interface Update<FluentT> extends
             Appliable<FluentT>,
+            GroupableResource.UpdateWithTags<Update<FluentT>>,
             UpdateStages.WithHostNameBinding<FluentT>,
             UpdateStages.WithHostNameSslBinding<FluentT>,
             UpdateStages.WithClientAffinityEnabled<FluentT>,

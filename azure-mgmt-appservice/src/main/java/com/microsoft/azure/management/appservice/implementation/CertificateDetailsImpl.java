@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.CertificateDetails;
@@ -14,6 +15,7 @@ import org.joda.time.DateTime;
 /**
  * The implementation for {@link AppServicePlan}.
  */
+@LangDefinition
 class CertificateDetailsImpl
         extends
         IndexableWrapperImpl<
