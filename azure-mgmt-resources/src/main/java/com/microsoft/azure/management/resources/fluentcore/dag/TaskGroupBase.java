@@ -41,7 +41,7 @@ public abstract class TaskGroupBase<T, U extends TaskItem<T>>
      * @param rootTaskItem the root task
      */
     public TaskGroupBase(String rootTaskItemId, U rootTaskItem) {
-        this.dag = new DAGraph<>(new TaskItemHolder(rootTaskItemId, rootTaskItem));
+        this.dag = new DAGraph<U, TaskItemHolder<T, U>>(new TaskItemHolder<T, U>(rootTaskItemId, rootTaskItem));
     }
 
     @Override
