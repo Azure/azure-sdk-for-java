@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
@@ -53,7 +54,7 @@ class ApplicationGatewaysImpl
 
     @Override
     public ApplicationGatewayImpl define(String name) {
-        return wrapModel(name);
+        return wrapModel(name).withSize(ApplicationGatewaySkuName.STANDARD_SMALL).withInstanceCount(1);
     }
 
     // Fluent model create helpers

@@ -15,13 +15,7 @@ import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.PublicIpAddresses;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Assert;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class TestVirtualMachineSsh extends TestTemplate<VirtualMachine, VirtualMachines> {
     final PublicIpAddresses pips;

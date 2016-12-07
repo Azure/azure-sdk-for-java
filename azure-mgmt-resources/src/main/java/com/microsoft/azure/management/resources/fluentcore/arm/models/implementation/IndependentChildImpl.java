@@ -69,6 +69,7 @@ public abstract class IndependentChildImpl<
         return this.id() == null;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public FluentModelImplT withExistingParentResource(String groupName, String parentName) {
         this.groupName = groupName;
@@ -82,6 +83,7 @@ public abstract class IndependentChildImpl<
         return withExistingParentResource(existingParentResource.resourceGroupName(), existingParentResource.name());
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public FluentModelImplT withNewParentResource(Creatable<FluentParentModelT> parentResourceCreatable) {
         if (this.creatableParentResourceKey == null) {
@@ -97,6 +99,7 @@ public abstract class IndependentChildImpl<
         this.setParentName(inner);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Observable<FluentModelT> createResourceAsync() {
         if (this.creatableParentResourceKey != null) {

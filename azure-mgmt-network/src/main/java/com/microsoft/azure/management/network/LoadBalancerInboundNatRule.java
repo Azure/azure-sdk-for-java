@@ -10,6 +10,7 @@ import com.microsoft.azure.management.network.implementation.InboundNatRuleInner
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIp;
 import com.microsoft.azure.management.network.model.HasFrontend;
+import com.microsoft.azure.management.network.model.HasFrontendPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -25,6 +26,7 @@ public interface LoadBalancerInboundNatRule extends
     HasBackendPort,
     HasProtocol<TransportProtocol>,
     HasFloatingIp,
+    HasFrontendPort,
     Wrapper<InboundNatRuleInner>,
     ChildResource<LoadBalancer> {
 
@@ -37,11 +39,6 @@ public interface LoadBalancerInboundNatRule extends
      * @return the resource ID of the network interface assigned as the backend of this inbound NAT rule
      */
     String backendNetworkInterfaceId();
-
-    /**
-     * @return the frontend port number associated with this NAT rule
-     */
-    int frontendPort();
 
     /**
      * @return the number of minutes before an idle connection is closed
@@ -108,13 +105,7 @@ public interface LoadBalancerInboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify the frontend port.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFrontendPort<ParentT> {
-            /**
-             * Specifies the frontend port.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFrontendPort(int port);
+        interface WithFrontendPort<ParentT> extends HasFrontendPort.DefinitionStages.WithFrontendPort<WithAttach<ParentT>> {
         }
 
         /**
@@ -177,13 +168,7 @@ public interface LoadBalancerInboundNatRule extends
         /**
          * The stage of an inbound NAT rule update allowing to specify the frontend port.
          */
-        interface WithFrontendPort {
-            /**
-             * Specifies the frontend port.
-             * @param port a port number
-             * @return the next stage of the update
-             */
-            Update withFrontendPort(int port);
+        interface WithFrontendPort extends HasFrontendPort.UpdateStages.WithFrontendPort<Update> {
         }
 
         /**
@@ -272,13 +257,7 @@ public interface LoadBalancerInboundNatRule extends
          * The stage of an inbound NAT rule definition allowing to specify the frontend port.
          * @param <ParentT> the parent load balancer type
          */
-        interface WithFrontendPort<ParentT> {
-            /**
-             * Specifies the frontend port.
-             * @param port a port number
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withFrontendPort(int port);
+        interface WithFrontendPort<ParentT> extends HasFrontendPort.UpdateDefinitionStages.WithFrontendPort<WithAttach<ParentT>> {
         }
 
         /**

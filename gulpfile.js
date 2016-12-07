@@ -55,10 +55,10 @@ var mappings = {
         'package': 'com.microsoft.azure.management.network',
         'args': '-FT 1'
     },
-    'website': {
-        'dir': 'azure-mgmt-website',
+    'appservice': {
+        'dir': 'azure-mgmt-appservice',
         'source': 'arm-web/compositeWebAppClient.json',
-        'package': 'com.microsoft.azure.management.website',
+        'package': 'com.microsoft.azure.management.appservice',
         'args': '-FT 1'
     },
     'graph.rbac': {
