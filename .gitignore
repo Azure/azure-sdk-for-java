@@ -54,6 +54,3 @@ Thumbs.db
 
 # reduced pom files should not be included
 dependency-reduced-pom.xml
-
-# the translation file should not included
-translation.properties
