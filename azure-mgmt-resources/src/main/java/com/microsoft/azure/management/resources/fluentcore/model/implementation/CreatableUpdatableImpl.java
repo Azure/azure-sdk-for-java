@@ -106,6 +106,13 @@ public abstract class CreatableUpdatableImpl<
     }
 
     /**
+     * Default implementation of prepare().
+     */
+    @Override
+    public void prepare() {
+    }
+
+    /**
      * Begins an update for a new resource.
      * <p>
      * This is the beginning of the builder pattern used to update top level resources
@@ -120,7 +127,7 @@ public abstract class CreatableUpdatableImpl<
     }
 
     /**
-     * Default implementation of createAsyncStreaming().
+     * Default implementation of createAsync().
      *
      * @return the observable that emit the created resource.
      */

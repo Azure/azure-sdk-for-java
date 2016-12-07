@@ -26,35 +26,35 @@ public class DAGraphTest {
         expectedOrder.add("E");
         expectedOrder.add("F");
 
-        DAGNode<String> nodeA = new DAGNode<>("A", "dataA");
-        DAGNode<String> nodeI = new DAGNode<>("I", "dataI");
+        ItemHolder nodeA = new ItemHolder("A", "dataA");
+        ItemHolder nodeI = new ItemHolder("I", "dataI");
 
-        DAGNode<String> nodeB = new DAGNode<>("B", "dataB");
+        ItemHolder nodeB = new ItemHolder("B", "dataB");
         nodeB.addDependency(nodeA.key());
 
-        DAGNode<String> nodeC = new DAGNode<>("C", "dataC");
+        ItemHolder nodeC = new ItemHolder("C", "dataC");
         nodeC.addDependency(nodeA.key());
 
-        DAGNode<String> nodeH = new DAGNode<>("H", "dataH");
+        ItemHolder nodeH = new ItemHolder("H", "dataH");
         nodeH.addDependency(nodeI.key());
 
-        DAGNode<String> nodeG = new DAGNode<>("G", "dataG");
+        ItemHolder nodeG = new ItemHolder("G", "dataG");
         nodeG.addDependency(nodeC.key());
 
-        DAGNode<String> nodeE = new DAGNode<>("E", "dataE");
+        ItemHolder nodeE = new ItemHolder("E", "dataE");
         nodeE.addDependency(nodeB.key());
         nodeE.addDependency(nodeG.key());
 
-        DAGNode<String> nodeD = new DAGNode<>("D", "dataD");
+        ItemHolder nodeD = new ItemHolder("D", "dataD");
         nodeD.addDependency(nodeB.key());
 
 
-        DAGNode<String> nodeF = new DAGNode<>("F", "dataF");
+        ItemHolder nodeF = new ItemHolder("F", "dataF");
         nodeF.addDependency(nodeD.key());
         nodeF.addDependency(nodeE.key());
         nodeF.addDependency(nodeH.key());
 
-        DAGraph<String, DAGNode<String>> dag = new DAGraph<>(nodeF);
+        DAGraph<String, ItemHolder> dag = new DAGraph<>(nodeF);
         dag.addNode(nodeA);
         dag.addNode(nodeB);
         dag.addNode(nodeC);
@@ -65,7 +65,7 @@ public class DAGraphTest {
         dag.addNode(nodeI);
 
         dag.prepare();
-        DAGNode<String> nextNode = dag.getNext();
+        ItemHolder nextNode = dag.getNext();
         int i = 0;
         while (nextNode != null) {
             Assert.assertEquals(nextNode.key(), expectedOrder.get(i));
@@ -96,37 +96,37 @@ public class DAGraphTest {
         expectedOrder.add("E");
         expectedOrder.add("F");
 
-        DAGraph<String, DAGNode<String>> graphA = createGraph("A");
-        DAGraph<String, DAGNode<String>> graphI = createGraph("I");
+        DAGraph<String, ItemHolder> graphA = createGraph("A");
+        DAGraph<String, ItemHolder> graphI = createGraph("I");
 
-        DAGraph<String, DAGNode<String>> graphB = createGraph("B");
+        DAGraph<String, ItemHolder> graphB = createGraph("B");
         graphA.merge(graphB);
 
-        DAGraph<String, DAGNode<String>> graphC = createGraph("C");
+        DAGraph<String, ItemHolder> graphC = createGraph("C");
         graphA.merge(graphC);
 
-        DAGraph<String, DAGNode<String>> graphH = createGraph("H");
+        DAGraph<String, ItemHolder> graphH = createGraph("H");
         graphI.merge(graphH);
 
-        DAGraph<String, DAGNode<String>> graphG = createGraph("G");
+        DAGraph<String, ItemHolder> graphG = createGraph("G");
         graphC.merge(graphG);
 
-        DAGraph<String, DAGNode<String>> graphE = createGraph("E");
+        DAGraph<String, ItemHolder> graphE = createGraph("E");
         graphB.merge(graphE);
         graphG.merge(graphE);
 
-        DAGraph<String, DAGNode<String>> graphD = createGraph("D");
+        DAGraph<String, ItemHolder> graphD = createGraph("D");
         graphB.merge(graphD);
 
-        DAGraph<String, DAGNode<String>> graphF = createGraph("F");
+        DAGraph<String, ItemHolder> graphF = createGraph("F");
         graphD.merge(graphF);
         graphE.merge(graphF);
         graphH.merge(graphF);
 
-        DAGraph<String, DAGNode<String>> dag = graphF;
+        DAGraph<String, ItemHolder> dag = graphF;
         dag.prepare();
 
-        DAGNode<String> nextNode = dag.getNext();
+        ItemHolder nextNode = dag.getNext();
         int i = 0;
         while (nextNode != null) {
             Assert.assertEquals(expectedOrder.get(i), nextNode.key());
@@ -137,9 +137,9 @@ public class DAGraphTest {
         }
     }
 
-    private DAGraph<String, DAGNode<String>> createGraph(String resourceName) {
-        DAGNode<String> node = new DAGNode<>(resourceName, "data" + resourceName);
-        DAGraph<String, DAGNode<String>> graph = new DAGraph<>(node);
+    private DAGraph<String, ItemHolder> createGraph(String resourceName) {
+        ItemHolder node = new ItemHolder(resourceName, "data" + resourceName);
+        DAGraph<String, ItemHolder> graph = new DAGraph<>(node);
         return graph;
     }
 }

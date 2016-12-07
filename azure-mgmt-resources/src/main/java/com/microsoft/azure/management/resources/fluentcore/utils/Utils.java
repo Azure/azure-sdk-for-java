@@ -59,6 +59,7 @@ public final class Utils {
      * @param <U> the specialized type of last item in the input stream
      * @return an observable that emits last item
      */
+    @SuppressWarnings("unchecked")
     public static <U extends Indexable> Observable<U> rootResource(Observable<Indexable> stream) {
         return stream.last().map(new Func1<Indexable, U>() {
             @Override
