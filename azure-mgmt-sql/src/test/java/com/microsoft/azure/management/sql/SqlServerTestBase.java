@@ -26,8 +26,8 @@ public abstract class SqlServerTestBase {
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
-                .withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-                .withReadTimeout(60, TimeUnit.SECONDS)
+//                .withProxy( new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                .withReadTimeout(100, TimeUnit.SECONDS)
                 .build();
 
         resourceManager = ResourceManager

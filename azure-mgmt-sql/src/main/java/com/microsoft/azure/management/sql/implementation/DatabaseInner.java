@@ -14,6 +14,7 @@ import com.microsoft.azure.management.sql.CreateMode;
 import com.microsoft.azure.management.sql.DatabaseEditions;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import java.util.List;
+import com.microsoft.azure.management.sql.UpgradeHint;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -24,38 +25,38 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class DatabaseInner extends Resource {
     /**
-     * The collation of the Azure SQL Database.
+     * The collation of the Azure SQL database.
      */
     @JsonProperty(value = "properties.collation")
     private String collation;
 
     /**
-     * The creation date of the Azure SQL Database (ISO8601 format).
+     * The creation date of the Azure SQL database (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * The containment state of the Azure SQL Database.
+     * The containment state of the Azure SQL database.
      */
     @JsonProperty(value = "properties.containmentState", access = JsonProperty.Access.WRITE_ONLY)
     private Long containmentState;
 
     /**
-     * The current Service Level Objective Id of the Azure SQL Database. This
-     * is the Id of the Service Level Objective that is currently active.
+     * The current Service Level Objective ID of the Azure SQL database. This
+     * is the ID of the Service Level Objective that is currently active.
      */
     @JsonProperty(value = "properties.currentServiceObjectiveId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID currentServiceObjectiveId;
 
     /**
-     * The Id of the Azure SQL Database.
+     * The ID of the Azure SQL database.
      */
     @JsonProperty(value = "properties.databaseId", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseId;
 
     /**
-     * The recovery period start date of the Azure SQL Database. This records
+     * The recovery period start date of the Azure SQL database. This records
      * the start date and time when recovery is available for this Azure SQL
      * Database (ISO8601 format).
      */
@@ -71,26 +72,26 @@ public class DatabaseInner extends Resource {
     private CreateMode createMode;
 
     /**
-     * Conditional.  Specifies the resource Id of the source database.  If
+     * Conditional. Specifies the resource ID of the source database. If
      * createMode is not set to Default, then this value must be specified.
-     * The name of the source database must be the same.  NOTE: Collation,
+     * The name of the source database must be the same. NOTE: Collation,
      * Edition, and MaxSizeBytes must remain the same while the link is
-     * active.  Values specified for these parameters will be ignored.
+     * active. Values specified for these parameters will be ignored.
      */
     @JsonProperty(value = "properties.sourceDatabaseId")
     private String sourceDatabaseId;
 
     /**
-     * The edition of the Azure SQL Database.  The DatabaseEditions
-     * enumeration contains all the valid editions. Possible values include:
-     * 'Web', 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
+     * The edition of the Azure SQL database. The DatabaseEditions enumeration
+     * contains all the valid editions. Possible values include: 'Web',
+     * 'Business', 'Basic', 'Standard', 'Premium', 'Free', 'Stretch',
      * 'DataWarehouse'.
      */
     @JsonProperty(value = "properties.edition")
     private DatabaseEditions edition;
 
     /**
-     * The max size of the Azure SQL Database expressed in bytes. Note: Only
+     * The max size of the Azure SQL database expressed in bytes. Note: Only
      * the following sizes are supported (in addition to limitations being
      * placed on each edition): { 100 MB | 500 MB |1 GB | 5 GB | 10 GB | 20
      * GB | 30 GB … 150 GB | 200 GB … 500 GB }.
@@ -99,9 +100,9 @@ public class DatabaseInner extends Resource {
     private String maxSizeBytes;
 
     /**
-     * The configured Service Level Objective Id of the Azure SQL Database.
+     * The configured Service Level Objective ID of the Azure SQL database.
      * This is the Service Level Objective that is in the process of being
-     * applied to the Azure SQL Database.  Once successfully updated, it will
+     * applied to the Azure SQL database. Once successfully updated, it will
      * match the value of currentServiceObjectiveId property.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveId")
@@ -109,24 +110,23 @@ public class DatabaseInner extends Resource {
 
     /**
      * The name of the configured Service Level Objective of the Azure SQL
-     * Database. This is the Service Level Objective that is in the process
-     * of being applied to the Azure SQL Database.  Once successfully
-     * updated, it will match the value of serviceLevelObjective property.
-     * Possible values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2',
-     * 'P3'.
+     * database. This is the Service Level Objective that is in the process
+     * of being applied to the Azure SQL database. Once successfully updated,
+     * it will match the value of serviceLevelObjective property. Possible
+     * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
     @JsonProperty(value = "properties.requestedServiceObjectiveName")
     private ServiceObjectiveName requestedServiceObjectiveName;
 
     /**
-     * The current Service Level Objective of the Azure SQL Database. Possible
+     * The current Service Level Objective of the Azure SQL database. Possible
      * values include: 'Basic', 'S0', 'S1', 'S2', 'S3', 'P1', 'P2', 'P3'.
      */
     @JsonProperty(value = "properties.serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceObjectiveName serviceLevelObjective;
 
     /**
-     * The status of the Azure SQL Database.
+     * The status of the Azure SQL database.
      */
     @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
@@ -153,7 +153,7 @@ public class DatabaseInner extends Resource {
      * The upgrade hint for this database.
      */
     @JsonProperty(value = "properties.upgradeHint", access = JsonProperty.Access.WRITE_ONLY)
-    private UpgradeHintInner upgradeHint;
+    private UpgradeHint upgradeHint;
 
     /**
      * The schemas from this database.
@@ -419,7 +419,7 @@ public class DatabaseInner extends Resource {
      *
      * @return the upgradeHint value
      */
-    public UpgradeHintInner upgradeHint() {
+    public UpgradeHint upgradeHint() {
         return this.upgradeHint;
     }
 

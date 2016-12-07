@@ -83,7 +83,7 @@ public final class ElasticPoolsInner {
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/elasticPoolDatabaseActivity")
-        Observable<Response<ResponseBody>> listDatabaseActivity(@Path("elasticPoolName") String elasticPoolName, @Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> listDatabaseActivity(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Path("elasticPoolName") String elasticPoolName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/elasticPools/{elasticPoolName}/databases/{databaseName}")
@@ -98,10 +98,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -111,10 +111,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -125,10 +125,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the observable for the request
      */
     public Observable<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -143,10 +143,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ElasticPoolInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -174,10 +174,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the ElasticPoolInner object if successful.
      */
     public ElasticPoolInner beginCreateOrUpdate(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -187,10 +187,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -201,10 +201,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the observable to the ElasticPoolInner object
      */
     public Observable<ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -219,10 +219,10 @@ public final class ElasticPoolsInner {
     /**
      * Creates a new Azure SQL elastic pool or updates an existing Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be operated on (Updated or created).
-     * @param parameters The required parameters for createing or updating an Elastic Pool.
+     * @param parameters The required parameters for creating or updating an Elastic Pool.
      * @return the observable to the ElasticPoolInner object
      */
     public Observable<ServiceResponse<ElasticPoolInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters) {
@@ -269,8 +269,8 @@ public final class ElasticPoolsInner {
     /**
      * Deletes the Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      */
     public void delete(String resourceGroupName, String serverName, String elasticPoolName) {
@@ -280,8 +280,8 @@ public final class ElasticPoolsInner {
     /**
      * Deletes the Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -293,8 +293,8 @@ public final class ElasticPoolsInner {
     /**
      * Deletes the Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -310,8 +310,8 @@ public final class ElasticPoolsInner {
     /**
      * Deletes the Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be deleted.
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -353,8 +353,8 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the ElasticPoolInner object if successful.
      */
@@ -365,8 +365,8 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -378,8 +378,8 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the observable to the ElasticPoolInner object
      */
@@ -395,8 +395,8 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the observable to the ElasticPoolInner object
      */
@@ -438,8 +438,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pools.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the List&lt;ElasticPoolInner&gt; object if successful.
      */
     public List<ElasticPoolInner> listByServer(String resourceGroupName, String serverName) {
@@ -449,8 +449,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pools.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -461,8 +461,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pools.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
     public Observable<List<ElasticPoolInner>> listByServerAsync(String resourceGroupName, String serverName) {
@@ -477,8 +477,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pools.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ElasticPoolInner&gt; object
      */
     public Observable<ServiceResponse<List<ElasticPoolInner>>> listByServerWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -517,8 +517,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pool activities.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
      * @return the List&lt;ElasticPoolActivityInner&gt; object if successful.
      */
@@ -529,8 +529,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pool activities.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -542,8 +542,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pool activities.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
      * @return the observable to the List&lt;ElasticPoolActivityInner&gt; object
      */
@@ -559,8 +559,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about Azure SQL elastic pool activities.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool for which to get the current activity.
      * @return the observable to the List&lt;ElasticPoolActivityInner&gt; object
      */
@@ -603,38 +603,38 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
      * @return the List&lt;ElasticPoolDatabaseActivityInner&gt; object if successful.
      */
-    public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String elasticPoolName, String resourceGroupName, String serverName) {
-        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).toBlocking().single().getBody();
+    public List<ElasticPoolDatabaseActivityInner> listDatabaseActivity(String resourceGroupName, String serverName, String elasticPoolName) {
+        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).toBlocking().single().getBody();
     }
 
     /**
      * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
-        return ServiceCall.create(listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName), serviceCallback);
+    public ServiceCall<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String resourceGroupName, String serverName, String elasticPoolName, final ServiceCallback<List<ElasticPoolDatabaseActivityInner>> serviceCallback) {
+        return ServiceCall.create(listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName), serviceCallback);
     }
 
     /**
      * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
      * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
      */
-    public Observable<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String elasticPoolName, String resourceGroupName, String serverName) {
-        return listDatabaseActivityWithServiceResponseAsync(elasticPoolName, resourceGroupName, serverName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
+    public Observable<List<ElasticPoolDatabaseActivityInner>> listDatabaseActivityAsync(String resourceGroupName, String serverName, String elasticPoolName) {
+        return listDatabaseActivityWithServiceResponseAsync(resourceGroupName, serverName, elasticPoolName).map(new Func1<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>, List<ElasticPoolDatabaseActivityInner>>() {
             @Override
             public List<ElasticPoolDatabaseActivityInner> call(ServiceResponse<List<ElasticPoolDatabaseActivityInner>> response) {
                 return response.getBody();
@@ -645,15 +645,12 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about activity on Azure SQL databases inside of an Azure SQL elastic pool.
      *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool.
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
      * @return the observable to the List&lt;ElasticPoolDatabaseActivityInner&gt; object
      */
-    public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> listDatabaseActivityWithServiceResponseAsync(String elasticPoolName, String resourceGroupName, String serverName) {
-        if (elasticPoolName == null) {
-            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
-        }
+    public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> listDatabaseActivityWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -663,8 +660,11 @@ public final class ElasticPoolsInner {
         if (serverName == null) {
             throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
         }
+        if (elasticPoolName == null) {
+            throw new IllegalArgumentException("Parameter elasticPoolName is required and cannot be null.");
+        }
         final String apiVersion = "2014-04-01";
-        return service.listDatabaseActivity(elasticPoolName, this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+        return service.listDatabaseActivity(this.client.subscriptionId(), resourceGroupName, serverName, elasticPoolName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<ElasticPoolDatabaseActivityInner>>> call(Response<ResponseBody> response) {
@@ -689,10 +689,10 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the DatabaseInner object if successful.
      */
     public DatabaseInner getDatabase(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
@@ -702,10 +702,10 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -716,10 +716,10 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
     public Observable<DatabaseInner> getDatabaseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
@@ -734,10 +734,10 @@ public final class ElasticPoolsInner {
     /**
      * Gets information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
-     * @param databaseName The name of the Azure SQL Database to be retrieved.
+     * @param databaseName The name of the Azure SQL database to be retrieved.
      * @return the observable to the DatabaseInner object
      */
     public Observable<ServiceResponse<DatabaseInner>> getDatabaseWithServiceResponseAsync(String resourceGroupName, String serverName, String elasticPoolName, String databaseName) {
@@ -781,8 +781,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the List&lt;DatabaseInner&gt; object if successful.
      */
@@ -793,8 +793,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -806,8 +806,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
@@ -823,8 +823,8 @@ public final class ElasticPoolsInner {
     /**
      * Returns information about an Azure SQL database inside of an Azure SQL elastic pool.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param elasticPoolName The name of the Azure SQL Elastic Pool to be retrieved.
      * @return the observable to the List&lt;DatabaseInner&gt; object
      */
