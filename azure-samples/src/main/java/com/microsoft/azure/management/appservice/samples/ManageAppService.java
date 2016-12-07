@@ -232,8 +232,7 @@ public final class ManageAppService {
 
                 slot2 = slot2.update()
                         .defineSourceControl()
-                            .withPublicExternalRepository()
-                            .withGit("https://github.com/jianghaolu/azure-site-test")
+                            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
                             .withBranch("master")
                             .attach()
                         .apply();

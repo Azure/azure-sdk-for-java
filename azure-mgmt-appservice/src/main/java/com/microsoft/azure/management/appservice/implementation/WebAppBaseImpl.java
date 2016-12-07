@@ -1120,6 +1120,16 @@ abstract class WebAppBaseImpl<
 
     @Override
     @SuppressWarnings("unchecked")
+    public FluentImplT withLocalGitSourceControl() {
+        if (inner().siteConfig() == null) {
+            inner().withSiteConfig(new SiteConfigInner());
+        }
+        inner().siteConfig().withScmType("LocalGit");
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
     public FluentImplT withoutSourceControl() {
         sourceControlToDelete = true;
         return (FluentImplT) this;

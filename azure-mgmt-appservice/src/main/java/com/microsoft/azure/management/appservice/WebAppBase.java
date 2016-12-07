@@ -243,9 +243,9 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
     Map<String, ConnectionString> connectionStrings();
 
     /**
-     * @return the FTP and Git publishing credentials
+     * @return the URL and credentials for publishing through FTP or Git
      */
-    PublishingCredentials getPublishingCredentials();
+    PublishingProfile getPublishingProfile();
 
     /**
      * @return the source control information for the web app
@@ -611,6 +611,12 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the first stage of a source control definition
              */
             WebAppSourceControl.DefinitionStages.Blank<WithCreate<FluentT>> defineSourceControl();
+
+            /**
+             * Specifies the source control to be a local Git repository on the web app.
+             * @return the next stage of the web app definition
+             */
+            WithCreate<FluentT> withLocalGitSourceControl();
         }
 
         /**
@@ -983,6 +989,13 @@ public interface WebAppBase<T extends WebAppBase<T>> extends
              * @return the next stage of the web app update
              */
             Update<FluentT> withoutSourceControl();
+
+            /**
+             * Specifies the source control to be a local Git repository on the web app.
+             * @return the next stage of the web app update
+             */
+            Update<FluentT> withLocalGitSourceControl();
+
         }
     }
 

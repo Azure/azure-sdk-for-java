@@ -8,19 +8,23 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.PublishingCredentials;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -138,9 +142,14 @@ class WebAppImpl
     }
 
     @Override
-    public PublishingCredentials getPublishingCredentials() {
-        UserInner inner = client.listPublishingCredentials(resourceGroupName(), name());
-        return new PublishingCredentialsImpl(inner);
+    public PublishingProfile getPublishingProfile() {
+        InputStream stream = client.listPublishingProfileXmlWithSecrets(resourceGroupName(), name());
+        try {
+            String xml = CharStreams.toString(new InputStreamReader(stream));
+            return new PublishingProfileImpl(xml);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

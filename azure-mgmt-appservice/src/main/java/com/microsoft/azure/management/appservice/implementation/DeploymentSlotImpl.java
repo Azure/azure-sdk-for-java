@@ -8,16 +8,20 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.PublishingCredentials;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -60,6 +64,17 @@ class DeploymentSlotImpl
                 return input.name().replace(name() + "/", "");
             }
         });
+    }
+
+    @Override
+    public PublishingProfile getPublishingProfile() {
+        InputStream stream = client.listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), parent().name(), name());
+        try {
+            String xml = CharStreams.toString(new InputStreamReader(stream));
+            return new PublishingProfileImpl(xml);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -210,12 +225,6 @@ class DeploymentSlotImpl
                 return null;
             }
         });
-    }
-
-    @Override
-    public PublishingCredentials getPublishingCredentials() {
-        UserInner inner = client.listPublishingCredentialsSlot(resourceGroupName(), parent().name(), name());
-        return new PublishingCredentialsImpl(inner);
     }
 
     @Override
