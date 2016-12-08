@@ -27,10 +27,7 @@ public class ServiceBusException extends Exception
 		super(message);
 		this.isTransient = isTransient;
 	}
-
-	/**
-	 * Constructor for the base error case
-	 */
+	
 	public ServiceBusException(final boolean isTransient, final Throwable cause)
 	{
 		super(cause);

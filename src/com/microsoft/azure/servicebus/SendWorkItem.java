@@ -7,7 +7,7 @@ package com.microsoft.azure.servicebus;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
-public class SendWorkItem<T> extends WorkItem<T>
+class SendWorkItem<T> extends WorkItem<T>
 {
 	private byte[] amqpMessage;
 	private int messageFormat;

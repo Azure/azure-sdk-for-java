@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-public class ReceiveWorkItem extends WorkItem<Collection<MessageWithDeliveryTag>>
+class ReceiveWorkItem extends WorkItem<Collection<MessageWithDeliveryTag>>
 {
 	private final int maxMessageCount;
 

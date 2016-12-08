@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus;
 
 import java.util.Locale;
 
-public abstract class ErrorContext
+abstract class ErrorContext
 {
 	private final String namespaceName;
 

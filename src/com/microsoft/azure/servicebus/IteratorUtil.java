@@ -6,7 +6,7 @@ package com.microsoft.azure.servicebus;
 
 import java.util.Iterator;
 
-public final class IteratorUtil
+final class IteratorUtil
 {
 	private IteratorUtil()
 	{
