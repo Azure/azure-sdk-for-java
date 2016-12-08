@@ -32,13 +32,13 @@ import java.util.Map;
 /**
  * Azure compute sample for creating multiple virtual machines in paralllel.
  */
-public class CreateVirtualMachinesInParallel {
+public final class CreateVirtualMachinesInParallel {
 
     /**
-     * Main entry point
+     * Main entry point.
      * @param args the parameters
      */
-    public static void main (String[] args) {
+    public static void main(String[] args) {
 
         final String rgName = ResourceNamer.randomResourceName("rgCOPD", 24);
         final String userName = "tirekicker";
@@ -91,7 +91,7 @@ public class CreateVirtualMachinesInParallel {
                         .withRegion(Region.US_EAST)
                         .create();
 
-                System.out.println ("Created a new resource group - " + resourceGroup.id());
+                System.out.println("Created a new resource group - " + resourceGroup.id());
 
                 List<String> publicIpCreatableKeys = new ArrayList<>();
                 // Prepare a batch of Creatable definitions
