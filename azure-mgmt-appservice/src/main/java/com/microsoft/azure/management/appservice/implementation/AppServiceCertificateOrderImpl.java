@@ -11,6 +11,7 @@ import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
@@ -276,7 +277,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
-        this.bindingVault = myManager.keyVaultManager().vaults().define(vaultName)
+        Observable<Indexable> resourceStream = myManager.keyVaultManager().vaults().define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName())
                 .defineAccessPolicy()
@@ -288,6 +289,7 @@ class AppServiceCertificateOrderImpl
                     .allowSecretPermissions(SecretPermissions.GET)
                     .attach()
                 .createAsync();
+        this.bindingVault = Utils.rootResource(resourceStream);
         return this;
     }
 }

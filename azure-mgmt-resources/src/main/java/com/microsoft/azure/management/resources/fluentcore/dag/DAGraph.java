@@ -18,7 +18,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  * @param <T> the type of the data stored in the graph nodes
  * @param <U> the type of the nodes in the graph
  */
-public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
+public class DAGraph<T, U extends DAGNode<T, U>> extends Graph<T, U> {
     private ConcurrentLinkedQueue<String> queue;
     private boolean hasParent;
     private U rootNode;
@@ -80,6 +80,25 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     }
 
     /**
+     * Merges DAG associated with childNode to DAG associated with a parent node
+     * of given key.
+     *
+     * @param parentKey the key of the parent node
+     * @param childNode the child node
+     */
+    public void mergeChildToParent(String parentKey, U childNode) {
+        U parentNode = this.graph.get(parentKey);
+        Map<String, U> parentGraph = parentNode.owner().graph;
+        Map<String, U> childGraph = childNode.owner().graph;
+        for (Map.Entry<String, U> entry : childGraph.entrySet()) {
+            String key = entry.getKey();
+            if (!parentGraph.containsKey(key)) {
+                parentGraph.put(key, entry.getValue());
+            }
+        }
+    }
+
+    /**
      * Prepares this DAG for traversal using getNext method, each call to getNext returns next node
      * in the DAG with no dependencies.
      */
@@ -123,6 +142,15 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
     }
 
     /**
+     * Gets a node from the graph with the given key.
+     * @param key the key of the node
+     * @return the node
+     */
+    public U getNode(String key) {
+        return graph.get(key);
+    }
+
+    /**
      * Reports that a node is resolved hence other nodes depends on it can consume it.
      *
      * @param completed the node ready to be consumed
@@ -131,7 +159,7 @@ public class DAGraph<T, U extends DAGNode<T>> extends Graph<T, U> {
         completed.setPreparer(true);
         String dependency = completed.key();
         for (String dependentKey : graph.get(dependency).dependentKeys()) {
-            DAGNode<T> dependent = graph.get(dependentKey);
+            DAGNode<T, U> dependent = graph.get(dependentKey);
             dependent.lock().lock();
             try {
                 dependent.reportResolved(dependency);

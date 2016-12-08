@@ -24,7 +24,7 @@ public interface TaskGroup<T, U extends TaskItem<T>> {
      *
      * @return the dag
      */
-    DAGraph<U, DAGNode<U>> dag();
+    DAGraph<U, TaskItemHolder<T, U>> dag();
 
     /**
      * Merges this task group with parent task group.

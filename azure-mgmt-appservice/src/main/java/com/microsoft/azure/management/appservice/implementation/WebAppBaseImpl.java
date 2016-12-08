@@ -465,7 +465,7 @@ abstract class WebAppBaseImpl<
             public Observable<SiteInner> call(final SiteInner site) {
                 List<Observable<HostNameBinding>> bindingObservables = new ArrayList<>();
                 for (HostNameBindingImpl<FluentT, FluentImplT> binding: hostNameBindingsToCreate.values()) {
-                    bindingObservables.add(binding.createAsync());
+                    bindingObservables.add(Utils.<HostNameBinding>rootResource(binding.createAsync()));
                 }
                 for (String binding: hostNameBindingsToDelete) {
                     bindingObservables.add(deleteHostNameBinding(binding).map(new Func1<Object, HostNameBinding>() {

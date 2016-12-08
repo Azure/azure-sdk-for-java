@@ -16,8 +16,9 @@ import java.util.concurrent.locks.ReentrantLock;
  * The type representing node in a {@link DAGraph}.
  *
  * @param <T> the type of the data stored in the node
+ * @param <U> the type of the node
  */
-public class DAGNode<T> extends Node<T> {
+public class DAGNode<T, U extends DAGNode<T, U>> extends Node<T, U> {
     private List<String> dependentKeys;
     private int toBeResolved;
     private boolean isPreparer;
@@ -29,7 +30,7 @@ public class DAGNode<T> extends Node<T> {
      * @param key unique id of the node
      * @param data data to be stored in the node
      */
-    public DAGNode(String key, T data) {
+    public DAGNode(final String key, final T data) {
         super(key, data);
         dependentKeys = new ArrayList<>();
         lock = new ReentrantLock();
