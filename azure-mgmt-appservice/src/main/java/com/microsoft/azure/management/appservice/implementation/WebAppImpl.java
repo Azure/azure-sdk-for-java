@@ -8,19 +8,24 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.DeploymentSlots;
 import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.PublishingCredentials;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
+import com.microsoft.azure.management.resources.implementation.ResourceGroupInner;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +34,7 @@ import java.util.Map;
 /**
  * The implementation for {@link WebApp}.
  */
+@LangDefinition
 class WebAppImpl
         extends WebAppBaseImpl<WebApp, WebAppImpl>
         implements
@@ -52,6 +58,11 @@ class WebAppImpl
     @Override
     Observable<SiteInner> getInner() {
         return client.getAsync(resourceGroupName(), name());
+    }
+
+    @Override
+    Observable<SiteConfigInner> getConfigInner() {
+        return client.getConfigurationAsync(resourceGroupName(), name());
     }
 
     @Override
@@ -133,9 +144,14 @@ class WebAppImpl
     }
 
     @Override
-    public PublishingCredentials getPublishingCredentials() {
-        UserInner inner = client.listPublishingCredentials(resourceGroupName(), name());
-        return new PublishingCredentialsImpl(inner);
+    public PublishingProfile getPublishingProfile() {
+        InputStream stream = client.listPublishingProfileXmlWithSecrets(resourceGroupName(), name());
+        try {
+            String xml = CharStreams.toString(new InputStreamReader(stream));
+            return new PublishingProfileImpl(xml);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -180,22 +196,18 @@ class WebAppImpl
     @Override
     public void swap(String slotName) {
         client.swapSlotWithProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
         client.applySlotConfigToProduction(resourceGroupName(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void resetSlotConfigurations() {
         client.resetProductionSlotConfig(resourceGroupName(), name());
-    }
-
-    @Override
-    public WebAppImpl refresh() {
-        this.setInner(client.get(resourceGroupName(), name()));
-        return this;
     }
 
     @Override
@@ -218,21 +230,17 @@ class WebAppImpl
         appServicePlan = appServicePlan
                 .withRegion(region())
                 .withPricingTier(pricingTier);
-        if (super.creatableGroup != null) {
+        if (super.creatableGroup != null && isInCreateMode()) {
             appServicePlan = appServicePlan.withNewResourceGroup(resourceGroupName());
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(regionName());
         } else {
             appServicePlan = appServicePlan.withExistingResourceGroup(resourceGroupName());
         }
-        addCreatableDependency(appServicePlan);
-        return this;
-    }
-
-    @Override
-    public WebAppImpl withExistingAppServicePlan(String appServicePlanName) {
-        String id = ResourceUtils.constructResourceId(myManager.subscriptionId(),
-                resourceGroupName(), "Microsoft.Web", "serverFarms", appServicePlanName, "");
-        inner().withServerFarmId(id);
+        if (isInCreateMode()) {
+            addCreatableDependency(appServicePlan);
+        } else {
+            addAppliableDependency(appServicePlan);
+        }
         return this;
     }
 
@@ -240,7 +248,7 @@ class WebAppImpl
     @SuppressWarnings("unchecked")
     public WebAppImpl withExistingAppServicePlan(AppServicePlan appServicePlan) {
         inner().withServerFarmId(appServicePlan.id());
-        if (super.creatableGroup != null) {
+        if (super.creatableGroup != null && isInCreateMode()) {
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
         }
         return this;

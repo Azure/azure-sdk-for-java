@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 import com.microsoft.azure.management.appservice.implementation.CertificateDetailsInner;
 import org.joda.time.DateTime;
@@ -13,6 +14,7 @@ import org.joda.time.DateTime;
 /**
  * An immutable client-side representation of an Azure Web App.
  */
+@Fluent
 public interface CertificateDetails extends
         Wrapper<CertificateDetailsInner> {
     /**

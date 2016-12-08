@@ -10,6 +10,7 @@ package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.microsoft.azure.management.sql.SloUsageMetric;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -67,7 +68,7 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
      * advisor.
      */
     @JsonProperty(value = "properties.serviceLevelObjectiveUsageMetrics", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics;
+    private List<SloUsageMetric> serviceLevelObjectiveUsageMetrics;
 
     /**
      * Gets or sets currentServiceLevelObjective for service tier advisor.
@@ -211,7 +212,7 @@ public class ServiceTierAdvisorInner extends SqlSubResource {
      *
      * @return the serviceLevelObjectiveUsageMetrics value
      */
-    public List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics() {
+    public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
         return this.serviceLevelObjectiveUsageMetrics;
     }
 

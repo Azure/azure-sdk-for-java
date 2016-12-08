@@ -21,7 +21,7 @@ public class SqlSubResource {
     private String name;
 
     /**
-     * Resource Id.
+     * The resource ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;

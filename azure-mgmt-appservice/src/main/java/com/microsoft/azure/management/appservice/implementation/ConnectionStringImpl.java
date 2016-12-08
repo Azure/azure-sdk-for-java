@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.ConnStringValueTypePair;
 import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.ConnectionStringType;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.appservice.ConnectionStringType;
 /**
  * An immutable client-side representation of a connection string on a web app.
  */
+@LangDefinition
 public class ConnectionStringImpl implements ConnectionString {
     private String name;
     private ConnStringValueTypePair valueTypePair;

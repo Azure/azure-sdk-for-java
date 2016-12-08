@@ -28,11 +28,11 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** The subscription id that identifies an Azure subscription. */
+    /** The subscription ID that identifies an Azure subscription. */
     private String subscriptionId;
 
     /**
-     * Gets The subscription id that identifies an Azure subscription.
+     * Gets The subscription ID that identifies an Azure subscription.
      *
      * @return the subscriptionId value.
      */
@@ -41,7 +41,7 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * Sets The subscription id that identifies an Azure subscription.
+     * Sets The subscription ID that identifies an Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself

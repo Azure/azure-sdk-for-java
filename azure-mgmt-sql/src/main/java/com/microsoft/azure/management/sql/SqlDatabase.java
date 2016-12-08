@@ -112,7 +112,7 @@ public interface SqlDatabase extends
     /**
      * @return the upgradeHint value
      */
-    UpgradeHint getUpgradeHint();
+    UpgradeHintInterface getUpgradeHint();
 
     /**
      * @return true if this Database is SqlWarehouse

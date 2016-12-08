@@ -79,7 +79,7 @@ public interface ServiceTierAdvisor extends
      * @return serviceLevelObjectiveUsageMetrics for the service tier
      * advisor.
      */
-    List<SloUsageMetric> serviceLevelObjectiveUsageMetrics();
+    List<SloUsageMetricInterface> serviceLevelObjectiveUsageMetrics();
 
     /**
      * @return or sets currentServiceLevelObjective for service tier advisor.

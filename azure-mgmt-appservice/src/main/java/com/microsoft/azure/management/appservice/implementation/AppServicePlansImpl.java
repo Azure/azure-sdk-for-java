@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePlans;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -17,6 +18,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServicePlans}.
  */
+@LangDefinition
 class AppServicePlansImpl
         extends GroupableResourcesImpl<
         AppServicePlan,

@@ -25,7 +25,7 @@ import com.microsoft.azure.management.sql.SqlElasticPool;
 import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.sql.SqlWarehouse;
 import com.microsoft.azure.management.sql.TransparentDataEncryption;
-import com.microsoft.azure.management.sql.UpgradeHint;
+import com.microsoft.azure.management.sql.UpgradeHintInterface;
 import org.joda.time.DateTime;
 import rx.Observable;
 import rx.functions.Func1;
@@ -129,7 +129,7 @@ class SqlDatabaseImpl
     }
 
     @Override
-    public UpgradeHint getUpgradeHint() {
+    public UpgradeHintInterface getUpgradeHint() {
         if (this.inner().upgradeHint() == null) {
             this.setInner(this.innerCollection.get(this.resourceGroupName(), this.sqlServerName(), this.name(), "upgradeHint"));
         }

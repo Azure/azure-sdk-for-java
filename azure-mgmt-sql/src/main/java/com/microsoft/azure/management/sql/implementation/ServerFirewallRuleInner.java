@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
- * Represents an Azure SQL Server Firewall Rule.
+ * Represents an Azure SQL server firewall rule.
  */
 @JsonFlatten
 public class ServerFirewallRuleInner extends SqlSubResource {
@@ -30,15 +30,15 @@ public class ServerFirewallRuleInner extends SqlSubResource {
     private String location;
 
     /**
-     * The start IP address of the Azure SQL Database Server Firewall Rule.
-     * Must be IPv4 format.
+     * The start IP address of the Azure SQL server firewall rule. Must be
+     * IPv4 format.
      */
     @JsonProperty(value = "properties.startIpAddress")
     private String startIpAddress;
 
     /**
-     * The end IP address of the Azure SQL Database Server Firewall Rule. Must
-     * be IPv4 format.
+     * The end IP address of the Azure SQL server firewall rule. Must be IPv4
+     * format.
      */
     @JsonProperty(value = "properties.endIpAddress")
     private String endIpAddress;

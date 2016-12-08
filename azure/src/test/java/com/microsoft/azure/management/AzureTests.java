@@ -228,7 +228,7 @@ public class AzureTests {
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
-        new TestApplicationGateway.PrivateComplex(azure.networks())
+        new TestApplicationGateway.PrivateComplex(azure.networks(), azure.publicIpAddresses())
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
     }
 

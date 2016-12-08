@@ -6,9 +6,12 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
+
 /**
  * An immutable client-side representation of an app setting on a web app.
  */
+@Fluent
 public interface AppSetting {
     /**
      * @return the key of the setting
