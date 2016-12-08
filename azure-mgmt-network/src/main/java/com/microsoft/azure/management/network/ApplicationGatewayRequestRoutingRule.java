@@ -102,7 +102,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the request routing rule with a frontend listener.
              * <p>
              * If the listener with the specified name does not yet exist, it must be defined separately in the optional part
-             * of the application gateway definition, using {@code defineListener(...)}. This only adds a reference to the listener by its name.
+             * of the application gateway definition, using {@code defineListener(...)}.
+             * This only adds a reference to the listener by its name.
+             * <p>
+             * Also, note that a given listener can be used by no more than one request routing rule at a time.
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
@@ -342,6 +345,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
         interface WithListener {
             /**
              * Associates the request routing rule with an existing frontend listener.
+             * <p>
+             * Also, note that a given listener can be used by no more than one request routing rule at a time.
              * @param name the name of a listener to reference
              * @return the next stage of the update
              */
@@ -417,7 +422,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * Associates the request routing rule with a frontend listener.
              * <p>
              * If the listener with the specified name does not yet exist, it must be defined separately in the optional part
-             * of the application gateway definition, using {@code defineListener(...)}. This only adds a reference to the listener by its name.
+             * of the application gateway definition, using {@code defineListener(...)}.
+             * This only adds a reference to the listener by its name.
+             * <p>
+             * Also, note that a given listener can be used by no more than one request routing rule at a time.
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
