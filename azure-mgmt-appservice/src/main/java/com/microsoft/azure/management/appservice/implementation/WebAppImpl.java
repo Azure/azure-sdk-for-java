@@ -181,16 +181,19 @@ class WebAppImpl
     @Override
     public void start() {
         client.start(resourceGroupName(), name());
+        refresh();
     }
 
     @Override
     public void stop() {
         client.stop(resourceGroupName(), name());
+        refresh();
     }
 
     @Override
     public void restart() {
         client.restart(resourceGroupName(), name());
+        refresh();
     }
 
     @Override

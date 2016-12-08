@@ -82,16 +82,19 @@ class DeploymentSlotImpl
     @Override
     public void start() {
         client.startSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void stop() {
         client.stopSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void restart() {
         client.restartSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
