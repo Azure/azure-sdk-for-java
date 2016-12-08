@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
@@ -8,6 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * Implementation for {@link VirtualMachineScaleSetVMs}.
  */
+@LangDefinition
 class VirtualMachineScaleSetVMsImpl
         extends
         ReadableWrappersImpl<VirtualMachineScaleSetVM, VirtualMachineScaleSetVMImpl, VirtualMachineScaleSetVMInner>

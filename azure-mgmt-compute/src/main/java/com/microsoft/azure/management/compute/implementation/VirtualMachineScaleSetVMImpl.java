@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.ImageReference;
@@ -28,6 +29,7 @@ import java.util.Map;
 /**
  * Implementation of {@link VirtualMachineScaleSetVM}.
  */
+@LangDefinition
 class VirtualMachineScaleSetVMImpl
         extends ChildResourceImpl<VirtualMachineScaleSetVMInner,
             VirtualMachineScaleSetImpl,

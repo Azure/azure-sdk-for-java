@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
@@ -12,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * The implementation for {@link VirtualMachineImages}.
  */
+@LangDefinition
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
     private final VirtualMachinePublishers publishers;

@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageVersion;
@@ -8,6 +9,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 /**
  * The implementation for {@link VirtualMachineExtensionImageVersion}.
  */
+@LangDefinition
 class VirtualMachineExtensionImageVersionImpl
         extends WrapperImpl<VirtualMachineExtensionImageInner>
         implements VirtualMachineExtensionImageVersion {
