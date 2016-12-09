@@ -42,6 +42,9 @@ class CdnEndpointsImpl extends
         this.client = client;
         this.originsClient = originsClient;
         this.customDomainsClient = customDomainsClient;
+        if (parent.id() != null) {
+            this.cacheCollection();
+        }
     }
 
     /**
@@ -81,12 +84,19 @@ class CdnEndpointsImpl extends
         for (EndpointInner innerEndpoint : this.client.listByProfile(
                                         this.parent().resourceGroupName(),
                                         this.parent().name())) {
-            childResources.add(new CdnEndpointImpl(innerEndpoint.name(),
+            CdnEndpointImpl endpointResource = new CdnEndpointImpl(innerEndpoint.name(),
                     this.parent(),
                     innerEndpoint,
                     this.client,
                     this.originsClient,
-                    this.customDomainsClient));
+                    this.customDomainsClient);
+            for (CustomDomainInner customDomain : this.customDomainsClient.listByEndpoint(
+                    this.parent().resourceGroupName(),
+                    this.parent().name(),
+                    innerEndpoint.name())) {
+                endpointResource.withCustomDomain(customDomain.hostName());
+            }
+            childResources.add(endpointResource);
         }
         return Collections.unmodifiableList(childResources);
     }
