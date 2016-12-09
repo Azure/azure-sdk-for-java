@@ -22,7 +22,6 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,18 +34,8 @@ import java.util.concurrent.TimeUnit;
  *  - domain
  *    - Create a domain
  *  - certificate
- *    - Create a Wildcard SSL certificate for the domain
- *    - update 1st web app to use the domain and a new standard SSL certificate
- *    - update 2nd web app to use the domain and the created wildcard SSL certificate
- *  - slots
- *    - create 2 slots under 2nd web app and bind to the domain and the wildcard SSL certificate
- *    - turn on auto-swap for 2nd slot
- *    - set connection strings to a storage account on production slot and make them sticky
- *  - source control
- *    - bind a simple web app in a public GitHub repo to 2nd slot and have it auto-swapped to production
- *    - Verify the web app has access to the storage account
- *  - Delete a slot
- *  - Delete a web app
+ *    - Upload a self-signed wildcard certificate
+ *    - update both web apps to use the domain and the created wildcard SSL certificate
  */
 public final class ManageWebAppWithDomainSsl {
 
@@ -165,12 +154,26 @@ public final class ManageWebAppWithDomainSsl {
 
                 System.out.println("Creating a self-signed certificate " + pfxPath + "...");
 
-                createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
+                Utils.createCertificate(cerPath, pfxPath, domainName, certPassword, "*." + domainName);
 
                 System.out.println("Created self-signed certificate " + pfxPath);
 
                 //============================================================
-                // Bind domain to web app 2 and turn on wild card SSL
+                // Bind domain to web app 2 and turn on wild card SSL for both
+
+                System.out.println("Binding https://" + app1Name + "." + domainName + " to web app " + app1Name + "...");
+
+                app1 = app1.update()
+                        .withManagedHostnameBindings(domain, app1Name)
+                        .defineSslBinding()
+                            .forHostname(app1Name + "." + domainName)
+                            .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                            .withSniBasedSsl()
+                            .attach()
+                        .apply();
+
+                System.out.println("Finished binding http://" + app1Name + "." + domainName + " to web app " + app1Name);
+                Utils.print(app1);
 
                 System.out.println("Binding https://" + app2Name + "." + domainName + " to web app " + app2Name + "...");
 
@@ -217,61 +220,5 @@ public final class ManageWebAppWithDomainSsl {
         httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
     }
 
-    /**
-     * This method creates a certificate for given password.
-     *
-     * @param certPath location of certificate file
-     * @param pfxPath location of pfx file
-     * @param alias User alias
-     * @param password alias password
-     * @param cnName domain name
-     * @throws Exception exceptions from the creation
-     */
-    public static void createCertificate(String certPath, String pfxPath,
-                                         String alias, String password, String cnName) throws Exception {
 
-        String validityInDays = "3650";
-        String keyAlg = "RSA";
-        String sigAlg = "SHA1withRSA";
-        String keySize = "2048";
-        String storeType = "pkcs12";
-        String command = "keytool";
-        String jdkPath = System.getProperty("java.home");
-        if (jdkPath != null && !jdkPath.isEmpty()) {
-            jdkPath = jdkPath.concat("\\bin");
-        }
-        if (new File(jdkPath).isDirectory()) {
-            command = String.format("%s%s%s", jdkPath, File.separator, command);
-        }
-
-        // Create Pfx file
-        String[] commandArgs = {command, "-genkey", "-alias", alias,
-                "-keystore", pfxPath, "-storepass", password, "-validity",
-                validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
-                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1" };
-        Utils.cmdInvocation(commandArgs, false);
-
-        // Create cer file i.e. extract public key from pfx
-        File pfxFile = new File(pfxPath);
-        if (pfxFile.exists()) {
-            String[] certCommandArgs = {command, "-export", "-alias", alias,
-                    "-storetype", storeType, "-keystore", pfxPath,
-                    "-storepass", password, "-rfc", "-file", certPath };
-            // output of keytool export command is going to error stream
-            // although command is
-            // executed successfully, hence ignoring error stream in this case
-            Utils.cmdInvocation(certCommandArgs, true);
-
-            // Check if file got created or not
-            File cerFile = new File(pfxPath);
-            if (!cerFile.exists()) {
-                throw new IOException(
-                        "Error occurred while creating certificate"
-                                + StringUtils.join(" ", certCommandArgs));
-            }
-        } else {
-            throw new IOException("Error occurred while creating certificates"
-                    + StringUtils.join(" ", commandArgs));
-        }
-    }
 }

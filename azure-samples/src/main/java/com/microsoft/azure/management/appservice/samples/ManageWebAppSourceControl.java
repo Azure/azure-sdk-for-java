@@ -11,25 +11,34 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.JavaVersion;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Azure App Service basic sample for managing web apps.
- *  - Create 3 web apps under the same new app service plan:
- *    - 1, 2 are in the same resource group, 3 in a different one
- *    - Stop and start 1, restart 2
- *    - Add Java support to app 3
+ *  - Create 2 web apps under the same new app service plan:
+ *    - Deploy to 1 using FTP
+ *    - Deploy to 2 using Git
+ *    - Deploy to 3 using
  *  - List web apps
  *  - Delete a web app
  */
-public final class ManageWebAppBasic {
+public final class ManageWebAppSourceControl {
+
+    private static OkHttpClient httpClient;
 
     /**
      * Main entry point.
@@ -53,7 +62,7 @@ public final class ManageWebAppBasic {
 
             Azure azure = Azure
                     .configure()
-                    .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                    .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -73,10 +82,25 @@ public final class ManageWebAppBasic {
                         .withNewAppServicePlan(planName)
                         .withRegion(Region.US_WEST)
                         .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                        .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                        .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
                         .create();
 
                 System.out.println("Created web app " + app1.name());
                 Utils.print(app1);
+
+                //============================================================
+                // Deploy to app 1 through FTP
+
+                System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
+
+                uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+
+                System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
+                Utils.print(app1);
+
+                System.out.println("CURLing " + app1Name + ".azurewebsites.net/helloworld");
+                System.out.println(curl("http://" + app1Name + ".azurewebsites.net/helloworld"));
 
                 //============================================================
                 // Create a second web app with the same app service plan
@@ -91,6 +115,19 @@ public final class ManageWebAppBasic {
 
                 System.out.println("Created web app " + app2.name());
                 Utils.print(app2);
+
+                //============================================================
+                // Deploy to app 2 through Github
+
+                System.out.println("Deploying helloworld.war to " + app1Name + " through FTP...");
+
+                uploadFileToFtp(app1.getPublishingProfile(), "helloworld.war", ManageWebAppSourceControl.class.getResourceAsStream("/helloworld.war"));
+
+                System.out.println("Deployment helloworld.war to web app " + app1.name() + " completed");
+                Utils.print(app1);
+
+                System.out.println("CURLing " + app1Name + ".azurewebsites.net/helloworld");
+                System.out.println(curl("http://" + app1Name + ".azurewebsites.net/helloworld"));
 
                 //============================================================
                 // Create a third web app with the same app service plan, but
@@ -179,5 +216,31 @@ public final class ManageWebAppBasic {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static String curl(String url) {
+        Request request = new Request.Builder().url(url).get().build();
+        try {
+            return httpClient.newCall(request).execute().body().string();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    static {
+        httpClient = new OkHttpClient.Builder().build();
+    }
+
+    private static void uploadFileToFtp(PublishingProfile profile, String fileName, InputStream file) throws Exception {
+        FTPClient ftpClient = new FTPClient();
+        String[] ftpUrlSegments = profile.ftpUrl().split("/", 2);
+        String server = ftpUrlSegments[0];
+        String path = "./site/wwwroot/webapps";
+        ftpClient.connect(server);
+        ftpClient.login(profile.ftpUsername(), profile.ftpPassword());
+        ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
+        ftpClient.changeWorkingDirectory(path);
+        ftpClient.storeFile(fileName, file);
+        ftpClient.disconnect();
     }
 }

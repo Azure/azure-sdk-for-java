@@ -52,8 +52,10 @@ import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -750,6 +752,64 @@ public final class Utils {
         long millis = Calendar.getInstance().getTimeInMillis();
         long datePart = millis % 10000000L;
         return namePrefix + root.toLowerCase().substring(0, 3) + datePart;
+    }
+
+    /**
+     * This method creates a certificate for given password.
+     *
+     * @param certPath location of certificate file
+     * @param pfxPath location of pfx file
+     * @param alias User alias
+     * @param password alias password
+     * @param cnName domain name
+     * @throws Exception exceptions from the creation
+     */
+    public static void createCertificate(String certPath, String pfxPath,
+                                         String alias, String password, String cnName) throws Exception {
+
+        String validityInDays = "3650";
+        String keyAlg = "RSA";
+        String sigAlg = "SHA1withRSA";
+        String keySize = "2048";
+        String storeType = "pkcs12";
+        String command = "keytool";
+        String jdkPath = System.getProperty("java.home");
+        if (jdkPath != null && !jdkPath.isEmpty()) {
+            jdkPath = jdkPath.concat("\\bin");
+        }
+        if (new File(jdkPath).isDirectory()) {
+            command = String.format("%s%s%s", jdkPath, File.separator, command);
+        }
+
+        // Create Pfx file
+        String[] commandArgs = {command, "-genkey", "-alias", alias,
+                "-keystore", pfxPath, "-storepass", password, "-validity",
+                validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
+                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1" };
+        Utils.cmdInvocation(commandArgs, false);
+
+        // Create cer file i.e. extract public key from pfx
+        File pfxFile = new File(pfxPath);
+        if (pfxFile.exists()) {
+            String[] certCommandArgs = {command, "-export", "-alias", alias,
+                    "-storetype", storeType, "-keystore", pfxPath,
+                    "-storepass", password, "-rfc", "-file", certPath };
+            // output of keytool export command is going to error stream
+            // although command is
+            // executed successfully, hence ignoring error stream in this case
+            Utils.cmdInvocation(certCommandArgs, true);
+
+            // Check if file got created or not
+            File cerFile = new File(pfxPath);
+            if (!cerFile.exists()) {
+                throw new IOException(
+                        "Error occurred while creating certificate"
+                                + StringUtils.join(" ", certCommandArgs));
+            }
+        } else {
+            throw new IOException("Error occurred while creating certificates"
+                    + StringUtils.join(" ", commandArgs));
+        }
     }
 
     /**
