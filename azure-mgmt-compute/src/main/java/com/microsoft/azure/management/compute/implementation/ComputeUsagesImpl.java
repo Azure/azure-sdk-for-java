@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ComputeUsage;
 import com.microsoft.azure.management.compute.ComputeUsages;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation of {@link ComputeUsages}.
  */
+@LangDefinition
 class ComputeUsagesImpl extends ReadableWrappersImpl<ComputeUsage, ComputeUsageImpl, UsageInner>
         implements ComputeUsages {
     private final ComputeManagementClientImpl client;
