@@ -193,11 +193,12 @@ public final class ManageWebAppSourceControl {
                         .define(app4Name)
                         .withExistingResourceGroup(rgName)
                         .withExistingAppServicePlan(plan)
-                        .defineSourceControl()
-                            .withContinuouslyIntegratedGitHubRepository("username", "reponame")
-                            .withBranch("master")
-                            .withGitHubAccessToken("YOUR GITHUB PERSONAL TOKEN")
-                            .attach()
+                        // Uncomment the following lines to turn on 4th scenario
+                        //.defineSourceControl()
+                        //    .withContinuouslyIntegratedGitHubRepository("username", "reponame")
+                        //    .withBranch("master")
+                        //    .withGitHubAccessToken("YOUR GITHUB PERSONAL TOKEN")
+                        //    .attach()
                         .create();
 
                 System.out.println("Created web app " + app4.name());
