@@ -122,6 +122,8 @@ class WebAppSourceControlImpl<
         if (githubAccessToken == null) {
             return Observable.just(null);
         }
-        return serviceClient.updateSourceControlAsync("Github", new SourceControlInner().withToken(githubAccessToken));
+        SourceControlInner sourceControlInner = new SourceControlInner().withToken(githubAccessToken);
+        sourceControlInner.withLocation(parent().regionName());
+        return serviceClient.updateSourceControlAsync("Github", sourceControlInner);
     }
 }

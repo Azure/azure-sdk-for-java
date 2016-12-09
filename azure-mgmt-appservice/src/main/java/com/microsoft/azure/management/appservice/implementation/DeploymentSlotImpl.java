@@ -73,7 +73,7 @@ class DeploymentSlotImpl
         InputStream stream = client.listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), parent().name(), name());
         try {
             String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml);
+            return new PublishingProfileImpl(xml, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
