@@ -22,6 +22,8 @@ public class FaultTolerantObject<T extends IIOObject> {
     final Queue<IOperationResult<Void, Exception>> closeCallbacks;
 
     T innerObject;
+    boolean creatingNewInnerObject;
+    boolean closingInnerObject;
     
     public FaultTolerantObject(
         final IOperation<T> openAsync,
@@ -50,11 +52,14 @@ public class FaultTolerantObject<T extends IIOObject> {
             dispatcher.invoke(new DispatchHandler() {
                 @Override
                 public void onEvent() {
-                    if (innerObject == null || innerObject.getState() == IIOObject.IOObjectState.CLOSED) {
+                    if (!creatingNewInnerObject 
+                            && (innerObject == null || innerObject.getState() == IIOObject.IOObjectState.CLOSED || innerObject.getState() == IIOObject.IOObjectState.CLOSING)) {
+                        creatingNewInnerObject = true;
                         openCallbacks.offer(openCallback);
                         openTask.run(new IOperationResult<T, Exception>() {
                             @Override
                             public void onComplete(T result) {
+                                creatingNewInnerObject = false;
                                 innerObject = result;
                                 for (IOperationResult<T, Exception> callback: openCallbacks)
                                     callback.onComplete(result);
@@ -63,6 +68,7 @@ public class FaultTolerantObject<T extends IIOObject> {
                             }
                             @Override
                             public void onError(Exception error) {
+                                creatingNewInnerObject = false;
                                 for (IOperationResult<T, Exception> callback: openCallbacks)
                                     callback.onError(error);
                                 
@@ -70,7 +76,7 @@ public class FaultTolerantObject<T extends IIOObject> {
                             }
                         });
                     }
-                    else if (innerObject.getState() == IIOObject.IOObjectState.OPENED) {
+                    else if (innerObject != null && innerObject.getState() == IIOObject.IOObjectState.OPENED) {
                         openCallback.onComplete(innerObject);
                     }
                     else {
@@ -94,14 +100,13 @@ public class FaultTolerantObject<T extends IIOObject> {
                     if (innerObject == null || innerObject.getState() == IIOObject.IOObjectState.CLOSED) {
                         closeCallback.onComplete(null);
                     } 
-                    else if (innerObject.getState() == IIOObject.IOObjectState.OPENING) {
-                        closeCallbacks.offer(closeCallback);
-                    } 
-                    else if (innerObject.getState() == IIOObject.IOObjectState.OPENED) {
+                    else if (!closingInnerObject && (innerObject.getState() == IIOObject.IOObjectState.OPENED || innerObject.getState() == IIOObject.IOObjectState.OPENING)) {
+                        closingInnerObject = true;
                         closeCallbacks.offer(closeCallback);
                         closeTask.run(new IOperationResult<Void, Exception>() {
                             @Override
                             public void onComplete(Void result) {
+                                closingInnerObject = false;
                                 for (IOperationResult<Void, Exception> callback: closeCallbacks)
                                     callback.onComplete(result);
                                 
@@ -110,12 +115,16 @@ public class FaultTolerantObject<T extends IIOObject> {
 
                             @Override
                             public void onError(Exception error) {
+                                closingInnerObject = false;
                                 for (IOperationResult<Void, Exception> callback: closeCallbacks)
                                     callback.onError(error);
                                 
                                 closeCallbacks.clear();
                             }
                         });
+                    } 
+                    else {
+                        closeCallbacks.offer(closeCallback);
                     }
                 }
             });

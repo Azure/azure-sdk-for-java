@@ -5,14 +5,16 @@
 package com.microsoft.azure.servicebus;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
+import com.microsoft.azure.servicebus.amqp.AmqpException;
 import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
 import com.microsoft.azure.servicebus.amqp.IOperation;
 import com.microsoft.azure.servicebus.amqp.IOperationResult;
@@ -102,7 +104,15 @@ public class CBSChannel {
             final RequestResponseChannel requestResponseChannel = new RequestResponseChannel(
                 "cbs", 
                 ClientConstants.CBS_ADDRESS,
-                CBSChannel.this.sessionProvider.getSession("cbs-session", UUID.randomUUID().toString(), null, null));
+                CBSChannel.this.sessionProvider.getSession(
+                    "cbs-session",
+                    null,
+                    new Consumer<ErrorCondition>() {
+                        @Override
+                        public void accept(ErrorCondition error) {
+                            operationCallback.onError(new AmqpException(error));
+                        }
+                    }));
 
             requestResponseChannel.open(
                 new IOperationResult<Void, Exception>() {
@@ -156,9 +166,7 @@ public class CBSChannel {
                         closeOperationCallback.onError(error);
                     }
                 });
-            }
-            
-        }
-        
+            }            
+        }        
     }
 }

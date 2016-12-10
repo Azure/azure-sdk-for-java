@@ -9,6 +9,7 @@ import java.nio.channels.UnresolvedAddressException;
 import java.time.Duration;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
@@ -35,7 +36,6 @@ import com.microsoft.azure.servicebus.amqp.ProtonUtil;
 import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 import com.microsoft.azure.servicebus.amqp.SessionHandler;
-import java.util.List;
 
 /**
  * Abstracts all amqp related details and exposes AmqpConnection object
@@ -52,7 +52,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 	private final LinkedList<Link> registeredLinks;
 	private final Object reactorLock;
         private final Object cbsChannelCreateLock;
-        private final Hashtable<String, Session> sessionCache;
         private final SharedAccessSignatureTokenProvider tokenProvider;
 	
 	private Reactor reactor;
@@ -81,9 +80,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
             this.reactorLock = new Object();
             this.connectionHandler = new ConnectionHandler(this);
             this.openConnection = new CompletableFuture<>();
-            this.sessionCache = new Hashtable<>();
             this.cbsChannelCreateLock = new Object();
-            this.tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey());
+            this.tokenProvider = builder.getSharedAccessSignature() == null
+                    ? new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey())
+                    : new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignature());
 
             this.closeTask = new CompletableFuture<>();
             this.closeTask.thenAccept(new Consumer<Void>()
@@ -124,7 +124,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 	private void createConnection(ConnectionStringBuilder builder) throws IOException
 	{
-		this.open = new CompletableFuture<MessagingFactory>();
+		this.open = new CompletableFuture<>();
 		this.startReactor(new ReactorHandler()
 		{
 			@Override
@@ -138,13 +138,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		});
 	}
 
-	private void startReactor(ReactorHandler reactorHandler) throws IOException
+	private void startReactor(final ReactorHandler reactorHandler) throws IOException
 	{
 		final Reactor newReactor = ProtonUtil.reactor(reactorHandler);
 		synchronized (this.reactorLock)
 		{
 			this.reactor = newReactor;
 			this.reactorScheduler = new ReactorDispatcher(newReactor);
+                        reactorHandler.unsafeSetReactorDispatcher(this.reactorScheduler);
 		}
 		
 		final Thread reactorThread = new Thread(new RunReactor(newReactor));
@@ -165,77 +166,17 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         }
 
 	@Override
-	public Session getSession(final String path, final String sessionId, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
+	public Session getSession(final String path, final Consumer<Session> onRemoteSessionOpen, final Consumer<ErrorCondition> onRemoteSessionOpenError)
 	{
-                if (StringUtil.isNullOrEmpty(sessionId))
-                    throw new IllegalArgumentException("sessionId cannot be empty");
-                
-                boolean createSession = false;
-		Session session = null;
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)
 		{
 			this.connection = this.getReactor().connectionToHost(this.hostName, ClientConstants.AMQPS_PORT, this.connectionHandler);
-			createSession = true;
-		}
-		else
-		{
-			if (this.sessionCache.containsKey(sessionId))
-			{
-				final Session oldSession = this.sessionCache.get(sessionId);
-				if (oldSession.getLocalState() != EndpointState.CLOSED && oldSession.getRemoteState() != EndpointState.CLOSED)
-					session = oldSession;
-				else
-					createSession = true;
-			}
-			else
-			{
-                                createSession = true;
-			}
 		}
                 
-                if (createSession)
-                {
-                        session = this.connection.session();
-                        sessionCache.put(sessionId, session);
-
-                        BaseHandler.setHandler(session, new SessionHandler(path, sessionId)
-                        {
-                            private boolean sessionCreated = false;
-
-                            @Override
-                            public void onSessionRemoteOpen(Event e) 
-                            {
-                                super.onSessionRemoteOpen(e);
-                                sessionCreated = true;
-                                
-                                if (onRemoteSessionOpen != null)
-                                    onRemoteSessionOpen.accept(e.getSession());
-                            }
-                            
-                            @Override 
-                            public void onSessionRemoteClose(Event e)
-                            {
-                                super.onSessionRemoteClose(e);
-                                if (!sessionCreated && onRemoteSessionOpenError != null)
-                                    onRemoteSessionOpenError.accept(e.getSession().getRemoteCondition());
-                            }
-                            
-                            @Override 
-                            public void onSessionLocalClose(Event e)
-                            {
-                                super.onSessionLocalClose(e);
-                                MessagingFactory.this.sessionCache.remove(this.getSessionId());
-                            }
-                        });
-
-                        session.open();
-                }
-                else
-                {
-                    if (onRemoteSessionOpen != null)
-                        onRemoteSessionOpen.accept(session);
-                }
-
+                final Session session = this.connection.session();
+                BaseHandler.setHandler(session, new SessionHandler(path, onRemoteSessionOpen, onRemoteSessionOpenError));
+                session.open();
+                
 		return session;
         }
 
@@ -251,8 +192,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
 	public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString) throws IOException
 	{
-		ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-		MessagingFactory messagingFactory = new MessagingFactory(builder);
+		final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
+		final MessagingFactory messagingFactory = new MessagingFactory(builder);
 
 		messagingFactory.createConnection(builder);
 		return messagingFactory.open;
@@ -282,7 +223,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 		}
 		else
 		{
-			final Connection currentConnection = this.connection;
+                        final Connection currentConnection = this.connection;
 			for (Link link: this.registeredLinks)
 			{
 				if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
@@ -291,7 +232,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 				}
 			}
 			
-			this.openConnection = new CompletableFuture<Connection>();
+			this.openConnection = new CompletableFuture<>();
 
 			if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
 			{

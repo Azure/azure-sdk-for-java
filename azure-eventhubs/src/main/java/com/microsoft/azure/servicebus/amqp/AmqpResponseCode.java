@@ -14,6 +14,7 @@ public enum AmqpResponseCode
     BAD_REQUEST (400),
     NOT_FOUND (0x194),
     FORBIDDEN (0x193),
+    INTERNAL_SERVER_ERROR (500),
     UNAUTHORIZED (0x191);
     
     private final int value;

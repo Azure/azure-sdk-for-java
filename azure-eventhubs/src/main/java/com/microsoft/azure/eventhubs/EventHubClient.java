@@ -38,7 +38,7 @@ public class EventHubClient extends ClientEntity
 	private boolean isSenderCreateStarted;
         private CompletableFuture<Void> createSender;
         
-	private EventHubClient(ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
+	private EventHubClient(final ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException
 	{
 		super(StringUtil.getRandomString(), null);
 
@@ -102,7 +102,7 @@ public class EventHubClient extends ClientEntity
 	public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
 			throws ServiceBusException, IOException
 	{
-		ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
+		final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
 		final EventHubClient eventHubClient = new EventHubClient(connStr);
 
 		return MessagingFactory.createFromConnectionString(connectionString.toString())

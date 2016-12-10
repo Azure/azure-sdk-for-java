@@ -9,7 +9,8 @@ public interface IIOObject {
     public static enum IOObjectState {
         OPENING,
         OPENED,
-        CLOSED
+        CLOSED,
+        CLOSING
     }
 
     // should be run on reactor thread

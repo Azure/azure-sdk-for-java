@@ -4,12 +4,13 @@
  */
 package com.microsoft.azure.servicebus;
 
-import java.net.*;
-import java.time.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import java.util.regex.*;
-import com.microsoft.azure.eventhubs.*;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
@@ -43,14 +44,15 @@ public class ConnectionStringBuilder
 	final static String EndpointConfigName = "Endpoint";
 	final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
 	final static String SharedAccessKeyConfigName = "SharedAccessKey";
+	final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
 	final static String EntityPathConfigName = "EntityPath";
 	final static String OperationTimeoutConfigName = "OperationTimeout";
 	final static String RetryPolicyConfigName = "RetryPolicy";
-	final static String KeyValueSeparator = "=";
+        final static String KeyValueSeparator = "=";
 	final static String KeyValuePairDelimiter = ";";
 
 	private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" +  EndpointConfigName + "|" + SharedAccessKeyNameConfigName
-			+ "|" + SharedAccessKeyConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
+			+ "|" + SharedAccessKeyConfigName + "|" + SharedAccessSignatureConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
 			+ "|" + RetryPolicyConfigName + ")";
 
 	private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
@@ -60,6 +62,7 @@ public class ConnectionStringBuilder
 	private String sharedAccessKeyName;
 	private String sharedAccessKey;
 	private String entityPath;
+        private String sharedAccessSignature;
 	private Duration operationTimeout;
 	private RetryPolicy retryPolicy;
 
@@ -74,6 +77,20 @@ public class ConnectionStringBuilder
 		this.endpoint = endpointAddress;
 		this.sharedAccessKey = sharedAccessKey;
 		this.sharedAccessKeyName = sharedAccessKeyName;
+		this.operationTimeout = operationTimeout;
+		this.retryPolicy = retryPolicy;
+		this.entityPath = entityPath;
+	}
+        
+        private ConnectionStringBuilder(
+			final URI endpointAddress, 
+			final String entityPath, 
+			final String sharedAccessSignature, 
+			final Duration operationTimeout, 
+			final RetryPolicy retryPolicy)
+	{
+		this.endpoint = endpointAddress;
+		this.sharedAccessSignature = sharedAccessSignature;
 		this.operationTimeout = operationTimeout;
 		this.retryPolicy = retryPolicy;
 		this.entityPath = entityPath;
@@ -106,7 +123,7 @@ public class ConnectionStringBuilder
 	}
 
 	/**
-	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
+	 * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
 	 * @param namespaceName Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
 	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
@@ -123,7 +140,7 @@ public class ConnectionStringBuilder
 	
 
 	/**
-	 * Build a connection string consumable by {@link EventHubClient#createFromConnectionString(String)}
+	 * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
 	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
 	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
 	 * @param sharedAccessKeyName Shared Access Key name
@@ -136,6 +153,20 @@ public class ConnectionStringBuilder
 			final String sharedAccessKey)
 	{
 		this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
+	}
+        
+        /**
+	 * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
+	 * @param endpointAddress namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
+	 * @param entityPath Entity path. For eventHubs case specify - eventHub name.
+	 * @param sharedAccessSignature Shared Access Signature
+	 */
+	public ConnectionStringBuilder(
+			final URI endpointAddress, 
+			final String entityPath, 
+			final String sharedAccessSignature)
+	{
+		this(endpointAddress, entityPath, sharedAccessSignature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
 	}
 
 	/**
@@ -175,6 +206,15 @@ public class ConnectionStringBuilder
 	{
 		return this.sharedAccessKeyName;
 	}
+        
+        /**
+	 * Get the shared access signature (also referred as SAS Token) from the connection string
+	 * @return Shared Access Signature
+	 */
+	public String getSharedAccessSignature()
+        {
+            return this.sharedAccessSignature;
+        }
 
 	/**
 	 * Get the entity path value from the connection string
@@ -196,7 +236,7 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Set the OperationTimeout value in the Connection String. This value will be used by all operations which uses this {@link ConnectionStringBuilder}, unless explicitly over-ridden.
-	 * <p>ConnectionString with operationTimeout is not interoperable between java and clients in other platforms.
+	 * <p>ConnectionString with operationTimeout is not inter-operable between java and clients in other platforms.
 	 * @param operationTimeout Operation Timeout
 	 */
 	public void setOperationTimeout(final Duration operationTimeout)
@@ -215,7 +255,7 @@ public class ConnectionStringBuilder
 
 	/**
 	 * Set the retry policy.
-	 * <p>RetryPolicy is not Serialized as part of {@link ConnectionStringBuilder#toString()} and is not interoperable with ServiceBus clients in other platforms. 
+	 * <p>RetryPolicy is not inter-operable with ServiceBus clients in other platforms. 
 	 * @param retryPolicy RetryPolicy applied for any operation performed using this ConnectionString
 	 */
 	public void setRetryPolicy(final RetryPolicy retryPolicy)
@@ -251,39 +291,44 @@ public class ConnectionStringBuilder
 
 		if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKey))
 		{
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s", SharedAccessKeyConfigName,
-					KeyValueSeparator, this.sharedAccessKey));
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessKeyConfigName,
+					KeyValueSeparator, this.sharedAccessKey, KeyValuePairDelimiter));
 		}
 
+                if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessSignature))
+		{
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", SharedAccessSignatureConfigName,
+					KeyValueSeparator, this.sharedAccessSignature, KeyValuePairDelimiter));
+		}
+                
 		if (this.operationTimeout != null)
 		{
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, OperationTimeoutConfigName,
-					KeyValueSeparator, this.operationTimeout.toString()));
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", OperationTimeoutConfigName,
+					KeyValueSeparator, this.operationTimeout.toString(), KeyValuePairDelimiter));
 		}
 
 		if (this.retryPolicy != null)
 		{
-			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", KeyValuePairDelimiter, RetryPolicyConfigName,
-					KeyValueSeparator, this.retryPolicy.toString()));
+			connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", RetryPolicyConfigName,
+					KeyValueSeparator, this.retryPolicy.toString(), KeyValuePairDelimiter));
 		}
 
-		return connectionStringBuilder.toString();
-		
+                connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
+		return connectionStringBuilder.toString();		
 	}
 
-	private void parseConnectionString(String connectionString)
+	private void parseConnectionString(final String connectionString)
 	{
-		// TODO: Trace and throw
 		if (StringUtil.isNullOrWhiteSpace(connectionString))
 		{
 			throw new IllegalConnectionStringFormatException(String.format("connectionString cannot be empty"));
 		}
 
-		String connection = KeyValuePairDelimiter + connectionString;
+		final String connection = KeyValuePairDelimiter + connectionString;
 
-		Pattern keyValuePattern = Pattern.compile(KeysWithDelimitersRegex, Pattern.CASE_INSENSITIVE);
-		String[] values = keyValuePattern.split(connection);
-		Matcher keys = keyValuePattern.matcher(connection);
+		final Pattern keyValuePattern = Pattern.compile(KeysWithDelimitersRegex, Pattern.CASE_INSENSITIVE);
+		final String[] values = keyValuePattern.split(connection);
+                final Matcher keys = keyValuePattern.matcher(connection);
 
 		if (values == null || values.length <= 1 || keys.groupCount() == 0)
 		{
@@ -357,6 +402,10 @@ public class ConnectionStringBuilder
 			else if(key.equalsIgnoreCase(SharedAccessKeyConfigName))
 			{
 				this.sharedAccessKey = values[valueIndex];
+			}
+                        else if(key.equalsIgnoreCase(SharedAccessSignatureConfigName))
+			{
+				this.sharedAccessSignature = values[valueIndex];
 			}
 			else if (key.equalsIgnoreCase(EntityPathConfigName))
 			{

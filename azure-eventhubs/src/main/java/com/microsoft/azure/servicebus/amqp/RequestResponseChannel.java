@@ -148,7 +148,9 @@ public class RequestResponseChannel implements IIOObject {
                 if (exception != null)
                     onOpen.onError(exception);
                 else {
-                    final ErrorCondition error = this.sendLink.getRemoteCondition() != null ? this.sendLink.getRemoteCondition() : this.receiveLink.getRemoteCondition();
+                    final ErrorCondition error = (this.sendLink.getRemoteCondition() != null && this.sendLink.getRemoteCondition().getCondition() != null)
+                            ? this.sendLink.getRemoteCondition()
+                            : this.receiveLink.getRemoteCondition();
                     onOpen.onError(new AmqpException(error));
                 }
             }
@@ -180,7 +182,10 @@ public class RequestResponseChannel implements IIOObject {
                 && sendLink.getLocalState() == EndpointState.ACTIVE && receiveLink.getRemoteState() == EndpointState.ACTIVE)
             return IOObjectState.OPENED;
         
-        return IOObjectState.CLOSED;
+        if (sendLink.getRemoteState() == EndpointState.CLOSED && receiveLink.getRemoteState() == EndpointState.CLOSED)
+            return IOObjectState.CLOSED;
+        
+        return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
     }
     
     private class RequestHandler implements IAmqpSender {

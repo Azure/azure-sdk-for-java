@@ -13,8 +13,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
@@ -23,6 +21,7 @@ public class SharedAccessSignatureTokenProvider
 {
         final String keyName;
         final String sharedAccessKey;
+        final String sharedAccessSignature;
         
         SharedAccessSignatureTokenProvider(
                 final String keyName,
@@ -30,11 +29,21 @@ public class SharedAccessSignatureTokenProvider
         {
                 this.keyName = keyName;
                 this.sharedAccessKey = sharedAccessKey;
+                this.sharedAccessSignature = null;
         }
+
+        public SharedAccessSignatureTokenProvider(final String sharedAccessSignature)
+        {
+            this.keyName = null;
+            this.sharedAccessKey = null;
+            this.sharedAccessSignature = sharedAccessSignature;
+        }        
         
         public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException 
         {
-                return generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive);
+                return this.sharedAccessSignature == null
+                        ? generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive)
+                        : this.sharedAccessSignature;
         }
     
 	public static String generateSharedAccessSignature(

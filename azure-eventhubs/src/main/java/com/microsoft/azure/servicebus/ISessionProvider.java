@@ -13,7 +13,6 @@ interface ISessionProvider
 {
 	Session getSession(
                 final String path,
-                final String sessionId,
                 final Consumer<Session> onSessionOpen,
                 final Consumer<ErrorCondition> onSessionOpenError);
 }

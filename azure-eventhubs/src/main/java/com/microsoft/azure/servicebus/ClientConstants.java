@@ -42,6 +42,8 @@ public final class ClientConstants
 	public final static String SERVICEBUS_CLIENT_TRACE = "servicebus.trace";
 
 	public final static boolean DEFAULT_IS_TRANSIENT = true;
+        
+        public final static int SESSION_OPEN_TIMEOUT_IN_MS = 15000;
 
 	public final static int REACTOR_IO_POLL_TIMEOUT = 20;
 	public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;

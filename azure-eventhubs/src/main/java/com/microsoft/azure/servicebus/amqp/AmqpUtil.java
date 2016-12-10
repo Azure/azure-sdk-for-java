@@ -16,6 +16,9 @@ import org.apache.qpid.proton.message.Message;
 
 public class AmqpUtil {
     
+    private AmqpUtil() {
+    }
+
     private static int getPayloadSize(Message msg) {
 
 		if (msg == null || msg.getBody() == null) {
@@ -57,8 +60,8 @@ public class AmqpUtil {
 		int payloadSize = getPayloadSize(amqpMessage);
 
 		// EventData - accepts only PartitionKey - which is a String & stuffed into MessageAnnotation
-		MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
-		ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
+		final MessageAnnotations messageAnnotations = amqpMessage.getMessageAnnotations();
+		final ApplicationProperties applicationProperties = amqpMessage.getApplicationProperties();
 		
 		int annotationsSize = 0;
 		int applicationPropertiesSize = 0;

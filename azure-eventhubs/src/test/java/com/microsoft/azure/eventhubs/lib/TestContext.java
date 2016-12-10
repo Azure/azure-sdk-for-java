@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+ */
 package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.servicebus.ConnectionStringBuilder;
@@ -6,6 +10,8 @@ public final class TestContext
 {
 	final static String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "EVENT_HUB_CONNECTION_STRING";
 	final static String PARTIION_COUNT_ENV_NAME = "PARTITION_COUNT";
+        
+        private static String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
 	private TestContext()
 	{
@@ -14,7 +20,7 @@ public final class TestContext
 	
 	public static ConnectionStringBuilder getConnectionString()
 	{
-		return new ConnectionStringBuilder(System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME));
+		return new ConnectionStringBuilder(CONNECTION_STRING);
 	}
 	
 	public static int getPartitionCount()
@@ -26,6 +32,11 @@ public final class TestContext
 	{
 		return "$default";
 	}
+        
+        public static void setConnectionString(final String connectionString)
+        {
+            CONNECTION_STRING = connectionString;
+        }
 	
 	public static boolean isTestConfigurationSet()
 	{

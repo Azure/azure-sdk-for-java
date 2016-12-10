@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+ */
 package com.microsoft.azure.eventhubs.sendrecv;
 
 import java.time.Duration;
@@ -40,7 +44,7 @@ public class SendTest extends ApiTestBase
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
 	{
-		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
+            	final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
 	}
 	
