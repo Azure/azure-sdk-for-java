@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.RepositoryType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.WebAppBase;
@@ -19,7 +20,7 @@ import rx.Observable;
  */
 @LangDefinition
 class WebAppSourceControlImpl<
-        FluentT extends WebAppBase<FluentT>,
+        FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteSourceControlInner>
     implements

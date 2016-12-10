@@ -8,6 +8,7 @@ package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
@@ -15,7 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  */
 @Fluent
 public interface WebApp extends
-        WebAppBase<WebApp>,
+        WebAppBase,
+        Refreshable<WebApp>,
         Updatable<WebApp.Update> {
     /**
      * @return the entry point to deployment slot management API under the web app

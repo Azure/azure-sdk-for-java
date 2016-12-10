@@ -58,7 +58,7 @@ import java.util.Set;
  */
 @LangDefinition
 abstract class WebAppBaseImpl<
-        FluentT extends WebAppBase<FluentT>,
+        FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
         extends GroupableResourceImpl<
             FluentT,
@@ -66,7 +66,7 @@ abstract class WebAppBaseImpl<
             FluentImplT,
             AppServiceManager>
         implements
-            WebAppBase<FluentT>,
+            WebAppBase,
             WebAppBase.Definition<FluentT>,
             WebAppBase.Update<FluentT>,
             WebAppBase.UpdateStages.WithWebContainer<FluentT> {

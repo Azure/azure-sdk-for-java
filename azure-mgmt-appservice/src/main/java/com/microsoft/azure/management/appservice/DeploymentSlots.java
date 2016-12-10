@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCreating;
@@ -16,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for storage accounts management API.
  */
+@Fluent
 public interface DeploymentSlots extends
         SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
         SupportsListing<DeploymentSlot>,

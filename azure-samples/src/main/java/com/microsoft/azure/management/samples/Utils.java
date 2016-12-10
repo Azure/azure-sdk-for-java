@@ -712,7 +712,7 @@ public final class Utils {
      * Print a web app.
      * @param resource a web app
      */
-    public static void print(WebAppBase<?> resource) {
+    public static void print(WebAppBase resource) {
         StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
                 .append("Name: ").append(resource.name())
                 .append("\n\tState: ").append(resource.state())

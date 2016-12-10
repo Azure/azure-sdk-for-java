@@ -23,12 +23,10 @@ import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure Web App or deployment slot.
- * @param <T> the fluent interface of the web app or deployment slot
  */
 @Fluent
-public interface WebAppBase<T extends WebAppBase<T>> extends
+public interface WebAppBase extends
         HasName,
-        Refreshable<T>,
         GroupableResource,
         Wrapper<SiteInner> {
 

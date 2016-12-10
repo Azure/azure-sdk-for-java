@@ -20,7 +20,7 @@ import com.microsoft.azure.management.appservice.implementation.HostNameBindingI
 public interface HostNameBinding
         extends
         Wrapper<HostNameBindingInner>,
-        ExternalChildResource<HostNameBinding, WebAppBase<?>>, Resource {
+        ExternalChildResource<HostNameBinding, WebAppBase>, Resource {
     /**
      * @return the hostname to bind to
      */
