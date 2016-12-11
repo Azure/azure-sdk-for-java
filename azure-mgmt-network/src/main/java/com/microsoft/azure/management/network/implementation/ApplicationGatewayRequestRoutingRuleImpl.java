@@ -51,7 +51,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
         List<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
         ApplicationGatewayBackend backend = this.backend();
         if (backend != null && backend.addresses() != null) {
-            backend.addresses();
+            addresses = backend.addresses();
         }
         return Collections.unmodifiableList(addresses);
     }
