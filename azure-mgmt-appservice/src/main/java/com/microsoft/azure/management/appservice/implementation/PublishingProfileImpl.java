@@ -26,12 +26,12 @@ class PublishingProfileImpl implements PublishingProfile {
     private String ftpPassword;
     private String gitPassword;
 
-    private final WebAppBase<?> parent;
+    private final WebAppBase parent;
 
     private static final Pattern GIT_REGEX = Pattern.compile("publishMethod=\"MSDeploy\" publishUrl=\"([^\"]+)\".+userName=\"(\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
     private static final Pattern FTP_REGEX = Pattern.compile("publishMethod=\"FTP\" publishUrl=\"ftp://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
 
-    PublishingProfileImpl(String publishingProfileXml, WebAppBase<?> parent) {
+    PublishingProfileImpl(String publishingProfileXml, WebAppBase parent) {
         Matcher matcher = GIT_REGEX.matcher(publishingProfileXml);
         if (matcher.find()) {
             gitUrl = matcher.group(1);
