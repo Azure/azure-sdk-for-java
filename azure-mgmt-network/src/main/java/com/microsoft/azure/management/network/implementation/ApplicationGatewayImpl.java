@@ -282,7 +282,7 @@ class ApplicationGatewayImpl
             return frontend;
         } else {
             String name = ResourceNamer.randomResourceName("frontend", 14);
-            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(name);
+            frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPrivateFrontend = frontend;
             return frontend;
@@ -295,7 +295,7 @@ class ApplicationGatewayImpl
             return frontend;
         } else {
             String name = ResourceNamer.randomResourceName("frontend", 14);
-            frontend = (ApplicationGatewayFrontendImpl) this.defineFrontend(name);
+            frontend = this.defineFrontend(name);
             frontend.attach();
             this.defaultPublicFrontend = frontend;
             return frontend;
@@ -657,20 +657,36 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutPrivateFrontend() {
-        // Ensure no frontend is private
+        // Delete all private frontends
+        List<String> toDelete = new ArrayList<>();
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            frontend.inner().withSubnet(null).withPrivateIPAddress(null).withPrivateIPAllocationMethod(null);
+            if (frontend.isPrivate()) {
+                toDelete.add(frontend.name());
+            }
         }
+
+        for (String frontendName : toDelete) {
+            this.frontends.remove(frontendName);
+        }
+
         this.defaultPrivateFrontend = null;
         return this;
     }
 
     @Override
     public ApplicationGatewayImpl withoutPublicFrontend() {
-        // Ensure no frontend is public
+        // Delete all public frontends
+        List<String> toDelete = new ArrayList<>();
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            frontend.inner().withPublicIPAddress(null);
+            if (frontend.isPublic()) {
+                toDelete.add(frontend.name());
+            }
         }
+
+        for (String frontendName : toDelete) {
+            this.frontends.remove(frontendName);
+        }
+
         this.defaultPublicFrontend = null;
         return this;
     }
@@ -772,8 +788,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withoutBackendFqdn(String fqdn) {
         for (ApplicationGatewayBackend backend : this.backends.values()) {
-            ApplicationGatewayBackendImpl backendImpl = (ApplicationGatewayBackendImpl) backend;
-            backendImpl.withoutFqdn(fqdn);
+            ((ApplicationGatewayBackendImpl) backend).withoutFqdn(fqdn);
         }
         return this;
     }
@@ -926,8 +941,9 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayFrontend defaultPrivateFrontend() {
         // Default means the only private one or the one tracked as default, if more than one private present
-        if (this.privateFrontends().size() == 1) {
-            this.defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) this.privateFrontends().values().iterator().next();
+        Map<String, ApplicationGatewayFrontend> privateFrontends = this.privateFrontends();
+        if (privateFrontends.size() == 1) {
+            this.defaultPrivateFrontend = (ApplicationGatewayFrontendImpl) privateFrontends.values().iterator().next();
         } else if (this.frontends().size() == 0) {
             this.defaultPrivateFrontend = null;
         }
@@ -938,8 +954,9 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayFrontend defaultPublicFrontend() {
         // Default means the only public one or the one tracked as default, if more than one public present
-        if (this.publicFrontends().size() == 1) {
-            this.defaultPublicFrontend = (ApplicationGatewayFrontendImpl) this.publicFrontends().values().iterator().next();
+        Map<String, ApplicationGatewayFrontend> publicFrontends = this.publicFrontends();
+        if (publicFrontends.size() == 1) {
+            this.defaultPublicFrontend = (ApplicationGatewayFrontendImpl) publicFrontends.values().iterator().next();
         } else if (this.frontends().size() == 0) {
             this.defaultPublicFrontend = null;
         }
@@ -1099,7 +1116,7 @@ class ApplicationGatewayImpl
     @Override
     public boolean isPrivate() {
         for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
-            if (!frontend.isPublic()) {
+            if (frontend.isPrivate()) {
                 return true;
             }
         }
@@ -1131,7 +1148,7 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayFrontend> privateFrontends() {
         Map<String, ApplicationGatewayFrontend> privateFrontends = new TreeMap<>();
-        for (ApplicationGatewayFrontend frontend : this.frontends().values()) {
+        for (ApplicationGatewayFrontend frontend : this.frontends.values()) {
             if (frontend.isPrivate()) {
                 privateFrontends.put(frontend.name(), frontend);
             }
