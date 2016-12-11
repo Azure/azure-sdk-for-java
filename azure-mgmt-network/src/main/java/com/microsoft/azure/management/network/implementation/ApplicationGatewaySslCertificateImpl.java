@@ -49,8 +49,7 @@ class ApplicationGatewaySslCertificateImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        this.parent().withSslCertificate(this);
-        return this.parent();
+        return this.parent().withSslCertificate(this);
     }
 
 
@@ -69,10 +68,9 @@ class ApplicationGatewaySslCertificateImpl
             return null;
         }
 
-        byte[] content;
         try {
-            content = Files.readAllBytes(pfxFile.toPath());
-            return withPfxFromBytes(content);
+            byte[] content = Files.readAllBytes(pfxFile.toPath());
+            return (content != null) ? withPfxFromBytes(content) : null;
         } catch (IOException e) {
             e.printStackTrace();
             return null;
