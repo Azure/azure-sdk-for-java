@@ -91,6 +91,10 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
+        if (ipAddress == null) {
+            return this;
+        }
+
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withIpAddress(ipAddress);
         List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
@@ -105,6 +109,9 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withFqdn(String fqdn) {
+        if (fqdn == null) {
+            return this;
+        }
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withFqdn(fqdn);
         ensureAddresses().add(address);
@@ -113,6 +120,9 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+        if (ipAddress == null) {
+            return this;
+        }
         if (this.inner().backendAddresses() == null) {
             return this;
         }
@@ -136,6 +146,9 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutFqdn(String fqdn) {
+        if (fqdn == null) {
+            return this;
+        }
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
             String curFqdn = addresses.get(i).fqdn();

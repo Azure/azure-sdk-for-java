@@ -72,7 +72,7 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public String publicIpAddressId() {
-        final ApplicationGatewayFrontendImpl frontend = (ApplicationGatewayFrontendImpl) this.frontend();
+        final ApplicationGatewayFrontend frontend = this.frontend();
         if (frontend == null) {
             return null;
         } else {
@@ -115,6 +115,8 @@ class ApplicationGatewayListenerImpl
     public int frontendPortNumber() {
         String name = this.frontendPortName();
         if (name == null) {
+            return 0;
+        } else if (!this.parent().frontendPorts().containsKey(name)) {
             return 0;
         } else {
             return this.parent().frontendPorts().get(name);
@@ -193,11 +195,13 @@ class ApplicationGatewayListenerImpl
 
     @Override
     public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
-        String name = ResourceNamer.randomResourceName("cert", 10);
-        return withSslCertificateFromPfxFile(pfxFile, name);
+        return withSslCertificateFromPfxFile(pfxFile, null);
     }
 
     private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+        if (name == null) {
+            name = ResourceNamer.randomResourceName("cert", 10);
+        }
         this.sslCert = this.parent().defineSslCertificate(name)
             .withPfxFromFile(pfxFile);
         return this;

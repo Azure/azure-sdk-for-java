@@ -102,7 +102,7 @@ class ApplicationGatewayFrontendImpl
         this.inner().withSubnet(subnetRef);
 
         // Ensure this frontend is not public
-        this.inner().withPublicIPAddress(null);
+        this.withoutPublicIpAddress();
         return this;
     }
 
@@ -114,19 +114,22 @@ class ApplicationGatewayFrontendImpl
     @Override
     public ApplicationGatewayFrontendImpl withExistingPublicIpAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
-        this.inner()
-            .withPublicIPAddress(pipRef)
-
-            // Ensure no conflicting public and private settings
-            .withSubnet(null)
-            .withPrivateIPAddress(null)
-            .withPrivateIPAllocationMethod(null);
+        this.inner().withPublicIPAddress(pipRef);
+        this.withoutSubnet(); // Ensure no conflicting public and private settings
         return this;
     }
 
     @Override
     public ApplicationGatewayFrontendImpl withoutPublicIpAddress() {
         this.inner().withPublicIPAddress(null);
+        return this;
+    }
+
+    public ApplicationGatewayFrontendImpl withoutSubnet() {
+        this.inner()
+            .withSubnet(null)
+            .withPrivateIPAddress(null)
+            .withPrivateIPAllocationMethod(null);
         return this;
     }
 
