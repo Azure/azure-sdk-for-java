@@ -48,14 +48,10 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public List<ApplicationGatewayBackendAddress> backendAddresses() {
-        List<ApplicationGatewayBackendAddress> addresses;
+        List<ApplicationGatewayBackendAddress> addresses = new ArrayList<>();
         ApplicationGatewayBackend backend = this.backend();
-        if (backend == null) {
-            addresses = new ArrayList<>();
-        } else if (backend.addresses() == null) {
-            addresses = new ArrayList<>();
-        } else {
-            addresses = backend.addresses();
+        if (backend != null && backend.addresses() != null) {
+            backend.addresses();
         }
         return Collections.unmodifiableList(addresses);
     }
@@ -63,89 +59,55 @@ class ApplicationGatewayRequestRoutingRuleImpl
     @Override
     public boolean cookieBasedAffinity() {
         final ApplicationGatewayBackendHttpConfiguration backendConfig = this.backendHttpConfiguration();
-        if (backendConfig == null) {
-            return false;
-        } else {
-            return backendConfig.cookieBasedAffinity();
-        }
+        return (backendConfig != null) ? backendConfig.cookieBasedAffinity() : false;
     }
 
     @Override
     public int backendPort() {
         final ApplicationGatewayBackendHttpConfiguration backendConfig = this.backendHttpConfiguration();
-        if (backendConfig == null) {
-            return 0;
-        } else {
-            return backendConfig.port();
-        }
+        return (backendConfig != null) ? backendConfig.port() : 0;
     }
 
     @Override
     public boolean requiresServerNameIndication() {
         final ApplicationGatewayListener listener = this.listener();
-        if (listener == null) {
-            return false;
-        } else {
-            return listener.requiresServerNameIndication();
-        }
+        return (listener != null) ? listener.requiresServerNameIndication() : false;
     }
 
     @Override
     public String hostName() {
         final ApplicationGatewayListener listener = this.listener();
-        if (listener == null) {
-            return null;
-        } else {
-            return listener.hostName();
-        }
+        return (listener != null) ? listener.hostName() : null;
     }
 
     @Override
     public int frontendPort() {
         final ApplicationGatewayListener listener = this.listener();
-        if (listener == null) {
-            return 0;
-        } else {
-            return listener.frontendPortNumber();
-        }
+        return (listener != null) ? listener.frontendPortNumber() : 0;
     }
 
     @Override
     public ApplicationGatewaySslCertificate sslCertificate() {
-        if (this.listener() == null) {
-            return null;
-        } else {
-            return this.listener().sslCertificate();
-        }
+        final ApplicationGatewayListener listener = this.listener();
+        return (listener != null) ? listener.sslCertificate() : null;
     }
 
     @Override
     public ApplicationGatewayProtocol frontendProtocol() {
-        if (this.listener() == null) {
-            return null;
-        } else {
-            return this.listener().protocol();
-        }
+        final ApplicationGatewayListener listener = this.listener();
+        return (listener != null) ? listener.protocol() : null;
     }
 
     @Override
     public String publicIpAddressId() {
         final ApplicationGatewayListener listener = this.listener();
-        if (listener == null) {
-            return null;
-        } else {
-            return listener.publicIpAddressId();
-        }
+        return (listener != null) ? listener.publicIpAddressId() : null;
     }
 
     @Override
     public PublicIpAddress getPublicIpAddress() {
         final String pipId = this.publicIpAddressId();
-        if (pipId == null) {
-            return null;
-        } else {
-            return this.parent().manager().publicIpAddresses().getById(pipId);
-        }
+        return (pipId != null) ? this.parent().manager().publicIpAddresses().getById(pipId) : null;
     }
 
     @Override
@@ -195,8 +157,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        this.parent().withRequestRoutingRule(this);
-        return this.parent();
+        return this.parent().withRequestRoutingRule(this);
     }
 
     // Withers
