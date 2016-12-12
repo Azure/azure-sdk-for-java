@@ -254,6 +254,7 @@ class WebAppImpl
         if (super.creatableGroup != null && isInCreateMode()) {
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
         }
+        this.withRegion(appServicePlan.regionName());
         return this;
     }
 }

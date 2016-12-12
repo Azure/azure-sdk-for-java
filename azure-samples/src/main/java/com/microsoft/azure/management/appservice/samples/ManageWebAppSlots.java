@@ -27,6 +27,11 @@ import java.util.concurrent.TimeUnit;
 /**
  * Azure App Service basic sample for managing web apps.
  *  - Create 3 web apps in 3 different regions
+ *  - Deploy to all 3 web apps
+ *  - For each of the web apps, create a staging slot
+ *  - For each of the web apps, deploy to staging slot
+ *  - For each of the web apps, auto-swap to production slot is triggered
+ *  - For each of the web apps, swap back (something goes wrong)
  */
 public final class ManageWebAppSlots {
 

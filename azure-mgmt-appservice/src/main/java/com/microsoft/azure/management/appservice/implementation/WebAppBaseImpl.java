@@ -12,7 +12,6 @@ import com.google.common.collect.Sets;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.appservice.AppServiceCertificate;
 import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppSetting;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CloningInfo;
@@ -446,50 +445,20 @@ abstract class WebAppBaseImpl<
         if (hostNameSslStateMap.size() > 0) {
             inner().withHostNameSslStates(new ArrayList<>(hostNameSslStateMap.values()));
         }
-        Observable<String> locationObs = Observable.just(inner().location());
-        if (inner().location() == null) {
-            locationObs = myManager.appServicePlans().getByIdAsync(inner().serverFarmId())
-                    .map(new Func1<AppServicePlan, String>() {
-                        @Override
-                        public String call(AppServicePlan appServicePlan) {
-                            return appServicePlan.regionName();
-                        }
-                    });
+        final boolean emptyConfig = inner().siteConfig() == null;
+        if (emptyConfig) {
+            inner().withSiteConfig(new SiteConfigInner());
         }
-        locationObs = locationObs.map(new Func1<String, String>() {
-            @Override
-            public String call(String s) {
-                inner().withLocation(s);
-                if (sourceControl != null) {
-                    sourceControl.inner().withLocation(s);
-                }
-                if (inner().siteConfig() != null) {
-                    inner().siteConfig().withLocation(s);
-                }
-                return s;
-            }
-        });
+        inner().siteConfig().withLocation(inner().location());
         // Construct web app observable
-        return locationObs.flatMap(new Func1<String, Observable<SiteInner>>() {
+        return createOrUpdateInner(inner())
+        .map(new Func1<SiteInner, SiteInner>() {
             @Override
-            public Observable<SiteInner> call(String s) {
-                // Need to send an empty config object for deployment slot
-                // creation, otherwise the parent configs are copied
-                final boolean emptyConfig = inner().siteConfig() == null;
+            public SiteInner call(SiteInner siteInner) {
                 if (emptyConfig) {
-                    inner().withSiteConfig(new SiteConfigInner());
-                    inner().siteConfig().withLocation(regionName());
+                    inner().withSiteConfig(null);
                 }
-                return createOrUpdateInner(inner())
-                        .map(new Func1<SiteInner, SiteInner>() {
-                            @Override
-                            public SiteInner call(SiteInner siteInner) {
-                                if (emptyConfig) {
-                                    inner().withSiteConfig(null);
-                                }
-                                return siteInner;
-                            }
-                        });
+                return siteInner;
             }
         })
         // Submit hostname bindings
@@ -1117,7 +1086,9 @@ abstract class WebAppBaseImpl<
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> defineSourceControl() {
-        return new WebAppSourceControlImpl<>(new SiteSourceControlInner(), this, serviceClient);
+        SiteSourceControlInner sourceControlInner = new SiteSourceControlInner();
+        sourceControlInner.withLocation(regionName());
+        return new WebAppSourceControlImpl<>(sourceControlInner, this, serviceClient);
     }
 
     @Override

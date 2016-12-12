@@ -46,6 +46,7 @@ class DeploymentSlotImpl
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
         inner().withServerFarmId(parent.appServicePlanId());
+        inner().withLocation(regionName());
     }
 
     @Override

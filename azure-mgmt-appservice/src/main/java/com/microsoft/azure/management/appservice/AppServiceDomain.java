@@ -146,7 +146,7 @@ public interface AppServiceDomain extends
         /**
          * The first stage of the domain definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithRegistrantContact> {
+        interface Blank extends GroupableResource.DefinitionStages.WithExistingResourceGroup<WithRegistrantContact> {
         }
 
         /**

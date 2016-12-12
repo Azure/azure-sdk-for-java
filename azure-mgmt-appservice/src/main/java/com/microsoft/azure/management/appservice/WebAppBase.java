@@ -7,13 +7,12 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import org.joda.time.DateTime;
 import rx.Observable;
 
