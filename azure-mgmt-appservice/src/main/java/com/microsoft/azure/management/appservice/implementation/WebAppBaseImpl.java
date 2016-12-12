@@ -405,7 +405,8 @@ abstract class WebAppBaseImpl<
                     cachedConnectionStrings = Maps.asMap(connectionStringsInner.properties().keySet(), new Function<String, ConnectionString>() {
                         @Override
                         public ConnectionString apply(String input) {
-                            return new ConnectionStringImpl(input, connectionStringsInner.properties().get(input), slotConfigs.connectionStringNames().contains(input));
+                            return new ConnectionStringImpl(input, connectionStringsInner.properties().get(input),
+                                    slotConfigs.connectionStringNames() != null && slotConfigs.connectionStringNames().contains(input));
                         }
                     });
                 }

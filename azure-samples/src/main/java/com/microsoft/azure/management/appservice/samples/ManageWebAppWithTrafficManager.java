@@ -12,7 +12,6 @@ import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryPhoneCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -31,13 +30,12 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Azure App Service sample for managing web apps.
- *  - app service plan, web app
- *    - Create 2 web apps under the same new app service plan
- *  - domain
- *    - Create a domain
- *  - certificate
- *    - Upload a self-signed wildcard certificate
- *    - update both web apps to use the domain and the created wildcard SSL certificate
+ *  - Create a domain
+ *  - Create a self-signed certificate for the domain
+ *  - Create 3 app service plans in 3 different regions
+ *  - Create 5 web apps under the 3 plans, bound to the domain and the certificate
+ *  - Create a traffic manager in front of the web apps
+ *  - Scale up the app service plans to twice the capacity
  */
 public final class ManageWebAppWithTrafficManager {
     private static final String RG_NAME = ResourceNamer.randomResourceName("rgNEMV_", 24);
@@ -87,24 +85,24 @@ public final class ManageWebAppWithTrafficManager {
 
                 System.out.println("Purchasing a domain " + domainName + "...");
 
-                ResourceGroup group = azure.resourceGroups().define(RG_NAME)
+                azure.resourceGroups().define(RG_NAME)
                         .withRegion(Region.US_WEST)
                         .create();
 
                 domain = azure.appServices().domains().define(domainName)
                         .withExistingResourceGroup(RG_NAME)
                         .defineRegistrantContact()
-                        .withFirstName("Jon")
-                        .withLastName("Doe")
-                        .withEmail("jondoe@contoso.com")
-                        .withAddressLine1("123 4th Ave")
-                        .withCity("Redmond")
-                        .withStateOrProvince("WA")
-                        .withCountry(CountryISOCode.UNITED_STATES)
-                        .withPostalCode("98052")
-                        .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                        .withPhoneNumber("4258828080")
-                        .attach()
+                            .withFirstName("Jon")
+                            .withLastName("Doe")
+                            .withEmail("jondoe@contoso.com")
+                            .withAddressLine1("123 4th Ave")
+                            .withCity("Redmond")
+                            .withStateOrProvince("WA")
+                            .withCountry(CountryISOCode.UNITED_STATES)
+                            .withPostalCode("98052")
+                            .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                            .withPhoneNumber("4258828080")
+                            .attach()
                         .withDomainPrivacyEnabled(true)
                         .withAutoRenewEnabled(false)
                         .create();
