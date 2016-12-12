@@ -429,7 +429,7 @@ public class TableBatchOperationTests {
             assertEquals(ex.getMessage(), "Bad Request");
             String errorAfterSemiColon = ex.getExtendedErrorInformation().getErrorMessage();
             errorAfterSemiColon = errorAfterSemiColon.substring(errorAfterSemiColon.indexOf(":") + 1);
-            assertTrue(errorAfterSemiColon.startsWith("One of the request inputs is not valid."));
+            assertTrue(errorAfterSemiColon.startsWith("The batch request operation exceeds the maximum 100 changes per change set."));
             assertEquals(ex.getErrorCode(), StorageErrorCodeStrings.INVALID_INPUT);
         }
     }

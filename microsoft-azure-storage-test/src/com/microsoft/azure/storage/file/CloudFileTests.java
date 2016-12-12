@@ -742,17 +742,8 @@ public class CloudFileTests {
             }
         });
 
-        try {
-            fileRef.upload(srcStream, length, null, null, context);
-            fileRef.download(new ByteArrayOutputStream(), null, null, context);
-            fail("Shouldn't sign empty header, expected a 403.");
-        }
-        catch (StorageException e) {
-            assertEquals(e.getHttpStatusCode(), 403);
-            assertEquals(
-                    e.getMessage(),
-                    "Server failed to authenticate the request. Make sure the value of Authorization header is formed correctly including the signature.");
-        }
+        fileRef.upload(srcStream, length, null, null, context);
+        fileRef.download(new ByteArrayOutputStream(), null, null, context);
     }
 
     /**

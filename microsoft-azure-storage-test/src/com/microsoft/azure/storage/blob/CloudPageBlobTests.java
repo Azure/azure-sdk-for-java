@@ -1148,7 +1148,7 @@ public class CloudPageBlobTests {
         final UriQueryBuilder builder = new UriQueryBuilder();
         builder.add(Constants.QueryConstants.SNAPSHOT, sasSnapshotBlob.snapshotID);
         URI sourceUri = TestHelper.defiddler(builder.addToURI(sasSnapshotBlob.getTransformedAddress(null).getPrimaryUri()));
-        
+
         String copyId = null;
         if (overload == 0) {
             copyId = copy.startIncrementalCopy(BlobTestHelper.defiddler(sasSnapshotBlob));
@@ -1167,7 +1167,7 @@ public class CloudPageBlobTests {
 
         assertEquals(BlobType.PAGE_BLOB, copy.getProperties().getBlobType());
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
-        assertEquals(sourceUri, copy.getCopyState().getSource());
+        assertEquals(sourceUri.getSchemeSpecificPart(), copy.getCopyState().getSource().getSchemeSpecificPart());
         assertTrue(buffer.length == copy.getCopyState().getTotalBytes());
         assertTrue(buffer.length == copy.getCopyState().getBytesCopied());
         assertEquals(copyId, copy.getCopyState().getCopyId());

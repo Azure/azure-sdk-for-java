@@ -239,7 +239,7 @@ public class TableQueryTests {
         catch (TableServiceException ex) {
             assertEquals(ex.getMessage(), "Bad Request");
             assertTrue(ex.getExtendedErrorInformation().getErrorMessage()
-                    .startsWith("One of the request inputs is not valid."));
+                    .startsWith("A binary operator with incompatible types was detected. Found operand types 'Edm.String' and 'Edm.Boolean' for operator kind 'And'."));
             assertEquals(ex.getExtendedErrorInformation().getErrorCode(), "InvalidInput");
         }
     }

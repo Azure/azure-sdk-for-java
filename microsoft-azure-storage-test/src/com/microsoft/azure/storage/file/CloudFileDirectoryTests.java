@@ -313,13 +313,16 @@ public class CloudFileDirectoryTests {
             segmentResults = topDir1.listFilesAndDirectoriesSegmented(
                 "mid" /* prefix */,
                 null /* maxResults */,
-                segmentResults.getContinuationToken() /* currentToken */,
+                null /* currentToken */,
                 null /* options */,
                 null /* operationContext */);
 
             assertNull(segmentResults.getContinuationToken());
-            assertEquals(1, segmentResults.getResults().size());
+            assertEquals(2, segmentResults.getResults().size());
             item = segmentResults.getResults().get(0);
+            assertEquals(this.share.getUri() + "/TopDir1/MidDir1", item.getUri().toString());
+            assertEquals("MidDir1", ((CloudFileDirectory)item).getName());
+            item = segmentResults.getResults().get(1);
             assertEquals(this.share.getUri() + "/TopDir1/MidDir2", item.getUri().toString());
             assertEquals("MidDir2", ((CloudFileDirectory)item).getName());
         }
