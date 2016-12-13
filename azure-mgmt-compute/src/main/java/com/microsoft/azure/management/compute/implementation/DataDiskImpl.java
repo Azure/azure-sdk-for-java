@@ -8,6 +8,7 @@ import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.VirtualHardDisk;
 import com.microsoft.azure.management.compute.VirtualMachineDataDisk;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 
 import java.util.ArrayList;
@@ -65,12 +66,12 @@ class DataDiskImpl
 
     @Override
     public int size() {
-        return this.inner().diskSizeGB();
+        return Utils.toPrimitiveInt(this.inner().diskSizeGB());
     }
 
     @Override
     public int lun() {
-        return this.inner().lun();
+        return Utils.toPrimitiveInt(this.inner().lun());
     }
 
     @Override

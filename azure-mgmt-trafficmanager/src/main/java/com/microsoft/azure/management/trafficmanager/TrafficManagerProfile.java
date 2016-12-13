@@ -39,7 +39,7 @@ public interface TrafficManagerProfile extends
     /**
      * @return the DNS Time-To-Live (TTL), in seconds
      */
-    int timeToLive();
+    long timeToLive();
 
     /**
      * @return true if the traffic manager profile is enabled, false if enabled
@@ -60,7 +60,7 @@ public interface TrafficManagerProfile extends
     /**
      * @return the port that is monitored to check the health of traffic manager profile endpoints
      */
-    int monitoringPort();
+    long monitoringPort();
 
     /**
      * @return the path that is monitored to check the health of traffic manager profile endpoints

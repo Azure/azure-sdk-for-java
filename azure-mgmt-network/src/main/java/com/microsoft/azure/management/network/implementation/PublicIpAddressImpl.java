@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
@@ -99,7 +100,7 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return this.inner().idleTimeoutInMinutes();
+        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override

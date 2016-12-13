@@ -28,7 +28,7 @@ public interface ComputeUsage extends Wrapper<UsageInner> {
      * @return the maximum count of the resources that can be allocated in the
      * subscription
      */
-    int limit();
+    long limit();
 
     /**
      * @return the name of the type of usage

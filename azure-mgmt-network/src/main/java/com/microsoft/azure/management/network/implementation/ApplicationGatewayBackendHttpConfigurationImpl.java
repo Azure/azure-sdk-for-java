@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfi
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  *  Implementation for ApplicationGatewayBackendHttpConfiguration.
@@ -51,7 +52,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public int port() {
-        return this.inner().port() != null ? this.inner().port().intValue() : 0;
+        return Utils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
@@ -66,7 +67,7 @@ class ApplicationGatewayBackendHttpConfigurationImpl
 
     @Override
     public int requestTimeout() {
-        return this.inner().requestTimeout() != null ? this.inner().requestTimeout().intValue() : 0;
+        return Utils.toPrimitiveInt(this.inner().requestTimeout());
     }
 
     // Withers

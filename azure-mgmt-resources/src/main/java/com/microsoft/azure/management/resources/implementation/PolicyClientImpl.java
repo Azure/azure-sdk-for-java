@@ -11,6 +11,7 @@ package com.microsoft.azure.management.resources.implementation;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.RestClient;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
 /**
@@ -95,7 +96,7 @@ public final class PolicyClientImpl extends AzureServiceClient {
      * @return the longRunningOperationRetryTimeout value.
      */
     public int longRunningOperationRetryTimeout() {
-        return this.longRunningOperationRetryTimeout;
+        return Utils.toPrimitiveInt(this.longRunningOperationRetryTimeout);
     }
 
     /**

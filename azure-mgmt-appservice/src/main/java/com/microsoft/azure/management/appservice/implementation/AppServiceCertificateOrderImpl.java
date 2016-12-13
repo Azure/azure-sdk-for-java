@@ -103,12 +103,12 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public int validityInYears() {
-        return inner().validityInYears();
+        return Utils.toPrimitiveInt(inner().validityInYears());
     }
 
     @Override
     public int keySize() {
-        return inner().keySize();
+        return Utils.toPrimitiveInt(inner().keySize());
     }
 
     @Override

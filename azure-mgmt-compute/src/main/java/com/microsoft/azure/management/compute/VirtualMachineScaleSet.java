@@ -132,7 +132,7 @@ public interface VirtualMachineScaleSet extends
     /**
      * @return the number of virtual machine instances in the scale set
      */
-    int capacity();
+    long capacity();
 
     /**
      * @return the virtual network associated with the primary network interfaces of the virtual machines

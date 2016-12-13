@@ -35,6 +35,31 @@ public final class Utils {
     }
 
     /**
+     * Converts an object Integer to a primitive int.
+     *
+     * @param value the <tt>Integer</tt> value
+     * @return <tt>0</tt> if the given Integer value is null else <tt>integer value</tt>
+     */
+    public static int toPrimitiveInt(Integer value) {
+        if (value == null) {
+            return 0;
+        }
+        return value;
+    }
+
+    /**
+     * Converts an object Long to a primitive long.
+     *
+     * @param value the <tt>Long</tt> value
+     * @return <tt>0</tt> if the given Long value is null else <tt>long value</tt>
+     */
+    public static long toPrimitiveLong(Long value) {
+        if (value == null) {
+            return 0;
+        }
+        return value;
+    }
+    /**
      * Creates an Odata filter string that can be used for filtering list results by tags.
      *
      * @param tagName the name of the tag. If not provided, all resources will be returned.

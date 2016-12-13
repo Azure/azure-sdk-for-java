@@ -7,6 +7,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
@@ -61,8 +62,8 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public int timeToLive() {
-        return this.inner().dnsConfig().ttl().intValue();
+    public long timeToLive() {
+        return Utils.toPrimitiveLong(this.inner().dnsConfig().ttl());
     }
 
     @Override
@@ -81,8 +82,8 @@ class TrafficManagerProfileImpl
     }
 
     @Override
-    public int monitoringPort() {
-        return this.inner().monitorConfig().port().intValue();
+    public long monitoringPort() {
+        return Utils.toPrimitiveLong(this.inner().monitorConfig().port());
     }
 
     @Override

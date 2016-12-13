@@ -787,12 +787,7 @@ class VirtualMachineImpl
 
     @Override
     public int osDiskSize() {
-        if (inner().storageProfile().osDisk().diskSizeGB() == null) {
-            // Server returns OS disk size as 0 for auto-created disks for which
-            // size was not explicitly set by the user.
-            return 0;
-        }
-        return inner().storageProfile().osDisk().diskSizeGB();
+        return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override

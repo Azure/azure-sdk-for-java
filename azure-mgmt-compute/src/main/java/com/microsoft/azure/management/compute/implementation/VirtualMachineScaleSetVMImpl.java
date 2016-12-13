@@ -160,11 +160,7 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public int osDiskSizeInGB() {
-        if (this.inner().storageProfile().osDisk().diskSizeGB() != null) {
-            this.inner().storageProfile().osDisk().diskSizeGB();
-        }
-        // Its a known issue that size of OS disk based on platform image is sometimes null
-        return 0;
+        return Utils.toPrimitiveInt(this.inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override

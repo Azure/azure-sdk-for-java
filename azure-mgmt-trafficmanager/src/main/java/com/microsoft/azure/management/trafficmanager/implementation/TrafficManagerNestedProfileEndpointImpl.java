@@ -7,6 +7,7 @@ package com.microsoft.azure.management.trafficmanager.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 
 /**
@@ -28,11 +29,8 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
     }
 
     @Override
-    public int minimumChildEndpointCount() {
-        if (inner().minChildEndpoints() == null) {
-            return 0;
-        }
-        return inner().minChildEndpoints().intValue();
+    public long minimumChildEndpointCount() {
+        return Utils.toPrimitiveLong(inner().minChildEndpoints());
     }
 
     @Override
