@@ -13,7 +13,8 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 @Fluent
 public interface PublishingProfile {
     /**
-     * @return the url for FTP publishing
+     * @return the url for FTP publishing, with ftp:// and the root folder.
+     * E.g. ftp://ftp.contoso.com/site/wwwroot
      */
     String ftpUrl();
     /**
@@ -27,7 +28,8 @@ public interface PublishingProfile {
     String ftpPassword();
 
     /**
-     * @return the url for FTP publishing
+     * @return the url for FTP publishing, with https:// upfront.
+     * E.g. https://contoso.com:443/myRepo.git
      */
     String gitUrl();
 

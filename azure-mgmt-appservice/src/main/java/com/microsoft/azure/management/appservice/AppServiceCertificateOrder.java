@@ -218,7 +218,7 @@ public interface AppServiceCertificateOrder extends
              * @param webApp the web app bound to the hostname
              * @return the next stage of the app service certificate definition
              */
-            WithKeyVault withWebAppVerification(WebAppBase<?> webApp);
+            WithKeyVault withWebAppVerification(WebAppBase webApp);
         }
 
         /**

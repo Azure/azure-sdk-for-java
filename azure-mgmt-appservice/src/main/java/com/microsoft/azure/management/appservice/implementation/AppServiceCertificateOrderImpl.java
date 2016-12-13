@@ -43,7 +43,7 @@ class AppServiceCertificateOrderImpl
 
     final AppServiceCertificateOrdersInner client;
 
-    private WebAppBase<?> domainVerifyWebApp;
+    private WebAppBase domainVerifyWebApp;
     private AppServiceDomain domainVerifyDomain;
     private Observable<Vault> bindingVault;
 
@@ -266,7 +266,7 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public AppServiceCertificateOrderImpl withWebAppVerification(WebAppBase<?> webApp) {
+    public AppServiceCertificateOrderImpl withWebAppVerification(WebAppBase webApp) {
         this.domainVerifyWebApp = webApp;
         return this;
     }
