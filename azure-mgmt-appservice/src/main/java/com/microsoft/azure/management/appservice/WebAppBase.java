@@ -7,13 +7,12 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import org.joda.time.DateTime;
 import rx.Observable;
 
@@ -23,12 +22,10 @@ import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure Web App or deployment slot.
- * @param <T> the fluent interface of the web app or deployment slot
  */
 @Fluent
-public interface WebAppBase<T extends WebAppBase<T>> extends
+public interface WebAppBase extends
         HasName,
-        Refreshable<T>,
         GroupableResource,
         Wrapper<SiteInner> {
 

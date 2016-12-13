@@ -148,7 +148,7 @@ class WebAppImpl
         InputStream stream = client.listPublishingProfileXmlWithSecrets(resourceGroupName(), name());
         try {
             String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml);
+            return new PublishingProfileImpl(xml, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -181,16 +181,19 @@ class WebAppImpl
     @Override
     public void start() {
         client.start(resourceGroupName(), name());
+        refresh();
     }
 
     @Override
     public void stop() {
         client.stop(resourceGroupName(), name());
+        refresh();
     }
 
     @Override
     public void restart() {
         client.restart(resourceGroupName(), name());
+        refresh();
     }
 
     @Override
@@ -251,6 +254,7 @@ class WebAppImpl
         if (super.creatableGroup != null && isInCreateMode()) {
             ((Wrapper<ResourceGroupInner>) super.creatableGroup).inner().withLocation(appServicePlan.regionName());
         }
+        this.withRegion(appServicePlan.regionName());
         return this;
     }
 }

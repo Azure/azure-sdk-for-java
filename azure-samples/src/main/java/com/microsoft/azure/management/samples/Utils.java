@@ -9,6 +9,16 @@ package com.microsoft.azure.management.samples;
 
 import com.google.common.base.Joiner;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
+import com.microsoft.azure.management.appservice.AppServiceDomain;
+import com.microsoft.azure.management.appservice.AppServicePlan;
+import com.microsoft.azure.management.appservice.AppSetting;
+import com.microsoft.azure.management.appservice.ConnectionString;
+import com.microsoft.azure.management.appservice.Contact;
+import com.microsoft.azure.management.appservice.HostNameBinding;
+import com.microsoft.azure.management.appservice.HostNameSslState;
+import com.microsoft.azure.management.appservice.SslState;
+import com.microsoft.azure.management.appservice.WebAppBase;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.ApplicationPackage;
 import com.microsoft.azure.management.batch.BatchAccount;
@@ -42,18 +52,13 @@ import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
-import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
-import com.microsoft.azure.management.appservice.AppServiceDomain;
-import com.microsoft.azure.management.appservice.AppServicePlan;
-import com.microsoft.azure.management.appservice.AppSetting;
-import com.microsoft.azure.management.appservice.ConnectionString;
-import com.microsoft.azure.management.appservice.Contact;
-import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.HostNameSslState;
-import com.microsoft.azure.management.appservice.SslState;
-import com.microsoft.azure.management.appservice.WebAppBase;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -707,9 +712,10 @@ public final class Utils {
      * Print a web app.
      * @param resource a web app
      */
-    public static void print(WebAppBase<?> resource) {
+    public static void print(WebAppBase resource) {
         StringBuilder builder = new StringBuilder().append("Web app: ").append(resource.id())
                 .append("Name: ").append(resource.name())
+                .append("\n\tState: ").append(resource.state())
                 .append("\n\tResource group: ").append(resource.resourceGroupName())
                 .append("\n\tRegion: ").append(resource.region())
                 .append("\n\tDefault hostname: ").append(resource.defaultHostName())
@@ -747,6 +753,119 @@ public final class Utils {
         long datePart = millis % 10000000L;
         return namePrefix + root.toLowerCase().substring(0, 3) + datePart;
     }
+
+    /**
+     * This method creates a certificate for given password.
+     *
+     * @param certPath location of certificate file
+     * @param pfxPath location of pfx file
+     * @param alias User alias
+     * @param password alias password
+     * @param cnName domain name
+     * @throws Exception exceptions from the creation
+     */
+    public static void createCertificate(String certPath, String pfxPath,
+                                         String alias, String password, String cnName) throws Exception {
+
+        String validityInDays = "3650";
+        String keyAlg = "RSA";
+        String sigAlg = "SHA1withRSA";
+        String keySize = "2048";
+        String storeType = "pkcs12";
+        String command = "keytool";
+        String jdkPath = System.getProperty("java.home");
+        if (jdkPath != null && !jdkPath.isEmpty()) {
+            jdkPath = jdkPath.concat("\\bin");
+        }
+        if (new File(jdkPath).isDirectory()) {
+            command = String.format("%s%s%s", jdkPath, File.separator, command);
+        }
+
+        // Create Pfx file
+        String[] commandArgs = {command, "-genkey", "-alias", alias,
+                "-keystore", pfxPath, "-storepass", password, "-validity",
+                validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
+                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1" };
+        Utils.cmdInvocation(commandArgs, false);
+
+        // Create cer file i.e. extract public key from pfx
+        File pfxFile = new File(pfxPath);
+        if (pfxFile.exists()) {
+            String[] certCommandArgs = {command, "-export", "-alias", alias,
+                    "-storetype", storeType, "-keystore", pfxPath,
+                    "-storepass", password, "-rfc", "-file", certPath };
+            // output of keytool export command is going to error stream
+            // although command is
+            // executed successfully, hence ignoring error stream in this case
+            Utils.cmdInvocation(certCommandArgs, true);
+
+            // Check if file got created or not
+            File cerFile = new File(pfxPath);
+            if (!cerFile.exists()) {
+                throw new IOException(
+                        "Error occurred while creating certificate"
+                                + StringUtils.join(" ", certCommandArgs));
+            }
+        } else {
+            throw new IOException("Error occurred while creating certificates"
+                    + StringUtils.join(" ", commandArgs));
+        }
+    }
+
+    /**
+     * This method is used for invoking native commands.
+     *
+     * @param command
+     *            :- command to invoke.
+     * @param ignoreErrorStream
+     *            : Boolean which controls whether to throw exception or not
+     *            based on error stream.
+     * @return result :- depending on the method invocation.
+     * @throws Exception exceptions thrown from the execution
+     */
+    public static String cmdInvocation(String[] command,
+                                       boolean ignoreErrorStream) throws Exception {
+        String result = "";
+        String error = "";
+        InputStream inputStream = null;
+        InputStream errorStream = null;
+        BufferedReader br = null;
+        BufferedReader ebr = null;
+        try {
+            Process process = new ProcessBuilder(command).start();
+            inputStream = process.getInputStream();
+            errorStream = process.getErrorStream();
+            br = new BufferedReader(new InputStreamReader(inputStream));
+            result = br.readLine();
+            process.waitFor();
+            ebr = new BufferedReader(new InputStreamReader(errorStream));
+            error = ebr.readLine();
+            if (error != null && (!error.equals(""))) {
+                // To do - Log error message
+
+                if (!ignoreErrorStream) {
+                    throw new Exception(error, null);
+                }
+            }
+        } catch (Exception e) {
+            throw new Exception("Exception occurred while invoking command", e);
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+            if (errorStream != null) {
+                errorStream.close();
+            }
+            if (br != null) {
+                br.close();
+            }
+            if (ebr != null) {
+                ebr.close();
+            }
+        }
+        return result;
+    }
+
 
     private Utils() {
 

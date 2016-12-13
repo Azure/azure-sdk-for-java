@@ -6,7 +6,9 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.PublishingProfile;
+import com.microsoft.azure.management.appservice.WebAppBase;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,10 +26,12 @@ class PublishingProfileImpl implements PublishingProfile {
     private String ftpPassword;
     private String gitPassword;
 
+    private final WebAppBase parent;
+
     private static final Pattern GIT_REGEX = Pattern.compile("publishMethod=\"MSDeploy\" publishUrl=\"([^\"]+)\".+userName=\"(\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
     private static final Pattern FTP_REGEX = Pattern.compile("publishMethod=\"FTP\" publishUrl=\"ftp://([^\"]+).+userName=\"([^\"]+\\\\\\$[^\"]+)\".+userPWD=\"([^\"]+)\"");
 
-    PublishingProfileImpl(String publishingProfileXml) {
+    PublishingProfileImpl(String publishingProfileXml, WebAppBase parent) {
         Matcher matcher = GIT_REGEX.matcher(publishingProfileXml);
         if (matcher.find()) {
             gitUrl = matcher.group(1);
@@ -40,6 +44,7 @@ class PublishingProfileImpl implements PublishingProfile {
             ftpUsername = matcher.group(2);
             ftpPassword = matcher.group(3);
         }
+        this.parent = parent;
     }
 
     @Override
@@ -54,7 +59,16 @@ class PublishingProfileImpl implements PublishingProfile {
 
     @Override
     public String gitUrl() {
-        return gitUrl;
+        String repoName;
+        if (parent instanceof DeploymentSlot) {
+            repoName = ((DeploymentSlot) parent).parent().name() + ".git";
+        } else {
+            repoName = parent.name() + ".git";
+        }
+        if (!gitUrl.startsWith("https://")) {
+            gitUrl = "https://" + gitUrl;
+        }
+        return gitUrl + "/" + repoName;
     }
 
     @Override
