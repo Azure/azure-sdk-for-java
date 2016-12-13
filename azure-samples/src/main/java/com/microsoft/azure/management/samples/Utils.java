@@ -52,6 +52,10 @@ import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
+import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -740,6 +744,80 @@ public final class Utils {
             builder = builder.append("\n\t\t" + conn.name() + ": " + conn.value() + " - " + conn.type() + (conn.sticky() ? " - slot setting" : ""));
         }
         System.out.println(builder.toString());
+    }
+
+    /**
+     * Print a traffic manager profile.
+     * @param profile a traffic manager profile
+     */
+    public static void print(TrafficManagerProfile profile) {
+        StringBuilder info = new StringBuilder();
+        info.append("Traffic Manager Profile: ").append(profile.id())
+                .append("\n\tName: ").append(profile.name())
+                .append("\n\tResource group: ").append(profile.resourceGroupName())
+                .append("\n\tRegion: ").append(profile.regionName())
+                .append("\n\tTags: ").append(profile.tags())
+                .append("\n\tDNSLabel: ").append(profile.dnsLabel())
+                .append("\n\tFQDN: ").append(profile.fqdn())
+                .append("\n\tTTL: ").append(profile.timeToLive())
+                .append("\n\tEnabled: ").append(profile.isEnabled())
+                .append("\n\tRoutingMethod: ").append(profile.trafficRoutingMethod())
+                .append("\n\tMonitor status: ").append(profile.monitorStatus())
+                .append("\n\tMonitoring port: ").append(profile.monitoringPort())
+                .append("\n\tMonitoring path: ").append(profile.monitoringPath());
+
+        Map<String, TrafficManagerAzureEndpoint> azureEndpoints = profile.azureEndpoints();
+        if (!azureEndpoints.isEmpty()) {
+            info.append("\n\tAzure endpoints:");
+            int idx = 1;
+            for (TrafficManagerAzureEndpoint endpoint : azureEndpoints.values()) {
+                info.append("\n\t\tAzure endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tTarget resourceId: ").append(endpoint.targetAzureResourceId())
+                        .append("\n\t\t\tTarget resourceType: ").append(endpoint.targetResourceType())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+
+        Map<String, TrafficManagerExternalEndpoint> externalEndpoints = profile.externalEndpoints();
+        if (!externalEndpoints.isEmpty()) {
+            info.append("\n\tExternal endpoints:");
+            int idx = 1;
+            for (TrafficManagerExternalEndpoint endpoint : externalEndpoints.values()) {
+                info.append("\n\t\tExternal endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tFQDN: ").append(endpoint.fqdn())
+                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+
+        Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints = profile.nestedProfileEndpoints();
+        if (!nestedProfileEndpoints.isEmpty()) {
+            info.append("\n\tNested profile endpoints:");
+            int idx = 1;
+            for (TrafficManagerNestedProfileEndpoint endpoint : nestedProfileEndpoints.values()) {
+                info.append("\n\t\tNested profile endpoint: #").append(idx++)
+                        .append("\n\t\t\tId: ").append(endpoint.id())
+                        .append("\n\t\t\tType: ").append(endpoint.endpointType())
+                        .append("\n\t\t\tNested profileId: ").append(endpoint.nestedProfileId())
+                        .append("\n\t\t\tMinimum child threshold: ").append(endpoint.minimumChildEndpointCount())
+                        .append("\n\t\t\tSource Traffic Location: ").append(endpoint.sourceTrafficLocation())
+                        .append("\n\t\t\tMonitor status: ").append(endpoint.monitorStatus())
+                        .append("\n\t\t\tEnabled: ").append(endpoint.isEnabled())
+                        .append("\n\t\t\tRouting priority: ").append(endpoint.routingPriority())
+                        .append("\n\t\t\tRouting weight: ").append(endpoint.routingWeight());
+            }
+        }
+        System.out.println(info.toString());
     }
 
     /**
