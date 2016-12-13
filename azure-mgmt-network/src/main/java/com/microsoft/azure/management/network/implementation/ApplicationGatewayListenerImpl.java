@@ -192,8 +192,6 @@ class ApplicationGatewayListenerImpl
         return this;
     }
 
-    private ApplicationGatewaySslCertificateImpl sslCert = null;
-
     @Override
     public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) throws IOException {
         return withSslCertificateFromPfxFile(pfxFile, null);
@@ -203,21 +201,19 @@ class ApplicationGatewayListenerImpl
         if (name == null) {
             name = ResourceNamer.randomResourceName("cert", 10);
         }
-        this.sslCert = this.parent().defineSslCertificate(name)
-            .withPfxFromFile(pfxFile);
+        this.parent().defineSslCertificate(name)
+            .withPfxFromFile(pfxFile)
+            .attach();
         return this;
     }
 
     @Override
     public ApplicationGatewayListenerImpl withSslCertificatePassword(String password) {
-        if (this.sslCert != null) {
-            this.sslCert.withPfxPassword(password).attach();
-            this.withSslCertificate(sslCert.name());
-            this.sslCert = null;
-            return this;
-        } else {
-            return null; // Fail fast as this should never happen if the internal logic is correct
+        ApplicationGatewaySslCertificateImpl sslCert = (ApplicationGatewaySslCertificateImpl) this.sslCertificate();
+        if (sslCert != null) {
+            sslCert.withPfxPassword(password);
         }
+        return this;
     }
 
     @Override
