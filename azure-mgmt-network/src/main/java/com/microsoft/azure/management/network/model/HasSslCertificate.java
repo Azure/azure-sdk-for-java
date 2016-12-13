@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.model;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 
@@ -43,9 +44,10 @@ public interface HasSslCertificate<T>  {
              * <p>
              * The certificate will be named using an auto-generated name.
              * @param pfxFile an existing PFX file
+             * @throws IOException when there are issues with the provided file
              * @return the next stage of the definition
              */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
+            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile) throws IOException;
         }
 
         /**
@@ -85,9 +87,10 @@ public interface HasSslCertificate<T>  {
              * <p>
              * The certificate will be named using an auto-generated name.
              * @param pfxFile an existing PFX file
+             * @throws IOException when there are issues with the provided file
              * @return the next stage of the definition
              */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
+            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile) throws IOException;
         }
 
         /**
@@ -127,9 +130,10 @@ public interface HasSslCertificate<T>  {
              * <p>
              * The certificate will be named using an auto-generated name.
              * @param pfxFile an existing PFX file
+             * @throws IOException when there are issues with the provided file
              * @return the next stage of the definition
              */
-            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile);
+            WithSslPassword<ReturnT> withSslCertificateFromPfxFile(File pfxFile) throws IOException;
         }
 
         /**

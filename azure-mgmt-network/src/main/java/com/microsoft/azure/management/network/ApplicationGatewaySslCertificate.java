@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaySslCertificateInner;
@@ -65,7 +66,7 @@ public interface ApplicationGatewaySslCertificate extends
              * @param pfxFile a file in the PFX format
              * @return the next stage of the definition
              */
-            WithPassword<ParentT> withPfxFromFile(File pfxFile);
+            WithPassword<ParentT> withPfxFromFile(File pfxFile) throws IOException;
         }
 
         /**

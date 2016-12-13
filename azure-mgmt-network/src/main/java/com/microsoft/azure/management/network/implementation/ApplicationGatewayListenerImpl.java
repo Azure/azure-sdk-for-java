@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -194,11 +195,11 @@ class ApplicationGatewayListenerImpl
     private ApplicationGatewaySslCertificateImpl sslCert = null;
 
     @Override
-    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) throws IOException {
         return withSslCertificateFromPfxFile(pfxFile, null);
     }
 
-    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
             name = ResourceNamer.randomResourceName("cert", 10);
         }

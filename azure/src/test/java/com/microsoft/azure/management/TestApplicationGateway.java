@@ -6,6 +6,7 @@
 package com.microsoft.azure.management;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -269,68 +270,73 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     // Create an application gateway
-                    resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(GROUP_NAME)
+                    try {
+                        resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(GROUP_NAME)
 
-                        // Request routing rules
-                        .defineRequestRoutingRule("rule80")
-                            .fromPrivateFrontend()
-                            .fromFrontendHttpPort(80)
-                            .toBackendHttpPort(8080)
-                            .toBackendIpAddress("11.1.1.1")
-                            .toBackendIpAddress("11.1.1.2")
-                            .withCookieBasedAffinity()
-                            .attach()
-                        .defineRequestRoutingRule("rule443")
-                            .fromPrivateFrontend()
-                            .fromFrontendHttpsPort(443)
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .toBackendHttpConfiguration("config1")
-                            .toBackend("backend1")
-                            .attach()
-                        .defineRequestRoutingRule("rule9000")
-                            .fromListener("listener1")
-                            .toBackendHttpConfiguration("config1")
-                            .toBackend("backend1")
-                            .attach()
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule80")
+                                .fromPrivateFrontend()
+                                .fromFrontendHttpPort(80)
+                                .toBackendHttpPort(8080)
+                                .toBackendIpAddress("11.1.1.1")
+                                .toBackendIpAddress("11.1.1.2")
+                                .withCookieBasedAffinity()
+                                .attach()
+                            .defineRequestRoutingRule("rule443")
+                                .fromPrivateFrontend()
+                                .fromFrontendHttpsPort(443)
+                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificatePassword("Abc123")
+                                .toBackendHttpConfiguration("config1")
+                                .toBackend("backend1")
+                                .attach()
+                            .defineRequestRoutingRule("rule9000")
+                                .fromListener("listener1")
+                                .toBackendHttpConfiguration("config1")
+                                .toBackend("backend1")
+                                .attach()
 
-                        // Additional/explicit backend HTTP setting configs
-                        .defineBackendHttpConfiguration("config1")
-                            .withPort(8081)
-                            .withRequestTimeout(45)
-                            .attach()
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                                .withPort(8081)
+                                .withRequestTimeout(45)
+                                .attach()
 
-                        .defineBackendHttpConfiguration("config2")
-                            .attach()
+                            .defineBackendHttpConfiguration("config2")
+                                .attach()
 
-                        // Additional/explicit backends
-                        .defineBackend("backend1")
-                            .withIpAddress("11.1.1.3")
-                            .withIpAddress("11.1.1.4")
-                            .attach()
+                            // Additional/explicit backends
+                            .defineBackend("backend1")
+                                .withIpAddress("11.1.1.3")
+                                .withIpAddress("11.1.1.4")
+                                .attach()
 
-                        .defineBackend("backend2")
-                            .attach()
+                            .defineBackend("backend2")
+                                .attach()
 
-                        // Additional/explicit frontend listeners
-                        .defineListener("listener1")
-                            .withPrivateFrontend()
-                            .withFrontendPort(9000)
-                            .withHttp()
-                            .attach()
+                            // Additional/explicit frontend listeners
+                            .defineListener("listener1")
+                                .withPrivateFrontend()
+                                .withFrontendPort(9000)
+                                .withHttp()
+                                .attach()
 
-                        // Additional/explicit certificates
-                        .defineSslCertificate("cert1")
-                            .withPfxFromFile(new File("myTest2.pfx"))
-                            .withPfxPassword("Abc123")
-                            .attach()
+                            // Additional/explicit certificates
+                            .defineSslCertificate("cert1")
+                                .withPfxFromFile(new File("myTest2.pfx"))
+                                .withPfxPassword("Abc123")
+                                .attach()
 
-                        .withExistingSubnet(vnet, "subnet1")
-                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                        .withInstanceCount(2)
-                        .create();
+                            .withExistingSubnet(vnet, "subnet1")
+                            .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                            .withInstanceCount(2)
+                            .create();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     }
                 });
 
@@ -580,62 +586,67 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     // Create an application gateway
-                    resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                        .withRegion(REGION)
-                        .withExistingResourceGroup(GROUP_NAME)
+                    try {
+                        resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                            .withRegion(REGION)
+                            .withExistingResourceGroup(GROUP_NAME)
 
-                        // Request routing rules
-                        .defineRequestRoutingRule("rule80")
-                            .fromPublicFrontend()
-                            .fromFrontendHttpPort(80)
-                            .toBackendHttpPort(8080)
-                            .toBackendFqdn("www.microsoft.com")
-                            .toBackendFqdn("www.example.com")
-                            .toBackendIpAddress("11.1.1.1")
-                            .toBackendIpAddress("11.1.1.2")
-                            .withCookieBasedAffinity()
-                            .attach()
-                        .defineRequestRoutingRule("rule443")
-                            .fromPublicFrontend()
-                            .fromFrontendHttpsPort(443)
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .toBackendHttpConfiguration("config1")
-                            .toBackend("backend1")
-                            .attach()
-                        .defineRequestRoutingRule("rule9000")
-                            .fromListener("listener1")
-                            .toBackendHttpConfiguration("config1")
-                            .toBackend("backend1")
-                            .attach()
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule80")
+                                .fromPublicFrontend()
+                                .fromFrontendHttpPort(80)
+                                .toBackendHttpPort(8080)
+                                .toBackendFqdn("www.microsoft.com")
+                                .toBackendFqdn("www.example.com")
+                                .toBackendIpAddress("11.1.1.1")
+                                .toBackendIpAddress("11.1.1.2")
+                                .withCookieBasedAffinity()
+                                .attach()
+                            .defineRequestRoutingRule("rule443")
+                                .fromPublicFrontend()
+                                .fromFrontendHttpsPort(443)
+                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificatePassword("Abc123")
+                                .toBackendHttpConfiguration("config1")
+                                .toBackend("backend1")
+                                .attach()
+                            .defineRequestRoutingRule("rule9000")
+                                .fromListener("listener1")
+                                .toBackendHttpConfiguration("config1")
+                                .toBackend("backend1")
+                                .attach()
 
-                        // Additional/explicit backend HTTP setting configs
-                        .defineBackendHttpConfiguration("config1")
-                            .withPort(8081)
-                            .withRequestTimeout(45)
-                            .attach()
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                                .withPort(8081)
+                                .withRequestTimeout(45)
+                                .attach()
 
-                        // Additional/explicit backends
-                        .defineBackend("backend1")
-                            .withIpAddress("11.1.1.1")
-                            .withIpAddress("11.1.1.2")
-                            .attach()
+                            // Additional/explicit backends
+                            .defineBackend("backend1")
+                                .withIpAddress("11.1.1.1")
+                                .withIpAddress("11.1.1.2")
+                                .attach()
 
-                        // Additional/explicit frontend listeners
-                        .defineListener("listener1")
-                            .withPublicFrontend()
-                            .withFrontendPort(9000)
-                            .withHttps()
-                            .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .withServerNameIndication()
-                            .withHostName("www.fabricam.com")
-                            .attach()
+                            // Additional/explicit frontend listeners
+                            .defineListener("listener1")
+                                .withPublicFrontend()
+                                .withFrontendPort(9000)
+                                .withHttps()
+                                .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
+                                .withSslCertificatePassword("Abc123")
+                                .withServerNameIndication()
+                                .withHostName("www.fabricam.com")
+                                .attach()
 
-                        .withExistingPublicIpAddress(testPips.get(0))
-                        .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
-                        .withInstanceCount(2)
-                        .create();
+                            .withExistingPublicIpAddress(testPips.get(0))
+                            .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
+                            .withInstanceCount(2)
+                            .create();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                     }
                 });
 
@@ -799,22 +810,27 @@ public class TestApplicationGateway {
                 @Override
                 public void run() {
                     // Create an application gateway
-                    resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
-                        .withRegion(REGION)
-                        .withNewResourceGroup(GROUP_NAME)
+                    try {
+                        resources.define(TestApplicationGateway.APP_GATEWAY_NAME)
+                            .withRegion(REGION)
+                            .withNewResourceGroup(GROUP_NAME)
 
-                        // Request routing rules
-                        .defineRequestRoutingRule("rule1")
-                            .fromPublicFrontend()
-                            .fromFrontendHttpsPort(443)
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
-                            .withSslCertificatePassword("Abc123")
-                            .toBackendHttpPort(8080)
-                            .toBackendIpAddress("11.1.1.1")
-                            .toBackendIpAddress("11.1.1.2")
-                            .attach()
+                            // Request routing rules
+                            .defineRequestRoutingRule("rule1")
+                                .fromPublicFrontend()
+                                .fromFrontendHttpsPort(443)
+                                .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                                .withSslCertificatePassword("Abc123")
+                                .toBackendHttpPort(8080)
+                                .toBackendIpAddress("11.1.1.1")
+                                .toBackendIpAddress("11.1.1.2")
+                                .attach()
 
-                        .create();
+                            .create();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             });
 
