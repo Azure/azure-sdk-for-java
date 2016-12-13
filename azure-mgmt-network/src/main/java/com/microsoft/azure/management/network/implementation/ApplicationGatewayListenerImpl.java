@@ -204,7 +204,7 @@ class ApplicationGatewayListenerImpl
         this.parent().defineSslCertificate(name)
             .withPfxFromFile(pfxFile)
             .attach();
-        return this;
+        return this.withSslCertificate(name);
     }
 
     @Override
