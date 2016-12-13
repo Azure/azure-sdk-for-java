@@ -8,21 +8,30 @@ package com.microsoft.azure.management.appservice.implementation;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Maps;
+import com.google.common.io.CharStreams;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.AppSetting;
+import com.microsoft.azure.management.appservice.ConnectionString;
 import com.microsoft.azure.management.appservice.DeploymentSlot;
 import com.microsoft.azure.management.appservice.HostNameBinding;
-import com.microsoft.azure.management.appservice.PublishingCredentials;
+import com.microsoft.azure.management.appservice.PublishingProfile;
 import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.appservice.WebAppSourceControl;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 /**
  * The implementation for {@link DeploymentSlot}.
  */
+@LangDefinition
 class DeploymentSlotImpl
         extends WebAppBaseImpl<DeploymentSlot, DeploymentSlotImpl>
         implements
@@ -36,19 +45,13 @@ class DeploymentSlotImpl
         super(name.replaceAll(".*/", ""), innerObject, configObject, client, manager, serviceClient);
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
+        inner().withServerFarmId(parent.appServicePlanId());
+        inner().withLocation(regionName());
     }
 
     @Override
     public String name() {
         return name;
-    }
-
-    @Override
-    public DeploymentSlotImpl refresh() {
-        SiteInner inner = client.getSlot(resourceGroupName(), parent.name(), name());
-        inner.withSiteConfig(client.getConfigurationSlot(resourceGroupName(), parent.name(), name()));
-        setInner(inner);
-        return this;
     }
 
     @Override
@@ -67,25 +70,37 @@ class DeploymentSlotImpl
     }
 
     @Override
+    public PublishingProfile getPublishingProfile() {
+        InputStream stream = client.listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), parent().name(), name());
+        try {
+            String xml = CharStreams.toString(new InputStreamReader(stream));
+            return new PublishingProfileImpl(xml, this);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void start() {
         client.startSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void stop() {
         client.stopSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void restart() {
         client.restartSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public DeploymentSlotImpl withBrandNewConfiguration() {
-        SiteConfigInner configInner = new SiteConfigInner();
-        configInner.withLocation(regionName());
-        inner().withSiteConfig(configInner);
+        inner().withSiteConfig(null);
         return this;
     }
 
@@ -96,14 +111,34 @@ class DeploymentSlotImpl
 
     @Override
     public DeploymentSlotImpl withConfigurationFromWebApp(WebApp webApp) {
-        inner().withSiteConfig(webApp.inner().siteConfig());
+        copyConfigurations(webApp.inner().siteConfig(), webApp.appSettings().values(), webApp.connectionStrings().values());
         return this;
     }
 
     @Override
-    public DeploymentSlotImpl withConfigurationFromDeploymentSlot(DeploymentSlot deploymentSlot) {
-        inner().withSiteConfig(deploymentSlot.inner().siteConfig());
+    public DeploymentSlotImpl withConfigurationFromDeploymentSlot(DeploymentSlot slot) {
+        copyConfigurations(slot.inner().siteConfig(), slot.appSettings().values(), slot.connectionStrings().values());
         return this;
+    }
+
+    private void copyConfigurations(SiteConfigInner configInner, Collection<AppSetting> appSettings, Collection<ConnectionString> connectionStrings) {
+        inner().withSiteConfig(configInner);
+        // app settings
+        for (AppSetting appSetting : appSettings) {
+            if (appSetting.sticky()) {
+                withStickyAppSetting(appSetting.key(), appSetting.value());
+            } else {
+                withAppSetting(appSetting.key(), appSetting.value());
+            }
+        }
+        // connection strings
+        for (ConnectionString connectionString : connectionStrings) {
+            if (connectionString.sticky()) {
+                withStickyConnectionString(connectionString.name(), connectionString.value(), connectionString.type());
+            } else {
+                withConnectionString(connectionString.name(), connectionString.value(), connectionString.type());
+            }
+        }
     }
 
     @Override
@@ -119,6 +154,11 @@ class DeploymentSlotImpl
     @Override
     Observable<SiteInner> getInner() {
         return client.getSlotAsync(resourceGroupName(), parent.name(), name());
+    }
+
+    @Override
+    Observable<SiteConfigInner> getConfigInner() {
+        return client.getConfigurationSlotAsync(resourceGroupName(), parent().name(), name());
     }
 
     @Override
@@ -169,11 +209,13 @@ class DeploymentSlotImpl
     @Override
     public void swap(String slotName) {
         client.swapSlotSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
     public void applySlotConfigurations(String slotName) {
         client.applySlotConfigurationSlot(resourceGroupName(), parent().name(), name(), new CsmSlotEntityInner().withTargetSlot(slotName));
+        refresh();
     }
 
     @Override
@@ -189,12 +231,6 @@ class DeploymentSlotImpl
                 return null;
             }
         });
-    }
-
-    @Override
-    public PublishingCredentials getPublishingCredentials() {
-        UserInner inner = client.listPublishingCredentialsSlot(resourceGroupName(), parent().name(), name());
-        return new PublishingCredentialsImpl(inner);
     }
 
     @Override

@@ -21,6 +21,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 
@@ -218,5 +219,10 @@ class LoadBalancerFrontendImpl
         } else {
             return this.parent().manager().publicIpAddresses().getById(pipId);
         }
+    }
+
+    @Override
+    public Subnet getSubnet() {
+        return this.parent().manager().getAssociatedSubnet(this.inner().subnet());
     }
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public final class PhpVersion {
     /** Static value 'Off' for PhpVersion. */
-    public static final PhpVersion OFF = null;
+    public static final PhpVersion OFF = new PhpVersion("null");
 
     /** Static value 5.5 for PhpVersion. */
     public static final PhpVersion PHP5_5 = new PhpVersion("5.5");

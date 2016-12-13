@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageTypes;
 import com.microsoft.azure.management.compute.VirtualMachineOffers;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * The implementation for {@link VirtualMachinePublisher}.
  */
+@LangDefinition
 class VirtualMachinePublisherImpl
         implements VirtualMachinePublisher {
     private final Region location;

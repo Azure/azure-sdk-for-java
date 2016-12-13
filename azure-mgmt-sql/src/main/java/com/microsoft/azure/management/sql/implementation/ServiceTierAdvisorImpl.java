@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.sql.ServiceTierAdvisor;
 import com.microsoft.azure.management.sql.SloUsageMetric;
+import com.microsoft.azure.management.sql.SloUsageMetricInterface;
 import org.joda.time.DateTime;
 
 import java.util.List;
@@ -27,7 +28,7 @@ class ServiceTierAdvisorImpl
         implements ServiceTierAdvisor {
     private final ResourceId resourceId;
     private final DatabasesInner databasesInner;
-    private List<SloUsageMetric> sloUsageMetrics;
+    private List<SloUsageMetricInterface> sloUsageMetrics;
 
     protected ServiceTierAdvisorImpl(ServiceTierAdvisorInner innerObject, DatabasesInner databasesInner) {
         super(innerObject);
@@ -97,11 +98,11 @@ class ServiceTierAdvisorImpl
     }
 
     @Override
-    public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
+    public List<SloUsageMetricInterface> serviceLevelObjectiveUsageMetrics() {
         if (sloUsageMetrics == null) {
-            PagedListConverter<SloUsageMetricInner, SloUsageMetric> converter = new PagedListConverter<SloUsageMetricInner, SloUsageMetric>() {
+            PagedListConverter<SloUsageMetric, SloUsageMetricInterface> converter = new PagedListConverter<SloUsageMetric, SloUsageMetricInterface>() {
                 @Override
-                public SloUsageMetric typeConvert(SloUsageMetricInner sloUsageMetricInner) {
+                public SloUsageMetricInterface typeConvert(SloUsageMetric sloUsageMetricInner) {
 
                     return new SloUsageMetricImpl(sloUsageMetricInner);
                 }

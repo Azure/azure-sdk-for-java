@@ -100,6 +100,13 @@ public final class ManageCdn {
 
                 CdnProfile profileRead = standardProfile.refresh();
 
+                profileRead = azure.cdnProfiles().getById(standardProfile.id());
+
+                if (profileRead.endpoints().size() != 3
+                        || profileRead.endpoints().get(cdnEndpointName).customDomains().size() != 2) {
+                    System.out.println("cdnProfiles().getById should retrieve endpoints and custom domains as well.");
+                }
+
                 for (CdnEndpoint endpoint : profileRead.endpoints().values()) {
                     System.out.println("CDN Endpoint: " + endpoint.name());
                     System.out.println("EP Hostname: " + endpoint.hostName());

@@ -25,7 +25,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -95,22 +94,6 @@ public final class ServersInner {
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> cancelUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/operationResults/versionUpgrade")
-        Observable<Response<ResponseBody>> getUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
-        Observable<Response<ResponseBody>> startUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
-        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/upgrade")
-        Observable<Response<ResponseBody>> beginStartUpgrade(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Body ServerUpgradeStartParametersInner parameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/usages")
         Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("serverName") String serverName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -127,10 +110,10 @@ public final class ServersInner {
     /**
      * Creates or updates an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @return the ServerFirewallRuleInner object if successful.
      */
     public ServerFirewallRuleInner createOrUpdateFirewallRule(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
@@ -140,10 +123,10 @@ public final class ServersInner {
     /**
      * Creates or updates an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -154,10 +137,10 @@ public final class ServersInner {
     /**
      * Creates or updates an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @return the observable to the ServerFirewallRuleInner object
      */
     public Observable<ServerFirewallRuleInner> createOrUpdateFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
@@ -172,10 +155,10 @@ public final class ServersInner {
     /**
      * Creates or updates an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
-     * @param parameters The required parameters for createing or updating a firewall rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
+     * @param parameters The required parameters for creating or updating a firewall rule.
      * @return the observable to the ServerFirewallRuleInner object
      */
     public Observable<ServiceResponse<ServerFirewallRuleInner>> createOrUpdateFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName, ServerFirewallRuleInner parameters) {
@@ -221,9 +204,9 @@ public final class ServersInner {
     /**
      * Deletes an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      */
     public void deleteFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
         deleteFirewallRuleWithServiceResponseAsync(resourceGroupName, serverName, firewallRuleName).toBlocking().single().getBody();
@@ -232,9 +215,9 @@ public final class ServersInner {
     /**
      * Deletes an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -245,9 +228,9 @@ public final class ServersInner {
     /**
      * Deletes an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -262,9 +245,9 @@ public final class ServersInner {
     /**
      * Deletes an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -305,9 +288,9 @@ public final class ServersInner {
     /**
      * Returns an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @return the ServerFirewallRuleInner object if successful.
      */
     public ServerFirewallRuleInner getFirewallRule(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -317,9 +300,9 @@ public final class ServersInner {
     /**
      * Returns an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -330,9 +313,9 @@ public final class ServersInner {
     /**
      * Returns an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @return the observable to the ServerFirewallRuleInner object
      */
     public Observable<ServerFirewallRuleInner> getFirewallRuleAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -347,9 +330,9 @@ public final class ServersInner {
     /**
      * Returns an Azure SQL server firewall rule.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param firewallRuleName The name of the Azure SQL Server Firewall Rule.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param firewallRuleName The name of the Azure SQL server firewall rule.
      * @return the observable to the ServerFirewallRuleInner object
      */
     public Observable<ServiceResponse<ServerFirewallRuleInner>> getFirewallRuleWithServiceResponseAsync(String resourceGroupName, String serverName, String firewallRuleName) {
@@ -390,8 +373,8 @@ public final class ServersInner {
     /**
      * Returns a list of Azure SQL server firewall rules.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the List&lt;ServerFirewallRuleInner&gt; object if successful.
      */
     public List<ServerFirewallRuleInner> listFirewallRules(String resourceGroupName, String serverName) {
@@ -401,8 +384,8 @@ public final class ServersInner {
     /**
      * Returns a list of Azure SQL server firewall rules.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -413,8 +396,8 @@ public final class ServersInner {
     /**
      * Returns a list of Azure SQL server firewall rules.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
      */
     public Observable<List<ServerFirewallRuleInner>> listFirewallRulesAsync(String resourceGroupName, String serverName) {
@@ -429,8 +412,8 @@ public final class ServersInner {
     /**
      * Returns a list of Azure SQL server firewall rules.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServerFirewallRuleInner&gt; object
      */
     public Observable<ServiceResponse<List<ServerFirewallRuleInner>>> listFirewallRulesWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -467,7 +450,7 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
      * @return the List&lt;ServerInner&gt; object if successful.
      */
@@ -476,7 +459,7 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -486,7 +469,7 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
@@ -500,7 +483,7 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
      * @return the observable to the List&lt;ServerInner&gt; object
      */
@@ -532,11 +515,11 @@ public final class ServersInner {
     }
 
     /**
-     * Creates a new Azure SQL Server.
+     * Creates a new Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for createing or updating a server.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param parameters The required parameters for creating or updating a server.
      * @return the ServerInner object if successful.
      */
     public ServerInner createOrUpdate(String resourceGroupName, String serverName, ServerInner parameters) {
@@ -544,11 +527,11 @@ public final class ServersInner {
     }
 
     /**
-     * Creates a new Azure SQL Server.
+     * Creates a new Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for createing or updating a server.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param parameters The required parameters for creating or updating a server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -557,11 +540,11 @@ public final class ServersInner {
     }
 
     /**
-     * Creates a new Azure SQL Server.
+     * Creates a new Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for createing or updating a server.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param parameters The required parameters for creating or updating a server.
      * @return the observable to the ServerInner object
      */
     public Observable<ServerInner> createOrUpdateAsync(String resourceGroupName, String serverName, ServerInner parameters) {
@@ -574,11 +557,11 @@ public final class ServersInner {
     }
 
     /**
-     * Creates a new Azure SQL Server.
+     * Creates a new Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for createing or updating a server.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
+     * @param parameters The required parameters for creating or updating a server.
      * @return the observable to the ServerInner object
      */
     public Observable<ServiceResponse<ServerInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String serverName, ServerInner parameters) {
@@ -621,8 +604,8 @@ public final class ServersInner {
     /**
      * Deletes a SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      */
     public void delete(String resourceGroupName, String serverName) {
         deleteWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
@@ -631,8 +614,8 @@ public final class ServersInner {
     /**
      * Deletes a SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -643,8 +626,8 @@ public final class ServersInner {
     /**
      * Deletes a SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String serverName) {
@@ -659,8 +642,8 @@ public final class ServersInner {
     /**
      * Deletes a SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -696,10 +679,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Server.
+     * Gets information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the ServerInner object if successful.
      */
     public ServerInner getByResourceGroup(String resourceGroupName, String serverName) {
@@ -707,10 +690,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Server.
+     * Gets information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -719,10 +702,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Server.
+     * Gets information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the ServerInner object
      */
     public Observable<ServerInner> getByResourceGroupAsync(String resourceGroupName, String serverName) {
@@ -735,10 +718,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Server.
+     * Gets information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the ServerInner object
      */
     public Observable<ServiceResponse<ServerInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -774,9 +757,9 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the List&lt;ServerInner&gt; object if successful.
      */
     public List<ServerInner> listByResourceGroup(String resourceGroupName) {
@@ -784,9 +767,9 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -795,9 +778,9 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the observable to the List&lt;ServerInner&gt; object
      */
     public Observable<List<ServerInner>> listByResourceGroupAsync(String resourceGroupName) {
@@ -810,9 +793,9 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about an Azure SQL Server.
+     * Returns information about an Azure SQL server.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @return the observable to the List&lt;ServerInner&gt; object
      */
     public Observable<ServiceResponse<List<ServerInner>>> listByResourceGroupWithServiceResponseAsync(String resourceGroupName) {
@@ -846,317 +829,10 @@ public final class ServersInner {
     }
 
     /**
-     * Cancel a pending upgrade for the Azure SQL Server.
+     * Returns information about Azure SQL server usage.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     */
-    public void cancelUpgrade(String resourceGroupName, String serverName) {
-        cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Cancel a pending upgrade for the Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> cancelUpgradeAsync(String resourceGroupName, String serverName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Cancel a pending upgrade for the Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> cancelUpgradeAsync(String resourceGroupName, String serverName) {
-        return cancelUpgradeWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Cancel a pending upgrade for the Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> cancelUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.cancelUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = cancelUpgradeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> cancelUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Gets information about Upgrade status of an Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the ServerUpgradeGetResultInner object if successful.
-     */
-    public ServerUpgradeGetResultInner getUpgrade(String resourceGroupName, String serverName) {
-        return getUpgradeWithServiceResponseAsync(resourceGroupName, serverName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets information about Upgrade status of an Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ServerUpgradeGetResultInner> getUpgradeAsync(String resourceGroupName, String serverName, final ServiceCallback<ServerUpgradeGetResultInner> serviceCallback) {
-        return ServiceCall.create(getUpgradeWithServiceResponseAsync(resourceGroupName, serverName), serviceCallback);
-    }
-
-    /**
-     * Gets information about Upgrade status of an Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the ServerUpgradeGetResultInner object
-     */
-    public Observable<ServerUpgradeGetResultInner> getUpgradeAsync(String resourceGroupName, String serverName) {
-        return getUpgradeWithServiceResponseAsync(resourceGroupName, serverName).map(new Func1<ServiceResponse<ServerUpgradeGetResultInner>, ServerUpgradeGetResultInner>() {
-            @Override
-            public ServerUpgradeGetResultInner call(ServiceResponse<ServerUpgradeGetResultInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets information about Upgrade status of an Azure SQL Server.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @return the observable to the ServerUpgradeGetResultInner object
-     */
-    public Observable<ServiceResponse<ServerUpgradeGetResultInner>> getUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        final String apiVersion = "2014-04-01";
-        return service.getUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ServerUpgradeGetResultInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ServerUpgradeGetResultInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ServerUpgradeGetResultInner> clientResponse = getUpgradeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<ServerUpgradeGetResultInner> getUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<ServerUpgradeGetResultInner, CloudException>(this.client.mapperAdapter())
-                .register(200, new TypeToken<ServerUpgradeGetResultInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     */
-    public void startUpgrade(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().last().getBody();
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> startUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the observable for the request
-     */
-    public Observable<Void> startUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        return startUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the observable for the request
-     */
-    public Observable<ServiceResponse<Void>> startUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        Observable<Response<ResponseBody>> observable = service.startUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     */
-    public void beginStartUpgrade(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> beginStartUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.create(beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters), serviceCallback);
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> beginStartUpgradeAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        return beginStartUpgradeWithServiceResponseAsync(resourceGroupName, serverName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Start an Azure SQL Server Upgrade.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
-     * @param parameters The required parameters for the Azure SQL Server Upgrade.
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> beginStartUpgradeWithServiceResponseAsync(String resourceGroupName, String serverName, ServerUpgradeStartParametersInner parameters) {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (serverName == null) {
-            throw new IllegalArgumentException("Parameter serverName is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        final String apiVersion = "2014-04-01";
-        return service.beginStartUpgrade(this.client.subscriptionId(), resourceGroupName, serverName, apiVersion, parameters, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = beginStartUpgradeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> beginStartUpgradeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
-                .register(202, new TypeToken<Void>() { }.getType())
-                .build(response);
-    }
-
-    /**
-     * Returns information about Azure SQL Server usage.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the List&lt;ServerMetricInner&gt; object if successful.
      */
     public List<ServerMetricInner> listUsages(String resourceGroupName, String serverName) {
@@ -1164,10 +840,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Server usage.
+     * Returns information about Azure SQL server usage.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1176,10 +852,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Server usage.
+     * Returns information about Azure SQL server usage.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServerMetricInner&gt; object
      */
     public Observable<List<ServerMetricInner>> listUsagesAsync(String resourceGroupName, String serverName) {
@@ -1192,10 +868,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Server usage.
+     * Returns information about Azure SQL server usage.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServerMetricInner&gt; object
      */
     public Observable<ServiceResponse<List<ServerMetricInner>>> listUsagesWithServiceResponseAsync(String resourceGroupName, String serverName) {
@@ -1232,10 +908,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Service Objective.
+     * Gets information about an Azure SQL database Service Objective.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @return the ServiceObjectiveInner object if successful.
      */
@@ -1244,10 +920,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Service Objective.
+     * Gets information about an Azure SQL database Service Objective.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -1257,10 +933,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Service Objective.
+     * Gets information about an Azure SQL database Service Objective.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @return the observable to the ServiceObjectiveInner object
      */
@@ -1274,10 +950,10 @@ public final class ServersInner {
     }
 
     /**
-     * Gets information about an Azure SQL Database Service Objective.
+     * Gets information about an Azure SQL database Service Objective.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceObjectiveName The name of the service objective to retrieve.
      * @return the observable to the ServiceObjectiveInner object
      */
@@ -1317,10 +993,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Service Objectives.
+     * Returns information about Azure SQL database Service Objectives.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the List&lt;ServiceObjectiveInner&gt; object if successful.
      */
     public List<ServiceObjectiveInner> listServiceObjectives(String resourceGroupName, String serverName) {
@@ -1328,10 +1004,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Service Objectives.
+     * Returns information about Azure SQL database Service Objectives.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1340,10 +1016,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Service Objectives.
+     * Returns information about Azure SQL database Service Objectives.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServiceObjectiveInner&gt; object
      */
     public Observable<List<ServiceObjectiveInner>> listServiceObjectivesAsync(String resourceGroupName, String serverName) {
@@ -1356,10 +1032,10 @@ public final class ServersInner {
     }
 
     /**
-     * Returns information about Azure SQL Database Service Objectives.
+     * Returns information about Azure SQL database Service Objectives.
      *
-     * @param resourceGroupName The name of the Resource Group to which the resource belongs.
-     * @param serverName The name of the Azure SQL Server
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the Azure SQL server.
      * @return the observable to the List&lt;ServiceObjectiveInner&gt; object
      */
     public Observable<ServiceResponse<List<ServiceObjectiveInner>>> listServiceObjectivesWithServiceResponseAsync(String resourceGroupName, String serverName) {

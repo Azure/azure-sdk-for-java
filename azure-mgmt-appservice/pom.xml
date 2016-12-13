@@ -70,6 +70,12 @@
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>commons-net</groupId>
+      <artifactId>commons-net</artifactId>
+      <version>3.3</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -92,6 +98,16 @@
         <configuration>
           <source>1.7</source>
           <target>1.7</target>
+          <annotationProcessors>
+            <annotationProcessor>
+              com.microsoft.azure.management.apigeneration.LangDefinitionProcessor</annotationProcessor>
+          </annotationProcessors>
+          <debug>true</debug>
+          <optimize>true</optimize>
+          <compilerArguments>
+            <AaddGeneratedAnnotation>true</AaddGeneratedAnnotation>
+            <Adebug>true</Adebug>
+          </compilerArguments>
         </configuration>
       </plugin>
       <plugin>

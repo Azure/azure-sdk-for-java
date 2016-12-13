@@ -45,6 +45,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
@@ -1059,11 +1060,11 @@ class VirtualMachineImpl
                     .map(storageAccountFunc);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
-            return this.storageManager.storageAccounts()
+            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync()
+                    .createAsync())
                     .map(storageAccountFunc);
         }
         return Observable.just(null);

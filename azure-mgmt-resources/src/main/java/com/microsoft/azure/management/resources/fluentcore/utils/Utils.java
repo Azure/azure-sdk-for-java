@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import okhttp3.ResponseBody;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
@@ -48,6 +49,24 @@ public final class Utils {
         } else {
             return String.format("tagname eq '%s' and tagvalue eq '%s'", tagName, tagValue);
         }
+    }
+
+    /**
+     * Gets an observable of {@link U} that emits only the root resource from a given
+     * observable of {@link Indexable}.
+     *
+     * @param stream the input observable of {@link Indexable}
+     * @param <U> the specialized type of last item in the input stream
+     * @return an observable that emits last item
+     */
+    @SuppressWarnings("unchecked")
+    public static <U extends Indexable> Observable<U> rootResource(Observable<Indexable> stream) {
+        return stream.last().map(new Func1<Indexable, U>() {
+            @Override
+            public U call(Indexable indexable) {
+                return (U) indexable;
+            }
+        });
     }
 
     /**

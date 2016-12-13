@@ -7,10 +7,12 @@
 package com.microsoft.azure.management.appservice;
 
 import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.azure.management.apigeneration.Fluent;
 
 /**
  * Defines App service pricing tiers.
  */
+@Fluent
 public class AppServicePricingTier {
     /** Free app service plan. */
     public static final AppServicePricingTier FREE_F1 = new AppServicePricingTier("Free", "F1");

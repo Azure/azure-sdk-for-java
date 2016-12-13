@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -15,10 +16,11 @@ import com.microsoft.azure.management.appservice.implementation.HostNameBindingI
 /**
  * A host name binding object.
  */
+@Fluent
 public interface HostNameBinding
         extends
         Wrapper<HostNameBindingInner>,
-        ExternalChildResource<HostNameBinding, WebAppBase<?>>, Resource {
+        ExternalChildResource<HostNameBinding, WebAppBase>, Resource {
     /**
      * @return the hostname to bind to
      */

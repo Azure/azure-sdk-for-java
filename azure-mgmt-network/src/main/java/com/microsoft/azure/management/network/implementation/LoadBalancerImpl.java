@@ -25,6 +25,9 @@ import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+
 import rx.Observable;
 
 import java.util.ArrayList;
@@ -40,17 +43,19 @@ import java.util.TreeMap;
  */
 @LangDefinition
 class LoadBalancerImpl
-    extends NetworkGroupableParentResourceImpl<
+    extends GroupableParentResourceImpl<
         LoadBalancer,
         LoadBalancerInner,
         LoadBalancerImpl,
-        LoadBalancersInner>
+        NetworkManager>
     implements
         LoadBalancer,
         LoadBalancer.Definition,
         LoadBalancer.Update {
 
     private final Map<String, String> nicsInBackends = new HashMap<>();
+    protected final Map<String, String> creatablePIPKeys = new HashMap<>();
+    protected final LoadBalancersInner innerCollection;
 
     private Map<String, LoadBalancerBackend> backends;
     private Map<String, LoadBalancerTcpProbe> tcpProbes;
@@ -60,11 +65,14 @@ class LoadBalancerImpl
     private Map<String, LoadBalancerInboundNatRule> inboundNatRules;
     private Map<String, LoadBalancerInboundNatPool> inboundNatPools;
 
+    protected static final String DEFAULT = "default";
+
     LoadBalancerImpl(String name,
             final LoadBalancerInner innerModel,
             final LoadBalancersInner innerCollection,
             final NetworkManager networkManager) {
-        super(name, innerModel, innerCollection, networkManager);
+        super(name, innerModel, networkManager);
+        this.innerCollection = innerCollection;
     }
 
     // Verbs
@@ -114,9 +122,9 @@ class LoadBalancerImpl
         this.inner().withInboundNatRules(innersFromWrappers(this.inboundNatRules.values()));
         for (LoadBalancerInboundNatRule natRule : this.inboundNatRules.values()) {
             // Clear deleted frontend references
-            SubResource frontendRef = natRule.inner().frontendIPConfiguration();
-            if (frontendRef != null
-                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
+            SubResource ref = natRule.inner().frontendIPConfiguration();
+            if (ref != null
+                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 natRule.inner().withFrontendIPConfiguration(null);
             }
         }
@@ -125,9 +133,9 @@ class LoadBalancerImpl
         this.inner().withInboundNatPools(innersFromWrappers(this.inboundNatPools.values()));
         for (LoadBalancerInboundNatPool natPool : this.inboundNatPools.values()) {
             // Clear deleted frontend references
-            SubResource frontendRef = natPool.inner().frontendIPConfiguration();
-            if (frontendRef != null
-                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
+            SubResource ref = natPool.inner().frontendIPConfiguration();
+            if (ref != null
+                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 natPool.inner().withFrontendIPConfiguration(null);
             }
         }
@@ -135,25 +143,27 @@ class LoadBalancerImpl
         // Reset and update load balancing rules
         this.inner().withLoadBalancingRules(innersFromWrappers(this.loadBalancingRules.values()));
         for (LoadBalancingRule lbRule : this.loadBalancingRules.values()) {
+            SubResource ref;
+
             // Clear deleted frontend references
-            SubResource frontendRef = lbRule.inner().frontendIPConfiguration();
-            if (frontendRef != null
-                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(frontendRef.id()))) {
+            ref = lbRule.inner().frontendIPConfiguration();
+            if (ref != null
+                    && !this.frontends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withFrontendIPConfiguration(null);
             }
 
             // Clear deleted backend references
-            SubResource backendRef = lbRule.inner().backendAddressPool();
-            if (backendRef != null
-                    && !this.backends().containsKey(ResourceUtils.nameFromResourceId(backendRef.id()))) {
+            ref = lbRule.inner().backendAddressPool();
+            if (ref != null
+                    && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withBackendAddressPool(null);
             }
 
             // Clear deleted probe references
-            SubResource probeRef = lbRule.inner().probe();
-            if (probeRef != null
-                    && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(probeRef.id()))
-                    && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(probeRef.id()))) {
+            ref = lbRule.inner().probe();
+            if (ref != null
+                    && !this.httpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))
+                    && !this.tcpProbes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 lbRule.inner().withProbe(null);
             }
         }
@@ -326,6 +336,46 @@ class LoadBalancerImpl
     // Withers (fluent)
 
     @Override
+    public LoadBalancerImpl withExistingPublicIpAddress(String resourceId) {
+        return withExistingPublicIpAddress(resourceId, DEFAULT);
+    }
+
+    @Override
+    public LoadBalancerImpl withExistingPublicIpAddress(PublicIpAddress pip) {
+        return withExistingPublicIpAddress(pip.id(), DEFAULT);
+    }
+
+    @Override
+    public LoadBalancerImpl withNewPublicIpAddress() {
+        // Autogenerated DNS leaf label for the PIP
+        String dnsLeafLabel = this.name().toLowerCase().replace("\\s", "");
+        return withNewPublicIpAddress(dnsLeafLabel);
+    }
+
+    @Override
+    public LoadBalancerImpl withNewPublicIpAddress(String dnsLeafLabel) {
+        PublicIpAddress.DefinitionStages.WithGroup precreatablePIP = manager().publicIpAddresses().define(dnsLeafLabel)
+                .withRegion(this.regionName());
+        Creatable<PublicIpAddress> creatablePip;
+        if (super.creatableGroup == null) {
+            creatablePip = precreatablePIP.withExistingResourceGroup(this.resourceGroupName()).withLeafDomainLabel(dnsLeafLabel);
+        } else {
+            creatablePip = precreatablePIP.withNewResourceGroup(super.creatableGroup).withLeafDomainLabel(dnsLeafLabel);
+        }
+        return withNewPublicIpAddress(creatablePip);
+    }
+
+    @Override
+    public LoadBalancerImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePIP) {
+        return withNewPublicIpAddress(creatablePIP, DEFAULT);
+    }
+
+    private LoadBalancerImpl withNewPublicIpAddress(Creatable<PublicIpAddress> creatablePip, String configName) {
+        this.creatablePIPKeys.put(creatablePip.key(), configName);
+        this.addCreatableDependency(creatablePip);
+        return this;
+    }
+
     protected LoadBalancerImpl withExistingPublicIpAddress(String resourceId, String frontendName) {
         if (frontendName == null) {
             frontendName = DEFAULT;

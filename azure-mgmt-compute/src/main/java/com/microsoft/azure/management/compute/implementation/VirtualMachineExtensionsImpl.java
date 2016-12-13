@@ -1,4 +1,5 @@
 package com.microsoft.azure.management.compute.implementation;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Represents a extension collection associated with a virtual machine.
  */
+@LangDefinition
 class VirtualMachineExtensionsImpl extends
         ExternalChildResourcesCachedImpl<VirtualMachineExtensionImpl,
                                 VirtualMachineExtension,

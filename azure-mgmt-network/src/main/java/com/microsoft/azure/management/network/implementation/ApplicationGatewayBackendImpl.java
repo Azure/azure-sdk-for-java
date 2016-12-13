@@ -26,7 +26,7 @@ class ApplicationGatewayBackendImpl
     extends ChildResourceImpl<ApplicationGatewayBackendAddressPoolInner, ApplicationGatewayImpl, ApplicationGateway>
     implements
         ApplicationGatewayBackend,
-        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithBackendOrHttpConfig>,
+        ApplicationGatewayBackend.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
         ApplicationGatewayBackend.UpdateDefinition<ApplicationGateway.Update>,
         ApplicationGatewayBackend.Update {
 
@@ -91,14 +91,27 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withIpAddress(String ipAddress) {
+        if (ipAddress == null) {
+            return this;
+        }
+
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withIpAddress(ipAddress);
-        ensureAddresses().add(address);
+        List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
+        for (ApplicationGatewayBackendAddress a : addresses) {
+            if (ipAddress.equalsIgnoreCase(a.ipAddress())) {
+                return this; // Address already included, so skip
+            }
+        }
+        addresses.add(address);
         return this;
     }
 
     @Override
     public ApplicationGatewayBackendImpl withFqdn(String fqdn) {
+        if (fqdn == null) {
+            return this;
+        }
         ApplicationGatewayBackendAddress address = new ApplicationGatewayBackendAddress()
                 .withFqdn(fqdn);
         ensureAddresses().add(address);
@@ -107,6 +120,13 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutIpAddress(String ipAddress) {
+        if (ipAddress == null) {
+            return this;
+        }
+        if (this.inner().backendAddresses() == null) {
+            return this;
+        }
+
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
             String curIpAddress = addresses.get(i).ipAddress();
@@ -126,6 +146,9 @@ class ApplicationGatewayBackendImpl
 
     @Override
     public ApplicationGatewayBackendImpl withoutFqdn(String fqdn) {
+        if (fqdn == null) {
+            return this;
+        }
         final List<ApplicationGatewayBackendAddress> addresses = ensureAddresses();
         for (int i = 0; i < addresses.size(); i++) {
             String curFqdn = addresses.get(i).fqdn();
@@ -135,5 +158,29 @@ class ApplicationGatewayBackendImpl
             }
         }
         return this;
+    }
+
+    @Override
+    public boolean containsIpAddress(String ipAddress) {
+        if (ipAddress != null) {
+            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+                if (ipAddress.equalsIgnoreCase(address.ipAddress())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsFqdn(String fqdn) {
+        if (fqdn != null) {
+            for (ApplicationGatewayBackendAddress address : this.inner().backendAddresses()) {
+                if (fqdn.equalsIgnoreCase(address.fqdn())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

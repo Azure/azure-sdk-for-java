@@ -8,22 +8,23 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
-import java.util.List;
-import org.joda.time.DateTime;
-import com.microsoft.azure.management.appservice.SiteMachineKey;
-import com.microsoft.azure.management.appservice.HandlerMapping;
-import com.microsoft.azure.management.appservice.ManagedPipelineMode;
-import com.microsoft.azure.management.appservice.VirtualApplication;
-import com.microsoft.azure.management.appservice.SiteLoadBalancing;
-import com.microsoft.azure.management.appservice.Experiments;
-import com.microsoft.azure.management.appservice.SiteLimits;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.Resource;
+import com.microsoft.azure.management.appservice.ApiDefinitionInfo;
 import com.microsoft.azure.management.appservice.AutoHealRules;
 import com.microsoft.azure.management.appservice.CorsSettings;
-import com.microsoft.azure.management.appservice.ApiDefinitionInfo;
+import com.microsoft.azure.management.appservice.Experiments;
+import com.microsoft.azure.management.appservice.HandlerMapping;
 import com.microsoft.azure.management.appservice.IpSecurityRestriction;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.management.appservice.ManagedPipelineMode;
+import com.microsoft.azure.management.appservice.SiteLimits;
+import com.microsoft.azure.management.appservice.SiteLoadBalancing;
+import com.microsoft.azure.management.appservice.SiteMachineKey;
+import com.microsoft.azure.management.appservice.VirtualApplication;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.Resource;
+import org.joda.time.DateTime;
+
+import java.util.List;
 
 /**
  * Configuration of an App Service app.
@@ -139,7 +140,7 @@ public class SiteConfigInner extends Resource {
     /**
      * SCM type.
      */
-    @JsonProperty(value = "properties.scmType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.scmType")
     private String scmType;
 
     /**
@@ -617,6 +618,17 @@ public class SiteConfigInner extends Resource {
      */
     public String scmType() {
         return this.scmType;
+    }
+
+    /**
+     * Set the scmType value.
+     *
+     * @param scmType the scmType value
+     * @return the SiteConfigInner object itself.
+     */
+    public SiteConfigInner withScmType(String scmType) {
+        this.scmType = scmType;
+        return this;
     }
 
     /**

@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.appservice.RepositoryType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.WebAppBase;
@@ -19,7 +20,7 @@ import rx.Observable;
  */
 @LangDefinition
 class WebAppSourceControlImpl<
-        FluentT extends WebAppBase<FluentT>,
+        FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<SiteSourceControlInner>
     implements
@@ -78,18 +79,6 @@ class WebAppSourceControlImpl<
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGit(String url) {
-        inner().withIsMercurial(false).withRepoUrl(url);
-        return this;
-    }
-
-    @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withMercurial(String url) {
-        inner().withIsMercurial(true).withRepoUrl(url);
-        return this;
-    }
-
-    @Override
     @SuppressWarnings("unchecked")
     public FluentImplT parent() {
         return (FluentImplT) parent;
@@ -102,25 +91,25 @@ class WebAppSourceControlImpl<
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicExternalRepository() {
-        inner().withIsManualIntegration(true);
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicGitRepository(String url) {
+        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
         return this;
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGitHubRepository(String organization, String repository) {
-        return withGitHubRepository(String.format("https://github.com/%s/%s", organization, repository));
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicMercurialRepository(String url) {
+        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
+        return this;
     }
 
     @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withGitHubRepository(String url) {
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String organization, String repository) {
+        return withContinuouslyIntegratedGitHubRepository(String.format("https://github.com/%s/%s", organization, repository));
+    }
+
+    @Override
+    public WebAppSourceControlImpl<FluentT, FluentImplT> withContinuouslyIntegratedGitHubRepository(String url) {
         inner().withRepoUrl(url).withIsMercurial(false).withIsManualIntegration(false);
-        return this;
-    }
-
-    @Override
-    public WebAppSourceControlImpl<FluentT, FluentImplT> withLocalGitRepository() {
-        inner().withRepoUrl(null).withBranch(null).withIsMercurial(false).withIsManualIntegration(false);
         return this;
     }
 
@@ -134,6 +123,8 @@ class WebAppSourceControlImpl<
         if (githubAccessToken == null) {
             return Observable.just(null);
         }
-        return serviceClient.updateSourceControlAsync("Github", new SourceControlInner().withToken(githubAccessToken));
+        SourceControlInner sourceControlInner = new SourceControlInner().withToken(githubAccessToken);
+        sourceControlInner.withLocation(parent().regionName());
+        return serviceClient.updateSourceControlAsync("Github", sourceControlInner);
     }
 }

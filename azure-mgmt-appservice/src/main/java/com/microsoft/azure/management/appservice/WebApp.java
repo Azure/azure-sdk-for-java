@@ -6,14 +6,18 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
+import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 /**
  * An immutable client-side representation of an Azure Web App.
  */
+@Fluent
 public interface WebApp extends
-        WebAppBase<WebApp>,
+        WebAppBase,
+        Refreshable<WebApp>,
         Updatable<WebApp.Update> {
     /**
      * @return the entry point to deployment slot management API under the web app
@@ -39,13 +43,13 @@ public interface WebApp extends
      */
     interface DefinitionStages {
         /**
-         * A web app definition allowing resource group to be set.
+         * The first stage of the web app definition.
          */
         interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithAppServicePlan> {
         }
 
         /**
-         * The first stage of the web app definition.
+         * A web app definition allowing new app service plan's region to be set.
          */
         interface WithRegion extends GroupableResource.DefinitionWithRegion<WithNewAppServicePlan> {
         }
@@ -60,13 +64,6 @@ public interface WebApp extends
              * @param name the name of the app service plan
              */
             WithRegion withNewAppServicePlan(String name);
-
-            /**
-             * Uses an existing app service plan in the same resource group for the web app.
-             * @param appServicePlanName the name of the existing app service plan
-             * @return the next stage of the web app definition
-             */
-            WebAppBase.DefinitionStages.WithHostNameBinding<WebApp> withExistingAppServicePlan(String appServicePlanName);
 
             /**
              * Uses an existing app service plan for the web app.
@@ -112,10 +109,10 @@ public interface WebApp extends
 
             /**
              * Uses an existing app service plan for the web app.
-             * @param appServicePlanName the name of the existing app service plan
+             * @param appServicePlan the existing app service plan
              * @return the next stage of the web app update
              */
-            Update withExistingAppServicePlan(String appServicePlanName);
+            Update withExistingAppServicePlan(AppServicePlan appServicePlan);
         }
 
         /**
@@ -142,6 +139,7 @@ public interface WebApp extends
      */
     interface Update extends
             WebAppBase.Update<WebApp>,
-            UpdateStages.WithAppServicePlan {
+            UpdateStages.WithAppServicePlan,
+            UpdateStages.WithNewAppServicePlan {
     }
 }

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.UpgradeHint;
+import com.microsoft.azure.management.sql.UpgradeHintInterface;
 
 import java.util.UUID;
 
@@ -17,10 +18,10 @@ import java.util.UUID;
  */
 @LangDefinition
 class UpgradeHintImpl
-        extends WrapperImpl<UpgradeHintInner>
-        implements UpgradeHint {
+        extends WrapperImpl<UpgradeHint>
+        implements UpgradeHintInterface {
 
-    protected UpgradeHintImpl(UpgradeHintInner innerObject) {
+    protected UpgradeHintImpl(UpgradeHint innerObject) {
         super(innerObject);
     }
 

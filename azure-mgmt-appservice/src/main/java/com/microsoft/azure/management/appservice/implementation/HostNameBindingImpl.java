@@ -6,8 +6,10 @@
 
 package com.microsoft.azure.management.appservice.implementation;
 
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.IndexableWrapperImpl;
 import com.microsoft.azure.management.appservice.AzureResourceType;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -16,6 +18,7 @@ import com.microsoft.azure.management.appservice.AppServiceDomain;
 import com.microsoft.azure.management.appservice.HostNameBinding;
 import com.microsoft.azure.management.appservice.HostNameType;
 import com.microsoft.azure.management.appservice.WebAppBase;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -31,8 +34,9 @@ import java.util.regex.Pattern;
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
+@LangDefinition
 class HostNameBindingImpl<
-            FluentT extends WebAppBase<FluentT>,
+            FluentT extends WebAppBase,
             FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
         extends
             IndexableWrapperImpl<HostNameBindingInner>
@@ -151,16 +155,18 @@ class HostNameBindingImpl<
 
     @Override
     public ServiceCall<HostNameBinding> createAsync(ServiceCallback<HostNameBinding> callback) {
-        return ServiceCall.create(createAsync().map(new Func1<HostNameBinding, ServiceResponse<HostNameBinding>>() {
-            @Override
-            public ServiceResponse<HostNameBinding> call(HostNameBinding hostNameBinding) {
-                return new ServiceResponse<>(hostNameBinding, null);
-            }
-        }), callback);
+        Observable<Indexable> indexableObservable = createAsync();
+        return ServiceCall.create(Utils.<HostNameBinding>rootResource(indexableObservable)
+                .map(new Func1<HostNameBinding, ServiceResponse<HostNameBinding>>() {
+                    @Override
+                    public ServiceResponse<HostNameBinding> call(HostNameBinding hostNameBinding) {
+                        return new ServiceResponse<>(hostNameBinding, null);
+                    }
+                }), callback);
     }
 
     @Override
-    public Observable<HostNameBinding> createAsync() {
+    public Observable<Indexable> createAsync() {
         final HostNameBinding self = this;
         Func1<HostNameBindingInner, HostNameBinding> mapper = new Func1<HostNameBindingInner, HostNameBinding>() {
             @Override
@@ -169,11 +175,23 @@ class HostNameBindingImpl<
                 return self;
             }
         };
+
+        Observable<HostNameBinding> hostNameBindingObservable;
         if (parent instanceof DeploymentSlot) {
-            return client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(), ((DeploymentSlot) parent).parent().name(), name, parent().name(), inner()).map(mapper);
+            hostNameBindingObservable = client.createOrUpdateHostNameBindingSlotAsync(parent().resourceGroupName(),
+                    ((DeploymentSlot) parent).parent().name(),
+                    name,
+                    parent().name(), inner()).map(mapper);
         } else {
-            return client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
+            hostNameBindingObservable = client.createOrUpdateHostNameBindingAsync(parent().resourceGroupName(), parent().name(), name, inner()).map(mapper);
         }
+
+        return hostNameBindingObservable.map(new Func1<HostNameBinding, Indexable>() {
+            @Override
+            public Indexable call(HostNameBinding hostNameBinding) {
+                return hostNameBinding;
+            }
+        });
     }
 
     private String normalizeHostNameBindingName(String hostname, String domainName) {
@@ -218,7 +236,7 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public WebAppBase<FluentT> parent() {
+    public WebAppBase parent() {
         return parent;
     }
 

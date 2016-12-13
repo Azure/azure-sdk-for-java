@@ -12,7 +12,7 @@ import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents Azure SQL Server metrics.
+ * Represents Azure SQL server metrics.
  */
 public class ServerMetricInner {
     /**

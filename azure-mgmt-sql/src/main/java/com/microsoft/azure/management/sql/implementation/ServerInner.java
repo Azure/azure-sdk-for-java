@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents an Azure SQL Server.
+ * Represents an Azure SQL server.
  */
 @JsonFlatten
 public class ServerInner extends Resource {

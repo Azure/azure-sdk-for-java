@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -15,8 +16,8 @@ import org.junit.Test;
 import java.util.List;
 
 public class AppServicePlansTests extends AppServiceTestBase {
-    private static final String RG_NAME = "javacsmrg323";
-    private static final String APP_SERVICE_PLAN_NAME = "java-appservice-plan-323";
+    private static final String RG_NAME = ResourceNamer.randomResourceName("javacsmrg", 20);
+    private static final String APP_SERVICE_PLAN_NAME = ResourceNamer.randomResourceName("java-asp-", 20);
 
     @BeforeClass
     public static void setup() throws Exception {

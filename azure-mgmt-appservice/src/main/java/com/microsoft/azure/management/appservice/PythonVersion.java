@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
  */
 public final class PythonVersion {
     /** Static value 'Off' for PythonVersion. */
-    public static final PythonVersion OFF = null;
+    public static final PythonVersion OFF = new PythonVersion("null");
 
     /** Static value 2.7 for PythonVersion. */
     public static final PythonVersion PYTHON_27 = new PythonVersion("2.7");

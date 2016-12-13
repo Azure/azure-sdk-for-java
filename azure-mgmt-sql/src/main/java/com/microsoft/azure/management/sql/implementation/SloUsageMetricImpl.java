@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.sql.ServiceObjectiveName;
 import com.microsoft.azure.management.sql.SloUsageMetric;
+import com.microsoft.azure.management.sql.SloUsageMetricInterface;
 
 import java.util.UUID;
 
@@ -18,10 +19,10 @@ import java.util.UUID;
  */
 @LangDefinition
 class SloUsageMetricImpl
-        extends WrapperImpl<SloUsageMetricInner>
-        implements SloUsageMetric {
+        extends WrapperImpl<SloUsageMetric>
+        implements SloUsageMetricInterface {
 
-    protected SloUsageMetricImpl(SloUsageMetricInner innerObject) {
+    protected SloUsageMetricImpl(SloUsageMetric innerObject) {
         super(innerObject);
     }
 

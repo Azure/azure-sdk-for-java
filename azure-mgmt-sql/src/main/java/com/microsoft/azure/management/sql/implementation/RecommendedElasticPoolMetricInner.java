@@ -22,8 +22,8 @@ public class RecommendedElasticPoolMetricInner {
     private DateTime dateTimeProperty;
 
     /**
-     * Gets or sets the DTUs (Database Transaction Units).  See
-     * https://azure.microsoft.com/en-us/documentation/articles/sql-database-what-is-a-dtu/.
+     * Gets or sets the DTUs (Database Transaction Units). See
+     * https://azure.microsoft.com/documentation/articles/sql-database-what-is-a-dtu/.
      */
     private Double dtu;
 

@@ -476,7 +476,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
         if (geoFilter.countryCodes() == null) {
             geoFilter.withCountryCodes(new ArrayList<String>());
         } else {
-            geoFilter.countryCodes().isEmpty();
+            geoFilter.countryCodes().clear();
         }
 
         for (CountryISOCode countryCode : countryCodes) {
@@ -500,9 +500,10 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public CdnEndpointImpl withCustomDomain(String hostName) {
-        if (this.customDomainList != null) {
-            this.customDomainList.add(new CustomDomainInner().withHostName(hostName));
+        if (this.customDomainList == null) {
+            this.customDomainList = new ArrayList<CustomDomainInner>();
         }
+        this.customDomainList.add(new CustomDomainInner().withHostName(hostName));
         return this;
     }
 

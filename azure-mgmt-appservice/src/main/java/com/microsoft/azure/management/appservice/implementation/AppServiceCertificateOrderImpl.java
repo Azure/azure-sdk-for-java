@@ -7,10 +7,12 @@
 package com.microsoft.azure.management.appservice.implementation;
 
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.keyvault.SecretPermissions;
 import com.microsoft.azure.management.keyvault.Vault;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.appservice.AppServiceCertificateKeyVaultBinding;
 import com.microsoft.azure.management.appservice.AppServiceCertificateOrder;
@@ -26,6 +28,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServicePlan}.
  */
+@LangDefinition
 class AppServiceCertificateOrderImpl
         extends
         GroupableResourceImpl<
@@ -40,7 +43,7 @@ class AppServiceCertificateOrderImpl
 
     final AppServiceCertificateOrdersInner client;
 
-    private WebAppBase<?> domainVerifyWebApp;
+    private WebAppBase domainVerifyWebApp;
     private AppServiceDomain domainVerifyDomain;
     private Observable<Vault> bindingVault;
 
@@ -263,7 +266,7 @@ class AppServiceCertificateOrderImpl
     }
 
     @Override
-    public AppServiceCertificateOrderImpl withWebAppVerification(WebAppBase<?> webApp) {
+    public AppServiceCertificateOrderImpl withWebAppVerification(WebAppBase webApp) {
         this.domainVerifyWebApp = webApp;
         return this;
     }
@@ -276,7 +279,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
-        this.bindingVault = myManager.keyVaultManager().vaults().define(vaultName)
+        Observable<Indexable> resourceStream = myManager.keyVaultManager().vaults().define(vaultName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroupName())
                 .defineAccessPolicy()
@@ -288,6 +291,7 @@ class AppServiceCertificateOrderImpl
                     .allowSecretPermissions(SecretPermissions.GET)
                     .attach()
                 .createAsync();
+        this.bindingVault = Utils.rootResource(resourceStream);
         return this;
     }
 }

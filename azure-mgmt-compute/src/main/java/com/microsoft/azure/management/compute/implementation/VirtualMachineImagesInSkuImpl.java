@@ -2,6 +2,7 @@ package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImagesInSku;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * The implementation for {@link VirtualMachineImagesInSku}.
  */
+@LangDefinition
 class VirtualMachineImagesInSkuImpl implements VirtualMachineImagesInSku {
 
     private final VirtualMachineImagesInner innerCollection;

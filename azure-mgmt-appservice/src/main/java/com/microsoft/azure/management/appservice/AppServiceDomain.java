@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.appservice;
 
+import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -27,6 +28,7 @@ import java.util.Map;
  * {@link Creatable#create()} or {@link Creatable#createAsync()} you agree to
  * the agreements listed in {@link AppServiceDomains#listAgreements(String)}.
  */
+@Fluent
 public interface AppServiceDomain extends
         GroupableResource,
         HasName,
@@ -144,7 +146,7 @@ public interface AppServiceDomain extends
         /**
          * The first stage of the domain definition.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithRegistrantContact> {
+        interface Blank extends GroupableResource.DefinitionStages.WithExistingResourceGroup<WithRegistrantContact> {
         }
 
         /**

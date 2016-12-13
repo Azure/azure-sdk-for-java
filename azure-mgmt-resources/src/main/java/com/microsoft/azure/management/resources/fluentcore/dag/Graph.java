@@ -21,7 +21,7 @@ import java.util.Set;
  * @param <T> the type of the data stored in the graph's nodes
  * @param <U> the type of the nodes in the graph
  */
-public class Graph<T, U extends Node<T>> {
+public class Graph<T, U extends Node<T, U>> {
     protected Map<String, U> graph;
     private Set<String> visited;
     private Integer time;
@@ -49,6 +49,7 @@ public class Graph<T, U extends Node<T>> {
      * @param node the node
      */
     public void addNode(U node) {
+        node.setOwner(this);
         graph.put(node.key(), node);
     }
 
@@ -68,7 +69,7 @@ public class Graph<T, U extends Node<T>> {
      * @param visitor the graph visitor
      */
     public void visit(Visitor visitor) {
-        for (Map.Entry<String, ? extends Node<T>> item : graph.entrySet()) {
+        for (Map.Entry<String, ? extends Node<T, U>> item : graph.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
             }
@@ -81,7 +82,7 @@ public class Graph<T, U extends Node<T>> {
         processed.clear();
     }
 
-    private void dfs(Visitor visitor, Node<T> node) {
+    private void dfs(Visitor visitor, Node<T, U> node) {
         visitor.visitNode(node);
 
         String fromKey = node.key();
