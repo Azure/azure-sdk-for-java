@@ -352,8 +352,14 @@ public final class CloudFile implements ListFileItem {
             final AccessCondition destinationAccessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException, URISyntaxException {
         Utility.assertNotNull("sourceBlob", sourceBlob);
-        return this.startCopy(
-                sourceBlob.getQualifiedUri(), sourceAccessCondition, destinationAccessCondition, options, opContext);
+
+        URI source = sourceBlob.getSnapshotQualifiedUri();
+        if (sourceBlob.getServiceClient() != null && sourceBlob.getServiceClient().getCredentials() != null)
+        {
+            source = sourceBlob.getServiceClient().getCredentials().transformUri(sourceBlob.getSnapshotQualifiedUri());
+        }
+
+        return this.startCopy(source, sourceAccessCondition, destinationAccessCondition, options, opContext);
     }
 
     /**

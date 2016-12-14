@@ -320,7 +320,7 @@ public class CloudBlockBlobTests {
         BlobTestHelper.waitForCopy(copy);
 
         assertEquals(CopyStatus.SUCCESS, copy.getCopyState().getStatus());
-        assertEquals(source.getQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
+        assertEquals(source.getSnapshotQualifiedUri().getPath(), copy.getCopyState().getSource().getPath());
         assertEquals(data.length(), copy.getCopyState().getTotalBytes().intValue());
         assertEquals(data.length(), copy.getCopyState().getBytesCopied().intValue());
         assertEquals(copyId, copy.getCopyState().getCopyId());
@@ -1829,7 +1829,7 @@ public class CloudBlockBlobTests {
 
         // Check original blob references for equality
         assertEquals(CopyStatus.SUCCESS, destination.getCopyState().getStatus());
-        assertEquals(source.getQualifiedUri().getPath(), destination.getCopyState().getSource().getPath());
+        assertEquals(source.getSnapshotQualifiedUri().getPath(), destination.getCopyState().getSource().getPath());
         assertEquals(data.length(), destination.getCopyState().getTotalBytes().intValue());
         assertEquals(data.length(), destination.getCopyState().getBytesCopied().intValue());
         assertEquals(copyId, destination.getProperties().getCopyState().getCopyId());

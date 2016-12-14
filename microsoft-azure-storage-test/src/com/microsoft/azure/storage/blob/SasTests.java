@@ -15,29 +15,9 @@
 
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.Constants;
-import com.microsoft.azure.storage.core.PathUtility;
-import com.microsoft.azure.storage.core.SR;
-import com.microsoft.azure.storage.IPRange;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.ResponseReceivedEvent;
-import com.microsoft.azure.storage.SecondaryTests;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.SharedAccessProtocols;
-import com.microsoft.azure.storage.StorageCredentials;
-import com.microsoft.azure.storage.StorageCredentialsAnonymous;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
-
 import junit.framework.Assert;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -54,7 +34,32 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TimeZone;
 
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.experimental.categories.Category;
+
+import com.microsoft.azure.storage.Constants;
+import com.microsoft.azure.storage.core.PathUtility;
+import com.microsoft.azure.storage.core.SR;
+import com.microsoft.azure.storage.IPRange;
+import com.microsoft.azure.storage.OperationContext;
+import com.microsoft.azure.storage.ResponseReceivedEvent;
+import com.microsoft.azure.storage.SecondaryTests;
+import com.microsoft.azure.storage.SendingRequestEvent;
+import com.microsoft.azure.storage.SharedAccessProtocols;
+import com.microsoft.azure.storage.SharedAccessAccountPermissions;
+import com.microsoft.azure.storage.SharedAccessAccountPolicy;
+import com.microsoft.azure.storage.SharedAccessAccountResourceType;
+import com.microsoft.azure.storage.SharedAccessAccountService;
+import com.microsoft.azure.storage.SharedAccessProtocols;
+import com.microsoft.azure.storage.StorageCredentials;
+import com.microsoft.azure.storage.StorageCredentialsAnonymous;
+import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
+import com.microsoft.azure.storage.StorageEvent;
+import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
+import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
@@ -485,6 +490,179 @@ public class SasTests {
         });
 
         sasBlob.download(new ByteArrayOutputStream(), null, null, context);
+    }
+
+    @Test
+    public void testAppendBlobCopyWithSasAndSnapshot()
+            throws URISyntaxException, StorageException, InterruptedException, IOException, InvalidKeyException {
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudAppendBlob source = this.container.getAppendBlobReference(blobName);
+        source.createOrReplace();
+        byte[] buffer = BlobTestHelper.getRandomBuffer(512);
+        ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
+        source.upload(stream, buffer.length);
+        source.getMetadata().put("Test", "value");
+        source.uploadMetadata();
+
+        SharedAccessBlobPolicy policy = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
+                      SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE), 5000);
+
+        CloudAppendBlob copy = this.container.getAppendBlobReference("copy");
+        String sasToken = copy.generateSharedAccessSignature(policy, null);
+        CloudAppendBlob copySas = new CloudAppendBlob(new URI(copy.getUri().toString() + "?" + sasToken));
+
+        // Generate account SAS for the source
+        // Cannot generate a SAS directly on a snapshot and the SAS for the destination is only for the destination
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(policy.getSharedAccessExpiryTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudAppendBlob snapshot = (CloudAppendBlob) source.createSnapshot();
+        CloudAppendBlob sasBlob = (CloudAppendBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasBlob.exists();
+
+        String copyId = copySas.startCopy(BlobTestHelper.defiddler(sasBlob));
+        BlobTestHelper.waitForCopy(copySas);
+        
+        copySas.downloadAttributes();
+        BlobProperties prop1 = copySas.getProperties();
+        BlobProperties prop2 = sasBlob.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentDisposition(),
+                prop2.getContentDisposition());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value", copySas.getMetadata().get("Test"));
+        assertEquals(copyId, copySas.getCopyState().getCopyId());
+
+        snapshot.delete();
+        source.delete();
+        copySas.delete();
+    }
+
+    @Test
+    public void testBlockBlobCopyWithSasAndSnapshot()
+            throws URISyntaxException, StorageException, InterruptedException, IOException, InvalidKeyException {
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudBlockBlob source = this.container.getBlockBlobReference(blobName);
+        String data = "String data";
+        source.uploadText(data, Constants.UTF8_CHARSET, null, null, null);
+
+        byte[] buffer = BlobTestHelper.getRandomBuffer(512);
+        ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
+        source.upload(stream, buffer.length);
+        source.getMetadata().put("Test", "value");
+        source.uploadMetadata();
+
+        SharedAccessBlobPolicy policy = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
+                      SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE), 5000);
+
+        CloudBlockBlob copy = this.container.getBlockBlobReference("copy");
+        String sasToken = copy.generateSharedAccessSignature(policy, null);
+        CloudBlockBlob copySas = new CloudBlockBlob(new URI(copy.getUri().toString() + "?" + sasToken));
+        
+        // Generate account SAS for the source
+        // Cannot generate a SAS directly on a snapshot and the SAS for the destination is only for the destination
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(policy.getSharedAccessExpiryTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudBlockBlob snapshot = (CloudBlockBlob) source.createSnapshot();
+        CloudBlockBlob sasBlob = (CloudBlockBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasBlob.exists();
+
+        String copyId = copySas.startCopy(BlobTestHelper.defiddler(sasBlob));
+        BlobTestHelper.waitForCopy(copySas);
+        
+        copySas.downloadAttributes();
+        BlobProperties prop1 = copySas.getProperties();
+        BlobProperties prop2 = sasBlob.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentDisposition(),
+                prop2.getContentDisposition());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value", copySas.getMetadata().get("Test"));
+        assertEquals(copyId, copySas.getCopyState().getCopyId());
+
+        snapshot.delete();
+        source.delete();
+        copySas.delete();
+    }
+
+    @Test
+    public void testPageBlobCopyWithSasAndSnapshot()
+            throws URISyntaxException, StorageException, InterruptedException, IOException, InvalidKeyException {
+        String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testblob");
+        CloudPageBlob source = this.container.getPageBlobReference(blobName);
+        source.create(1024);
+        byte[] buffer = BlobTestHelper.getRandomBuffer(512);
+        ByteArrayInputStream stream = new ByteArrayInputStream(buffer);
+        source.upload(stream, buffer.length);
+        source.getMetadata().put("Test", "value");
+        source.uploadMetadata();
+
+        SharedAccessBlobPolicy policy = createSharedAccessPolicy(
+                EnumSet.of(SharedAccessBlobPermissions.READ, SharedAccessBlobPermissions.WRITE,
+                      SharedAccessBlobPermissions.LIST, SharedAccessBlobPermissions.DELETE), 5000);
+
+        CloudPageBlob copy = this.container.getPageBlobReference("copy");
+        String sasToken = copy.generateSharedAccessSignature(policy, null);
+        CloudPageBlob copySas = new CloudPageBlob(new URI(copy.getUri().toString() + "?" + sasToken));
+        
+        // Generate account SAS for the source
+        // Cannot generate a SAS directly on a snapshot and the SAS for the destination is only for the destination
+        SharedAccessAccountPolicy accountPolicy = new SharedAccessAccountPolicy();
+        accountPolicy.setPermissions(EnumSet.of(SharedAccessAccountPermissions.READ, SharedAccessAccountPermissions.WRITE));
+        accountPolicy.setServices(EnumSet.of(SharedAccessAccountService.BLOB));
+        accountPolicy.setResourceTypes(EnumSet.of(SharedAccessAccountResourceType.OBJECT, SharedAccessAccountResourceType.CONTAINER));
+        accountPolicy.setSharedAccessExpiryTime(policy.getSharedAccessExpiryTime());
+        final CloudBlobClient sasClient = TestHelper.createCloudBlobClient(accountPolicy, false);
+
+        CloudPageBlob snapshot = (CloudPageBlob) source.createSnapshot();
+        CloudPageBlob sasBlob = (CloudPageBlob) sasClient.getContainerReference(container.getName())
+                .getBlobReferenceFromServer(snapshot.getName(), snapshot.snapshotID, null, null, null);
+        sasBlob.exists();
+
+        String copyId = copySas.startCopy(BlobTestHelper.defiddler(sasBlob));
+        BlobTestHelper.waitForCopy(copySas);
+        
+        copySas.downloadAttributes();
+        BlobProperties prop1 = copySas.getProperties();
+        BlobProperties prop2 = sasBlob.getProperties();
+
+        assertEquals(prop1.getCacheControl(), prop2.getCacheControl());
+        assertEquals(prop1.getContentEncoding(), prop2.getContentEncoding());
+        assertEquals(prop1.getContentDisposition(),
+                prop2.getContentDisposition());
+        assertEquals(prop1.getContentLanguage(), prop2.getContentLanguage());
+        assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
+        assertEquals(prop1.getContentType(), prop2.getContentType());
+
+        assertEquals("value", copySas.getMetadata().get("Test"));
+        assertEquals(copyId, copySas.getCopyState().getCopyId());
+
+        snapshot.delete();
+        source.delete();
+        copySas.delete();
     }
 
     private final static SharedAccessBlobPolicy createSharedAccessPolicy(EnumSet<SharedAccessBlobPermissions> sap,

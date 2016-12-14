@@ -2118,7 +2118,48 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     /**
-     * Returns the snapshot or shared access signature qualified URI for this blob.
+     * Returns the blob's URI for both the primary and secondary locations, including query string information if the blob is a snapshot.
+     *
+     * @return A {@link StorageUri} object containing the blob's URIs for both the primary and secondary locations, 
+     *         including snapshot query information if the blob is a snapshot.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public final StorageUri getSnapshotQualifiedStorageUri() throws URISyntaxException, StorageException {
+        if (this.isSnapshot()) {
+            return PathUtility.addToQuery(this.getStorageUri(),
+                    String.format("snapshot=%s", this.snapshotID));
+        }
+
+        return this.getStorageUri();
+    }
+    
+    /**
+     * Returns the absolute URI to the blob, including query string information if the blob is a snapshot.
+     *
+     * @return A <code>java.net.URI</code> object specifying the absolute URI to the blob,
+     *         including snapshot query information if the blob is a snapshot.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public final URI getSnapshotQualifiedUri() throws URISyntaxException, StorageException {
+        if (this.isSnapshot()) {
+            return PathUtility.addToQuery(this.getUri(), String.format("snapshot=%s", this.snapshotID));
+        }
+
+        return this.getUri();
+    }
+
+    /**
+     * Returns the snapshot and/or shared access signature qualified URI for this blob.
+     *
+     * @deprecated use {@link #getSnapshotQualifiedStorageUri()} instead.
      *
      * @return A {@link StorageUri} object that represents the snapshot or shared access signature.
      *
@@ -2127,6 +2168,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Deprecated
     public final StorageUri getQualifiedStorageUri() throws URISyntaxException, StorageException {
         if (this.isSnapshot()) {
             StorageUri snapshotQualifiedUri = PathUtility.addToQuery(this.getStorageUri(),
@@ -2139,6 +2181,8 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Returns the snapshot or shared access signature qualified URI for this blob.
      *
+     * @deprecated use {@link #getSnapshotQualifiedUri()} instead.
+     *
      * @return A <code>java.net.URI</code> object that represents the snapshot or shared access signature.
      *
      * @throws StorageException
@@ -2146,6 +2190,7 @@ public abstract class CloudBlob implements ListBlobItem {
      * @throws URISyntaxException
      *             If the resource URI is invalid.
      */
+    @Deprecated
     public final URI getQualifiedUri() throws URISyntaxException, StorageException {
         if (this.isSnapshot()) {
             return PathUtility.addToQuery(this.getUri(), String.format("snapshot=%s", this.snapshotID));

@@ -864,7 +864,7 @@ public class CloudBlobContainerTests {
         assertEquals(createdBlob.getContainer().getName(), listedBlob.getContainer().getName());
         assertEquals(createdBlob.getMetadata(), listedBlob.getMetadata());
         assertEquals(createdBlob.getName(), listedBlob.getName());
-        assertEquals(createdBlob.getQualifiedUri(), listedBlob.getQualifiedUri());
+        assertEquals(createdBlob.getSnapshotQualifiedUri(), listedBlob.getSnapshotQualifiedUri());
         assertEquals(createdBlob.getSnapshotID(), listedBlob.getSnapshotID());
         assertEquals(createdBlob.getUri(), listedBlob.getUri());
 

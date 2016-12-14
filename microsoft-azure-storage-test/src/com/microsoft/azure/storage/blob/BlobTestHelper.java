@@ -388,7 +388,7 @@ public class BlobTestHelper extends TestHelper {
             assertEquals(blob1.getUri(), blob2.getUri());
             assertEquals(blob1.getSnapshotID(), blob2.getSnapshotID());
             assertEquals(blob1.isSnapshot(), blob2.isSnapshot());
-            assertEquals(blob1.getQualifiedStorageUri(), blob2.getQualifiedStorageUri());
+            assertEquals(blob1.getSnapshotQualifiedStorageUri(), blob2.getSnapshotQualifiedStorageUri());
             assertAreEqual(blob1.getProperties(), blob2.getProperties());
             assertAreEqual(blob1.getCopyState(), blob2.getCopyState());
         }
