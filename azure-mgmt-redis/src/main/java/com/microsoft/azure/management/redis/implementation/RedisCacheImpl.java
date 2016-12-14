@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.DayOfWeek;
 import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
@@ -119,6 +120,7 @@ class RedisCacheImpl
     }
 
     @Override
+    @Method
     public RedisCachePremium asPremium() {
         if (this.isPremium()) {
             return (RedisCachePremium) this;

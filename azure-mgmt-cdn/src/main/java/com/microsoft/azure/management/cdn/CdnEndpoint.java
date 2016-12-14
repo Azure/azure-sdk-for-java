@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.cdn.implementation.EndpointInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -389,6 +390,7 @@ public interface CdnEndpoint extends
          * @param <ParentT> the parent definition {@link AttachableStandard#attach()} returns to
          */
         interface AttachableStandard<ParentT> {
+            @Method
             ParentT attach();
         }
 
@@ -398,6 +400,7 @@ public interface CdnEndpoint extends
          * @param <ParentT> the parent definition {@link AttachableStandard#attach()} returns to
          */
         interface AttachablePremium<ParentT> {
+            @Method
             ParentT attach();
         }
     }
@@ -656,6 +659,7 @@ public interface CdnEndpoint extends
          * @param <ParentT> the parent definition {@link AttachableStandard#attach()} returns to
          */
         interface AttachableStandard<ParentT> {
+            @Method
             ParentT attach();
         }
 
@@ -665,6 +669,7 @@ public interface CdnEndpoint extends
          * @param <ParentT> the parent definition {@link AttachableStandard#attach()} returns to
          */
         interface AttachablePremium<ParentT> {
+            @Method
             ParentT attach();
         }
     }

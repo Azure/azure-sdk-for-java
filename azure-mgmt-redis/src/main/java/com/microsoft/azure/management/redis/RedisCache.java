@@ -34,6 +34,7 @@ public interface RedisCache extends
     /**
      * @return exposes features available only to Premium Sku Redis Cache instances.
      */
+    @Method
     RedisCachePremium asPremium();
 
     /**
