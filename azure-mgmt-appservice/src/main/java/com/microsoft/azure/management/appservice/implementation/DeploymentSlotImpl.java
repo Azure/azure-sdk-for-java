@@ -46,6 +46,7 @@ class DeploymentSlotImpl
         this.name = name.replaceAll(".*/", "");
         this.parent = parent;
         inner().withServerFarmId(parent.appServicePlanId());
+        inner().withLocation(regionName());
     }
 
     @Override
@@ -73,7 +74,7 @@ class DeploymentSlotImpl
         InputStream stream = client.listPublishingProfileXmlWithSecretsSlot(resourceGroupName(), parent().name(), name());
         try {
             String xml = CharStreams.toString(new InputStreamReader(stream));
-            return new PublishingProfileImpl(xml);
+            return new PublishingProfileImpl(xml, this);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -82,16 +83,19 @@ class DeploymentSlotImpl
     @Override
     public void start() {
         client.startSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void stop() {
         client.stopSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override
     public void restart() {
         client.restartSlot(resourceGroupName(), parent.name(), name());
+        refresh();
     }
 
     @Override

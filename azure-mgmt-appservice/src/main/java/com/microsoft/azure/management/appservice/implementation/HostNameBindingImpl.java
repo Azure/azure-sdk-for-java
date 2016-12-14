@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
  */
 @LangDefinition
 class HostNameBindingImpl<
-            FluentT extends WebAppBase<FluentT>,
+            FluentT extends WebAppBase,
             FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
         extends
             IndexableWrapperImpl<HostNameBindingInner>
@@ -236,7 +236,7 @@ class HostNameBindingImpl<
     }
 
     @Override
-    public WebAppBase<FluentT> parent() {
+    public WebAppBase parent() {
         return parent;
     }
 

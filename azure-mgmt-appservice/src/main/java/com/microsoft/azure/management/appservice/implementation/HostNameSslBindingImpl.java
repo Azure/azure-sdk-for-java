@@ -40,7 +40,7 @@ import java.security.cert.X509Certificate;
  */
 @LangDefinition
 class HostNameSslBindingImpl<
-        FluentT extends WebAppBase<FluentT>,
+        FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
     extends IndexableWrapperImpl<HostNameSslState>
     implements
@@ -146,7 +146,7 @@ class HostNameSslBindingImpl<
     }
 
     @Override
-    public WebAppBase<FluentT> parent() {
+    public WebAppBase parent() {
         return parent;
     }
 

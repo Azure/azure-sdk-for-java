@@ -140,7 +140,7 @@ public class SiteConfigInner extends Resource {
     /**
      * SCM type.
      */
-    @JsonProperty(value = "properties.scmType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.scmType")
     private String scmType;
 
     /**

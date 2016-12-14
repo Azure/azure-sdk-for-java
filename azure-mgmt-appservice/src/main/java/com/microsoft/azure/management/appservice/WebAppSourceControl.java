@@ -17,7 +17,7 @@ import com.microsoft.azure.management.appservice.implementation.SiteSourceContro
 @Fluent
 public interface WebAppSourceControl extends
     Wrapper<SiteSourceControlInner>,
-    ChildResource<WebAppBase<?>> {
+    ChildResource<WebAppBase> {
     /**
      * @return the repository or source control url
      */
@@ -300,13 +300,4 @@ public interface WebAppSourceControl extends
         }
     }
 
-    /**
-     * The type of a repository.
-     */
-    enum RepositoryType {
-        /** Git repository. */
-        GIT,
-        /** Mercurial repository. */
-        MERCURIAL
-    }
- }
+}
