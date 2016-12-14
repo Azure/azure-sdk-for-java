@@ -20,6 +20,7 @@ import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.Period;
 import rx.Observable;
 import rx.functions.Action1;
@@ -76,12 +77,12 @@ class RedisCacheImpl
 
     @Override
     public int port() {
-        return this.inner().port();
+        return Utils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int sslPort() {
-        return this.inner().sslPort();
+        return Utils.toPrimitiveInt(this.inner().sslPort());
     }
 
     @Override
@@ -101,7 +102,7 @@ class RedisCacheImpl
 
     @Override
     public int shardCount() {
-        return this.inner().shardCount();
+        return Utils.toPrimitiveInt(this.inner().shardCount());
     }
 
     @Override

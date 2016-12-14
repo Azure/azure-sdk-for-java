@@ -12,6 +12,7 @@ import com.microsoft.azure.management.network.SecurityRuleAccess;
 import com.microsoft.azure.management.network.SecurityRuleDirection;
 import com.microsoft.azure.management.network.SecurityRuleProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  *  Implementation for {@link NetworkSecurityRule} and its create and update interfaces.
@@ -73,7 +74,7 @@ class NetworkSecurityRuleImpl
 
     @Override
     public int priority() {
-        return this.inner().priority();
+        return Utils.toPrimitiveInt(this.inner().priority());
     }
 
     // Fluent setters

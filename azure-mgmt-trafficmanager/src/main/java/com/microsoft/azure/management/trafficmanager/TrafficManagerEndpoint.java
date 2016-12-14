@@ -39,13 +39,13 @@ public interface TrafficManagerEndpoint extends
      * @return the weight of the endpoint which is used when traffic manager profile is configured with
      * Weighted traffic-routing method
      */
-    int routingWeight();
+    long routingWeight();
 
     /**
      * @return the priority of the endpoint which is used when traffic manager profile is configured with
      * Priority traffic-routing method
      */
-    int routingPriority();
+    long routingPriority();
 
     /**
      * The entirety of a traffic manager profile endpoint definition as a part of parent definition.

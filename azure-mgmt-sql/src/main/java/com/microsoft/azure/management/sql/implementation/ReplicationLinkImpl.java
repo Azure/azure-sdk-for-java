@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ReplicationLink;
 import com.microsoft.azure.management.sql.ReplicationRole;
 import com.microsoft.azure.management.sql.ReplicationState;
@@ -83,7 +84,7 @@ class ReplicationLinkImpl
 
     @Override
     public int percentComplete() {
-        return this.inner().percentComplete();
+        return Utils.toPrimitiveInt(this.inner().percentComplete());
     }
 
     @Override

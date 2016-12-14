@@ -1,8 +1,6 @@
 /**
- *
  * Copyright (c) Microsoft Corporation. All rights reserved.
  * Licensed under the MIT License. See License.txt in the project root for license information.
- *
  */
 
 package com.microsoft.azure.management.samples;
@@ -50,6 +48,12 @@ import com.microsoft.azure.management.redis.RedisAccessKeys;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCachePremium;
 import com.microsoft.azure.management.redis.ScheduleEntry;
+import com.microsoft.azure.management.sql.ElasticPoolActivity;
+import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
+import com.microsoft.azure.management.sql.SqlDatabase;
+import com.microsoft.azure.management.sql.SqlElasticPool;
+import com.microsoft.azure.management.sql.SqlFirewallRule;
+import com.microsoft.azure.management.sql.SqlServer;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint;
@@ -332,7 +336,7 @@ public final class Utils {
                 .append("\n\tSku: ").append(vault.sku().name()).append(" - ").append(vault.sku().family())
                 .append("\n\tVault URI: ").append(vault.vaultUri())
                 .append("\n\tAccess policies: ");
-        for (AccessPolicy accessPolicy: vault.accessPolicies()) {
+        for (AccessPolicy accessPolicy : vault.accessPolicies()) {
             info.append("\n\t\tIdentity:").append(accessPolicy.objectId())
                     .append("\n\t\tKey permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().keys()))
                     .append("\n\t\tSecret permissions: ").append(Joiner.on(", ").join(accessPolicy.permissions().secrets()));
@@ -381,7 +385,7 @@ public final class Utils {
             redisInfo.append("\n\tRedis Configuration:");
             for (Map.Entry<String, String> redisConfiguration : redisCache.redisConfiguration().entrySet()) {
                 redisInfo.append("\n\t  '").append(redisConfiguration.getKey())
-                         .append("' : '").append(redisConfiguration.getValue()).append("'");
+                        .append("' : '").append(redisConfiguration.getValue()).append("'");
             }
         }
         if (redisCache.isPremium()) {
@@ -563,7 +567,7 @@ public final class Utils {
         // Show inbound NAT pools
         info.append("\n\tInbound NAT pools: ")
                 .append(resource.inboundNatPools().size());
-        for (LoadBalancerInboundNatPool natPool: resource.inboundNatPools().values()) {
+        for (LoadBalancerInboundNatPool natPool : resource.inboundNatPools().values()) {
             info.append("\n\t\tInbound NAT pool name: ").append(natPool.name())
                     .append("\n\t\t\tProtocol: ").append(natPool.protocol().toString())
                     .append("\n\t\t\tFrontend: ").append(natPool.frontend().name())
@@ -609,7 +613,7 @@ public final class Utils {
      * @param batchAccountKeys a list of batch account keys
      */
     public static void print(BatchAccountKeys batchAccountKeys) {
-        System.out.println("Primary Key (" +  batchAccountKeys.primary() + ") Secondary key = ("
+        System.out.println("Primary Key (" + batchAccountKeys.primary() + ") Secondary key = ("
                 + batchAccountKeys.secondary() + ")");
     }
 
@@ -625,7 +629,7 @@ public final class Utils {
                 Application application = applicationEntry.getValue();
                 StringBuilder applicationPackages = new StringBuilder().append("\n\t\t\tapplicationPackages : ");
 
-                for (Map.Entry<String, ApplicationPackage> applicationPackageEntry: application.applicationPackages().entrySet()) {
+                for (Map.Entry<String, ApplicationPackage> applicationPackageEntry : application.applicationPackages().entrySet()) {
                     ApplicationPackage applicationPackage = applicationPackageEntry.getValue();
                     StringBuilder singleApplicationPackage = new StringBuilder().append("\n\t\t\t\tapplicationPackage : " + applicationPackage.name());
                     singleApplicationPackage.append("\n\t\t\t\tapplicationPackageState : " + applicationPackage.state());
@@ -675,7 +679,7 @@ public final class Utils {
             builder = builder.append("\n\t\tName: ").append(contact.nameFirst() + " " + contact.nameLast());
         }
         builder = builder.append("\n\tName servers: ");
-        for (String nameServer: resource.nameServers()) {
+        for (String nameServer : resource.nameServers()) {
             builder = builder.append("\n\t\t" + nameServer);
         }
         System.out.println(builder.toString());
@@ -725,22 +729,22 @@ public final class Utils {
                 .append("\n\tDefault hostname: ").append(resource.defaultHostName())
                 .append("\n\tApp service plan: ").append(resource.appServicePlanId())
                 .append("\n\tHost name bindings: ");
-        for (HostNameBinding binding: resource.getHostNameBindings().values()) {
+        for (HostNameBinding binding : resource.getHostNameBindings().values()) {
             builder = builder.append("\n\t\t" + binding.toString());
         }
         builder = builder.append("\n\tSSL bindings: ");
-        for (HostNameSslState binding: resource.hostNameSslStates().values()) {
+        for (HostNameSslState binding : resource.hostNameSslStates().values()) {
             builder = builder.append("\n\t\t" + binding.name() + ": " + binding.sslState());
             if (binding.sslState() != null && binding.sslState() != SslState.DISABLED) {
                 builder = builder.append(" - " + binding.thumbprint());
             }
         }
         builder = builder.append("\n\tApp settings: ");
-        for (AppSetting setting: resource.appSettings().values()) {
+        for (AppSetting setting : resource.appSettings().values()) {
             builder = builder.append("\n\t\t" + setting.key() + ": " + setting.value() + (setting.sticky() ? " - slot setting" : ""));
         }
         builder = builder.append("\n\tConnection strings: ");
-        for (ConnectionString conn: resource.connectionStrings().values()) {
+        for (ConnectionString conn : resource.connectionStrings().values()) {
             builder = builder.append("\n\t\t" + conn.name() + ": " + conn.value() + " - " + conn.type() + (conn.sticky() ? " - slot setting" : ""));
         }
         System.out.println(builder.toString());
@@ -863,7 +867,7 @@ public final class Utils {
         String[] commandArgs = {command, "-genkey", "-alias", alias,
                 "-keystore", pfxPath, "-storepass", password, "-validity",
                 validityInDays, "-keyalg", keyAlg, "-sigalg", sigAlg, "-keysize", keySize,
-                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1" };
+                "-storetype", storeType, "-dname", "CN=" + cnName, "-ext", "EKU=1.3.6.1.5.5.7.3.1"};
         Utils.cmdInvocation(commandArgs, false);
 
         // Create cer file i.e. extract public key from pfx
@@ -871,7 +875,7 @@ public final class Utils {
         if (pfxFile.exists()) {
             String[] certCommandArgs = {command, "-export", "-alias", alias,
                     "-storetype", storeType, "-keystore", pfxPath,
-                    "-storepass", password, "-rfc", "-file", certPath };
+                    "-storepass", password, "-rfc", "-file", certPath};
             // output of keytool export command is going to error stream
             // although command is
             // executed successfully, hence ignoring error stream in this case
@@ -944,6 +948,126 @@ public final class Utils {
         return result;
     }
 
+
+    /**
+     * Prints information for passed SQL Server.
+     * @param sqlServer sqlServer to be printed
+     */
+    public static void print(SqlServer sqlServer) {
+        StringBuilder builder = new StringBuilder().append("Sql Server: ").append(sqlServer.id())
+                .append("Name: ").append(sqlServer.name())
+                .append("\n\tResource group: ").append(sqlServer.resourceGroupName())
+                .append("\n\tRegion: ").append(sqlServer.region())
+                .append("\n\tSqlServer version: ").append(sqlServer.version())
+                .append("\n\tFully qualified name for Sql Server: ").append(sqlServer.fullyQualifiedDomainName());
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Prints information for the passed SQL Database.
+     * @param database database to be printed
+     */
+    public static void print(SqlDatabase database) {
+        StringBuilder builder = new StringBuilder().append("Sql Database: ").append(database.id())
+                .append("Name: ").append(database.name())
+                .append("\n\tResource group: ").append(database.resourceGroupName())
+                .append("\n\tRegion: ").append(database.region())
+                .append("\n\tSqlServer Name: ").append(database.sqlServerName())
+                .append("\n\tEdition of SQL database: ").append(database.edition())
+                .append("\n\tCollation of SQL database: ").append(database.collation())
+                .append("\n\tCreation date of SQL database: ").append(database.creationDate())
+                .append("\n\tIs data warehouse: ").append(database.isDataWarehouse())
+                .append("\n\tCurrent service objective of SQL database: ").append(database.serviceLevelObjective())
+                .append("\n\tId of current service objective of SQL database: ").append(database.currentServiceObjectiveId())
+                .append("\n\tMax size bytes of SQL database: ").append(database.maxSizeBytes())
+                .append("\n\tDefault secondary location of SQL database: ").append(database.defaultSecondaryLocation());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Prints information for the passed firewall rule.
+     * @param firewallRule firewall rule to be printed.
+     */
+    public static void print(SqlFirewallRule firewallRule) {
+        StringBuilder builder = new StringBuilder().append("Sql firewall rule: ").append(firewallRule.id())
+                .append("Name: ").append(firewallRule.name())
+                .append("\n\tResource group: ").append(firewallRule.resourceGroupName())
+                .append("\n\tRegion: ").append(firewallRule.region())
+                .append("\n\tSqlServer Name: ").append(firewallRule.sqlServerName())
+                .append("\n\tStart IP Address of the firewall rule: ").append(firewallRule.startIpAddress())
+                .append("\n\tEnd IP Address of the firewall rule: ").append(firewallRule.endIpAddress());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Prints information of the elastic pool passed in.
+     * @param elasticPool elastic pool to be printed
+     */
+    public static void print(SqlElasticPool elasticPool) {
+        StringBuilder builder = new StringBuilder().append("Sql elastic pool: ").append(elasticPool.id())
+                .append("Name: ").append(elasticPool.name())
+                .append("\n\tResource group: ").append(elasticPool.resourceGroupName())
+                .append("\n\tRegion: ").append(elasticPool.region())
+                .append("\n\tSqlServer Name: ").append(elasticPool.sqlServerName())
+                .append("\n\tEdition of elastic pool: ").append(elasticPool.edition())
+                .append("\n\tTotal number of DTUs in the elastic pool: ").append(elasticPool.dtu())
+                .append("\n\tMaximum DTUs a database can get in elastic pool: ").append(elasticPool.databaseDtuMax())
+                .append("\n\tMinimum DTUs a database is guaranteed in elastic pool: ").append(elasticPool.databaseDtuMin())
+                .append("\n\tCreation date for the elastic pool: ").append(elasticPool.creationDate())
+                .append("\n\tState of the elastic pool: ").append(elasticPool.state())
+                .append("\n\tStorage capacity in MBs for the elastic pool: ").append(elasticPool.storageMB());
+
+        System.out.println(builder.toString());
+    }
+
+    /**
+     * Prints information of the elastic pool activity.
+     * @param elasticPoolActivity elastic pool activity to be printed
+     */
+    public static void print(ElasticPoolActivity elasticPoolActivity) {
+        StringBuilder builder = new StringBuilder().append("Sql elastic pool activity: ").append(elasticPoolActivity.id())
+                .append("Name: ").append(elasticPoolActivity.name())
+                .append("\n\tResource group: ").append(elasticPoolActivity.resourceGroupName())
+                .append("\n\tState: ").append(elasticPoolActivity.state())
+                .append("\n\tElastic pool name: ").append(elasticPoolActivity.elasticPoolName())
+                .append("\n\tStart time of activity: ").append(elasticPoolActivity.startTime())
+                .append("\n\tEnd time of activity: ").append(elasticPoolActivity.endTime())
+                .append("\n\tError code of activity: ").append(elasticPoolActivity.errorCode())
+                .append("\n\tError message of activity: ").append(elasticPoolActivity.errorMessage())
+                .append("\n\tError severity of activity: ").append(elasticPoolActivity.errorSeverity())
+                .append("\n\tOperation: ").append(elasticPoolActivity.operation())
+                .append("\n\tCompleted percentage of activity: ").append(elasticPoolActivity.percentComplete())
+                .append("\n\tRequested DTU max limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMax())
+                .append("\n\tRequested DTU min limit in activity: ").append(elasticPoolActivity.requestedDatabaseDtuMin())
+                .append("\n\tRequested DTU limit in activity: ").append(elasticPoolActivity.requestedDtu());
+
+        System.out.println(builder.toString());
+
+    }
+
+    /**
+     * Prints information of the database activity.
+     * @param databaseActivity database activity to be printed
+     */
+    public static void print(ElasticPoolDatabaseActivity databaseActivity) {
+        StringBuilder builder = new StringBuilder().append("Sql elastic pool database activity: ").append(databaseActivity.id())
+                .append("Name: ").append(databaseActivity.name())
+                .append("\n\tResource group: ").append(databaseActivity.resourceGroupName())
+                .append("\n\tSQL Server Name: ").append(databaseActivity.serverName())
+                .append("\n\tDatabase name name: ").append(databaseActivity.databaseName())
+                .append("\n\tCurrent elastic pool name of the database: ").append(databaseActivity.currentElasticPoolName())
+                .append("\n\tState: ").append(databaseActivity.state())
+                .append("\n\tStart time of activity: ").append(databaseActivity.startTime())
+                .append("\n\tEnd time of activity: ").append(databaseActivity.endTime())
+                .append("\n\tCompleted percentage: ").append(databaseActivity.percentComplete())
+                .append("\n\tError code of activity: ").append(databaseActivity.errorCode())
+                .append("\n\tError message of activity: ").append(databaseActivity.errorMessage())
+                .append("\n\tError severity of activity: ").append(databaseActivity.errorSeverity());
+
+        System.out.println(builder.toString());
+    }
 
     private Utils() {
 

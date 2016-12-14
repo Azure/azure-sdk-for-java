@@ -9,6 +9,7 @@ package com.microsoft.azure.management.sql.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
 import org.joda.time.DateTime;
 
@@ -48,7 +49,7 @@ class ElasticPoolActivityImpl
 
     @Override
     public int errorCode() {
-        return this.inner().errorCode();
+        return Utils.toPrimitiveInt(this.inner().errorCode());
     }
 
     @Override
@@ -58,7 +59,7 @@ class ElasticPoolActivityImpl
 
     @Override
     public int errorSeverity() {
-        return this.inner().errorSeverity();
+        return Utils.toPrimitiveInt(this.inner().errorSeverity());
     }
 
     @Override
@@ -73,22 +74,22 @@ class ElasticPoolActivityImpl
 
     @Override
     public int percentComplete() {
-        return this.inner().percentComplete();
+        return Utils.toPrimitiveInt(this.inner().percentComplete());
     }
 
     @Override
     public int requestedDatabaseDtuMax() {
-        return this.inner().requestedDatabaseDtuMax();
+        return Utils.toPrimitiveInt(this.inner().requestedDatabaseDtuMax());
     }
 
     @Override
     public int requestedDatabaseDtuMin() {
-        return this.inner().requestedDatabaseDtuMin();
+        return Utils.toPrimitiveInt(this.inner().requestedDatabaseDtuMin());
     }
 
     @Override
     public int requestedDtu() {
-        return this.inner().requestedDtu();
+        return Utils.toPrimitiveInt(this.inner().requestedDtu());
     }
 
     @Override
@@ -98,7 +99,7 @@ class ElasticPoolActivityImpl
 
     @Override
     public long requestedStorageLimitInGB() {
-        return this.inner().requestedStorageLimitInGB();
+        return Utils.toPrimitiveLong(this.inner().requestedStorageLimitInGB());
     }
 
     @Override

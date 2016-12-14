@@ -22,13 +22,13 @@ public interface NetworkUsage extends Wrapper<UsageInner> {
     /**
      * @return the current count of the allocated resources in the subscription
      */
-    int currentValue();
+    long currentValue();
 
     /**
      * @return the maximum count of the resources that can be allocated in the
      * subscription
      */
-    int limit();
+    long limit();
 
     /**
      * @return the name of the type of usage

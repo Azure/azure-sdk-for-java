@@ -16,6 +16,7 @@ import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.batch.ProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
@@ -153,17 +154,17 @@ public class BatchAccountImpl
 
     @Override
     public int coreQuota() {
-        return this.inner().coreQuota();
+        return Utils.toPrimitiveInt(this.inner().coreQuota());
     }
 
     @Override
     public int poolQuota() {
-        return this.inner().poolQuota();
+        return Utils.toPrimitiveInt(this.inner().poolQuota());
     }
 
     @Override
     public int activeJobAndJobScheduleQuota() {
-        return this.inner().activeJobAndJobScheduleQuota();
+        return Utils.toPrimitiveInt(this.inner().activeJobAndJobScheduleQuota());
     }
 
     @Override

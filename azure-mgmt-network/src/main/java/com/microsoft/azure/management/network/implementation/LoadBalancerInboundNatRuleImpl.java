@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  *  Implementation for {@link LoadBalancerInboundNatRule}.
@@ -48,11 +49,7 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public int backendPort() {
-        if (this.inner().backendPort() == null) {
-            return 0;
-        } else {
-            return this.inner().backendPort().intValue();
-        }
+        return Utils.toPrimitiveInt(this.inner().backendPort());
     }
 
     @Override
@@ -71,11 +68,7 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public int frontendPort() {
-        if (this.inner().frontendPort() == null) {
-            return 0;
-        } else {
-            return this.inner().frontendPort().intValue();
-        }
+        return Utils.toPrimitiveInt(this.inner().frontendPort());
     }
 
     @Override
@@ -92,7 +85,7 @@ class LoadBalancerInboundNatRuleImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return this.inner().idleTimeoutInMinutes();
+        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     // Fluent setters

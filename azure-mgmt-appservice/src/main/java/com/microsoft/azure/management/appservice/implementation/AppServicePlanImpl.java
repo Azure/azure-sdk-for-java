@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.appservice.AppServicePlan;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
@@ -49,12 +50,12 @@ class AppServicePlanImpl
 
     @Override
     public int maxInstances() {
-        return inner().maximumNumberOfWorkers();
+        return Utils.toPrimitiveInt(inner().maximumNumberOfWorkers());
     }
 
     @Override
     public int capacity() {
-        return inner().sku().capacity();
+        return Utils.toPrimitiveInt(inner().sku().capacity());
     }
 
     @Override
@@ -64,7 +65,7 @@ class AppServicePlanImpl
 
     @Override
     public int numberOfWebApps() {
-        return inner().numberOfSites();
+        return Utils.toPrimitiveInt(inner().numberOfSites());
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Independen
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.IndependentChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.sql.ElasticPoolActivity;
 import com.microsoft.azure.management.sql.ElasticPoolDatabaseActivity;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
@@ -81,22 +82,22 @@ class SqlElasticPoolImpl
 
     @Override
     public int dtu() {
-        return this.inner().dtu();
+        return Utils.toPrimitiveInt(this.inner().dtu());
     }
 
     @Override
     public int databaseDtuMax() {
-        return this.inner().databaseDtuMax();
+        return Utils.toPrimitiveInt(this.inner().databaseDtuMax());
     }
 
     @Override
     public int databaseDtuMin() {
-        return this.inner().databaseDtuMin();
+        return Utils.toPrimitiveInt(this.inner().databaseDtuMin());
     }
 
     @Override
     public int storageMB() {
-        return this.inner().storageMB();
+        return Utils.toPrimitiveInt(this.inner().storageMB());
     }
 
     @Override

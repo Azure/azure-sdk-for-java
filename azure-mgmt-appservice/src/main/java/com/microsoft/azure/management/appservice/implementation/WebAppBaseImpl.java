@@ -244,7 +244,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public int containerSize() {
-        return inner().containerSize();
+        return Utils.toPrimitiveInt(inner().containerSize());
     }
 
     @Override

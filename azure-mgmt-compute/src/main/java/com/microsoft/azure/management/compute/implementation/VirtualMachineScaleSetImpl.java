@@ -212,8 +212,8 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public int capacity() {
-        return this.inner().sku().capacity().intValue();
+    public long capacity() {
+        return Utils.toPrimitiveLong(this.inner().sku().capacity());
     }
 
     @Override

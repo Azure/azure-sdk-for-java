@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -47,12 +48,12 @@ class AvailabilitySetImpl
 
     @Override
     public int updateDomainCount() {
-        return this.inner().platformUpdateDomainCount();
+        return Utils.toPrimitiveInt(this.inner().platformUpdateDomainCount());
     }
 
     @Override
     public int faultDomainCount() {
-        return this.inner().platformFaultDomainCount();
+        return Utils.toPrimitiveInt(this.inner().platformFaultDomainCount());
     }
 
     @Override

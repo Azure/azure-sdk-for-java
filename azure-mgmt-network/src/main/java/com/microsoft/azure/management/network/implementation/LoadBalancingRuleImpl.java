@@ -16,6 +16,7 @@ import com.microsoft.azure.management.network.LoadBalancerProbe;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  *  Implementation for {@link LoadBalancingRule}.
@@ -52,21 +53,17 @@ class LoadBalancingRuleImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return this.inner().idleTimeoutInMinutes();
+        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override
     public int frontendPort() {
-        return this.inner().frontendPort();
+        return Utils.toPrimitiveInt(this.inner().frontendPort());
     }
 
     @Override
     public int backendPort() {
-        if (this.inner().backendPort() == null) {
-            return 0;
-        } else {
-            return this.inner().backendPort();
-        }
+        return Utils.toPrimitiveInt(this.inner().backendPort());
     }
 
     @Override
