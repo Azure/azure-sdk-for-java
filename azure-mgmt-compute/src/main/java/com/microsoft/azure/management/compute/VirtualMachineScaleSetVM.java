@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetVMInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -175,6 +176,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the reimage action
      */
+    @Method
     Observable<Void> reimageAsync();
 
     /**
@@ -187,6 +189,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the deallocate action
      */
+    @Method
     Observable<Void> deallocateAsync();
 
     /**
@@ -199,6 +202,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the poweroff action
      */
+    @Method
     Observable<Void> powerOffAsync();
 
     /**
@@ -211,6 +215,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the start action
      */
+    @Method
     Observable<Void> startAsync();
 
     /**
@@ -223,6 +228,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the restart action
      */
+    @Method
     Observable<Void> restartAsync();
 
     /**
@@ -235,6 +241,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the observable to the delete action
      */
+    @Method
     Observable<Void> deleteAsync();
 
     /**
@@ -251,6 +258,7 @@ public interface VirtualMachineScaleSetVM extends
      *
      * @return the instance view
      */
+    @Method
     VirtualMachineInstanceView refreshInstanceView();
 
     /**
