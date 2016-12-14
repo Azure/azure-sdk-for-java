@@ -872,13 +872,12 @@ public class TestApplicationGateway {
             ApplicationGatewayRequestRoutingRule rule = appGateway.requestRoutingRules().get("rule1");
             Assert.assertTrue(rule != null);
             Assert.assertTrue(rule.frontendPort() == 443);
+            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.listener() != null);
             Assert.assertTrue(rule.listener().frontend() != null);
             Assert.assertTrue(rule.listener().frontend().isPublic());
             Assert.assertTrue(!rule.listener().frontend().isPrivate());
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
             Assert.assertTrue(rule.backendPort() == 8080);
-            Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(rule.sslCertificate() != null);
             Assert.assertTrue(rule.backendAddresses().size() == 2);
             Assert.assertTrue(rule.backend().containsIpAddress("11.1.1.1"));
