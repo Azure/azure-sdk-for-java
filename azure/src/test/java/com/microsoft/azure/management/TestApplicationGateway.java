@@ -350,10 +350,10 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
+            Assert.assertTrue(appGateway != null);
             Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
             Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(appGateway.size()));
             Assert.assertTrue(appGateway.instanceCount() == 2);
-            Assert.assertTrue(appGateway != null);
             Assert.assertTrue(!appGateway.isPublic());
             Assert.assertTrue(appGateway.isPrivate());
             Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
