@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import org.apache.qpid.proton.amqp.transport.*;
 import org.apache.qpid.proton.engine.*;
 
-import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 
 public class BaseLinkHandler extends BaseHandler
 {

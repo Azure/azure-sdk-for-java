@@ -18,8 +18,8 @@ import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Handshaker;
 
-import com.microsoft.azure.servicebus.ClientConstants;
-import com.microsoft.azure.servicebus.StringUtil;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
+import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor

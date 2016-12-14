@@ -11,7 +11,7 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
 
-import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 
 public class ReactorHandler extends BaseHandler
 {

@@ -13,7 +13,7 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Session;
 
-import com.microsoft.azure.servicebus.ClientConstants;
+import com.microsoft.azure.servicebus.primitives.ClientConstants;
 
 public class SessionHandler extends BaseHandler
 {
