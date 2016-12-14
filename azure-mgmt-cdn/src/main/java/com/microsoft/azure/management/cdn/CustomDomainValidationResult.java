@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.management.cdn;
 
-
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.cdn.implementation.ValidateCustomDomainOutputInner;
 
 /**
@@ -31,6 +31,7 @@ public class CustomDomainValidationResult {
      *
      * @return the customDomainValidated value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public boolean customDomainValidated() {
         return this.inner.customDomainValidated();
     }
@@ -40,6 +41,7 @@ public class CustomDomainValidationResult {
      *
      * @return the reason value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String reason() {
         return this.inner.reason();
     }
@@ -49,6 +51,7 @@ public class CustomDomainValidationResult {
      *
      * @return the message value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String message() {
         return this.inner.message();
     }

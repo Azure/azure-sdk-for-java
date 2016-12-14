@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
 import com.microsoft.azure.management.cdn.implementation.OperationInner;
 
 /**
@@ -30,6 +31,7 @@ public class Operation {
      *
      * @return the name value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String name() {
         return this.inner.name();
     }
@@ -39,6 +41,7 @@ public class Operation {
      *
      * @return the provider value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String provider() {
         if (this.inner.display() == null) {
             return null;
@@ -51,6 +54,7 @@ public class Operation {
      *
      * @return the resource value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String resource() {
         if (this.inner.display() == null) {
             return null;
@@ -63,6 +67,7 @@ public class Operation {
      *
      * @return the operation value
      */
+    @LangMethodDefinition(AsType = LangMethodDefinition.LangMethodType.Property)
     public String type() {
         if (this.inner.display() == null) {
             return null;

@@ -7,6 +7,8 @@
 package com.microsoft.azure.management.cdn;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition;
+import com.microsoft.azure.management.apigeneration.LangMethodDefinition.LangMethodType;
 import com.microsoft.azure.management.cdn.implementation.CheckNameAvailabilityOutputInner;
 
 /**
@@ -30,6 +32,7 @@ public class CheckNameAvailabilityResult {
      *
      * @return the nameAvailable value
      */
+    @LangMethodDefinition(AsType = LangMethodType.Property)
     public boolean nameAvailable() {
         return this.inner.nameAvailable();
     }
@@ -39,6 +42,7 @@ public class CheckNameAvailabilityResult {
      *
      * @return the reason value
      */
+    @LangMethodDefinition(AsType = LangMethodType.Property)
     public String reason() {
         return this.inner.reason();
     }
@@ -48,6 +52,7 @@ public class CheckNameAvailabilityResult {
      *
      * @return the message value
      */
+    @LangMethodDefinition(AsType = LangMethodType.Property)
     public String message() {
         return this.inner.message();
     }
