@@ -96,10 +96,10 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.manager().applicationGateways().getById(resourceId);
+            Assert.assertTrue(appGateway != null);
             Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
             Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(appGateway.size()));
             Assert.assertTrue(appGateway.instanceCount() == 1);
-            Assert.assertTrue(appGateway != null);
 
             // Verify frontend ports
             Assert.assertTrue(appGateway.frontendPorts().size() == 1);

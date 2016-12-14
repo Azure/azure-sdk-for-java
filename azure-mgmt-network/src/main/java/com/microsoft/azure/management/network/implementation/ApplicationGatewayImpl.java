@@ -71,7 +71,7 @@ class ApplicationGatewayImpl
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
     private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
-    private Map<String, String> creatablePipsByFrontend = new HashMap<>();
+    private Map<String, String> creatablePipsByFrontend;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -104,6 +104,7 @@ class ApplicationGatewayImpl
         initializeSslCertificatesFromInner();
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
+        this.creatablePipsByFrontend = new HashMap<>();
     }
 
     private void initializeSslCertificatesFromInner() {
