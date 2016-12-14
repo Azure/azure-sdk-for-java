@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -191,32 +192,28 @@ class ApplicationGatewayListenerImpl
         return this;
     }
 
-    private ApplicationGatewaySslCertificateImpl sslCert = null;
-
     @Override
-    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile) throws IOException {
         return withSslCertificateFromPfxFile(pfxFile, null);
     }
 
-    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) {
+    private ApplicationGatewayListenerImpl withSslCertificateFromPfxFile(File pfxFile, String name) throws IOException {
         if (name == null) {
             name = ResourceNamer.randomResourceName("cert", 10);
         }
-        this.sslCert = this.parent().defineSslCertificate(name)
-            .withPfxFromFile(pfxFile);
-        return this;
+        this.parent().defineSslCertificate(name)
+            .withPfxFromFile(pfxFile)
+            .attach();
+        return this.withSslCertificate(name);
     }
 
     @Override
     public ApplicationGatewayListenerImpl withSslCertificatePassword(String password) {
-        if (this.sslCert != null) {
-            this.sslCert.withPfxPassword(password).attach();
-            this.withSslCertificate(sslCert.name());
-            this.sslCert = null;
-            return this;
-        } else {
-            return null; // Fail fast as this should never happen if the internal logic is correct
+        ApplicationGatewaySslCertificateImpl sslCert = (ApplicationGatewaySslCertificateImpl) this.sslCertificate();
+        if (sslCert != null) {
+            sslCert.withPfxPassword(password);
         }
+        return this;
     }
 
     @Override

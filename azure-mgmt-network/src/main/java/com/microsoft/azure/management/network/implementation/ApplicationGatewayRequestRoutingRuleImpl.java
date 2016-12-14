@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -301,7 +302,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
     }
 
     @Override
-    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile) {
+    public ApplicationGatewayRequestRoutingRuleImpl withSslCertificateFromPfxFile(File pfxFile) throws IOException {
         this.parent().updateListener(ensureListener().name()).withSslCertificateFromPfxFile(pfxFile);
         return this;
     }

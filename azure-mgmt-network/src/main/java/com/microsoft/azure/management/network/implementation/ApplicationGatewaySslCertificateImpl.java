@@ -63,18 +63,13 @@ class ApplicationGatewaySslCertificateImpl
     }
 
     @Override
-    public ApplicationGatewaySslCertificateImpl withPfxFromFile(File pfxFile) {
+    public ApplicationGatewaySslCertificateImpl withPfxFromFile(File pfxFile) throws IOException {
         if (pfxFile == null) {
             return null;
         }
 
-        try {
-            byte[] content = Files.readAllBytes(pfxFile.toPath());
-            return (content != null) ? withPfxFromBytes(content) : null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        byte[] content = Files.readAllBytes(pfxFile.toPath());
+        return (content != null) ? withPfxFromBytes(content) : null;
     }
 
     @Override

@@ -71,7 +71,7 @@ class ApplicationGatewayImpl
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
     private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
-    private Map<String, String> creatablePipsByFrontend = new HashMap<>();
+    private Map<String, String> creatablePipsByFrontend;
 
     ApplicationGatewayImpl(String name,
             final ApplicationGatewayInner innerModel,
@@ -104,6 +104,7 @@ class ApplicationGatewayImpl
         initializeSslCertificatesFromInner();
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
+        this.creatablePipsByFrontend = new HashMap<>();
     }
 
     private void initializeSslCertificatesFromInner() {
@@ -473,57 +474,45 @@ class ApplicationGatewayImpl
     }
 
     ApplicationGatewayImpl withFrontend(ApplicationGatewayFrontendImpl frontend) {
-        if (frontend == null) {
-            return null;
-        } else {
+        if (frontend != null) {
             this.frontends.put(frontend.name(), frontend);
-            return this;
         }
+        return this;
     }
 
     ApplicationGatewayImpl withBackend(ApplicationGatewayBackendImpl backend) {
-        if (backend == null) {
-            return null;
-        } else {
+        if (backend != null) {
             this.backends.put(backend.name(), backend);
-            return this;
         }
+        return this;
     }
 
     ApplicationGatewayImpl withSslCertificate(ApplicationGatewaySslCertificateImpl cert) {
-        if (cert == null) {
-            return null;
-        } else {
+        if (cert != null) {
             this.sslCerts.put(cert.name(), cert);
-            return this;
         }
+        return this;
     }
 
     ApplicationGatewayImpl withHttpListener(ApplicationGatewayListenerImpl httpListener) {
-        if (httpListener == null) {
-            return null;
-        } else {
+        if (httpListener != null) {
             this.listeners.put(httpListener.name(), httpListener);
-            return this;
         }
+        return this;
     }
 
     ApplicationGatewayImpl withRequestRoutingRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
-        if (rule == null) {
-            return null;
-        } else {
+        if (rule != null) {
             this.rules.put(rule.name(), rule);
-            return this;
         }
+        return this;
     }
 
     ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
-        if (httpConfig == null) {
-            return null;
-        } else {
+        if (httpConfig != null) {
             this.backendHttpConfigs.put(httpConfig.name(), httpConfig);
-            return this;
         }
+        return this;
     }
 
     @Override
@@ -562,12 +551,10 @@ class ApplicationGatewayImpl
     }
 
     ApplicationGatewayImpl withConfig(ApplicationGatewayIpConfigurationImpl config) {
-        if (config == null) {
-            return null;
-        } else {
+        if (config != null) {
             this.ipConfigs.put(config.name(), config);
-            return this;
         }
+        return this;
     }
 
     @Override
