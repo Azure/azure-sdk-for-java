@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.DomainLegalAgreement;
 /**
  * Implementation for {@link Tenant}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 final class DomainLegalAgreementImpl extends
         WrapperImpl<TldLegalAgreementInner>
         implements

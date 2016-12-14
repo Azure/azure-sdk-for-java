@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for storage accounts management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DeploymentSlots extends
         SupportsCreating<DeploymentSlot.DefinitionStages.Blank>,
         SupportsListing<DeploymentSlot>,

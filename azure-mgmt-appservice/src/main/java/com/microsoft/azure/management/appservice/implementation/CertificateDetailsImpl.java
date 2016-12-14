@@ -15,7 +15,7 @@ import org.joda.time.DateTime;
 /**
  * The implementation for {@link AppServicePlan}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class CertificateDetailsImpl
         extends
         IndexableWrapperImpl<

@@ -10,7 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 /**
  * Endpoints and credentials for publishing to a web app.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface PublishingProfile {
     /**
      * @return the url for FTP publishing, with ftp:// and the root folder.

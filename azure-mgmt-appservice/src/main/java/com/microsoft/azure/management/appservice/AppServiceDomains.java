@@ -19,7 +19,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point for domain management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceDomains extends
         SupportsCreating<AppServiceDomain.DefinitionStages.Blank>,
         SupportsListing<AppServiceDomain>,

@@ -16,7 +16,7 @@ import java.io.File;
 /**
  * A Host name - SSL certificate binding definition.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface HostNameSslBinding extends
     Wrapper<HostNameSslState>,
     ChildResource<WebAppBase> {

@@ -18,7 +18,7 @@ import rx.Observable;
 /**
  * Entry point for app service certificate order management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificateOrders extends
         SupportsCreating<AppServiceCertificateOrder.DefinitionStages.Blank>,
         SupportsDeletingById,

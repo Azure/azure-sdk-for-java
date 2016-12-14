@@ -18,7 +18,7 @@ import rx.Observable;
 /**
  * Entry point for app service plan management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServicePlans extends
         SupportsCreating<AppServicePlan.DefinitionStages.Blank>,
         SupportsDeletingById,

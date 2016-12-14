@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.implementation.TldLegalAgreemen
 /**
  * An immutable client-side representation of an Azure domain legal agreement.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DomainLegalAgreement
     extends Wrapper<TldLegalAgreementInner> {
     /**

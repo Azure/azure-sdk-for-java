@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.appservice;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.appservice.implementation.SiteInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
@@ -23,7 +24,7 @@ import java.util.Set;
 /**
  * An immutable client-side representation of an Azure Web App or deployment slot.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebAppBase extends
         HasName,
         GroupableResource,
@@ -329,6 +330,7 @@ public interface WebAppBase extends
              * Starts the definition of a new host name binding.
              * @return the first stage of a hostname binding definition
              */
+            @Method
             HostNameBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineHostnameBinding();
 
             /**
@@ -359,6 +361,7 @@ public interface WebAppBase extends
              * Starts a definition of an SSL binding.
              * @return the first stage of an SSL binding definition
              */
+            @Method
             HostNameSslBinding.DefinitionStages.Blank<WithHostNameSslBinding<FluentT>> defineSslBinding();
         }
 
@@ -609,6 +612,7 @@ public interface WebAppBase extends
              * Starts the definition of a new source control.
              * @return the first stage of a source control definition
              */
+            @Method
             WebAppSourceControl.DefinitionStages.Blank<WithCreate<FluentT>> defineSourceControl();
 
             /**
@@ -651,6 +655,7 @@ public interface WebAppBase extends
              * Starts the definition of a new host name binding.
              * @return the first stage of a hostname binding update
              */
+            @Method
             HostNameBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineHostnameBinding();
 
             /**
@@ -688,6 +693,7 @@ public interface WebAppBase extends
              * Starts a definition of an SSL binding.
              * @return the first stage of an SSL binding definition
              */
+            @Method
             HostNameSslBinding.UpdateDefinitionStages.Blank<Update<FluentT>> defineSslBinding();
 
             /**
@@ -981,6 +987,7 @@ public interface WebAppBase extends
              * Starts the definition of a new source control.
              * @return the first stage of a source control definition
              */
+            @Method
             WebAppSourceControl.UpdateDefinitionStages.Blank<Update<FluentT>> defineSourceControl();
 
             /**

@@ -16,7 +16,7 @@ import com.microsoft.azure.management.appservice.implementation.HostNameBindingI
 /**
  * A host name binding object.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface HostNameBinding
         extends
         Wrapper<HostNameBindingInner>,

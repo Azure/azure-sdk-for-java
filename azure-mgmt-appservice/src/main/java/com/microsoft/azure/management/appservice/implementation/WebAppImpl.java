@@ -34,7 +34,7 @@ import java.util.Map;
 /**
  * The implementation for {@link WebApp}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppImpl
         extends WebAppBaseImpl<WebApp, WebAppImpl>
         implements

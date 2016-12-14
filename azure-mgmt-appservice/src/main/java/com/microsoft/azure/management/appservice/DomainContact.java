@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 /**
  * A domain contact definition.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface DomainContact extends
     Wrapper<Contact>,
     ChildResource<AppServiceDomain> {

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.implementation.SiteSourceContro
 /**
  * A web app source control in a web app.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebAppSourceControl extends
     Wrapper<SiteSourceControlInner>,
     ChildResource<WebAppBase> {

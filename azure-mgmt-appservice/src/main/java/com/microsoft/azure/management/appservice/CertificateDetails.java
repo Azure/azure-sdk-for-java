@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 /**
  * An immutable client-side representation of an Azure Web App.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface CertificateDetails extends
         Wrapper<CertificateDetailsInner> {
     /**

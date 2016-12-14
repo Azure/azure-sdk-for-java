@@ -18,7 +18,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServicePlans}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateOrdersImpl
         extends GroupableResourcesImpl<
         AppServiceCertificateOrder,

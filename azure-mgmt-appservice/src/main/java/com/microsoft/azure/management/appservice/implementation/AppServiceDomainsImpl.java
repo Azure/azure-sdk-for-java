@@ -19,7 +19,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServiceDomains}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainsImpl
         extends GroupableResourcesImpl<
         AppServiceDomain,

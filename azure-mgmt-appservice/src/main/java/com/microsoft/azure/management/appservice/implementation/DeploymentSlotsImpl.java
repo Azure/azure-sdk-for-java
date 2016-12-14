@@ -20,7 +20,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link DeploymentSlots}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotsImpl
         extends IndependentChildResourcesImpl<
                         DeploymentSlot,
@@ -42,7 +42,7 @@ class DeploymentSlotsImpl
         converter = new PagedListConverter<SiteInner, DeploymentSlot>() {
             @Override
             public DeploymentSlot typeConvert(SiteInner siteInner) {
-                siteInner.withSiteConfig(innerCollection.getConfiguration(siteInner.resourceGroup(), siteInner.name()));
+                siteInner.withSiteConfig(innerCollection.getConfigurationSlot(siteInner.resourceGroup(), parent.name(), siteInner.name().replaceAll(".*/", "")));
                 return wrapModel(siteInner).cacheAppSettingsAndConnectionStrings().toBlocking().single();
             }
         };

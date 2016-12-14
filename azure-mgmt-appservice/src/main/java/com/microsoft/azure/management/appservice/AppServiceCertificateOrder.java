@@ -22,7 +22,7 @@ import rx.Observable;
 /**
  * An immutable client-side representation of an Azure App Service Certificate Order.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificateOrder extends
         GroupableResource,
         Refreshable<AppServiceCertificateOrder>,
@@ -161,7 +161,7 @@ public interface AppServiceCertificateOrder extends
         /**
          * An app service certificate order definition allowing resource group to be set.
          */
-        interface Blank extends GroupableResource.DefinitionStages.WithGroup<WithHostName> {
+        interface Blank extends GroupableResource.DefinitionStages.WithExistingResourceGroup<WithHostName> {
         }
 
         /**

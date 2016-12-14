@@ -55,7 +55,7 @@ import java.util.Set;
  *  @param <FluentT> the fluent interface of the web app or deployment slot
  *  @param <FluentImplT> the fluent implementation of the web app or deployment slot
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 abstract class WebAppBaseImpl<
         FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
@@ -199,7 +199,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public boolean isPremiumApp() {
-        return inner().premiumAppDeployed();
+        return Utils.toPrimitiveBoolean(inner().premiumAppDeployed());
     }
 
     @Override
@@ -234,7 +234,7 @@ abstract class WebAppBaseImpl<
 
     @Override
     public boolean hostNamesDisabled() {
-        return false;
+        return Utils.toPrimitiveBoolean(inner().hostNamesDisabled());
     }
 
     @Override

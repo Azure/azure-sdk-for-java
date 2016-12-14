@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * An immutable client-side representation of an Azure app service certificate.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificate extends
         GroupableResource,
         Refreshable<AppServiceCertificate>,

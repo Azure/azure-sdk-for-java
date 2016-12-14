@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * The implementation for {@link AppServiceDomain}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceDomainImpl
         extends
         GroupableResourceImpl<

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 /**
  * An immutable client-side representation of an Azure Web App.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebApp extends
         WebAppBase,
         Refreshable<WebApp>,

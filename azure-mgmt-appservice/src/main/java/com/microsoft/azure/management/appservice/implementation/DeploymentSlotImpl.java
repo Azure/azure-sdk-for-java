@@ -31,7 +31,7 @@ import java.util.Map;
 /**
  * The implementation for {@link DeploymentSlot}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DeploymentSlotImpl
         extends WebAppBaseImpl<DeploymentSlot, DeploymentSlotImpl>
         implements

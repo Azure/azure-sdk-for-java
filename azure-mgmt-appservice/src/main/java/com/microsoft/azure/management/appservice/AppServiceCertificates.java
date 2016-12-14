@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 /**
  * Entry point for certificate management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificates extends
         SupportsCreating<AppServiceCertificate.DefinitionStages.Blank>,
         SupportsDeletingById,

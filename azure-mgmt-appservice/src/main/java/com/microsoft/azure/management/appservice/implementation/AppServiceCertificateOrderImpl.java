@@ -28,7 +28,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link AppServicePlan}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateOrderImpl
         extends
         GroupableResourceImpl<
@@ -157,17 +157,17 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public String serialNumber() {
-        return null;
+        return inner().serialNumber();
     }
 
     @Override
     public DateTime lastCertificateIssuanceTime() {
-        return null;
+        return inner().lastCertificateIssuanceTime();
     }
 
     @Override
     public DateTime expirationTime() {
-        return null;
+        return inner().expirationTime();
     }
 
     @Override

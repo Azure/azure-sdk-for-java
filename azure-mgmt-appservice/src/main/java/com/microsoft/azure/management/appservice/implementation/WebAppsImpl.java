@@ -18,7 +18,7 @@ import rx.functions.Func1;
 /**
  * The implementation for {@link WebApps}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppsImpl
         extends GroupableResourcesImpl<
         WebApp,
