@@ -183,7 +183,7 @@ public final class RestClient {
             // Set up OkHttp client
             this.httpClientBuilder = httpClientBuilder
                     .cookieJar(new JavaNetCookieJar(cookieManager))
-                    .readTimeout(30, TimeUnit.SECONDS);
+                    .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
         }
 
