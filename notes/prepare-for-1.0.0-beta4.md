@@ -12,122 +12,171 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 3 
     <th>To</th>
     <th>Ref</th>
   </tr>
-  <tr>
-    <td><code>Subnet.networkSecurityGroup()</code></td>
-    <td><code>Subnet.getNetworkSecurityGroup()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1140">#1140</a></td>
+    <tr>
+    <td><code>VirtualMachine.disableVmAgent()</code></td>
+    <td><code>VirtualMachine.withoutVmAgent()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>Network.dsnServerIPs()</code></td>
-    <td><code>Network.dnsServerIps()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1140">#1140</a></td>
+    <td><code>VirtualMachine.disableAutoUpdate()</code></td>
+    <td><code>VirtualMachine.withoutAutoUpdate()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>NicIpConfiguration.publicIpAddress()</code></td>
-    <td><code>NicIpConfiguration.getPublicIpAddress()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1083">#1083</a></td>
+    <td><code>VirtualMachine.withRootUserName()</code></td>
+    <td><code>VirtualMachine.withRootUsername()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>NicIpConfiguration.network()</code></td>
-    <td><code>NicIpConfiguration.getNetwork()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1083">#1083</a></td>
+    <td><code>VirtualMachine.withAdminUserName()</code></td>
+    <td><code>VirtualMachine.withAdminUsername()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>NetworkInterface.networkSecurityGroup()</code></td>
-    <td><code>NetworkInterface.getNetworkSecurityGroup()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1065">#1065</a></td>
+    <td><code>VirtualMachine.withPassword()</code></td>
+    <td><code>VirtualMachine.withRootPassword()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
+  </tr>
+    <tr>
+    <td><code>VirtualMachine.withPassword()</code></td>
+    <td><code>VirtualMachine.withAdminPassword()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>NicIpConfiguration.privateIp()</code></td>
-    <td><code>NicIpConfiguration.privateIpAddress()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1055">#1055</a></td>
+    <td><code>VirtualMachineScaleSet.withPrimaryInternetFacingLoadBalancer()</code></td>
+    <td><code>VirtualMachineScaleSet.withExistingPrimaryInternetFacingLoadBalancer()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
   </tr>
   <tr>
-    <td><code>VirtualMachine.primaryPublicIpAddress()</code></td>
-    <td><code>VirtualMachine.getPrimaryPublicIpAddress()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>VirtualMachineScaleSet.withPrimaryInternalLoadBalancer()</code></td>
+    <td><code>VirtualMachineScaleSet.withExistingPrimaryInternalLoadBalancer()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
   </tr>
   <tr>
-    <td><code>StorageAccount.refreshKeys()</code></td>
-    <td><code>StorageAccount.getKeys()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>VirtualMachineScaleSet.withAdminUserName()</code></td>
+    <td><code>VirtualMachineScaleSet.withAdminUsername()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
   </tr>
   <tr>
-    <td><code>NetworkInterface.primaryNetwork()</code></td>
-    <td><code>NetworkInterface.getPrimaryNetwork()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>VirtualMachineScaleSet.withRootUserName()</code></td>
+    <td><code>VirtualMachineScaleSet.withRootUsername()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
+  </tr>
+  <tr>
+    <td><code>VirtualMachineScaleSet.withPassword()</code></td>
+    <td>
+    <code>VirtualMachineScaleSet.withRootPassword()</code><br/>
+    <code>VirtualMachineScaleSet.withAdminPassword()</code>
+    </td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.Frontend()</code></td>
+    <td><code>LoadBalancer.LoadBalancerFrontend()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.Probe()</code></td>
+    <td><code>LoadBalancer.LoadBalancerProbe()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.TcpProbe()</code></td>
+    <td><code>LoadBalancer.LoadBalancerTcpProbe()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.HttpProbe()</code></td>
+    <td><code>LoadBalancer.LoadBalancerHttpProbe()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.Backend()</code></td>
+    <td><code>LoadBalancer.LoadBalancerBackend()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
+  </tr>
+  <tr>
+    <td><code>LoadBalancer.withExistingSubnet()</code></td>
+    <td><code>LoadBalancer.withFrontendSubnet()</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1245">#1245</a></td>
+  </tr>
+
+  <tr>
+    <td><code>ResourceGroups.delete(String id)</code></td>
+    <td><code>ResourceGroups().deleteByName(String name)</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
+  </tr>
+  <tr>
+    <td><code>{ResourceCollection}.delete(String id)</code></td>
+    <td><code>{ResourceCollection}.deleteById(String id)</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
+  </tr>
+  <tr>
+    <td><code>{ResourceCollection}.delete(String groupName, String name)</code></td>
+    <td><code>{ResourceCollection}.deleteByGroup(String groupName, String name)</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
   </tr>
 </table>
 
-# Change Receiving Variable Type #
+# Change interface Names #
 
 <table>
   <tr>
     <th>From</th>
     <th>To</th>
-    <th>For Method</th>
     <th>Ref</th>
   </tr>
-  <tr>
-    <td><code>List</code></td>
-    <td><code>Map</code></td>
-    <td><code>NetworkInterface.ipConfigurations()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1055">#1055</a></td>
+   <tr>
+    <td><code>com.microsoft.azure.management.compute.WithAdminUserName</code></td>
+    <td><code>com.microsoft.azure.management.compute.WithWindowsAdminUsername</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
+  </tr>
+   <tr>
+    <td><code>com.microsoft.azure.management.compute.WithRootUserName</code></td>
+    <td><code>com.microsoft.azure.management.compute.WithLinuxRootUsername</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
+  </tr>
+   <tr>
+    <td><code>com.microsoft.azure.management.compute.WithPassword</code></td>
+    <td>
+    <code>com.microsoft.azure.management.compute.WithWindowsAdminPassword</code><br/>
+    <code>com.microsoft.azure.management.compute.WithLinuxRootPasswordOrPublicKey</code>
+    </td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
   </tr>
   <tr>
-    <td><code>List</code></td>
-    <td><code>Map</code></td>
-    <td><code>VirtualMachine.resources()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1045">#1045</a></td>
+    <td><code>com.microsoft.azure.management.network.HttpProbe</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerHttpProbe</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
   </tr>
   <tr>
-    <td><code>List</code></td>
-    <td><code>Map</code></td>
-    <td><code>NetworkSecurityGroup.securityRules()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/970">#970</a></td>
+    <td><code>com.microsoft.azure.management.network.TcpProbe</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerTcpProbe</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
   </tr>
   <tr>
-    <td><code>List</code></td>
-    <td><code>Map</code></td>
-    <td><code>NetworkSecurityGroup.defaultSecurityRules()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/970">#970</a></td>
-  </tr>
-</table>
-
-# Drop Method Usage or Use Alternate #
-
-There are alternate ways to achieve the same thing:
-
-<table>
-  <tr>
-    <th>Drop Method</th>
-    <th>Use Alternate</th>
-    <th>Ref</th>
+    <td><code>com.microsoft.azure.management.network.Probe</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerProbe</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1178">#1178</a></td>
   </tr>
   <tr>
-    <td><code>NetworkInterface.primarySubnetId()</code></td>
-    <td><code>NetworkInterface.primaryIpConfiguration().subnetId()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>com.microsoft.azure.management.network.PrivateFrontend</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerPrivateFrontend</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1245">#1245</a></td>
   </tr>
   <tr>
-    <td><code>NicIpConfiguration.subnetId()</code></td>
-    <td>Use <code>NicIpConfiguration.subnetName()</code> for the name of the subnet, and <code>.networkId()</code> for its parent virtual network ID. Or simply call <code>.getNetwork()</code> for the actual associated Network instance and look up the subnet using <code>Network.subnets().get(subnetName)</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>com.microsoft.azure.management.network.PublicFrontend</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerPublicFrontend</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1245">#1245</a></td>
   </tr>
   <tr>
-    <td><code>NetworkInterface.primaryPublicIpAddress()</code></td>
-    <td><code>NetworkInterface.primaryIpConfiguration().getPublicIpAddress()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>com.microsoft.azure.management.network.InboundNatRule</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerInboundNatRule</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1245">#1245</a></td>
   </tr>
   <tr>
-    <td><code>StorageAccount.keys()</code></td>
-    <td><code>StorageAccount.getKeys()</code></td>
-    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1090">#1090</a></td>
+    <td><code>com.microsoft.azure.management.network.InboundNatPool</code></td>
+    <td><code>com.microsoft.azure.management.network.LoadBalancerInboundNatPool</code></td>
+    <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1245">#1245</a></td>
   </tr>
 </table>
-
-# Add Property #
-
-Add another property <code>graphURL=https\://graph.windows.net/</code> to the experimental Azure Auth file [#1107](https://github.com/Azure/azure-sdk-for-java/pull/1107).
-
-
