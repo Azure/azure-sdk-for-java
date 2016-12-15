@@ -27,6 +27,15 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
 import com.microsoft.azure.management.keyvault.AccessPolicy;
 import com.microsoft.azure.management.keyvault.Vault;
+import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayListener;
+import com.microsoft.azure.management.network.ApplicationGatewayIpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
+import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
@@ -1068,6 +1077,170 @@ public final class Utils {
 
         System.out.println(builder.toString());
     }
+
+
+    /**
+     * Print an application gateway
+     * @param resource an application gateway
+     */
+    public static void print(ApplicationGateway resource) {
+        StringBuilder info = new StringBuilder();
+        info.append("Application gateway: ").append(resource.id())
+                .append("Name: ").append(resource.name())
+                .append("\n\tResource group: ").append(resource.resourceGroupName())
+                .append("\n\tRegion: ").append(resource.region())
+                .append("\n\tTags: ").append(resource.tags())
+                .append("\n\tSKU: ").append(resource.sku().toString())
+                .append("\n\tOperational state: ").append(resource.operationalState())
+                .append("\n\tSSL policy: ").append(resource.sslPolicy())
+                .append("\n\tInternet-facing? ").append(resource.isPublic())
+                .append("\n\tInternal? ").append(resource.isPrivate())
+                .append("\n\tDefault private IP address: ").append(resource.privateIpAddress())
+                .append("\n\tPrivate IP address allocation method: ").append(resource.privateIpAllocationMethod());
+
+        // Show IP configs
+        Map<String, ApplicationGatewayIpConfiguration> ipConfigs = resource.ipConfigurations();
+        info.append("\n\tIP configurations: ").append(ipConfigs.size());
+        for (ApplicationGatewayIpConfiguration ipConfig : ipConfigs.values()) {
+            info.append("\n\t\tName: ").append(ipConfig.name())
+                    .append("\n\t\t\tNetwork id: ").append(ipConfig.networkId())
+                    .append("\n\t\t\tSubnet name: ").append(ipConfig.subnetName());
+        }
+
+        // Show frontends
+        Map<String, ApplicationGatewayFrontend> frontends = resource.frontends();
+        info.append("\n\tFrontends: ").append(frontends.size());
+        for (ApplicationGatewayFrontend frontend : frontends.values()) {
+            info.append("\n\t\tName: ").append(frontend.name())
+                    .append("\n\t\t\tPublic? ").append(frontend.isPublic());
+
+            if (frontend.isPublic()) {
+                // Show public frontend info
+                info.append("\n\t\t\tPublic IP address ID: ").append(frontend.publicIpAddressId());
+            }
+
+            if (frontend.isPrivate()) {
+                // Show private frontend info
+                info.append("\n\t\t\tPrivate IP address: ").append(frontend.privateIpAddress())
+                        .append("\n\t\t\tPrivate IP allocation method: ").append(frontend.privateIpAllocationMethod())
+                        .append("\n\t\t\tSubnet name: ").append(frontend.subnetName())
+                        .append("\n\t\t\tVirtual network ID: ").append(frontend.networkId());
+            }
+        }
+
+        // Show backends
+        Map<String, ApplicationGatewayBackend> backends = resource.backends();
+        info.append("\n\tBackends: ").append(backends.size());
+        for (ApplicationGatewayBackend backend : backends.values()) {
+            info.append("\n\t\tName: ").append(backend.name())
+                    .append("\n\t\t\tAssociated NIC IP configuration IDs: ").append(backend.backendNicIpConfigurationNames().keySet());
+
+            // Show addresses
+            List<ApplicationGatewayBackendAddress> addresses = backend.addresses();
+            info.append("\n\t\t\tAddresses: ").append(addresses.size());
+            for (ApplicationGatewayBackendAddress address : addresses) {
+                info.append("\n\t\t\t\tFQDN: ").append(address.fqdn())
+                        .append("\n\t\t\t\tIP: ").append(address.ipAddress());
+            }
+        }
+
+        // Show backend HTTP configurations
+        Map<String, ApplicationGatewayBackendHttpConfiguration> httpConfigs = resource.backendHttpConfigurations();
+        info.append("\n\tHTTP Configurations: ").append(httpConfigs.size());
+        for (ApplicationGatewayBackendHttpConfiguration httpConfig : httpConfigs.values()) {
+            info.append("\n\t\tName: ").append(httpConfig.name())
+                    .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
+                    .append("\n\t\t\tPort: ").append(httpConfig.port())
+                    .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
+                    .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+        }
+
+        // Show SSL certificates
+        Map<String, ApplicationGatewaySslCertificate> sslCerts = resource.sslCertificates();
+        info.append("\n\tSSL certificates: ").append(sslCerts.size());
+        for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
+            info.append("\n\t\tName: ").append(cert.name())
+                    .append("\n\t\t\tCert data: ").append(cert.publicData());
+        }
+
+        // Show HTTP listeners
+        Map<String, ApplicationGatewayListener> listeners = resource.listeners();
+        info.append("\n\tHTTP listeners: ").append(listeners.size());
+        for (ApplicationGatewayListener listener : listeners.values()) {
+            info.append("\n\t\tName: ").append(listener.name())
+                    .append("\n\t\t\tHost name: ").append(listener.hostName())
+                    .append("\n\t\t\tServer name indication required? ").append(listener.requiresServerNameIndication())
+                    .append("\n\t\t\tAssociated frontend name: ").append(listener.frontend().name())
+                    .append("\n\t\t\tFrontend port name: ").append(listener.frontendPortName())
+                    .append("\n\t\t\tFrontend port number: ").append(listener.frontendPortNumber())
+                    .append("\n\t\t\tProtocol: ").append(listener.protocol().toString());
+            if (listener.sslCertificate() != null) {
+                info.append("\n\t\t\tAssociated SSL certificate: ").append(listener.sslCertificate().name());
+            }
+        }
+
+        // Show request routing rules
+        Map<String, ApplicationGatewayRequestRoutingRule> rules = resource.requestRoutingRules();
+        info.append("\n\tRequest routing rules: ").append(rules.size());
+        for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
+            info.append("\n\t\tName: ").append(rule.name())
+                    .append("\n\t\t\tType: ").append(rule.ruleType())
+                    .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIpAddressId())
+                    .append("\n\t\t\tHost name: ").append(rule.hostName())
+                    .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                    .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
+                    .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                    .append("\n\t\t\tBackend port: ").append(rule.backendPort())
+                    .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+
+            // Show backend addresses
+            List<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
+            info.append("\n\t\t\tBackend addresses: ").append(addresses.size());
+            for (ApplicationGatewayBackendAddress address : addresses) {
+                info.append("\n\t\t\t\t")
+                        .append(address.fqdn())
+                        .append(" [").append(address.ipAddress()).append("]");
+            }
+
+            // Show SSL cert
+            info.append("\n\t\t\tSSL certificate name: ");
+            ApplicationGatewaySslCertificate cert = rule.sslCertificate();
+            if (cert == null) {
+                info.append("(None)");
+            } else {
+                info.append(cert.name());
+            }
+
+            // Show backend
+            info.append("\n\t\t\tAssociated backend address pool: ");
+            ApplicationGatewayBackend backend = rule.backend();
+            if (backend == null) {
+                info.append("(None)");
+            } else {
+                info.append(backend.name());
+            }
+
+            // Show backend HTTP settings config
+            info.append("\n\t\t\tAssociated backend HTTP settings configuration: ");
+            ApplicationGatewayBackendHttpConfiguration config = rule.backendHttpConfiguration();
+            if (config == null) {
+                info.append("(None)");
+            } else {
+                info.append(config.name());
+            }
+
+            // Show frontend listener
+            info.append("\n\t\t\tAssociated frontend listener: ");
+            ApplicationGatewayListener listener = rule.listener();
+            if (listener == null) {
+                info.append("(None)");
+            } else {
+                info.append(config.name());
+            }
+        }
+        System.out.println(info.toString());
+    }
+
 
     private Utils() {
 
