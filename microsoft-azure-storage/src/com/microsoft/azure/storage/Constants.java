@@ -1110,6 +1110,11 @@ public final class Constants {
     public static final String MARKER_ELEMENT = "Marker";
 
     /**
+     * The maximum size for Range ContentMD5.
+     */
+    public static int MAX_RANGE_CONTENT_MD5 = 4 * MB;
+
+    /**
      * The maximum size of a BlockBlob block.
      */
     public static int MAX_BLOCK_SIZE = 100 * MB;
@@ -1167,7 +1172,7 @@ public final class Constants {
     /**
      * The default minimum read size, in bytes, for a {@link BlobInputStream} or {@link FileInputStream}.
      */
-    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = Constants.MAX_BLOCK_SIZE;
+    public static final int DEFAULT_MINIMUM_READ_SIZE_IN_BYTES = 4 * Constants.MB;
 
     /**
      * The maximum size, in bytes, of a given stream mark operation.

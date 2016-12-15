@@ -1387,6 +1387,26 @@ public class CloudFileTests {
         assertEquals(prop1.getContentMD5(), prop2.getContentMD5());
         assertEquals(prop1.getContentType(), prop2.getContentType());
     }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testFileGetRangeContentMD5Bounds() throws StorageException, IOException, URISyntaxException {
+        {
+            CloudFile file = FileTestHelper.uploadNewFile(this.share, 5 * Constants.MB, null);
+
+            FileRequestOptions options = new FileRequestOptions();
+            OperationContext opContext = new OperationContext();
+            try {
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB + 1, true);
+                fail("The request for range ContentMD5 should have thrown an Exception for exceeding the limit.");
+            }
+            catch (IllegalArgumentException e)
+            {
+                assertEquals(e.getMessage(), String.format("The value of the parameter 'count' should be between 1 and %1d.", Constants.MAX_RANGE_CONTENT_MD5));
+            }
+        }
+    }
     
     private CloudFile doCloudBlobCopy(CloudBlob source, int length) throws Exception {
         Calendar cal = new GregorianCalendar(TimeZone.getTimeZone("UTC"));

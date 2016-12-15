@@ -1710,6 +1710,26 @@ public class CloudBlockBlobTests {
         assertFalse("ETage should be modified on write metadata", newETag.equals(currentETag));
     }
 
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testBlobGetRangeContentMD5Bounds() throws StorageException, IOException, URISyntaxException {
+    {
+        CloudBlockBlob blob = (CloudBlockBlob) BlobTestHelper.uploadNewBlob(this.container, BlobType.BLOCK_BLOB,
+                "test", 5 * Constants.MB, null);
+        BlobRequestOptions options = new BlobRequestOptions();
+        OperationContext opContext = new OperationContext();
+        try {
+            BlobRequest.getBlob(blob.getUri(), options, opContext, null, "", 0L, 4L * Constants.MB, true);
+            BlobRequest.getBlob(blob.getUri(), options, opContext, null, "", 0L, 4L * Constants.MB + 1, true);
+            fail("The request for range ContentMD5 should have thrown an Exception for exceeding the limit.");
+        }
+        catch (IllegalArgumentException e)
+        {
+            assertEquals(e.getMessage(), String.format("The value of the parameter 'count' should be between 1 and %1d.", Constants.MAX_RANGE_CONTENT_MD5));
+        }
+    }
+    }
+
     private void doUploadDownloadStringTest(CloudBlockBlob blob, int length) throws StorageException, IOException {
         String stringToUse = this.getRandomUNCString(length);
         blob.uploadText(stringToUse, Constants.UTF8_CHARSET, null, null, null);

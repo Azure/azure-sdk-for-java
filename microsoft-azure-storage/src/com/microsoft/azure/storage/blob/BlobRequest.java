@@ -489,7 +489,7 @@ final class BlobRequest {
 
         if (offset != null && requestRangeContentMD5) {
             Utility.assertNotNull("count", count);
-            Utility.assertInBounds("count", count, 1, Constants.MAX_BLOCK_SIZE);
+            Utility.assertInBounds("count", count, 1, Constants.MAX_RANGE_CONTENT_MD5);
         }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
