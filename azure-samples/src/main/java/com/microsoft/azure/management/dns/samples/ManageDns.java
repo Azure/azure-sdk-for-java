@@ -124,8 +124,8 @@ public class ManageDns {
                 System.out.println("Waiting a minute for CName record entry to propagate...");
                 Thread.sleep(60 * 1000);
 
-                //============================================================
-                // Adds a web app host name binding for www.[customDomainName]
+                // Step 2: Adds a web app host name binding for www.[customDomainName]
+                //         This binding action will fail if the CName record propagation is not yet completed
 
                 System.out.println("Updating Web app with host name binding...");
                 webApp.update()
@@ -138,7 +138,8 @@ public class ManageDns {
                 System.out.println("Web app updated");
                 Utils.print(webApp);
 
-                // Step 2: Creates a virtual machine with public IP
+                //============================================================
+                // Creates a virtual machine with public IP
 
                 System.out.println("Creating a virtual machine with public IP...");
                 VirtualMachine virtualMachine1 = azure.virtualMachines()
