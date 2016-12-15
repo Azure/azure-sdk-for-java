@@ -17,7 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDe
 /**
  * Entry point for web app management API.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface WebApps extends
         SupportsCreating<WebApp.DefinitionStages.Blank>,
         SupportsDeletingById,

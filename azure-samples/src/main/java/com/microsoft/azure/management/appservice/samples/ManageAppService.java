@@ -18,6 +18,7 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
+import com.microsoft.rest.UserAgentInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -74,9 +75,12 @@ public final class ManageAppService {
 
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
+            UserAgentInterceptor interceptor = new UserAgentInterceptor();
+
             Azure azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
+                    .withInterceptor(interceptor)
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -101,6 +105,8 @@ public final class ManageAppService {
                 System.out.println("Created web app " + app1.name());
                 Utils.print(app1);
 
+                interceptor.withUserAgent("blah");
+
                 //============================================================
                 // Create a second web app with the same app service plan
 
@@ -114,6 +120,8 @@ public final class ManageAppService {
 
                 System.out.println("Created web app " + app2.name());
                 Utils.print(app2);
+
+                interceptor.withUserAgent("AutoRest-Java");
 
                 //============================================================
                 // Purchase a domain (will be canceled for a full refund)

@@ -27,7 +27,7 @@ import java.util.List;
 /**
  * The implementation for {@link AppServicePlan}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServiceCertificateImpl
         extends
         GroupableResourceImpl<

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServiceCertif
 /**
  * An immutable client-side representation of an Azure App Service Certificate.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServiceCertificateKeyVaultBinding extends
         IndependentChildResource,
         Wrapper<AppServiceCertificateInner> {

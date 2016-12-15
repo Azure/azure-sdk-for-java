@@ -16,7 +16,7 @@ import rx.Observable;
 /**
  * The implementation for {@link AppServicePlan}.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppServicePlanImpl
         extends
         GroupableResourceImpl<

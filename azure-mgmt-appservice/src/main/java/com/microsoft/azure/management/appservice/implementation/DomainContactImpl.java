@@ -17,7 +17,7 @@ import com.microsoft.azure.management.appservice.DomainContact;
 /**
  *  Implementation for {@link DomainContact} and its create and update interfaces.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class DomainContactImpl
     extends ChildResourceImpl<Contact, AppServiceDomainImpl, AppServiceDomain>
     implements

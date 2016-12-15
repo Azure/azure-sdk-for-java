@@ -12,7 +12,7 @@ import com.microsoft.azure.management.appservice.AppSetting;
 /**
  * An immutable client-side representation of an app setting on a web app.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class AppSettingImpl implements AppSetting {
     private String key;
     private String value;

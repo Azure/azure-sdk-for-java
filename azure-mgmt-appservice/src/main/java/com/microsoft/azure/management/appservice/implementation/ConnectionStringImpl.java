@@ -14,7 +14,7 @@ import com.microsoft.azure.management.appservice.ConnectionStringType;
 /**
  * An immutable client-side representation of a connection string on a web app.
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public class ConnectionStringImpl implements ConnectionString {
     private String name;
     private ConnStringValueTypePair valueTypePair;

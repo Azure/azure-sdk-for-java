@@ -18,7 +18,7 @@ import rx.Observable;
  *  @param <FluentT> the fluent interface of the parent web app
  *  @param <FluentImplT> the fluent implementation of the parent web app
  */
-@LangDefinition
+@LangDefinition(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 class WebAppSourceControlImpl<
         FluentT extends WebAppBase,
         FluentImplT extends WebAppBaseImpl<FluentT, FluentImplT>>
@@ -98,7 +98,7 @@ class WebAppSourceControlImpl<
 
     @Override
     public WebAppSourceControlImpl<FluentT, FluentImplT> withPublicMercurialRepository(String url) {
-        inner().withIsManualIntegration(true).withIsMercurial(false).withRepoUrl(url);
+        inner().withIsManualIntegration(true).withIsMercurial(true).withRepoUrl(url);
         return this;
     }
 

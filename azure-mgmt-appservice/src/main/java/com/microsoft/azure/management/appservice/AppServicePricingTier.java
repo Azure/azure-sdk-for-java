@@ -12,7 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 /**
  * Defines App service pricing tiers.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public class AppServicePricingTier {
     /** Free app service plan. */
     public static final AppServicePricingTier FREE_F1 = new AppServicePricingTier("Free", "F1");

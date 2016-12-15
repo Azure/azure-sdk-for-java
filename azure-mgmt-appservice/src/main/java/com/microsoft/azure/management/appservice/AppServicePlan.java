@@ -19,7 +19,7 @@ import com.microsoft.azure.management.appservice.implementation.AppServicePlanIn
 /**
  * An immutable client-side representation of an Azure App Service Plan.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppServicePlan extends
         GroupableResource,
         HasName,

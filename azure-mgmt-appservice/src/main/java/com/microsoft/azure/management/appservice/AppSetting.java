@@ -11,7 +11,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 /**
  * An immutable client-side representation of an app setting on a web app.
  */
-@Fluent
+@Fluent(ContainerName = "/Microsoft.Azure.Management.AppService.Fluent")
 public interface AppSetting {
     /**
      * @return the key of the setting
