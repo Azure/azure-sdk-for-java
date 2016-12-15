@@ -7,22 +7,48 @@
 package com.microsoft.azure.management.cdn.samples;
 
 import com.microsoft.azure.management.Azure;
+import com.microsoft.azure.management.appservice.AppServicePricingTier;
+import com.microsoft.azure.management.appservice.JavaVersion;
+import com.microsoft.azure.management.appservice.WebApp;
+import com.microsoft.azure.management.appservice.WebContainer;
 import com.microsoft.azure.management.cdn.CdnEndpoint;
 import com.microsoft.azure.management.cdn.CdnProfile;
-import com.microsoft.azure.management.cdn.CustomDomainValidationResult;
-import com.microsoft.azure.management.cdn.GeoFilterActions;
 import com.microsoft.azure.management.cdn.QueryStringCachingBehavior;
-import com.microsoft.azure.management.resources.fluentcore.arm.CountryISOCode;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created by hovsepm on 10/26/2016.
+ * Created by hovsepm on 12/14/2016.
+ */
+
+/**
+ * Azure CDN sample for managing CDN profiles:
+ * - Create 8 web apps in 8 regions:
+ *    * 2 in US
+ *    * 2 in EU
+ *    * 2 in Southeast
+ *    * 1 in Brazil
+ *    * 1 in Japan
+ * - Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
+ * - Load some content (referenced by Web Apps) to the CDN endpoints.
  */
 public final class ManageCdn {
+    private static OkHttpClient httpClient;
+    private static final String RG_NAME = ResourceNamer.randomResourceName("rgCDN_", 24);
+    private static final String SUFFIX = ".azurewebsites.net";
+    private static Azure azure;
 
     /**
      * Main entry point.
@@ -30,141 +56,92 @@ public final class ManageCdn {
      */
     public static void main(String[] args) {
 
-        final String cdnStandardProfileName = Utils.createRandomName("cdnStandardProfile");
-        final String cdnPremiumProfileName = Utils.createRandomName("cdnPremiumProfile");
-        final String cdnEndpointName = "endpoint-f3757d2a3e10";
-        final String cdnPremiumEndpointName = "premiumVerizonEndpointFluentTest";
-        final String rgName = Utils.createRandomName("rgRCCDN");
+        final String cdnProfileName = Utils.createRandomName("cdnStandardProfile");
+        String[] appNames = new String[8];
 
         try {
 
             final File credFile = new File("D:/my.azureauth");
 
-            Azure azure = Azure
+            azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
-                    //.withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    .withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
             // Print selected subscription
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
+            azure.resourceGroups().define(RG_NAME)
+                    .withRegion(Region.US_CENTRAL)
+                    .create();
+
             try {
                 // ============================================================
-                // Create a redis cache
+                // Create 8 websites
+                for (int i = 0; i < 8; i++) {
+                    appNames[i] = ResourceNamer.randomResourceName("webapp" + (i + 1) + "-", 20);
+                }
 
+                // 2 in US
+                createWebApp(appNames[0], Region.US_WEST);
+                createWebApp(appNames[1], Region.US_EAST);
+
+                // 2 in EU
+                createWebApp(appNames[2], Region.EUROPE_WEST);
+                createWebApp(appNames[3], Region.EUROPE_NORTH);
+
+                // 2 in Southeast
+                createWebApp(appNames[4], Region.ASIA_SOUTHEAST);
+                createWebApp(appNames[5], Region.AUSTRALIA_SOUTHEAST);
+
+                // 1 in Brazil
+                createWebApp(appNames[6], Region.BRAZIL_SOUTH);
+
+                // 1 in Japan
+                createWebApp(appNames[7], Region.JAPAN_WEST);
+                // =======================================================================================
+                // Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
                 System.out.println("Creating a CDN Profile");
 
-                CdnProfile standardProfile = azure.cdnProfiles().define(cdnStandardProfileName)
+                CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azure.cdnProfiles().define(cdnProfileName)
                         .withRegion(Region.US_CENTRAL)
-                        .withNewResourceGroup(rgName)
+                        .withExistingResourceGroup(RG_NAME)
+                        .withStandardVerizonSku();
 
-                        .withStandardAkamaiSku()
-                        .withNewEndpoint("supername.cloudapp.net")
-                        .defineNewEndpoint("akamiEndpointWithoutMuchProperties")
-                            .withOrigin("originSuperName", "storageforazdevextest.blob.core.windows.net")
-                            .attach()
-                        .defineNewEndpoint(cdnEndpointName, "mylinuxapp.azurewebsites.net")
-                            .withContentTypeToCompress("powershell/pain")
-                            .withGeoFilter("/path/videos", GeoFilterActions.BLOCK, CountryISOCode.ARGENTINA)
-                            .withGeoFilter("/path/images", GeoFilterActions.BLOCK, CountryISOCode.BELGIUM)
-                            .withContentTypeToCompress("text/plain")
-                            .withCompressionEnabled(true)
-                            .withQueryStringCachingBehavior(QueryStringCachingBehavior.BYPASS_CACHING)
-                            .withHttpsAllowed(true)
-                            .withHttpsPort(444)
-                            .withHttpAllowed(true)
-                            .withHttpPort(85)
-                            .withCustomDomain("sdk-1-f3757d2a3e10.azureedge-test.net")
-                            .withCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net")
-                            .attach()
-                        .create();
-
-                CdnProfile premiumProfile = azure.cdnProfiles().define(cdnPremiumProfileName)
-                        .withRegion(Region.US_CENTRAL)
-                        .withNewResourceGroup(rgName)
-                        .withPremiumVerizonSku()
-                        .withNewPremiumEndpoint("someweirdname.blob.core.windows.net")
-                        .defineNewPremiumEndpoint("supermuperep1")
-                            .withPremiumOrigin("originPremium", "xplattestvmss1sto0575014.blob.core.windows.net")
-                            .attach()
-                        .defineNewPremiumEndpoint(cdnPremiumEndpointName)
-                            .withPremiumOrigin("supername.cloudapp.net")
-                            .withHttpAllowed(true)
-                            .withHttpsAllowed(true)
-                            .withHttpsPort(12)
-                            .withHttpPort(123)
-                            .attach()
-                        .create();
-
-                CdnProfile profileRead = standardProfile.refresh();
-
-                profileRead = azure.cdnProfiles().getById(standardProfile.id());
-
-                if (profileRead.endpoints().size() != 3
-                        || profileRead.endpoints().get(cdnEndpointName).customDomains().size() != 2) {
-                    System.out.println("cdnProfiles().getById should retrieve endpoints and custom domains as well.");
+                // define all the endpoints then crete all of them at once
+                Creatable<CdnProfile> cdnCreatable = null;
+                for (String webSite : appNames) {
+                    cdnCreatable = profileDefinition
+                            .defineNewEndpoint()
+                                .withOrigin(webSite + SUFFIX)
+                                .withHostHeader(webSite + SUFFIX)
+                                .withCompressionEnabled(true)
+                                .withQueryStringCachingBehavior(QueryStringCachingBehavior.IGNORE_QUERY_STRING)
+                            .attach();
                 }
 
-                for (CdnEndpoint endpoint : profileRead.endpoints().values()) {
-                    System.out.println("CDN Endpoint: " + endpoint.name());
-                    System.out.println("EP Hostname: " + endpoint.hostName());
-                    System.out.println("EP Origin hostname: " + endpoint.originHostName());
-                    System.out.println("EP optimization type: " + endpoint.optimizationType());
-                    System.out.println("EP Origin host header: " + endpoint.originHostHeader());
-                    System.out.println("EP Origin path: " + endpoint.originPath());
-                    for (String customDomain : endpoint.customDomains()) {
-                        System.out.println("EP custom domain: " + customDomain);
-                    }
+                CdnProfile profile = cdnCreatable.create();
+
+                // =======================================================================================
+                // Load some content (referenced by Web Apps) to the CDN endpoints.
+                ArrayList<String> contentToLoad = new ArrayList<>();
+                contentToLoad.add("/server.js");
+                contentToLoad.add("/pictures/microsoft_logo.png");
+
+                for (CdnEndpoint endpoint : profile.endpoints().values()) {
+                    endpoint.loadContent(contentToLoad);
                 }
-
-                if (!standardProfile.isPremiumVerizon()) {
-                    standardProfile.update()
-                            .withTag("provider", "Akamai")
-                            .withNewEndpoint("www.somewebsite.com")
-                            .defineNewEndpoint("somenewnamefortheendpoint")
-                                .withOrigin("www.someotherwebsite.com")
-                                .withGeoFilter("/path/music", GeoFilterActions.BLOCK, CountryISOCode.ESTONIA)
-                                .attach()
-                            .updateEndpoint(cdnEndpointName)
-                                .withoutGeoFilters()
-                                .withHttpAllowed(true)
-                                .withHttpPort(1111)
-                                .withoutCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net")
-                                .parent()
-                    .apply();
-                }
-
-                premiumProfile.update()
-                        .withTag("provider", "Verizon")
-                        .withNewPremiumEndpoint("xplattestvmss1sto0575014.blob.core.windows.net")
-                        .defineNewPremiumEndpoint("supermuperep3")
-                            .withPremiumOrigin("xplattestvmss1sto0575014.blob.core.windows.net")
-                        .attach()
-                        .updatePremiumEndpoint(cdnPremiumEndpointName)
-                            .withHttpsAllowed(true)
-                            .withHttpsPort(1111)
-                        .parent()
-                        .withoutEndpoint("supermuperep1")
-                .apply();
-
-                String ssoUri = premiumProfile.generateSsoUri();
-
-                System.out.println("Standard Akamai Endpoints: " + standardProfile.endpoints().size());
-                CdnEndpoint standardEp = standardProfile.endpoints().get(cdnEndpointName);
-                CustomDomainValidationResult validationResult = standardEp.validateCustomDomain("sdk-2-f3757d2a3e10.azureedge-test.net");
-                standardProfile.stopEndpoint(standardEp.name());
-                standardEp.start();
 
             } catch (Exception f) {
                 System.out.println(f.getMessage());
                 f.printStackTrace();
             } finally {
-                if (azure.resourceGroups().getByName(rgName) != null) {
-                    System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().deleteByName(rgName);
-                    System.out.println("Deleted Resource Group: " + rgName);
+                if (azure.resourceGroups().getByName(RG_NAME) != null) {
+                    System.out.println("Deleting Resource Group: " + RG_NAME);
+                    azure.resourceGroups().deleteByName(RG_NAME);
+                    System.out.println("Deleted Resource Group: " + RG_NAME);
                 } else {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");
                 }
@@ -173,6 +150,47 @@ public final class ManageCdn {
             System.out.println(e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private static WebApp createWebApp(String appName, Region region) {
+        final String planName = ResourceNamer.randomResourceName("jplan_", 15);
+        final String appUrl = appName + SUFFIX;
+
+        System.out.println("Creating web app " + appName + " with master branch...");
+
+        WebApp app = azure.webApps()
+                .define(appName)
+                .withExistingResourceGroup(RG_NAME)
+                .withNewAppServicePlan(planName)
+                .withRegion(region)
+                .withPricingTier(AppServicePricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .defineSourceControl()
+                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test.git")
+                    .withBranch("master")
+                    .attach()
+                .create();
+
+        System.out.println("Created web app " + app.name());
+        Utils.print(app);
+
+        System.out.println("CURLing " + appUrl + "...");
+        System.out.println(curl("http://" + appUrl));
+        return app;
+    }
+
+    private static String curl(String url) {
+        Request request = new Request.Builder().url(url).get().build();
+        try {
+            return httpClient.newCall(request).execute().body().string();
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    static {
+        httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
     }
 
     private ManageCdn() {
