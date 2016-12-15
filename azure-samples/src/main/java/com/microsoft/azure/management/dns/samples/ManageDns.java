@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.dns.samples;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.AppServicePricingTier;
 import com.microsoft.azure.management.appservice.CustomHostNameDnsRecordType;
@@ -7,6 +8,8 @@ import com.microsoft.azure.management.appservice.WebApp;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.dns.ARecordSet;
+import com.microsoft.azure.management.dns.CnameRecordSet;
 import com.microsoft.azure.management.dns.DnsRecordSet;
 import com.microsoft.azure.management.dns.DnsZone;
 import com.microsoft.azure.management.network.PublicIpAddress;
@@ -28,8 +31,8 @@ import java.io.File;
  *  - Creates a child DNS zone (partners.contoso.com)
  *  - Creates a virtual machine with public IP
  *  - Add a A record (partners) to child DNS zone that points to virtual machine public IPV4 address
- *  - Delegate from parent domain to child domain by adding NS records
- *  - Remove A record from the parent DNS zone
+ *  - Delegate from root domain to child domain by adding NS records
+ *  - Remove A record from the root DNS zone
  *  - Delete the child DNS zone
  */
 public class ManageDns {
@@ -38,7 +41,7 @@ public class ManageDns {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
+        final String customDomainName         = "anuthomaschandy.com"; // "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = ResourceNamer.randomResourceName("rgNEMV_", 24);
         final String appServicePlanName       = ResourceNamer.randomResourceName("jplan1_", 15);
         final String webAppName               = ResourceNamer.randomResourceName("webapp1-", 20);
@@ -79,7 +82,8 @@ public class ManageDns {
                 // Sets NS records in the parent zone (hosting custom domain) to make Azure DNS the authoritative
                 // source for name resolution for the zone
 
-                System.out.println("Go to your registrar portal and configure your domain " + customDomainName + " with following name server addresses");
+                System.out.println("Go to your registrar portal and configure your domain " + customDomainName +
+                        " with following name server addresses");
                 for (String nameServer : rootDnsZone.nameServers()) {
                     System.out.println(" " + nameServer);
                 }
@@ -104,7 +108,10 @@ public class ManageDns {
                 Utils.print(webApp);
 
                 //============================================================
-                // Adds CName Dns record to root DNS zone that specify web app host domain as an alias for www.[customDomainName]
+                // Creates a CName record and bind it with the web app
+
+                // Step 1: Adds CName Dns record to root DNS zone that specify web app host domain as an
+                // alias for www.[customDomainName]
 
                 System.out.println("Updating DNS zone by adding a CName record...");
                 rootDnsZone = rootDnsZone.update()
@@ -112,6 +119,10 @@ public class ManageDns {
                         .apply();
                 System.out.println("DNS zone updated");
                 Utils.print(rootDnsZone);
+
+                // Waiting for a minute for DNS CName entry to propagate
+                System.out.println("Waiting a minute for CName record entry to propagate...");
+                Thread.sleep(60 * 1000);
 
                 //============================================================
                 // Adds a web app host name binding for www.[customDomainName]
@@ -127,8 +138,7 @@ public class ManageDns {
                 System.out.println("Web app updated");
                 Utils.print(webApp);
 
-                //============================================================
-                // Creates a virtual machine with public IP
+                // Step 2: Creates a virtual machine with public IP
 
                 System.out.println("Creating a virtual machine with public IP...");
                 VirtualMachine virtualMachine1 = azure.virtualMachines()
@@ -137,7 +147,7 @@ public class ManageDns {
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(ResourceNamer.randomResourceName("employeespip-", 15))
+                        .withNewPrimaryPublicIpAddress(ResourceNamer.randomResourceName("empip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
@@ -158,6 +168,29 @@ public class ManageDns {
                 System.out.println("Updated root DNS zone " + rootDnsZone.name());
                 Utils.print(rootDnsZone);
 
+                // Prints the CName and A Records in the root DNS zone
+                //
+                System.out.println("Getting CName record set in the root DNS zone " + customDomainName + "...");
+                PagedList<CnameRecordSet> cnameRecordSets = rootDnsZone
+                        .cnameRecordSets()
+                        .list();
+
+                for (CnameRecordSet cnameRecordSet : cnameRecordSets){
+                    System.out.println("Name: " + cnameRecordSet.name() + " Canonical Name: " + cnameRecordSet.canonicalName());
+                }
+
+                System.out.println("Getting ARecord record set in the root DNS zone " + customDomainName + "...");
+                PagedList<ARecordSet> aRecordSets = rootDnsZone
+                        .aRecordSets()
+                        .list();
+
+                for (ARecordSet aRecordSet : aRecordSets){
+                    System.out.println("Name: " + aRecordSet.name());
+                    for (String ipv4Address : aRecordSet.ipv4Addresses()) {
+                        System.out.println("  " + ipv4Address);
+                    }
+                }
+
                 //============================================================
                 // Creates a child DNS zone
 
@@ -173,14 +206,13 @@ public class ManageDns {
                 //============================================================
                 // Adds NS records in the root dns zone to delegate partners.[customDomainName] to child dns zone
 
-                System.out.println("Updating parent DNS zone " + rootDnsZone + "...");
-                DnsRecordSet.UpdateDefinitionStages.NsRecordSetBlank<DnsZone.Update> nsRecordsetStage = rootDnsZone.update()
-                        .defineNsRecordSet("partners");
-                DnsRecordSet
-                        .UpdateDefinitionStages
-                        .WithNsRecordNameServerOrAttachable<DnsZone.Update> nsRecordStage = null;
-                for (String nameServerName : partnersDnsZone.nameServers()) {
-                    nsRecordsetStage.withNameServer(nameServerName);
+                System.out.println("Updating root DNS zone " + rootDnsZone + "...");
+                DnsRecordSet.UpdateDefinitionStages.WithNsRecordNameServerOrAttachable<DnsZone.Update> nsRecordStage = rootDnsZone
+                        .update()
+                        .defineNsRecordSet("partners")
+                        .withNameServer(partnersDnsZone.nameServers().get(0));
+                for (int i = 1; i < partnersDnsZone.nameServers().size(); i++) {
+                    nsRecordStage = nsRecordStage.withNameServer(partnersDnsZone.nameServers().get(i));
                 }
                 nsRecordStage
                         .attach()
@@ -198,7 +230,7 @@ public class ManageDns {
                         .withExistingResourceGroup(resourceGroup)
                         .withNewPrimaryNetwork("10.0.0.0/28")
                         .withPrimaryPrivateIpAddressDynamic()
-                        .withNewPrimaryPublicIpAddress(ResourceNamer.randomResourceName("partnerspip-", 15))
+                        .withNewPrimaryPublicIpAddress(ResourceNamer.randomResourceName("ptnerpip-", 20))
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                         .withAdminUsername("testuser")
                         .withAdminPassword("12NewPA$$w0rd!")
