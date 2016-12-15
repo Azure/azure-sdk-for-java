@@ -41,7 +41,7 @@ public class ManageDns {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String customDomainName         = "anuthomaschandy.com"; // "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
+        final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = ResourceNamer.randomResourceName("rgNEMV_", 24);
         final String appServicePlanName       = ResourceNamer.randomResourceName("jplan1_", 15);
         final String webAppName               = ResourceNamer.randomResourceName("webapp1-", 20);
@@ -82,8 +82,8 @@ public class ManageDns {
                 // Sets NS records in the parent zone (hosting custom domain) to make Azure DNS the authoritative
                 // source for name resolution for the zone
 
-                System.out.println("Go to your registrar portal and configure your domain " + customDomainName +
-                        " with following name server addresses");
+                System.out.println("Go to your registrar portal and configure your domain " + customDomainName
+                        + " with following name server addresses");
                 for (String nameServer : rootDnsZone.nameServers()) {
                     System.out.println(" " + nameServer);
                 }
@@ -164,7 +164,7 @@ public class ManageDns {
                 rootDnsZone = rootDnsZone.update()
                         .defineARecordSet("employees")
                             .withIpv4Address(vm1PublicIpAddress.ipAddress())
-                        .   attach()
+                            .attach()
                         .apply();
                 System.out.println("Updated root DNS zone " + rootDnsZone.name());
                 Utils.print(rootDnsZone);
@@ -176,7 +176,7 @@ public class ManageDns {
                         .cnameRecordSets()
                         .list();
 
-                for (CnameRecordSet cnameRecordSet : cnameRecordSets){
+                for (CnameRecordSet cnameRecordSet : cnameRecordSets) {
                     System.out.println("Name: " + cnameRecordSet.name() + " Canonical Name: " + cnameRecordSet.canonicalName());
                 }
 
@@ -185,7 +185,7 @@ public class ManageDns {
                         .aRecordSets()
                         .list();
 
-                for (ARecordSet aRecordSet : aRecordSets){
+                for (ARecordSet aRecordSet : aRecordSets) {
                     System.out.println("Name: " + aRecordSet.name());
                     for (String ipv4Address : aRecordSet.ipv4Addresses()) {
                         System.out.println("  " + ipv4Address);
