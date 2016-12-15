@@ -38,7 +38,7 @@ public class ManageDns {
      * @param args the parameters
      */
     public static void main(String[] args) {
-        final String customDomainName         = "anuthomaschandy.com"; // "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
+        final String customDomainName         = "THE CUSTOM DOMAIN THAT YOU OWN (e.g. contoso.com)";
         final String rgName                   = ResourceNamer.randomResourceName("rgNEMV_", 24);
         final String appServicePlanName       = ResourceNamer.randomResourceName("jplan1_", 15);
         final String webAppName               = ResourceNamer.randomResourceName("webapp1-", 20);
@@ -227,7 +227,7 @@ public class ManageDns {
                         .withoutARecordSet("employees")
                         .apply();
                 System.out.println("Removed A Record from root DNS zone");
-                Utils.print(partnersDnsZone);
+                Utils.print(rootDnsZone);
 
                 //============================================================
                 // Deletes the Dns zone
