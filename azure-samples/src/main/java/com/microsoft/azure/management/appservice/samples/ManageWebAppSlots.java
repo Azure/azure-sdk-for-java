@@ -68,6 +68,9 @@ public final class ManageWebAppSlots {
             System.out.println("Selected subscription: " + azure.subscriptionId());
             try {
 
+                azure.resourceGroups().define(RG_NAME)
+                        .withRegion(Region.US_WEST)
+                        .create();
 
                 //============================================================
                 // Create 3 web apps with 3 new app service plans in different regions
@@ -125,7 +128,7 @@ public final class ManageWebAppSlots {
 
         WebApp app = azure.webApps()
                 .define(appName)
-                .withNewResourceGroup(RG_NAME)
+                .withExistingResourceGroup(RG_NAME)
                 .withNewAppServicePlan(planName)
                 .withRegion(region)
                 .withPricingTier(AppServicePricingTier.STANDARD_S1)

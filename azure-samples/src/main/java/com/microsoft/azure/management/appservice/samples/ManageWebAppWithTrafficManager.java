@@ -205,6 +205,7 @@ public final class ManageWebAppWithTrafficManager {
                         .create();
 
                 System.out.println("Created traffic manager " + trafficManager.name());
+                Utils.print(trafficManager);
 
                 //============================================================
                 // Scale up the app service plans
