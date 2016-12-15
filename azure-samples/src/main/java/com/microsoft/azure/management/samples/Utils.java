@@ -1080,7 +1080,7 @@ public final class Utils {
 
 
     /**
-     * Print an application gateway
+     * Print an application gateway.
      * @param resource an application gateway
      */
     public static void print(ApplicationGateway resource) {

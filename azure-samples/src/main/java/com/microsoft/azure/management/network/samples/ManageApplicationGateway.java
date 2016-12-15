@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Azure network sample for managing application gateways
+ * Azure network sample for managing application gateways.
  *
  *  - CREATE an application gateway for load balancing
  *    HTTP/HTTPS requests to backend server pools of virtual machines
@@ -238,7 +238,7 @@ public final class ManageApplicationGateway {
                                 + "][vm = "
                                 + j
                                 + "] = "
-                                + ipAddresses[i][j] );
+                                + ipAddresses[i][j]);
 
                     }
 
@@ -340,7 +340,7 @@ public final class ManageApplicationGateway {
         }
     }
 
-    private ManageApplicationGateway(){
+    private ManageApplicationGateway() {
 
     }
 }
