@@ -9,6 +9,13 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
+import retrofit2.http.GET;
+import retrofit2.http.Header;
+import retrofit2.http.Url;
+import rx.Observable;
+import rx.functions.Func1;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -18,14 +25,6 @@ import java.util.Arrays;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.ResponseBody;
-import retrofit2.Response;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Url;
-import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * An instance of this class defines a ServiceClient that handles polling and
@@ -450,17 +449,20 @@ public class AzureClient extends AzureServiceClient {
                 @Override
                 public Observable<PollingState<T>> call(Response<ResponseBody> response) {
                     AzureAsyncOperation body = null;
+                    String bodyString = "";
                     if (response.body() != null) {
                         try {
-                            body = restClient().mapperAdapter().deserialize(response.body().string(), AzureAsyncOperation.class);
-                            response.body().close();
+                            bodyString = response.body().string();
+                            body = restClient().mapperAdapter().deserialize(bodyString, AzureAsyncOperation.class);
                         } catch (IOException e) {
-                            body = null;
+                            // null body will be handlded later
+                        } finally {
+                            response.body().close();
                         }
                     }
 
                     if (body == null || body.getStatus() == null) {
-                        CloudException exception = new CloudException("polling response does not contain a valid body: " + body);
+                        CloudException exception = new CloudException("polling response does not contain a valid body: " + bodyString);
                         exception.setResponse(response);
                         return Observable.error(exception);
                     }
@@ -516,11 +518,12 @@ public class AzureClient extends AzureServiceClient {
         if (!Arrays.asList(allowedStatusCodes).contains(statusCode)) {
             CloudException exception;
             try {
-                CloudError errorBody = restClient().mapperAdapter().deserialize(responseBody.string(), CloudError.class);
+                String bodyString = responseBody.string();
+                CloudError errorBody = restClient().mapperAdapter().deserialize(bodyString, CloudError.class);
                 if (errorBody != null) {
                     exception = new CloudException(errorBody.getMessage());
                 } else {
-                    exception = new CloudException("Unknown error with status code " + statusCode);
+                    exception = new CloudException("Unknown error with status code " + statusCode + " and body " + bodyString);
                 }
                 exception.setBody(errorBody);
                 exception.setResponse(response);
