@@ -24,8 +24,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -61,12 +59,12 @@ public final class ManageCdn {
 
         try {
 
-            final File credFile = new File("D:/my.azureauth");
+            final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             azure = Azure
                     .configure()
                     .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
-                    .withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
+                    //.withProxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
                     .authenticate(credFile)
                     .withDefaultSubscription();
 
@@ -105,12 +103,15 @@ public final class ManageCdn {
                 // Create CDN profile using Standard Verizon SKU with endpoints in each region of Web apps.
                 System.out.println("Creating a CDN Profile");
 
+                // create Cdn Profile definition object that will let us do a for loop
+                // to define all 8 endpoints and then parallelize their creation
                 CdnProfile.DefinitionStages.WithStandardCreate profileDefinition = azure.cdnProfiles().define(cdnProfileName)
                         .withRegion(Region.US_CENTRAL)
                         .withExistingResourceGroup(RG_NAME)
                         .withStandardVerizonSku();
 
-                // define all the endpoints then crete all of them at once
+                // define all the endpoints. We need to keep track of the last creatable stage
+                // to be able to call create on the entire Cdn profile deployment definition.
                 Creatable<CdnProfile> cdnCreatable = null;
                 for (String webSite : appNames) {
                     cdnCreatable = profileDefinition
@@ -118,10 +119,12 @@ public final class ManageCdn {
                                 .withOrigin(webSite + SUFFIX)
                                 .withHostHeader(webSite + SUFFIX)
                                 .withCompressionEnabled(true)
+                                .withContentTypeToCompress("application/javascript")
                                 .withQueryStringCachingBehavior(QueryStringCachingBehavior.IGNORE_QUERY_STRING)
                             .attach();
                 }
 
+                // create profile and then all the defined endpoints in parallel
                 CdnProfile profile = cdnCreatable.create();
 
                 // =======================================================================================
