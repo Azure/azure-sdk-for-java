@@ -88,6 +88,8 @@ public final class ManageApplicationGateway {
 
         final String userName = "tirekicker";
         final String sshKey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfSPC2K7LZcFKEO+/t3dzmQYtrJFZNxOsbVgOVKietqHyvmYGHEC0J2wPdAqQ/63g/hhAEFRoyehM+rbeDri4txB3YFfnOK58jqdkyXzupWqXzOrlKY4Wz9SKjjN765+dqUITjKRIaAip1Ri137szRg71WnrmdP3SphTRlCx1Bk2nXqWPsclbRDCiZeF8QOTi4JqbmJyK5+0UqhqYRduun8ylAwKKQJ1NJt85sYIHn9f1Rfr6Tq2zS0wZ7DHbZL+zB5rSlAr8QyUdg/GQD+cmSs6LvPJKL78d6hMGk84ARtFo4A79ovwX/Fj01znDQkU6nJildfkaolH2rWFG/qttD azjava@javalib.com";
+        final String sslCertificatePfxPath = "myTest._pfx";
+        final String sslCertificatePfxPath2 = "myTest2._pfx";
 
         int backendPools = 2;
         int vmCountInAPool = 4;
@@ -270,7 +272,7 @@ public final class ManageApplicationGateway {
                         .defineRequestRoutingRule("HTTPs-443-to-8080")
                             .fromPublicFrontend()
                             .fromFrontendHttpsPort(443)
-                            .withSslCertificateFromPfxFile(new File("myTest.pfx"))
+                            .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath))
                             .withSslCertificatePassword("Abc123")
                             .toBackendHttpPort(8080)
                             .toBackendIpAddress(ipAddresses[1][0])
@@ -301,7 +303,7 @@ public final class ManageApplicationGateway {
                         .defineRequestRoutingRule("HTTPs-1443-to-8080")
                             .fromPublicFrontend()
                             .fromFrontendHttpsPort(1443)
-                            .withSslCertificateFromPfxFile(new File("myTest2.pfx"))
+                            .withSslCertificateFromPfxFile(new File(sslCertificatePfxPath2))
                             .withSslCertificatePassword("Abc123")
                             .toBackendHttpPort(8080)
                             .toBackendIpAddress(ipAddresses[0][0])
