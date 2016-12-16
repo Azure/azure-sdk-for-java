@@ -65,8 +65,13 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 3 
   <tr>
     <td><code>VirtualMachineScaleSet.withPassword()</code></td>
     <td>
-    <code>VirtualMachineScaleSet.withRootPassword()</code><br/>
+    Windows:
+    <br/>
     <code>VirtualMachineScaleSet.withAdminPassword()</code>
+    <br/>
+    Linux:
+    <br/>
+    <code>VirtualMachineScaleSet.withRootPassword()</code><br/>
     </td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1266">#1266</a></td>
   </tr>
@@ -107,13 +112,57 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 3 
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
   </tr>
   <tr>
-    <td><code>{ResourceCollection}.delete(String id)</code></td>
-    <td><code>{ResourceCollection}.deleteById(String id)</code></td>
+    <td>
+      <code>{ResourceCollection}.delete(String id)</code>
+      <br/>
+      e.g.
+      <br/>
+      <code>VirtualMachines.delete(String id)</code>
+      <br/>
+      <code>Networks.delete(String id)</code>
+      <br/>
+      <code>StorageAccounts.delete(String id)</code>
+      <br/>
+      ...
+    </td>
+    <td>
+      <code>{ResourceCollection}.deleteById(String id)</code>
+      <br/>
+      <br/>
+      <code>VirtualMachines.deleteById(String id)</code>
+      <br/>
+      <code>Networks.deleteById(String id)</code>
+      <br/>
+      <code>StorageAccounts.deleteById(String id)</code>
+      <br/>
+      <br/>
+    </td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
   </tr>
   <tr>
-    <td><code>{ResourceCollection}.delete(String groupName, String name)</code></td>
-    <td><code>{ResourceCollection}.deleteByGroup(String groupName, String name)</code></td>
+    <td><code>{ResourceCollection}.delete(String groupName, String name)</code>
+      <br/>
+      e.g.
+      <br/>
+      <code>VirtualMachines.delete(String groupName, String name)</code>
+      <br/>
+      <code>Networks.delete(String groupName, String name)</code>
+      <br/>
+      <code>StorageAccounts.delete(String groupName, String name)</code>
+      <br/>
+      ...
+      </td>
+    <td><code>{ResourceCollection}.deleteByGroup(String groupName, String name)</code>
+      <br/>
+      <br/>
+      <code>VirtualMachines.deleteByGroup(String groupName, String name)</code>
+      <br/>
+      <code>Networks.deleteByGroup(String groupName, String name)</code>
+      <br/>
+      <code>StorageAccounts.deleteByGroup(String groupName, String name)</code>
+      <br/>
+      <br/>
+    </td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1236">#1236</a></td>
   </tr>
 </table>
