@@ -30,6 +30,7 @@ import java.io.File;
  *  - Remove a database from elastic pool.
  *  - List and print elastic pool activities
  *  - List and print elastic pool database activities
+ *  - Add another elastic pool in existing SQL Server.
  *  - Delete database, elastic pools and SQL Server
  */
 
@@ -43,6 +44,13 @@ public final class ManageSqlDatabaseInElasticPool {
         final String sqlServerName = Utils.createRandomName("sqlserver");
         final String rgName = Utils.createRandomName("rgRSSDEP");
         final String elasticPoolName = "myElasticPool";
+        final String elasticPool2Name = "secondElasticPool";
+        final String administratorLogin = "sqladmin3423";
+        final String administratorPassword = "myS3cureP@ssword";
+        final String database1Name = "myDatabase1";
+        final String database2Name = "myDatabase2";
+        final String anotherDatabaseName = "myAnotherDatabase";
+        final ElasticPoolEditions elasticPoolEdition = ElasticPoolEditions.STANDARD;
 
         try {
 
@@ -65,9 +73,9 @@ public final class ManageSqlDatabaseInElasticPool {
                 SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
-                        .withAdministratorLogin("myadmin123")
-                        .withAdministratorPassword("myS3cureP@ssword")
-                        .withNewElasticPool(elasticPoolName, ElasticPoolEditions.STANDARD, "myDatabase1", "myDatabase2")
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
+                        .withNewElasticPool(elasticPoolName, elasticPoolEdition, database1Name, database2Name)
                         .create();
 
                 Utils.print(sqlServer);
@@ -126,7 +134,7 @@ public final class ManageSqlDatabaseInElasticPool {
 
                 // ============================================================
                 // Create another database and move it in elastic pool as update to the elastic pool.
-                SqlDatabase anotherDatabase = sqlServer.databases().define("myAnotherDatabase")
+                SqlDatabase anotherDatabase = sqlServer.databases().define(anotherDatabaseName)
                         .withoutElasticPool()
                         .withoutSourceDatabaseId()
                         .create();
@@ -145,6 +153,7 @@ public final class ManageSqlDatabaseInElasticPool {
 
                 // ============================================================
                 // Remove the database from the elastic pool.
+                System.out.println("Remove the database from the pool.");
                 anotherDatabase = anotherDatabase.update()
                         .withoutElasticPool()
                         .withEdition(DatabaseEditions.STANDARD)
@@ -184,9 +193,22 @@ public final class ManageSqlDatabaseInElasticPool {
                 }
 
                 // ============================================================
+                // Create another elastic pool in SQL Server
+                System.out.println("Create ElasticPool in existing SQL Server");
+                SqlElasticPool elasticPool2 = sqlServer.elasticPools().define(elasticPool2Name)
+                        .withEdition(elasticPoolEdition)
+                        .withDtu(100)
+                        .withDatabaseDtuMax(50)
+                        .withDatabaseDtuMin(10)
+                        .create();
+
+                Utils.print(elasticPool2);
+
+                // ============================================================
                 // Deletes the elastic pool.
                 System.out.println("Delete the elastic pool from the SQL Server");
                 sqlServer.elasticPools().delete(elasticPoolName);
+                sqlServer.elasticPools().delete(elasticPool2Name);
 
                 // ============================================================
                 // Delete the SQL Server.

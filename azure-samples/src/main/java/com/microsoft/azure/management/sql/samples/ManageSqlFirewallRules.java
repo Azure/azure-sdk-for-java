@@ -39,9 +39,17 @@ public final class ManageSqlFirewallRules {
 
         final String sqlServerName = Utils.createRandomName("sqlserver");
         final String rgName = Utils.createRandomName("rgRSSDFW");
+        final String administratorLogin = "sqladmin3423";
+        final String administratorPassword = "myS3cureP@ssword";
+        final String firewallRuleIpAddress = "10.0.0.1";
+        final String firewallRuleStartIpAddress = "10.2.0.1";
+        final String firewallRuleEndIpAddress = "10.2.0.10";
+        final String myFirewallName = "myFirewallRule";
+        final String myFirewallRuleIpAddress = "10.10.10.10";
+        final String otherFirewallRuleStartIpAddress = "121.12.12.1";
+        final String otherFirewallRuleEndIpAddress = "121.12.12.10";
 
         try {
-
             final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
 
             Azure azure = Azure
@@ -57,20 +65,23 @@ public final class ManageSqlFirewallRules {
 
                 // ============================================================
                 // Create a SQL Server, with 2 firewall rules.
+                System.out.println("Create a SQL server with 2 firewall rules adding a single IP Address and a range of IP Addresses");
 
                 SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
-                        .withAdministratorLogin("adminlogin123")
-                        .withAdministratorPassword("myS3cureP@ssword")
-                        .withNewFirewallRule("10.0.0.1")
-                        .withNewFirewallRule("10.2.0.1", "10.2.0.10")
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
+                        .withNewFirewallRule(firewallRuleIpAddress)
+                        .withNewFirewallRule(firewallRuleStartIpAddress, firewallRuleEndIpAddress)
                         .create();
 
                 Utils.print(sqlServer);
 
                 // ============================================================
                 // List and delete all firewall rules.
+                System.out.println("Listing all firewall rules in SQL Server.");
+
                 List<SqlFirewallRule> firewallRules = sqlServer.firewallRules().list();
                 for (SqlFirewallRule firewallRule: firewallRules) {
                     // Print information of the firewall rule.
@@ -83,19 +94,22 @@ public final class ManageSqlFirewallRules {
 
                 // ============================================================
                 // Add new firewall rules.
-                System.out.println("Creating a firewall rule for SQL Server");
-                SqlFirewallRule firewallRule = sqlServer.firewallRules().define("myFirewallRule")
-                        .withIpAddress("10.10.10.10")
+                System.out.println("Creating a firewall rule in existing SQL Server");
+                SqlFirewallRule firewallRule = sqlServer.firewallRules().define(myFirewallName)
+                        .withIpAddress(myFirewallRuleIpAddress)
                         .create();
 
                 Utils.print(firewallRule);
 
-                firewallRule = sqlServer.firewallRules().get("myFirewallRule");
+                System.out.println("Get a particular firewall rule in SQL Server");
+
+                firewallRule = sqlServer.firewallRules().get(myFirewallName);
                 Utils.print(firewallRule);
 
+                System.out.println("Deleting and adding new firewall rules as part of SQL Server update.");
                 sqlServer.update()
-                        .withoutFirewallRule("myFirewallRule")
-                        .withNewFirewallRule("121.12.12.1", "121.12.12.10")
+                        .withoutFirewallRule(myFirewallName)
+                        .withNewFirewallRule(otherFirewallRuleStartIpAddress, otherFirewallRuleEndIpAddress)
                         .apply();
 
                 for (SqlFirewallRule sqlFirewallRule: sqlServer.firewallRules().list()) {

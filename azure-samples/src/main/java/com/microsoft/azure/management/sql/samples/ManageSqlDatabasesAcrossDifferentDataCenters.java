@@ -48,9 +48,15 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
      * @param args the parameters
      */
     public static void main(String[] args) {
-
         final String sqlServerName = Utils.createRandomName("sqlserver");
         final String rgName = Utils.createRandomName("rgRSSDRE");
+        final String administratorLogin = "sqladmin3423";
+        final String administratorPassword = "myS3cureP@ssword";
+        final String slaveSqlServer1Name = "slave1sql";
+        final String slaveSqlServer2Name = "slave2sql";
+        final String databaseName = "mydatabase";
+        final String networkNamePrefix = "network";
+        final String virtualMachineNamePrefix = "samplevm";
 
         try {
 
@@ -69,12 +75,11 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
                 // ============================================================
                 // Create a SQL Server, with 2 firewall rules.
-
                 SqlServer masterSqlServer = azure.sqlServers().define(sqlServerName)
                         .withRegion(Region.US_EAST)
                         .withNewResourceGroup(rgName)
-                        .withAdministratorLogin("adminlogin123")
-                        .withAdministratorPassword("myS3cureP@ssword")
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
                         .create();
 
                 Utils.print(masterSqlServer);
@@ -83,40 +88,48 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 // Create a Database in master SQL server created above.
                 System.out.println("Creating a database");
 
-                SqlDatabase masterDatabase = masterSqlServer.databases().define("mydatabase")
+                SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName)
                         .withoutElasticPool()
                         .withoutSourceDatabaseId()
                         .withEdition(DatabaseEditions.BASIC)
                         .create();
                 Utils.print(masterDatabase);
 
-                // Create secondary databases for the master database
+                // ============================================================
+                // Create secondary SQLServer/Database for the master database
+                System.out.println("Creating server in secondary location for master SQL Server");
+
                 SqlServer sqlServerInSecondaryLocation = azure.sqlServers()
-                        .define(Utils.createRandomName("slave1sql"))
+                        .define(Utils.createRandomName(slaveSqlServer1Name))
                         .withRegion(masterDatabase.defaultSecondaryLocation())
                         .withExistingResourceGroup(rgName)
-                        .withAdministratorLogin("adminlogin123")
-                        .withAdministratorPassword("myS3cureP@ssword")
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
                         .create();
                 Utils.print(sqlServerInSecondaryLocation);
 
-                SqlDatabase secondaryDatabase = sqlServerInSecondaryLocation.databases().define("mydatabase")
+                System.out.println("Creating database in slave SQL Server.");
+                SqlDatabase secondaryDatabase = sqlServerInSecondaryLocation.databases().define(databaseName)
                         .withoutElasticPool()
                         .withSourceDatabase(masterDatabase)
                         .withMode(CreateMode.ONLINE_SECONDARY)
                         .create();
                 Utils.print(secondaryDatabase);
 
+                // ============================================================
+                // Create another slave SQLServer/Database for the master database
+                System.out.println("Creating server in another location for master SQL Server");
                 SqlServer sqlServerInEurope = azure.sqlServers()
-                        .define(Utils.createRandomName("slave2sql"))
+                        .define(Utils.createRandomName(slaveSqlServer2Name))
                         .withRegion(Region.EUROPE_WEST)
                         .withExistingResourceGroup(rgName)
-                        .withAdministratorLogin("adminlogin123")
-                        .withAdministratorPassword("myS3cureP@ssword")
+                        .withAdministratorLogin(administratorLogin)
+                        .withAdministratorPassword(administratorPassword)
                         .create();
                 Utils.print(sqlServerInEurope);
 
-                SqlDatabase secondaryDatabaseInEurope = sqlServerInEurope.databases().define("mydatabase")
+                System.out.println("Creating database in second slave SQL Server.");
+                SqlDatabase secondaryDatabaseInEurope = sqlServerInEurope.databases().define(databaseName)
                         .withoutElasticPool()
                         .withSourceDatabase(masterDatabase)
                         .withMode(CreateMode.ONLINE_SECONDARY)
@@ -126,6 +139,7 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 // ============================================================
                 // Create Virtual Networks in different regions
                 List<Region> regions = new ArrayList<>();
+
                 regions.add(Region.US_EAST);
                 regions.add(Region.US_WEST);
                 regions.add(Region.EUROPE_NORTH);
@@ -134,8 +148,10 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
                 List<Creatable<Network>> creatableNetworks = new ArrayList<>();
 
+                System.out.println("Creating virtual networks in different regions.");
+
                 for (Region region: regions) {
-                    creatableNetworks.add(azure.networks().define(Utils.createRandomName("network"))
+                    creatableNetworks.add(azure.networks().define(Utils.createRandomName(networkNamePrefix))
                             .withRegion(region)
                             .withExistingResourceGroup(rgName));
                 }
@@ -144,9 +160,10 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 // ============================================================
                 // Create virtual machines attached to different virtual networks created above.
                 List<Creatable<VirtualMachine>> creatableVirtualMachines = new ArrayList<>();
+                System.out.println("Creating virtual machines in different regions.");
 
                 for (Network network: networks) {
-                    String vmName = Utils.createRandomName("samplevm");
+                    String vmName = Utils.createRandomName(virtualMachineNamePrefix);
                     Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
                             .define(vmName)
                             .withRegion(network.region())
@@ -160,8 +177,8 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                             .withPrimaryPrivateIpAddressDynamic()
                             .withNewPrimaryPublicIpAddress(publicIpAddressCreatable)
                             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                            .withAdminUsername("admind234")
-                            .withAdminPassword("myS3cureP@ssword~2")
+                            .withAdminUsername(administratorLogin)
+                            .withAdminPassword(administratorPassword)
                             .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2));
                 }
 
