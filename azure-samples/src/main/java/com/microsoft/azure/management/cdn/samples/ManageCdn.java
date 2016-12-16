@@ -28,10 +28,6 @@ import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by hovsepm on 12/14/2016.
- */
-
-/**
  * Azure CDN sample for managing CDN profiles:
  * - Create 8 web apps in 8 regions:
  *    * 2 in US
