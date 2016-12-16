@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Azure compute sample for creating multiple virtual machines in paralllel.
+ * Azure compute sample for creating multiple virtual machines in parallel.
  */
 public final class CreateVirtualMachinesInParallel {
 
