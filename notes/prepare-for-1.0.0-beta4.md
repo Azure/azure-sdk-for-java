@@ -188,7 +188,12 @@ Steps to migrate code that uses Azure Management Libraries for Java from beta 3 
    <tr>
     <td><code>com.microsoft.azure.management.compute.WithPassword</code></td>
     <td>
-    <code>com.microsoft.azure.management.compute.WithWindowsAdminPassword</code><br/>
+    Windows:
+    <br/>
+    <code>com.microsoft.azure.management.compute.WithWindowsAdminPassword</code>
+    <br/>
+    Linux:
+    <br/>
     <code>com.microsoft.azure.management.compute.WithLinuxRootPasswordOrPublicKey</code>
     </td>
     <td><a href="https://github.com/Azure/azure-sdk-for-java/pull/1249">#1249</a></td>
