@@ -160,7 +160,7 @@ You can create a SQL database instance by using another `define() … create()` 
 
 #Sample Code
 
-You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, Key Vault and Batch … 
+You can find plenty of sample code that illustrates management scenarios in Azure Virtual Machines, Virtual Machine Scale Sets, Storage, Networking, Resource Manager, SQL Database, App Service (Web Apps), Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
