@@ -152,10 +152,27 @@ WebApp webApp = azure.webApps()
 
 **Create a SQL Database**
 
-You can create a SQL database instance by using another `define() … create()` method chain.
+You can create a SQL server instance by using another `define() … create()` method chain.
 
 ```java
+SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
+    .withRegion(Region.US_EAST)
+    .withNewResourceGroup(rgName)
+    .withAdministratorLogin("adminlogin123")
+    .withAdministratorPassword("myS3cureP@ssword")
+    .withNewFirewallRule("10.0.0.1")
+    .withNewFirewallRule("10.2.0.1", "10.2.0.10")
+    .create();
+```
 
+Then, you can create a SQL database instance by using another `define() … create()` method chain.
+
+```java
+SqlDatabase database = sqlServer.databases().define("myNewDatabase")
+    .withoutElasticPool()
+    .withoutSourceDatabaseId()
+    .withEdition(DatabaseEditions.BASIC)
+    .create();
 ```
 
 #Sample Code
