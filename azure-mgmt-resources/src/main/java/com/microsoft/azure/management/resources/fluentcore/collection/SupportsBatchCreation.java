@@ -3,9 +3,9 @@ package com.microsoft.azure.management.resources.fluentcore.collection;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConversion;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
@@ -19,7 +19,7 @@ import java.util.List;
  * @param <ResourceT> the top level Azure resource type
  */
 @LangDefinition(ContainerName = "CollectionActions", MethodConversionType = MethodConversion.OnlyMethod)
-public interface SupportsBatchCreation<ResourceT extends Resource> {
+public interface SupportsBatchCreation<ResourceT extends Indexable> {
     /**
      * Executes the create requests on a collection (batch) of resources.
      *
@@ -43,7 +43,7 @@ public interface SupportsBatchCreation<ResourceT extends Resource> {
      * @param creatables the creatables in the batch
      * @return an observable for the resources
      */
-    Observable<CreatedResources<ResourceT>> createAsync(Creatable<ResourceT>... creatables);
+    Observable<Indexable> createAsync(Creatable<ResourceT>... creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when
@@ -52,7 +52,7 @@ public interface SupportsBatchCreation<ResourceT extends Resource> {
      * @param creatables the list of creatables in the batch
      * @return an observable for the resources
      */
-    Observable<CreatedResources<ResourceT>> createAsync(List<Creatable<ResourceT>> creatables);
+    Observable<Indexable> createAsync(List<Creatable<ResourceT>> creatables);
 
     /**
      * Puts the requests to create a batch of resources into the queue and allow the HTTP client to execute it when

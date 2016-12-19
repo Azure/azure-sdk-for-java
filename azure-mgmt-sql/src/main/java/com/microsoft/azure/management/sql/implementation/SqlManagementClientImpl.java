@@ -13,8 +13,6 @@ import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.RestClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 
-import java.util.UUID;
-
 /**
  * Initializes a new instance of the SqlManagementClientImpl class.
  */
@@ -30,72 +28,26 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         return this.azureClient;
     }
 
-    /** Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call. */
-    private UUID subscriptionId;
+    /** The subscription ID that identifies an Azure subscription. */
+    private String subscriptionId;
 
     /**
-     * Gets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Gets The subscription ID that identifies an Azure subscription.
      *
      * @return the subscriptionId value.
      */
-    public UUID subscriptionId() {
+    public String subscriptionId() {
         return this.subscriptionId;
     }
 
     /**
-     * Sets Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+     * Sets The subscription ID that identifies an Azure subscription.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the service client itself
      */
-    public SqlManagementClientImpl withSubscriptionId(UUID subscriptionId) {
+    public SqlManagementClientImpl withSubscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
-        return this;
-    }
-
-    /** The name of the Resource Group to which the resource belongs. */
-    private String resourceGroupName;
-
-    /**
-     * Gets The name of the Resource Group to which the resource belongs.
-     *
-     * @return the resourceGroupName value.
-     */
-    public String resourceGroupName() {
-        return this.resourceGroupName;
-    }
-
-    /**
-     * Sets The name of the Resource Group to which the resource belongs.
-     *
-     * @param resourceGroupName the resourceGroupName value.
-     * @return the service client itself
-     */
-    public SqlManagementClientImpl withResourceGroupName(String resourceGroupName) {
-        this.resourceGroupName = resourceGroupName;
-        return this;
-    }
-
-    /** The name of the Azure SQL Server. */
-    private String serverName;
-
-    /**
-     * Gets The name of the Azure SQL Server.
-     *
-     * @return the serverName value.
-     */
-    public String serverName() {
-        return this.serverName;
-    }
-
-    /**
-     * Sets The name of the Azure SQL Server.
-     *
-     * @param serverName the serverName value.
-     * @return the service client itself
-     */
-    public SqlManagementClientImpl withServerName(String serverName) {
-        this.serverName = serverName;
         return this;
     }
 
@@ -169,32 +121,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
     }
 
     /**
-     * The DatabasesInner object to access its operations.
-     */
-    private DatabasesInner databases;
-
-    /**
-     * Gets the DatabasesInner object to access its operations.
-     * @return the DatabasesInner object.
-     */
-    public DatabasesInner databases() {
-        return this.databases;
-    }
-
-    /**
-     * The EngineAuditRecordsInner object to access its operations.
-     */
-    private EngineAuditRecordsInner engineAuditRecords;
-
-    /**
-     * Gets the EngineAuditRecordsInner object to access its operations.
-     * @return the EngineAuditRecordsInner object.
-     */
-    public EngineAuditRecordsInner engineAuditRecords() {
-        return this.engineAuditRecords;
-    }
-
-    /**
      * The ServersInner object to access its operations.
      */
     private ServersInner servers;
@@ -205,6 +131,19 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
      */
     public ServersInner servers() {
         return this.servers;
+    }
+
+    /**
+     * The DatabasesInner object to access its operations.
+     */
+    private DatabasesInner databases;
+
+    /**
+     * Gets the DatabasesInner object to access its operations.
+     * @return the DatabasesInner object.
+     */
+    public DatabasesInner databases() {
+        return this.databases;
     }
 
     /**
@@ -231,45 +170,6 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
      */
     public RecommendedElasticPoolsInner recommendedElasticPools() {
         return this.recommendedElasticPools;
-    }
-
-    /**
-     * The AuditingPolicysInner object to access its operations.
-     */
-    private AuditingPolicysInner auditingPolicys;
-
-    /**
-     * Gets the AuditingPolicysInner object to access its operations.
-     * @return the AuditingPolicysInner object.
-     */
-    public AuditingPolicysInner auditingPolicys() {
-        return this.auditingPolicys;
-    }
-
-    /**
-     * The DataMaskingsInner object to access its operations.
-     */
-    private DataMaskingsInner dataMaskings;
-
-    /**
-     * Gets the DataMaskingsInner object to access its operations.
-     * @return the DataMaskingsInner object.
-     */
-    public DataMaskingsInner dataMaskings() {
-        return this.dataMaskings;
-    }
-
-    /**
-     * The CapabilitiesInner object to access its operations.
-     */
-    private CapabilitiesInner capabilities;
-
-    /**
-     * Gets the CapabilitiesInner object to access its operations.
-     * @return the CapabilitiesInner object.
-     */
-    public CapabilitiesInner capabilities() {
-        return this.capabilities;
     }
 
     /**
@@ -308,14 +208,10 @@ public final class SqlManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.databases = new DatabasesInner(restClient().retrofit(), this);
-        this.engineAuditRecords = new EngineAuditRecordsInner(restClient().retrofit(), this);
         this.servers = new ServersInner(restClient().retrofit(), this);
+        this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.elasticPools = new ElasticPoolsInner(restClient().retrofit(), this);
         this.recommendedElasticPools = new RecommendedElasticPoolsInner(restClient().retrofit(), this);
-        this.auditingPolicys = new AuditingPolicysInner(restClient().retrofit(), this);
-        this.dataMaskings = new DataMaskingsInner(restClient().retrofit(), this);
-        this.capabilities = new CapabilitiesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

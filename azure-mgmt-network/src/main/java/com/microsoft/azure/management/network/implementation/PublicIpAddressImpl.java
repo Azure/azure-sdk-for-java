@@ -11,11 +11,12 @@ import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NicIpConfiguration;
-import com.microsoft.azure.management.network.PublicFrontend;
+import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 /**
@@ -99,7 +100,7 @@ class PublicIpAddressImpl
 
     @Override
     public int idleTimeoutInMinutes() {
-        return this.inner().idleTimeoutInMinutes();
+        return Utils.toPrimitiveInt(this.inner().idleTimeoutInMinutes());
     }
 
     @Override
@@ -178,13 +179,13 @@ class PublicIpAddressImpl
     }
 
     @Override
-    public PublicFrontend getAssignedLoadBalancerFrontend() {
+    public LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend() {
         if (this.hasAssignedLoadBalancer()) {
             final String refId = this.inner().ipConfiguration().id();
-            final String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final LoadBalancer lb = this.myManager.loadBalancers().getById(loadBalancerId);
             final String frontendName = ResourceUtils.nameFromResourceId(refId);
-            return (PublicFrontend) lb.frontends().get(frontendName);
+            return (LoadBalancerPublicFrontend) lb.frontends().get(frontendName);
         } else {
             return null;
         }
@@ -199,7 +200,7 @@ class PublicIpAddressImpl
     public NicIpConfiguration getAssignedNetworkInterfaceIpConfiguration() {
         if (this.hasAssignedNetworkInterface()) {
             final String refId = this.inner().ipConfiguration().id();
-            final String parentId = ResourceUtils.parentResourcePathFromResourceId(refId);
+            final String parentId = ResourceUtils.parentResourceIdFromResourceId(refId);
             final NetworkInterface nic = this.myManager.networkInterfaces().getById(parentId);
             final String childName = ResourceUtils.nameFromResourceId(refId);
             return nic.ipConfigurations().get(childName);

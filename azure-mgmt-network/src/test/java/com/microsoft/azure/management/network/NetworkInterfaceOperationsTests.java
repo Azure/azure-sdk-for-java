@@ -14,7 +14,6 @@ import java.util.LinkedHashMap;
 
 public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
     private static String RG_NAME = "javanwmrg";
-    private static String resourceGroupId = null;
 
     @BeforeClass
     public static void setup() throws Exception {
@@ -23,9 +22,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        if (resourceGroupId != null) {
-            resourceManager.resourceGroups().delete(resourceGroupId);
-        }
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test

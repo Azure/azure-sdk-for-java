@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListingByRegion;
 
 /**
@@ -14,6 +15,18 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 @Fluent
 public interface VirtualMachineImages extends
         SupportsListingByRegion<VirtualMachineImage> {
+    /**
+     * Gets a virtual machine image.
+     *
+     * @param region the region
+     * @param publisherName publisher name
+     * @param offerName offer name
+     * @param skuName sku name
+     * @param version version name
+     * @return the virtual machine image
+     */
+    VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version);
+
     /**
      * @return entry point to virtual machine image publishers
      */

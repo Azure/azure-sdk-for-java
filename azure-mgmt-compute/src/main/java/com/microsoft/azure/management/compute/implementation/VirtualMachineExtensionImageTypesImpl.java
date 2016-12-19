@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageType;
 import com.microsoft.azure.management.compute.VirtualMachineExtensionImageTypes;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
@@ -9,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation for {@link VirtualMachineExtensionImageTypes}.
  */
+@LangDefinition
 class VirtualMachineExtensionImageTypesImpl
         extends ReadableWrappersImpl<VirtualMachineExtensionImageType, VirtualMachineExtensionImageTypeImpl, VirtualMachineExtensionImageInner>
         implements VirtualMachineExtensionImageTypes {
@@ -27,6 +29,9 @@ class VirtualMachineExtensionImageTypesImpl
 
     @Override
     protected VirtualMachineExtensionImageTypeImpl wrapModel(VirtualMachineExtensionImageInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineExtensionImageTypeImpl(this.client, this.publisher, inner);
     }
 }

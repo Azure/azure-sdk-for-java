@@ -8,39 +8,47 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Location information.
  */
 public class LocationInner {
     /**
-     * Gets or sets the ID of the resource (/subscriptions/SubscriptionId).
+     * The fully qualified Id of the location. For example,
+     * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the subscription Id.
+     * The subscription Id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
-     * Gets or sets the location name.
+     * The location name.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets or sets the display name of the location.
+     * The display name of the location.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
-     * Gets or sets the latitude of the location.
+     * The latitude of the location.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String latitude;
 
     /**
-     * Gets or sets the longitude of the location.
+     * The longitude of the location.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String longitude;
 
     /**
@@ -53,34 +61,12 @@ public class LocationInner {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the subscriptionId value.
      *
      * @return the subscriptionId value
      */
     public String subscriptionId() {
         return this.subscriptionId;
-    }
-
-    /**
-     * Set the subscriptionId value.
-     *
-     * @param subscriptionId the subscriptionId value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
     }
 
     /**
@@ -93,34 +79,12 @@ public class LocationInner {
     }
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
      * Get the displayName value.
      *
      * @return the displayName value
      */
     public String displayName() {
         return this.displayName;
-    }
-
-    /**
-     * Set the displayName value.
-     *
-     * @param displayName the displayName value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
     }
 
     /**
@@ -133,34 +97,12 @@ public class LocationInner {
     }
 
     /**
-     * Set the latitude value.
-     *
-     * @param latitude the latitude value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withLatitude(String latitude) {
-        this.latitude = latitude;
-        return this;
-    }
-
-    /**
      * Get the longitude value.
      *
      * @return the longitude value
      */
     public String longitude() {
         return this.longitude;
-    }
-
-    /**
-     * Set the longitude value.
-     *
-     * @param longitude the longitude value to set
-     * @return the LocationInner object itself.
-     */
-    public LocationInner withLongitude(String longitude) {
-        this.longitude = longitude;
-        return this;
     }
 
 }

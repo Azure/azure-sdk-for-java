@@ -35,7 +35,7 @@ public class SubnetInner extends SubResource {
      * Gets or sets the reference of the RouteTable resource.
      */
     @JsonProperty(value = "properties.routeTable")
-    private RouteTableInner routeTable;
+    private SubResource routeTable;
 
     /**
      * Gets array of references to the network interface IP configurations
@@ -112,7 +112,7 @@ public class SubnetInner extends SubResource {
      *
      * @return the routeTable value
      */
-    public RouteTableInner routeTable() {
+    public SubResource routeTable() {
         return this.routeTable;
     }
 
@@ -122,7 +122,7 @@ public class SubnetInner extends SubResource {
      * @param routeTable the routeTable value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withRouteTable(RouteTableInner routeTable) {
+    public SubnetInner withRouteTable(SubResource routeTable) {
         this.routeTable = routeTable;
         return this;
     }

@@ -12,13 +12,18 @@ import rx.Observable;
 /**
  * Type representing a task in a task group {@link TaskGroup}.
  *
- * @param <U> the task result type
+ * @param <T> the task result type
  */
-public interface TaskItem<U> {
+public interface TaskItem<T> {
     /**
      * @return the result of the task execution
      */
-    U result();
+    T result();
+
+    /**
+     * method that gets called before start executing all the tasks in the task group {@link TaskGroup}.
+     */
+    void prepare();
 
     /**
      * Executes the task asynchronously.
@@ -27,5 +32,5 @@ public interface TaskItem<U> {
      *
      * @return the handle of the REST call
      */
-    Observable<U> executeAsync();
+    Observable<T> executeAsync();
 }

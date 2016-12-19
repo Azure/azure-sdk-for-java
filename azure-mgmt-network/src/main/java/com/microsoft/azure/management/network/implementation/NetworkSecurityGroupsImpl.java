@@ -47,7 +47,7 @@ class NetworkSecurityGroupsImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -70,6 +70,9 @@ class NetworkSecurityGroupsImpl
 
     @Override
     protected NetworkSecurityGroupImpl wrapModel(NetworkSecurityGroupInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NetworkSecurityGroupImpl(
                 inner.name(),
                 inner,

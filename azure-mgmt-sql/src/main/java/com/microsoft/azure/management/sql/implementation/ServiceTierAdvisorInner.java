@@ -10,30 +10,31 @@ package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
 import java.util.List;
+import com.microsoft.azure.management.sql.SloUsageMetric;
 import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.sql.SqlSubResource;
 
 /**
  * Represents a Service Tier Advisor.
  */
 @JsonFlatten
-public class ServiceTierAdvisorInner extends SubResource {
+public class ServiceTierAdvisorInner extends SqlSubResource {
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;
 
     /**
-     * Gets the activeTimeRatio for service tier advisor.
+     * The activeTimeRatio for service tier advisor.
      */
     @JsonProperty(value = "properties.activeTimeRatio", access = JsonProperty.Access.WRITE_ONLY)
     private Double activeTimeRatio;
@@ -67,13 +68,13 @@ public class ServiceTierAdvisorInner extends SubResource {
      * advisor.
      */
     @JsonProperty(value = "properties.serviceLevelObjectiveUsageMetrics", access = JsonProperty.Access.WRITE_ONLY)
-    private List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics;
+    private List<SloUsageMetric> serviceLevelObjectiveUsageMetrics;
 
     /**
      * Gets or sets currentServiceLevelObjective for service tier advisor.
      */
     @JsonProperty(value = "properties.currentServiceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private UUID currentServiceLevelObjective;
+    private String currentServiceLevelObjective;
 
     /**
      * Gets or sets currentServiceLevelObjectiveId for service tier advisor.
@@ -211,7 +212,7 @@ public class ServiceTierAdvisorInner extends SubResource {
      *
      * @return the serviceLevelObjectiveUsageMetrics value
      */
-    public List<SloUsageMetricInner> serviceLevelObjectiveUsageMetrics() {
+    public List<SloUsageMetric> serviceLevelObjectiveUsageMetrics() {
         return this.serviceLevelObjectiveUsageMetrics;
     }
 
@@ -220,7 +221,7 @@ public class ServiceTierAdvisorInner extends SubResource {
      *
      * @return the currentServiceLevelObjective value
      */
-    public UUID currentServiceLevelObjective() {
+    public String currentServiceLevelObjective() {
         return this.currentServiceLevelObjective;
     }
 

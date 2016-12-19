@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The USqlJobProperties model.
+ * U-SQL job properties used when submitting and retrieving U-SQL jobs.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("USql")
@@ -96,8 +96,10 @@ public class USqlJobProperties extends JobProperties {
     private Long yarnApplicationTimeStamp;
 
     /**
-     * the compile mode for the job. Possible values include: 'Semantic',
-     * 'Full', 'SingleBox'.
+     * Optionally enforces a specific compilation mode for the job during
+     * execution. If this is not specified during submission, the server will
+     * determine the optimal compilation mode. Possible values include:
+     * 'Semantic', 'Full', 'SingleBox'.
      */
     private CompileMode compileMode;
 

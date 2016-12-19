@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.LoadBalancerBackend;
-import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NicIpConfiguration;
@@ -92,9 +92,9 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
             }
 
             // Show associated load balancer inbound NAT rules
-            final List<InboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+            final List<LoadBalancerInboundNatRule> natRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
             info.append("\n\t\tAssociated load balancer inbound NAT rules: ").append(natRules.size());
-            for (InboundNatRule natRule : natRules) {
+            for (LoadBalancerInboundNatRule natRule : natRules) {
                 info.append("\n\t\t\tLoad balancer ID: ").append(natRule.parent().id())
                     .append("\n\t\t\tInbound NAT rule name: ").append(natRule.name());
             }

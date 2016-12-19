@@ -11,6 +11,8 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
 import com.microsoft.azure.management.resources.GenericResources;
+import com.microsoft.azure.management.resources.PolicyAssignments;
+import com.microsoft.azure.management.resources.PolicyDefinitions;
 import com.microsoft.azure.management.resources.Providers;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.Subscriptions;
@@ -26,12 +28,15 @@ public final class ResourceManager extends ManagerBase {
     // The sdk clients
     private final ResourceManagementClientImpl resourceManagementClient;
     private final FeatureClientImpl featureClient;
+    private final PolicyClientImpl policyClient;
     // The collections
     private ResourceGroups resourceGroups;
     private GenericResources genericResources;
     private Deployments deployments;
     private Features features;
     private Providers providers;
+    private PolicyDefinitions policyDefinitions;
+    private PolicyAssignments policyAssignments;
 
     /**
      * Creates an instance of ResourceManager that exposes resource management API entry points.
@@ -151,6 +156,8 @@ public final class ResourceManager extends ManagerBase {
         this.resourceManagementClient.withSubscriptionId(subscriptionId);
         this.featureClient = new FeatureClientImpl(restClient);
         this.featureClient.withSubscriptionId(subscriptionId);
+        this.policyClient = new PolicyClientImpl(restClient);
+        this.policyClient.withSubscriptionId(subscriptionId);
     }
 
     /**
@@ -204,5 +211,25 @@ public final class ResourceManager extends ManagerBase {
             providers = new ProvidersImpl(resourceManagementClient.providers());
         }
         return providers;
+    }
+
+    /**
+     * @return the policy definition management API entry point
+     */
+    public PolicyDefinitions policyDefinitions() {
+        if (policyDefinitions == null) {
+            policyDefinitions = new PolicyDefinitionsImpl(policyClient.policyDefinitions());
+        }
+        return policyDefinitions;
+    }
+
+    /**
+     * @return the policy assignment management API entry point
+     */
+    public PolicyAssignments policyAssignments() {
+        if (policyAssignments == null) {
+            policyAssignments = new PolicyAssignmentsImpl(policyClient.policyAssignments());
+        }
+        return policyAssignments;
     }
 }

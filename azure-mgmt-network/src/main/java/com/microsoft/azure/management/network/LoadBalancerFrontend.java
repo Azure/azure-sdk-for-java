@@ -30,10 +30,10 @@ public interface LoadBalancerFrontend extends
     /**
      * @return the inbound NAT pools on this load balancer that use this frontend, indexed by their names
      */
-    Map<String, InboundNatPool> inboundNatPools();
+    Map<String, LoadBalancerInboundNatPool> inboundNatPools();
 
     /**
      * @return the inbound NAT rules on this load balancer that use this frontend, indexed by their names
      */
-    Map<String, InboundNatRule> inboundNatRules();
+    Map<String, LoadBalancerInboundNatRule> inboundNatRules();
 }

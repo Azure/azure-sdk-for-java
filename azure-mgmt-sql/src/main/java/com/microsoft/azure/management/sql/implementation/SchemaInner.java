@@ -19,7 +19,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class SchemaInner extends Resource {
     /**
-     * Gets the tables from this database.
+     * The tables from this database.
      */
     @JsonProperty(value = "properties.tables", access = JsonProperty.Access.WRITE_ONLY)
     private List<TableInner> tables;

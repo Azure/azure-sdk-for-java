@@ -26,11 +26,28 @@ public interface Subnet extends
     String addressPrefix();
 
     /**
-     * @return the network security group associated with this subnet
+     * @return the network security group associated with this subnet, if any
      * <p>
      * Note that this method will result in a call to Azure each time it is invoked.
      */
     NetworkSecurityGroup getNetworkSecurityGroup();
+
+    /**
+     * @return the resource ID of the network security group associated with this subnet, if any
+     */
+    String networkSecurityGroupId();
+
+    /**
+     * @return the route table associated with this subnet, if any
+     * <p>
+     * Note that this method will result in a call to Azure each time it is invoked.
+     */
+    RouteTable getRouteTable();
+
+    /**
+     * @return the resource ID of the route table associated with this subnet, if any
+     */
+    String routeTableId();
 
     /**
      * Grouping of subnet definition stages.
@@ -76,6 +93,26 @@ public interface Subnet extends
             WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
         }
 
+        /**
+         * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
+         * @param <ParentT> the parent network type
+         */
+        interface WithRouteTable<ParentT> {
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param routeTable an existing route table to associate
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingRouteTable(RouteTable routeTable);
+
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param resourceId the resource ID of an existing route table
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingRouteTable(String resourceId);
+        }
+
         /** The final stage of the subnet definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the subnet definition
@@ -84,7 +121,8 @@ public interface Subnet extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinition<ParentT>,
-            WithNetworkSecurityGroup<ParentT> {
+            WithNetworkSecurityGroup<ParentT>,
+            WithRouteTable<ParentT> {
         }
     }
 
@@ -131,6 +169,32 @@ public interface Subnet extends
              */
             Update withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
         }
+
+        /**
+         * The stage of a subnet update allowing to specify a route table to associate with the subnet, or remove an existing association.
+         */
+        interface WithRouteTable {
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param routeTable an existing route table to associate
+             * @return the next stage of the update
+             */
+            Update withExistingRouteTable(RouteTable routeTable);
+
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param resourceId the resource ID of an existing route table
+             * @return the next stage of the update
+             */
+            Update withExistingRouteTable(String resourceId);
+
+            /**
+             * Removes the association with a route table, if any.
+             * @return the next stage of the update
+             */
+            Update withoutRouteTable();
+        }
+
     }
 
     /**
@@ -139,6 +203,7 @@ public interface Subnet extends
     interface Update extends
         UpdateStages.WithAddressPrefix,
         UpdateStages.WithNetworkSecurityGroup,
+        UpdateStages.WithRouteTable,
         Settable<Network.Update> {
     }
 
@@ -186,6 +251,26 @@ public interface Subnet extends
             WithAttach<ParentT> withExistingNetworkSecurityGroup(NetworkSecurityGroup nsg);
         }
 
+        /**
+         * The stage of a subnet definition allowing to specify a route table to associate with the subnet.
+         * @param <ParentT> the parent type
+         */
+        interface WithRouteTable<ParentT> {
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param routeTable an existing route table to associate
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingRouteTable(RouteTable routeTable);
+
+            /**
+             * Specifies an existing route table to associate with the subnet.
+             * @param resourceId the resource ID of an existing route table
+             * @return the next stage of the definition
+             */
+            WithAttach<ParentT> withExistingRouteTable(String resourceId);
+        }
+
         /** The final stage of the subnet definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the subnet definition
@@ -194,7 +279,8 @@ public interface Subnet extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
-            WithNetworkSecurityGroup<ParentT> {
+            WithNetworkSecurityGroup<ParentT>,
+            WithRouteTable<ParentT> {
         }
     }
 

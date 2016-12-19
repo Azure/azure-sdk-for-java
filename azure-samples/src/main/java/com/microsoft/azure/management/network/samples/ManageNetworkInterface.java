@@ -149,8 +149,8 @@ public final class ManageNetworkInterface {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterface1)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(userName)
-                        .withPassword(password)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingSecondaryNetworkInterface(networkInterface2)
                         .withExistingSecondaryNetworkInterface(networkInterface3)
@@ -190,9 +190,9 @@ public final class ManageNetworkInterface {
 
                 System.out.println("Deleting a network interface: " + networkInterface2.id());
                 System.out.println("First, deleting the vm");
-                azure.virtualMachines().delete(vm.id());
+                azure.virtualMachines().deleteById(vm.id());
                 System.out.println("Second, deleting the network interface");
-                azure.networkInterfaces().delete(networkInterface2.id());
+                azure.networkInterfaces().deleteById(networkInterface2.id());
                 System.out.println("Deleted network interface");
 
                 System.out.println("============================================================");
@@ -210,7 +210,7 @@ public final class ManageNetworkInterface {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

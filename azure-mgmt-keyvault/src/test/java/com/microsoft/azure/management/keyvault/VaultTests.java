@@ -25,7 +25,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        //resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
@@ -74,6 +74,7 @@ public class VaultTests extends KeyVaultManagementTestBase {
                     .allowKeyAllPermissions()
                     .disallowSecretAllPermissions()
                     .parent()
+                .withTag("foo", "bar")
                 .apply();
         for (AccessPolicy policy : vault.accessPolicies()) {
             if (policy.objectId().equals("8188d1e8-3090-4e3c-aa76-38cf2b5c7b3a")) {

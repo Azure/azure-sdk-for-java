@@ -107,8 +107,8 @@ public final class ManageAvailabilitySet {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(userName)
-                        .withPassword(password)
+                        .withAdminUsername(userName)
+                        .withAdminPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1)
                         .create();
@@ -130,8 +130,8 @@ public final class ManageAvailabilitySet {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withoutPrimaryPublicIpAddress()
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
-                        .withPassword(password)
+                        .withRootUsername(userName)
+                        .withRootPassword(password)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet1)
                         .create();
@@ -183,7 +183,7 @@ public final class ManageAvailabilitySet {
 
                 System.out.println("Deleting an availability set: " + availSet2.id());
 
-                azure.availabilitySets().delete(availSet2.id());
+                azure.availabilitySets().deleteById(availSet2.id());
 
                 System.out.println("Deleted availability set: " + availSet2.id());
 
@@ -196,7 +196,7 @@ public final class ManageAvailabilitySet {
 
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

@@ -18,6 +18,7 @@ import com.microsoft.azure.management.network.ProbeProtocol;
 import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 /**
  *  Implementation for {@link LoadBalancerTcpProbe} and its create and update interfaces.
@@ -43,17 +44,17 @@ class LoadBalancerProbeImpl
 
     @Override
     public int intervalInSeconds() {
-        return this.inner().intervalInSeconds();
+        return Utils.toPrimitiveInt(this.inner().intervalInSeconds());
     }
 
     @Override
     public int port() {
-        return this.inner().port();
+        return Utils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int numberOfProbes() {
-        return this.inner().numberOfProbes();
+        return Utils.toPrimitiveInt(this.inner().numberOfProbes());
     }
 
     @Override

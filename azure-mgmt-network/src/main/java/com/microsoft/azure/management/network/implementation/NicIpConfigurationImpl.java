@@ -5,7 +5,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.LoadBalancerBackend;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
-import com.microsoft.azure.management.network.InboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
@@ -120,7 +120,7 @@ class NicIpConfigurationImpl
     @Override
     public String networkId() {
         SubResource subnetRef = this.inner().subnet();
-        return (subnetRef != null) ? ResourceUtils.parentResourcePathFromResourceId(subnetRef.id()) : null;
+        return (subnetRef != null) ? ResourceUtils.parentResourceIdFromResourceId(subnetRef.id()) : null;
     }
 
     @Override
@@ -386,14 +386,14 @@ class NicIpConfigurationImpl
     }
 
     @Override
-    public List<InboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
+    public List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules() {
         final List<InboundNatRuleInner> refs = this.inner().loadBalancerInboundNatRules();
         final Map<String, LoadBalancer> loadBalancers = new HashMap<>();
-        final List<InboundNatRule> rules = new ArrayList<>();
+        final List<LoadBalancerInboundNatRule> rules = new ArrayList<>();
 
         if (refs != null) {
             for (InboundNatRuleInner ref : refs) {
-                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(ref.id());
+                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(ref.id());
                 LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
                 if (loadBalancer == null) {
                     loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);
@@ -416,7 +416,7 @@ class NicIpConfigurationImpl
 
         if (backendRefs != null) {
             for (BackendAddressPoolInner backendRef : backendRefs) {
-                String loadBalancerId = ResourceUtils.parentResourcePathFromResourceId(backendRef.id());
+                String loadBalancerId = ResourceUtils.parentResourceIdFromResourceId(backendRef.id());
                 LoadBalancer loadBalancer = loadBalancers.get(loadBalancerId);
                 if (loadBalancer == null) {
                     loadBalancer = this.parent().manager().loadBalancers().getById(loadBalancerId);

@@ -8,36 +8,57 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
+import com.microsoft.azure.management.resources.SubscriptionState;
 import com.microsoft.azure.management.resources.SubscriptionPolicies;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Subscription information.
  */
 public class SubscriptionInner {
     /**
-     * Gets or sets the ID of the resource (/subscriptions/SubscriptionId).
+     * The fully qualified Id. For example,
+     * /subscriptions/00000000-0000-0000-0000-000000000000.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
-     * Gets or sets the subscription Id.
+     * The subscription Id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String subscriptionId;
 
     /**
-     * Gets or sets the subscription display name.
+     * The tenant Id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantId;
+
+    /**
+     * The subscription display name.
+     */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /**
-     * Gets or sets the subscription state.
+     * The subscription state. Possible values include: 'Enabled', 'Warned',
+     * 'PastDue', 'Disabled', 'Deleted'.
      */
-    private String state;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private SubscriptionState state;
 
     /**
-     * Gets or sets the subscription policies.
+     * The subscription policies.
      */
     private SubscriptionPolicies subscriptionPolicies;
+
+    /**
+     * The authorization source of the request. Valid values are one or more
+     * combinations of Legacy, RoleBased, Bypassed, Direct and Management.
+     * For example, 'Legacy, RoleBased'.
+     */
+    private String authorizationSource;
 
     /**
      * Get the id value.
@@ -46,17 +67,6 @@ public class SubscriptionInner {
      */
     public String id() {
         return this.id;
-    }
-
-    /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the SubscriptionInner object itself.
-     */
-    public SubscriptionInner withId(String id) {
-        this.id = id;
-        return this;
     }
 
     /**
@@ -69,14 +79,12 @@ public class SubscriptionInner {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Get the tenantId value.
      *
-     * @param subscriptionId the subscriptionId value to set
-     * @return the SubscriptionInner object itself.
+     * @return the tenantId value
      */
-    public SubscriptionInner withSubscriptionId(String subscriptionId) {
-        this.subscriptionId = subscriptionId;
-        return this;
+    public String tenantId() {
+        return this.tenantId;
     }
 
     /**
@@ -89,34 +97,12 @@ public class SubscriptionInner {
     }
 
     /**
-     * Set the displayName value.
-     *
-     * @param displayName the displayName value to set
-     * @return the SubscriptionInner object itself.
-     */
-    public SubscriptionInner withDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    /**
      * Get the state value.
      *
      * @return the state value
      */
-    public String state() {
+    public SubscriptionState state() {
         return this.state;
-    }
-
-    /**
-     * Set the state value.
-     *
-     * @param state the state value to set
-     * @return the SubscriptionInner object itself.
-     */
-    public SubscriptionInner withState(String state) {
-        this.state = state;
-        return this;
     }
 
     /**
@@ -136,6 +122,26 @@ public class SubscriptionInner {
      */
     public SubscriptionInner withSubscriptionPolicies(SubscriptionPolicies subscriptionPolicies) {
         this.subscriptionPolicies = subscriptionPolicies;
+        return this;
+    }
+
+    /**
+     * Get the authorizationSource value.
+     *
+     * @return the authorizationSource value
+     */
+    public String authorizationSource() {
+        return this.authorizationSource;
+    }
+
+    /**
+     * Set the authorizationSource value.
+     *
+     * @param authorizationSource the authorizationSource value to set
+     * @return the SubscriptionInner object itself.
+     */
+    public SubscriptionInner withAuthorizationSource(String authorizationSource) {
+        this.authorizationSource = authorizationSource;
         return this;
     }
 

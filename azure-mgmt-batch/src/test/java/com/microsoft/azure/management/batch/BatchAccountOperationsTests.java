@@ -7,14 +7,16 @@
 package com.microsoft.azure.management.batch;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.List;
 
@@ -30,17 +32,19 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
     public void canCRUDBatchAccount() throws Exception {
         // Create
-        BatchAccount batchAccount = batchManager.batchAccounts()
+        Observable<Indexable> resourceStream = batchManager.batchAccounts()
                 .define(BATCH_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
-                .createAsync()
+                .createAsync();
+
+        BatchAccount batchAccount = Utils.<BatchAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, batchAccount.resourceGroupName());
         Assert.assertNull(batchAccount.autoStorage());
@@ -165,14 +169,10 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
                     .withoutApplicationPackage(applicationPackage1Name)
                 .parent()
                 .apply();
-        batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 
     @Test
@@ -182,16 +182,18 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         boolean allowUpdates = true;
 
         // Create
-        BatchAccount batchAccount = batchManager.batchAccounts()
+        Observable<Indexable> resourceStream = batchManager.batchAccounts()
                 .define(BATCH_NAME)
                 .withRegion(Region.US_CENTRAL)
                 .withNewResourceGroup(RG_NAME)
                 .defineNewApplication(applicationId)
-                    .withDisplayName(applicationDisplayName)
-                    .withAllowUpdates(allowUpdates)
-                    .attach()
+                .withDisplayName(applicationDisplayName)
+                .withAllowUpdates(allowUpdates)
+                .attach()
                 .withNewStorageAccount(SA_NAME)
-                .createAsync()
+                .createAsync();
+
+        BatchAccount batchAccount = Utils.<BatchAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, batchAccount.resourceGroupName());
         Assert.assertNotNull(batchAccount.autoStorage());
@@ -217,13 +219,8 @@ public class BatchAccountOperationsTests extends BatchManagementTestBase {
         Assert.assertEquals(application.displayName(), applicationDisplayName);
         Assert.assertEquals(application.updatesAllowed(), allowUpdates);
 
-        batchManager.batchAccounts().delete(batchAccount.resourceGroupName(), batchAccount.name());
-        try {
-            batchManager.batchAccounts().getById(batchAccount.id());
-            Assert.assertTrue(false);
-        }
-        catch (CloudException exception) {
-            Assert.assertEquals(exception.getResponse().code(), 404);
-        }
+        batchManager.batchAccounts().deleteByGroup(batchAccount.resourceGroupName(), batchAccount.name());
+        batchAccount = batchManager.batchAccounts().getById(batchAccount.id());
+        Assert.assertNull(batchAccount);
     }
 }

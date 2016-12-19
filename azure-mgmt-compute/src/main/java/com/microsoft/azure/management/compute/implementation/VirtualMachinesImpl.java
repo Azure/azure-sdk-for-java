@@ -74,7 +74,7 @@ class VirtualMachinesImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -116,10 +116,12 @@ class VirtualMachinesImpl
     @Override
     public String capture(String groupName, String name,
                           String containerName,
+                          String vhdPrefix,
                           boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
+        parameters.withVhdPrefix(vhdPrefix);
         VirtualMachineCaptureResultInner captureResult = this.innerCollection.capture(groupName, name, parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
@@ -161,6 +163,9 @@ class VirtualMachinesImpl
 
     @Override
     protected VirtualMachineImpl wrapModel(VirtualMachineInner virtualMachineInner) {
+        if (virtualMachineInner == null) {
+            return null;
+        }
         return new VirtualMachineImpl(virtualMachineInner.name(),
                 virtualMachineInner,
                 this.innerCollection,

@@ -11,7 +11,7 @@ package com.microsoft.azure.management.datalake.analytics.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The Diagnostics model.
+ * Error diagnostic information for failed jobs.
  */
 public class Diagnostics {
     /**

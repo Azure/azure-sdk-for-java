@@ -14,7 +14,6 @@ import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.DiskEncryptionSettings;
 import com.microsoft.azure.management.compute.HardwareProfile;
 import com.microsoft.azure.management.compute.ImageReference;
-import com.microsoft.azure.management.compute.InstanceViewStatus;
 import com.microsoft.azure.management.compute.InstanceViewTypes;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
 import com.microsoft.azure.management.compute.KnownWindowsVirtualMachineImage;
@@ -46,13 +45,15 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
-
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,10 +65,10 @@ import java.util.UUID;
 @LangDefinition
 class VirtualMachineImpl
         extends GroupableResourceImpl<
-            VirtualMachine,
-            VirtualMachineInner,
-            VirtualMachineImpl,
-            ComputeManager>
+        VirtualMachine,
+        VirtualMachineInner,
+        VirtualMachineImpl,
+        ComputeManager>
         implements
         VirtualMachine,
         VirtualMachine.Definition,
@@ -196,10 +197,11 @@ class VirtualMachineImpl
     }
 
     @Override
-    public String capture(String containerName, boolean overwriteVhd) {
+    public String capture(String containerName, String vhdPrefix, boolean overwriteVhd) {
         VirtualMachineCaptureParametersInner parameters = new VirtualMachineCaptureParametersInner();
         parameters.withDestinationContainerName(containerName);
         parameters.withOverwriteVhds(overwriteVhd);
+        parameters.withVhdPrefix(vhdPrefix);
         VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
@@ -274,6 +276,7 @@ class VirtualMachineImpl
     public VirtualMachineImpl withNewPrimaryPublicIpAddress(Creatable<PublicIpAddress> creatable) {
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
                 .withNewPrimaryPublicIpAddress(creatable);
+        this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
     }
@@ -419,13 +422,13 @@ class VirtualMachineImpl
     //
 
     @Override
-    public VirtualMachineImpl withRootUserName(String rootUserName) {
+    public VirtualMachineImpl withRootUsername(String rootUserName) {
         this.inner().osProfile().withAdminUsername(rootUserName);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl withAdminUserName(String adminUserName) {
+    public VirtualMachineImpl withAdminUsername(String adminUserName) {
         this.inner().osProfile().withAdminUsername(adminUserName);
         return this;
     }
@@ -449,13 +452,13 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl disableVmAgent() {
+    public VirtualMachineImpl withoutVmAgent() {
         this.inner().osProfile().windowsConfiguration().withProvisionVMAgent(false);
         return this;
     }
 
     @Override
-    public VirtualMachineImpl disableAutoUpdate() {
+    public VirtualMachineImpl withoutAutoUpdate() {
         this.inner().osProfile().windowsConfiguration().withEnableAutomaticUpdates(false);
         return this;
     }
@@ -482,8 +485,26 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withPassword(String password) {
+    public VirtualMachineImpl withRootPassword(String password) {
         this.inner().osProfile().withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withAdminPassword(String password) {
+        this.inner().osProfile().withAdminPassword(password);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withCustomData(String base64EncodedCustomData) {
+        this.inner().osProfile().withCustomData(base64EncodedCustomData);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withComputerName(String computerName) {
+        this.inner().osProfile().withComputerName(computerName);
         return this;
     }
 
@@ -507,9 +528,29 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withOsDiskVhdLocation(String containerName, String vhdName) {
-        VirtualHardDisk osVhd = new VirtualHardDisk();
-        osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
-        this.inner().storageProfile().osDisk().withVhd(osVhd);
+        StorageProfile storageProfile = this.inner().storageProfile();
+        OSDisk osDisk = storageProfile.osDisk();
+        if (this.isOSDiskFromImage(osDisk)) {
+            VirtualHardDisk osVhd = new VirtualHardDisk();
+            if (this.isOSDiskFromPlatformImage(storageProfile)) {
+                // OS Disk from 'Platform image' requires explicit storage account to be specified.
+                osVhd.withUri(temporaryBlobUrl(containerName, vhdName));
+            } else if (this.isOSDiskFromCustomImage(osDisk)) {
+                // 'Captured image' and 'Bring your own feature image' has a restriction that the
+                // OS disk based on these images should reside in the same storage account as the
+                // image.
+                try {
+                    URL sourceCustomImageUrl = new URL(osDisk.image().uri());
+                    URL destinationVhdUrl = new URL(sourceCustomImageUrl.getProtocol(),
+                            sourceCustomImageUrl.getHost(),
+                            "/" + containerName + "/" + vhdName);
+                    osVhd.withUri(destinationVhdUrl.toString());
+                } catch (MalformedURLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            this.inner().storageProfile().osDisk().withVhd(osVhd);
+        }
         return this;
     }
 
@@ -603,10 +644,17 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewAvailabilitySet(String name) {
-        return withNewAvailabilitySet(super.myManager.availabilitySets().define(name)
-                .withRegion(this.regionName())
-                .withExistingResourceGroup(this.resourceGroupName())
-        );
+        AvailabilitySet.DefinitionStages.WithGroup definitionWithGroup = super.myManager
+                .availabilitySets()
+                .define(name)
+                .withRegion(this.regionName());
+        Creatable<AvailabilitySet> definitionAfterGroup;
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        return withNewAvailabilitySet(definitionAfterGroup);
     }
 
     @Override
@@ -710,6 +758,10 @@ class VirtualMachineImpl
 
     @Override
     public String computerName() {
+        if (inner().osProfile() == null) {
+            // VM created by attaching a specialized OS Disk VHD will not have the osProfile.
+            return null;
+        }
         return inner().osProfile().computerName();
     }
 
@@ -735,12 +787,7 @@ class VirtualMachineImpl
 
     @Override
     public int osDiskSize() {
-        if (inner().storageProfile().osDisk().diskSizeGB() == null) {
-            // Server returns OS disk size as 0 for auto-created disks for which
-            // size was not explicitly set by the user.
-            return 0;
-        }
-        return inner().storageProfile().osDisk().diskSizeGB();
+        return Utils.toPrimitiveInt(inner().storageProfile().osDisk().diskSizeGB());
     }
 
     @Override
@@ -859,11 +906,7 @@ class VirtualMachineImpl
 
     @Override
     public PowerState powerState() {
-        String powerStateCode = this.getStatusCodeFromInstanceView("PowerState");
-        if (powerStateCode != null) {
-            return PowerState.fromValue(powerStateCode);
-        }
-        return null;
+        return PowerState.fromInstanceView(this.instanceView());
     }
 
     // CreateUpdateTaskGroup.ResourceCreator.createResourceAsync implementation
@@ -930,8 +973,10 @@ class VirtualMachineImpl
         OSDisk osDisk = this.inner().storageProfile().osDisk();
         if (isOSDiskFromImage(osDisk)) {
             if (osDisk.vhd() == null) {
-                // Sets the OS disk VHD for "UserImage" and "VM(Platform)Image"
-                withOsDiskVhdLocation("vhds", this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd");
+                // Sets the OS disk container and VHD for "CustomImage (Captured BringYourOwn)" or "PlatformImage"
+                String osDiskVhdContainerName = "vhds";
+                String osDiskVhdName = this.vmName + "-os-disk-" + UUID.randomUUID().toString() + ".vhd";
+                withOsDiskVhdLocation(osDiskVhdContainerName, osDiskVhdName);
             }
             OSProfile osProfile = this.inner().osProfile();
             if (osDisk.osType() == OperatingSystemTypes.LINUX || this.isMarketplaceLinuxImage) {
@@ -941,6 +986,21 @@ class VirtualMachineImpl
                 }
                 this.inner().osProfile().linuxConfiguration().withDisablePasswordAuthentication(osProfile.adminPassword() == null);
             }
+
+            if (this.inner().osProfile().computerName() == null) {
+                // VM name cannot contain only numeric values and cannot exceed 15 chars
+                if (vmName.matches("[0-9]+")) {
+                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                } else if (vmName.length() <= 15) {
+                    this.inner().osProfile().withComputerName(vmName);
+                } else {
+                    this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
+                }
+            }
+        } else {
+            // Compute has a new restriction that OS Profile property need to set null
+            // when an VM's OS disk is ATTACH-ed to a Specialized VHD
+            this.inner().withOsProfile(null);
         }
 
         if (osDisk.caching() == null) {
@@ -949,17 +1009,6 @@ class VirtualMachineImpl
 
         if (osDisk.name() == null) {
             withOsDiskName(this.vmName + "-os-disk");
-        }
-
-        if (this.inner().osProfile().computerName() == null) {
-            // VM name cannot contain only numeric values and cannot exceed 15 chars
-            if (vmName.matches("[0-9]+")) {
-                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
-            } else if (vmName.length() <= 15) {
-                this.inner().osProfile().withComputerName(vmName);
-            } else {
-                this.inner().osProfile().withComputerName(ResourceNamer.randomResourceName("vm", 15));
-            }
         }
     }
 
@@ -979,7 +1028,7 @@ class VirtualMachineImpl
             @Override
             public StorageAccount call(StorageAccount storageAccount) {
                 if (isInCreateMode()) {
-                    if (isOSDiskFromImage(inner().storageProfile().osDisk())) {
+                    if (isOSDiskFromPlatformImage(inner().storageProfile())) {
                         String uri = inner()
                                 .storageProfile()
                                 .osDisk().vhd().uri()
@@ -1006,11 +1055,11 @@ class VirtualMachineImpl
                     .map(storageAccountFunc);
         } else if (osDiskRequiresImplicitStorageAccountCreation()
                 || dataDisksRequiresImplicitStorageAccountCreation()) {
-            return this.storageManager.storageAccounts()
+            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
                     .define(this.namer.randomName("stg", 24))
                     .withRegion(this.regionName())
                     .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync()
+                    .createAsync())
                     .map(storageAccountFunc);
         }
         return Observable.just(null);
@@ -1079,7 +1128,7 @@ class VirtualMachineImpl
             return false;
         }
 
-        return isOSDiskFromImage(this.inner().storageProfile().osDisk());
+        return isOSDiskFromPlatformImage(this.inner().storageProfile());
     }
 
     private boolean dataDisksRequiresImplicitStorageAccountCreation() {
@@ -1117,12 +1166,44 @@ class VirtualMachineImpl
         return false;
     }
 
+    /**
+     * Checks whether the OS disk is directly attached to a VHD.
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is attached to a VHD, false otherwise
+     */
     private boolean isOSDiskAttached(OSDisk osDisk) {
         return osDisk.createOption() == DiskCreateOptionTypes.ATTACH;
     }
 
+    /**
+     * Checks whether the OS disk is based on an image (image from PIR or custom image [captured, bringYourOwnFeature]).
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is configured to use image from PIR or custom image
+     */
     private boolean isOSDiskFromImage(OSDisk osDisk) {
-        return !isOSDiskAttached(osDisk);
+        return osDisk.createOption() == DiskCreateOptionTypes.FROM_IMAGE;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an platform image (image in PIR).
+     *
+     * @param storageProfile the storage profile
+     * @return true if the OS disk is configured to be based on platform image.
+     */
+    private boolean isOSDiskFromPlatformImage(StorageProfile storageProfile) {
+        return isOSDiskFromImage(storageProfile.osDisk()) && storageProfile.imageReference() != null;
+    }
+
+    /**
+     * Checks whether the OS disk is based on an custom image ('captured' or 'bring your own feature').
+     *
+     * @param osDisk the osDisk value in the storage profile
+     * @return true if the OS disk is configured to use custom image ('captured' or 'bring your own feature')
+     */
+    private boolean isOSDiskFromCustomImage(OSDisk osDisk) {
+        return isOSDiskFromImage(osDisk) && osDisk.image() != null && osDisk.image().uri() != null;
     }
 
     private String temporaryBlobUrl(String containerName, String blobName) {
@@ -1168,19 +1249,6 @@ class VirtualMachineImpl
             definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
         }
         return definitionAfterGroup;
-    }
-
-    private String getStatusCodeFromInstanceView(String codePrefix) {
-        try {
-            for (InstanceViewStatus status : this.instanceView().statuses()) {
-                if (status.code() != null && status.code().startsWith(codePrefix)) {
-                    return status.code();
-                }
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-        return null;
     }
 
     private void clearCachedRelatedResources() {

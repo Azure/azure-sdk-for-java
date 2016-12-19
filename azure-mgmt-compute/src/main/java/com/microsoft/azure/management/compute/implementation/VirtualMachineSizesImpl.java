@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineSize;
 import com.microsoft.azure.management.compute.VirtualMachineSizes;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation for {@link VirtualMachineSizes}.
  */
+@LangDefinition
 class VirtualMachineSizesImpl
         extends ReadableWrappersImpl<VirtualMachineSize, VirtualMachineSizeImpl, VirtualMachineSizeInner>
         implements VirtualMachineSizes {
@@ -30,6 +32,9 @@ class VirtualMachineSizesImpl
 
     @Override
     protected VirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineSizeImpl(inner);
     }
 

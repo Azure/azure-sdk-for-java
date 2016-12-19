@@ -20,20 +20,20 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class TableInner extends Resource {
     /**
-     * Gets the type of Azure SQL Database table. Possible values include:
+     * The type of Azure SQL Database table. Possible values include:
      * 'BaseTable', 'View'.
      */
     @JsonProperty(value = "properties.tableType", access = JsonProperty.Access.WRITE_ONLY)
     private TableType tableType;
 
     /**
-     * Gets the columns from this table.
+     * The columns from this table.
      */
     @JsonProperty(value = "properties.columns", access = JsonProperty.Access.WRITE_ONLY)
     private List<ColumnInner> columns;
 
     /**
-     * Gets the recommended indices for this table.
+     * The recommended indices for this table.
      */
     @JsonProperty(value = "properties.recommendedIndexes", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedIndexInner> recommendedIndexes;

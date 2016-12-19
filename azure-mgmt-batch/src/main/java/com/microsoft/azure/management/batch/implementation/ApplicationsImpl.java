@@ -10,7 +10,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.batch.Application;
 import com.microsoft.azure.management.batch.BatchAccount;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ExternalChildResourcesCachedImpl;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @LangDefinition
 class ApplicationsImpl extends
-        ExternalChildResourcesImpl<ApplicationImpl,
+        ExternalChildResourcesCachedImpl<ApplicationImpl,
                 Application,
                 ApplicationInner,
                 BatchAccountImpl,
@@ -35,7 +35,7 @@ class ApplicationsImpl extends
         super(parent, "Application");
         this.client = client;
         this.applicationPackagesClient = applicationPackagesClient;
-        this.initializeCollection();
+        this.cacheCollection();
     }
 
     public Map<String, Application> asMap() {

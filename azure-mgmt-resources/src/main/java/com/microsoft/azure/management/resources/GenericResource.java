@@ -23,7 +23,7 @@ import com.microsoft.azure.management.resources.implementation.GenericResourceIn
 public interface GenericResource extends
         GroupableResource,
         Refreshable<GenericResource>,
-        Updatable<GenericResource.UpdateStages.WithApiVersion>,
+        Updatable<GenericResource.Update>,
         Wrapper<GenericResourceInner> {
     /**
      * @return the namespace of the resource provider
@@ -33,7 +33,7 @@ public interface GenericResource extends
     /**
      * @return the id of the parent resource if this is a child resource
      */
-    String parentResourceId();
+    String parentResourcePath();
 
     /**
      * @return the type of the resource
@@ -124,14 +124,14 @@ public interface GenericResource extends
              * @param promotionCode the promotion code, if any
              * @return the next stage of the generic resource definition
              */
-            WithApiVersion withPlan(String name, String publisher, String product, String promotionCode);
+            WithCreate withPlan(String name, String publisher, String product, String promotionCode);
 
             /**
              * Specifies the plan of the resource.
              *
              * @return the next stage of the generic resource definition
              */
-            WithApiVersion withoutPlan();
+            WithCreate withoutPlan();
         }
 
         /**
@@ -157,7 +157,15 @@ public interface GenericResource extends
              * @param parentResourceId the parent resource id
              * @return the next stage of the generic resource definition
              */
-            WithCreate withParentResource(String parentResourceId);
+            WithCreate withParentResourceId(String parentResourceId);
+
+            /**
+             * Specifies the parent resource relative path.
+             *
+             * @param parentResourcePath the relative path of parent resource
+             * @return the next stage of the generic resource definition
+             */
+            WithCreate withParentResourcePath(String parentResourcePath);
         }
 
         /**
@@ -167,6 +175,7 @@ public interface GenericResource extends
          */
         interface WithCreate extends
                 WithParentResource,
+                WithApiVersion,
                 Creatable<GenericResource>,
                 Resource.DefinitionWithTags<WithCreate> {
             /**
@@ -203,10 +212,18 @@ public interface GenericResource extends
             /**
              * Specifies the parent resource.
              *
-             * @param parentResourceId the parent resource ID
-             * @return the next stage of the generic resource definition
+             * @param parentResourceId the parent resource id
+             * @return the next stage of the generic resource update
              */
-            Update withParentResource(String parentResourceId);
+            Update withParentResourceId(String parentResourceId);
+
+            /**
+             * Specifies the parent resource relative path.
+             *
+             * @param parentResourcePath the relative path of parent resource
+             * @return the next stage of the generic resource update
+             */
+            Update withParentResourcePath(String parentResourcePath);
         }
 
         /**
@@ -251,6 +268,7 @@ public interface GenericResource extends
      */
     interface Update extends
             Appliable<GenericResource>,
+            UpdateStages.WithApiVersion,
             UpdateStages.WithPlan,
             UpdateStages.WithParentResource,
             UpdateStages.WithProperties,

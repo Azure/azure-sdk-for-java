@@ -168,7 +168,7 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2015-11-01";
+        this.apiVersion = "2016-06-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -186,6 +186,6 @@ public final class SubscriptionClientImpl extends AzureServiceClient {
     public String userAgent() {
         return String.format("Azure-SDK-For-Java/%s (%s)",
                 getClass().getPackage().getImplementationVersion(),
-                "SubscriptionClient, 2015-11-01");
+                "SubscriptionClient, 2016-06-01");
     }
 }

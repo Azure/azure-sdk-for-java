@@ -13,8 +13,11 @@ import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 import org.junit.Test;
+import rx.Observable;
 import rx.functions.Action1;
 
 public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMachines> {
@@ -23,17 +26,20 @@ public class TestVirtualMachine extends TestTemplate<VirtualMachine, VirtualMach
         final String vmName = "vm" + this.testId;
         final VirtualMachine[] vms = new VirtualMachine[1];
         final SettableFuture<VirtualMachine> future = SettableFuture.create();
-        virtualMachines.define(vmName)
+
+        Observable<Indexable> resourceStream = virtualMachines.define(vmName)
                 .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
                 .withNewPrimaryNetwork("10.0.0.0/28")
                 .withPrimaryPrivateIpAddressDynamic()
                 .withoutPrimaryPublicIpAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUserName("testuser")
-                .withPassword("12NewPA$$w0rd!")
+                .withAdminUsername("testuser")
+                .withAdminPassword("12NewPA$$w0rd!")
                 .withSize(VirtualMachineSizeTypes.STANDARD_D1_V2)
-                .createAsync()
+                .createAsync();
+
+        Utils.<VirtualMachine>rootResource(resourceStream)
                 .subscribe(new Action1<VirtualMachine>() {
                     @Override
                     public void call(VirtualMachine virtualMachine) {

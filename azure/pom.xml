@@ -90,6 +90,26 @@
       <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-trafficmanager</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-dns</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-redis</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-appservice</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
@@ -110,6 +130,21 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>api-annotations</artifactId>
       <version>0.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-cdn</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
+    </dependency>
+      <dependency>
+          <groupId>com.microsoft.azure</groupId>
+          <artifactId>azure-mgmt-sql</artifactId>
+          <version>1.0.0-beta4-SNAPSHOT</version>
+      </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-sql</artifactId>
+      <version>1.0.0-beta4-SNAPSHOT</version>
     </dependency>
 
   </dependencies>

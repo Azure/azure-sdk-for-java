@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachineOffers;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation for {@link VirtualMachineOffers}.
  */
+@LangDefinition
 class VirtualMachineOffersImpl
         extends ReadableWrappersImpl<VirtualMachineOffer, VirtualMachineOfferImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineOffers {
@@ -28,6 +30,9 @@ class VirtualMachineOffersImpl
 
     @Override
     protected VirtualMachineOfferImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineOfferImpl(this.publisher, inner.name(), this.innerCollection);
     }
 

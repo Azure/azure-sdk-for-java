@@ -8,12 +8,13 @@
 
 package com.microsoft.azure.management.sql.implementation;
 
+import com.microsoft.azure.management.sql.ServerVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * Represents an Azure SQL Server.
+ * Represents an Azure SQL server.
  */
 @JsonFlatten
 public class ServerInner extends Resource {
@@ -24,20 +25,20 @@ public class ServerInner extends Resource {
     private String fullyQualifiedDomainName;
 
     /**
-     * The version of the server.
+     * The version of the server. Possible values include: '2.0', '12.0'.
      */
     @JsonProperty(value = "properties.version")
-    private String version;
+    private ServerVersion version;
 
     /**
      * Administrator username for the server. Can only be specified when the
-     * server is being created.
+     * server is being created (and is required for creation).
      */
     @JsonProperty(value = "properties.administratorLogin")
     private String administratorLogin;
 
     /**
-     * The administrator login password.
+     * The administrator login password (required for server creation).
      */
     @JsonProperty(value = "properties.administratorLoginPassword")
     private String administratorLoginPassword;
@@ -56,7 +57,7 @@ public class ServerInner extends Resource {
      *
      * @return the version value
      */
-    public String version() {
+    public ServerVersion version() {
         return this.version;
     }
 
@@ -66,7 +67,7 @@ public class ServerInner extends Resource {
      * @param version the version value to set
      * @return the ServerInner object itself.
      */
-    public ServerInner withVersion(String version) {
+    public ServerInner withVersion(ServerVersion version) {
         this.version = version;
         return this;
     }

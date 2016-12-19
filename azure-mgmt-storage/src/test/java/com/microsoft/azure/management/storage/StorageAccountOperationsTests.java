@@ -8,10 +8,13 @@ package com.microsoft.azure.management.storage;
 
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.List;
 
@@ -29,7 +32,7 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceManager.resourceGroups().delete(RG_NAME);
+        resourceManager.resourceGroups().deleteByName(RG_NAME);
     }
 
     @Test
@@ -39,11 +42,12 @@ public class StorageAccountOperationsTests extends StorageManagementTestBase {
                 .checkNameAvailability(SA_NAME);
         Assert.assertEquals(true, result.isAvailable());
         // Create
-        StorageAccount storageAccount = storageManager.storageAccounts()
+        Observable<Indexable> resourceStream = storageManager.storageAccounts()
                 .define(SA_NAME)
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(RG_NAME)
-                .createAsync()
+                .createAsync();
+        StorageAccount storageAccount = Utils.<StorageAccount>rootResource(resourceStream)
                 .toBlocking().last();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());

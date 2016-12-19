@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.datalake.store.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The EncryptionConfig model.
+ * The encryption configuration for the account.
  */
 public class EncryptionConfig {
     /**
@@ -18,6 +19,7 @@ public class EncryptionConfig {
      * supported types are 'UserManaged' and 'ServiceManaged'. Possible
      * values include: 'UserManaged', 'ServiceManaged'.
      */
+    @JsonProperty(required = true)
     private EncryptionConfigType type;
 
     /**

@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.datalake.analytics;
 
-import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.analytics.models.JobDataPath;
 import com.microsoft.azure.management.datalake.analytics.models.JobInformation;
@@ -18,7 +17,6 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 import rx.Observable;
@@ -33,12 +31,9 @@ public interface Jobs {
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity Job Information ID.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobStatistics object wrapped in {@link ServiceResponse} if successful.
+     * @return the JobStatistics object if successful.
      */
-    ServiceResponse<JobStatistics> getStatistics(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException;
+    JobStatistics getStatistics(String accountName, UUID jobIdentity);
 
     /**
      * Gets statistics of the specified job.
@@ -57,19 +52,25 @@ public interface Jobs {
      * @param jobIdentity Job Information ID.
      * @return the observable to the JobStatistics object
      */
-    Observable<ServiceResponse<JobStatistics>> getStatisticsAsync(String accountName, UUID jobIdentity);
+    Observable<JobStatistics> getStatisticsAsync(String accountName, UUID jobIdentity);
+
+    /**
+     * Gets statistics of the specified job.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity Job Information ID.
+     * @return the observable to the JobStatistics object
+     */
+    Observable<ServiceResponse<JobStatistics>> getStatisticsWithServiceResponseAsync(String accountName, UUID jobIdentity);
 
     /**
      * Gets the job debug data information specified by the job ID.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobDataPath object wrapped in {@link ServiceResponse} if successful.
+     * @return the JobDataPath object if successful.
      */
-    ServiceResponse<JobDataPath> getDebugDataPath(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException;
+    JobDataPath getDebugDataPath(String accountName, UUID jobIdentity);
 
     /**
      * Gets the job debug data information specified by the job ID.
@@ -88,19 +89,25 @@ public interface Jobs {
      * @param jobIdentity JobInfo ID.
      * @return the observable to the JobDataPath object
      */
-    Observable<ServiceResponse<JobDataPath>> getDebugDataPathAsync(String accountName, UUID jobIdentity);
+    Observable<JobDataPath> getDebugDataPathAsync(String accountName, UUID jobIdentity);
+
+    /**
+     * Gets the job debug data information specified by the job ID.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
+     * @return the observable to the JobDataPath object
+     */
+    Observable<ServiceResponse<JobDataPath>> getDebugDataPathWithServiceResponseAsync(String accountName, UUID jobIdentity);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param parameters The parameters to build a job.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
+     * @return the JobInformation object if successful.
      */
-    ServiceResponse<JobInformation> build(String accountName, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException;
+    JobInformation build(String accountName, JobInformation parameters);
 
     /**
      * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
@@ -119,19 +126,24 @@ public interface Jobs {
      * @param parameters The parameters to build a job.
      * @return the observable to the JobInformation object
      */
-    Observable<ServiceResponse<JobInformation>> buildAsync(String accountName, JobInformation parameters);
+    Observable<JobInformation> buildAsync(String accountName, JobInformation parameters);
+
+    /**
+     * Builds (compiles) the specified job in the specified Data Lake Analytics account for job correctness and validation.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param parameters The parameters to build a job.
+     * @return the observable to the JobInformation object
+     */
+    Observable<ServiceResponse<JobInformation>> buildWithServiceResponseAsync(String accountName, JobInformation parameters);
 
     /**
      * Cancels the running job specified by the job ID.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID to cancel.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the {@link ServiceResponse} object if successful.
      */
-    ServiceResponse<Void> cancel(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException;
+    void cancel(String accountName, UUID jobIdentity);
 
     /**
      * Cancels the running job specified by the job ID.
@@ -150,19 +162,25 @@ public interface Jobs {
      * @param jobIdentity JobInfo ID to cancel.
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> cancelAsync(String accountName, UUID jobIdentity);
+    Observable<Void> cancelAsync(String accountName, UUID jobIdentity);
+
+    /**
+     * Cancels the running job specified by the job ID.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID to cancel.
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> cancelWithServiceResponseAsync(String accountName, UUID jobIdentity);
 
     /**
      * Gets the job information for the specified job ID.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity JobInfo ID.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
+     * @return the JobInformation object if successful.
      */
-    ServiceResponse<JobInformation> get(String accountName, UUID jobIdentity) throws CloudException, IOException, IllegalArgumentException;
+    JobInformation get(String accountName, UUID jobIdentity);
 
     /**
      * Gets the job information for the specified job ID.
@@ -181,7 +199,16 @@ public interface Jobs {
      * @param jobIdentity JobInfo ID.
      * @return the observable to the JobInformation object
      */
-    Observable<ServiceResponse<JobInformation>> getAsync(String accountName, UUID jobIdentity);
+    Observable<JobInformation> getAsync(String accountName, UUID jobIdentity);
+
+    /**
+     * Gets the job information for the specified job ID.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity JobInfo ID.
+     * @return the observable to the JobInformation object
+     */
+    Observable<ServiceResponse<JobInformation>> getWithServiceResponseAsync(String accountName, UUID jobIdentity);
 
     /**
      * Submits a job to the specified Data Lake Analytics account.
@@ -189,12 +216,9 @@ public interface Jobs {
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
      * @param jobIdentity The job ID (a GUID) for the job being submitted.
      * @param parameters The parameters to submit a job.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the JobInformation object wrapped in {@link ServiceResponse} if successful.
+     * @return the JobInformation object if successful.
      */
-    ServiceResponse<JobInformation> create(String accountName, UUID jobIdentity, JobInformation parameters) throws CloudException, IOException, IllegalArgumentException;
+    JobInformation create(String accountName, UUID jobIdentity, JobInformation parameters);
 
     /**
      * Submits a job to the specified Data Lake Analytics account.
@@ -215,18 +239,25 @@ public interface Jobs {
      * @param parameters The parameters to submit a job.
      * @return the observable to the JobInformation object
      */
-    Observable<ServiceResponse<JobInformation>> createAsync(String accountName, UUID jobIdentity, JobInformation parameters);
+    Observable<JobInformation> createAsync(String accountName, UUID jobIdentity, JobInformation parameters);
+
+    /**
+     * Submits a job to the specified Data Lake Analytics account.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param jobIdentity The job ID (a GUID) for the job being submitted.
+     * @param parameters The parameters to submit a job.
+     * @return the observable to the JobInformation object
+     */
+    Observable<ServiceResponse<JobInformation>> createWithServiceResponseAsync(String accountName, UUID jobIdentity, JobInformation parameters);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param accountName The Azure Data Lake Analytics account to execute job operations on.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobInformation&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;JobInformation&gt; object if successful.
      */
-    ServiceResponse<PagedList<JobInformation>> list(final String accountName) throws CloudException, IOException, IllegalArgumentException;
+    PagedList<JobInformation> list(final String accountName);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -236,6 +267,22 @@ public interface Jobs {
      * @return the {@link ServiceCall} object
      */
     ServiceCall<List<JobInformation>> listAsync(final String accountName, final ListOperationCallback<JobInformation> serviceCallback);
+
+    /**
+     * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     */
+    Observable<Page<JobInformation>> listAsync(final String accountName);
+
+    /**
+     * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     */
+    Observable<ServiceResponse<Page<JobInformation>>> listWithServiceResponseAsync(final String accountName);
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
@@ -243,18 +290,12 @@ public interface Jobs {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobInformation&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;JobInformation&gt; object if successful.
      */
-    ServiceResponse<PagedList<JobInformation>> list(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format) throws CloudException, IOException, IllegalArgumentException;
+    PagedList<JobInformation> list(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -263,16 +304,13 @@ public interface Jobs {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
-    ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format, final ListOperationCallback<JobInformation> serviceCallback);
+    ServiceCall<List<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<JobInformation> serviceCallback);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -281,26 +319,34 @@ public interface Jobs {
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
-     * @param expand OData expansion. Expand related resources in line with the retrieved resources, e.g. Categories?$expand=Products would expand Product data in line with each Category entry. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
-     * @param search A free form search. A free-text search expression to match for whether a particular entry should be included in the feed, e.g. Categories?$search=blue OR green. Optional.
-     * @param format The return format. Return the response in particular formatxii without access to request headers for standard content-type negotiation (e.g Orders?$format=json). Optional.
-     * @return the observable to the List&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
      */
-    Observable<ServiceResponse<Page<JobInformation>>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String expand, final String select, final String orderby, final Boolean count, final String search, final String format);
+    Observable<Page<JobInformation>> listAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
+
+    /**
+     * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
+     *
+     * @param accountName The Azure Data Lake Analytics account to execute job operations on.
+     * @param filter OData filter. Optional.
+     * @param top The number of items to return. Optional.
+     * @param skip The number of items to skip over before returning elements. Optional.
+     * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+     * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+     * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     */
+    Observable<ServiceResponse<Page<JobInformation>>> listWithServiceResponseAsync(final String accountName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws CloudException exception thrown from REST call
-     * @throws IOException exception thrown from serialization/deserialization
-     * @throws IllegalArgumentException exception thrown from invalid parameters
-     * @return the List&lt;JobInformation&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;JobInformation&gt; object if successful.
      */
-    ServiceResponse<PagedList<JobInformation>> listNext(final String nextPageLink) throws CloudException, IOException, IllegalArgumentException;
+    PagedList<JobInformation> listNext(final String nextPageLink);
 
     /**
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
@@ -316,8 +362,16 @@ public interface Jobs {
      * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the List&lt;JobInformation&gt; object
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
      */
-    Observable<ServiceResponse<Page<JobInformation>>> listNextAsync(final String nextPageLink);
+    Observable<Page<JobInformation>> listNextAsync(final String nextPageLink);
+
+    /**
+     * Lists the jobs, if any, associated with the specified Data Lake Analytics account. The response includes a link to the next page of results, if any.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @return the observable to the PagedList&lt;JobInformation&gt; object
+     */
+    Observable<ServiceResponse<Page<JobInformation>>> listNextWithServiceResponseAsync(final String nextPageLink);
 
 }

@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.DeploymentOperationProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Deployment operation information.
@@ -17,11 +18,13 @@ public class DeploymentOperationInner {
     /**
      * Full deployment operation id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /**
      * Deployment operation id.
      */
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
     /**
@@ -39,34 +42,12 @@ public class DeploymentOperationInner {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the DeploymentOperationInner object itself.
-     */
-    public DeploymentOperationInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the operationId value.
      *
      * @return the operationId value
      */
     public String operationId() {
         return this.operationId;
-    }
-
-    /**
-     * Set the operationId value.
-     *
-     * @param operationId the operationId value to set
-     * @return the DeploymentOperationInner object itself.
-     */
-    public DeploymentOperationInner withOperationId(String operationId) {
-        this.operationId = operationId;
-        return this;
     }
 
     /**

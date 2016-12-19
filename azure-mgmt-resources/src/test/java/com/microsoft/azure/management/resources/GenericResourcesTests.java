@@ -35,8 +35,8 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
 
     @AfterClass
     public static void cleanup() throws Exception {
-        resourceGroups.delete(newRgName);
-        resourceGroups.delete(rgName);
+        resourceGroups.beginDeleteByName(newRgName);
+        resourceGroups.beginDeleteByName(rgName);
     }
 
     @Test
@@ -48,8 +48,7 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
                 .withResourceType("sites")
                 .withProviderNamespace("Microsoft.Web")
                 .withoutPlan()
-                .withApiVersion("2015-08-01")
-                .withParentResource("")
+                .withParentResourcePath("")
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Shared\"}"))
                 .create();
         //List
@@ -63,16 +62,18 @@ public class GenericResourcesTests extends ResourceManagerTestBase {
         }
         Assert.assertTrue(found);
         // Get
-        Assert.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        Assert.assertNotNull(genericResources.get(rgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
         // Move
         genericResources.moveResources(rgName, resourceGroups.getByName(newRgName), Arrays.asList(resource.id()));
-        Assert.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion()));
-        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourceId(), resource.resourceType(), resource.name(), resource.apiVersion());
+        Assert.assertFalse(genericResources.checkExistence(rgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
+        resource = genericResources.get(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion());
         Assert.assertNotNull(resource);
         // Update
         resource.update()
-                .withApiVersion("2015-08-01")
                 .withProperties(new ObjectMapper().readTree("{\"SiteMode\":\"Limited\",\"ComputeMode\":\"Dynamic\"}"))
                 .apply();
+        // Delete
+        genericResources.deleteById(resource.id());
+        Assert.assertFalse(genericResources.checkExistence(newRgName, resource.resourceProviderNamespace(), resource.parentResourcePath(), resource.resourceType(), resource.name(), resource.apiVersion()));
     }
 }

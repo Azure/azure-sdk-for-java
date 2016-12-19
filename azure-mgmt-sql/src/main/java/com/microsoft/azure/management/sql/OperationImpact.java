@@ -15,25 +15,25 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class OperationImpact {
     /**
-     * Gets the name of the impact dimension.
+     * The name of the impact dimension.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Gets the unit in which estimated impact to dimension is measured.
+     * The unit in which estimated impact to dimension is measured.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
     /**
-     * Gets the absolute impact to dimension.
+     * The absolute impact to dimension.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueAbsolute;
 
     /**
-     * Gets the relative impact to dimension (null if not applicable).
+     * The relative impact to dimension (null if not applicable).
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Double changeValueRelative;

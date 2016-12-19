@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachineSkus;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
@@ -14,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 /**
  * The implementation for {@link VirtualMachineSkus}.
  */
+@LangDefinition
 class VirtualMachineSkusImpl
         extends ReadableWrappersImpl<VirtualMachineSku, VirtualMachineSkuImpl, VirtualMachineImageResourceInner>
         implements VirtualMachineSkus {
@@ -36,6 +38,9 @@ class VirtualMachineSkusImpl
 
     @Override
     protected VirtualMachineSkuImpl wrapModel(VirtualMachineImageResourceInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new VirtualMachineSkuImpl(this.offer, inner.name(), innerCollection);
     }
 }

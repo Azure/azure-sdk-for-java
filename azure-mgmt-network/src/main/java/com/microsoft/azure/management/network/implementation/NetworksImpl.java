@@ -51,7 +51,7 @@ class NetworksImpl
     }
 
     @Override
-    public Observable<Void> deleteAsync(String groupName, String name) {
+    public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
     }
 
@@ -102,6 +102,9 @@ class NetworksImpl
 
     @Override
     protected NetworkImpl wrapModel(VirtualNetworkInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NetworkImpl(
                 inner.name(),
                 inner,

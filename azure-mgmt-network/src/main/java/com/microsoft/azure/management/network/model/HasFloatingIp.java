@@ -52,7 +52,7 @@ public interface HasFloatingIp {
      */
     interface UpdateStages {
         /**
-         * The stage of a definition allowing to control floating IP support.
+         * The stage of an update allowing to control floating IP support.
          * @param <ReturnT> the next stage of the definition
          */
         interface WithFloatingIp<ReturnT> {

@@ -9,6 +9,8 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
@@ -23,7 +25,7 @@ import rx.functions.Func1;
  * @param <FluentModelImplT> the implementation type of the fluent model
  */
 public abstract class CreatableUpdatableImpl<
-            FluentModelT,
+            FluentModelT  extends Indexable,
             InnerModelT,
             FluentModelImplT extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>>
         extends IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
@@ -85,7 +87,7 @@ public abstract class CreatableUpdatableImpl<
      * @param creatable the creatable dependency.
      */
     @SuppressWarnings("unchecked")
-    protected void addCreatableDependency(Creatable<? extends Resource> creatable) {
+    protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
         CreateUpdateTaskGroup<FluentModelT> childGroup =
                 ((CreateUpdateTaskGroup.ResourceCreatorUpdator<FluentModelT>) creatable).creatorUpdatorTaskGroup();
         childGroup.merge(this.createUpdateTaskGroup);
@@ -97,10 +99,17 @@ public abstract class CreatableUpdatableImpl<
      * @param appliable the appliable dependency.
      */
     @SuppressWarnings("unchecked")
-    protected void addAppliableDependency(Appliable<? extends Resource> appliable) {
+    protected void addAppliableDependency(Appliable<? extends Indexable> appliable) {
         CreateUpdateTaskGroup<FluentModelT> childGroup =
                 ((CreateUpdateTaskGroup.ResourceCreatorUpdator<FluentModelT>) appliable).creatorUpdatorTaskGroup();
         childGroup.merge(this.createUpdateTaskGroup);
+    }
+
+    /**
+     * Default implementation of prepare().
+     */
+    @Override
+    public void prepare() {
     }
 
     /**
@@ -123,8 +132,8 @@ public abstract class CreatableUpdatableImpl<
      * @return the observable that emit the created resource.
      */
     @Override
-    public Observable<FluentModelT> createAsync() {
-        return this.executeTaskGroupAsync();
+    public Observable<Indexable> createAsync() {
+        return this.executeTaskGroupAsyncStreaming();
     }
 
     /**
@@ -134,7 +143,7 @@ public abstract class CreatableUpdatableImpl<
      * @return a handle to cancel the request
      */
     public ServiceCall<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        return observableToFuture(createAsync(), callback);
+        return observableToFuture(Utils.<FluentModelT>rootResource(createAsync()), callback);
     }
 
     /**
@@ -144,7 +153,7 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     public FluentModelT create() {
-        return createAsync().toBlocking().single();
+        return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
     }
 
     /**
@@ -177,6 +186,7 @@ public abstract class CreatableUpdatableImpl<
     public FluentModelT apply() {
         return applyAsync().toBlocking().last();
     }
+
     /**
      * This is the default implementation of 'updateResourceAsync', it simply calls createResourceAsync()
      * since for most of the resource both create and update are handled by the same API call
@@ -199,6 +209,21 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @SuppressWarnings("unchecked")
+    protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
+        if (createUpdateTaskGroup.isPreparer()) {
+            createUpdateTaskGroup.prepare();
+            return createUpdateTaskGroup.executeAsync()
+                    .map(new Func1<FluentModelT, Indexable>() {
+                            @Override
+                            public Indexable call(FluentModelT fluentModelT) {
+                                return fluentModelT;
+                            }
+                        });
+        }
+        throw new IllegalStateException("Internal Error: executeTaskGroupAsync can be called only on preparer");
+    }
+
+    @SuppressWarnings("unchecked")
     protected Func1<InnerModelT, FluentModelT> innerToFluentMap(final FluentModelImplT fluentModelImplT) {
         return new Func1<InnerModelT, FluentModelT>() {
             @Override
@@ -209,8 +234,9 @@ public abstract class CreatableUpdatableImpl<
         };
     }
 
-    protected ServiceCall<FluentModelT> observableToFuture(Observable<FluentModelT> observable,
-                                                           final ServiceCallback<FluentModelT> callback) {
+    protected ServiceCall<FluentModelT> observableToFuture(
+            Observable<FluentModelT> observable,
+            final ServiceCallback<FluentModelT> callback) {
         return ServiceCall.create(
                 observable.map(new Func1<FluentModelT, ServiceResponse<FluentModelT>>() {
                     @Override

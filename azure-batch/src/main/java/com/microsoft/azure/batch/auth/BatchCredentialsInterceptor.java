@@ -24,22 +24,29 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * The interceptor class to insert Shared Key credential information to request HEADER.
+ */
 class BatchCredentialsInterceptor implements Interceptor {
 
-    /**
-     * 
-     */
     private BatchSharedKeyCredentials credentials;
 
     /**
      * Constructor for BatchCredentialsInterceptor
-     * @param batchCredentials
-     *                          The account name/key credential              
+     *
+     * @param batchCredentials The account name/key credential
      */
     public BatchCredentialsInterceptor(BatchSharedKeyCredentials batchCredentials) {
         this.credentials = batchCredentials;
     }
 
+    /**
+     * Inject the new authentication HEADER
+     *
+     * @param chain The interceptor chain
+     * @return Response of the request
+     * @throws IOException Exception thrown from serialization
+     */
     @Override
     public Response intercept(Interceptor.Chain chain) throws IOException {
         Request newRequest = this.signHeader(chain.request());

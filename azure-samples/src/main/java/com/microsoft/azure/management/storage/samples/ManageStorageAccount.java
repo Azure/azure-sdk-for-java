@@ -120,7 +120,7 @@ public final class ManageStorageAccount {
                 System.out.println("Deleting a storage account - " + storageAccount.name()
                         + " created @ " + storageAccount.creationTime());
 
-                azure.storageAccounts().delete(storageAccount.id());
+                azure.storageAccounts().deleteById(storageAccount.id());
 
                 System.out.println("Deleted storage account");
             } catch (Exception f) {
@@ -129,7 +129,7 @@ public final class ManageStorageAccount {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 }
                 catch (Exception e) {

@@ -34,13 +34,13 @@ public class Error {
     private String target;
 
     /**
-     * the list of error details.
+     * The list of error details.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private List<ErrorDetails> details;
 
     /**
-     * the inner exceptions or errors, if any.
+     * The inner exceptions or errors, if any.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private InnerError innerError;

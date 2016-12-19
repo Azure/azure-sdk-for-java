@@ -8,107 +8,109 @@
 
 package com.microsoft.azure.management.datalake.store.models;
 
-import java.util.Map;
+import org.joda.time.DateTime;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
  * Data Lake Store account information.
  */
-public class DataLakeStoreAccount {
-    /**
-     * the account regional location.
-     */
-    private String location;
-
-    /**
-     * the account name.
-     */
-    private String name;
-
-    /**
-     * the namespace and type of the account.
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
-    /**
-     * the account subscription ID.
-     */
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
+@JsonFlatten
+public class DataLakeStoreAccount extends Resource {
     /**
      * The Key vault encryption identity, if any.
      */
     private EncryptionIdentity identity;
 
     /**
-     * the value of custom properties.
+     * the status of the Data Lake Store account while being provisioned.
+     * Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded',
+     * 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'.
      */
-    private Map<String, String> tags;
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private DataLakeStoreAccountStatus provisioningState;
 
     /**
-     * the Data Lake Store account properties.
+     * the status of the Data Lake Store account after provisioning has
+     * completed. Possible values include: 'Active', 'Suspended'.
      */
-    private DataLakeStoreAccountProperties properties;
+    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
+    private DataLakeStoreAccountState state;
 
     /**
-     * Get the location value.
-     *
-     * @return the location value
+     * the account creation time.
      */
-    public String location() {
-        return this.location;
-    }
+    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime creationTime;
 
     /**
-     * Set the location value.
-     *
-     * @param location the location value to set
-     * @return the DataLakeStoreAccount object itself.
+     * The current state of encryption for this Data Lake store account.
+     * Possible values include: 'Enabled', 'Disabled'.
      */
-    public DataLakeStoreAccount withLocation(String location) {
-        this.location = location;
-        return this;
-    }
+    @JsonProperty(value = "properties.encryptionState")
+    private EncryptionState encryptionState;
 
     /**
-     * Get the name value.
-     *
-     * @return the name value
+     * The current state of encryption provisioning for this Data Lake store
+     * account. Possible values include: 'Creating', 'Succeeded'.
      */
-    public String name() {
-        return this.name;
-    }
+    @JsonProperty(value = "properties.encryptionProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private EncryptionProvisioningState encryptionProvisioningState;
 
     /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the DataLakeStoreAccount object itself.
+     * The Key vault encryption configuration.
      */
-    public DataLakeStoreAccount withName(String name) {
-        this.name = name;
-        return this;
-    }
+    @JsonProperty(value = "properties.encryptionConfig")
+    private EncryptionConfig encryptionConfig;
 
     /**
-     * Get the type value.
-     *
-     * @return the type value
+     * The current state of the IP address firewall for this Data Lake store
+     * account. Possible values include: 'Enabled', 'Disabled'.
      */
-    public String type() {
-        return this.type;
-    }
+    @JsonProperty(value = "properties.firewallState")
+    private FirewallState firewallState;
 
     /**
-     * Get the id value.
-     *
-     * @return the id value
+     * The list of firewall rules associated with this Data Lake store account.
      */
-    public String id() {
-        return this.id;
-    }
+    @JsonProperty(value = "properties.firewallRules")
+    private List<FirewallRule> firewallRules;
+
+    /**
+     * The current state of the trusted identity provider feature for this
+     * Data Lake store account. Possible values include: 'Enabled',
+     * 'Disabled'.
+     */
+    @JsonProperty(value = "properties.trustedIdProviderState")
+    private TrustedIdProviderState trustedIdProviderState;
+
+    /**
+     * The list of trusted identity providers associated with this Data Lake
+     * store account.
+     */
+    @JsonProperty(value = "properties.trustedIdProviders")
+    private List<TrustedIdProvider> trustedIdProviders;
+
+    /**
+     * the account last modified time.
+     */
+    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastModifiedTime;
+
+    /**
+     * the gateway host.
+     */
+    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String endpoint;
+
+    /**
+     * the default owner group for all new folders and files created in the
+     * Data Lake Store account.
+     */
+    @JsonProperty(value = "properties.defaultGroup")
+    private String defaultGroup;
 
     /**
      * Get the identity value.
@@ -131,42 +133,196 @@ public class DataLakeStoreAccount {
     }
 
     /**
-     * Get the tags value.
+     * Get the provisioningState value.
      *
-     * @return the tags value
+     * @return the provisioningState value
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public DataLakeStoreAccountStatus provisioningState() {
+        return this.provisioningState;
     }
 
     /**
-     * Set the tags value.
+     * Get the state value.
      *
-     * @param tags the tags value to set
+     * @return the state value
+     */
+    public DataLakeStoreAccountState state() {
+        return this.state;
+    }
+
+    /**
+     * Get the creationTime value.
+     *
+     * @return the creationTime value
+     */
+    public DateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the encryptionState value.
+     *
+     * @return the encryptionState value
+     */
+    public EncryptionState encryptionState() {
+        return this.encryptionState;
+    }
+
+    /**
+     * Set the encryptionState value.
+     *
+     * @param encryptionState the encryptionState value to set
      * @return the DataLakeStoreAccount object itself.
      */
-    public DataLakeStoreAccount withTags(Map<String, String> tags) {
-        this.tags = tags;
+    public DataLakeStoreAccount withEncryptionState(EncryptionState encryptionState) {
+        this.encryptionState = encryptionState;
         return this;
     }
 
     /**
-     * Get the properties value.
+     * Get the encryptionProvisioningState value.
      *
-     * @return the properties value
+     * @return the encryptionProvisioningState value
      */
-    public DataLakeStoreAccountProperties properties() {
-        return this.properties;
+    public EncryptionProvisioningState encryptionProvisioningState() {
+        return this.encryptionProvisioningState;
     }
 
     /**
-     * Set the properties value.
+     * Get the encryptionConfig value.
      *
-     * @param properties the properties value to set
+     * @return the encryptionConfig value
+     */
+    public EncryptionConfig encryptionConfig() {
+        return this.encryptionConfig;
+    }
+
+    /**
+     * Set the encryptionConfig value.
+     *
+     * @param encryptionConfig the encryptionConfig value to set
      * @return the DataLakeStoreAccount object itself.
      */
-    public DataLakeStoreAccount withProperties(DataLakeStoreAccountProperties properties) {
-        this.properties = properties;
+    public DataLakeStoreAccount withEncryptionConfig(EncryptionConfig encryptionConfig) {
+        this.encryptionConfig = encryptionConfig;
+        return this;
+    }
+
+    /**
+     * Get the firewallState value.
+     *
+     * @return the firewallState value
+     */
+    public FirewallState firewallState() {
+        return this.firewallState;
+    }
+
+    /**
+     * Set the firewallState value.
+     *
+     * @param firewallState the firewallState value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withFirewallState(FirewallState firewallState) {
+        this.firewallState = firewallState;
+        return this;
+    }
+
+    /**
+     * Get the firewallRules value.
+     *
+     * @return the firewallRules value
+     */
+    public List<FirewallRule> firewallRules() {
+        return this.firewallRules;
+    }
+
+    /**
+     * Set the firewallRules value.
+     *
+     * @param firewallRules the firewallRules value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withFirewallRules(List<FirewallRule> firewallRules) {
+        this.firewallRules = firewallRules;
+        return this;
+    }
+
+    /**
+     * Get the trustedIdProviderState value.
+     *
+     * @return the trustedIdProviderState value
+     */
+    public TrustedIdProviderState trustedIdProviderState() {
+        return this.trustedIdProviderState;
+    }
+
+    /**
+     * Set the trustedIdProviderState value.
+     *
+     * @param trustedIdProviderState the trustedIdProviderState value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withTrustedIdProviderState(TrustedIdProviderState trustedIdProviderState) {
+        this.trustedIdProviderState = trustedIdProviderState;
+        return this;
+    }
+
+    /**
+     * Get the trustedIdProviders value.
+     *
+     * @return the trustedIdProviders value
+     */
+    public List<TrustedIdProvider> trustedIdProviders() {
+        return this.trustedIdProviders;
+    }
+
+    /**
+     * Set the trustedIdProviders value.
+     *
+     * @param trustedIdProviders the trustedIdProviders value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withTrustedIdProviders(List<TrustedIdProvider> trustedIdProviders) {
+        this.trustedIdProviders = trustedIdProviders;
+        return this;
+    }
+
+    /**
+     * Get the lastModifiedTime value.
+     *
+     * @return the lastModifiedTime value
+     */
+    public DateTime lastModifiedTime() {
+        return this.lastModifiedTime;
+    }
+
+    /**
+     * Get the endpoint value.
+     *
+     * @return the endpoint value
+     */
+    public String endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Get the defaultGroup value.
+     *
+     * @return the defaultGroup value
+     */
+    public String defaultGroup() {
+        return this.defaultGroup;
+    }
+
+    /**
+     * Set the defaultGroup value.
+     *
+     * @param defaultGroup the defaultGroup value to set
+     * @return the DataLakeStoreAccount object itself.
+     */
+    public DataLakeStoreAccount withDefaultGroup(String defaultGroup) {
+        this.defaultGroup = defaultGroup;
         return this;
     }
 

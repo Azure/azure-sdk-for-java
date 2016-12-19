@@ -21,7 +21,7 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class RecommendedElasticPoolInner extends Resource {
     /**
-     * Gets the edition of the Azure SQL Recommended Elastic Pool. The
+     * The edition of the Azure SQL Recommended Elastic Pool. The
      * ElasticPoolEditions enumeration contains all the valid editions.
      * Possible values include: 'Basic', 'Standard', 'Premium'.
      */
@@ -29,37 +29,37 @@ public class RecommendedElasticPoolInner extends Resource {
     private ElasticPoolEditions databaseEdition;
 
     /**
-     * Gets the DTU for the Sql Azure Recommended Elastic Pool.
+     * The DTU for the SQL Azure Recommended Elastic Pool.
      */
-    @JsonProperty(value = "properties.dtu", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.dtu")
     private Double dtu;
 
     /**
-     * Gets the minimum DTU for the database.
+     * The minimum DTU for the database.
      */
-    @JsonProperty(value = "properties.databaseDtuMin", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.databaseDtuMin")
     private Double databaseDtuMin;
 
     /**
-     * Gets the maximum DTU for the database.
+     * The maximum DTU for the database.
      */
-    @JsonProperty(value = "properties.databaseDtuMax", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.databaseDtuMax")
     private Double databaseDtuMax;
 
     /**
      * Gets storage size in megabytes.
      */
-    @JsonProperty(value = "properties.storageMB", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.storageMB")
     private Double storageMB;
 
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodStart", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodStart;
 
     /**
-     * Gets the observation period start.
+     * The observation period start (ISO8601 format).
      */
     @JsonProperty(value = "properties.observationPeriodEnd", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime observationPeriodEnd;
@@ -77,14 +77,13 @@ public class RecommendedElasticPoolInner extends Resource {
     private Double maxObservedStorageMB;
 
     /**
-     * Gets the list of Azure Sql Databases in this pool. Expanded property.
+     * The list of Azure SQL Databases in this pool. Expanded property.
      */
     @JsonProperty(value = "properties.databases", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseInner> databases;
 
     /**
-     * Gets the list of Azure Sql Databases housed in the server. Expanded
-     * property.
+     * The list of Azure SQL Databases housed in the server. Expanded property.
      */
     @JsonProperty(value = "properties.metrics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RecommendedElasticPoolMetricInner> metrics;
@@ -108,12 +107,34 @@ public class RecommendedElasticPoolInner extends Resource {
     }
 
     /**
+     * Set the dtu value.
+     *
+     * @param dtu the dtu value to set
+     * @return the RecommendedElasticPoolInner object itself.
+     */
+    public RecommendedElasticPoolInner withDtu(Double dtu) {
+        this.dtu = dtu;
+        return this;
+    }
+
+    /**
      * Get the databaseDtuMin value.
      *
      * @return the databaseDtuMin value
      */
     public Double databaseDtuMin() {
         return this.databaseDtuMin;
+    }
+
+    /**
+     * Set the databaseDtuMin value.
+     *
+     * @param databaseDtuMin the databaseDtuMin value to set
+     * @return the RecommendedElasticPoolInner object itself.
+     */
+    public RecommendedElasticPoolInner withDatabaseDtuMin(Double databaseDtuMin) {
+        this.databaseDtuMin = databaseDtuMin;
+        return this;
     }
 
     /**
@@ -126,12 +147,34 @@ public class RecommendedElasticPoolInner extends Resource {
     }
 
     /**
+     * Set the databaseDtuMax value.
+     *
+     * @param databaseDtuMax the databaseDtuMax value to set
+     * @return the RecommendedElasticPoolInner object itself.
+     */
+    public RecommendedElasticPoolInner withDatabaseDtuMax(Double databaseDtuMax) {
+        this.databaseDtuMax = databaseDtuMax;
+        return this;
+    }
+
+    /**
      * Get the storageMB value.
      *
      * @return the storageMB value
      */
     public Double storageMB() {
         return this.storageMB;
+    }
+
+    /**
+     * Set the storageMB value.
+     *
+     * @param storageMB the storageMB value to set
+     * @return the RecommendedElasticPoolInner object itself.
+     */
+    public RecommendedElasticPoolInner withStorageMB(Double storageMB) {
+        this.storageMB = storageMB;
+        return this;
     }
 
     /**

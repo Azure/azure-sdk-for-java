@@ -1,18 +1,16 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsBatchCreation;
-import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeleting;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 import rx.functions.Func1;
-import rx.observables.BlockingObservable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -20,7 +18,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 
 /**
  * Base class for creatable resource collection, i.e. those where the member of the collection is of Resource
@@ -31,12 +28,10 @@ import java.util.Map;
  * @param <ImplT> the individual resource implementation
  * @param <InnerT> the wrapper inner type
  */
-public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T, InnerT>
+public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends T, InnerT>
         extends CreatableWrappersImpl<T, ImplT, InnerT>
         implements
-            SupportsBatchCreation<T>,
-            // Assume anything creatable is deletable
-            SupportsDeleting {
+            SupportsBatchCreation<T> {
 
     protected CreatableResourcesImpl() {
     }
@@ -44,47 +39,37 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
     @Override
     @SafeVarargs
     public final CreatedResources<T> create(Creatable<T> ... creatables) {
-        return BlockingObservable.from(createAsync(creatables)).single();
+        return createAsyncNonStream(creatables)
+                .toBlocking()
+                .single();
     }
 
     @Override
     public final CreatedResources<T> create(List<Creatable<T>> creatables) {
-        return BlockingObservable.from(createAsync(creatables)).single();
+        return createAsyncNonStream(creatables)
+                .toBlocking()
+                .single();
     }
 
     @Override
     @SafeVarargs
-    public final Observable<CreatedResources<T>> createAsync(Creatable<T> ... creatables) {
+    public final Observable<Indexable> createAsync(Creatable<T> ... creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-
-        return rootResource.createAsync()
-                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
-                    @Override
-                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
-                    }
-                });
+        return rootResource.createAsync();
     }
 
     @Override
-    public final Observable<CreatedResources<T>> createAsync(List<Creatable<T>> creatables) {
+    public final Observable<Indexable> createAsync(List<Creatable<T>> creatables) {
         CreatableUpdatableResourcesRootImpl<T> rootResource = new CreatableUpdatableResourcesRootImpl<>();
         rootResource.addCreatableDependencies(creatables);
-
-        return rootResource.createAsync()
-                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
-                    @Override
-                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
-                        return new CreatedResourcesImpl<T>(tCreatableUpdatableResourcesRoot);
-                    }
-                });
+        return rootResource.createAsync();
     }
 
     @Override
     @SafeVarargs
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, Creatable<T>... creatables) {
-        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
                 // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
@@ -95,7 +80,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
     @Override
     public final ServiceCall<CreatedResources<T>> createAsync(final ServiceCallback<CreatedResources<T>> callback, List<Creatable<T>> creatables) {
-        return ServiceCall.create(createAsync(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
+        return ServiceCall.create(createAsyncNonStream(creatables).map(new Func1<CreatedResources<T>, ServiceResponse<CreatedResources<T>>>() {
             @Override
             public ServiceResponse<CreatedResources<T>> call(CreatedResources<T> ts) {
                 // TODO: When https://github.com/Azure/azure-sdk-for-java/issues/1029 is done, this map can be removed
@@ -104,26 +89,32 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }), callback);
     }
 
-    @Override
-    public void delete(String id) {
-        deleteAsync(id).toBlocking().subscribe();
+
+    private Observable<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
+        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot);
+                    }
+                });
     }
 
-    @Override
-    public ServiceCall<Void> deleteAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceCall.create(deleteAsync(id).map(new Func1<Void, ServiceResponse<Void>>() {
-            @Override
-            public ServiceResponse<Void> call(Void aVoid) {
-                return new ServiceResponse<>(aVoid, null);
-            }
-        }), callback);
+    private Observable<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
+        return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
+                .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
+                    @Override
+                    public CreatedResources<T> call(CreatableUpdatableResourcesRoot<T> tCreatableUpdatableResourcesRoot) {
+                        return new CreatedResourcesImpl<>(tCreatableUpdatableResourcesRoot);
+                    }
+                });
     }
 
     /**
      * Implements {@link CreatedResources}.
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatedResourcesImpl<ResourceT extends Resource> implements CreatedResources<ResourceT> {
+    private class CreatedResourcesImpl<ResourceT extends Indexable> implements CreatedResources<ResourceT> {
         private CreatableUpdatableResourcesRoot<ResourceT> creatableUpdatableResourcesRoot;
         private final List<ResourceT> list;
 
@@ -133,7 +124,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public Resource createdRelatedResource(String key) {
+        public Indexable createdRelatedResource(String key) {
             return this.creatableUpdatableResourcesRoot.createdRelatedResource(key);
         }
 
@@ -259,9 +250,9 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    interface CreatableUpdatableResourcesRoot<ResourceT extends Resource> extends Resource {
+    interface CreatableUpdatableResourcesRoot<ResourceT extends Indexable> extends Indexable {
         List<ResourceT> createdTopLevelResources();
-        Resource createdRelatedResource(String key);
+         Indexable createdRelatedResource(String key);
     }
 
     /**
@@ -269,7 +260,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
      *
      * @param <ResourceT> the type of the resources in the batch.
      */
-    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Resource>
+    private class CreatableUpdatableResourcesRootImpl<ResourceT extends Indexable>
             extends CreatableUpdatableImpl<CreatableUpdatableResourcesRoot<ResourceT>, Object, CreatableUpdatableResourcesRootImpl<ResourceT>>
             implements CreatableUpdatableResourcesRoot<ResourceT> {
         /**
@@ -292,7 +283,7 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
         }
 
         @Override
-        public Resource createdRelatedResource(String key) {
+        public Indexable createdRelatedResource(String key) {
             return creatorUpdatorTaskGroup().createdResource(key);
         }
 
@@ -331,31 +322,6 @@ public abstract class CreatableResourcesImpl<T extends Resource, ImplT extends T
 
         @Override
         public CreatableUpdatableResourcesRoot<ResourceT> refresh() {
-            return null;
-        }
-
-        @Override
-        public String id() {
-            return null;
-        }
-
-        @Override
-        public String type() {
-            return null;
-        }
-
-        @Override
-        public String regionName() {
-            return null;
-        }
-
-        @Override
-        public Region region() {
-            return null;
-        }
-
-        @Override
-        public Map<String, String> tags() {
             return null;
         }
     }

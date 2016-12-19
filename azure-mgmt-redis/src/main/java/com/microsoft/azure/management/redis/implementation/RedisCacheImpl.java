@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.redis.DayOfWeek;
 import com.microsoft.azure.management.redis.RebootType;
 import com.microsoft.azure.management.redis.RedisAccessKeys;
@@ -19,6 +20,7 @@ import com.microsoft.azure.management.redis.SkuFamily;
 import com.microsoft.azure.management.redis.SkuName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.joda.time.Period;
 import rx.Observable;
 import rx.functions.Action1;
@@ -75,12 +77,12 @@ class RedisCacheImpl
 
     @Override
     public int port() {
-        return this.inner().port();
+        return Utils.toPrimitiveInt(this.inner().port());
     }
 
     @Override
     public int sslPort() {
-        return this.inner().sslPort();
+        return Utils.toPrimitiveInt(this.inner().sslPort());
     }
 
     @Override
@@ -100,7 +102,7 @@ class RedisCacheImpl
 
     @Override
     public int shardCount() {
-        return this.inner().shardCount();
+        return Utils.toPrimitiveInt(this.inner().shardCount());
     }
 
     @Override
@@ -119,6 +121,7 @@ class RedisCacheImpl
     }
 
     @Override
+    @Method
     public RedisCachePremium asPremium() {
         if (this.isPremium()) {
             return (RedisCachePremium) this;
@@ -430,8 +433,11 @@ class RedisCacheImpl
 
     @Override
     public List<ScheduleEntry> listPatchSchedules() {
-        return patchSchedulesInner.get(resourceGroupName(), name())
-                                   .scheduleEntries();
+        RedisPatchScheduleInner patchSchedules =  patchSchedulesInner.get(resourceGroupName(), name());
+        if (patchSchedules != null) {
+            return patchSchedules.scheduleEntries();
+        }
+        return null;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
@@ -12,12 +13,25 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 /**
  * The implementation for {@link VirtualMachineImages}.
  */
+@LangDefinition
 class VirtualMachineImagesImpl
         implements VirtualMachineImages {
     private final VirtualMachinePublishers publishers;
+    private final VirtualMachineImagesInner client;
 
-    VirtualMachineImagesImpl(VirtualMachinePublishers publishers) {
+    VirtualMachineImagesImpl(VirtualMachinePublishers publishers, VirtualMachineImagesInner client) {
         this.publishers = publishers;
+        this.client = client;
+    }
+
+    @Override
+    public VirtualMachineImage getImage(Region region, String publisherName, String offerName, String skuName, String version) {
+        VirtualMachineImageInner innerImage = this.client.get(region.name(),
+                publisherName,
+                offerName,
+                skuName,
+                version);
+        return new VirtualMachineImageImpl(region, publisherName, offerName, skuName, version, innerImage);
     }
 
     @Override

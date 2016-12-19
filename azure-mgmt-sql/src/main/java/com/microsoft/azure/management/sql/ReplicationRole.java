@@ -8,61 +8,55 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for ReplicationRole.
  */
-public final class ReplicationRole {
-    /** Static value Primary for ReplicationRole. */
-    public static final ReplicationRole PRIMARY = new ReplicationRole("Primary");
+public enum ReplicationRole {
+    /** Enum value Primary. */
+    PRIMARY("Primary"),
 
-    /** Static value Secondary for ReplicationRole. */
-    public static final ReplicationRole SECONDARY = new ReplicationRole("Secondary");
+    /** Enum value Secondary. */
+    SECONDARY("Secondary"),
 
-    /** Static value NonReadableSecondary for ReplicationRole. */
-    public static final ReplicationRole NON_READABLE_SECONDARY = new ReplicationRole("NonReadableSecondary");
+    /** Enum value NonReadableSecondary. */
+    NON_READABLE_SECONDARY("NonReadableSecondary"),
 
-    /** Static value Source for ReplicationRole. */
-    public static final ReplicationRole SOURCE = new ReplicationRole("Source");
+    /** Enum value Source. */
+    SOURCE("Source"),
 
-    /** Static value Copy for ReplicationRole. */
-    public static final ReplicationRole COPY = new ReplicationRole("Copy");
+    /** Enum value Copy. */
+    COPY("Copy");
 
+    /** The actual serialized value for a ReplicationRole instance. */
     private String value;
 
-    /**
-     * Creates a custom value for ReplicationRole.
-     * @param value the custom value
-     */
-    public ReplicationRole(String value) {
+    ReplicationRole(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a ReplicationRole instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed ReplicationRole object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static ReplicationRole fromString(String value) {
+        ReplicationRole[] items = ReplicationRole.values();
+        for (ReplicationRole item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ReplicationRole)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        ReplicationRole rhs = (ReplicationRole) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }

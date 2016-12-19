@@ -20,7 +20,7 @@ public abstract class DataLakeStoreManagementTestBase {
                 AzureEnvironment.AZURE);
 
         RestClient restClient = new RestClient.Builder()
-                .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
+                .withBaseUrl("https://management.azure.com")
                 .withCredentials(credentials)
                 .withLogLevel(HttpLoggingInterceptor.Level.BODY)
                 .build();

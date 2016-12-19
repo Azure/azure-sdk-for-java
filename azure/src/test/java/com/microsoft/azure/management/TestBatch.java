@@ -10,7 +10,10 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccounts;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.junit.Assert;
+import rx.Observable;
 import rx.functions.Action1;
 
 public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
@@ -19,11 +22,15 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
         final String batchAccountName = "batch" + this.testId;
         final BatchAccount[] batchAccounts = new BatchAccount[1];
         final SettableFuture<BatchAccount> future = SettableFuture.create();
-        resources.define(batchAccountName)
+
+
+        Observable<Indexable> resourceStream = resources.define(batchAccountName)
                 .withRegion(Region.INDIA_CENTRAL)
                 .withNewResourceGroup()
                 .withTag("mytag", "testtag")
-                .createAsync()
+                .createAsync();
+
+        Utils.<BatchAccount>rootResource(resourceStream)
                 .subscribe(new Action1<BatchAccount>() {
                     @Override
                     public void call(BatchAccount batchAccount) {
@@ -32,7 +39,6 @@ public class TestBatch extends TestTemplate<BatchAccount, BatchAccounts>  {
                 });
 
         batchAccounts[0] = future.get();
-
         Assert.assertNull(batchAccounts[0].autoStorage());
 
         return batchAccounts[0];

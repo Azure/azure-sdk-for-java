@@ -1,10 +1,8 @@
 package com.microsoft.azure.management.compute;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.compute.implementation.VirtualMachineExtensionInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
-import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,54 +13,8 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineExtension extends
-        ExternalChildResource<VirtualMachineExtension, VirtualMachine>,
-        Wrapper<VirtualMachineExtensionInner> {
-    /**
-     * @return the publisher name of the virtual machine extension image this extension is created from
-     */
-    String publisherName();
-
-    /**
-     * @return the type name of the virtual machine extension image this extension is created from
-     */
-    String typeName();
-
-    /**
-     * @return the version name of the virtual machine extension image this extension is created from
-     */
-    String versionName();
-
-    /**
-     * @return true if this extension is configured to upgrade automatically when a new minor version of
-     * virtual machine extension image that this extension based on is published
-     */
-    boolean autoUpgradeMinorVersionEnabled();
-
-    /**
-     * @return the public settings of the virtual machine extension as key value pairs
-     */
-    Map<String, Object> publicSettings();
-
-    /**
-     * @return the public settings of the virtual machine extension as a json string
-     */
-    String publicSettingsAsJsonString();
-
-    /**
-     * @return the instance view of this virtual machine extension
-     */
-    VirtualMachineExtensionInstanceView instanceView();
-
-    /**
-     * @return the tags for this virtual machine extension
-     */
-    Map<String, String> tags();
-
-    /**
-     * @return the provisioning state of this virtual machine extension
-     */
-    String provisioningState();
-
+        VirtualMachineExtensionBase,
+        ExternalChildResource<VirtualMachineExtension, VirtualMachine> {
     /**
      * Grouping of virtual machine extension definition stages as a part of parent virtual machine definition.
      */
@@ -166,14 +118,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
              * disables auto upgrade of the extension.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
@@ -357,14 +309,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionEnabled();
+            WithAttach<ParentT> withMinorVersionAutoUpgrade();
 
             /**
              * disables auto upgrade of the extension.
              *
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withAutoUpgradeMinorVersionDisabled();
+            WithAttach<ParentT> withoutMinorVersionAutoUpgrade();
         }
 
         /**
@@ -458,14 +410,14 @@ public interface VirtualMachineExtension extends
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionEnabled();
+            Update withMinorVersionAutoUpgrade();
 
             /**
              * enables auto upgrade of the extension.
              *
              * @return the next stage of the update
              */
-            Update withAutoUpgradeMinorVersionDisabled();
+            Update withoutMinorVersionAutoUpgrade();
         }
 
         /**

@@ -35,6 +35,9 @@ final class FeaturesImpl
 
     @Override
     protected FeatureImpl wrapModel(FeatureResultInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new FeatureImpl(inner);
     }
 }

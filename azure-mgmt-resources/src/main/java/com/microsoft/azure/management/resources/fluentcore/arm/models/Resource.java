@@ -13,17 +13,13 @@ import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import java.util.Map;
 
 /**
-* Base interfaces for fluent resources.
-*/
+ * Base interfaces for fluent resources.
+ */
 @LangDefinition()
 public interface Resource extends
-    Indexable,
-    HasName {
-
-    /**
-     * @return the resource ID string
-     */
-    String id();
+        Indexable,
+        HasId,
+        HasName {
 
     /**
      * @return the type of the resource

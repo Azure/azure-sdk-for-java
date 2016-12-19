@@ -15,11 +15,11 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for DataLakeStoreAccountState.
  */
 public enum DataLakeStoreAccountState {
-    /** Enum value active. */
-    ACTIVE("active"),
+    /** Enum value Active. */
+    ACTIVE("Active"),
 
-    /** Enum value suspended. */
-    SUSPENDED("suspended");
+    /** Enum value Suspended. */
+    SUSPENDED("Suspended");
 
     /** The actual serialized value for a DataLakeStoreAccountState instance. */
     private String value;

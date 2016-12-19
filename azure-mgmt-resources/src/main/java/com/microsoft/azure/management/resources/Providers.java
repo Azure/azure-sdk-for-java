@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByName;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.rest.ServiceResponse;
+import rx.Observable;
 
 /**
  * Entry point to providers management API.
@@ -33,4 +34,12 @@ public interface Providers extends
      * @return the ProviderInner object wrapped in {@link ServiceResponse} if successful
      */
     Provider register(String resourceProviderNamespace);
+
+    /**
+     * Gets the information about a provider from Azure based on the provider name.
+     *
+     * @param name the name of the provider
+     * @return an observable of the immutable representation of the Provider
+     */
+    Observable<Provider> getByNameAsync(String name);
 }

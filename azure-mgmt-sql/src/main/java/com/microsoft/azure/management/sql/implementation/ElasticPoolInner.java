@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.sql.implementation;
 
 import org.joda.time.DateTime;
+import com.microsoft.azure.management.sql.ElasticPoolState;
 import com.microsoft.azure.management.sql.ElasticPoolEditions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -20,44 +21,45 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ElasticPoolInner extends Resource {
     /**
-     * Gets the creation date of the Azure SQL Elastic Pool.
+     * The creation date of the Azure SQL Elastic Pool (ISO8601 format).
      */
     @JsonProperty(value = "properties.creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationDate;
 
     /**
-     * Gets the state of the Azure SQL Elastic Pool.
+     * The state of the Azure SQL Elastic Pool. Possible values include:
+     * 'Creating', 'Ready', 'Disabled'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private String state;
+    private ElasticPoolState state;
 
     /**
-     * Gets the edition of the Azure SQL Elastic Pool. Possible values
-     * include: 'Basic', 'Standard', 'Premium'.
+     * The edition of the Azure SQL Elastic Pool. Possible values include:
+     * 'Basic', 'Standard', 'Premium'.
      */
     @JsonProperty(value = "properties.edition")
     private ElasticPoolEditions edition;
 
     /**
-     * Gets the total shared DTU for the Sql Azure Database Elastic Pool.
+     * The total shared DTU for the SQL Azure Database Elastic Pool.
      */
     @JsonProperty(value = "properties.dtu")
     private Integer dtu;
 
     /**
-     * Gets the maximum DTU any one Sql Azure Database can consume.
+     * The maximum DTU any one SQL Azure Database can consume.
      */
     @JsonProperty(value = "properties.databaseDtuMax")
     private Integer databaseDtuMax;
 
     /**
-     * Gets the minimum DTU all Sql Azure Databases are guaranteed.
+     * The minimum DTU all SQL Azure Databases are guaranteed.
      */
     @JsonProperty(value = "properties.databaseDtuMin")
     private Integer databaseDtuMin;
 
     /**
-     * Gets storage limit for the Sql Azure Database Elastic Pool in MB.
+     * Gets storage limit for the SQL Azure Database Elastic Pool in MB.
      */
     @JsonProperty(value = "properties.storageMB")
     private Integer storageMB;
@@ -76,7 +78,7 @@ public class ElasticPoolInner extends Resource {
      *
      * @return the state value
      */
-    public String state() {
+    public ElasticPoolState state() {
         return this.state;
     }
 

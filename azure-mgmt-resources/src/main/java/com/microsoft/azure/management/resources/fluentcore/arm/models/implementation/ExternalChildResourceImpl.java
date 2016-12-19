@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 package com.microsoft.azure.management.resources.fluentcore.arm.models.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -8,7 +13,7 @@ import rx.Observable;
  * Inorder to be eligible for an external child resource following criteria must be satisfied:
  * 1. It's is always associated with a parent resource and has no existence without parent
  *    i.e. if you delete parent then child resource will be deleted automatically.
- * 2. Parent will contain collection of child resources. this is not a hard requirement.
+ * 2. Parent may or may not contain collection of child resources (i.e. as inline collection property).
  * 3. It's has an ID and can be created, updated, fetched and deleted independent of the parent
  *    i.e. CRUD on child resource does not require CRUD on the parent
  * (Internal use only)
@@ -91,6 +96,13 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
      * @return the observable to track the delete action.
      */
     public abstract Observable<Void> deleteAsync();
+
+    /**
+     * @return the key of this child resource in the collection maintained by ExternalChildResourceCollectionImpl
+     */
+    public String childResourceKey() {
+        return name();
+    }
 
     /**
      * The possible operation pending on a child resource in-memory.

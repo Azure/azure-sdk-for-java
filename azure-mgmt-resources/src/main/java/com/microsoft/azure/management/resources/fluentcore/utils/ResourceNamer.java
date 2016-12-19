@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -7,6 +8,7 @@ import java.util.UUID;
  */
 public class ResourceNamer {
     private final String randName;
+    private final Random random = new Random();
 
     /**
      * Creates ResourceNamer.
@@ -31,11 +33,11 @@ public class ResourceNamer {
             return randomString(maxLen);
         }
 
-        if (maxLen <= prefix.length() + minRandomnessLength) {
+        if (maxLen < prefix.length() + minRandomnessLength) {
             return randomString(maxLen);
         }
 
-        String minRandomString = String.valueOf(System.currentTimeMillis() % 100000L);
+        String minRandomString = String.format("%05d", Math.abs(random.nextInt() % 100000));
         if (maxLen <= prefix.length() + randName.length() + minRandomnessLength) {
             String str = prefix + minRandomString;
             return str + randomString((maxLen - str.length()) / 2);

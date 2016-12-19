@@ -15,10 +15,24 @@ import java.util.List;
  * Type represents a node in a {@link Graph}.
  *
  * @param <T> the type of the data stored in the node
+ * @param <U> the type of the node
  */
-public class Node<T> {
-    private String key;
-    private T data;
+public class Node<T, U extends Node<T, U>> {
+    /**
+     * The graph that owns this node.
+     */
+    private Graph<T, U> ownerGraph;
+    /**
+     * A key that uniquely identifies this node in the owner graph {@link this#ownerGraph}.
+     */
+    private final String key;
+    /**
+     * reference to the data stored in the node.
+     */
+    private final T data;
+    /**
+     * the collection of child node keys.
+     */
     private List<String> children;
 
     /**
@@ -27,7 +41,7 @@ public class Node<T> {
      * @param key unique id of the node
      * @param data data to be stored in the node
      */
-    public Node(String key, T data) {
+    public Node(final String key, final T data) {
         this.key = key;
         this.data = data;
         this.children = new ArrayList<>();
@@ -66,5 +80,27 @@ public class Node<T> {
      */
     public void addChild(String childKey) {
         this.children.add(childKey);
+    }
+
+    /**
+     * Sets reference to the graph owning this node.
+     *
+     * @param ownerGraph the owning graph
+     */
+    public void setOwner(Graph<T, U> ownerGraph) {
+        if (this.ownerGraph != null) {
+            throw new RuntimeException("Changing owner graph is not allowed");
+        }
+        this.ownerGraph = ownerGraph;
+    }
+
+    /**
+     * @return the owner (container) graph of this node.
+     */
+    public Graph<T, U> owner() {
+        if (this.ownerGraph == null) {
+            throw new RuntimeException("Required owner graph is not set");
+        }
+        return this.ownerGraph;
     }
 }

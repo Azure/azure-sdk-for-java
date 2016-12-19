@@ -6,6 +6,9 @@
 
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
+import com.microsoft.azure.management.resources.Provider;
+import com.microsoft.azure.management.resources.ProviderResourceType;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,7 +24,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String groupFromResourceId(String id) {
-        return extractFromResourceId(id, "resource[gG]roups");
+        return ResourceId.parseResourceId(id).resourceGroupName();
     }
 
     /**
@@ -30,7 +33,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String resourceProviderFromResourceId(String id) {
-        return extractFromResourceId(id, "providers");
+        return ResourceId.parseResourceId(id).providerNamespace();
     }
 
     /**
@@ -39,17 +42,69 @@ public final class ResourceUtils {
      * @return the resource type
      */
     public static String resourceTypeFromResourceId(String id) {
-        String[] splits = id.split("/");
-        return splits[splits.length - 2];
+        if (id == null) {
+            return null;
+        }
+        return ResourceId.parseResourceId(id).resourceType();
+    }
+
+    /**
+     * Extract parent resource ID from a resource ID string.
+     * E.g. subscriptions/s/resourcegroups/r/foos/foo/bars/bar will return
+     * subscriptions/s/resourcegroups/r/foos/foo.
+     *
+     * @param id the resource ID string
+     * @return the parent resource ID
+     */
+    public static String parentResourceIdFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
+        ResourceId resourceId = ResourceId.parseResourceId(id);
+        if (resourceId != null && resourceId.parent() != null) {
+            return ResourceId.parseResourceId(id).parent().id();
+        }
+
+        return null;
     }
 
     /**
      * Extract parent resource path from a resource ID string.
+     * E.g. subscriptions/s/resourcegroups/r/foos/foo/bars/bar will return foos/foo.
+     *
      * @param id the resource ID string
-     * @return the parent resource path
+     * @return the parent resource ID
      */
-    public static String parentResourcePathFromResourceId(String id) {
-        return id.replace("/" + resourceTypeFromResourceId(id) + "/" + nameFromResourceId(id), "");
+    public static String parentRelativePathFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
+
+        ResourceId parent = ResourceId.parseResourceId(id).parent();
+        if (parent != null) {
+            return parent.resourceType() + "/" + parent.name();
+        }
+
+        return "";
+    }
+
+    /**
+     * Extract the relative path to the current resource provider.
+     * E.g. subscriptions/sub1/resourceGroups/rg1/providers/Microsoft.Foo/foos/foo1 will return foos/foo1.
+     *
+     * @param id the id of the resource
+     * @return the relative path
+     */
+    public static String relativePathFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
+        String[] paths = id.split("/providers/" + resourceProviderFromResourceId(id) + "/", 2);
+        if (paths.length == 1) {
+            return "";
+        } else {
+            return paths[1];
+        }
     }
 
     /**
@@ -64,7 +119,7 @@ public final class ResourceUtils {
         if (id == null || identifier == null) {
             return id;
         }
-        Pattern pattern = Pattern.compile(identifier + "/[-\\w\\._]+");
+        Pattern pattern = Pattern.compile(identifier + "/[-\\w._]+");
         Matcher matcher = pattern.matcher(id);
         if (matcher.find()) {
             return matcher.group().split("/")[1];
@@ -79,7 +134,74 @@ public final class ResourceUtils {
      * @return the name of the resource
      */
     public static String nameFromResourceId(String id) {
-        String[] splits = id.split("/");
-        return splits[splits.length - 1];
+        if (id == null) {
+            return null;
+        }
+        return ResourceId.parseResourceId(id).name();
+    }
+
+    /**
+     * Find out the default api version to make a REST request with from
+     * the resource provider.
+     *
+     * @param id the resource ID
+     * @param provider the resource provider
+     * @return the default api version to use
+     */
+    public static String defaultApiVersion(String id, Provider provider) {
+        String resourceType = resourceTypeFromResourceId(id).toLowerCase();
+        // Exact match
+        for (ProviderResourceType prt : provider.resourceTypes()) {
+            if (prt.resourceType().equalsIgnoreCase(resourceType)) {
+                return prt.apiVersions().get(0);
+            }
+        }
+        // child resource, e.g. sites/config
+        for (ProviderResourceType prt : provider.resourceTypes()) {
+            if (prt.resourceType().toLowerCase().contains("/" + resourceType)) {
+                return prt.apiVersions().get(0);
+            }
+        }
+        // look for parent
+        String parentId = parentResourceIdFromResourceId(id);
+        if (parentId != null) {
+            return defaultApiVersion(parentId, provider);
+        } else {
+            // Fallback: use a random one, not guaranteed to work
+            return provider.resourceTypes().get(0).apiVersions().get(0);
+        }
+    }
+
+    /**
+     * Creates a resource ID from information of a generic resource.
+     *
+     * @param subscriptionId the subscription UUID
+     * @param resourceGroupName the resource group name
+     * @param resourceProviderNamespace the resource provider namespace
+     * @param resourceType the type of the resource or nested resource
+     * @param resourceName name of the resource or nested resource
+     * @param parentResourcePath parent resource's relative path to the provider,
+     *                           if the resource is a generic resource
+     * @return the resource ID string
+     */
+    public static String constructResourceId(
+            final String subscriptionId,
+            final String resourceGroupName,
+            final String resourceProviderNamespace,
+            final String resourceType,
+            final String resourceName,
+            final String parentResourcePath) {
+        String prefixedParentPath = parentResourcePath;
+        if (parentResourcePath != null && !parentResourcePath.isEmpty()) {
+            prefixedParentPath = "/" + parentResourcePath;
+        }
+        return String.format(
+                "/subscriptions/%s/resourcegroups/%s/providers/%s%s/%s/%s",
+                subscriptionId,
+                resourceGroupName,
+                resourceProviderNamespace,
+                prefixedParentPath,
+                resourceType,
+                resourceName);
     }
 }

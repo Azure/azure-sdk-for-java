@@ -8,25 +8,29 @@
 
 package com.microsoft.azure.management.datalake.store.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The KeyVaultMetaInfo model.
+ * Metadata information used by account encryption.
  */
 public class KeyVaultMetaInfo {
     /**
      * The resource identifier for the user managed Key Vault being used to
      * encrypt.
      */
+    @JsonProperty(required = true)
     private String keyVaultResourceId;
 
     /**
      * The name of the user managed encryption key.
      */
+    @JsonProperty(required = true)
     private String encryptionKeyName;
 
     /**
      * The version of the user managed encryption key.
      */
+    @JsonProperty(required = true)
     private String encryptionKeyVersion;
 
     /**

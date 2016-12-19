@@ -37,6 +37,9 @@ final class SubscriptionsImpl
     // Gets a specific resource group
     public SubscriptionImpl getByName(String name) {
         SubscriptionInner subscription = client.get(name);
+        if (subscription == null) {
+            return null;
+        }
         return new SubscriptionImpl(subscription, client);
     }
 }

@@ -8,52 +8,46 @@
 
 package com.microsoft.azure.management.sql;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for TableType.
  */
-public final class TableType {
-    /** Static value BaseTable for TableType. */
-    public static final TableType BASE_TABLE = new TableType("BaseTable");
+public enum TableType {
+    /** Enum value BaseTable. */
+    BASE_TABLE("BaseTable"),
 
-    /** Static value View for TableType. */
-    public static final TableType VIEW = new TableType("View");
+    /** Enum value View. */
+    VIEW("View");
 
+    /** The actual serialized value for a TableType instance. */
     private String value;
 
-    /**
-     * Creates a custom value for TableType.
-     * @param value the custom value
-     */
-    public TableType(String value) {
+    TableType(String value) {
         this.value = value;
+    }
+
+    /**
+     * Parses a serialized value to a TableType instance.
+     *
+     * @param value the serialized value to parse.
+     * @return the parsed TableType object, or null if unable to parse.
+     */
+    @JsonCreator
+    public static TableType fromString(String value) {
+        TableType[] items = TableType.values();
+        for (TableType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof TableType)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        TableType rhs = (TableType) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+        return this.value;
     }
 }

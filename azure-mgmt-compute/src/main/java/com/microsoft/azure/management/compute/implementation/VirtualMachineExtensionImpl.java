@@ -109,13 +109,13 @@ class VirtualMachineExtensionImpl
     }
 
     @Override
-    public VirtualMachineExtensionImpl withAutoUpgradeMinorVersionEnabled() {
+    public VirtualMachineExtensionImpl withMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(true);
         return this;
     }
 
     @Override
-    public VirtualMachineExtensionImpl withAutoUpgradeMinorVersionDisabled() {
+    public VirtualMachineExtensionImpl withoutMinorVersionAutoUpgrade() {
         this.inner().withAutoUpgradeMinorVersion(false);
         return this;
     }
@@ -210,7 +210,7 @@ class VirtualMachineExtensionImpl
         return this;
     }
 
-    // Implementation of ExternalChildResourceImpl createAsync,  updateAsync and deleteAsync
+    // Implementation of ExternalChildResourceImpl createAsyncStreaming,  updateAsync and deleteAsync
     //
     @Override
     public Observable<VirtualMachineExtension> createAsync() {

@@ -10,7 +10,7 @@ package com.microsoft.azure.management.resources.implementation;
 
 
 /**
- * The DeploymentExportResultInner model.
+ * The deployment export result.
  */
 public class DeploymentExportResultInner {
     /**

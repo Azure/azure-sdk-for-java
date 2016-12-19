@@ -48,5 +48,5 @@ public interface Creatable<T> extends
      * @return an observable of the request
      */
     @Method
-    Observable<T> createAsync();
+    Observable<Indexable> createAsync();
 }

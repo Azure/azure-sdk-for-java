@@ -303,7 +303,7 @@ public final class ManageInternalLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces2.get(0))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet2);
@@ -316,7 +316,7 @@ public final class ManageInternalLoadBalancer {
                         .withExistingResourceGroup(rgName)
                         .withExistingPrimaryNetworkInterface(networkInterfaces2.get(1))
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                        .withRootUserName(userName)
+                        .withRootUsername(userName)
                         .withSsh(sshKey)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .withExistingAvailabilitySet(availSet2);
@@ -450,7 +450,7 @@ public final class ManageInternalLoadBalancer {
 
                 System.out.println("Deleting load balancer " + loadBalancerName4
                         + "(" + loadBalancer4.id() + ")");
-                azure.loadBalancers().delete(loadBalancer4.id());
+                azure.loadBalancers().deleteById(loadBalancer4.id());
                 System.out.println("Deleted load balancer" + loadBalancerName4);
 
 
@@ -462,7 +462,7 @@ public final class ManageInternalLoadBalancer {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");

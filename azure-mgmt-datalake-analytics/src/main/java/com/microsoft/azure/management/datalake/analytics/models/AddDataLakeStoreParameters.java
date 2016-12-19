@@ -9,34 +9,36 @@
 package com.microsoft.azure.management.datalake.analytics.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
  * Additional Data Lake Store parameters.
  */
+@JsonFlatten
 public class AddDataLakeStoreParameters {
     /**
-     * the properties for the Data Lake Store account being added.
+     * the optional suffix for the Data Lake Store account.
      */
-    @JsonProperty(required = true)
-    private DataLakeStoreAccountInfoProperties properties;
+    @JsonProperty(value = "properties.suffix")
+    private String suffix;
 
     /**
-     * Get the properties value.
+     * Get the suffix value.
      *
-     * @return the properties value
+     * @return the suffix value
      */
-    public DataLakeStoreAccountInfoProperties properties() {
-        return this.properties;
+    public String suffix() {
+        return this.suffix;
     }
 
     /**
-     * Set the properties value.
+     * Set the suffix value.
      *
-     * @param properties the properties value to set
+     * @param suffix the suffix value to set
      * @return the AddDataLakeStoreParameters object itself.
      */
-    public AddDataLakeStoreParameters withProperties(DataLakeStoreAccountInfoProperties properties) {
-        this.properties = properties;
+    public AddDataLakeStoreParameters withSuffix(String suffix) {
+        this.suffix = suffix;
         return this;
     }
 

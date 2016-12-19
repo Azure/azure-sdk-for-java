@@ -13,6 +13,7 @@ import com.microsoft.azure.management.compute.VirtualMachineImage;
 import com.microsoft.azure.management.compute.VirtualMachineOffer;
 import com.microsoft.azure.management.compute.VirtualMachinePublisher;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
+import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.resources.Deployment;
 import com.microsoft.azure.management.resources.DeploymentMode;
 import com.microsoft.azure.management.resources.GenericResource;
@@ -28,6 +29,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class AzureTests {
     private static final ApplicationTokenCredentials CREDENTIALS = new ApplicationTokenCredentials(
@@ -71,7 +73,7 @@ public class AzureTests {
     public void setup() throws Exception {
         // Authenticate based on credentials instance
         Azure.Authenticated azureAuthed = Azure.configure()
-                .withLogLevel(Level.NONE)
+                .withLogLevel(Level.BODY)
                 .withUserAgent("AzureTests")
                 .authenticate(CREDENTIALS);
 
@@ -82,6 +84,7 @@ public class AzureTests {
             this.azure = Azure.configure()
                     .withLogLevel(Level.BODY)
                     .withUserAgent("AzureTests")
+                    .withReadTimeout(60, TimeUnit.SECONDS)
                     .authenticate(new File("my.azureauth"))
                     .withDefaultSubscription();
         } else {
@@ -90,7 +93,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests ARM template deployments
+     * Tests ARM template deployments.
      * @throws IOException
      * @throws CloudException
      */
@@ -111,12 +114,11 @@ public class AzureTests {
             .create();
         System.out.println("Created deployment: " + deployment.correlationId());
 
-        azure.resourceGroups().delete("rg" + testId);
+        azure.resourceGroups().deleteByName("rg" + testId);
     }
 
-
     /**
-     * Tests basic generic resources retrieval
+     * Tests basic generic resources retrieval.
      * @throws Exception
      */
     @Test public void testGenericResources() throws Exception {
@@ -132,7 +134,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests VM images
+     * Tests VM images.
      * @throws IOException
      * @throws CloudException
      */
@@ -161,7 +163,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the network security group implementation
+     * Tests the network security group implementation.
      * @throws Exception
      */
     @Test
@@ -169,6 +171,10 @@ public class AzureTests {
         new TestNSG().runTest(azure.networkSecurityGroups(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the inbound NAT rule support in load balancers.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersNatRules() throws Exception {
         new TestLoadBalancer.InternetWithNatRule(
@@ -178,6 +184,10 @@ public class AzureTests {
             .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the inbound NAT pool support in load balancers.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersNatPools() throws Exception {
         new TestLoadBalancer.InternetWithNatPool(
@@ -187,6 +197,10 @@ public class AzureTests {
         .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
+    /**
+     * Tests the minimum internet-facing load balancer.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersInternetMinimum() throws Exception {
         new TestLoadBalancer.InternetMinimal(
@@ -196,6 +210,10 @@ public class AzureTests {
             .runTest(azure.loadBalancers(),  azure.resourceGroups());
     }
 
+    /**
+     * Tests the minimum internal load balancer.
+     * @throws Exception
+     */
     @Test
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(
@@ -205,7 +223,55 @@ public class AzureTests {
     }
 
     /**
-     * Tests the public IP address implementation
+     * Tests a complex internal application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternalComplex() throws Exception {
+        new TestApplicationGateway.PrivateComplex(azure.networks(), azure.publicIpAddresses())
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a minimal internal application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternalMinimal() throws Exception {
+        new TestApplicationGateway.PrivateMinimal()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a minimal Internet-facing application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingMinimal() throws Exception {
+        new TestApplicationGateway.PublicMinimal()
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    /**
+     * Tests a complex Internet-facing application gateway
+     * @throws Exception
+     */
+    @Test
+    public void testAppGatewaysInternetFacingComplex() throws Exception {
+        new TestApplicationGateway.PublicComplex(
+                azure.publicIpAddresses())
+            .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testAppGatewaysExisting() {
+        String appGatewayId = "/subscriptions/9657ab5d-4a4a-4fd2-ae7a-4cd9fbd030ef/resourceGroups/rg1478645787244/providers/Microsoft.Network/applicationGateways/ag1478645787244";
+        ApplicationGateway ag  = azure.applicationGateways().getById(appGatewayId);
+        TestApplicationGateway.printAppGateway(ag);
+    }
+
+    /**
+     * Tests the public IP address implementation.
      * @throws Exception
      */
     @Test public void testPublicIpAddresses() throws Exception {
@@ -213,7 +279,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the availability set implementation
+     * Tests the availability set implementation.
      * @throws Exception
      */
     @Test public void testAvailabilitySets() throws Exception {
@@ -221,22 +287,60 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual network implementation
+     * Tests the virtual network implementation.
      * @throws Exception
      */
     @Test public void testNetworks() throws Exception {
-        new TestNetwork(azure.networkSecurityGroups())
+        new TestNetwork.WithSubnets(azure.networkSecurityGroups())
             .runTest(azure.networks(), azure.resourceGroups());
     }
 
     /**
-     * Tests the network interface implementation
+     * Tests route tables.
+     * @throws Exception
+     */
+    @Test public void testRouteTables() throws Exception {
+        new TestRouteTables.Minimal(azure.networks())
+            .runTest(azure.routeTables(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the regions enum
+     */
+    @Test public void testRegions() {
+        // Show built-in regions
+        System.out.println("Built-in regions list:");
+        int regionsCount = Region.values().length;
+
+        for (Region region : Region.values()) {
+            System.out.println("Name: " + region.name() + ", Label: " + region.label());
+        }
+
+        // Look up built-in region
+        Region region = Region.fromName("westus");
+        Assert.assertTrue(region == Region.US_WEST);
+
+        // Add a region
+        Region region2 = Region.fromName("madeUpRegion");
+        Assert.assertTrue(region2 != null);
+        Assert.assertTrue(region2.name().equals("madeUpRegion"));
+        Region region3 = Region.fromName("madeupregion");
+        Assert.assertTrue(region3 == region2);
+        Assert.assertTrue(Region.values().length == regionsCount + 1);
+    }
+
+    /**
+     * Tests the network interface implementation.
      * @throws Exception
      */
     @Test public void testNetworkInterfaces() throws Exception {
         new TestNetworkInterface().runTest(azure.networkInterfaces(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machines.
+     * @throws Exception
+     */
     @Test public void testVirtualMachines() throws Exception {
         // Future: This method needs to have a better specific name since we are going to include unit test for
         // different vm scenarios.
@@ -244,7 +348,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual machine data disk implementation
+     * Tests the virtual machine data disk implementation.
      * @throws Exception
      */
     @Test public void testVirtualMachineDataDisk() throws Exception {
@@ -252,7 +356,7 @@ public class AzureTests {
     }
 
     /**
-     * Tests the virtual machine network interface implementation
+     * Tests the virtual machine network interface implementation.
      * @throws Exception
      */
     @Test public void testVirtualMachineNics() throws Exception {
@@ -262,21 +366,46 @@ public class AzureTests {
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machine support for SSH.
+     * @throws Exception
+     */
     @Test public void testVirtualMachineSSh() throws Exception {
         new TestVirtualMachineSsh(azure.publicIpAddresses())
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    /**
+     * Tests virtual machine sizes.
+     * @throws Exception
+     */
     @Test public void testVirtualMachineSizes() throws Exception {
         new TestVirtualMachineSizes()
                 .runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 
+    @Test public void testVirtualMachineCustomData() throws Exception {
+        new TestVirtualMachineCustomData(azure.publicIpAddresses())
+                .runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    @Test public void testVirtualMachineInAvailabilitySet() throws Exception {
+        new TestVirtualMachineInAvailabilitySet().runTest(azure.virtualMachines(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests subscription listing.
+     * @throws Exception
+     */
     @Test
     public void listSubscriptions() throws Exception {
         Assert.assertTrue(0 < subscriptions.list().size());
     }
 
+    /**
+     * Tests resource group listing.
+     * @throws Exception
+     */
     @Test
     public void listResourceGroups() throws Exception {
         int groupCount = azure.resourceGroups().list().size();
@@ -284,6 +413,10 @@ public class AzureTests {
         Assert.assertTrue(0 < groupCount);
     }
 
+    /**
+     * Tests storage account listing.
+     * @throws Exception
+     */
     @Test
     public void listStorageAccounts() throws Exception {
         Assert.assertTrue(0 < azure.storageAccounts().list().size());
@@ -304,5 +437,39 @@ public class AzureTests {
     @Test
     public void testBatchAccount() throws Exception {
         new TestBatch().runTest(azure.batchAccounts(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testTrafficManager() throws Exception {
+        new TestTrafficManager(azure.resourceGroups(), azure.publicIpAddresses())
+                .runTest(azure.trafficManagerProfiles(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testRedis() throws Exception {
+        new TestRedis()
+                .runTest(azure.redisCaches(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testCdnManager() throws Exception {
+        new TestCdn()
+                .runTest(azure.cdnProfiles(), azure.resourceGroups());
+    }
+
+    @Test
+    public void testDnsZones() throws Exception {
+        new TestDns()
+                .runTest(azure.dnsZones(), azure.resourceGroups());
+    }
+
+
+    @Test
+    public void testSqlServer() throws Exception {
+        new TestSql().runTest(azure.sqlServers(), azure.resourceGroups());
+    }
+
+    @Test public void testResourceStreaming() throws Exception {
+        new TestResourceStreaming(azure.storageAccounts(), azure.resourceGroups()).runTest(azure.virtualMachines(), azure.resourceGroups());
     }
 }

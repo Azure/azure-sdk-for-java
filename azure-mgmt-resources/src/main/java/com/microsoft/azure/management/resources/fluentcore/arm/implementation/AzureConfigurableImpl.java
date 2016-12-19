@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.RestClient;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
+import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -84,6 +85,13 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     @Override
     public T withProxy(Proxy proxy) {
         this.restClientBuilder = restClientBuilder.withProxy(proxy);
+        return (T) this;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public T withProxyAuthenticator(Authenticator proxyAuthenticator) {
+        this.restClientBuilder = restClientBuilder.withProxyAuthenticator(proxyAuthenticator);
         return (T) this;
     }
 

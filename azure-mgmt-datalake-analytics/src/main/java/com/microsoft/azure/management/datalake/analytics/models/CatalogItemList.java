@@ -14,34 +14,9 @@ package com.microsoft.azure.management.datalake.analytics.models;
  */
 public class CatalogItemList {
     /**
-     * the count of items in the list.
-     */
-    private Integer count;
-
-    /**
      * the link to the next page of results.
      */
     private String nextLink;
-
-    /**
-     * Get the count value.
-     *
-     * @return the count value
-     */
-    public Integer count() {
-        return this.count;
-    }
-
-    /**
-     * Set the count value.
-     *
-     * @param count the count value to set
-     * @return the CatalogItemList object itself.
-     */
-    public CatalogItemList withCount(Integer count) {
-        this.count = count;
-        return this;
-    }
 
     /**
      * Get the nextLink value.

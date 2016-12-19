@@ -124,8 +124,8 @@ public final class ManageVirtualMachineExtension {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(pipDnsLabelLinuxVM)
                         .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_14_04_LTS)
-                        .withRootUserName(firstLinuxUserName)
-                        .withPassword(firstLinuxUserPassword)
+                        .withRootUsername(firstLinuxUserName)
+                        .withRootPassword(firstLinuxUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .create();
 
@@ -191,7 +191,7 @@ public final class ManageVirtualMachineExtension {
                             .withPublisher(linuxCustomScriptExtensionPublisherName)
                             .withType(linuxCustomScriptExtensionTypeName)
                             .withVersion(linuxCustomScriptExtensionVersionName)
-                            .withAutoUpgradeMinorVersionEnabled()
+                            .withMinorVersionAutoUpgrade()
                             .withPublicSetting("fileUris", linuxScriptFileUris)
                             .withPublicSetting("commandToExecute", installMySQLLinuxCommand)
                         .attach()
@@ -222,14 +222,14 @@ public final class ManageVirtualMachineExtension {
                         .withPrimaryPrivateIpAddressDynamic()
                         .withNewPrimaryPublicIpAddress(pipDnsLabelWindowsVM)
                         .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                        .withAdminUserName(firstWindowsUserName)
-                        .withPassword(firstWindowsUserPassword)
+                        .withAdminUsername(firstWindowsUserName)
+                        .withAdminPassword(firstWindowsUserPassword)
                         .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                         .defineNewExtension(windowsCustomScriptExtensionName)
                             .withPublisher(windowsCustomScriptExtensionPublisherName)
                             .withType(windowsCustomScriptExtensionTypeName)
                             .withVersion(windowsCustomScriptExtensionVersionName)
-                            .withAutoUpgradeMinorVersionEnabled()
+                            .withMinorVersionAutoUpgrade()
                             .withPublicSetting("fileUris", windowsScriptFileUris)
                             .withPublicSetting("commandToExecute", installMySQLWindowsCommand)
                         .attach()
@@ -294,7 +294,7 @@ public final class ManageVirtualMachineExtension {
             } finally {
                 try {
                     System.out.println("Deleting Resource Group: " + rgName);
-                    azure.resourceGroups().delete(rgName);
+                    azure.resourceGroups().deleteByName(rgName);
                     System.out.println("Deleted Resource Group: " + rgName);
                 } catch (NullPointerException npe) {
                     System.out.println("Did not create any resources in Azure. No clean up is necessary");
