@@ -53,7 +53,7 @@ public class UserTokenCredentials extends TokenCredentials implements AzureToken
         this.domain = domain;
         this.username = username;
         this.password = password;
-        this.environment = environment;
+        this.environment = (environment == null) ? AzureEnvironment.AZURE : environment;
         this.tokens = new HashMap<>();
     }
 
