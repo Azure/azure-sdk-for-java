@@ -52,7 +52,7 @@ public class ApplicationTokenCredentials extends TokenCredentials implements Azu
      */
     public ApplicationTokenCredentials(String clientId, String domain, String secret, AzureEnvironment environment) {
         super(null, null); // defer token acquisition
-        this.environment = environment;
+        this.environment = (environment == null) ? AzureEnvironment.AZURE : environment;
         this.clientId = clientId;
         this.domain = domain;
         this.secret = secret;
