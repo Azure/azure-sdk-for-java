@@ -54,7 +54,7 @@ You can easily create a service principal and grant it access privileges for a g
 1. Select the subscription you want your service principal to have access to by running `az account set --subscription <subscription name>`. You can view your subscriptions by `az account list --out jsonc`.
 1. Run the following command to create a service principal authentication file.
 ```
-az ad sp create-for-rbac --expanded-view -o json --query "{subscription: subscriptionId, client: client, key: password, tenant: tenantId, managementURI: endpoints.management, baseURL: endpoints.resourceManager, authURL: endpoints.activeDirectory, graphURL: endpoints.activeDirectoryGraphResourceId}" | jq -r "to_entries|map(\"\(.key)=\(.value|sub(\"https:(?<x>.+[^/])$\";\"https\\\\:\(.x)/\"))\")|.[]"
+az ad sp create-for-rbac --expanded-view -o json --query "{subscription: subscriptionId, client: client, key: password, tenant: tenantId, managementURI: endpoints.management, baseURL: endpoints.resourceManager, authURL: endpoints.activeDirectory, graphURL: endpoints.activeDirectoryGraphResourceId}" | jq -r "to_entries|map(\"\(.key)=\(.value|sub(\"https:(?<x>.+[^/])/?$\";\"https\\\\:\(.x)/\"))\")|.[]"
 ```
 
 Now all the pieces are in place to enable authenticating your code without requiring an interactive login nor the need to manage access tokens.
