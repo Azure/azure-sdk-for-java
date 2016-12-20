@@ -1,0 +1,5 @@
+1.0.0-beta4 (2016.12.15)
+  - Parallel creation graph code is moved to azure-sdk-for-java repo
+  - Simplify RestClient
+  - Return null instead of throwing when server returns 404 on a GET request
+  - Support authentication through proxy
