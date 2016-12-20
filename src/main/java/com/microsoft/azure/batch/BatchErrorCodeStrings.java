@@ -7,7 +7,7 @@
 package com.microsoft.azure.batch;
 
 /**
- * Error code strings from the Batch service.
+ * Error code strings returned from the Batch service.
  */
 public final class BatchErrorCodeStrings {
     // Batch Service
@@ -433,7 +433,7 @@ public final class BatchErrorCodeStrings {
     public static final String InvalidHeaderValue = "InvalidHeaderValue";
 
     /**
-     * The Batch service did not recognize the HTTP verb.
+     * The Batch service did not recognize the HTTP verb used for the request.
      */
     public static final String InvalidHttpVerb = "InvalidHttpVerb";
 

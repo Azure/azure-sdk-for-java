@@ -19,9 +19,9 @@ public class DetailLevelInterceptor extends RequestInterceptor {
     private final DetailLevel detailLevel;
 
     /**
-     * Initializes a new {@link DetailLevelInterceptor} for applying a DetailLevel to a request.
+     * Initializes a new {@link DetailLevelInterceptor} for applying a {@link DetailLevel} object to a request.
      *
-     * @param detailLevel The DetailLevel
+     * @param detailLevel The {@link DetailLevel} object.
      */
     public DetailLevelInterceptor(final DetailLevel detailLevel) {
         this.detailLevel = detailLevel;

@@ -4,6 +4,6 @@
 //
 
 /**
- * This package contains the classes for interacting with the Azure Batch service.
+ * This package contains classes for writing applications that use the Azure Batch service.
  */
 package com.microsoft.azure.batch;

@@ -9,7 +9,7 @@ package com.microsoft.azure.batch.interceptor;
 import com.microsoft.azure.batch.BatchClientBehavior;
 
 /**
- * This class enables an interceptor to modify a request issued to the Batch service.
+ * A {@link BatchClientBehavior} that modifies requests to the Batch service.
  */
 public class RequestInterceptor extends BatchClientBehavior {
     private BatchRequestInterceptHandler _handler;
@@ -30,26 +30,26 @@ public class RequestInterceptor extends BatchClientBehavior {
     /**
      * Initializes a new instance of RequestInterceptor.
      *
-     * @param handler The interceptor handler for the instance
+     * @param handler The handler which will intercept requests to the Batch service.
      */
     public RequestInterceptor(BatchRequestInterceptHandler handler) {
         this._handler = handler;
     }
 
     /**
-     * Gets the BatchRequestInterceptHandler.
+     * Gets the handler which will intercept requests to the Batch service.
      *
-     * @return The BatchRequestInterceptHandler
+     * @return The handler which will intercept requests to the Batch service.
      */
     public BatchRequestInterceptHandler handler() {
         return _handler;
     }
 
     /**
-     * Sets the BatchRequestInterceptHandler.
+     * Sets the handler which will intercept requests to the Batch service.
      *
-     * @param handler The BatchRequestInterceptHandler
-     * @return The instance of RequestInterceptor
+     * @param handler The handler which will intercept requests to the Batch service.
+     * @return The current instance.
      */
     public RequestInterceptor withHandler(BatchRequestInterceptHandler handler) {
         this._handler = handler;

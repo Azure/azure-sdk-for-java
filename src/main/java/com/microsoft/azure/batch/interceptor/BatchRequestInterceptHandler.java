@@ -11,9 +11,9 @@ package com.microsoft.azure.batch.interceptor;
  */
 public interface BatchRequestInterceptHandler {
     /**
-     * Modify the request to the Batch service.
+     * Modifies the request to the Batch service.
      *
-     * @param request The outgoing Batch service request
+     * @param request The outgoing Batch service request.
      */
     void modify(Object request);
 }

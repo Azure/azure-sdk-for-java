@@ -10,16 +10,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * Interceptor which contains a function used to set the server timeout in a request issued to the Batch service.
+ * Sets Batch service request timeouts.
  */
 public class ServerTimeoutInterceptor extends RequestInterceptor {
 
     private final int serverTimeout;
 
     /**
-     * Initializes a new {@link ServerTimeoutInterceptor} for setting the server timeout of a request issued to the Batch service.
+     * Initializes a new {@link ServerTimeoutInterceptor} for setting the service timeout interval for a request issued to the Batch service.
      *
-     * @param timeout The server timeout in seconds
+     * @param timeout The service timeout interval, in seconds.
      */
     public ServerTimeoutInterceptor(int timeout) {
         this.serverTimeout = timeout;

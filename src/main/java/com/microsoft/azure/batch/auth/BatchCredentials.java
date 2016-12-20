@@ -13,9 +13,9 @@ public abstract class BatchCredentials {
     private String baseUrl;
 
     /**
-     * Gets the Batch service endpoint
+     * Gets the Batch service endpoint.
      *
-     * @return The Batch service endpoint
+     * @return The Batch service endpoint.
      */
     public String baseUrl() {
         return baseUrl;
@@ -24,7 +24,7 @@ public abstract class BatchCredentials {
     /**
      * Initializes a new instance of the {@link BatchCredentials} class.
      *
-     * @param baseUrl The Batch service endpoint
+     * @param baseUrl The Batch service endpoint.
      * @return The new instance of BatchCredentials.
      */
     protected BatchCredentials withBaseUrl(String baseUrl) {

@@ -13,16 +13,16 @@ import com.microsoft.azure.batch.protocol.models.TaskAddResult;
 import java.util.List;
 
 /**
- * The exception that is thrown when the CreateTasks operation is terminated.
+ * The exception that is thrown when the {@link TaskOperations#createTasks(String, List)} operation is terminated.
  */
 public class CreateTasksTerminatedException extends BatchErrorException {
 
     /**
      * Initializes a new instance of the CreateTasksTerminatedException class.
      *
-     * @param message The exception message
-     * @param failureTasks The list of {@link TaskAddResult} instances containing failure details of tasks that were not successfully created.
-     * @param pendingList The list of {@link TaskAddParameter} instances containing the tasks that were not added but can be retried.
+     * @param message The exception message.
+     * @param failureTasks The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
+     * @param pendingList The list of {@link TaskAddParameter} instances containing the tasks that were not added, but for which the operation can be retried.
      */
     public CreateTasksTerminatedException(final String message, List<TaskAddResult> failureTasks, List<TaskAddParameter> pendingList) {
         super(message);
@@ -34,14 +34,14 @@ public class CreateTasksTerminatedException extends BatchErrorException {
     private List<TaskAddParameter> pendingTaskList;
 
     /**
-     * @return The list of {@link TaskAddResult} instances containing failure details of tasks that were not successfully created.
+     * @return The list of {@link TaskAddResult} instances containing failure details for tasks that were not successfully created.
      */
     public List<TaskAddResult> failureTasks() {
         return failureTasks;
     }
 
     /**
-     * @return The list of {@link TaskAddParameter} instances containing the tasks that were not added but can be retried.
+     * @return The list of {@link TaskAddParameter} instances containing the tasks that were not added, but for which the operation can be retried.
      */
     public List<TaskAddParameter> pendingTaskList() {
         return pendingTaskList;

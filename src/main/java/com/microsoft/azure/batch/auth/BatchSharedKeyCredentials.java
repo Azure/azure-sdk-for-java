@@ -39,9 +39,9 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
     /**
      * Initializes a new instance of the {@link BatchSharedKeyCredentials} class with the specified Batch service endpoint, account name, and access key.
      *
-     * @param baseUrl The Batch service endpoint
-     * @param accountName The Batch account name
-     * @param keyValue The Batch access key
+     * @param baseUrl The Batch service endpoint.
+     * @param accountName The Batch account name.
+     * @param keyValue The Batch access key.
      */
     public BatchSharedKeyCredentials(String baseUrl, String accountName, String keyValue) {
 
@@ -61,9 +61,9 @@ public class BatchSharedKeyCredentials extends BatchCredentials implements Servi
     }
 
     /**
-     * Apply the credential to the Batch service request
+     * Applies the credentials to the Batch service request.
      *
-     * @param clientBuilder The client builder
+     * @param clientBuilder The client builder.
      */
     @Override
     public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
