@@ -109,7 +109,7 @@ public class AzureClient extends AzureServiceClient {
         ServiceResponse<T> bodyResponse = getPutOrPatchResult(observable, resourceType);
         return new ServiceResponseWithHeaders<>(
             bodyResponse.getBody(),
-            restClient().mapperAdapter().<THeader>deserialize(restClient().mapperAdapter().serialize(bodyResponse.getResponse().headers()), headerType),
+            restClient().serializerAdapter().<THeader>deserialize(restClient().serializerAdapter().serialize(bodyResponse.getResponse().headers()), headerType),
             bodyResponse.getResponse()
         );
     }
@@ -135,7 +135,7 @@ public class AzureClient extends AzureServiceClient {
                     }
 
                     try {
-                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().mapperAdapter());
+                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
                         final String url = response.raw().request().url().toString();
 
                         // Task runner will take it from here
@@ -213,7 +213,7 @@ public class AzureClient extends AzureServiceClient {
                     try {
                         return Observable
                             .just(new ServiceResponseWithHeaders<>(serviceResponse.getBody(),
-                                restClient().mapperAdapter().<THeader>deserialize(restClient().mapperAdapter().serialize(serviceResponse.getResponse().headers()), headerType),
+                                restClient().serializerAdapter().<THeader>deserialize(restClient().serializerAdapter().serialize(serviceResponse.getResponse().headers()), headerType),
                                 serviceResponse.getResponse()));
                     } catch (IOException e) {
                         return Observable.error(e);
@@ -257,7 +257,7 @@ public class AzureClient extends AzureServiceClient {
         ServiceResponse<T> bodyResponse = getPostOrDeleteResult(observable, resourceType);
         return new ServiceResponseWithHeaders<>(
             bodyResponse.getBody(),
-            restClient().mapperAdapter().<THeader>deserialize(restClient().mapperAdapter().serialize(bodyResponse.getResponse().headers()), headerType),
+            restClient().serializerAdapter().<THeader>deserialize(restClient().serializerAdapter().serialize(bodyResponse.getResponse().headers()), headerType),
             bodyResponse.getResponse()
         );
     }
@@ -283,7 +283,7 @@ public class AzureClient extends AzureServiceClient {
                     }
 
                     try {
-                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().mapperAdapter());
+                        final PollingState<T> pollingState = new PollingState<>(response, getLongRunningOperationRetryTimeout(), resourceType, restClient().serializerAdapter());
                         return Observable.just(pollingState)
                             // Emit a polling task intermittently
                             .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
@@ -348,7 +348,7 @@ public class AzureClient extends AzureServiceClient {
                     try {
                         return Observable
                             .just(new ServiceResponseWithHeaders<>(serviceResponse.getBody(),
-                                restClient().mapperAdapter().<THeader>deserialize(restClient().mapperAdapter().serialize(serviceResponse.getResponse().headers()), headerType),
+                                restClient().serializerAdapter().<THeader>deserialize(restClient().serializerAdapter().serialize(serviceResponse.getResponse().headers()), headerType),
                                 serviceResponse.getResponse()));
                     } catch (IOException e) {
                         return Observable.error(e);
@@ -453,7 +453,7 @@ public class AzureClient extends AzureServiceClient {
                     if (response.body() != null) {
                         try {
                             bodyString = response.body().string();
-                            body = restClient().mapperAdapter().deserialize(bodyString, AzureAsyncOperation.class);
+                            body = restClient().serializerAdapter().deserialize(bodyString, AzureAsyncOperation.class);
                         } catch (IOException e) {
                             // null body will be handlded later
                         } finally {
@@ -519,7 +519,7 @@ public class AzureClient extends AzureServiceClient {
             CloudException exception;
             try {
                 String bodyString = responseBody.string();
-                CloudError errorBody = restClient().mapperAdapter().deserialize(bodyString, CloudError.class);
+                CloudError errorBody = restClient().serializerAdapter().deserialize(bodyString, CloudError.class);
                 if (errorBody != null) {
                     exception = new CloudException(errorBody.getMessage());
                 } else {

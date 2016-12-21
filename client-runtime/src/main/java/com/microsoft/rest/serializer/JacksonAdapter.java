@@ -16,6 +16,8 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
+import com.microsoft.rest.protocol.CollectionFormat;
+import com.microsoft.rest.protocol.SerializerAdapter;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -26,7 +28,7 @@ import java.util.List;
 /**
  * A serialization helper class wrapped around {@link JacksonConverterFactory} and {@link ObjectMapper}.
  */
-public class JacksonMapperAdapter {
+public abstract class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
@@ -43,54 +45,20 @@ public class JacksonMapperAdapter {
     private JacksonConverterFactory converterFactory;
 
     /**
-     * Initializes an instance of JacksonMapperAdapter with default configurations
-     * applied to the object mapper.
-     *
-     * @param mapper the object mapper to use.
-     */
-    protected void initializeObjectMapper(ObjectMapper mapper) {
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-                .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
-                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-                .registerModule(new JodaModule())
-                .registerModule(ByteArraySerializer.getModule())
-                .registerModule(Base64UrlSerializer.getModule())
-                .registerModule(DateTimeSerializer.getModule())
-                .registerModule(DateTimeRfc1123Serializer.getModule())
-                .registerModule(HeadersSerializer.getModule());
-        mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
-                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
-                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
-                .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
-    }
-
-    /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
      *
      * @return an instance of {@link ObjectMapper}.
      */
-    protected ObjectMapper getSimpleMapper() {
+    protected ObjectMapper simpleMapper() {
         if (simpleMapper == null) {
-            simpleMapper = new ObjectMapper();
-            initializeObjectMapper(simpleMapper);
+            simpleMapper = initializeObjectMapper(new ObjectMapper());
         }
         return simpleMapper;
     }
 
-    /**
-     * Gets a static instance of {@link ObjectMapper}.
-     *
-     * @return an instance of {@link ObjectMapper}.
-     */
-    public ObjectMapper getObjectMapper() {
+    protected ObjectMapper mapper() {
         if (mapper == null) {
-            mapper = new ObjectMapper();
-            initializeObjectMapper(mapper);
-            mapper.registerModule(FlatteningSerializer.getModule(getSimpleMapper()))
-                    .registerModule(FlatteningDeserializer.getModule(getSimpleMapper()));
+            simpleMapper = initializeObjectMapper(new ObjectMapper());
         }
         return mapper;
     }
@@ -100,9 +68,9 @@ public class JacksonMapperAdapter {
      *
      * @return an instance of JacksonConverter factory.
      */
-    public JacksonConverterFactory getConverterFactory() {
+    public JacksonConverterFactory converterFactory() {
         if (converterFactory == null) {
-            converterFactory = JacksonConverterFactory.create(getObjectMapper());
+            converterFactory = JacksonConverterFactory.create(serializer());
         }
         return converterFactory;
     }
@@ -119,7 +87,7 @@ public class JacksonMapperAdapter {
             return null;
         }
         StringWriter writer = new StringWriter();
-        getObjectMapper().writeValue(writer, object);
+        serializer().writeValue(writer, object);
         return writer.toString();
     }
 
@@ -176,11 +144,37 @@ public class JacksonMapperAdapter {
         if (value == null || value.isEmpty()) {
             return null;
         }
-        return (T) getObjectMapper().readValue(value, new TypeReference<T>() {
+        return (T) serializer().readValue(value, new TypeReference<T>() {
             @Override
             public Type getType() {
                 return type;
             }
         });
+    }
+
+    /**
+     * Initializes an instance of JacksonMapperAdapter with default configurations
+     * applied to the object mapper.
+     *
+     * @param mapper the object mapper to use.
+     */
+    private static ObjectMapper initializeObjectMapper(ObjectMapper mapper) {
+        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true)
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .registerModule(new JodaModule())
+                .registerModule(ByteArraySerializer.getModule())
+                .registerModule(Base64UrlSerializer.getModule())
+                .registerModule(DateTimeSerializer.getModule())
+                .registerModule(DateTimeRfc1123Serializer.getModule())
+                .registerModule(HeadersSerializer.getModule());
+        mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
+                .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
+                .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withGetterVisibility(JsonAutoDetect.Visibility.NONE)
+                .withIsGetterVisibility(JsonAutoDetect.Visibility.NONE));
+        return mapper;
     }
 }

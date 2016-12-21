@@ -7,13 +7,13 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.serializer.AzureJacksonMapperAdapter;
 import com.microsoft.rest.BaseUrlHandler;
 import com.microsoft.rest.CustomHeadersInterceptor;
 import com.microsoft.rest.UserAgentInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import com.microsoft.rest.retry.RetryStrategy;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
@@ -41,19 +41,19 @@ public final class RestClient {
     private ServiceClientCredentials credentials;
     /** The interceptor to handle custom headers. */
     private CustomHeadersInterceptor customHeadersInterceptor;
-    /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
-    private JacksonMapperAdapter mapperAdapter;
+    /** The adapter for a serializer. */
+    private SerializerAdapter<?> serializerAdapter;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
-                       JacksonMapperAdapter mapperAdapter) {
+                       SerializerAdapter<?> serializerAdapter) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
-        this.mapperAdapter = mapperAdapter;
+        this.serializerAdapter = serializerAdapter;
     }
 
     /**
@@ -70,19 +70,8 @@ public final class RestClient {
      *
      * @return the Jackson mapper adapter.
      */
-    public JacksonMapperAdapter mapperAdapter() {
-        return mapperAdapter;
-    }
-
-    /**
-     * Sets the mapper adapter.
-     *
-     * @param mapperAdapter an adapter to a Jackson mapper.
-     * @return the builder itself for chaining.
-     */
-    public RestClient withMapperAdapater(JacksonMapperAdapter mapperAdapter) {
-        this.mapperAdapter = mapperAdapter;
-        return this;
+    public SerializerAdapter<?> serializerAdapter() {
+        return serializerAdapter;
     }
 
     /**
@@ -136,6 +125,8 @@ public final class RestClient {
         private CustomHeadersInterceptor customHeadersInterceptor;
         /** The value for 'User-Agent' header. */
         private String userAgent;
+        /** The adapter for serializations and deserializations. */
+        private SerializerAdapter<?> serializerAdapter;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -348,12 +339,32 @@ public final class RestClient {
         }
 
         /**
+         * Sets the serialization adapter.
+         *
+         * @param serializerAdapter the adapter to a serializer
+         * @return the builder itself for chaining
+         */
+        public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+            return this;
+        }
+
+        /**
+         * Adds a retry strategy to the client.
+         * @param strategy the retry strategy to add
+         * @return the builder itself for chaining
+         */
+        public Builder withRetryStrategy(RetryStrategy strategy) {
+            this.withInterceptor(new RetryHandler(strategy));
+            return this;
+        }
+
+        /**
          * Build a RestClient with all the current configurations.
          *
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            AzureJacksonMapperAdapter mapperAdapter = new AzureJacksonMapperAdapter();
             UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
             if (userAgent != null) {
                 userAgentInterceptor.withUserAgent(userAgent);
@@ -363,19 +374,18 @@ public final class RestClient {
                     .addInterceptor(new RequestIdHeaderInterceptor())
                     .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
-                    .addInterceptor(new RetryHandler(new ResourceGetExponentialBackoffRetryStrategy()))
                     .addInterceptor(new RetryHandler())
                     .build();
             return new RestClient(httpClient,
                     retrofitBuilder
                             .baseUrl(baseUrl)
                             .client(httpClient)
-                            .addConverterFactory(mapperAdapter.getConverterFactory())
+                            .addConverterFactory(serializerAdapter.converterFactory())
                             .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                             .build(),
                     credentials,
                     customHeadersInterceptor,
-                    mapperAdapter);
+                    serializerAdapter);
         }
     }
 }

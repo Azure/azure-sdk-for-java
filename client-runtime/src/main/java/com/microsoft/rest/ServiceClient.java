@@ -8,15 +8,15 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
-
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-
+import com.microsoft.rest.serializer.JacksonAdapter;
+import com.microsoft.rest.serializer.SimpleJacksonAdapter;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
@@ -27,7 +27,7 @@ public abstract class ServiceClient {
     /** The Retrofit instance. */
     private Retrofit retrofit;
     /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
-    private JacksonMapperAdapter mapperAdapter;
+    private JacksonAdapter mapperAdapter;
 
     /**
      * Initializes a new instance of the ServiceClient class.
@@ -52,7 +52,7 @@ public abstract class ServiceClient {
         if (restBuilder == null) {
             throw new IllegalArgumentException("restBuilder == null");
         }
-        this.mapperAdapter = new JacksonMapperAdapter();
+        this.mapperAdapter = new SimpleJacksonAdapter();
         CookieManager cookieManager = new CookieManager();
         cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
         this.httpClient = clientBuilder
@@ -65,7 +65,7 @@ public abstract class ServiceClient {
         this.retrofit = restBuilder
                 .baseUrl(baseUrl)
                 .client(httpClient)
-                .addConverterFactory(mapperAdapter.getConverterFactory())
+                .addConverterFactory(mapperAdapter.converterFactory())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
@@ -87,7 +87,7 @@ public abstract class ServiceClient {
     /**
      * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
      */
-    public JacksonMapperAdapter mapperAdapter() {
+    public JacksonAdapter mapperAdapter() {
         return this.mapperAdapter;
     }
 }

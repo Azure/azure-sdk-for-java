@@ -7,8 +7,7 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
-
+import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -65,9 +64,9 @@ public abstract class AzureServiceClient {
     }
 
     /**
-     * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
+     * @return the adapter to a JSON serializer.
      */
-    public JacksonMapperAdapter mapperAdapter() {
-        return restClient().mapperAdapter();
+    public SerializerAdapter<?> serializerAdapter() {
+        return restClient().serializerAdapter();
     }
 }

@@ -8,7 +8,7 @@
 package com.microsoft.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -40,14 +40,14 @@ public class ServiceResponseBuilder<T, E extends RestException> {
     /**
      * The mapperAdapter used for deserializing the response.
      */
-    protected JacksonMapperAdapter mapperAdapter;
+    protected JacksonAdapter mapperAdapter;
 
     /**
      * Create a ServiceResponseBuilder instance.
      *
      * @param mapperAdapter the serialization utils to use for deserialization operations
      */
-    public ServiceResponseBuilder(JacksonMapperAdapter mapperAdapter) {
+    public ServiceResponseBuilder(JacksonAdapter mapperAdapter) {
         this(mapperAdapter, new HashMap<Integer, Type>());
     }
 
@@ -57,7 +57,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
      * @param mapperAdapter the serialization utils to use for deserialization operations
      * @param responseTypes a mapping of response status codes and response destination types
      */
-    public ServiceResponseBuilder(JacksonMapperAdapter mapperAdapter, Map<Integer, Type> responseTypes) {
+    public ServiceResponseBuilder(JacksonAdapter mapperAdapter, Map<Integer, Type> responseTypes) {
         this.mapperAdapter = mapperAdapter;
         this.responseTypes = responseTypes;
         this.exceptionType = ServiceException.class;
