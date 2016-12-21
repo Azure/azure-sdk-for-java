@@ -24,6 +24,9 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String groupFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         return ResourceId.parseResourceId(id).resourceGroupName();
     }
 
@@ -33,6 +36,9 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String resourceProviderFromResourceId(String id) {
+        if (id == null) {
+            return null;
+        }
         return ResourceId.parseResourceId(id).providerNamespace();
     }
 
