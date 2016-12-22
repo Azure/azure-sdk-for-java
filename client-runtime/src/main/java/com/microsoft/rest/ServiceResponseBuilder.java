@@ -8,6 +8,7 @@
 package com.microsoft.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
@@ -40,25 +41,25 @@ public class ServiceResponseBuilder<T, E extends RestException> {
     /**
      * The mapperAdapter used for deserializing the response.
      */
-    protected JacksonAdapter mapperAdapter;
+    protected SerializerAdapter<?> serializerAdapter;
 
     /**
      * Create a ServiceResponseBuilder instance.
      *
-     * @param mapperAdapter the serialization utils to use for deserialization operations
+     * @param serializerAdapter the serialization utils to use for deserialization operations
      */
-    public ServiceResponseBuilder(JacksonAdapter mapperAdapter) {
-        this(mapperAdapter, new HashMap<Integer, Type>());
+    public ServiceResponseBuilder(JacksonAdapter serializerAdapter) {
+        this(serializerAdapter, new HashMap<Integer, Type>());
     }
 
     /**
      * Create a ServiceResponseBuilder instance.
      *
-     * @param mapperAdapter the serialization utils to use for deserialization operations
+     * @param serializerAdapter the serialization utils to use for deserialization operations
      * @param responseTypes a mapping of response status codes and response destination types
      */
-    public ServiceResponseBuilder(JacksonAdapter mapperAdapter, Map<Integer, Type> responseTypes) {
-        this.mapperAdapter = mapperAdapter;
+    public ServiceResponseBuilder(SerializerAdapter<?> serializerAdapter, Map<Integer, Type> responseTypes) {
+        this.serializerAdapter = serializerAdapter;
         this.responseTypes = responseTypes;
         this.exceptionType = ServiceException.class;
         this.responseTypes.put(0, Object.class);
@@ -214,8 +215,8 @@ public class ServiceResponseBuilder<T, E extends RestException> {
      */
     public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws E, IOException {
         ServiceResponse<T> bodyResponse = build(response);
-        THeader headers = mapperAdapter.deserialize(
-                mapperAdapter.serialize(response.headers()),
+        THeader headers = serializerAdapter.deserialize(
+                serializerAdapter.serialize(response.headers()),
                 headerType);
         return new ServiceResponseWithHeaders<>(bodyResponse.getBody(), headers, bodyResponse.getResponse());
     }
@@ -239,8 +240,8 @@ public class ServiceResponseBuilder<T, E extends RestException> {
      */
     public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws E, IOException {
         ServiceResponse<T> bodyResponse = buildEmpty(response);
-        THeader headers = mapperAdapter.deserialize(
-                mapperAdapter.serialize(response.headers()),
+        THeader headers = serializerAdapter.deserialize(
+                serializerAdapter.serialize(response.headers()),
                 headerType);
         ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(headers, bodyResponse.getHeadResponse());
         serviceResponse.setBody(bodyResponse.getBody());
@@ -286,7 +287,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
             if (responseContent.length() <= 0) {
                 return null;
             }
-            return mapperAdapter.deserialize(responseContent, type);
+            return serializerAdapter.deserialize(responseContent, type);
         }
     }
 }

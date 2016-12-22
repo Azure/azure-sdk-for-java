@@ -7,8 +7,10 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.BaseUrlHandler;
 import com.microsoft.rest.CustomHeadersInterceptor;
+import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.UserAgentInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.protocol.SerializerAdapter;
@@ -20,6 +22,8 @@ import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
@@ -176,6 +180,7 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
+            this.serializerAdapter = new AzureJacksonAdapter();
         }
 
         /**
@@ -229,16 +234,46 @@ public final class RestClient {
         }
 
         /**
-         * Sets the log level.
+         * Sets the HTTP log level when SLF4J logger level is set to INFO.
          *
-         * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
+         * @param logLevel the {@link LogLevel} enum.
          * @return the builder itself for chaining.
          */
-        public Builder withLogLevel(HttpLoggingInterceptor.Level logLevel) {
+        public Builder withLogLevel(LogLevel logLevel) {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(logLevel));
+            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
+                    if (logger.isInfoEnabled()) {
+                        logger.info(message);
+                    }
+                }
+            }).setLevel(logLevel.raw()));
+            return this;
+        }
+
+        /**
+         * Sets the HTTP log level when SLF4J logger level is set to DEBUG and beyond.
+         *
+         * @param logLevel the {@link LogLevel} enum.
+         * @return the builder itself for chaining.
+         */
+        public Builder withDebugLogLevel(LogLevel logLevel) {
+            if (logLevel == null) {
+                throw new NullPointerException("logLevel == null");
+            }
+            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(message);
+                    }
+                }
+            }).setLevel(logLevel.raw()));
             return this;
         }
 

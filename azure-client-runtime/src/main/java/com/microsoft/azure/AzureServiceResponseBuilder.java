@@ -11,15 +11,14 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseBuilder;
-import com.microsoft.rest.serializer.JacksonAdapter;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
-
-import retrofit2.Response;
 
 /**
  * The builder for building a {@link ServiceResponse}.
@@ -31,10 +30,10 @@ public class AzureServiceResponseBuilder<T, E extends RestException> extends Ser
     /**
      * Create a ServiceResponseBuilder instance.
      *
-     * @param deserializer the serialization utils to use for deserialization operations
+     * @param serializer the serialization utils to use for deserialization operations
      */
-    public AzureServiceResponseBuilder(JacksonAdapter deserializer) {
-        this(deserializer, new HashMap<Integer, Type>());
+    public AzureServiceResponseBuilder(SerializerAdapter<?> serializer) {
+        this(serializer, new HashMap<Integer, Type>());
     }
 
     /**
@@ -43,7 +42,7 @@ public class AzureServiceResponseBuilder<T, E extends RestException> extends Ser
      * @param deserializer the serialization utils to use for deserialization operations
      * @param responseTypes a mapping of response status codes and response destination types.
      */
-    public AzureServiceResponseBuilder(JacksonAdapter deserializer, Map<Integer, Type> responseTypes) {
+    public AzureServiceResponseBuilder(SerializerAdapter<?> deserializer, Map<Integer, Type> responseTypes) {
         super(deserializer, responseTypes);
     }
 
