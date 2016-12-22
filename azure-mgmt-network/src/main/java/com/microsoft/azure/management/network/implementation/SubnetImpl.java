@@ -105,8 +105,9 @@ class SubnetImpl
 
     @Override
     public NetworkSecurityGroup getNetworkSecurityGroup() {
-        return (this.networkSecurityGroupId() != null)
-                ? this.parent().manager().networkSecurityGroups().getById(this.routeTableId())
-                        : null;
+        String nsgId = this.networkSecurityGroupId();
+        return (nsgId != null)
+                ? this.parent().manager().networkSecurityGroups().getById(nsgId)
+                : null;
     }
 }

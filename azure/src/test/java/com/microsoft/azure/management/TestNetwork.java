@@ -54,11 +54,19 @@ public class TestNetwork {
                         .attach()
                     .create();
 
+            // Verify subnets
             List<Subnet> subnets = nsg.refresh().listAssociatedSubnets();
             Assert.assertTrue(subnets.size() == 1);
             Subnet subnet = subnets.get(0);
             Assert.assertTrue(subnet.name().equalsIgnoreCase("subnetB"));
             Assert.assertTrue(subnet.parent().name().equalsIgnoreCase(newName));
+
+            // Verify NSG
+            Assert.assertTrue(subnet.networkSecurityGroupId() != null);
+            NetworkSecurityGroup nsg2 = subnet.getNetworkSecurityGroup();
+            Assert.assertTrue(nsg2 != null);
+            Assert.assertTrue(nsg2.id().equalsIgnoreCase(nsg.id()));
+
             return network;
         }
 
