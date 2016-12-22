@@ -8,6 +8,7 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import rx.Observable;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -26,11 +27,20 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     /**
      * Creates TaskGroup.
      *
+     * @param rootTaskEntry the entry holding root task
+     */
+    public TaskGroup(TaskGroupEntry<ResultT, TaskT> rootTaskEntry) {
+        super(rootTaskEntry);
+    }
+
+    /**
+     * Creates TaskGroup.
+     *
      * @param rootTaskItemId the id of the root task in the group
      * @param rootTaskItem the root task
      */
     public TaskGroup(String rootTaskItemId, TaskT rootTaskItem) {
-        super(new TaskGroupEntry<ResultT, TaskT>(rootTaskItemId, rootTaskItem));
+        this(new TaskGroupEntry<ResultT, TaskT>(rootTaskItemId, rootTaskItem));
     }
 
     /**
@@ -66,84 +76,123 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      */
     public Observable<ResultT> executeAsync() {
         if (!isPreparer()) {
-          return Observable.error(new IllegalStateException("executeAsync can be called "
-                  + "only from root TaskGroup"));
+            return Observable.error(new IllegalStateException("executeAsync can be called "
+                    + "only from root TaskGroup"));
         }
         prepareTaskItems();
         return executeInternAsync();
     }
 
-    private boolean isRootTask(TaskGroupEntry<ResultT, TaskT> taskGroupEntry) {
-        return isRootNode(taskGroupEntry);
-    }
-
-    private Observable<ResultT> executeInternAsync() {
-        TaskGroupEntry<ResultT, TaskT> currentEntry = super.getNext();
-        final List<Observable<ResultT>> observables = new ArrayList<>();
-        while (currentEntry != null) {
-            final TaskGroupEntry<ResultT, TaskT> entry = currentEntry;
-            Observable<ResultT> thisTaskObservable;
-            if (entry.hasTaskResult() && !isRootTask(entry)) {
-                thisTaskObservable = Observable.just(entry.taskResult());
-            } else {
-                thisTaskObservable = entry.executeTaskAsync();
-            }
-            observables.add(thisTaskObservable.flatMap(new Func1<ResultT, Observable<ResultT>>() {
-                @Override
-                public Observable<ResultT> call(ResultT taskResult) {
-                    reportedCompleted(entry);
-                    if (isRootTask(entry)) {
-                        return Observable.just(taskResult);
-                    } else {
-                        return Observable.just(taskResult).concatWith(executeInternAsync());
-                    }
-                }
-            }));
-            currentEntry = super.getNext();
-        }
-        return Observable.merge(observables);
-    }
-
+    /**
+     * Prepares the tasks stored in the group entries, preparation allows tasks to define additional
+     * task dependencies.
+     */
     private void prepareTaskItems() {
         boolean isPreparePending;
         HashSet<String> preparedTasksKeys = new HashSet<>();
-        // In each pass of below loop, prepare() will be invoked on a subset of tasks in the
-        // group for which preparation is pending. Initially preparation is pending on all tasks.
+        // Invokes 'prepare' on a subset of non-prepared tasks in the group. Initially preparation
+        // is pending on all task items.
         //
         do {
             isPreparePending = false;
             super.prepare();
-            TaskGroupEntry<ResultT, TaskT> currentEntry = super.getNext();
-            // Enumerate through each task item in the group in the order dependency is defined
-            // (starting from tasks with 0 dependencies and works backward).
+            TaskGroupEntry<ResultT, TaskT> entry = super.getNext();
+            // Enumerate group entries, an entry holds one task item, in topological sorted order
             //
-            // For each non-prepared task item -
-            // 1. TaskItem.prepare() will be invoked where additional dependencies for the task can be added
-            // 2. if any dependencies added then set a flag which indicates another pass is required to
-            //    'prepare' newly added task items
-            // 3. Add the prepared task item to the set to skip them in the next pass
+            // A. For each non-prepared task item -
+            //     1. Invoke 'prepare'
+            //     2. If new task dependencies added in 'prepare' then set a flag (isPreparePending)
+            //        which indicates another pass is required to 'prepare' new task items
+            //     3. Add the prepared task item to the set to skip it in the next pass
             //
-            // For each task item (prepared/non-prepared)
-            // 1. Refresh the dependent underlying collection with any newly added dependencies
+            // B. For each prepared & non-prepared task item -
+            //     1. Refresh the dependent underlying collection with any newly added dependencies
             //
-            while (currentEntry != null) {
-                if (!preparedTasksKeys.contains(currentEntry.key())) {
-                    int dependencyCountBefore = currentEntry.dependencyKeys().size();
-                    currentEntry.data().prepare();
-                    int dependencyCountAfter = currentEntry.dependencyKeys().size();
+            while (entry != null) {
+                if (!preparedTasksKeys.contains(entry.key())) {
+                    int dependencyCountBefore = entry.dependencyKeys().size();
+                    entry.data().prepare();
+                    int dependencyCountAfter = entry.dependencyKeys().size();
                     if ((dependencyCountAfter - dependencyCountBefore) > 0) {
                         isPreparePending = true;
                     }
-                    preparedTasksKeys.add(currentEntry.key());
+                    preparedTasksKeys.add(entry.key());
                 }
-                for (String parentKey : currentEntry.dependentKeys()) {
-                    super.mergeChildToParent(parentKey, currentEntry);
+                for (String parentKey : entry.dependentKeys()) {
+                    super.mergeChildToParent(parentKey, entry);
                 }
-                super.reportedCompleted(currentEntry);
-                currentEntry = super.getNext();
+                super.reportedCompleted(entry);
+                entry = super.getNext();
             }
-        } while (isPreparePending); // Exit only if no new dependencies were added in this iteration
+        } while (isPreparePending); // Run another pass if new dependencies were added in this pass
         super.prepare();
+    }
+
+    /**
+     * Executes the tasks in the group in the topological order of dependencies.
+     *
+     * @return an observable that emits the result of tasks in the order they finishes.
+     */
+    private Observable<ResultT> executeInternAsync() {
+        TaskGroupEntry<ResultT, TaskT> entry = super.getNext();
+        final List<Observable<ResultT>> observables = new ArrayList<>();
+        while (entry != null) {
+            final TaskGroupEntry<ResultT, TaskT> currentEntry = entry;
+            Observable<ResultT> currentTaskObservable = this.executeTaskAsync(currentEntry);
+            Func1<ResultT, Observable<ResultT>> onNext = new Func1<ResultT, Observable<ResultT>>() {
+                @Override
+                public Observable<ResultT> call(ResultT taskResult) {
+                    return Observable.just(taskResult);
+                }
+            };
+            Func1<Throwable, Observable<ResultT>> onError = new Func1<Throwable, Observable<ResultT>>() {
+                @Override
+                public Observable<ResultT> call(Throwable throwable) {
+                    return Observable.error(throwable);
+                }
+            };
+            Func0<Observable<ResultT>> onComplete = new Func0<Observable<ResultT>>() {
+                @Override
+                public Observable<ResultT> call() {
+                    reportedCompleted(currentEntry);
+                    if (isRootEntry(currentEntry)) {
+                        return Observable.empty();
+                    } else {
+                        return executeInternAsync();
+                    }
+                }
+            };
+            observables.add(currentTaskObservable.flatMap(onNext, onError, onComplete));
+            entry = super.getNext();
+        }
+        return Observable.merge(observables);
+    }
+
+    /**
+     * Executes the task item stored in the given entry.
+     * <p>
+     * if there is a cached result then it will be returned without executing the task, but the root
+     *  task always executed even though result is cached.
+     *
+     * @param entry the entry holding task item
+     * @return an observable that emits the result of task.
+     */
+    private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry) {
+        if (entry.hasTaskResult() && !isRootEntry(entry)) {
+            return Observable.just(entry.taskResult());
+        } else {
+            return entry.executeTaskAsync();
+        }
+    }
+
+    /**
+     * Checks the given entry is a root entry in this group.
+     *
+     * @param taskGroupEntry the entry
+     * @return true, if the entry is root entry in the group, false otherwise.
+     */
+    private boolean isRootEntry(TaskGroupEntry<ResultT, TaskT> taskGroupEntry) {
+        return isRootNode(taskGroupEntry);
     }
 
     /**

@@ -40,6 +40,11 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
+    public boolean isHot() {
+        return this.resourceCreatorUpdator.isHot();
+    }
+
+    @Override
     public Observable<ResourceT> executeAsync() {
         if (this.resourceCreatorUpdator.isInCreateMode()) {
             return this.resourceCreatorUpdator.createResourceAsync()
@@ -77,6 +82,12 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
          * prepare for create or update.
          */
         void prepare();
+
+        /**
+         * @return true if the observable returned by {@link this#createResourceAsync()} and
+         * updateResourceAsync are hot observable, false if its a cold observable.
+         */
+        boolean isHot();
 
         /**
          * Creates the resource asynchronously.

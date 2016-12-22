@@ -21,10 +21,16 @@ public interface TaskItem<T> {
     T result();
 
     /**
-     * method that gets called before start executing all the tasks in the task group {@link TaskGroup}
-     * in which this task belongs to.
+     * method that gets called before start executing all the tasks in the task group
+     * {@link TaskGroup} in which this task belongs to.
      */
     void prepare();
+
+    /**
+     * @return true if the observable returned by {@link this#executeAsync()} is a hot
+     * observable, false if its a cold observable.
+     */
+    boolean isHot();
 
     /**
      * Executes the task asynchronously.

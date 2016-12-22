@@ -95,6 +95,13 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
+    public boolean isHot() {
+        // createResourceAsync & updateResourceAsync returns cold observable since Retrofit Http
+        // request APIs (POST, PUT, PATCH ..) returns cold observable
+        return false;
+    }
+
+    @Override
     public Observable<Indexable> createAsync() {
         return this.executeTaskGroupAsyncStreaming();
     }
