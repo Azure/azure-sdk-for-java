@@ -240,7 +240,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
   <tr>
     <td>Traffic Manager</td>
     <td><ul style="list-style-type:circle">
-<li><a href="https://github.com/Azure-Samples/traffic-manager-java-manage-traffic-manage-profiles">Manage traffic manager profiles</a></li>
+<li><a href="https://github.com/Azure-Samples/traffic-manager-java-manage-profiles">Manage traffic manager profiles</a></li>
 </ul></td>
   </tr>
 
@@ -257,7 +257,7 @@ You can find plenty of sample code that illustrates management scenarios in Azur
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-db">Manage SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-dbs-in-elastic-pool">Manage SQL databases in elastic pools</a></li>
-<li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-dbs-in-elastic-pool">Manage firewalls for SQL databases</a></li>
+<li><a href="https://github.com/Azure-Samples/sql-database-java-manage-firewalls-for-sql-databases">Manage firewalls for SQL databases</a></li>
 <li><a href="https://github.com/Azure-Samples/sql-database-java-manage-sql-databases-across-regions">Manage SQL databases across regions</a></li>
 </ul></td>
   </tr>
