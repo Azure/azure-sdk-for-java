@@ -19,7 +19,7 @@ import rx.functions.Func0;
  * @param <ResultT> the type of the result produced by the task
  * @param <TaskT> the task type that can return a value
  */
-public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
+final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGNode<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
      * indicates that one or more decedent dependency tasks are faulted.
@@ -32,7 +32,7 @@ public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
      * @param taskId id that uniquely identifies the task from other tasks in the group
      * @param taskItem the task this entry holds
      */
-    public TaskGroupEntry(String taskId, TaskT taskItem) {
+    TaskGroupEntry(String taskId, TaskT taskItem) {
         super(taskId, taskItem);
     }
 
@@ -67,7 +67,7 @@ public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
     /**
      * @return the handle to the asynchronous execution of the task this entry holds.
      */
-    public final Observable<ResultT> executeTaskAsync() {
+    public Observable<ResultT> executeTaskAsync() {
         final TaskT taskItem = this.taskItem();
         if (taskItem.isHot()) {
             // Convert hot task to cold to delay it's execution until subscription.

@@ -10,5 +10,5 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
 /**
  * The inner piza type.
  */
-final class PizaInner {
+final class PizzaInner {
 }

@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Type that represents group of {@link TaskGroupEntry} items, each item holds a {@link TaskItem}
+ * Type that represents group of {@link TaskGroupEntry}, each entry holds a {@link TaskItem}
  * and associated dependency information.
  *
  * @param <ResultT> type of the result produced by the tasks in the group
@@ -24,6 +24,12 @@ import java.util.List;
  */
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
+    /**
+     * The shared exception object used by the tasks to indicate they are faulted due to faulted
+     * descent dependency tasks.
+     */
+    private final FaultedDependencyException faultedDependencyException = new FaultedDependencyException();
+
     /**
      * Creates TaskGroup.
      *
@@ -44,7 +50,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Gets the result produced by a task item in the group.
+     * Gets the result produced by a task in the group.
      * <p>
      * this method can null if the task has not yet been executed
      *
@@ -60,8 +66,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Merge this group with the given group containing root task depends on this
-     * group.
+     * Merge this group with the given group containing root task depends on this group.
      *
      * @param parentTaskGroup the parent task group
      */
@@ -79,15 +84,15 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             return Observable.error(new IllegalStateException("executeAsync can be called "
                     + "only from root TaskGroup"));
         }
-        prepareTaskItems();
-        return executeInternAsync();
+        prepareTasks();
+        return executeReadyTasksAsync();
     }
 
     /**
      * Prepares the tasks stored in the group entries, preparation allows tasks to define additional
      * task dependencies.
      */
-    private void prepareTaskItems() {
+    private void prepareTasks() {
         boolean isPreparePending;
         HashSet<String> preparedTasksKeys = new HashSet<>();
         // Invokes 'prepare' on a subset of non-prepared tasks in the group. Initially preparation
@@ -129,16 +134,18 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Executes the tasks in the group in the topological order of dependencies.
+     * Executes the ready tasks.
      *
      * @return an observable that emits the result of tasks in the order they finishes.
      */
-    private Observable<ResultT> executeInternAsync() {
+    private Observable<ResultT> executeReadyTasksAsync() {
         TaskGroupEntry<ResultT, TaskT> entry = super.getNext();
         final List<Observable<ResultT>> observables = new ArrayList<>();
+        // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
+        //
         while (entry != null) {
             final TaskGroupEntry<ResultT, TaskT> currentEntry = entry;
-            Observable<ResultT> currentTaskObservable = this.executeTaskAsync(currentEntry);
+            Observable<ResultT> currentTaskObservable = executeTaskAsync(currentEntry);
             Func1<ResultT, Observable<ResultT>> onNext = new Func1<ResultT, Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call(ResultT taskResult) {
@@ -148,32 +155,13 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             Func1<Throwable, Observable<ResultT>> onError = new Func1<Throwable, Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call(Throwable throwable) {
-                    reportError(currentEntry, throwable);
-                    boolean isDependencyFaulted = throwable instanceof FaultedDependencyException;
-                    if (isRootEntry(currentEntry)) {
-                        if (isDependencyFaulted) {
-                            return Observable.empty();
-                        } else {
-                            return toErrorObservable(throwable);
-                        }
-                    } else {
-                        if (isDependencyFaulted) {
-                            return executeInternAsync();
-                        } else {
-                            return Observable.concatDelayError(executeInternAsync(), toErrorObservable(throwable));
-                        }
-                    }
+                    return processFaultedTaskAsync(currentEntry, throwable);
                 }
             };
             Func0<Observable<ResultT>> onComplete = new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
-                    reportCompletion(currentEntry);
-                    if (isRootEntry(currentEntry)) {
-                        return Observable.empty();
-                    } else {
-                        return executeInternAsync();
-                    }
+                    return processCompletedTaskAsync(currentEntry);
                 }
             };
             observables.add(currentTaskObservable.flatMap(onNext, onError, onComplete));
@@ -183,17 +171,17 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Executes the task item stored in the given entry.
+     * Executes the task stored in the given entry.
      * <p>
      * if there is a cached result then it will be returned without executing the task, but the root
-     *  task always executed even though result is cached.
+     * task always executed even though result is cached.
      *
-     * @param entry the entry holding task item
+     * @param entry the entry holding task
      * @return an observable that emits the result of task.
      */
     private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry) {
         if (entry.hasFaultedDescentDependencyTask()) {
-            return toErrorObservable(new FaultedDependencyException());
+            return toErrorObservable(faultedDependencyException);
         }
         if (entry.hasTaskResult() && !isRootEntry(entry)) {
             return Observable.just(entry.taskResult());
@@ -203,10 +191,53 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
+     * Handles successful completion of a task.
+     * <p>
+     * If the task is not root task then this kickoff execution of next set of ready tasks
+     *
+     * @param completedEntry the entry holding completed task
+     * @return an observable represents asynchronous operation in the next stage
+     */
+    private Observable<ResultT> processCompletedTaskAsync(final TaskGroupEntry<ResultT, TaskT> completedEntry) {
+        reportCompletion(completedEntry);
+        if (isRootEntry(completedEntry)) {
+            return Observable.empty();
+        } else {
+            return executeReadyTasksAsync();
+        }
+    }
+
+    /**
+     * Handles a faulted task.
+     *
+     * @param faultedEntry the entry holding faulted task
+     * @param throwable the reason for fault
+     * @return an observable represents asynchronous operation in the next stage
+     */
+    private Observable<ResultT> processFaultedTaskAsync(final TaskGroupEntry<ResultT, TaskT> faultedEntry,
+                                                        Throwable throwable) {
+        reportError(faultedEntry, throwable);
+        boolean isDependencyFaulted = throwable instanceof FaultedDependencyException;
+        if (isRootEntry(faultedEntry)) {
+            if (isDependencyFaulted) {
+                return Observable.empty();
+            } else {
+                return toErrorObservable(throwable);
+            }
+        } else {
+            if (isDependencyFaulted) {
+                return executeReadyTasksAsync();
+            } else {
+                return Observable.concatDelayError(executeReadyTasksAsync(), toErrorObservable(throwable));
+            }
+        }
+    }
+
+    /**
      * Checks the given entry is a root entry in this group.
      *
      * @param taskGroupEntry the entry
-     * @return true, if the entry is root entry in the group, false otherwise.
+     * @return true if the entry is root entry in the group, false otherwise.
      */
     private boolean isRootEntry(TaskGroupEntry<ResultT, TaskT> taskGroupEntry) {
         return isRootNode(taskGroupEntry);

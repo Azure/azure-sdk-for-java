@@ -21,13 +21,13 @@ import java.util.concurrent.TimeUnit;
  * Implementation of {@link IPizza}
  */
 class PizzaImpl
-        extends CreatableUpdatableImpl<IPizza, PizaInner, PizzaImpl>
+        extends CreatableUpdatableImpl<IPizza, PizzaInner, PizzaImpl>
         implements IPizza {
     final List<Creatable<IPizza>> delayedPizzas;
     boolean prepareCalled = false;
 
     public PizzaImpl(String name) {
-        super(name, new PizaInner());
+        super(name, new PizzaInner());
         delayedPizzas = new ArrayList<>();
     }
 

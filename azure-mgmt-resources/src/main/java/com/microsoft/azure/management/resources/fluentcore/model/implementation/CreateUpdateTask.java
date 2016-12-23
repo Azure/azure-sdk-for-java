@@ -85,7 +85,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
 
         /**
          * @return true if the observable returned by {@link this#createResourceAsync()} and
-         * updateResourceAsync are hot observable, false if its a cold observable.
+         * {@link this#updateResourceAsync()} are hot observables, false if they are cold observables.
          */
         boolean isHot();
 
