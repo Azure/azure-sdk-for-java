@@ -154,14 +154,37 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      *
      * @param completed the node ready to be consumed
      */
-    public void reportedCompleted(NodeT completed) {
+    public void reportCompletion(NodeT completed) {
         completed.setPreparer(true);
         String dependency = completed.key();
         for (String dependentKey : graph.get(dependency).dependentKeys()) {
             DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
             dependent.lock().lock();
             try {
-                dependent.reportResolved(dependency);
+                dependent.onSuccessfulResolution(dependency);
+                if (dependent.hasAllResolved()) {
+                    queue.add(dependent.key());
+                }
+            } finally {
+                dependent.lock().unlock();
+            }
+        }
+    }
+
+    /**
+     * Reports that a node is faulted.
+     *
+     * @param faulted the node faulted
+     * @param throwable the reason for fault
+     */
+    public void reportError(NodeT faulted, Throwable throwable) {
+        faulted.setPreparer(true);
+        String dependency = faulted.key();
+        for (String dependentKey : graph.get(dependency).dependentKeys()) {
+            DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
+            dependent.lock().lock();
+            try {
+                dependent.onFaultedResolution(dependency, throwable);
                 if (dependent.hasAllResolved()) {
                     queue.add(dependent.key());
                 }

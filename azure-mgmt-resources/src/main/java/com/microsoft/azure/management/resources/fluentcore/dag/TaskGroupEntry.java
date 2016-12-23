@@ -22,6 +22,11 @@ import rx.functions.Func0;
 public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGNode<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
+     * indicates that one or more decedent dependency tasks are faulted.
+     */
+    private boolean hasFaultedDescentDependencyTask;
+
+    /**
      * Creates TaskGroupEntry.
      *
      * @param taskId id that uniquely identifies the task from other tasks in the group
@@ -29,6 +34,20 @@ public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
      */
     public TaskGroupEntry(String taskId, TaskT taskItem) {
         super(taskId, taskItem);
+    }
+
+    @Override
+    public void initialize() {
+        super.initialize();
+        this.hasFaultedDescentDependencyTask = false;
+    }
+
+    /**
+     * @return true if one or more decedent tasks that this task depends on
+     * are in faulted state.
+     */
+    public boolean hasFaultedDescentDependencyTask() {
+        return this.hasFaultedDescentDependencyTask;
     }
 
     /**
@@ -68,5 +87,11 @@ public class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
      */
     private TaskT taskItem() {
         return super.data();
+    }
+
+    @Override
+    protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
+        super.onFaultedResolution(dependencyKey, throwable);
+        this.hasFaultedDescentDependencyTask = true;
     }
 }

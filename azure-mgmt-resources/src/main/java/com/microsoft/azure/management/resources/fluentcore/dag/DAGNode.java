@@ -119,18 +119,31 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     }
 
     /**
-     * @return <tt>true</tt> if all dependencies of this node are ready to be consumed
+     * @return <tt>true</tt> if all dependencies of this node are resolved
      */
-    boolean hasAllResolved() {
+    protected boolean hasAllResolved() {
         return toBeResolved == 0;
     }
 
     /**
-     * Reports that one of this node's dependency has been resolved and ready to be consumed.
+     * Reports a dependency of this node has been successfully resolved.
      *
      * @param dependencyKey the id of the dependency node
      */
-    void reportResolved(String dependencyKey) {
+    protected void onSuccessfulResolution(String dependencyKey) {
+        if (toBeResolved == 0) {
+            throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
+        }
+        toBeResolved--;
+    }
+
+    /**
+     * Reports a dependency of this node has been faulted.
+     *
+     * @param dependencyKey the id of the dependency node
+     * @param throwable the reason for unsuccessful resolution
+     */
+    protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         if (toBeResolved == 0) {
             throw new RuntimeException("invalid state - " + this.key() + ": The dependency '" + dependencyKey + "' is already reported or there is no such dependencyKey");
         }

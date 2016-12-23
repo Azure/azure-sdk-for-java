@@ -121,7 +121,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
                 for (String parentKey : entry.dependentKeys()) {
                     super.mergeChildToParent(parentKey, entry);
                 }
-                super.reportedCompleted(entry);
+                super.reportCompletion(entry);
                 entry = super.getNext();
             }
         } while (isPreparePending); // Run another pass if new dependencies were added in this pass
@@ -148,13 +148,27 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             Func1<Throwable, Observable<ResultT>> onError = new Func1<Throwable, Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call(Throwable throwable) {
-                    return Observable.error(throwable);
+                    reportError(currentEntry, throwable);
+                    boolean isDependencyFaulted = throwable instanceof FaultedDependencyException;
+                    if (isRootEntry(currentEntry)) {
+                        if (isDependencyFaulted) {
+                            return Observable.empty();
+                        } else {
+                            return toErrorObservable(throwable);
+                        }
+                    } else {
+                        if (isDependencyFaulted) {
+                            return executeInternAsync();
+                        } else {
+                            return Observable.concatDelayError(executeInternAsync(), toErrorObservable(throwable));
+                        }
+                    }
                 }
             };
             Func0<Observable<ResultT>> onComplete = new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
-                    reportedCompleted(currentEntry);
+                    reportCompletion(currentEntry);
                     if (isRootEntry(currentEntry)) {
                         return Observable.empty();
                     } else {
@@ -165,7 +179,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             observables.add(currentTaskObservable.flatMap(onNext, onError, onComplete));
             entry = super.getNext();
         }
-        return Observable.merge(observables);
+        return Observable.mergeDelayError(observables);
     }
 
     /**
@@ -178,6 +192,9 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * @return an observable that emits the result of task.
      */
     private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry) {
+        if (entry.hasFaultedDescentDependencyTask()) {
+            return toErrorObservable(new FaultedDependencyException());
+        }
         if (entry.hasTaskResult() && !isRootEntry(entry)) {
             return Observable.just(entry.taskResult());
         } else {
@@ -193,6 +210,16 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      */
     private boolean isRootEntry(TaskGroupEntry<ResultT, TaskT> taskGroupEntry) {
         return isRootNode(taskGroupEntry);
+    }
+
+    /**
+     * Gets the given throwable as observable.
+     *
+     * @param throwable the throwable to wrap
+     * @return observable with throwable wrapped
+     */
+    private Observable<ResultT> toErrorObservable(Throwable throwable) {
+        return Observable.error(throwable);
     }
 
     /**
