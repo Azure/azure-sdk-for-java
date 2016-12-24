@@ -25,18 +25,37 @@ import java.util.List;
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
-     * The shared exception object used by the tasks to indicate they are faulted due to faulted
+     * The shared exception object used by a task to indicate it is not executed due to faulted
      * descent dependency tasks.
      */
-    private final FaultedDependencyException faultedDependencyException = new FaultedDependencyException();
+    private final ErroredDependencyTaskException erroredDependencyTaskException = new ErroredDependencyTaskException();
+
+    /**
+     * The shared exception object used by a task to indicate it is not executed since the parent
+     * group is marked as isGroupCancelled.
+     */
+    private final TaskCancelledException taskCancelledException = new TaskCancelledException();
+
+    /**
+     * Task group termination strategy to be used once any task in the group error-ed.
+     */
+    private final TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy;
+
+    /**
+     * Flag indicating whether this group is marked isGroupCancelled or not.
+     */
+    private boolean isGroupCancelled;
 
     /**
      * Creates TaskGroup.
      *
      * @param rootTaskEntry the entry holding root task
+     * @param taskGroupTerminateOnErrorStrategy termination strategy to be used on error
      */
-    public TaskGroup(TaskGroupEntry<ResultT, TaskT> rootTaskEntry) {
+    private TaskGroup(TaskGroupEntry<ResultT, TaskT> rootTaskEntry,
+                      TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy) {
         super(rootTaskEntry);
+        this.taskGroupTerminateOnErrorStrategy = taskGroupTerminateOnErrorStrategy;
     }
 
     /**
@@ -44,9 +63,12 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      *
      * @param rootTaskItemId the id of the root task in the group
      * @param rootTaskItem the root task
+     * @param taskGroupTerminateOnErrorStrategy termination strategy to be used on error
      */
-    public TaskGroup(String rootTaskItemId, TaskT rootTaskItem) {
-        this(new TaskGroupEntry<ResultT, TaskT>(rootTaskItemId, rootTaskItem));
+    public TaskGroup(String rootTaskItemId,
+                     TaskT rootTaskItem,
+                     TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy) {
+        this(new TaskGroupEntry<ResultT, TaskT>(rootTaskItemId, rootTaskItem), taskGroupTerminateOnErrorStrategy);
     }
 
     /**
@@ -60,7 +82,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     public ResultT taskResult(String taskId) {
         TaskGroupEntry<ResultT, TaskT> taskGroupEntry = super.getNode(taskId);
         if (taskGroupEntry == null) {
-            throw new IllegalArgumentException("A task with key '" + taskId + "' not found");
+            throw new IllegalArgumentException("A task with id '" + taskId + "' is not found");
         }
         return taskGroupEntry.taskResult();
     }
@@ -84,7 +106,12 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             return Observable.error(new IllegalStateException("executeAsync can be called "
                     + "only from root TaskGroup"));
         }
+        this.isGroupCancelled = false;
+        // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
+        //
         prepareTasks();
+        // Runs the ready tasks concurrently
+        //
         return executeReadyTasksAsync();
     }
 
@@ -173,15 +200,22 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     /**
      * Executes the task stored in the given entry.
      * <p>
-     * if there is a cached result then it will be returned without executing the task, but the root
-     * task always executed even though result is cached.
+     * if the task cannot be executed due to faulted dependencies then an observable that
+     * emit {@link ErroredDependencyTaskException} will be returned.
+     * if the task cannot be executed because of the group marked as cancelled then an observable
+     * that emit {@link TaskCancelledException} will be returned.
+     * if the task is not root task and if the cached result is available then an observable
+     * that emits the cached result will be returned.
      *
      * @param entry the entry holding task
-     * @return an observable that emits the result of task.
+     * @return an observable represents result of task in the given entry.
      */
     private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry) {
         if (entry.hasFaultedDescentDependencyTask()) {
-            return toErrorObservable(faultedDependencyException);
+            return toErrorObservable(erroredDependencyTaskException);
+        }
+        if (this.isGroupCancelled) {
+            return toErrorObservable(taskCancelledException);
         }
         if (entry.hasTaskResult() && !isRootEntry(entry)) {
             return Observable.just(entry.taskResult());
@@ -193,7 +227,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     /**
      * Handles successful completion of a task.
      * <p>
-     * If the task is not root task then this kickoff execution of next set of ready tasks
+     * If the task is not root (terminal) task then this kickoff execution of next set of ready tasks
      *
      * @param completedEntry the entry holding completed task
      * @return an observable represents asynchronous operation in the next stage
@@ -202,9 +236,8 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         reportCompletion(completedEntry);
         if (isRootEntry(completedEntry)) {
             return Observable.empty();
-        } else {
-            return executeReadyTasksAsync();
         }
+        return executeReadyTasksAsync();
     }
 
     /**
@@ -216,31 +249,42 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      */
     private Observable<ResultT> processFaultedTaskAsync(final TaskGroupEntry<ResultT, TaskT> faultedEntry,
                                                         Throwable throwable) {
+        this.isGroupCancelled = this.taskGroupTerminateOnErrorStrategy
+                == TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_INPROGRESS_TASKS_COMPLETION;
         reportError(faultedEntry, throwable);
-        boolean isDependencyFaulted = throwable instanceof FaultedDependencyException;
         if (isRootEntry(faultedEntry)) {
-            if (isDependencyFaulted) {
-                return Observable.empty();
-            } else {
+            if (shouldPropagateException(throwable)) {
                 return toErrorObservable(throwable);
             }
-        } else {
-            if (isDependencyFaulted) {
-                return executeReadyTasksAsync();
-            } else {
-                return Observable.concatDelayError(executeReadyTasksAsync(), toErrorObservable(throwable));
-            }
+            return Observable.empty();
         }
+        if (shouldPropagateException(throwable)) {
+            return Observable.concatDelayError(executeReadyTasksAsync(), toErrorObservable(throwable));
+        }
+        return executeReadyTasksAsync();
     }
 
     /**
-     * Checks the given entry is a root entry in this group.
+     * Checks the given entry is the root entry in this group.
      *
      * @param taskGroupEntry the entry
      * @return true if the entry is root entry in the group, false otherwise.
      */
     private boolean isRootEntry(TaskGroupEntry<ResultT, TaskT> taskGroupEntry) {
         return isRootNode(taskGroupEntry);
+    }
+
+    /**
+     * Checks the given throwable needs to be propagated to final stream returned to the
+     * consumer of {@link this#executeAsync()} method.
+     *
+     * @param throwable the exception to check
+     * @return true if the throwable needs to be included in the aggregate exception emitted
+     * by the final stream
+     */
+    private boolean shouldPropagateException(Throwable throwable) {
+        return (!(throwable instanceof ErroredDependencyTaskException)
+                && !(throwable instanceof TaskCancelledException));
     }
 
     /**

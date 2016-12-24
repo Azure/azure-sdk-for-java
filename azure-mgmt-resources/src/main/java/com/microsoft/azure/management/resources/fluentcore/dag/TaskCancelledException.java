@@ -8,7 +8,8 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 /**
- * An FaultedDependencyException is thrown when a task cannot be executed due to a faulted decedent task.
+ * An TaskCancelledException is emitted when a task cannot be executed because the parent task group is
+ * marked as cancelled.
  */
-final class FaultedDependencyException extends Exception {
+final class TaskCancelledException extends Exception {
 }

@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroupTerminateOnErrorStrategy;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
@@ -53,7 +54,9 @@ public abstract class CreatableUpdatableImpl<
     protected CreatableUpdatableImpl(String name, InnerModelT innerObject) {
         super(innerObject);
         this.name = name;
-        taskGroup = new TaskGroup<>(this.key(), new CreateUpdateTask<>(this));
+        taskGroup = new TaskGroup<>(this.key(),
+                new CreateUpdateTask<>(this),
+                TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_INPROGRESS_TASKS_COMPLETION);
     }
 
     @Override
