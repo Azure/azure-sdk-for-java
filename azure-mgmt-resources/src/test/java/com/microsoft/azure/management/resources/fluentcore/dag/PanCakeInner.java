@@ -8,7 +8,7 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 /**
- * The inner pizza type.
+ * The inner pancake type.
  */
-final class PizzaInner {
+final class PancakeInner {
 }

@@ -25,13 +25,13 @@ import java.util.List;
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
-     * The shared exception object used by a task to indicate it is not executed due to faulted
+     * The shared exception object used by any task to indicate it is not executed due to faulted
      * descent dependency tasks.
      */
     private final ErroredDependencyTaskException erroredDependencyTaskException = new ErroredDependencyTaskException();
 
     /**
-     * The shared exception object used by a task to indicate it is not executed since the parent
+     * The shared exception object used by any task to indicate it is not executed since the parent
      * group is marked as isGroupCancelled.
      */
     private final TaskCancelledException taskCancelledException = new TaskCancelledException();
@@ -182,12 +182,14 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             Func1<Throwable, Observable<ResultT>> onError = new Func1<Throwable, Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call(Throwable throwable) {
+                    // Append next observable on error terminate event of this observable
                     return processFaultedTaskAsync(currentEntry, throwable);
                 }
             };
             Func0<Observable<ResultT>> onComplete = new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
+                    // Append next observable on successful terminate event of this observable
                     return processCompletedTaskAsync(currentEntry);
                 }
             };
@@ -275,12 +277,12 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Checks the given throwable needs to be propagated to final stream returned to the
-     * consumer of {@link this#executeAsync()} method.
+     * Checks the given throwable needs to be propagated to final stream returned by
+     * {@link this#executeAsync()} method.
      *
      * @param throwable the exception to check
-     * @return true if the throwable needs to be included in the aggregate exception emitted
-     * by the final stream
+     * @return true if the throwable needs to be included in the {@link rx.exceptions.CompositeException}
+     * emitted by the final stream
      */
     private boolean shouldPropagateException(Throwable throwable) {
         return (!(throwable instanceof ErroredDependencyTaskException)
