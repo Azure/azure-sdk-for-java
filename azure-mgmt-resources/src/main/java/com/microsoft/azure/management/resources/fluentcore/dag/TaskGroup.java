@@ -42,7 +42,8 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     private final TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy;
 
     /**
-     * Flag indicating whether this group is marked isGroupCancelled or not.
+     * Flag indicating whether this group is marked as cancelled or not. Setting this flag can be
+     * think as broadcasting a cancellation signal to subset of tasks those are yet to execute.
      */
     private boolean isGroupCancelled;
 
