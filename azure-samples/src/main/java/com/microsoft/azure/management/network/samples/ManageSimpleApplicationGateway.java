@@ -4,15 +4,12 @@ package com.microsoft.azure.management.network.samples;
 
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.PublicIpAddress;
-import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import com.microsoft.azure.management.samples.Utils;
 import okhttp3.logging.HttpLoggingInterceptor;
 
 import java.io.File;
-import java.util.Date;
 
 /**
  * Azure network sample for managing application gateways.
@@ -61,7 +58,6 @@ public final class ManageSimpleApplicationGateway {
     public static void main(String[] args) {
 
         final String rgName = ResourceNamer.randomResourceName("rgNEAGS", 15);
-        final String pipName = ResourceNamer.randomResourceName("pip" + "-", 18);
 
          try {
 
@@ -80,42 +76,16 @@ public final class ManageSimpleApplicationGateway {
             System.out.println("Selected subscription: " + azure.subscriptionId());
 
             try {
-
-                //=============================================================
-                // Create a resource group (Where all resources gets created)
-                //
-                ResourceGroup resourceGroup = azure.resourceGroups()
-                        .define(rgName)
-                        .withRegion(Region.US_EAST)
-                        .create();
-
-                System.out.println("Created a new resource group - " + resourceGroup.id());
-
-
-                //=============================================================
-                // Create a public IP address for the Application Gateway
-                System.out.println("Creating a public IP address for the application gateway ...");
-
-                PublicIpAddress publicIpAddress = azure.publicIpAddresses().define(pipName)
-                        .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(rgName)
-                        .create();
-
-                System.out.println("Created a public IP address");
-                // Print the virtual network details
-                Utils.print(publicIpAddress);
-
-
                 //=======================================================================
                 // Create an application gateway
 
-                Date t3 = new Date();
                 System.out.println("================= CREATE ======================");
                 System.out.println("Creating an application gateway");
+                long t1 = System.currentTimeMillis();
 
                 ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
                         .withRegion(Region.US_EAST)
-                        .withExistingResourceGroup(resourceGroup)
+                        .withNewResourceGroup(rgName)
                         // Request routing rule for HTTP from public 80 to public 8080
                         .defineRequestRoutingRule("HTTP-80-to-8080")
                             .fromPublicFrontend()
@@ -126,12 +96,12 @@ public final class ManageSimpleApplicationGateway {
                             .toBackendIpAddress("11.1.1.3")
                             .toBackendIpAddress("11.1.1.4")
                             .attach()
-                        .withExistingPublicIpAddress(publicIpAddress)
+                        .withNewPublicIpAddress()
                         .create();
 
-                Date t4 = new Date();
+                long t2 = System.currentTimeMillis();
 
-                System.out.println("Application gateway created: (took " + ((t4.getTime() - t3.getTime()) / 1000) + " seconds)");
+                System.out.println("Application gateway created: (took " + (t2 - t1) / 1000 + " seconds)");
                 Utils.print(applicationGateway);
 
 
@@ -142,7 +112,7 @@ public final class ManageSimpleApplicationGateway {
                 System.out.println("================= UPDATE ======================");
                 System.out.println("Updating the application gateway");
 
-                Date t5 = new Date();
+                t1 = System.currentTimeMillis();
 
                 applicationGateway.update()
                         .withoutRequestRoutingRule("HTTP-80-to-8080")
@@ -161,9 +131,9 @@ public final class ManageSimpleApplicationGateway {
                             .attach()
                         .apply();
 
-                Date t6 = new Date();
+                t2 = System.currentTimeMillis();
 
-                System.out.println("Application gateway updated: (took " + ((t6.getTime() - t5.getTime()) / 1000) + " seconds)");
+                System.out.println("Application gateway updated: (took " + (t2 - t1) / 1000 + " seconds)");
                 Utils.print(applicationGateway);
 
             } catch (Exception f) {
