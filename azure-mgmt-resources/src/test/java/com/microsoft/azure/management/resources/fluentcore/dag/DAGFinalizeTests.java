@@ -15,7 +15,7 @@ public class DAGFinalizeTests {
     @Test
     public void testWithoutFinalize() {
         /**
-         *   |------------------>[D](2)----------->[B](1)------------->[A](0)
+         *   |------------------>[D](2)----------->[B](1)-------------->[A](0)
          *   |                                        ^                   ^
          *   |                                        |                   |
          *  [F](4)---->[E](3)-------------------------|                   |
@@ -209,7 +209,7 @@ public class DAGFinalizeTests {
 
     @Test
     public void testFinalize() {
-        // Define pizzas with instant pizzas
+        // Initial dependency graph
         //
         /**
          *   |------------------>[D](2)----------->[B](1)------------->[A](0)
@@ -247,7 +247,7 @@ public class DAGFinalizeTests {
         pizzaF.withInstantPizza(pizzaE);
         pizzaF.withInstantPizza(pizzaH);
 
-        // Update the above setup by adding delayed pizzas.
+        // Update the above setup by adding delayed pizzas in finalize (prepare).
         // Define 3 (J, K, L) delayed pizzas (edges with '==' symbol), two of them (J, L)
         // with instant pizzas.
         //    - The delayed pizza J has an instance pizza N
@@ -265,9 +265,9 @@ public class DAGFinalizeTests {
          *   |          |                              |
          *   |          |------->[G](4)-->[C](3)--------
          *   |                    |
-         *   |                    |=============================>[L](2)------->[P](1)======>[Q](0)
+         *   |                    |==================>[L](2)----->[P](1)======>[Q](0)
          *   |
-         *   |-------------------------------------------------->[H](1)------->[I](0)
+         *   |--------------------------------------------------->[H](1)------>[I](0)
          */
 
         PizzaImpl pizzaJ = new PizzaImpl("J");

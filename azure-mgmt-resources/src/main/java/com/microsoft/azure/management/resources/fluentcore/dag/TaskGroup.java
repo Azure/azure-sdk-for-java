@@ -25,27 +25,27 @@ import java.util.List;
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
+     * Task group termination strategy to be used once any task in the group error-ed.
+     */
+    private final TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy;
+    /**
+     * Flag indicating whether this group is marked as cancelled or not. This flag will be used only
+     * if this group's terminate on error strategy is
+     * {@link TaskGroupTerminateOnErrorStrategy#TERMINATE_ON_INPROGRESS_TASKS_COMPLETION}.
+     * Effect of setting this flag can be think as broadcasting a cancellation signal to subset of
+     * tasks those are yet to execute.
+     */
+    private boolean isGroupCancelled;
+    /**
      * The shared exception object used by any task to indicate it is not executed due to faulted
      * descent dependency tasks.
      */
     private final ErroredDependencyTaskException erroredDependencyTaskException = new ErroredDependencyTaskException();
-
     /**
-     * The shared exception object used by any task to indicate it is not executed since the parent
-     * group is marked as isGroupCancelled.
+     * The shared exception object used by any task to indicate it is not executed since the group
+     * is marked as cancelled i.e. {@link this#isGroupCancelled} is set.
      */
     private final TaskCancelledException taskCancelledException = new TaskCancelledException();
-
-    /**
-     * Task group termination strategy to be used once any task in the group error-ed.
-     */
-    private final TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy;
-
-    /**
-     * Flag indicating whether this group is marked as cancelled or not. Setting this flag can be
-     * think as broadcasting a cancellation signal to subset of tasks those are yet to execute.
-     */
-    private boolean isGroupCancelled;
 
     /**
      * Creates TaskGroup.
@@ -74,11 +74,9 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
 
     /**
      * Gets the result produced by a task in the group.
-     * <p>
-     * this method can null if the task has not yet been executed
      *
      * @param taskId the task item id
-     * @return the task result
+     * @return the task result, null will be returned if task has not yet been executed
      */
     public ResultT taskResult(String taskId) {
         TaskGroupEntry<ResultT, TaskT> taskGroupEntry = super.getNode(taskId);
@@ -283,7 +281,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      *
      * @param throwable the exception to check
      * @return true if the throwable needs to be included in the {@link rx.exceptions.CompositeException}
-     * emitted by the final stream
+     * emitted by the final stream.
      */
     private boolean shouldPropagateException(Throwable throwable) {
         return (!(throwable instanceof ErroredDependencyTaskException)

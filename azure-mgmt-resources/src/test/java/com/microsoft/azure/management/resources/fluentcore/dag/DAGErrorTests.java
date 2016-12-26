@@ -22,14 +22,21 @@ import java.util.Set;
 
 public class DAGErrorTests {
     @Test
-    public void testCompositeErrorTaskCancellation() {
-        // Define pancakes
+    public void testCancellationOnError() {
+        // The task B start and asynchronously wait for 4000 ms then emit an error.
+        // The tasks Q and I start and asynchronous wait for 8000 ms and then report
+        // completion. The more delay in Q and I ensure that B emits error before Q and
+        // I finishes.
+        //
+        // In this setup,
+        //    D and E cannot be executed since their dependency B is faulted.
+        //    P, H, L and G cannot be executed since fault in B cause group cancellation
         //
         /**
          *                                                                        |--------->[M](0)
          *                                                                        |
          *                                                       |==============>[J](1)----->[N](0)
-         *                                                       |
+         *                                 X                     |
          *   |------------------>[D](4)-->[B](3)--------------->[A](2)======================>[K](0)
          *   |                             ^                     ^
          *   |                             |                     |
@@ -37,9 +44,117 @@ public class DAGErrorTests {
          *   |          |                                        |
          *   |          |------->[G](4)-->[C](3)------------------
          *   |                    |
-         *   |                    |=============================>[L](2)------->[P](1)=======>[Q](0)
+         *   |                    |============================>[L](2)---------->[P](1)=====>[Q](0)
          *   |
-         *   |---------------------------------------------------------------->[H](1)------->[I](0)
+         *   |------------------------------------------------------------------>[H](1)----->[I](0)
+         */
+        PancakeImpl pancakeM = new PancakeImpl("M", 250);
+        PancakeImpl pancakeN = new PancakeImpl("N", 250);
+        PancakeImpl pancakeK = new PancakeImpl("K", 250);
+        PancakeImpl pancakeQ = new PancakeImpl("Q", 8000);
+        PancakeImpl pancakeI = new PancakeImpl("I", 8000);
+
+        PancakeImpl pancakeJ = new PancakeImpl("J", 250);
+        pancakeJ.withInstantPancake(pancakeM);
+        pancakeJ.withInstantPancake(pancakeN);
+        PancakeImpl pancakeP = new PancakeImpl("P", 250);
+        pancakeP.withDelayedPancake(pancakeQ);
+        PancakeImpl pancakeH = new PancakeImpl("H", 250);
+        pancakeH.withInstantPancake(pancakeI);
+
+        PancakeImpl pancakeA = new PancakeImpl("A", 250);
+        PancakeImpl pancakeL = new PancakeImpl("L", 250);
+        pancakeL.withInstantPancake(pancakeP);
+
+
+        PancakeImpl pancakeB = new PancakeImpl("B", 4000, true); // Task B wait for 4000 ms then emit error
+        pancakeB.withInstantPancake(pancakeA);
+        PancakeImpl pancakeC = new PancakeImpl("C", 250);
+        pancakeC.withInstantPancake(pancakeA);
+
+        PancakeImpl pancakeD = new PancakeImpl("D", 250);
+        pancakeD.withInstantPancake(pancakeB);
+        PancakeImpl pancakeG = new PancakeImpl("G", 250);
+        pancakeG.withInstantPancake(pancakeC);
+        pancakeG.withDelayedPancake(pancakeL);
+
+        PancakeImpl pancakeE = new PancakeImpl("E", 250);
+        pancakeE.withInstantPancake(pancakeB);
+        pancakeE.withInstantPancake(pancakeG);
+
+        PancakeImpl pancakeF = new PancakeImpl("F", 250);
+        pancakeF.withInstantPancake(pancakeD);
+        pancakeF.withInstantPancake(pancakeE);
+        pancakeF.withInstantPancake(pancakeH);
+
+        pancakeA.withDelayedPancake(pancakeJ);
+        pancakeA.withDelayedPancake(pancakeK);
+
+        final Set<String> expectedToSee = new HashSet<>();
+        expectedToSee.add("M");
+        expectedToSee.add("N");
+        expectedToSee.add("K");
+        expectedToSee.add("Q");
+        expectedToSee.add("I");
+
+        expectedToSee.add("J");
+
+        expectedToSee.add("A");
+
+        expectedToSee.add("C");
+
+        final Set<String> seen = new HashSet<>();
+        final List<Throwable> exceptions = new ArrayList<>();
+        IPancake rootPancake = pancakeF.createAsync().map(new Func1<Indexable, IPancake>() {
+            @Override
+            public IPancake call(Indexable indexable) {
+                IPancake pancake = (IPancake) indexable;
+                System.out.println("map.onNext: " + pancake.name());
+                seen.add(pancake.name());
+                return pancake;
+            }
+        })
+        .onErrorResumeNext(new Func1<Throwable, Observable<IPancake>>() {
+            @Override
+            public Observable<IPancake> call(Throwable throwable) {
+                System.out.println("map.onErrorResumeNext: " + throwable);
+                exceptions.add(throwable);
+                return Observable.empty();
+            }
+        }).toBlocking().last();
+
+        Assert.assertTrue(Sets.difference(expectedToSee, seen).isEmpty());
+        Assert.assertEquals(exceptions.size(), 1);
+        Assert.assertTrue(exceptions.get(0) instanceof RuntimeException);
+        RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
+        Assert.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
+    }
+
+    @Test
+    public void testCompositeError() {
+        // Tasks marked X (B & G) will fault. B and G are not depends on each other.
+        // If B start at time 't0'th ms then G starts ~'t1 = (t0 + 250)'th ms.
+        // After B start, it asynchronously wait and emit an error at time '(t0 + 3500)' ms.
+        // In this setup, G gets ~3250 ms to start before B emits error. Eventually G also
+        // emit error.
+        // The final stream, emits result of all tasks that B and G directly or indirectly
+        // depends on and terminate with composite exception (that composes exception from
+        // B and G).
+        /**
+         *                                                                        |--------->[M](0)
+         *                                                                        |
+         *                                                       |==============>[J](1)----->[N](0)
+         *                                 X                     |
+         *   |------------------>[D](4)-->[B](3)--------------->[A](2)======================>[K](0)
+         *   |                             ^                     ^
+         *   |                             |                     |
+         *  [F](6)---->[E](5)--------------|                     |
+         *   |          |         X                              |
+         *   |          |------->[G](4)-->[C](3)------------------
+         *   |                    |
+         *   |                    |============================>[L](2)---------->[P](1)=====>[Q](0)
+         *   |
+         *   |------------------------------------------------------------------>[H](1)----->[I](0)
          */
 
         PancakeImpl pancakeM = new PancakeImpl("M", 250);
@@ -61,14 +176,14 @@ public class DAGErrorTests {
         pancakeL.withInstantPancake(pancakeP);
 
 
-        PancakeImpl pancakeB = new PancakeImpl("B", 3000, true); // Task B wait for 3000 secs then emit error
+        PancakeImpl pancakeB = new PancakeImpl("B", 3500, true); // Task B wait for 3500 ms then emit error
         pancakeB.withInstantPancake(pancakeA);
         PancakeImpl pancakeC = new PancakeImpl("C", 250);
         pancakeC.withInstantPancake(pancakeA);
 
         PancakeImpl pancakeD = new PancakeImpl("D", 250);
         pancakeD.withInstantPancake(pancakeB);
-        PancakeImpl pancakeG = new PancakeImpl("G", 1500, true); // Task G wait for 1500 secs then emit error
+        PancakeImpl pancakeG = new PancakeImpl("G", 250, true); // Task G wait for 250 ms then emit error
         pancakeG.withInstantPancake(pancakeC);
         pancakeG.withDelayedPancake(pancakeL);
 
@@ -107,8 +222,9 @@ public class DAGErrorTests {
             @Override
             public IPancake call(Indexable indexable) {
                 IPancake pancake = (IPancake) indexable;
-                System.out.println("map.onNext:" + pancake.name());
-                seen.add(pancake.name());
+                String name = pancake.name();
+                System.out.println("map.onNext:" + name);
+                seen.add(name);
                 return pancake;
             }
         })
@@ -134,23 +250,24 @@ public class DAGErrorTests {
 
     @Test
     public void testErrorOnRoot() {
-        // Define pancakes
+        // In this setup only the root task F fault. The final stream will emit result from
+        // all tasks expect F and terminate with exception from F.
         //
         /**
-         *                                                                        |--------->[M](0)
+         *                                                                        |---------->[M](0)
          *                                                                        |
-         *                                                       |==============>[J](1)----->[N](0)
+         *                                                       |==============>[J](1)------>[N](0)
          *                                                       |
-         *   |------------------>[D](4)-->[B](3)--------------->[A](2)======================>[K](0)
-         *   |                             ^                     ^
-         *   |                             |                     |
-         *  [F](6)---->[E](5)--------------|                     |
-         *   |          |                                        |
-         *   |          |------->[G](4)-->[C](3)------------------
-         *   |                    |
-         *   |                    |=============================>[L](2)------->[P](1)=======>[Q](0)
-         *   |
-         *   |---------------------------------------------------------------->[H](1)------->[I](0)
+         *    |------------------>[D](4)-->[B](3)--------------->[A](2)======================>[K](0)
+         *    |                             ^                     ^
+         *    |                             |                     |
+         *  X[F](6)---->[E](5)--------------|                     |
+         *    |          |                                        |
+         *    |          |------->[G](4)-->[C](3)------------------
+         *    |                    |
+         *    |                    |============================>[L](2)--------->[P](1)======>[Q](0)
+         *    |
+         *    |----------------------------------------------------------------->[H](1)------>[I](0)
          */
 
         PancakeImpl pancakeM = new PancakeImpl("M", 250);
