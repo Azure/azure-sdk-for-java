@@ -12,29 +12,29 @@ import com.microsoft.azure.management.network.UsageName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Describes Network Resource Usage.
+ * Describes network resource usage.
  */
 public class UsageInner {
     /**
-     * Gets or sets an enum describing the unit of measurement.
+     * An enum describing the unit of measurement.
      */
     @JsonProperty(required = true)
     private String unit;
 
     /**
-     * Gets or sets the current value of the usage.
+     * The current value of the usage.
      */
     @JsonProperty(required = true)
     private long currentValue;
 
     /**
-     * Gets or sets the limit of usage.
+     * The limit of usage.
      */
     @JsonProperty(required = true)
     private long limit;
 
     /**
-     * Gets or sets the name of the type of usage.
+     * The name of the type of usage.
      */
     @JsonProperty(required = true)
     private UsageName name;

@@ -12,109 +12,117 @@ import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySslPolicy;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import java.util.List;
+import com.microsoft.azure.management.network.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * ApplicationGateways resource.
+ * Application gateway resource.
  */
 @JsonFlatten
 public class ApplicationGatewayInner extends Resource {
     /**
-     * Sku of application gateway resource.
+     * SKU of the application gateway resource.
      */
     @JsonProperty(value = "properties.sku")
     private ApplicationGatewaySku sku;
 
     /**
-     * SSL policy of application gateway resource.
+     * SSL policy of the application gateway resource.
      */
     @JsonProperty(value = "properties.sslPolicy")
     private ApplicationGatewaySslPolicy sslPolicy;
 
     /**
-     * Operational state of application gateway resource. Possible values
+     * Operational state of the application gateway resource. Possible values
+     * are: 'Stopped', 'Started', 'Running', and 'Stopping'. Possible values
      * include: 'Stopped', 'Starting', 'Running', 'Stopping'.
      */
     @JsonProperty(value = "properties.operationalState", access = JsonProperty.Access.WRITE_ONLY)
     private ApplicationGatewayOperationalState operationalState;
 
     /**
-     * Subnets of application gateway resource.
+     * Subnets of application the gateway resource.
      */
     @JsonProperty(value = "properties.gatewayIPConfigurations")
     private List<ApplicationGatewayIPConfigurationInner> gatewayIPConfigurations;
 
     /**
-     * Authentication certificates of application gateway resource.
+     * Authentication certificates of the application gateway resource.
      */
     @JsonProperty(value = "properties.authenticationCertificates")
     private List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates;
 
     /**
-     * SSL certificates of application gateway resource.
+     * SSL certificates of the application gateway resource.
      */
     @JsonProperty(value = "properties.sslCertificates")
     private List<ApplicationGatewaySslCertificateInner> sslCertificates;
 
     /**
-     * Frontend IP addresses of application gateway resource.
+     * Frontend IP addresses of the application gateway resource.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
     private List<ApplicationGatewayFrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Frontend ports of application gateway resource.
+     * Frontend ports of the application gateway resource.
      */
     @JsonProperty(value = "properties.frontendPorts")
     private List<ApplicationGatewayFrontendPortInner> frontendPorts;
 
     /**
-     * Probes of application gateway resource.
+     * Probes of the application gateway resource.
      */
     @JsonProperty(value = "properties.probes")
     private List<ApplicationGatewayProbeInner> probes;
 
     /**
-     * Backend address pool of application gateway resource.
+     * Backend address pool of the application gateway resource.
      */
     @JsonProperty(value = "properties.backendAddressPools")
     private List<ApplicationGatewayBackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Backend http settings of application gateway resource.
+     * Backend http settings of the application gateway resource.
      */
     @JsonProperty(value = "properties.backendHttpSettingsCollection")
     private List<ApplicationGatewayBackendHttpSettingsInner> backendHttpSettingsCollection;
 
     /**
-     * HTTP listeners of application gateway resource.
+     * Http listeners of the application gateway resource.
      */
     @JsonProperty(value = "properties.httpListeners")
     private List<ApplicationGatewayHttpListenerInner> httpListeners;
 
     /**
-     * URL path map of application gateway resource.
+     * URL path map of the application gateway resource.
      */
     @JsonProperty(value = "properties.urlPathMaps")
     private List<ApplicationGatewayUrlPathMapInner> urlPathMaps;
 
     /**
-     * Request routing rules of application gateway resource.
+     * Request routing rules of the application gateway resource.
      */
     @JsonProperty(value = "properties.requestRoutingRules")
     private List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules;
 
     /**
-     * Resource guid property of the ApplicationGateway resource.
+     * Web application firewall configuration.
+     */
+    @JsonProperty(value = "properties.webApplicationFirewallConfiguration")
+    private ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration;
+
+    /**
+     * Resource GUID property of the application gateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Provisioning state of the ApplicationGateway resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the application gateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
@@ -390,6 +398,26 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
+        return this;
+    }
+
+    /**
+     * Get the webApplicationFirewallConfiguration value.
+     *
+     * @return the webApplicationFirewallConfiguration value
+     */
+    public ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration() {
+        return this.webApplicationFirewallConfiguration;
+    }
+
+    /**
+     * Set the webApplicationFirewallConfiguration value.
+     *
+     * @param webApplicationFirewallConfiguration the webApplicationFirewallConfiguration value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
+        this.webApplicationFirewallConfiguration = webApplicationFirewallConfiguration;
         return this;
     }
 

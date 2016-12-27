@@ -15,92 +15,86 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Rules of the load balancer.
+ * A loag balancing rule for a load balancer.
  */
 @JsonFlatten
 public class LoadBalancingRuleInner extends SubResource {
     /**
-     * Gets or sets a reference to frontend IP Addresses.
+     * A reference to frontend IP addresses.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
     private SubResource frontendIPConfiguration;
 
     /**
-     * Gets or sets  a reference to a pool of DIPs. Inbound traffic is
-     * randomly load balanced across IPs in the backend IPs.
+     * A reference to a pool of DIPs. Inbound traffic is randomly load balanced
+     * across IPs in the backend IPs.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Gets or sets the reference of the load balancer probe used by the Load
-     * Balancing rule.
+     * The reference of the load balancer probe used by the load balancing
+     * rule.
      */
     @JsonProperty(value = "properties.probe")
     private SubResource probe;
 
     /**
-     * Gets or sets the transport protocol for the external endpoint. Possible
-     * values are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
+     * The transport protocol for the external endpoint. Possible values are
+     * 'Udp' or 'Tcp'. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
     private TransportProtocol protocol;
 
     /**
-     * Gets or sets the load distribution policy for this rule. Possible
-     * values include: 'Default', 'SourceIP', 'SourceIPProtocol'.
+     * The load distribution policy for this rule. Possible values are
+     * 'Default', 'SourceIP', and 'SourceIPProtocol'. Possible values include:
+     * 'Default', 'SourceIP', 'SourceIPProtocol'.
      */
     @JsonProperty(value = "properties.loadDistribution")
     private LoadDistribution loadDistribution;
 
     /**
-     * Gets or sets the port for the external endpoint. You can specify any
-     * port number you choose, but the port numbers specified for each role
-     * in the service must be unique. Possible values range between 1 and
-     * 65535, inclusive.
+     * The port for the external endpoint. Port numbers for each Rule must be
+     * unique within the Load Balancer. Acceptable values are between 1 and
+     * 65534.
      */
     @JsonProperty(value = "properties.frontendPort", required = true)
     private int frontendPort;
 
     /**
-     * Gets or sets a port used for internal connections on the endpoint. The
-     * localPort attribute maps the eternal port of the endpoint to an
-     * internal port on a role. This is useful in scenarios where a role must
-     * communicate to an internal component on a port that is different from
-     * the one that is exposed externally. If not specified, the value of
-     * localPort is the same as the port attribute. Set the value of
-     * localPort to '*' to automatically assign an unallocated port that is
-     * discoverable using the runtime API.
+     * The port used for internal connections on the endpoint. Acceptable
+     * values are between 1 and 65535.
      */
     @JsonProperty(value = "properties.backendPort")
     private Integer backendPort;
 
     /**
-     * Gets or sets the timeout for the Tcp idle connection. The value can be
-     * set between 4 and 30 minutes. The default value is 4 minutes. This
-     * element is only used when the protocol is set to Tcp.
+     * The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only
+     * used when the protocol is set to TCP.
      */
     @JsonProperty(value = "properties.idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /**
      * Configures a virtual machine's endpoint for the floating IP capability
-     * required to configure a SQL AlwaysOn availability Group. This setting
-     * is required when using the SQL Always ON availability Groups in SQL
-     * server. This setting can't be changed after you create the endpoint.
+     * required to configure a SQL AlwaysOn Availability Group. This setting is
+     * required when using the SQL AlwaysOn Availability Groups in SQL server.
+     * This setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "properties.enableFloatingIP")
     private Boolean enableFloatingIP;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

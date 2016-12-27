@@ -14,63 +14,64 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Peerings in a VirtualNework resource.
+ * Peerings in a virtual network resource.
  */
 @JsonFlatten
 public class VirtualNetworkPeeringInner extends SubResource {
     /**
-     * Gets or sets whether the VMs in the linked virtual network space would
-     * be able to access all the VMs in local Virtual network space.
+     * Whether the VMs in the linked virtual network space would be able to
+     * access all the VMs in local Virtual network space.
      */
     @JsonProperty(value = "properties.allowVirtualNetworkAccess")
     private Boolean allowVirtualNetworkAccess;
 
     /**
-     * Gets or sets whether the forwarded traffic from the VMs in the remote
-     * virtual network will be allowed/disallowed.
+     * Whether the forwarded traffic from the VMs in the remote virtual network
+     * will be allowed/disallowed.
      */
     @JsonProperty(value = "properties.allowForwardedTraffic")
     private Boolean allowForwardedTraffic;
 
     /**
-     * Gets or sets if gatewayLinks can be used in remote virtual network’s
-     * link to this virtual network.
+     * If gateway links can be used in remote virtual networking to link to
+     * this virtual network.
      */
     @JsonProperty(value = "properties.allowGatewayTransit")
     private Boolean allowGatewayTransit;
 
     /**
-     * Gets or sets if remote gateways can be used on this virtual network. If
-     * the flag is set to true, and allowGatewayTransit on remote peering is
-     * also true, virtual network will use gateways of remote virtual network
-     * for transit. Only 1 peering can have this flag set to true. This flag
-     * cannot be set if virtual network already has a gateway.
+     * If remote gateways can be used on this virtual network. If the flag is
+     * set to true, and allowGatewayTransit on remote peering is also true,
+     * virtual network will use gateways of remote virtual network for transit.
+     * Only one peering can have this flag set to true. This flag cannot be set
+     * if virtual network already has a gateway.
      */
     @JsonProperty(value = "properties.useRemoteGateways")
     private Boolean useRemoteGateways;
 
     /**
-     * Gets or sets the reference of the remote virtual network.
+     * The reference of the remote virtual network.
      */
     @JsonProperty(value = "properties.remoteVirtualNetwork")
     private SubResource remoteVirtualNetwork;
 
     /**
-     * Gets the status of the virtual network peering. Possible values
-     * include: 'Initiated', 'Connected', 'Disconnected'.
+     * The status of the virtual network peering. Possible values are
+     * 'Initiated', 'Connected', and 'Disconnected'. Possible values include:
+     * 'Initiated', 'Connected', 'Disconnected'.
      */
     @JsonProperty(value = "properties.peeringState")
     private VirtualNetworkPeeringState peeringState;
 
     /**
-     * Gets provisioning state of the resource.
+     * The provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets or sets the name of the resource that is unique within a resource
-     * group. This name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This
+     * name can be used to access the resource.
      */
     private String name;
 

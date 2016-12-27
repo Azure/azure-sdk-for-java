@@ -14,18 +14,17 @@ package com.microsoft.azure.management.network;
  */
 public class BgpSettings {
     /**
-     * Gets or sets this BGP speaker's ASN.
+     * The BGP speaker's ASN.
      */
     private Long asn;
 
     /**
-     * Gets or sets the BGP peering address and BGP identifier of this BGP
-     * speaker.
+     * The BGP peering address and BGP identifier of this BGP speaker.
      */
     private String bgpPeeringAddress;
 
     /**
-     * Gets or sets the weight added to routes learned from this BGP speaker.
+     * The weight added to routes learned from this BGP speaker.
      */
     private Integer peerWeight;
 

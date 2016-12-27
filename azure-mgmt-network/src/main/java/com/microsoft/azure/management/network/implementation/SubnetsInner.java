@@ -92,7 +92,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -103,7 +103,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -116,7 +116,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -133,7 +133,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -153,15 +153,13 @@ public final class SubnetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -172,7 +170,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -185,7 +183,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -202,7 +200,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The delete subnet operation deletes the specified subnet.
+     * Deletes the specified subnet.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -222,10 +220,8 @@ public final class SubnetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -248,7 +244,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -260,7 +256,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -273,7 +269,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -290,7 +286,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -310,11 +306,9 @@ public final class SubnetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubnetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SubnetInner>> call(Response<ResponseBody> response) {
@@ -329,12 +323,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the SubnetInner object if successful.
      */
     public SubnetInner get(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -342,12 +336,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -356,12 +350,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the SubnetInner object
      */
     public Observable<SubnetInner> getAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -374,12 +368,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Get subnet operation retrieves information about the specified subnet.
+     * Gets the specified subnet by virtual network and resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the SubnetInner object
      */
     public Observable<ServiceResponse<SubnetInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand) {
@@ -395,10 +389,8 @@ public final class SubnetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubnetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SubnetInner>> call(Response<ResponseBody> response) {
@@ -420,12 +412,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the SubnetInner object if successful.
      */
     public SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -433,12 +425,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -447,12 +439,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the observable for the request
      */
     public Observable<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -465,12 +457,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SubnetInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -489,21 +481,19 @@ public final class SubnetsInner {
         if (subnetParameters == null) {
             throw new IllegalArgumentException("Parameter subnetParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(subnetParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SubnetInner>() { }.getType());
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the SubnetInner object if successful.
      */
     public SubnetInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -511,12 +501,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -525,12 +515,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the observable to the SubnetInner object
      */
     public Observable<SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -543,12 +533,12 @@ public final class SubnetsInner {
     }
 
     /**
-     * The Put Subnet operation creates/updates a subnet in the specified virtual network.
+     * Creates or updates a subnet in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create/update Subnet operation
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
      * @return the observable to the SubnetInner object
      */
     public Observable<ServiceResponse<SubnetInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters) {
@@ -567,11 +557,9 @@ public final class SubnetsInner {
         if (subnetParameters == null) {
             throw new IllegalArgumentException("Parameter subnetParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(subnetParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, subnetName, this.client.subscriptionId(), subnetParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubnetInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SubnetInner>> call(Response<ResponseBody> response) {
@@ -594,7 +582,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -611,7 +599,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -631,7 +619,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -648,7 +636,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -669,7 +657,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SubnetInner>> * @param virtualNetworkName The name of the virtual network.
@@ -685,10 +673,8 @@ public final class SubnetsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubnetInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SubnetInner>>> call(Response<ResponseBody> response) {
@@ -710,7 +696,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SubnetInner&gt; object if successful.
@@ -726,7 +712,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -746,7 +732,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
@@ -762,7 +748,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SubnetInner&gt; object
@@ -782,7 +768,7 @@ public final class SubnetsInner {
     }
 
     /**
-     * The List subnets operation retrieves all the subnets in a virtual network.
+     * Gets all subnets in a virtual network.
      *
     ServiceResponse<PageImpl<SubnetInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SubnetInner&gt; object wrapped in {@link ServiceResponse} if successful.

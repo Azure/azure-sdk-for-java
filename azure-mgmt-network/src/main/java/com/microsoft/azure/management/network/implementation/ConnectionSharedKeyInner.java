@@ -8,14 +8,16 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response for GetConnectionSharedKey Api service call.
+ * Response for GetConnectionSharedKey API service call.
  */
 public class ConnectionSharedKeyInner {
     /**
      * The virtual network connection shared key value.
      */
+    @JsonProperty(required = true)
     private String value;
 
     /**

@@ -21,84 +21,82 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class SecurityRuleInner extends SubResource {
     /**
-     * Gets or sets a description for this rule. Restricted to 140 chars.
+     * A description for this rule. Restricted to 140 chars.
      */
     @JsonProperty(value = "properties.description")
     private String description;
 
     /**
-     * Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or
-     * All(*). Possible values include: 'Tcp', 'Udp', '*'.
+     * Network protocol this rule applies to. Possible values are 'Tcp', 'Udp',
+     * and '*'. Possible values include: 'Tcp', 'Udp', '*'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
     private SecurityRuleProtocol protocol;
 
     /**
-     * Gets or sets Source Port or Range. Integer or range between 0 and
-     * 65535. Asterix '*' can also be used to match all ports.
+     * The source port or range. Integer or range between 0 and 65535. Asterix
+     * '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.sourcePortRange")
     private String sourcePortRange;
 
     /**
-     * Gets or sets Destination Port or Range. Integer or range between 0 and
-     * 65535. Asterix '*' can also be used to match all ports.
+     * The destination port or range. Integer or range between 0 and 65535.
+     * Asterix '*' can also be used to match all ports.
      */
     @JsonProperty(value = "properties.destinationPortRange")
     private String destinationPortRange;
 
     /**
-     * Gets or sets source address prefix. CIDR or source IP range. Asterix
-     * '*' can also be used to match all source IPs. Default tags such as
-     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
-     * If this is an ingress rule, specifies where network traffic originates
-     * from.
+     * The CIDR or source IP range. Asterix '*' can also be used to match all
+     * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer'
+     * and 'Internet' can also be used. If this is an ingress rule, specifies
+     * where network traffic originates from.
      */
     @JsonProperty(value = "properties.sourceAddressPrefix", required = true)
     private String sourceAddressPrefix;
 
     /**
-     * Gets or sets destination address prefix. CIDR or source IP range.
-     * Asterix '*' can also be used to match all source IPs. Default tags
-     * such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also
-     * be used.
+     * The destination address prefix. CIDR or source IP range. Asterix '*' can
+     * also be used to match all source IPs. Default tags such as
+     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      */
     @JsonProperty(value = "properties.destinationAddressPrefix", required = true)
     private String destinationAddressPrefix;
 
     /**
-     * Gets or sets network traffic is allowed or denied. Possible values are
-     * 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
+     * The network traffic is allowed or denied. Possible values are: 'Allow'
+     * and 'Deny'. Possible values include: 'Allow', 'Deny'.
      */
     @JsonProperty(value = "properties.access", required = true)
     private SecurityRuleAccess access;
 
     /**
-     * Gets or sets the priority of the rule. The value can be between 100 and
-     * 4096. The priority number must be unique for each rule in the
-     * collection. The lower the priority number, the higher the priority of
-     * the rule.
+     * The priority of the rule. The value can be between 100 and 4096. The
+     * priority number must be unique for each rule in the collection. The
+     * lower the priority number, the higher the priority of the rule.
      */
     @JsonProperty(value = "properties.priority")
     private Integer priority;
 
     /**
-     * Gets or sets the direction of the rule.InBound or Outbound. The
-     * direction specifies if rule will be evaluated on incoming or outcoming
-     * traffic. Possible values include: 'Inbound', 'Outbound'.
+     * The direction of the rule. The direction specifies if rule will be
+     * evaluated on incoming or outcoming traffic. Possible values are:
+     * 'Inbound' and 'Outbound'. Possible values include: 'Inbound',
+     * 'Outbound'.
      */
     @JsonProperty(value = "properties.direction", required = true)
     private SecurityRuleDirection direction;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

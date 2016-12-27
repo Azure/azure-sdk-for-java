@@ -14,73 +14,66 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Inbound NAT rule of the loadbalancer.
+ * Inbound NAT rule of the load balancer.
  */
 @JsonFlatten
 public class InboundNatRuleInner extends SubResource {
     /**
-     * Gets or sets a reference to frontend IP Addresses.
+     * A reference to frontend IP addresses.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
     private SubResource frontendIPConfiguration;
 
     /**
-     * Gets or sets a reference to a private ip address defined on a
-     * NetworkInterface of a VM. Traffic sent to frontendPort of each of the
-     * frontendIPConfigurations is forwarded to the backed IP.
+     * A reference to a private IP address defined on a network interface of a
+     * VM. Traffic sent to the frontend port of each of the frontend IP
+     * configurations is forwarded to the backed IP.
      */
     @JsonProperty(value = "properties.backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIPConfigurationInner backendIPConfiguration;
 
     /**
-     * Gets or sets the transport protocol for the endpoint. Possible values
-     * are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
+     * The transport protocol for the endpoint. Possible values are: 'Udp' or
+     * 'Tcp'. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol")
     private TransportProtocol protocol;
 
     /**
-     * Gets or sets the port for the external endpoint. You can specify any
-     * port number you choose, but the port numbers specified for each role
-     * in the service must be unique. Possible values range between 1 and
-     * 65535, inclusive.
+     * The port for the external endpoint. Port numbers for each Rule must be
+     * unique within the Load Balancer. Acceptable values range from 1 to
+     * 65534.
      */
     @JsonProperty(value = "properties.frontendPort")
     private Integer frontendPort;
 
     /**
-     * Gets or sets a port used for internal connections on the endpoint. The
-     * localPort attribute maps the eternal port of the endpoint to an
-     * internal port on a role. This is useful in scenarios where a role must
-     * communicate to an internal component on a port that is different from
-     * the one that is exposed externally. If not specified, the value of
-     * localPort is the same as the port attribute. Set the value of
-     * localPort to '*' to automatically assign an unallocated port that is
-     * discoverable using the runtime API.
+     * The port used for the internal endpoint. Acceptable values range from 1
+     * to 65535.
      */
     @JsonProperty(value = "properties.backendPort")
     private Integer backendPort;
 
     /**
-     * Gets or sets the timeout for the Tcp idle connection. The value can be
-     * set between 4 and 30 minutes. The default value is 4 minutes. This
-     * element is only used when the protocol is set to Tcp.
+     * The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only
+     * used when the protocol is set to TCP.
      */
     @JsonProperty(value = "properties.idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /**
      * Configures a virtual machine's endpoint for the floating IP capability
-     * required to configure a SQL AlwaysOn availability Group. This setting
-     * is required when using the SQL Always ON availability Groups in SQL
-     * server. This setting can't be changed after you create the endpoint.
+     * required to configure a SQL AlwaysOn Availability Group. This setting is
+     * required when using the SQL AlwaysOn Availability Groups in SQL server.
+     * This setting can't be changed after you create the endpoint.
      */
     @JsonProperty(value = "properties.enableFloatingIP")
     private Boolean enableFloatingIP;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

@@ -15,63 +15,63 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Load balancer Probe.
+ * A load balancer probe.
  */
 @JsonFlatten
 public class ProbeInner extends SubResource {
     /**
-     * Gets Load balancer rules that use this probe.
+     * The load balancer rules that use this probe.
      */
     @JsonProperty(value = "properties.loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
 
     /**
-     * Gets or sets the protocol of the end point. Possible values are http or
-     * Tcp. If Tcp is specified, a received ACK is required for the probe to
-     * be successful. If http is specified,a 200 OK response from the
-     * specifies URI is required for the probe to be successful. Possible
-     * values include: 'Http', 'Tcp'.
+     * The protocol of the end point. Possible values are: 'Http' or 'Tcp'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be
+     * successful. If 'Http' is specified, a 200 OK response from the specifies
+     * URI is required for the probe to be successful. Possible values include:
+     * 'Http', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
     private ProbeProtocol protocol;
 
     /**
-     * Gets or sets Port for communicating the probe. Possible values range
-     * from 1 to 65535, inclusive.
+     * The port for communicating the probe. Possible values range from 1 to
+     * 65535, inclusive.
      */
     @JsonProperty(value = "properties.port", required = true)
     private int port;
 
     /**
-     * Gets or sets the interval, in seconds, for how frequently to probe the
-     * endpoint for health status. Typically, the interval is slightly less
-     * than half the allocated timeout period (in seconds) which allows two
-     * full probes before taking the instance out of rotation. The default
-     * value is 15, the minimum value is 5.
+     * The interval, in seconds, for how frequently to probe the endpoint for
+     * health status. Typically, the interval is slightly less than half the
+     * allocated timeout period (in seconds) which allows two full probes
+     * before taking the instance out of rotation. The default value is 15, the
+     * minimum value is 5.
      */
     @JsonProperty(value = "properties.intervalInSeconds")
     private Integer intervalInSeconds;
 
     /**
-     * Gets or sets the number of probes where if no response, will result in
-     * stopping further traffic from being delivered to the endpoint. This
-     * values allows endpoints to be taken out of rotation faster or slower
-     * than the typical times used in Azure.
+     * The number of probes where if no response, will result in stopping
+     * further traffic from being delivered to the endpoint. This values allows
+     * endpoints to be taken out of rotation faster or slower than the typical
+     * times used in Azure.
      */
     @JsonProperty(value = "properties.numberOfProbes")
     private Integer numberOfProbes;
 
     /**
-     * Gets or sets the URI used for requesting health status from the VM.
-     * Path is required if a protocol is set to http. Otherwise, it is not
-     * allowed. There is no default value.
+     * The URI used for requesting health status from the VM. Path is required
+     * if a protocol is set to http. Otherwise, it is not allowed. There is no
+     * default value.
      */
     @JsonProperty(value = "properties.requestPath")
     private String requestPath;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
