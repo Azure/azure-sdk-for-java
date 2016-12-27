@@ -72,7 +72,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
      *
      * @param <ResultT> the resource type
      */
-    interface ResourceCreatorUpdator<ResultT> {
+    public interface ResourceCreatorUpdator<ResultT> {
         /**
          * @return true if this creatorUpdator is in create mode.
          */

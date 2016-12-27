@@ -90,7 +90,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * @param visitor the graph visitor
      */
     public void visit(Visitor visitor) {
-        for (Map.Entry<String, ? extends Node<DataT, NodeT>> item : graph.entrySet()) {
+        for (Map.Entry<String, NodeT> item : graph.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
             }

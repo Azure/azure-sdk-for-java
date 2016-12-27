@@ -43,21 +43,6 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * @return true if one or more decedent tasks that this task depends on
-     * are in faulted state.
-     */
-    public boolean hasFaultedDescentDependencyTask() {
-        return this.hasFaultedDescentDependencyTask;
-    }
-
-    /**
-     * @return true, if the result of the task is cached.
-     */
-    public boolean hasTaskResult() {
-        return taskItem().result() != null;
-    }
-
-    /**
      * @return the result produced by the task.
      */
     public ResultT taskResult() {
@@ -65,10 +50,22 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
+     * Executes the task this entry holds.
+     * if the task cannot be executed due to faulted dependencies then an observable that emit
+     * {@link ErroredDependencyTaskException} will be returned.
+     *
+     * @param ignoreCachedResult indicate that whether the cached result can be returned without
+     *                           re-running the task
      * @return the handle to the asynchronous execution of the task this entry holds.
      */
-    public Observable<ResultT> executeTaskAsync() {
+    public Observable<ResultT> executeTaskAsync(boolean ignoreCachedResult) {
+        if (hasFaultedDescentDependencyTask) {
+            return Observable.error(new ErroredDependencyTaskException());
+        }
         final TaskT taskItem = this.taskItem();
+        if (!ignoreCachedResult && hasCachedResult()) {
+            return Observable.just(taskItem.result());
+        }
         if (taskItem.isHot()) {
             // Convert hot task to cold to delay it's execution until subscription.
             return Observable.defer(new Func0<Observable<ResultT>>() {
@@ -82,6 +79,12 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
         }
     }
 
+    @Override
+    protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
+        super.onFaultedResolution(dependencyKey, throwable);
+        this.hasFaultedDescentDependencyTask = true;
+    }
+
     /**
      * @return the {@link TaskItem} this entry holds.
      */
@@ -89,9 +92,10 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
         return super.data();
     }
 
-    @Override
-    protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
-        super.onFaultedResolution(dependencyKey, throwable);
-        this.hasFaultedDescentDependencyTask = true;
+    /**
+     * @return true, if the result of the task is cached.
+     */
+    private boolean hasCachedResult() {
+        return taskItem().result() != null;
     }
 }
