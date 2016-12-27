@@ -27,8 +27,8 @@ public interface TaskItem<T> {
     void prepare();
 
     /**
-     * @return true if the observable returned by {@link this#executeAsync()} is a hot
-     * observable, false if its a cold observable.
+     * @return true if the observable returned by executeAsync is a hot observable,
+     * false if its a cold observable.
      */
     boolean isHot();
 
