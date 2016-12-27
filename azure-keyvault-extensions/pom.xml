@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-parent</artifactId>
-    <version>1.0.0-beta4-SNAPSHOT</version>
+    <version>1.0.0-beta5-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -68,22 +68,22 @@
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault-core</artifactId>
-    	<version>1.0.0-beta4-SNAPSHOT</version>
+    	<version>1.0.0-beta5-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault-cryptography</artifactId>
-    	<version>1.0.0-beta4-SNAPSHOT</version>
+    	<version>1.0.0-beta5-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault</artifactId>
-    	<version>1.0.0-beta4-SNAPSHOT</version>
+    	<version>1.0.0-beta5-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault-webkey</artifactId>
-    	<version>1.0.0-beta4-SNAPSHOT</version>
+    	<version>1.0.0-beta5-SNAPSHOT</version>
     </dependency>
     <dependency>
     	<groupId>org.mockito</groupId>
