@@ -132,7 +132,7 @@
           <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>autorest-build-tools</artifactId>
-            <version>1.0.0-beta4</version>
+            <version>1.0.0-beta5-SNAPSHOT</version>
           </dependency>
           <dependency>
             <groupId>com.puppycrawl.tools</groupId>
