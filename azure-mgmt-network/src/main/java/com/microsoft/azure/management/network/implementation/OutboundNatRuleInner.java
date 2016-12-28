@@ -19,33 +19,33 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class OutboundNatRuleInner extends SubResource {
     /**
-     * Gets or sets the number of outbound ports to be used for SNAT.
+     * The number of outbound ports to be used for NAT.
      */
     @JsonProperty(value = "properties.allocatedOutboundPorts")
     private Integer allocatedOutboundPorts;
 
     /**
-     * Gets or sets Frontend IP addresses of the load balancer.
+     * The Frontend IP addresses of the load balancer.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
     private List<SubResource> frontendIPConfigurations;
 
     /**
-     * Gets or sets a reference to a pool of DIPs. Outbound traffic is
-     * randomly load balanced across IPs in the backend IPs.
+     * A reference to a pool of DIPs. Outbound traffic is randomly load
+     * balanced across IPs in the backend IPs.
      */
     @JsonProperty(value = "properties.backendAddressPool", required = true)
     private SubResource backendAddressPool;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

@@ -20,9 +20,9 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class LocalNetworkGatewayInner extends Resource {
     /**
-     * Local network site Address space.
+     * Local network site address space.
      */
-    @JsonProperty(value = "properties.localNetworkAddressSpace")
+    @JsonProperty(value = "properties.localNetworkAddressSpace", required = true)
     private AddressSpace localNetworkAddressSpace;
 
     /**
@@ -38,21 +38,20 @@ public class LocalNetworkGatewayInner extends Resource {
     private BgpSettings bgpSettings;
 
     /**
-     * Gets or sets resource guid property of the LocalNetworkGateway resource.
+     * The resource GUID property of the LocalNetworkGateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the LocalNetworkGateway resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the LocalNetworkGateway resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
@@ -143,17 +142,6 @@ public class LocalNetworkGatewayInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the LocalNetworkGatewayInner object itself.
-     */
-    public LocalNetworkGatewayInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

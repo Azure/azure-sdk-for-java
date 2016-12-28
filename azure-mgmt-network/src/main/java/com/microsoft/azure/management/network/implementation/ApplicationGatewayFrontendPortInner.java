@@ -13,7 +13,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Frontend Port of application gateway.
+ * Frontend port of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayFrontendPortInner extends SubResource {
@@ -24,8 +24,8 @@ public class ApplicationGatewayFrontendPortInner extends SubResource {
     private Integer port;
 
     /**
-     * Provisioning state of the frontend port resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

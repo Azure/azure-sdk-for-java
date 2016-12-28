@@ -11,31 +11,41 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 /**
- * Dns settings of a network interface.
+ * DNS settings of a network interface.
  */
 public class NetworkInterfaceDnsSettings {
     /**
-     * Gets or sets list of DNS servers IP addresses.
+     * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to
+     * azure provided DNS resolution. 'AzureProvidedDNS' value cannot be
+     * combined with other IPs, it must be the only value in dnsServers
+     * collection.
      */
     private List<String> dnsServers;
 
     /**
-     * Gets or sets list of Applied DNS servers IP addresses.
+     * If the VM that uses this NIC is part of an Availability Set, then this
+     * list will have the union of all DNS servers from all NICs that are part
+     * of the Availability Set. This property is what is configured on each of
+     * those VMs.
      */
     private List<String> appliedDnsServers;
 
     /**
-     * Gets or sets the internal DNS name.
+     * Relative DNS name for this NIC used for internal communications between
+     * VMs in the same virtual network.
      */
     private String internalDnsNameLabel;
 
     /**
-     * Gets or sets the internal fqdn.
+     * Fully qualified DNS name supporting internal communications between VMs
+     * in the same virtual network.
      */
     private String internalFqdn;
 
     /**
-     * Gets or sets internal domain name suffix of the NIC.
+     * Even if internalDnsNameLabel is not specified, a DNS entry is created
+     * for the primary NIC of the VM. This DNS name can be constructed by
+     * concatenating the VM name with the value of internalDomainNameSuffix.
      */
     private String internalDomainNameSuffix;
 

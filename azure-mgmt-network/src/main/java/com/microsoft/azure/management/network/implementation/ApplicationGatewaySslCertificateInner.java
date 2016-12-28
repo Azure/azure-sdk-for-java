@@ -13,31 +13,33 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * SSL certificates of application gateway.
+ * SSL certificates of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewaySslCertificateInner extends SubResource {
     /**
-     * SSL Certificate data.
+     * Base-64 encoded pfx certificate. Only applicable in PUT Request.
      */
     @JsonProperty(value = "properties.data")
     private String data;
 
     /**
-     * SSL Certificate password.
+     * Password for the pfx file specified in data. Only applicable in PUT
+     * request.
      */
     @JsonProperty(value = "properties.password")
     private String password;
 
     /**
-     * SSL Certificate public data.
+     * Base-64 encoded Public cert data corresponding to pfx specified in data.
+     * Only applicable in GET request.
      */
     @JsonProperty(value = "properties.publicCertData")
     private String publicCertData;
 
     /**
-     * Provisioning state of the ssl certificate resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the SSL certificate resource Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

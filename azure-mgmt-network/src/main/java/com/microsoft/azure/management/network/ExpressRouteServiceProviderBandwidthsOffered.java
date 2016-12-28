@@ -10,16 +10,16 @@ package com.microsoft.azure.management.network;
 
 
 /**
- * Contains Bandwidths offered in ExpressRouteServiceProviders.
+ * Contains bandwidths offered in ExpressRouteServiceProvider resources.
  */
 public class ExpressRouteServiceProviderBandwidthsOffered {
     /**
-     * Gets the OfferName.
+     * The OfferName.
      */
     private String offerName;
 
     /**
-     * Gets the ValueInMbps.
+     * The ValueInMbps.
      */
     private Integer valueInMbps;
 

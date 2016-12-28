@@ -92,11 +92,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner createOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -104,11 +104,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -117,11 +117,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the observable for the request
      */
     public Observable<LocalNetworkGatewayInner> createOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -134,11 +134,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<LocalNetworkGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -154,20 +154,18 @@ public final class LocalNetworkGatewaysInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<LocalNetworkGatewayInner>() { }.getType());
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the LocalNetworkGatewayInner object if successful.
      */
     public LocalNetworkGatewayInner beginCreateOrUpdate(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -175,11 +173,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -188,11 +186,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the observable to the LocalNetworkGatewayInner object
      */
     public Observable<LocalNetworkGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -205,11 +203,11 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Put LocalNetworkGateway operation creates/updates a local network gateway in the specified resource group through Network resource provider.
+     * Creates or updates a local network gateway in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
-     * @param parameters Parameters supplied to the Begin Create or update Local Network Gateway operation through Network resource provider.
+     * @param parameters Parameters supplied to the create or update local network gateway operation.
      * @return the observable to the LocalNetworkGatewayInner object
      */
     public Observable<ServiceResponse<LocalNetworkGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String localNetworkGatewayName, LocalNetworkGatewayInner parameters) {
@@ -225,11 +223,9 @@ public final class LocalNetworkGatewaysInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LocalNetworkGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LocalNetworkGatewayInner>> call(Response<ResponseBody> response) {
@@ -252,7 +248,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
+     * Gets the specified local network gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -263,7 +259,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
+     * Gets the specified local network gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -275,7 +271,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
+     * Gets the specified local network gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -291,7 +287,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Get LocalNetworkGateway operation retrieves information about the specified local network gateway through Network resource provider.
+     * Gets the specified local network gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -307,10 +303,8 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LocalNetworkGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LocalNetworkGatewayInner>> call(Response<ResponseBody> response) {
@@ -332,7 +326,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -342,7 +336,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -354,7 +348,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -370,7 +364,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -386,15 +380,13 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -404,7 +396,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -416,7 +408,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -432,7 +424,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The Delete LocalNetworkGateway operation deletes the specified local network Gateway through Network resource provider.
+     * Deletes the specified local network gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param localNetworkGatewayName The name of the local network gateway.
@@ -448,10 +440,8 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, localNetworkGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -474,7 +464,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
@@ -490,7 +480,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -509,7 +499,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
@@ -525,7 +515,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
@@ -545,7 +535,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -557,10 +547,8 @@ public final class LocalNetworkGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LocalNetworkGatewayInner>>> call(Response<ResponseBody> response) {
@@ -582,7 +570,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object if successful.
@@ -598,7 +586,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -618,7 +606,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
@@ -634,7 +622,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LocalNetworkGatewayInner&gt; object
@@ -654,7 +642,7 @@ public final class LocalNetworkGatewaysInner {
     }
 
     /**
-     * The List LocalNetworkGateways operation retrieves all the local network gateways stored.
+     * Gets all the local network gateways in a resource group.
      *
     ServiceResponse<PageImpl<LocalNetworkGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LocalNetworkGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.

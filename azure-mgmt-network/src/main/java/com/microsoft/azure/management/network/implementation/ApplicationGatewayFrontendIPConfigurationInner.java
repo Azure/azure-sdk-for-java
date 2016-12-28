@@ -14,19 +14,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Frontend IP configuration of application gateway.
+ * Frontend IP configuration of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource {
     /**
-     * PrivateIPAddress of the Network Interface IP Configuration.
+     * PrivateIPAddress of the network interface IP Configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
     private String privateIPAddress;
 
     /**
-     * PrivateIP allocation method (Static/Dynamic). Possible values include:
-     * 'Static', 'Dynamic'.
+     * PrivateIP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
@@ -44,7 +44,8 @@ public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource 
     private SubResource publicIPAddress;
 
     /**
-     * Provisioning state of the PublicIP resource Updating/Deleting/Failed.
+     * Provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

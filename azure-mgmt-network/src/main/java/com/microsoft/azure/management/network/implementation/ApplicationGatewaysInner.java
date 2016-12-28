@@ -107,6 +107,14 @@ public final class ApplicationGatewaysInner {
         Observable<Response<ResponseBody>> beginStop(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth")
+        Observable<Response<ResponseBody>> backendHealth(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
+        @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/applicationGateways/{applicationGatewayName}/backendhealth")
+        Observable<Response<ResponseBody>> beginBackendHealth(@Path("resourceGroupName") String resourceGroupName, @Path("applicationGatewayName") String applicationGatewayName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers("Content-Type: application/json; charset=utf-8")
         @GET("{nextLink}")
         Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -117,7 +125,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -127,7 +135,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -139,7 +147,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -155,7 +163,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -171,15 +179,13 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -189,7 +195,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -201,7 +207,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -217,7 +223,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The delete ApplicationGateway operation deletes the specified application gateway.
+     * Deletes the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -233,10 +239,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -259,7 +263,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Get ApplicationGateway operation retrieves information about the specified application gateway.
+     * Gets the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -270,7 +274,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Get ApplicationGateway operation retrieves information about the specified application gateway.
+     * Gets the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -282,7 +286,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Get ApplicationGateway operation retrieves information about the specified application gateway.
+     * Gets the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -298,7 +302,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Get ApplicationGateway operation retrieves information about the specified application gateway.
+     * Gets the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -314,10 +318,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationGatewayInner>> call(Response<ResponseBody> response) {
@@ -339,11 +341,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner createOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -351,11 +353,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -364,11 +366,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the observable for the request
      */
     public Observable<ApplicationGatewayInner> createOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -381,11 +383,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ApplicationGatewayInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -401,20 +403,18 @@ public final class ApplicationGatewaysInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ApplicationGatewayInner>() { }.getType());
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the ApplicationGatewayInner object if successful.
      */
     public ApplicationGatewayInner beginCreateOrUpdate(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -422,11 +422,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -435,11 +435,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the observable to the ApplicationGatewayInner object
      */
     public Observable<ApplicationGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -452,11 +452,11 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Put ApplicationGateway operation creates/updates a ApplicationGateway.
+     * Creates or updates the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param applicationGatewayName The name of the ApplicationGateway.
-     * @param parameters Parameters supplied to the create/delete ApplicationGateway operation
+     * @param applicationGatewayName The name of the application gateway.
+     * @param parameters Parameters supplied to the create or update application gateway operation.
      * @return the observable to the ApplicationGatewayInner object
      */
     public Observable<ServiceResponse<ApplicationGatewayInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, ApplicationGatewayInner parameters) {
@@ -472,11 +472,9 @@ public final class ApplicationGatewaysInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ApplicationGatewayInner>> call(Response<ResponseBody> response) {
@@ -499,7 +497,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
@@ -515,7 +513,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -534,7 +532,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -550,7 +548,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -570,7 +568,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -582,10 +580,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
@@ -607,7 +603,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
      */
@@ -622,7 +618,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -640,7 +636,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
@@ -655,7 +651,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
      */
@@ -674,7 +670,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -682,10 +678,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ApplicationGatewayInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ApplicationGatewayInner>>> call(Response<ResponseBody> response) {
@@ -707,7 +701,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -717,7 +711,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -729,7 +723,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -745,7 +739,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -761,15 +755,13 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.start(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -779,7 +771,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -791,7 +783,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -807,7 +799,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The Start ApplicationGateway operation starts application gateway in the specified resource group through Network resource provider.
+     * Starts the specified application gateway.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -823,10 +815,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginStart(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -848,7 +838,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -858,7 +848,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -870,7 +860,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -886,7 +876,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -902,15 +892,13 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.stop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -920,7 +908,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -932,7 +920,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -948,7 +936,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The STOP ApplicationGateway operation stops application gateway in the specified resource group through Network resource provider.
+     * Stops the specified application gateway in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param applicationGatewayName The name of the application gateway.
@@ -964,10 +952,8 @@ public final class ApplicationGatewaysInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginStop(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -989,7 +975,288 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the ApplicationGatewayBackendHealthInner object if successful.
+     */
+    public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName) {
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().last().getBody();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceCall.create(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable for the request
+     */
+    public Observable<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName) {
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
+            @Override
+            public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> backendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationGatewayName == null) {
+            throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-09-01";
+        final String expand = null;
+        Observable<Response<ResponseBody>> observable = service.backendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType());
+    }
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the ApplicationGatewayBackendHealthInner object if successful.
+     */
+    public ApplicationGatewayBackendHealthInner backendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().last().getBody();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceCall.create(backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the observable for the request
+     */
+    public Observable<ApplicationGatewayBackendHealthInner> backendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
+        return backendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
+            @Override
+            public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the observable for the request
+     */
+    public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> backendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, String expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationGatewayName == null) {
+            throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.backendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType());
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the ApplicationGatewayBackendHealthInner object if successful.
+     */
+    public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName) {
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceCall.create(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName), serviceCallback);
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable to the ApplicationGatewayBackendHealthInner object
+     */
+    public Observable<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName) {
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
+            @Override
+            public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @return the observable to the ApplicationGatewayBackendHealthInner object
+     */
+    public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> beginBackendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationGatewayName == null) {
+            throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-09-01";
+        final String expand = null;
+        return service.beginBackendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ApplicationGatewayBackendHealthInner> clientResponse = beginBackendHealthDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the ApplicationGatewayBackendHealthInner object if successful.
+     */
+    public ApplicationGatewayBackendHealthInner beginBackendHealth(String resourceGroupName, String applicationGatewayName, String expand) {
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).toBlocking().single().getBody();
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @return the {@link ServiceCall} object
+     */
+    public ServiceCall<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand, final ServiceCallback<ApplicationGatewayBackendHealthInner> serviceCallback) {
+        return ServiceCall.create(beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand), serviceCallback);
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the observable to the ApplicationGatewayBackendHealthInner object
+     */
+    public Observable<ApplicationGatewayBackendHealthInner> beginBackendHealthAsync(String resourceGroupName, String applicationGatewayName, String expand) {
+        return beginBackendHealthWithServiceResponseAsync(resourceGroupName, applicationGatewayName, expand).map(new Func1<ServiceResponse<ApplicationGatewayBackendHealthInner>, ApplicationGatewayBackendHealthInner>() {
+            @Override
+            public ApplicationGatewayBackendHealthInner call(ServiceResponse<ApplicationGatewayBackendHealthInner> response) {
+                return response.getBody();
+            }
+        });
+    }
+
+    /**
+     * Gets the backend health of the specified application gateway in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationGatewayName The name of the application gateway.
+     * @param expand Expands BackendAddressPool and BackendHttpSettings referenced in backend health.
+     * @return the observable to the ApplicationGatewayBackendHealthInner object
+     */
+    public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> beginBackendHealthWithServiceResponseAsync(String resourceGroupName, String applicationGatewayName, String expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (applicationGatewayName == null) {
+            throw new IllegalArgumentException("Parameter applicationGatewayName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2016-09-01";
+        return service.beginBackendHealth(resourceGroupName, applicationGatewayName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>>>() {
+                @Override
+                public Observable<ServiceResponse<ApplicationGatewayBackendHealthInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<ApplicationGatewayBackendHealthInner> clientResponse = beginBackendHealthDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<ApplicationGatewayBackendHealthInner> beginBackendHealthDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return new AzureServiceResponseBuilder<ApplicationGatewayBackendHealthInner, CloudException>(this.client.mapperAdapter())
+                .register(200, new TypeToken<ApplicationGatewayBackendHealthInner>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
@@ -1005,7 +1272,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1025,7 +1292,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1041,7 +1308,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1061,7 +1328,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a resource group.
+     * Lists all application gateways in a resource group.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1092,7 +1359,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object if successful.
@@ -1108,7 +1375,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1128,7 +1395,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1144,7 +1411,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ApplicationGatewayInner&gt; object
@@ -1164,7 +1431,7 @@ public final class ApplicationGatewaysInner {
     }
 
     /**
-     * The List ApplicationGateway operation retrieves all the application gateways in a subscription.
+     * Gets all the application gateways in a subscription.
      *
     ServiceResponse<PageImpl<ApplicationGatewayInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ApplicationGatewayInner&gt; object wrapped in {@link ServiceResponse} if successful.
