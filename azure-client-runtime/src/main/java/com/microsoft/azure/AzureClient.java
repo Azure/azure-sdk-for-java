@@ -152,7 +152,7 @@ public class AzureClient extends AzureServiceClient {
                                 @Override
                                 public Observable<PollingState<T>> call(PollingState<T> pollingState) {
                                     for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
-                                        if (terminalStatus.equals(pollingState.getStatus())) {
+                                        if (terminalStatus.equalsIgnoreCase(pollingState.getStatus())) {
                                             return Observable.just(pollingState);
                                         }
                                     }
@@ -164,7 +164,7 @@ public class AzureClient extends AzureServiceClient {
                                 @Override
                                 public Boolean call(PollingState<T> pollingState) {
                                     for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
-                                        if (terminalStatus.equals(pollingState.getStatus())) {
+                                        if (terminalStatus.equalsIgnoreCase(pollingState.getStatus())) {
                                             return true;
                                         }
                                     }
@@ -305,7 +305,7 @@ public class AzureClient extends AzureServiceClient {
                                 @Override
                                 public Observable<PollingState<T>> call(PollingState<T> pollingState) {
                                     for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
-                                        if (terminalStatus.equals(pollingState.getStatus())) {
+                                        if (terminalStatus.equalsIgnoreCase(pollingState.getStatus())) {
                                             return Observable.just(pollingState);
                                         }
                                     }
@@ -317,7 +317,7 @@ public class AzureClient extends AzureServiceClient {
                                 @Override
                                 public Boolean call(PollingState<T> pollingState) {
                                     for (String terminalStatus : AzureAsyncOperation.getTerminalStatuses()) {
-                                        if (terminalStatus.equals(pollingState.getStatus())) {
+                                        if (terminalStatus.equalsIgnoreCase(pollingState.getStatus())) {
                                             return true;
                                         }
                                     }
