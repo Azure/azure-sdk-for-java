@@ -98,6 +98,7 @@ public final class ManageRedisCache {
                         .withRegion(Region.US_CENTRAL)
                         .withNewResourceGroup(rgName)
                         .withPremiumSku()
+                        .withShardCount(3)
                         .create();
 
                 System.out.println("Created a Redis Cache:");
@@ -107,6 +108,7 @@ public final class ManageRedisCache {
                         .withRegion(Region.US_CENTRAL)
                         .withNewResourceGroup(rgName)
                         .withPremiumSku(2)
+                        .withShardCount(3)
                         .create();
 
                 System.out.println("Created a Redis Cache:");
@@ -142,7 +144,7 @@ public final class ManageRedisCache {
 
                         // Restart Redis Cache
                         System.out.println("Restarting updated Redis Cache");
-                        premium.forceReboot(RebootType.ALL_NODES);
+                        premium.forceReboot(RebootType.ALL_NODES, 1);
 
                         System.out.println("Redis Cache restart scheduled");
                     }
