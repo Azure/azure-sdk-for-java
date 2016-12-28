@@ -8,22 +8,25 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ConnectionResetSharedKeyInner model.
  */
 public class ConnectionResetSharedKeyInner {
     /**
-     * The virtual network connection reset shared key length.
+     * The virtual network connection reset shared key length, should between 1
+     * and 128.
      */
-    private Long keyLength;
+    @JsonProperty(required = true)
+    private int keyLength;
 
     /**
      * Get the keyLength value.
      *
      * @return the keyLength value
      */
-    public Long keyLength() {
+    public int keyLength() {
         return this.keyLength;
     }
 
@@ -33,7 +36,7 @@ public class ConnectionResetSharedKeyInner {
      * @param keyLength the keyLength value to set
      * @return the ConnectionResetSharedKeyInner object itself.
      */
-    public ConnectionResetSharedKeyInner withKeyLength(Long keyLength) {
+    public ConnectionResetSharedKeyInner withKeyLength(int keyLength) {
         this.keyLength = keyLength;
         return this;
     }

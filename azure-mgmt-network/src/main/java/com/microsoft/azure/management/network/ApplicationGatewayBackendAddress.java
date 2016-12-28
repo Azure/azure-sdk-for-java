@@ -10,16 +10,16 @@ package com.microsoft.azure.management.network;
 
 
 /**
- * Backend Address of application gateway.
+ * Backend address of an application gateway.
  */
 public class ApplicationGatewayBackendAddress {
     /**
-     * Dns name.
+     * Fully qualified domain name (FQDN).
      */
     private String fqdn;
 
     /**
-     * Ip address.
+     * IP address.
      */
     private String ipAddress;
 

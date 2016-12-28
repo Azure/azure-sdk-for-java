@@ -8,23 +8,26 @@
 
 package com.microsoft.azure.management.network;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * VirtualNetworkGatewaySku details.
  */
 public class VirtualNetworkGatewaySku {
     /**
-     * Gateway sku name -Basic/HighPerformance/Standard/UltraPerformance.
-     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
-     * 'UltraPerformance'.
+     * Gateway SKU name. Possible values are: 'Basic',
+     * 'HighPerformance','Standard', and 'UltraPerformance'. Possible values
+     * include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance'.
      */
+    @JsonProperty(required = true)
     private VirtualNetworkGatewaySkuName name;
 
     /**
-     * Gateway sku tier -Basic/HighPerformance/Standard/UltraPerformance.
-     * Possible values include: 'Basic', 'HighPerformance', 'Standard',
-     * 'UltraPerformance'.
+     * Gateway SKU tier. Possible values are: 'Basic',
+     * 'HighPerformance','Standard', and 'UltraPerformance'. Possible values
+     * include: 'Basic', 'HighPerformance', 'Standard', 'UltraPerformance'.
      */
+    @JsonProperty(required = true)
     private VirtualNetworkGatewaySkuTier tier;
 
     /**

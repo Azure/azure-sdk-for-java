@@ -92,7 +92,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -103,7 +103,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -116,7 +116,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -133,7 +133,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -153,15 +153,13 @@ public final class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -172,7 +170,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -185,7 +183,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -202,7 +200,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The delete network security rule operation deletes the specified network security rule.
+     * Deletes the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -222,10 +220,8 @@ public final class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -248,7 +244,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Get NetworkSecurityRule operation retrieves information about the specified network security rule.
+     * Get the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -260,7 +256,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Get NetworkSecurityRule operation retrieves information about the specified network security rule.
+     * Get the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -273,7 +269,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Get NetworkSecurityRule operation retrieves information about the specified network security rule.
+     * Get the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -290,7 +286,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Get NetworkSecurityRule operation retrieves information about the specified network security rule.
+     * Get the specified network security rule.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -310,10 +306,8 @@ public final class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecurityRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SecurityRuleInner>> call(Response<ResponseBody> response) {
@@ -335,12 +329,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -348,12 +342,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -362,12 +356,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the observable for the request
      */
     public Observable<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -380,12 +374,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<SecurityRuleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -404,21 +398,19 @@ public final class SecurityRulesInner {
         if (securityRuleParameters == null) {
             throw new IllegalArgumentException("Parameter securityRuleParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(securityRuleParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SecurityRuleInner>() { }.getType());
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the SecurityRuleInner object if successful.
      */
     public SecurityRuleInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -426,12 +418,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -440,12 +432,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -458,12 +450,12 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The Put network security rule operation creates/updates a security rule in the specified network security group.
+     * Creates or updates a security rule in the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create/update network security rule operation
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
      * @return the observable to the SecurityRuleInner object
      */
     public Observable<ServiceResponse<SecurityRuleInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters) {
@@ -482,11 +474,9 @@ public final class SecurityRulesInner {
         if (securityRuleParameters == null) {
             throw new IllegalArgumentException("Parameter securityRuleParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(securityRuleParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecurityRuleInner>>>() {
                 @Override
                 public Observable<ServiceResponse<SecurityRuleInner>> call(Response<ResponseBody> response) {
@@ -509,7 +499,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -526,7 +516,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -546,7 +536,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -563,7 +553,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -584,7 +574,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param networkSecurityGroupName The name of the network security group.
@@ -600,10 +590,8 @@ public final class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<SecurityRuleInner>>> call(Response<ResponseBody> response) {
@@ -625,7 +613,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SecurityRuleInner&gt; object if successful.
@@ -641,7 +629,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -661,7 +649,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
@@ -677,7 +665,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;SecurityRuleInner&gt; object
@@ -697,7 +685,7 @@ public final class SecurityRulesInner {
     }
 
     /**
-     * The List network security rule operation retrieves all the security rules in a network security group.
+     * Gets all security rules in a network security group.
      *
     ServiceResponse<PageImpl<SecurityRuleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SecurityRuleInner&gt; object wrapped in {@link ServiceResponse} if successful.

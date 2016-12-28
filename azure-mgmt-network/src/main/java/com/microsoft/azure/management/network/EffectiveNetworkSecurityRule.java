@@ -11,65 +11,65 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 /**
- * Effective NetworkSecurityRules.
+ * Effective network security rules.
  */
 public class EffectiveNetworkSecurityRule {
     /**
-     * Gets the name of the security rule specified by the user (if created by
-     * the user).
+     * The name of the security rule specified by the user (if created by the
+     * user).
      */
     private String name;
 
     /**
-     * Gets Network protocol this rule applies to. Possible values include:
-     * 'Tcp', 'Udp', '*'.
+     * The network protocol this rule applies to. Possible values are: 'Tcp',
+     * 'Udp', and '*'. Possible values include: 'Tcp', 'Udp', '*'.
      */
     private SecurityRuleProtocol protocol;
 
     /**
-     * Gets source port or range.
+     * The source port or range.
      */
     private String sourcePortRange;
 
     /**
-     * Gets destination port or range.
+     * The destination port or range.
      */
     private String destinationPortRange;
 
     /**
-     * Gets source address prefix.
+     * The source address prefix.
      */
     private String sourceAddressPrefix;
 
     /**
-     * Gets destination address prefix.
+     * The destination address prefix.
      */
     private String destinationAddressPrefix;
 
     /**
-     * Gets expanded source address prefix.
+     * The expanded source address prefix.
      */
     private List<String> expandedSourceAddressPrefix;
 
     /**
-     * Gets expanded destination address prefix.
+     * Expanded destination address prefix.
      */
     private List<String> expandedDestinationAddressPrefix;
 
     /**
-     * Gets network traffic is allowed or denied. Possible values include:
-     * 'Allow', 'Deny'.
+     * Whether network traffic is allowed or denied. Possible values are:
+     * 'Allow' and 'Deny'. Possible values include: 'Allow', 'Deny'.
      */
     private SecurityRuleAccess access;
 
     /**
-     * Gets the priority of the rule.
+     * The priority of the rule.
      */
     private Integer priority;
 
     /**
-     * Gets the direction of the rule. Possible values include: 'Inbound',
-     * 'Outbound'.
+     * The direction of the rule. Possible values are: 'Inbound and Outbound'.
+     * Possible values include: 'Inbound', 'Outbound'.
      */
     private SecurityRuleDirection direction;
 

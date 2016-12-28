@@ -104,7 +104,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -114,7 +114,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -126,7 +126,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -142,7 +142,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -158,15 +158,13 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -176,7 +174,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -188,7 +186,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -204,7 +202,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Delete VirtualNetwork operation deletes the specified virtual network.
+     * Deletes the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -220,10 +218,8 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -246,7 +242,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -257,7 +253,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -269,7 +265,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -285,7 +281,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -301,11 +297,9 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkInner>> call(Response<ResponseBody> response) {
@@ -320,11 +314,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner get(String resourceGroupName, String virtualNetworkName, String expand) {
@@ -332,11 +326,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -345,11 +339,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<VirtualNetworkInner> getAsync(String resourceGroupName, String virtualNetworkName, String expand) {
@@ -362,11 +356,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Get VirtualNetwork operation retrieves information about the specified virtual network.
+     * Gets the specified virtual network by resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<ServiceResponse<VirtualNetworkInner>> getWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, String expand) {
@@ -379,10 +373,8 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkInner>> call(Response<ResponseBody> response) {
@@ -404,11 +396,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -416,11 +408,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -429,11 +421,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the observable for the request
      */
     public Observable<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -446,11 +438,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the observable for the request
      */
     public Observable<ServiceResponse<VirtualNetworkInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -466,20 +458,18 @@ public final class VirtualNetworksInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualNetworkInner>() { }.getType());
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the VirtualNetworkInner object if successful.
      */
     public VirtualNetworkInner beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -487,11 +477,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -500,11 +490,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -517,11 +507,11 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The Put VirtualNetwork operation creates/updates a virtual network in the specified resource group.
+     * Creates or updates a virtual network in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
-     * @param parameters Parameters supplied to the create/update Virtual Network operation
+     * @param parameters Parameters supplied to the create or update virtual network operation
      * @return the observable to the VirtualNetworkInner object
      */
     public Observable<ServiceResponse<VirtualNetworkInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters) {
@@ -537,11 +527,9 @@ public final class VirtualNetworksInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualNetworkInner>>>() {
                 @Override
                 public Observable<ServiceResponse<VirtualNetworkInner>> call(Response<ResponseBody> response) {
@@ -564,7 +552,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
      */
@@ -579,7 +567,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -597,7 +585,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
@@ -612,7 +600,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
      */
@@ -631,7 +619,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -639,10 +627,8 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
@@ -664,7 +650,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
@@ -680,7 +666,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -699,7 +685,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -715,7 +701,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -735,7 +721,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -747,10 +733,8 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<VirtualNetworkInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<VirtualNetworkInner>>> call(Response<ResponseBody> response) {
@@ -772,7 +756,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -783,7 +767,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -795,7 +779,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -811,7 +795,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -827,11 +811,9 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String ipAddress = null;
-        return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IPAddressAvailabilityResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> call(Response<ResponseBody> response) {
@@ -846,7 +828,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -858,7 +840,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -871,7 +853,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -888,7 +870,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * Checks whether a private Ip address is available for use.
+     * Checks whether a private IP address is available for use.
      *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
@@ -905,10 +887,8 @@ public final class VirtualNetworksInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.checkIPAddressAvailability(resourceGroupName, virtualNetworkName, this.client.subscriptionId(), ipAddress, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<IPAddressAvailabilityResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<IPAddressAvailabilityResultInner>> call(Response<ResponseBody> response) {
@@ -930,7 +910,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
@@ -946,7 +926,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -966,7 +946,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -982,7 +962,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -1002,7 +982,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a subscription.
+     * Gets all virtual networks in a subscription.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1033,7 +1013,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object if successful.
@@ -1049,7 +1029,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1069,7 +1049,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -1085,7 +1065,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;VirtualNetworkInner&gt; object
@@ -1105,7 +1085,7 @@ public final class VirtualNetworksInner {
     }
 
     /**
-     * The list VirtualNetwork returns all Virtual Networks in a resource group.
+     * Gets all virtual networks in a resource group.
      *
     ServiceResponse<PageImpl<VirtualNetworkInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;VirtualNetworkInner&gt; object wrapped in {@link ServiceResponse} if successful.

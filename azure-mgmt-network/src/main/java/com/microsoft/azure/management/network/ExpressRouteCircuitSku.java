@@ -10,23 +10,23 @@ package com.microsoft.azure.management.network;
 
 
 /**
- * Contains sku in an ExpressRouteCircuit.
+ * Contains SKU in an ExpressRouteCircuit.
  */
 public class ExpressRouteCircuitSku {
     /**
-     * Gets or sets name of the sku.
+     * The name of the SKU.
      */
     private String name;
 
     /**
-     * Gets or sets tier of the sku. Possible values include: 'Standard',
-     * 'Premium'.
+     * The tier of the SKU. Possible values are 'Standard' and 'Premium'.
+     * Possible values include: 'Standard', 'Premium'.
      */
     private ExpressRouteCircuitSkuTier tier;
 
     /**
-     * Gets or sets family of the sku. Possible values include:
-     * 'UnlimitedData', 'MeteredData'.
+     * The family of the SKU. Possible values are: 'UnlimitedData' and
+     * 'MeteredData'. Possible values include: 'UnlimitedData', 'MeteredData'.
      */
     private ExpressRouteCircuitSkuFamily family;
 

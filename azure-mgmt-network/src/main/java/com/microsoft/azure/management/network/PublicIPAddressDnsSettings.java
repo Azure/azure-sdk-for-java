@@ -17,8 +17,8 @@ public class PublicIPAddressDnsSettings {
      * Gets or sets the Domain name label.The concatenation of the domain name
      * label and the regionalized DNS zone make up the fully qualified domain
      * name associated with the public IP address. If a domain name label is
-     * specified, an A DNS record is created for the public IP in the
-     * Microsoft Azure DNS system.
+     * specified, an A DNS record is created for the public IP in the Microsoft
+     * Azure DNS system.
      */
     private String domainNameLabel;
 
@@ -32,8 +32,8 @@ public class PublicIPAddressDnsSettings {
     /**
      * Gets or Sets the Reverse FQDN. A user-visible, fully qualified domain
      * name that resolves to this public IP address. If the reverseFqdn is
-     * specified, then a PTR DNS record is created pointing from the IP
-     * address in the in-addr.arpa domain to the reverse FQDN.
+     * specified, then a PTR DNS record is created pointing from the IP address
+     * in the in-addr.arpa domain to the reverse FQDN.
      */
     private String reverseFqdn;
 

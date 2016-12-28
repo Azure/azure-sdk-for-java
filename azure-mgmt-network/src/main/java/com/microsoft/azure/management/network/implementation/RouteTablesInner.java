@@ -100,7 +100,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -110,7 +110,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -122,7 +122,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -138,7 +138,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -154,15 +154,13 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -172,7 +170,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -184,7 +182,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -200,7 +198,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Delete RouteTable operation deletes the specified Route Table.
+     * Deletes the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -216,10 +214,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -242,7 +238,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -253,7 +249,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -265,7 +261,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -281,7 +277,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
@@ -297,11 +293,9 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -316,11 +310,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner get(String resourceGroupName, String routeTableName, String expand) {
@@ -328,11 +322,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -341,11 +335,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the RouteTableInner object
      */
     public Observable<RouteTableInner> getAsync(String resourceGroupName, String routeTableName, String expand) {
@@ -358,11 +352,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Get RouteTables operation retrieves information about the specified route table.
+     * Gets the specified route table.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the RouteTableInner object
      */
     public Observable<ServiceResponse<RouteTableInner>> getWithServiceResponseAsync(String resourceGroupName, String routeTableName, String expand) {
@@ -375,10 +369,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, routeTableName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -400,11 +392,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner createOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -412,11 +404,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -425,11 +417,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable for the request
      */
     public Observable<RouteTableInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -442,11 +434,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RouteTableInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -462,20 +454,18 @@ public final class RouteTablesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RouteTableInner>() { }.getType());
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the RouteTableInner object if successful.
      */
     public RouteTableInner beginCreateOrUpdate(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -483,11 +473,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -496,11 +486,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable to the RouteTableInner object
      */
     public Observable<RouteTableInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -513,11 +503,11 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The Put RouteTable operation creates/updates a route table in the specified resource group.
+     * Create or updates a route table in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
-     * @param parameters Parameters supplied to the create/update Route Table operation
+     * @param parameters Parameters supplied to the create or update route table operation.
      * @return the observable to the RouteTableInner object
      */
     public Observable<ServiceResponse<RouteTableInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String routeTableName, RouteTableInner parameters) {
@@ -533,11 +523,9 @@ public final class RouteTablesInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, routeTableName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RouteTableInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RouteTableInner>> call(Response<ResponseBody> response) {
@@ -560,7 +548,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
@@ -576,7 +564,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -595,7 +583,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -611,7 +599,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -631,7 +619,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -643,10 +631,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
@@ -668,7 +654,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
      */
@@ -683,7 +669,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -701,7 +687,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
@@ -716,7 +702,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
      */
@@ -735,7 +721,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -743,10 +729,8 @@ public final class RouteTablesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RouteTableInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<RouteTableInner>>> call(Response<ResponseBody> response) {
@@ -768,7 +752,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
@@ -784,7 +768,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -804,7 +788,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -820,7 +804,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -840,7 +824,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a resource group.
+     * Gets all route tables in a resource group.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -871,7 +855,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object if successful.
@@ -887,7 +871,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -907,7 +891,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -923,7 +907,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RouteTableInner&gt; object
@@ -943,7 +927,7 @@ public final class RouteTablesInner {
     }
 
     /**
-     * The list RouteTables returns all route tables in a subscription.
+     * Gets all route tables in a subscription.
      *
     ServiceResponse<PageImpl<RouteTableInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RouteTableInner&gt; object wrapped in {@link ServiceResponse} if successful.

@@ -11,13 +11,13 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 
 /**
- * DHCPOptions contains an array of DNS servers available to VMs deployed in
- * the virtual networkStandard DHCP option for a subnet overrides VNET DHCP
+ * DhcpOptions contains an array of DNS servers available to VMs deployed in
+ * the virtual network. Standard DHCP option for a subnet overrides VNET DHCP
  * options.
  */
 public class DhcpOptions {
     /**
-     * Gets or sets list of DNS servers IP addresses.
+     * The list of DNS servers IP addresses.
      */
     private List<String> dnsServers;
 

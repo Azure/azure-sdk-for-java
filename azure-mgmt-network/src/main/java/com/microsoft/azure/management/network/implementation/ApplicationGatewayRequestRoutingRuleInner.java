@@ -14,43 +14,44 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Request routing rule of application gateway.
+ * Request routing rule of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     /**
-     * Rule type. Possible values include: 'Basic', 'PathBasedRouting'.
+     * Rule type. Possible values are: 'Basic' and 'PathBasedRouting'. Possible
+     * values include: 'Basic', 'PathBasedRouting'.
      */
     @JsonProperty(value = "properties.ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
 
     /**
-     * Backend address pool resource of application gateway.
+     * Backend address pool resource of the application gateway.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Frontend port resource of application gateway.
+     * Frontend port resource of the application gateway.
      */
     @JsonProperty(value = "properties.backendHttpSettings")
     private SubResource backendHttpSettings;
 
     /**
-     * Http listener resource of application gateway.
+     * Http listener resource of the application gateway.
      */
     @JsonProperty(value = "properties.httpListener")
     private SubResource httpListener;
 
     /**
-     * Url path map resource of application gateway.
+     * URL path map resource of the application gateway.
      */
     @JsonProperty(value = "properties.urlPathMap")
     private SubResource urlPathMap;
 
     /**
-     * Provisioning state of the request routing rule resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the request routing rule resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

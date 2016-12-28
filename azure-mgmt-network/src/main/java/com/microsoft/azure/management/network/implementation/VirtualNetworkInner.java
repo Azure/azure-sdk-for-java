@@ -21,40 +21,40 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualNetworkInner extends Resource {
     /**
-     * Gets or sets AddressSpace that contains an array of IP address ranges
-     * that can be used by subnets.
+     * The AddressSpace that contains an array of IP address ranges that can be
+     * used by subnets.
      */
     @JsonProperty(value = "properties.addressSpace")
     private AddressSpace addressSpace;
 
     /**
-     * Gets or sets DHCPOptions that contains an array of DNS servers
-     * available to VMs deployed in the virtual network.
+     * The dhcpOptions that contains an array of DNS servers available to VMs
+     * deployed in the virtual network.
      */
     @JsonProperty(value = "properties.dhcpOptions")
     private DhcpOptions dhcpOptions;
 
     /**
-     * Gets or sets list of subnets in a VirtualNetwork.
+     * A list of subnets in a Virtual Network.
      */
     @JsonProperty(value = "properties.subnets")
     private List<SubnetInner> subnets;
 
     /**
-     * Gets or sets list of peerings in a VirtualNetwork.
+     * A list of peerings in a Virtual Network.
      */
-    @JsonProperty(value = "properties.VirtualNetworkPeerings")
+    @JsonProperty(value = "properties.virtualNetworkPeerings")
     private List<VirtualNetworkPeeringInner> virtualNetworkPeerings;
 
     /**
-     * Gets or sets resource guid property of the VirtualNetwork resource.
+     * The resourceGuid property of the Virtual Network resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

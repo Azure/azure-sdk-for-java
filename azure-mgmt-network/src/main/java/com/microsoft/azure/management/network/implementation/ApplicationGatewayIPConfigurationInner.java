@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * IP configuration of application gateway.
+ * IP configuration of an application gateway. Currently 1 public and 1 private
+ * IP configuration is allowed.
  */
 @JsonFlatten
 public class ApplicationGatewayIPConfigurationInner extends SubResource {
@@ -25,8 +26,8 @@ public class ApplicationGatewayIPConfigurationInner extends SubResource {
     private SubResource subnet;
 
     /**
-     * Provisioning state of the application gateway subnet resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the application gateway subnet resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

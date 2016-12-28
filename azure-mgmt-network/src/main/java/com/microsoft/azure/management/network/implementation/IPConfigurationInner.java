@@ -19,39 +19,39 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class IPConfigurationInner extends SubResource {
     /**
-     * Gets or sets the privateIPAddress of the IP Configuration.
+     * The private IP address of the IP configuration.
      */
     @JsonProperty(value = "properties.privateIPAddress")
     private String privateIPAddress;
 
     /**
-     * Gets or sets PrivateIP allocation method. Possible values include:
-     * 'Static', 'Dynamic'.
+     * The private IP allocation method. Possible values are 'Static' and
+     * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
 
     /**
-     * Gets or sets the reference of the subnet resource.
+     * The reference of the subnet resource.
      */
     @JsonProperty(value = "properties.subnet")
     private SubnetInner subnet;
 
     /**
-     * Gets or sets the reference of the PublicIP resource.
+     * The reference of the public IP resource.
      */
     @JsonProperty(value = "properties.publicIPAddress")
     private PublicIPAddressInner publicIPAddress;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

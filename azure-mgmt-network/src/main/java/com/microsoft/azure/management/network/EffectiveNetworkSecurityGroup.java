@@ -12,11 +12,11 @@ import com.microsoft.azure.SubResource;
 import java.util.List;
 
 /**
- * Effective NetworkSecurityGroup.
+ * Effective network security group.
  */
 public class EffectiveNetworkSecurityGroup {
     /**
-     * Gets the id of network security group that is applied.
+     * The ID of network security group that is applied.
      */
     private SubResource networkSecurityGroup;
 
@@ -26,7 +26,7 @@ public class EffectiveNetworkSecurityGroup {
     private EffectiveNetworkSecurityGroupAssociation association;
 
     /**
-     * Gets collection of effective security rules.
+     * A collection of effective security rules.
      */
     private List<EffectiveNetworkSecurityRule> effectiveSecurityRules;
 

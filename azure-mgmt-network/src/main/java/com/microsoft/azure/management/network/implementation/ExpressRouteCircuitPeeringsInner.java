@@ -92,7 +92,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -103,7 +103,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -116,7 +116,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -133,7 +133,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -153,15 +153,13 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -172,7 +170,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -185,7 +183,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -202,7 +200,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The delete peering operation deletes the specified peering from the ExpressRouteCircuit.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -222,10 +220,8 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -248,7 +244,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -260,7 +256,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -273,7 +269,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -290,7 +286,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The GET peering operation retrieves the specified authorization from the ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -310,10 +306,8 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> call(Response<ResponseBody> response) {
@@ -335,12 +329,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the ExpressRouteCircuitPeeringInner object if successful.
      */
     public ExpressRouteCircuitPeeringInner createOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -348,12 +342,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -362,12 +356,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitPeeringInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -380,12 +374,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -404,21 +398,19 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (peeringParameters == null) {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(peeringParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitPeeringInner>() { }.getType());
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the ExpressRouteCircuitPeeringInner object if successful.
      */
     public ExpressRouteCircuitPeeringInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -426,12 +418,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -440,12 +432,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ExpressRouteCircuitPeeringInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -458,12 +450,12 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The Put Peering operation creates/updates an peering in the specified ExpressRouteCircuits.
+     * Creates or updates a peering in the specified express route circuits.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
-     * @param peeringParameters Parameters supplied to the create/update ExpressRouteCircuit Peering operation
+     * @param peeringParameters Parameters supplied to the create or update express route circuit peering operation.
      * @return the observable to the ExpressRouteCircuitPeeringInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String peeringName, ExpressRouteCircuitPeeringInner peeringParameters) {
@@ -482,11 +474,9 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (peeringParameters == null) {
             throw new IllegalArgumentException("Parameter peeringParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(peeringParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, this.client.subscriptionId(), peeringParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitPeeringInner>> call(Response<ResponseBody> response) {
@@ -509,10 +499,10 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object if successful.
      */
     public PagedList<ExpressRouteCircuitPeeringInner> list(final String resourceGroupName, final String circuitName) {
@@ -526,10 +516,10 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -546,10 +536,10 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<Page<ExpressRouteCircuitPeeringInner>> listAsync(final String resourceGroupName, final String circuitName) {
@@ -563,10 +553,10 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param circuitName The name of the circuit.
+     * @param circuitName The name of the express route circuit.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listWithServiceResponseAsync(final String resourceGroupName, final String circuitName) {
@@ -584,10 +574,10 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param resourceGroupName The name of the resource group.
-    ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param circuitName The name of the circuit.
+    ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param circuitName The name of the express route circuit.
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> listSinglePageAsync(final String resourceGroupName, final String circuitName) {
@@ -600,10 +590,8 @@ public final class ExpressRouteCircuitPeeringsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitPeeringInner>>> call(Response<ResponseBody> response) {
@@ -625,7 +613,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object if successful.
@@ -641,7 +629,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -661,7 +649,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
@@ -677,7 +665,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object
@@ -697,7 +685,7 @@ public final class ExpressRouteCircuitPeeringsInner {
     }
 
     /**
-     * The List peering operation retrieves all the peerings in an ExpressRouteCircuit.
+     * Gets all peerings in a specified express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitPeeringInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitPeeringInner&gt; object wrapped in {@link ServiceResponse} if successful.
