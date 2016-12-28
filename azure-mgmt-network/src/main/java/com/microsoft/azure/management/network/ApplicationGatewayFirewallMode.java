@@ -11,22 +11,22 @@ package com.microsoft.azure.management.network;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for ApplicationGatewayTier.
+ * Defines values for ApplicationGatewayFirewallMode.
  */
-public final class ApplicationGatewayTier {
-    /** Static value Standard for ApplicationGatewayTier. */
-    public static final ApplicationGatewayTier STANDARD = new ApplicationGatewayTier("Standard");
+public final class ApplicationGatewayFirewallMode {
+    /** Static value Detection for ApplicationGatewayFirewallMode. */
+    public static final ApplicationGatewayFirewallMode DETECTION = new ApplicationGatewayFirewallMode("Detection");
 
-    /** Static value WAF for ApplicationGatewayTier. */
-    public static final ApplicationGatewayTier WAF = new ApplicationGatewayTier("WAF");
+    /** Static value Prevention for ApplicationGatewayFirewallMode. */
+    public static final ApplicationGatewayFirewallMode PREVENTION = new ApplicationGatewayFirewallMode("Prevention");
 
     private String value;
 
     /**
-     * Creates a custom value for ApplicationGatewayTier.
+     * Creates a custom value for ApplicationGatewayFirewallMode.
      * @param value the custom value
      */
-    public ApplicationGatewayTier(String value) {
+    public ApplicationGatewayFirewallMode(String value) {
         this.value = value;
     }
 
@@ -43,13 +43,13 @@ public final class ApplicationGatewayTier {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ApplicationGatewayTier)) {
+        if (!(obj instanceof ApplicationGatewayFirewallMode)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        ApplicationGatewayTier rhs = (ApplicationGatewayTier) obj;
+        ApplicationGatewayFirewallMode rhs = (ApplicationGatewayFirewallMode) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

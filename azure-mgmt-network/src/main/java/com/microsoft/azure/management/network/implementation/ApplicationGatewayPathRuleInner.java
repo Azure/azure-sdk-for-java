@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Path rule of URL path map of application gateway.
+ * Path rule of URL path map of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayPathRuleInner extends SubResource {
@@ -37,7 +37,8 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     private SubResource backendHttpSettings;
 
     /**
-     * Path rule of URL path map resource Updating/Deleting/Failed.
+     * Path rule of URL path map resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

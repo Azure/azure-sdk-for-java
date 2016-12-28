@@ -17,13 +17,13 @@ import com.microsoft.azure.management.network.implementation.VpnClientRevokedCer
  */
 public class VpnClientConfiguration {
     /**
-     * Gets or sets the reference of the Address space resource which
-     * represents Address space for P2S VpnClient.
+     * The reference of the address space resource which represents Address
+     * space for P2S VpnClient.
      */
     private AddressSpace vpnClientAddressPool;
 
     /**
-     * VpnClientRootCertificate for Virtual network gateway.
+     * VpnClientRootCertificate for virtual network gateway.
      */
     private List<VpnClientRootCertificateInner> vpnClientRootCertificates;
 

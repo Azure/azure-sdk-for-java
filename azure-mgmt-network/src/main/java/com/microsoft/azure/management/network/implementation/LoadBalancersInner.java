@@ -100,20 +100,20 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      */
     public void delete(String resourceGroupName, String loadBalancerName) {
         deleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().last().getBody();
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -122,10 +122,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String loadBalancerName) {
@@ -138,10 +138,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
@@ -154,28 +154,26 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, loadBalancerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, loadBalancerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      */
     public void beginDelete(String resourceGroupName, String loadBalancerName) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, loadBalancerName).toBlocking().single().getBody();
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -184,10 +182,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName) {
@@ -200,10 +198,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The delete LoadBalancer operation deletes the specified load balancer.
+     * Deletes the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
@@ -216,10 +214,8 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, loadBalancerName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, loadBalancerName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -242,10 +238,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName) {
@@ -253,10 +249,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -265,10 +261,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName) {
@@ -281,10 +277,10 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
+     * @param loadBalancerName The name of the load balancer.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<ServiceResponse<LoadBalancerInner>> getWithServiceResponseAsync(String resourceGroupName, String loadBalancerName) {
@@ -297,11 +293,9 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, loadBalancerName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, loadBalancerName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LoadBalancerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LoadBalancerInner>> call(Response<ResponseBody> response) {
@@ -316,11 +310,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param expand expand references resources.
+     * @param loadBalancerName The name of the load balancer.
+     * @param expand Expands referenced resources.
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner get(String resourceGroupName, String loadBalancerName, String expand) {
@@ -328,11 +322,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param expand expand references resources.
+     * @param loadBalancerName The name of the load balancer.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -341,11 +335,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param expand expand references resources.
+     * @param loadBalancerName The name of the load balancer.
+     * @param expand Expands referenced resources.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<LoadBalancerInner> getAsync(String resourceGroupName, String loadBalancerName, String expand) {
@@ -358,11 +352,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Get LoadBalancer operation retrieves information about the specified LoadBalancer.
+     * Gets the specified load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param expand expand references resources.
+     * @param loadBalancerName The name of the load balancer.
+     * @param expand Expands referenced resources.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<ServiceResponse<LoadBalancerInner>> getWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, String expand) {
@@ -375,10 +369,8 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, loadBalancerName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, loadBalancerName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LoadBalancerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LoadBalancerInner>> call(Response<ResponseBody> response) {
@@ -400,11 +392,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -412,11 +404,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -425,11 +417,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the observable for the request
      */
     public Observable<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -442,11 +434,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<LoadBalancerInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -462,20 +454,18 @@ public final class LoadBalancersInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, loadBalancerName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, loadBalancerName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<LoadBalancerInner>() { }.getType());
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the LoadBalancerInner object if successful.
      */
     public LoadBalancerInner beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -483,11 +473,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -496,11 +486,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -513,11 +503,11 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The Put LoadBalancer operation creates/updates a LoadBalancer.
+     * Creates or updates a load balancer.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the loadBalancer.
-     * @param parameters Parameters supplied to the create/delete LoadBalancer operation
+     * @param loadBalancerName The name of the load balancer.
+     * @param parameters Parameters supplied to the create or update load balancer operation.
      * @return the observable to the LoadBalancerInner object
      */
     public Observable<ServiceResponse<LoadBalancerInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters) {
@@ -533,11 +523,9 @@ public final class LoadBalancersInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, loadBalancerName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, loadBalancerName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LoadBalancerInner>>>() {
                 @Override
                 public Observable<ServiceResponse<LoadBalancerInner>> call(Response<ResponseBody> response) {
@@ -560,7 +548,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
      */
@@ -575,7 +563,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -593,7 +581,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
@@ -608,7 +596,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
      */
@@ -627,7 +615,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -635,10 +623,8 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
@@ -660,7 +646,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
@@ -676,7 +662,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -695,7 +681,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -711,7 +697,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -731,7 +717,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -743,10 +729,8 @@ public final class LoadBalancersInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<LoadBalancerInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<LoadBalancerInner>>> call(Response<ResponseBody> response) {
@@ -768,7 +752,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
@@ -784,7 +768,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -804,7 +788,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -820,7 +804,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -840,7 +824,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a subscription.
+     * Gets all the load balancers in a subscription.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -871,7 +855,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LoadBalancerInner&gt; object if successful.
@@ -887,7 +871,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -907,7 +891,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -923,7 +907,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;LoadBalancerInner&gt; object
@@ -943,7 +927,7 @@ public final class LoadBalancersInner {
     }
 
     /**
-     * The List loadBalancer operation retrieves all the load balancers in a resource group.
+     * Gets all the load balancers in a resource group.
      *
     ServiceResponse<PageImpl<LoadBalancerInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;LoadBalancerInner&gt; object wrapped in {@link ServiceResponse} if successful.

@@ -14,24 +14,25 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * RouteTable resource.
+ * Route table resource.
  */
 @JsonFlatten
 public class RouteTableInner extends Resource {
     /**
-     * Gets or sets Routes in a Route Table.
+     * Collection of routes contained within a route table.
      */
     @JsonProperty(value = "properties.routes")
     private List<RouteInner> routes;
 
     /**
-     * Gets collection of references to subnets.
+     * A collection of references to subnets.
      */
     @JsonProperty(value = "properties.subnets", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubnetInner> subnets;
 
     /**
-     * Gets provisioning state of the resource Updating/Deleting/Failed.
+     * The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

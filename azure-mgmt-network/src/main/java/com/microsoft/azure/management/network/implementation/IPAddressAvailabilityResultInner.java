@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network.implementation;
 import java.util.List;
 
 /**
- * Response for CheckIPAddressAvailability Api service call.
+ * Response for CheckIPAddressAvailability API service call.
  */
 public class IPAddressAvailabilityResultInner {
     /**

@@ -15,36 +15,38 @@ import java.util.List;
  */
 public class EffectiveRoute {
     /**
-     * Gets the name of the user defined route. This is optional.
+     * The name of the user defined route. This is optional.
      */
     private String name;
 
     /**
-     * Gets who created the route. Possible values include: 'Unknown', 'User',
-     * 'VirtualNetworkGateway', 'Default'.
+     * Who created the route. Possible values are: 'Unknown', 'User',
+     * 'VirtualNetworkGateway', and 'Default'. Possible values include:
+     * 'Unknown', 'User', 'VirtualNetworkGateway', 'Default'.
      */
     private EffectiveRouteSource source;
 
     /**
-     * Gets value of effective route. Possible values include: 'Active',
-     * 'Invalid'.
+     * The value of effective route. Possible values are: 'Active' and
+     * 'Invalid'. Possible values include: 'Active', 'Invalid'.
      */
     private EffectiveRouteState state;
 
     /**
-     * Gets address prefixes of the effective routes in CIDR notation.
+     * The address prefixes of the effective routes in CIDR notation.
      */
     private List<String> addressPrefix;
 
     /**
-     * Gets the IP address of the next hop of the effective route.
+     * The IP address of the next hop of the effective route.
      */
     private List<String> nextHopIpAddress;
 
     /**
-     * Gets or sets the type of Azure hop the packet should be sent to.
-     * Possible values include: 'VirtualNetworkGateway', 'VnetLocal',
-     * 'Internet', 'VirtualAppliance', 'None'.
+     * The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance',
+     * and 'None'. Possible values include: 'VirtualNetworkGateway',
+     * 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      */
     private RouteNextHopType nextHopType;
 

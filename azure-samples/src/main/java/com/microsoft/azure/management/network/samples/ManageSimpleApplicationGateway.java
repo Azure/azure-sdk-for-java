@@ -80,7 +80,7 @@ public final class ManageSimpleApplicationGateway {
                 // Create an application gateway
 
                 System.out.println("================= CREATE ======================");
-                System.out.println("Creating an application gateway");
+                System.out.println("Creating an application gateway... (this can take about 20 min)");
                 long t1 = System.currentTimeMillis();
 
                 ApplicationGateway applicationGateway = azure.applicationGateways().define("myFirstAppGateway")
