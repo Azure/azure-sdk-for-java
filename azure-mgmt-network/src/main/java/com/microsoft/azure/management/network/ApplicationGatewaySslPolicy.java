@@ -15,7 +15,8 @@ import java.util.List;
  */
 public class ApplicationGatewaySslPolicy {
     /**
-     * SSL protocols to be disabled on Application Gateway.
+     * SSL protocols to be disabled on application gateway. Possible values
+     * are: 'TLSv1_0', 'TLSv1_1', and 'TLSv1_2'.
      */
     private List<ApplicationGatewaySslProtocol> disabledSslProtocols;
 

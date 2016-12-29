@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 
 /**
- * Response for CheckDnsNameAvailability Api service call.
+ * Response for the CheckDnsNameAvailability API service call.
  */
 public class DnsNameAvailabilityResultInner {
     /**

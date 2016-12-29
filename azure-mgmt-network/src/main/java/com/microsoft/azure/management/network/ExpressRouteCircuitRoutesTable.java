@@ -34,7 +34,7 @@ public class ExpressRouteCircuitRoutesTable {
     private Integer weight;
 
     /**
-     * path .
+     * path.
      */
     private String path;
 

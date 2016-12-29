@@ -92,7 +92,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -103,7 +103,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -116,7 +116,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -133,7 +133,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -153,15 +153,13 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -172,7 +170,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -185,7 +183,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -202,7 +200,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The delete authorization operation deletes the specified authorization from the specified ExpressRouteCircuit.
+     * Deletes the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -222,10 +220,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -248,7 +244,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -260,7 +256,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -273,7 +269,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -290,7 +286,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The GET authorization operation retrieves the specified authorization from the specified ExpressRouteCircuit.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
@@ -310,10 +306,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> call(Response<ResponseBody> response) {
@@ -335,12 +329,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner createOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -348,12 +342,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -362,12 +356,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the observable for the request
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> createOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -380,12 +374,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -404,21 +398,19 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(authorizationParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitAuthorizationInner>() { }.getType());
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the ExpressRouteCircuitAuthorizationInner object if successful.
      */
     public ExpressRouteCircuitAuthorizationInner beginCreateOrUpdate(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -426,12 +418,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -440,12 +432,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ExpressRouteCircuitAuthorizationInner> beginCreateOrUpdateAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -458,12 +450,12 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The Put Authorization operation creates/updates an authorization in the specified ExpressRouteCircuits.
+     * Creates or updates an authorization in the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the express route circuit.
      * @param authorizationName The name of the authorization.
-     * @param authorizationParameters Parameters supplied to the create/update ExpressRouteCircuitAuthorization operation
+     * @param authorizationParameters Parameters supplied to the create or update express route circuit authorization operation.
      * @return the observable to the ExpressRouteCircuitAuthorizationInner object
      */
     public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String circuitName, String authorizationName, ExpressRouteCircuitAuthorizationInner authorizationParameters) {
@@ -482,11 +474,9 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (authorizationParameters == null) {
             throw new IllegalArgumentException("Parameter authorizationParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(authorizationParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, circuitName, authorizationName, this.client.subscriptionId(), authorizationParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitAuthorizationInner>> call(Response<ResponseBody> response) {
@@ -509,7 +499,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -526,7 +516,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -546,7 +536,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -563,7 +553,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
      * @param circuitName The name of the circuit.
@@ -584,7 +574,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param resourceGroupName The name of the resource group.
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param circuitName The name of the circuit.
@@ -600,10 +590,8 @@ public final class ExpressRouteCircuitAuthorizationsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, circuitName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<ExpressRouteCircuitAuthorizationInner>>> call(Response<ResponseBody> response) {
@@ -625,7 +613,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object if successful.
@@ -641,7 +629,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -661,7 +649,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
@@ -677,7 +665,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object
@@ -697,7 +685,7 @@ public final class ExpressRouteCircuitAuthorizationsInner {
     }
 
     /**
-     * The List authorization operation retrieves all the authorizations in an ExpressRouteCircuit.
+     * Gets all authorizations in an express route circuit.
      *
     ServiceResponse<PageImpl<ExpressRouteCircuitAuthorizationInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;ExpressRouteCircuitAuthorizationInner&gt; object wrapped in {@link ServiceResponse} if successful.

@@ -14,17 +14,17 @@ package com.microsoft.azure.management.network;
  */
 public class ExpressRouteCircuitServiceProviderProperties {
     /**
-     * Gets or sets serviceProviderName.
+     * The serviceProviderName.
      */
     private String serviceProviderName;
 
     /**
-     * Gets or sets peering location.
+     * The peering location.
      */
     private String peeringLocation;
 
     /**
-     * Gets or sets BandwidthInMbps.
+     * The BandwidthInMbps.
      */
     private Integer bandwidthInMbps;
 

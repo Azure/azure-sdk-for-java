@@ -27,8 +27,7 @@ public class AccountStatuses {
 
     /**
      * @return the status indicating whether the primary location of the storage
-     * account is available or unavailable. Possible values include:
-     * 'Available', 'Unavailable'.
+     * account is available or unavailable.
      */
     public AccountStatus primary() {
         return primary;
@@ -37,8 +36,7 @@ public class AccountStatuses {
     /**
      * @return the status indicating whether the secondary location of the
      * storage account is available or unavailable. Only available if the
-     * accountType is StandardGRS or StandardRAGRS. Possible values include:
-     * 'Available', 'Unavailable'.
+     * accountType is StandardGRS or StandardRAGRS.
      */
     public AccountStatus secondary() {
         return secondary;

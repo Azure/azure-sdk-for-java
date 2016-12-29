@@ -18,20 +18,20 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class VpnClientRootCertificateInner extends SubResource {
     /**
-     * Gets or sets the certificate public data.
+     * The certificate public data.
      */
-    @JsonProperty(value = "properties.publicCertData")
+    @JsonProperty(value = "properties.publicCertData", required = true)
     private String publicCertData;
 
     /**
-     * Gets provisioning state of the VPN client root certificate resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the VPN client root certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;
@@ -68,17 +68,6 @@ public class VpnClientRootCertificateInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VpnClientRootCertificateInner object itself.
-     */
-    public VpnClientRootCertificateInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

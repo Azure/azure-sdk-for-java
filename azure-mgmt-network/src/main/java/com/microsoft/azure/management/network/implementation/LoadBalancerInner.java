@@ -19,63 +19,75 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class LoadBalancerInner extends Resource {
     /**
-     * Gets or sets frontend IP addresses of the load balancer.
+     * Object representing the frontend IPs to be used for the load balancer.
      */
     @JsonProperty(value = "properties.frontendIPConfigurations")
     private List<FrontendIPConfigurationInner> frontendIPConfigurations;
 
     /**
-     * Gets or sets Pools of backend IP addresses.
+     * Collection of backend address pools used by a load balancer.
      */
     @JsonProperty(value = "properties.backendAddressPools")
     private List<BackendAddressPoolInner> backendAddressPools;
 
     /**
-     * Gets or sets load balancing rules.
+     * Object collection representing the load balancing rules Gets the
+     * provisioning.
      */
     @JsonProperty(value = "properties.loadBalancingRules")
     private List<LoadBalancingRuleInner> loadBalancingRules;
 
     /**
-     * Gets or sets list of Load balancer probes.
+     * Collection of probe objects used in the load balancer.
      */
     @JsonProperty(value = "properties.probes")
     private List<ProbeInner> probes;
 
     /**
-     * Gets or sets list of inbound rules.
+     * Collection of inbound NAT Rules used by a load balancer. Defining
+     * inbound NAT rules on your load balancer is mutually exclusive with
+     * defining an inbound NAT pool. Inbound NAT pools are referenced from
+     * virtual machine scale sets. NICs that are associated with individual
+     * virtual machines cannot reference an Inbound NAT pool. They have to
+     * reference individual inbound NAT rules.
      */
     @JsonProperty(value = "properties.inboundNatRules")
     private List<InboundNatRuleInner> inboundNatRules;
 
     /**
-     * Gets or sets inbound NAT pools.
+     * Defines an external port range for inbound NAT to a single backend port
+     * on NICs associated with a load balancer. Inbound NAT rules are created
+     * automatically for each NIC associated with the Load Balancer using an
+     * external port from this range. Defining an Inbound NAT pool on your Load
+     * Balancer is mutually exclusive with defining inbound Nat rules. Inbound
+     * NAT pools are referenced from virtual machine scale sets. NICs that are
+     * associated with individual virtual machines cannot reference an inbound
+     * NAT pool. They have to reference individual inbound NAT rules.
      */
     @JsonProperty(value = "properties.inboundNatPools")
     private List<InboundNatPoolInner> inboundNatPools;
 
     /**
-     * Gets or sets outbound NAT rules.
+     * The outbound NAT rules.
      */
     @JsonProperty(value = "properties.outboundNatRules")
     private List<OutboundNatRuleInner> outboundNatRules;
 
     /**
-     * Gets or sets resource guid property of the Load balancer resource.
+     * The resource GUID property of the load balancer resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
