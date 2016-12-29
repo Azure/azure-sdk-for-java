@@ -71,11 +71,11 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Create or replace the patching schedule for redis cache.
+     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters to set patch schedules for redis cache.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @return the RedisPatchScheduleInner object if successful.
      */
     public RedisPatchScheduleInner createOrUpdate(String resourceGroupName, String name, RedisPatchScheduleInner parameters) {
@@ -83,11 +83,11 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Create or replace the patching schedule for redis cache.
+     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters to set patch schedules for redis cache.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -96,11 +96,11 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Create or replace the patching schedule for redis cache.
+     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters to set patch schedules for redis cache.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<RedisPatchScheduleInner> createOrUpdateAsync(String resourceGroupName, String name, RedisPatchScheduleInner parameters) {
@@ -113,11 +113,11 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Create or replace the patching schedule for redis cache.
+     * Create or replace the patching schedule for Redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters to set patch schedules for redis cache.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters to set the patching schedule for Redis cache.
      * @return the observable to the RedisPatchScheduleInner object
      */
     public Observable<ServiceResponse<RedisPatchScheduleInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String name, RedisPatchScheduleInner parameters) {
@@ -159,7 +159,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Deletes the patching schedule for redis cache.
+     * Deletes the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -169,7 +169,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Deletes the patching schedule for redis cache.
+     * Deletes the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -181,7 +181,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Deletes the patching schedule for redis cache.
+     * Deletes the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -197,7 +197,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Deletes the patching schedule for redis cache.
+     * Deletes the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -233,11 +233,12 @@ public final class PatchSchedulesInner {
     private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<Void, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .register(204, new TypeToken<Void>() { }.getType())
                 .build(response);
     }
 
     /**
-     * Gets the patching schedule for redis cache.
+     * Gets the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -248,7 +249,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Gets the patching schedule for redis cache.
+     * Gets the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -260,7 +261,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Gets the patching schedule for redis cache.
+     * Gets the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.
@@ -276,7 +277,7 @@ public final class PatchSchedulesInner {
     }
 
     /**
-     * Gets the patching schedule for redis cache.
+     * Gets the patching schedule of a redis cache (requires Premium SKU).
      *
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the redis cache.

@@ -15,40 +15,10 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * A single redis item in List or Get Operation.
+ * A single Redis item in List or Get Operation.
  */
 @JsonFlatten
 public class RedisResourceInner extends Resource {
-    /**
-     * Redis Version.
-     */
-    @JsonProperty(value = "properties.redisVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String redisVersion;
-
-    /**
-     * Redis instance provisioning status.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /**
-     * Redis host name.
-     */
-    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostName;
-
-    /**
-     * Redis non-ssl port.
-     */
-    @JsonProperty(value = "properties.port", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer port;
-
-    /**
-     * Redis ssl port.
-     */
-    @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer sslPort;
-
     /**
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
@@ -58,8 +28,7 @@ public class RedisResourceInner extends Resource {
     private Map<String, String> redisConfiguration;
 
     /**
-     * If the value is true, then the non-ssl redis server port (6379) will be
-     * enabled.
+     * Specifies whether the non-ssl Redis server port (6379) is enabled.
      */
     @JsonProperty(value = "properties.enableNonSslPort")
     private Boolean enableNonSslPort;
@@ -78,69 +47,54 @@ public class RedisResourceInner extends Resource {
 
     /**
      * The full resource ID of a subnet in a virtual network to deploy the
-     * redis cache in. Example format:
+     * Redis cache in. Example format:
      * /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      */
     @JsonProperty(value = "properties.subnetId")
     private String subnetId;
 
     /**
-     * Required when deploying a redis cache inside an existing Azure Virtual
-     * Network.
+     * Static IP address. Required when deploying a Redis cache inside an
+     * existing Azure Virtual Network.
      */
     @JsonProperty(value = "properties.staticIP")
     private String staticIP;
 
     /**
-     * What sku of redis cache to deploy.
+     * The SKU of the Redis cache to deploy.
      */
-    @JsonProperty(value = "properties.sku", required = true)
+    @JsonProperty(value = "properties.sku")
     private Sku sku;
 
     /**
-     * Get the redisVersion value.
-     *
-     * @return the redisVersion value
+     * Redis version.
      */
-    public String redisVersion() {
-        return this.redisVersion;
-    }
+    @JsonProperty(value = "properties.redisVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private String redisVersion;
 
     /**
-     * Get the provisioningState value.
-     *
-     * @return the provisioningState value
+     * Redis instance provisioning status.
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private String provisioningState;
 
     /**
-     * Get the hostName value.
-     *
-     * @return the hostName value
+     * Redis host name.
      */
-    public String hostName() {
-        return this.hostName;
-    }
+    @JsonProperty(value = "properties.hostName", access = JsonProperty.Access.WRITE_ONLY)
+    private String hostName;
 
     /**
-     * Get the port value.
-     *
-     * @return the port value
+     * Redis non-SSL port.
      */
-    public Integer port() {
-        return this.port;
-    }
+    @JsonProperty(value = "properties.port", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer port;
 
     /**
-     * Get the sslPort value.
-     *
-     * @return the sslPort value
+     * Redis SSL port.
      */
-    public Integer sslPort() {
-        return this.sslPort;
-    }
+    @JsonProperty(value = "properties.sslPort", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer sslPort;
 
     /**
      * Get the redisConfiguration value.
@@ -280,6 +234,51 @@ public class RedisResourceInner extends Resource {
     public RedisResourceInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the redisVersion value.
+     *
+     * @return the redisVersion value
+     */
+    public String redisVersion() {
+        return this.redisVersion;
+    }
+
+    /**
+     * Get the provisioningState value.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the hostName value.
+     *
+     * @return the hostName value
+     */
+    public String hostName() {
+        return this.hostName;
+    }
+
+    /**
+     * Get the port value.
+     *
+     * @return the port value
+     */
+    public Integer port() {
+        return this.port;
+    }
+
+    /**
+     * Get the sslPort value.
+     *
+     * @return the sslPort value
+     */
+    public Integer sslPort() {
+        return this.sslPort;
     }
 
 }
