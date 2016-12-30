@@ -14,12 +14,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * Response to put/get patch schedules for redis cache.
+ * Response to put/get patch schedules for Redis cache.
  */
 @JsonFlatten
 public class RedisPatchScheduleInner {
     /**
-     * Resource Id.
+     * Resource ID.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String id;
@@ -43,7 +43,7 @@ public class RedisPatchScheduleInner {
     private String location;
 
     /**
-     * List of patch schedules for redis cache.
+     * List of patch schedules for a Redis cache.
      */
     @JsonProperty(value = "properties.scheduleEntries", required = true)
     private List<ScheduleEntry> scheduleEntries;

@@ -12,13 +12,13 @@ import org.joda.time.Period;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Patch schedule entry for Premium Redis Cache.
+ * Patch schedule entry for a Premium Redis Cache.
  */
 public class ScheduleEntry {
     /**
-     * Day of week when cache can be patched. Possible values include:
+     * Day of the week when a cache can be patched. Possible values include:
      * 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday',
-     * 'Sunday'.
+     * 'Sunday', 'Everyday', 'Weekend'.
      */
     @JsonProperty(required = true)
     private DayOfWeek dayOfWeek;

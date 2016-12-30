@@ -11,11 +11,11 @@ package com.microsoft.azure.management.redis;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies which redis access keys to reset.
+ * Specifies which Redis access keys to reset.
  */
 public class RedisRegenerateKeyParameters {
     /**
-     * Which redis access key to reset. Possible values include: 'Primary',
+     * The Redis access key to regenerate. Possible values include: 'Primary',
      * 'Secondary'.
      */
     @JsonProperty(required = true)
