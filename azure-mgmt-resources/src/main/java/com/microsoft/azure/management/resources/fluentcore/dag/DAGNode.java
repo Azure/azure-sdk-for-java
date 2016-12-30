@@ -121,7 +121,7 @@ public class DAGNode<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Node<Da
     /**
      * @return <tt>true</tt> if all dependencies of this node are resolved
      */
-    protected boolean hasAllResolved() {
+    boolean hasAllResolved() {
         return toBeResolved == 0;
     }
 

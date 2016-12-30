@@ -151,9 +151,6 @@ public abstract class CreatableUpdatableImpl<
         return this.createResourceAsync();
     }
 
-    @Override
-    public abstract Observable<FluentModelT> createResourceAsync();
-
     @SuppressWarnings("unchecked")
     protected Observable<FluentModelT> executeTaskGroupAsync() {
         return taskGroup.executeAsync().last();
