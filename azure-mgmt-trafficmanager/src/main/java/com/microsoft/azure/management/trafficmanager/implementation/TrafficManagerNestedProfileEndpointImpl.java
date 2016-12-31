@@ -35,6 +35,6 @@ class TrafficManagerNestedProfileEndpointImpl extends TrafficManagerEndpointImpl
 
     @Override
     public Region sourceTrafficLocation() {
-        return Region.fromName((inner().endpointLocation()));
+        return Region.fromLabel((inner().endpointLocation()));
     }
 }

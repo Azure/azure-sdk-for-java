@@ -143,7 +143,7 @@ public final class Region {
     /**
      * Parses a name into a Region object and creates a new Region instance if not found among the existing ones.
      *
-     * @param name the region name
+     * @param name a region name
      * @return the parsed or created region
      */
     public static Region fromName(String name) {
@@ -152,6 +152,20 @@ public final class Region {
             return region;
         } else {
             return Region.create(name, name);
+        }
+    }
+
+    /**
+     * Parses a region label into a Region object and creates a new Region instance if not found among the existing ones.
+     * @param label a region label
+     * @return the parsed or created region
+     */
+    public static Region fromLabel(String label) {
+        Region region = VALUES_BY_LABEL.get(label.toLowerCase());
+        if (region != null) {
+            return region;
+        } else {
+            return Region.create(label, label);
         }
     }
 
