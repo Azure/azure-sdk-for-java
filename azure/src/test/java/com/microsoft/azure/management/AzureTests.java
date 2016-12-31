@@ -432,6 +432,8 @@ public class AzureTests {
                 .create();
 
         Assert.assertEquals(storageAccount.name(), storageAccountName);
+
+        azure.resourceGroups().deleteByName(storageAccount.resourceGroupName());
     }
 
     @Test
