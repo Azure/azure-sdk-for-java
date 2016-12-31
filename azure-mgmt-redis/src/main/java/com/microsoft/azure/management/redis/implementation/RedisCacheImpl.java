@@ -465,11 +465,23 @@ class RedisCacheImpl
 
     @Override
     public Observable<RedisCache> updateResourceAsync() {
+        final RedisCache self = this;
         return client.updateAsync(resourceGroupName(), name(), updateParameters)
                 .map(innerToFluentMap(this))
                 .doOnNext(new Action1<RedisCache>() {
                     @Override
                     public void call(RedisCache redisCache) {
+                        RedisResourceInner innerResource = null;
+                        while (!redisCache.provisioningState().equalsIgnoreCase("Succeeded")) {
+                            try {
+                                Thread.sleep(30 * 1000);
+                            } catch (InterruptedException ex) {
+                                break;
+                            }
+                            innerResource = client.get(resourceGroupName(), name());
+                            redisCache.setInner(innerResource);
+                        }
+                        self.setInner(innerResource);
                         updatePatchSchedules();
                     }
                 });

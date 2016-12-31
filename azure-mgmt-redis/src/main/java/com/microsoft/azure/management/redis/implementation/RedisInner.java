@@ -78,10 +78,6 @@ public final class RedisInner {
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; charset=utf-8")
-        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}")
-        Observable<Response<ResponseBody>> beginUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Body RedisUpdateParametersInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers("Content-Type: application/json; charset=utf-8")
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
@@ -140,11 +136,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner create(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -152,11 +148,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -165,11 +161,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the observable for the request
      */
     public Observable<RedisResourceInner> createAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -182,11 +178,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<RedisResourceInner>> createWithServiceResponseAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -211,11 +207,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner beginCreate(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -223,11 +219,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -236,11 +232,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the observable to the RedisResourceInner object
      */
     public Observable<RedisResourceInner> beginCreateAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -253,11 +249,11 @@ public final class RedisInner {
     }
 
     /**
-     * Create or replace (overwrite/recreate, with potential downtime) an existing redis cache.
+     * Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Create redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Create Redis operation.
      * @return the observable to the RedisResourceInner object
      */
     public Observable<ServiceResponse<RedisResourceInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String name, RedisCreateParametersInner parameters) {
@@ -293,7 +289,7 @@ public final class RedisInner {
 
     private ServiceResponse<RedisResourceInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RedisResourceInner, CloudException>(this.client.mapperAdapter())
-                .register(201, new TypeToken<Void>() { }.getType())
+                .register(201, new TypeToken<RedisResourceInner>() { }.getType())
                 .register(200, new TypeToken<RedisResourceInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -303,20 +299,20 @@ public final class RedisInner {
      * Update an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner update(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
+        return updateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
     /**
      * Update an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -328,9 +324,9 @@ public final class RedisInner {
      * Update an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @return the observable for the request
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @return the observable to the RedisResourceInner object
      */
     public Observable<RedisResourceInner> updateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
         return updateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
@@ -345,9 +341,9 @@ public final class RedisInner {
      * Update an existing Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @return the observable for the request
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters supplied to the Update Redis operation.
+     * @return the observable to the RedisResourceInner object
      */
     public Observable<ServiceResponse<RedisResourceInner>> updateWithServiceResponseAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
         if (resourceGroupName == null) {
@@ -366,83 +362,12 @@ public final class RedisInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
-        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RedisResourceInner>() { }.getType());
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @return the RedisResourceInner object if successful.
-     */
-    public RedisResourceInner beginUpdate(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<RedisResourceInner> beginUpdateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters, final ServiceCallback<RedisResourceInner> serviceCallback) {
-        return ServiceCall.create(beginUpdateWithServiceResponseAsync(resourceGroupName, name, parameters), serviceCallback);
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @return the observable to the RedisResourceInner object
-     */
-    public Observable<RedisResourceInner> beginUpdateAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        return beginUpdateWithServiceResponseAsync(resourceGroupName, name, parameters).map(new Func1<ServiceResponse<RedisResourceInner>, RedisResourceInner>() {
-            @Override
-            public RedisResourceInner call(ServiceResponse<RedisResourceInner> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Update an existing Redis cache.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters supplied to the Update redis operation.
-     * @return the observable to the RedisResourceInner object
-     */
-    public Observable<ServiceResponse<RedisResourceInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String name, RedisUpdateParametersInner parameters) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (name == null) {
-            throw new IllegalArgumentException("Parameter name is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Validator.validate(parameters);
-        return service.beginUpdate(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.update(resourceGroupName, name, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RedisResourceInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RedisResourceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RedisResourceInner> clientResponse = beginUpdateDelegate(response);
+                        ServiceResponse<RedisResourceInner> clientResponse = updateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -451,7 +376,7 @@ public final class RedisInner {
             });
     }
 
-    private ServiceResponse<RedisResourceInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RedisResourceInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return new AzureServiceResponseBuilder<RedisResourceInner, CloudException>(this.client.mapperAdapter())
                 .register(200, new TypeToken<RedisResourceInner>() { }.getType())
                 .registerError(CloudException.class)
@@ -459,20 +384,20 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      */
     public void delete(String resourceGroupName, String name) {
         deleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().last().getBody();
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -481,10 +406,10 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String name) {
@@ -497,10 +422,10 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -521,20 +446,20 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      */
     public void beginDelete(String resourceGroupName, String name) {
         beginDeleteWithServiceResponseAsync(resourceGroupName, name).toBlocking().single().getBody();
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -543,10 +468,10 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginDeleteAsync(String resourceGroupName, String name) {
@@ -559,10 +484,10 @@ public final class RedisInner {
     }
 
     /**
-     * Deletes a redis cache. This operation takes a while to complete.
+     * Deletes a Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -600,10 +525,10 @@ public final class RedisInner {
     }
 
     /**
-     * Gets a redis cache (resource description).
+     * Gets a Redis cache (resource description).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the RedisResourceInner object if successful.
      */
     public RedisResourceInner get(String resourceGroupName, String name) {
@@ -611,10 +536,10 @@ public final class RedisInner {
     }
 
     /**
-     * Gets a redis cache (resource description).
+     * Gets a Redis cache (resource description).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -623,10 +548,10 @@ public final class RedisInner {
     }
 
     /**
-     * Gets a redis cache (resource description).
+     * Gets a Redis cache (resource description).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable to the RedisResourceInner object
      */
     public Observable<RedisResourceInner> getAsync(String resourceGroupName, String name) {
@@ -639,10 +564,10 @@ public final class RedisInner {
     }
 
     /**
-     * Gets a redis cache (resource description).
+     * Gets a Redis cache (resource description).
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable to the RedisResourceInner object
      */
     public Observable<ServiceResponse<RedisResourceInner>> getWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -680,7 +605,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
@@ -696,7 +621,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -715,7 +640,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -731,7 +656,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -751,7 +676,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
     ServiceResponse<PageImpl<RedisResourceInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;RedisResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -788,7 +713,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
      */
@@ -803,7 +728,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -821,7 +746,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
      */
@@ -836,7 +761,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
      */
@@ -855,7 +780,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @return the PagedList&lt;RedisResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -888,10 +813,10 @@ public final class RedisInner {
     }
 
     /**
-     * Retrieve a redis cache's access keys. This operation requires write permission to the cache resource.
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner listKeys(String resourceGroupName, String name) {
@@ -899,10 +824,10 @@ public final class RedisInner {
     }
 
     /**
-     * Retrieve a redis cache's access keys. This operation requires write permission to the cache resource.
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -911,10 +836,10 @@ public final class RedisInner {
     }
 
     /**
-     * Retrieve a redis cache's access keys. This operation requires write permission to the cache resource.
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable to the RedisAccessKeysInner object
      */
     public Observable<RedisAccessKeysInner> listKeysAsync(String resourceGroupName, String name) {
@@ -927,10 +852,10 @@ public final class RedisInner {
     }
 
     /**
-     * Retrieve a redis cache's access keys. This operation requires write permission to the cache resource.
+     * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
+     * @param name The name of the Redis cache.
      * @return the observable to the RedisAccessKeysInner object
      */
     public Observable<ServiceResponse<RedisAccessKeysInner>> listKeysWithServiceResponseAsync(String resourceGroupName, String name) {
@@ -968,11 +893,11 @@ public final class RedisInner {
     }
 
     /**
-     * Regenerate redis cache's access keys. This operation requires write permission to the cache resource.
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param keyType Which redis access key to reset. Possible values include: 'Primary', 'Secondary'
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @return the RedisAccessKeysInner object if successful.
      */
     public RedisAccessKeysInner regenerateKey(String resourceGroupName, String name, RedisKeyType keyType) {
@@ -980,11 +905,11 @@ public final class RedisInner {
     }
 
     /**
-     * Regenerate redis cache's access keys. This operation requires write permission to the cache resource.
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param keyType Which redis access key to reset. Possible values include: 'Primary', 'Secondary'
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -993,11 +918,11 @@ public final class RedisInner {
     }
 
     /**
-     * Regenerate redis cache's access keys. This operation requires write permission to the cache resource.
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param keyType Which redis access key to reset. Possible values include: 'Primary', 'Secondary'
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @return the observable to the RedisAccessKeysInner object
      */
     public Observable<RedisAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String name, RedisKeyType keyType) {
@@ -1010,11 +935,11 @@ public final class RedisInner {
     }
 
     /**
-     * Regenerate redis cache's access keys. This operation requires write permission to the cache resource.
+     * Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param keyType Which redis access key to reset. Possible values include: 'Primary', 'Secondary'
+     * @param name The name of the Redis cache.
+     * @param keyType The Redis access key to regenerate. Possible values include: 'Primary', 'Secondary'
      * @return the observable to the RedisAccessKeysInner object
      */
     public Observable<ServiceResponse<RedisAccessKeysInner>> regenerateKeyWithServiceResponseAsync(String resourceGroupName, String name, RedisKeyType keyType) {
@@ -1057,22 +982,22 @@ public final class RedisInner {
     }
 
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Specifies which redis node(s) to reboot.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
      */
     public void forceReboot(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
         forceRebootWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Specifies which redis node(s) to reboot.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1081,11 +1006,11 @@ public final class RedisInner {
     }
 
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Specifies which redis node(s) to reboot.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> forceRebootAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
@@ -1098,11 +1023,11 @@ public final class RedisInner {
     }
 
     /**
-     * Reboot specified redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
+     * Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can be potential data loss.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Specifies which redis node(s) to reboot.
+     * @param name The name of the Redis cache.
+     * @param parameters Specifies which Redis node(s) to reboot.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> forceRebootWithServiceResponseAsync(String resourceGroupName, String name, RedisRebootParametersInner parameters) {
@@ -1144,22 +1069,22 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      */
     public void importData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
         importDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1168,11 +1093,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @return the observable for the request
      */
     public Observable<Void> importDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
@@ -1185,11 +1110,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> importDataWithServiceResponseAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
@@ -1214,22 +1139,22 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      */
     public void beginImportData(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
         beginImportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1238,11 +1163,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginImportDataAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
@@ -1255,11 +1180,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Import data into Redis cache.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis import operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis import operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginImportDataWithServiceResponseAsync(String resourceGroupName, String name, ImportRDBParametersInner parameters) {
@@ -1300,22 +1225,22 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      */
     public void exportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
         exportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().last().getBody();
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1324,11 +1249,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @return the observable for the request
      */
     public Observable<Void> exportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
@@ -1341,11 +1266,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> exportDataWithServiceResponseAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
@@ -1370,22 +1295,22 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      */
     public void beginExportData(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
         beginExportDataWithServiceResponseAsync(resourceGroupName, name, parameters).toBlocking().single().getBody();
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -1394,11 +1319,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<Void> beginExportDataAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
@@ -1411,11 +1336,11 @@ public final class RedisInner {
     }
 
     /**
-     * Import data into redis cache.
+     * Export data from the redis cache to blobs in a container.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param parameters Parameters for redis export operation.
+     * @param name The name of the Redis cache.
+     * @param parameters Parameters for Redis export operation.
      * @return the {@link ServiceResponse} object if successful.
      */
     public Observable<ServiceResponse<Void>> beginExportDataWithServiceResponseAsync(String resourceGroupName, String name, ExportRDBParametersInner parameters) {
@@ -1456,7 +1381,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
@@ -1472,7 +1397,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1492,7 +1417,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -1508,7 +1433,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -1528,7 +1453,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in a resource group.
+     * Lists all Redis caches in a resource group.
      *
     ServiceResponse<PageImpl<RedisResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RedisResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -1559,7 +1484,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RedisResourceInner&gt; object if successful.
@@ -1575,7 +1500,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -1595,7 +1520,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -1611,7 +1536,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;RedisResourceInner&gt; object
@@ -1631,7 +1556,7 @@ public final class RedisInner {
     }
 
     /**
-     * Gets all redis caches in the specified subscription.
+     * Gets all Redis caches in the specified subscription.
      *
     ServiceResponse<PageImpl<RedisResourceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;RedisResourceInner&gt; object wrapped in {@link ServiceResponse} if successful.

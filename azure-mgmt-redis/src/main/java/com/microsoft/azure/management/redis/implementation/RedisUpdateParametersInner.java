@@ -27,8 +27,7 @@ public class RedisUpdateParametersInner {
     private Map<String, String> redisConfiguration;
 
     /**
-     * If the value is true, then the non-ssl redis server port (6379) will be
-     * enabled.
+     * Specifies whether the non-ssl Redis server port (6379) is enabled.
      */
     @JsonProperty(value = "properties.enableNonSslPort")
     private Boolean enableNonSslPort;
@@ -47,21 +46,21 @@ public class RedisUpdateParametersInner {
 
     /**
      * The full resource ID of a subnet in a virtual network to deploy the
-     * redis cache in. Example format:
+     * Redis cache in. Example format:
      * /subscriptions/{subid}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1.
      */
     @JsonProperty(value = "properties.subnetId")
     private String subnetId;
 
     /**
-     * Required when deploying a redis cache inside an existing Azure Virtual
-     * Network.
+     * Static IP address. Required when deploying a Redis cache inside an
+     * existing Azure Virtual Network.
      */
     @JsonProperty(value = "properties.staticIP")
     private String staticIP;
 
     /**
-     * What sku of redis cache to deploy.
+     * The SKU of the Redis cache to deploy.
      */
     @JsonProperty(value = "properties.sku")
     private Sku sku;
