@@ -25,7 +25,7 @@ public abstract class ComputeManagementTestBase {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
-                .withLogLevel(HttpLoggingInterceptor.Level.NONE)
+                .withLogLevel(HttpLoggingInterceptor.Level.BASIC)
                 .build();
 
         resourceManager = ResourceManager

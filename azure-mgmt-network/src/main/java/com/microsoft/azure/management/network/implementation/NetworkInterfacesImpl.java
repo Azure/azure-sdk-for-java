@@ -5,6 +5,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
 
@@ -47,6 +48,27 @@ class NetworkInterfacesImpl
     @Override
     public Observable<Void> deleteByGroupAsync(String groupName, String name) {
         return this.innerCollection.deleteAsync(groupName, name);
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName,
+                                                                                          String scaleSetName) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+                scaleSetName,
+                this.innerCollection,
+                this.myManager);
+        return scaleSetNetworkInterfaces.list();
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetVMInstanceId(String resourceGroupName,
+                                                                                                      String scaleSetName,
+                                                                                                      String instanceId) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+                scaleSetName,
+                this.innerCollection,
+                this.myManager);
+        return scaleSetNetworkInterfaces.listByVirtualMachineInstanceId(instanceId);
     }
 
     @Override
