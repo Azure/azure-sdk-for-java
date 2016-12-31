@@ -227,7 +227,7 @@ public interface VirtualMachineScaleSet extends
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
     /**
-     * List the network interface associated with a specific virtual machine instance in the scale set
+     * List the network interface associated with a specific virtual machine instance in the scale set.
      *
      * @param virtualMachineInstanceId the instance id
      * @return the network interfaces
