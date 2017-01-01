@@ -111,7 +111,7 @@ public abstract class IndependentChildImpl<
 
     protected void setParentName(InnerModelT inner) {
         if (this.id() != null) {
-            this.parentName = ResourceId.parseResourceId(this.id()).parent().name();
+            this.parentName = ResourceId.fromString(this.id()).parent().name();
         }
     }
 

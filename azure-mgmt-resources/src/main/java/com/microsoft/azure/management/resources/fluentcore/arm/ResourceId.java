@@ -108,12 +108,8 @@ public final class ResourceId {
      * @param id of the resource
      * @return ResourceId object
      */
-    public static ResourceId parseResourceId(String id) {
-        if (id == null) {
-            return new ResourceId(null);
-        } else {
-            return new ResourceId(id);
-        }
+    public static ResourceId fromString(String id) {
+        return new ResourceId(id);
     }
 
     /**
@@ -144,7 +140,7 @@ public final class ResourceId {
         if (this.id == null || this.parentId == null) {
             return null;
         } else {
-            return parseResourceId(this.parentId);
+            return fromString(this.parentId);
         }
     }
 

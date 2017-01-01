@@ -23,7 +23,7 @@ class ServiceObjectiveImpl
 
     protected ServiceObjectiveImpl(ServiceObjectiveInner innerObject, ServersInner serversInner) {
         super(innerObject);
-        this.resourceId = ResourceId.parseResourceId(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.inner().id());
         this.serversInner = serversInner;
     }
 

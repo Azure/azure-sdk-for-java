@@ -27,7 +27,7 @@ class ReplicationLinkImpl
 
     protected ReplicationLinkImpl(ReplicationLinkInner innerObject, DatabasesInner innerCollection) {
         super(innerObject);
-        this.resourceId = ResourceId.parseResourceId(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.inner().id());
         this.innerCollection = innerCollection;
     }
 

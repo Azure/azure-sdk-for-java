@@ -39,7 +39,7 @@ class RecommendedElasticPoolImpl
         super(innerObject);
         this.databasesInner = databasesInner;
         this.recommendedElasticPoolsInner = recommendedElasticPoolsInner;
-        this.resourceId = ResourceId.parseResourceId(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.inner().id());
     }
 
     @Override
