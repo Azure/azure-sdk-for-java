@@ -25,6 +25,10 @@ public interface VirtualMachineScaleSetNicIpConfiguration extends
         HasPrivateIpAddress,
         HasSubnet {
     /**
+     * @return true if this is the primary ip configuration
+     */
+    boolean isPrimary();
+    /**
      * @return the virtual network associated with the Ip configuration
      */
     Network getNetwork();

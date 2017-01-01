@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NicIpConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +55,11 @@ class VirtualMachineScaleSetNicIpConfigurationImpl
     }
 
     @Override
+    public boolean isPrimary() {
+        return Utils.toPrimitiveBoolean(this.inner().primary());
+    }
+
+    @Override
     public String privateIpAddress() {
         return this.inner().privateIPAddress();
     }
@@ -80,7 +86,10 @@ class VirtualMachineScaleSetNicIpConfigurationImpl
     @Override
     public Network getNetwork() {
         String id = this.networkId();
-        return (id != null) ? this.networkManager.networks().getById(id) : null;
+        if (id == null) {
+            return null;
+        }
+        return this.networkManager.networks().getById(id);
     }
 
     @Override
