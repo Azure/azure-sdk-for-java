@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByGroup;
@@ -23,4 +24,30 @@ public interface NetworkInterfaces  extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<NetworkInterface> {
+    /**
+     * List the network interfaces associated with a virtual machine scale set.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @return list of network interfaces
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName, String scaleSetName);
+
+    /**
+     * List the network interfaces associated with a virtual machine scale set.
+     *
+     * @param id virtual machine scale set resource id
+     * @return list of network interfaces
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetId(String id);
+
+    /**
+     * List the network interfaces associated with a specific virtual machine instance in a scale set.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @param instanceId the virtual machine scale set vm instance id
+     * @return list of network interfaces
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(String resourceGroupName, String scaleSetName, String instanceId);
 }

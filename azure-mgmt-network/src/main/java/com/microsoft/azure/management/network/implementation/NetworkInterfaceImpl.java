@@ -44,23 +44,37 @@ class NetworkInterfaceImpl
         NetworkInterface,
         NetworkInterface.Definition,
         NetworkInterface.Update {
-    // Clients
+    /**
+     * the inner collection.
+     */
     private final NetworkInterfacesInner innerCollection;
-    // the name of the network interface
+    /**
+     * the name of the network interface.
+     */
     private final String nicName;
-    // used to generate unique name for any dependency resources
+    /**
+     * used to generate unique name for any dependency resources.
+     */
     protected final ResourceNamer namer;
-    // reference to the primary ip configuration
+    /**
+     * reference to the primary ip configuration.
+     */
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
-
-    // references to all ip configuration
+    /**
+     * references to all ip configuration.
+     */
     private Map<String, NicIpConfiguration> nicIpConfigurations;
-
-    // unique key of a creatable network security group to be associated with the network interface
+    /**
+     * unique key of a creatable network security group to be associated with the network interface.
+     */
     private String creatableNetworkSecurityGroupKey;
-    // reference to an network security group to be associated with the network interface
+    /**
+     * reference to an network security group to be associated with the network interface.
+     */
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
-    // Cached related resources.
+    /**
+     * cached related resources.
+     */
     private NetworkSecurityGroup networkSecurityGroup;
 
     NetworkInterfaceImpl(String name,

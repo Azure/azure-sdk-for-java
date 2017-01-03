@@ -34,6 +34,7 @@ import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
@@ -309,6 +310,20 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Map<String, VirtualMachineScaleSetExtension> extensions() {
         return Collections.unmodifiableMap(this.extensions);
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
+        return this.networkManager.networkInterfaces()
+                .listByVirtualMachineScaleSet(this.resourceGroupName(), this.name());
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId) {
+        return this.networkManager.networkInterfaces()
+                .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
+                        this.name(),
+                        virtualMachineInstanceId);
     }
 
     // Fluent setters

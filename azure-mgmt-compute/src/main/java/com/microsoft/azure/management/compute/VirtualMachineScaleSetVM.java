@@ -1,8 +1,10 @@
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetVMInner;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
@@ -265,4 +267,9 @@ public interface VirtualMachineScaleSetVM extends
      * @return the power state of the virtual machine instance
      */
     PowerState powerState();
+
+    /**
+     * @return the network interfaces associated with this virtual machine instance.
+     */
+    PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 }
