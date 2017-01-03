@@ -19,6 +19,7 @@ import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
@@ -111,12 +112,12 @@ public final class RestClient {
      *
      * @return the logging level
      */
-    public LogLevel logLevel() {
-        return new LogLevel(loggingInterceptor.getLevel());
+    public Level logLevel() {
+        return loggingInterceptor.getLevel();
     }
 
-    public RestClient withLogLevel(LogLevel logLevel) {
-        this.loggingInterceptor.setLevel(logLevel.raw());
+    public RestClient withLogLevel(Level logLevel) {
+        this.loggingInterceptor.setLevel(logLevel);
         return this;
     }
 
@@ -261,10 +262,10 @@ public final class RestClient {
         /**
          * Sets the HTTP log level.
          *
-         * @param logLevel the {@link LogLevel} enum.
+         * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
          * @return the builder itself for chaining.
          */
-        public Builder withLogLevel(LogLevel logLevel) {
+        public Builder withLogLevel(Level logLevel) {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
@@ -276,7 +277,7 @@ public final class RestClient {
                         logger.info(message);
                     }
                 }
-            }).setLevel(logLevel.raw());
+            }).setLevel(logLevel);
             return this;
         }
 

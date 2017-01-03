@@ -60,6 +60,9 @@ public abstract class PagedList<E> implements List<E> {
         try {
             while (nextPageLink != null) {
                 cachedPage = nextPage(nextPageLink);
+                if (cachedPage == null) {
+                    break;
+                }
                 nextPageLink = cachedPage.getNextPageLink();
                 if (hasNextPage()) {
                     // a legit, non-empty page has been fetched, otherwise keep fetching
