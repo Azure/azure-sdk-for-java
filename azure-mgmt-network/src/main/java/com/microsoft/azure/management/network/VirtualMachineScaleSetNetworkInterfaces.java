@@ -16,6 +16,14 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 public interface VirtualMachineScaleSetNetworkInterfaces extends
         SupportsListing<VirtualMachineScaleSetNetworkInterface> {
     /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return the network interface
+     */
+    VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name);
+    /**
      * Lists all the network interfaces associated with a virtual machine instance in the scale set.
      *
      * @param instanceId virtual machine scale set vm instance id

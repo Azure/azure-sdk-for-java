@@ -313,6 +313,14 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name) {
+        return this.networkManager.networkInterfaces().getByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
+                this.name(),
+                instanceId,
+                name);
+    }
+
+    @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.networkManager.networkInterfaces()
                 .listByVirtualMachineScaleSet(this.resourceGroupName(), this.name());
