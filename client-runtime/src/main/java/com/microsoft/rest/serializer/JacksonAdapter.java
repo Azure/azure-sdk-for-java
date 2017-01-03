@@ -59,6 +59,8 @@ public abstract class JacksonAdapter implements SerializerAdapter<ObjectMapper> 
     protected ObjectMapper mapper() {
         if (mapper == null) {
             mapper = initializeObjectMapper(new ObjectMapper());
+            mapper = mapper.registerModule(FlatteningSerializer.getModule(simpleMapper()))
+                    .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
         }
         return mapper;
     }

@@ -27,7 +27,7 @@ public final class LogLevel {
 
     private HttpLoggingInterceptor.Level value;
 
-    private LogLevel(HttpLoggingInterceptor.Level logLevel) {
+    public LogLevel(HttpLoggingInterceptor.Level logLevel) {
         this.value = logLevel;
     }
 

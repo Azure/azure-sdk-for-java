@@ -7,12 +7,15 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.protocol.Environment;
+
 import java.lang.reflect.Field;
 
 /**
  * An instance of this class describes an environment in Azure.
  */
-public final class AzureEnvironment {
+public final class AzureEnvironment implements Environment {
     /**
      * Base URL for calls to Azure management API.
      */
@@ -150,7 +153,7 @@ public final class AzureEnvironment {
     /**
      * The enum representing available endpoints in an environment.
      */
-    public enum Endpoint {
+    public enum Endpoint implements Environment.Endpoint {
         /** Azure Resource Manager endpoint. */
         RESOURCE_MANAGER("resourceManagerEndpoint"),
         /** Azure Active Directory Graph APIs endpoint. */
@@ -160,6 +163,11 @@ public final class AzureEnvironment {
 
         Endpoint(String value) {
             this.field = value;
+        }
+
+        @Override
+        public String identifier() {
+            return field;
         }
 
         @Override
@@ -174,13 +182,13 @@ public final class AzureEnvironment {
      * @param endpoint the endpoint
      * @return the URL
      */
-    public String getEndpoint(Endpoint endpoint) {
+    public String url(Environment.Endpoint endpoint) {
         try {
-            Field f = AzureEnvironment.class.getDeclaredField(endpoint.toString());
+            Field f = AzureEnvironment.class.getDeclaredField(endpoint.identifier());
             f.setAccessible(true);
             return (String) f.get(this);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new RuntimeException("Unable to reflect on field " + endpoint.toString(), e);
+            throw new RuntimeException("Unable to reflect on field " + endpoint.identifier(), e);
         }
     }
 

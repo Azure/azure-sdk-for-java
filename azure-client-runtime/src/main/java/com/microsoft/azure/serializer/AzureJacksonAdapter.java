@@ -20,8 +20,6 @@ import com.microsoft.rest.serializer.JacksonAdapter;
 public final class AzureJacksonAdapter extends JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     @Override
     public ObjectMapper serializer() {
-        return mapper().registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()))
-                .registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
+        return mapper().registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
     }
 }

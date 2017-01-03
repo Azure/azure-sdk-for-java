@@ -21,7 +21,6 @@ public class SimpleJacksonAdapter extends JacksonAdapter implements SerializerAd
      * @return an instance of {@link ObjectMapper}.
      */
     public ObjectMapper serializer() {
-        return mapper().registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+        return mapper();
     }
 }

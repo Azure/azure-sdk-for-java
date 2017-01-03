@@ -5,17 +5,14 @@
  *
  */
 
-package com.microsoft.azure;
+package com.microsoft.rest;
 
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.BaseUrlHandler;
-import com.microsoft.rest.CustomHeadersInterceptor;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.UserAgentInterceptor;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
 import com.microsoft.rest.retry.RetryStrategy;
+import com.microsoft.rest.serializer.SimpleJacksonAdapter;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
@@ -38,26 +35,30 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RestClient {
     /** The {@link okhttp3.OkHttpClient} object. */
-    private OkHttpClient httpClient;
+    private final OkHttpClient httpClient;
     /** The {@link retrofit2.Retrofit} object. */
-    private Retrofit retrofit;
+    private final Retrofit retrofit;
     /** The credentials to authenticate. */
-    private ServiceClientCredentials credentials;
+    private final ServiceClientCredentials credentials;
     /** The interceptor to handle custom headers. */
-    private CustomHeadersInterceptor customHeadersInterceptor;
+    private final CustomHeadersInterceptor customHeadersInterceptor;
     /** The adapter for a serializer. */
-    private SerializerAdapter<?> serializerAdapter;
+    private final SerializerAdapter<?> serializerAdapter;
+    /** The logging interceptor to use. */
+    private final HttpLoggingInterceptor loggingInterceptor;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
+                       HttpLoggingInterceptor loggingInterceptor,
                        SerializerAdapter<?> serializerAdapter) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
         this.serializerAdapter = serializerAdapter;
+        this.loggingInterceptor = loggingInterceptor;
     }
 
     /**
@@ -106,6 +107,20 @@ public final class RestClient {
     }
 
     /**
+     * Get the current HTTP logging level for INFO SLF4J configuration.
+     *
+     * @return the logging level
+     */
+    public LogLevel logLevel() {
+        return new LogLevel(loggingInterceptor.getLevel());
+    }
+
+    public RestClient withLogLevel(LogLevel logLevel) {
+        this.loggingInterceptor.setLevel(logLevel.raw());
+        return this;
+    }
+
+    /**
      * Create a new builder for a new Rest Client with the same configurations on this one.
      * @return a RestClient builder
      */
@@ -131,6 +146,8 @@ public final class RestClient {
         private String userAgent;
         /** The adapter for serializations and deserializations. */
         private SerializerAdapter<?> serializerAdapter;
+        /** The logging interceptor to use. */
+        private HttpLoggingInterceptor loggingInterceptor;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -171,7 +188,6 @@ public final class RestClient {
             if (retrofitBuilder == null) {
                 throw new IllegalArgumentException("retrofitBuilder == null");
             }
-            this.baseUrl = AzureEnvironment.AZURE.getResourceManagerEndpoint();
             CookieManager cookieManager = new CookieManager();
             cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
             customHeadersInterceptor = new CustomHeadersInterceptor();
@@ -180,7 +196,16 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
-            this.serializerAdapter = new AzureJacksonAdapter();
+            this.serializerAdapter = new SimpleJacksonAdapter();
+            this.loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+                @Override
+                public void log(String message) {
+                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
+                    if (logger.isInfoEnabled()) {
+                        logger.info(message);
+                    }
+                }
+            }).setLevel(HttpLoggingInterceptor.Level.NONE);
         }
 
         /**
@@ -195,14 +220,14 @@ public final class RestClient {
         }
 
         /**
-         * Sets the base URL with the default from the Azure Environment.
+         * Sets the base URL with the default from the Environment.
          *
-         * @param environment the Azure environment to use
+         * @param environment the environment to use
          * @param endpoint the environment endpoint the application is accessing
          * @return the builder itself for chaining
          */
-        public Builder withBaseUrl(AzureEnvironment environment, AzureEnvironment.Endpoint endpoint) {
-            this.baseUrl = environment.getEndpoint(endpoint);
+        public Builder withBaseUrl(Environment environment, Environment.Endpoint endpoint) {
+            this.baseUrl = environment.url(endpoint);
             return this;
         }
 
@@ -234,7 +259,7 @@ public final class RestClient {
         }
 
         /**
-         * Sets the HTTP log level when SLF4J logger level is set to INFO.
+         * Sets the HTTP log level.
          *
          * @param logLevel the {@link LogLevel} enum.
          * @return the builder itself for chaining.
@@ -243,7 +268,7 @@ public final class RestClient {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            this.loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
                     Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
@@ -251,29 +276,7 @@ public final class RestClient {
                         logger.info(message);
                     }
                 }
-            }).setLevel(logLevel.raw()));
-            return this;
-        }
-
-        /**
-         * Sets the HTTP log level when SLF4J logger level is set to DEBUG and beyond.
-         *
-         * @param logLevel the {@link LogLevel} enum.
-         * @return the builder itself for chaining.
-         */
-        public Builder withDebugLogLevel(LogLevel logLevel) {
-            if (logLevel == null) {
-                throw new NullPointerException("logLevel == null");
-            }
-            httpClientBuilder.addNetworkInterceptor(new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                @Override
-                public void log(String message) {
-                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(message);
-                    }
-                }
-            }).setLevel(logLevel.raw()));
+            }).setLevel(logLevel.raw());
             return this;
         }
 
@@ -400,9 +403,14 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
+            Logger logger = LoggerFactory.getLogger(getClass());
             UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
             if (userAgent != null) {
                 userAgentInterceptor.withUserAgent(userAgent);
+            }
+            if (baseUrl == null) {
+                baseUrl = "https://management.azure.com/";
+                logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
             }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
@@ -410,6 +418,7 @@ public final class RestClient {
                     .addInterceptor(new BaseUrlHandler())
                     .addInterceptor(customHeadersInterceptor)
                     .addInterceptor(new RetryHandler())
+                    .addNetworkInterceptor(loggingInterceptor)
                     .build();
             return new RestClient(httpClient,
                     retrofitBuilder
@@ -420,6 +429,7 @@ public final class RestClient {
                             .build(),
                     credentials,
                     customHeadersInterceptor,
+                    loggingInterceptor,
                     serializerAdapter);
         }
     }

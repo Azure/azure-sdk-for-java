@@ -7,6 +7,8 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RequestIdHeaderInterceptor;
+import com.microsoft.rest.RestClient;
 import com.microsoft.rest.retry.RetryHandler;
 import okhttp3.Interceptor;
 import okhttp3.Protocol;

@@ -5,7 +5,7 @@
  *
  */
 
-package com.microsoft.azure;
+package com.microsoft.rest;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -21,9 +21,12 @@ import java.util.UUID;
 public class RequestIdHeaderInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
-        Request request = chain.request().newBuilder()
-                .header("x-ms-client-request-id", UUID.randomUUID().toString())
-                .build();
+        Request request = chain.request();
+        if (request.header("x-ms-client-request-id") == null) {
+            request = chain.request().newBuilder()
+                    .header("x-ms-client-request-id", UUID.randomUUID().toString())
+                    .build();
+        }
         return chain.proceed(request);
     }
 }

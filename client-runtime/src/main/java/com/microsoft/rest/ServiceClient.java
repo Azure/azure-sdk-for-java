@@ -7,8 +7,8 @@
 
 package com.microsoft.rest;
 
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.serializer.SimpleJacksonAdapter;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
@@ -22,12 +22,10 @@ import java.net.CookiePolicy;
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
 public abstract class ServiceClient {
-    /** The HTTP client. */
-    private OkHttpClient httpClient;
-    /** The Retrofit instance. */
-    private Retrofit retrofit;
-    /** The adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}. */
-    private JacksonAdapter mapperAdapter;
+    /**
+     * The RestClient instance storing all information needed for making REST calls.
+     */
+    private RestClient restClient;
 
     /**
      * Initializes a new instance of the ServiceClient class.
@@ -46,48 +44,43 @@ public abstract class ServiceClient {
      * @param restBuilder the retrofit rest client builder
      */
     protected ServiceClient(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        if (clientBuilder == null) {
-            throw new IllegalArgumentException("clientBuilder == null");
-        }
-        if (restBuilder == null) {
-            throw new IllegalArgumentException("restBuilder == null");
-        }
-        this.mapperAdapter = new SimpleJacksonAdapter();
-        CookieManager cookieManager = new CookieManager();
-        cookieManager.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-        this.httpClient = clientBuilder
-                .cookieJar(new JavaNetCookieJar(cookieManager))
-                .addInterceptor(new UserAgentInterceptor())
-                .addInterceptor(new BaseUrlHandler())
-                .addInterceptor(new CustomHeadersInterceptor())
-                .addInterceptor(new RetryHandler())
-                .build();
-        this.retrofit = restBuilder
-                .baseUrl(baseUrl)
-                .client(httpClient)
-                .addConverterFactory(mapperAdapter.converterFactory())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+        this(new RestClient.Builder(clientBuilder, restBuilder).withBaseUrl(baseUrl).build());
+    }
+
+    /**
+     * Initializes a new instance of the ServiceClient class.
+     *
+     * @param restClient the REST client
+     */
+    protected ServiceClient(RestClient restClient) {
+        this.restClient = restClient;
+    }
+
+    /**
+     * @return the {@link RestClient} instance.
+     */
+    public RestClient restClient() {
+        return restClient;
     }
 
     /**
      * @return the Retrofit instance.
      */
     public Retrofit retrofit() {
-        return this.retrofit;
+        return restClient.retrofit();
     }
 
     /**
      * @return the HTTP client.
      */
     public OkHttpClient httpClient() {
-        return this.httpClient;
+        return this.restClient.httpClient();
     }
 
     /**
      * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
      */
-    public JacksonAdapter mapperAdapter() {
-        return this.mapperAdapter;
+    public SerializerAdapter<?> serializerAdapter() {
+        return this.restClient.serializerAdapter();
     }
 }

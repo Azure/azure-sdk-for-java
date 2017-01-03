@@ -48,7 +48,7 @@ public class ServiceResponseBuilder<T, E extends RestException> {
      *
      * @param serializerAdapter the serialization utils to use for deserialization operations
      */
-    public ServiceResponseBuilder(JacksonAdapter serializerAdapter) {
+    public ServiceResponseBuilder(SerializerAdapter<?> serializerAdapter) {
         this(serializerAdapter, new HashMap<Integer, Type>());
     }
 
