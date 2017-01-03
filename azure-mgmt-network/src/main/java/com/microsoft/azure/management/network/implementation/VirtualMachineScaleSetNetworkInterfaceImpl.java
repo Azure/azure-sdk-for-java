@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.IPAllocationMethod;
+import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -29,9 +31,21 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
                 VirtualMachineScaleSetNetworkInterfaceImpl>
         implements
         VirtualMachineScaleSetNetworkInterface {
+    /**
+     * inner client.
+     */
     private final NetworkInterfacesInner client;
+    /**
+     * the network client.
+     */
     private final NetworkManager networkManager;
+    /**
+     * name of the parent scale set.
+     */
     private final String scaleSetName;
+    /**
+     * resource group this nic belongs to.
+     */
     private final String resourceGroupName;
 
     VirtualMachineScaleSetNetworkInterfaceImpl(String name,
@@ -99,6 +113,24 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
+    public String primaryPrivateIp() {
+        VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = this.primaryIpConfiguration();
+        if (primaryIpConfig == null) {
+            return null;
+        }
+        return primaryIpConfig.privateIpAddress();
+    }
+
+    @Override
+    public IPAllocationMethod primaryPrivateIpAllocationMethod() {
+        VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = this.primaryIpConfiguration();
+        if (primaryIpConfig == null) {
+            return null;
+        }
+        return primaryIpConfig.privateIpAllocationMethod();
+    }
+
+    @Override
     public Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations() {
         List<NetworkInterfaceIPConfigurationInner> inners = this.inner().ipConfigurations();
         if (inners == null || inners.size() == 0) {
@@ -113,11 +145,33 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
     }
 
     @Override
+    public VirtualMachineScaleSetNicIpConfiguration primaryIpConfiguration() {
+        for (VirtualMachineScaleSetNicIpConfiguration ipConfiguration : this.ipConfigurations().values()) {
+            if (ipConfiguration.isPrimary()) {
+                return ipConfiguration;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String networkSecurityGroupId() {
         if (this.inner().networkSecurityGroup() == null) {
             return null;
         }
         return this.inner().networkSecurityGroup().id();
+    }
+
+    @Override
+    public NetworkSecurityGroup getNetworkSecurityGroup() {
+        String nsgId = this.networkSecurityGroupId();
+        if (nsgId == null) {
+            return null;
+        }
+        return networkManager
+            .networkSecurityGroups()
+            .getByGroup(ResourceUtils.groupFromResourceId(nsgId),
+                ResourceUtils.nameFromResourceId(nsgId));
     }
 
     @Override
@@ -130,7 +184,7 @@ class VirtualMachineScaleSetNetworkInterfaceImpl
 
     @Override
     public Observable<VirtualMachineScaleSetNetworkInterface> createResourceAsync() {
-        // Future: We need to think of introducing ReadonlyResourceImpl
+        // VMSS NIC is a read-only resource hence this operation is not supported.
         throw new UnsupportedOperationException();
     }
 

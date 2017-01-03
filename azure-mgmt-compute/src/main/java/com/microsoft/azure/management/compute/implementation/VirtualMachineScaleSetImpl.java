@@ -321,7 +321,7 @@ public class VirtualMachineScaleSetImpl
     @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfacesByInstanceId(String virtualMachineInstanceId) {
         return this.networkManager.networkInterfaces()
-                .listByVirtualMachineScaleSetVMInstanceId(this.resourceGroupName(),
+                .listByVirtualMachineScaleSetInstanceId(this.resourceGroupName(),
                         this.name(),
                         virtualMachineInstanceId);
     }

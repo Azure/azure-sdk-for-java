@@ -10,8 +10,6 @@ import com.microsoft.azure.management.network.implementation.NetworkInterfaceInn
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,60 +17,17 @@ import java.util.Map;
  */
 @Fluent
 public interface VirtualMachineScaleSetNetworkInterface extends
+        NetworkInterfaceBase,
         Resource,
         Refreshable<VirtualMachineScaleSetNetworkInterface>,
         Wrapper<NetworkInterfaceInner> {
-    /**
-     * @return <tt>true</tt> if Ip forwarding is enabled in this network interface
-     */
-    boolean isIpForwardingEnabled();
-
-    /**
-     * @return the MAC Address of the network interface
-     */
-    String macAddress();
-
-    /**
-     * @return the internal DNS name assigned to this network interface
-     */
-    String internalDnsNameLabel();
-
-    /**
-     * Gets the fully qualified domain name of this network interface.
-     * <p>
-     * A network interface receives FQDN as a part of assigning it to a scale set virtual machine.
-     *
-     * @return the qualified domain name
-     */
-    String internalFqdn();
-
-    /**
-     * @return the internal domain name suffix
-     */
-    String internalDomainNameSuffix();
-
-    /**
-     * @return IP addresses of this network interface's DNS servers
-     */
-    List<String> dnsServers();
-
-    /**
-     * @return applied DNS servers
-     */
-    List<String> appliedDnsServers();
-
     /**
      * @return the IP configurations of this network interface, indexed by their names
      */
     Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigurations();
 
     /**
-     * @return the network security group resource id associated with this network interface
+     * @return the primary IP configuration of this network interface
      */
-    String networkSecurityGroupId();
-
-    /**
-     * @return the resource Id of the associated scale set virtual machine
-     */
-    String virtualMachineId();
+    VirtualMachineScaleSetNicIpConfiguration primaryIpConfiguration();
 }

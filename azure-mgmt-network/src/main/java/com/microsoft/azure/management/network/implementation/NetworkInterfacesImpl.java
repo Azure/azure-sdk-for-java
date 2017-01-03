@@ -6,6 +6,7 @@ import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkInterfaceDnsSettings;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import rx.Observable;
 
@@ -61,9 +62,14 @@ class NetworkInterfacesImpl
     }
 
     @Override
-    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetVMInstanceId(String resourceGroupName,
-                                                                                                      String scaleSetName,
-                                                                                                      String instanceId) {
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetId(String id) {
+        return this.listByVirtualMachineScaleSet(ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id));
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSetInstanceId(String resourceGroupName,
+                                                                                                    String scaleSetName,
+                                                                                                    String instanceId) {
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
                 scaleSetName,
                 this.innerCollection,
