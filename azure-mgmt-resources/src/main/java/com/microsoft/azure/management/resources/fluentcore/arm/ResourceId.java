@@ -26,7 +26,7 @@ public final class ResourceId {
     private String parentId = null;
 
     private static String badIdErrorText(String id) {
-        return "The specified ID `%s` is not a valid Azure resource ID.".replaceAll("%s", id);
+        return "The specified ID `%s` is not a valid Azure resource ID.".replace("%s", id);
     }
 
     private ResourceId(final String id) {
