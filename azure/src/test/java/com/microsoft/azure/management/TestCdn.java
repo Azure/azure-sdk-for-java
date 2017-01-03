@@ -87,7 +87,7 @@ public class TestCdn extends TestTemplate<CdnProfile, CdnProfiles> {
                     .parent()
                 .apply();
 
-        Assert.assertEquals(2, profile.endpoints().size());
+        Assert.assertEquals(3, profile.endpoints().size());
         CdnEndpoint updatedEndpoint = profile.endpoints().get(firstEndpointName);
         Assert.assertTrue(updatedEndpoint.isHttpsAllowed());
         Assert.assertEquals(1111, updatedEndpoint.httpPort());

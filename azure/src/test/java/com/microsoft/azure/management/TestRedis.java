@@ -10,7 +10,6 @@ import com.google.common.util.concurrent.SettableFuture;
 import com.microsoft.azure.management.redis.RedisCache;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import org.junit.Assert;
@@ -41,7 +40,7 @@ public class TestRedis extends TestTemplate<RedisCache, RedisCaches>  {
 
         redisCaches[0] = future.get();
 
-        Assert.assertEquals(ResourceUtils.nameFromResourceId(redisCaches[0].name()), redisName);
+        Assert.assertEquals(redisCaches[0].name(), redisName);
 
         return redisCaches[0];
     }

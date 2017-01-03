@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for redis import operation.
+ * Parameters for Redis import operation.
  */
 public class ImportRDBParametersInner {
     /**
