@@ -61,7 +61,7 @@ class NetworkInterfaceImpl
      */
     private NicIpConfigurationImpl nicPrimaryIpConfiguration;
     /**
-     * references to all ip configuration
+     * references to all ip configuration.
      */
     private Map<String, NicIpConfiguration> nicIpConfigurations;
     /**
