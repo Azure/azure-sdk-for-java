@@ -34,8 +34,8 @@ public final class ResourceId {
             // Protect against NPEs from null IDs, preserving legacy behavior for null IDs
             return;
         } else {
-            // Skip the first '/' and then split using '/'
-            String[] splits = id.substring(1).split("/");
+            // Skip the first '/' if any, and then split using '/'
+            String[] splits = (id.startsWith("/")) ? id.substring(1).split("/") : id.split("/");
             if (splits.length % 2 == 1) {
                 throw new InvalidParameterException(badIdErrorText(id));
             }
