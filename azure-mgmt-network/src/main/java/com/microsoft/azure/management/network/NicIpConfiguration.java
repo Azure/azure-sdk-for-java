@@ -1,7 +1,5 @@
 package com.microsoft.azure.management.network;
 
-import java.util.List;
-
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIpAddress;
@@ -18,35 +16,12 @@ import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
  */
 @Fluent()
 public interface NicIpConfiguration extends
+        NicIpConfigurationBase,
         Wrapper<NetworkInterfaceIPConfigurationInner>,
         ChildResource<NetworkInterface>,
         HasPrivateIpAddress,
         HasPublicIpAddress,
         HasSubnet {
-    // Getters
-
-    /**
-     * @return the virtual network associated with this IP configuration
-     */
-    Network getNetwork();
-
-    /**
-     * @return private IP address version
-     */
-    IPVersion privateIpAddressVersion();
-
-    /**
-     * @return the load balancer backends associated with this network interface IP configuration
-     */
-    List<LoadBalancerBackend> listAssociatedLoadBalancerBackends();
-
-    /**
-     * @return the load balancer inbound NAT rules associated with this network interface IP configuration
-     */
-    List<LoadBalancerInboundNatRule> listAssociatedLoadBalancerInboundNatRules();
-
-    // Setters (fluent)
-
     /**
      * The entirety of the network interface IP configuration definition.
      * @param <ParentT> the return type of the final {@link Attachable#attach()}

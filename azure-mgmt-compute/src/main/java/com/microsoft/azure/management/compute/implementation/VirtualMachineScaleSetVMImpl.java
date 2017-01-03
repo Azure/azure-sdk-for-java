@@ -1,5 +1,6 @@
 package com.microsoft.azure.management.compute.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.CachingTypes;
 import com.microsoft.azure.management.compute.DiagnosticsProfile;
@@ -15,6 +16,7 @@ import com.microsoft.azure.management.compute.VirtualMachineScaleSet;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMInstanceExtension;
 import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
@@ -392,6 +394,11 @@ class VirtualMachineScaleSetVMImpl
                 this.instanceId()));
         this.clearCachedRelatedResources();
         return this;
+    }
+
+    @Override
+    public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
+        return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
     }
 
     private void clearCachedRelatedResources() {

@@ -3,9 +3,14 @@ package com.microsoft.azure.management.compute;
 import com.jcraft.jsch.JSch;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancerBackend;
+import com.microsoft.azure.management.network.LoadBalancerInboundNatRule;
+import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIpAddress;
 import com.microsoft.azure.management.network.TransportProtocol;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.microsoft.azure.management.network.VirtualMachineScaleSetNicIpConfiguration;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceNamer;
 import okhttp3.OkHttpClient;
@@ -18,6 +23,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTestBase {
     private static final String RG_NAME = ResourceNamer.randomResourceName("javacsmrg", 20);
@@ -79,7 +85,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .attach()
                 .create();
 
-        checkInstances(virtualMachineScaleSet);
+        checkVMInstances(virtualMachineScaleSet);
 
         List<String> publicIpAddressIds = virtualMachineScaleSet.primaryPublicIpAddressIds();
         PublicIpAddress publicIpAddress = this.networkManager.publicIpAddresses()
@@ -93,17 +99,40 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .build();
         Response response = client.newCall(request).execute();
         Assert.assertEquals(response.code(), 200);
-        int startPort = 5000;
-        int endPort = 5001;
-        for (int port = startPort; port < endPort; port++) {
-            // Assert public ssh connection to vms
+
+        // Check SSH to VM instances via Nat rule
+        //
+        for (VirtualMachineScaleSetVM vm : virtualMachineScaleSet.virtualMachines().list()) {
+            PagedList<VirtualMachineScaleSetNetworkInterface> networkInterfaces = vm.listNetworkInterfaces();
+            Assert.assertEquals(networkInterfaces.size(), 1);
+            VirtualMachineScaleSetNetworkInterface networkInterface = networkInterfaces.get(0);
+            VirtualMachineScaleSetNicIpConfiguration primaryIpConfig = null;
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  networkInterface.ipConfigurations();
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
+                if(ipConfig.isPrimary()) {
+                    primaryIpConfig = ipConfig;
+                    break;
+                }
+            }
+            Assert.assertNotNull(primaryIpConfig);
+            Integer sshFrontendPort = null;
+            List<LoadBalancerInboundNatRule> natRules = primaryIpConfig.listAssociatedLoadBalancerInboundNatRules();
+            for (LoadBalancerInboundNatRule natRule : natRules) {
+                if (natRule.backendPort() == 22) {
+                    sshFrontendPort = natRule.frontendPort();
+                    break;
+                }
+            }
+            Assert.assertNotNull(sshFrontendPort);
+            // Assert public ssh connection to vm
             JSch jsch = new JSch();
             com.jcraft.jsch.Session session = null;
             try {
                 java.util.Properties config = new java.util.Properties();
                 config.put("StrictHostKeyChecking", "no");
-                session = jsch.getSession("jvuser", fqdn, port);
-                session.setPassword("123OData!@#123!");
+                session = jsch.getSession("jvuser", fqdn, sshFrontendPort);
+                session.setPassword("123OData!@#123");
                 session.setConfig(config);
                 session.connect();
             } catch (Exception e) {
@@ -156,6 +185,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withNewStorageAccount(ResourceNamer.randomResourceName("stg", 15))
                 .create();
 
+        // Validate Network specific properties (LB, VNet, NIC, IPConfig etc..)
+        //
         Assert.assertNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 0);
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 0);
@@ -164,15 +195,65 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().size() == 2);
 
-        Assert.assertNotNull(virtualMachineScaleSet.getPrimaryNetwork());
+        Network primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
+        Assert.assertNotNull(primaryNetwork.id());
 
+        List<VirtualMachineScaleSetNetworkInterface> nics = virtualMachineScaleSet.listNetworkInterfaces();
+        int nicCount = 0;
+        for (VirtualMachineScaleSetNetworkInterface nic : nics) {
+            nicCount++;
+            Assert.assertNotNull(nic.id());
+            Assert.assertTrue(nic.virtualMachineId().toLowerCase().startsWith(virtualMachineScaleSet.id().toLowerCase()));
+            Assert.assertNotNull(nic.macAddress());
+            Assert.assertNotNull(nic.dnsServers());
+            Assert.assertNotNull(nic.appliedDnsServers());
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  nic.ipConfigurations();
+            Assert.assertEquals(ipConfigs.size(), 1);
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
+                Assert.assertNotNull(ipConfig);
+                Assert.assertTrue(ipConfig.isPrimary());
+                Assert.assertNotNull(ipConfig.subnetName());
+                Assert.assertTrue(primaryNetwork.id().toLowerCase().equalsIgnoreCase(ipConfig.networkId()));
+                Assert.assertNotNull(ipConfig.privateIpAddress());
+                Assert.assertNotNull(ipConfig.privateIpAddressVersion());
+                Assert.assertNotNull(ipConfig.privateIpAllocationMethod());
+                List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
+                // VMSS is created with a internet facing LB with two Backend pools so there will be two
+                // backends in ip-config as well
+                Assert.assertEquals(lbBackends.size(), 2);
+                for (LoadBalancerBackend lbBackend : lbBackends) {
+                    Map<String, LoadBalancingRule> lbRules = lbBackend.loadBalancingRules();
+                    Assert.assertEquals(lbRules.size(), 1);
+                    for (Map.Entry<String, LoadBalancingRule> ruleEntry : lbRules.entrySet()) {
+                        LoadBalancingRule rule = ruleEntry.getValue();
+                        Assert.assertNotNull(rule);
+                        Assert.assertTrue((rule.frontendPort() == 80 && rule.backendPort() == 80)
+                                || (rule.frontendPort() == 443 && rule.backendPort() == 443));
+                    }
+                }
+                List<LoadBalancerInboundNatRule> lbNatRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+                // VMSS is created with a internet facing LB with two nat pools so there will be two
+                //  nat rules in ip-config as well
+                Assert.assertEquals(lbNatRules.size(), 2);
+                for (LoadBalancerInboundNatRule lbNatRule : lbNatRules) {
+                    Assert.assertTrue((lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort()<= 5099)
+                            || (lbNatRule.frontendPort() >= 6000 && lbNatRule.frontendPort()<= 6099));
+                    Assert.assertTrue(lbNatRule.backendPort() == 22 || lbNatRule.backendPort() == 23);
+                }
+            }
+        }
+        Assert.assertTrue(nicCount > 0);
+
+        // Validate other properties
+        //
         Assert.assertEquals(virtualMachineScaleSet.vhdContainers().size(), 2);
         Assert.assertEquals(virtualMachineScaleSet.sku(), VirtualMachineScaleSetSkuTypes.STANDARD_A0);
         // Check defaults
         Assert.assertTrue(virtualMachineScaleSet.upgradeModel() == UpgradeMode.AUTOMATIC);
         Assert.assertEquals(virtualMachineScaleSet.capacity(), 2);
         // Fetch the primary Virtual network
-        Network primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
+        primaryNetwork = virtualMachineScaleSet.getPrimaryNetwork();
 
         String inboundNatPoolToRemove = null;
         for (String inboundNatPoolName :
@@ -188,13 +269,15 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         virtualMachineScaleSet
                 .update()
                 .withExistingPrimaryInternalLoadBalancer(internalLoadBalancer)
-                .withoutPrimaryInternalLoadBalancerNatPools(inboundNatPoolToRemove)
+                .withoutPrimaryInternalLoadBalancerNatPools(inboundNatPoolToRemove) // Remove one NatPool
                 .apply();
 
         virtualMachineScaleSet = this.computeManager
                 .virtualMachineScaleSets()
                 .getByGroup(RG_NAME, vmss_name);
 
+        // Check LB after update
+        //
         Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternetFacingLoadBalancer());
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternetFacingLoadBalancerInboundNatPools().size() == 1);
@@ -202,9 +285,53 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         Assert.assertNotNull(virtualMachineScaleSet.getPrimaryInternalLoadBalancer());
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerBackends().size() == 2);
         Assert.assertTrue(virtualMachineScaleSet.listPrimaryInternalLoadBalancerInboundNatPools().size() == 2);
+
+        // Check NIC + IpConfig after update
+        //
+        nics = virtualMachineScaleSet.listNetworkInterfaces();
+        nicCount = 0;
+        for (VirtualMachineScaleSetNetworkInterface nic : nics) {
+            nicCount++;
+            Map<String, VirtualMachineScaleSetNicIpConfiguration> ipConfigs =  nic.ipConfigurations();
+            Assert.assertEquals(ipConfigs.size(), 1);
+            for (Map.Entry<String, VirtualMachineScaleSetNicIpConfiguration> entry :ipConfigs.entrySet()) {
+                VirtualMachineScaleSetNicIpConfiguration ipConfig = entry.getValue();
+                Assert.assertNotNull(ipConfig);
+                List<LoadBalancerBackend> lbBackends = ipConfig.listAssociatedLoadBalancerBackends();
+                Assert.assertNotNull(lbBackends);
+                // Updated VMSS has a internet facing LB with two backend pools and a internal LB with two
+                // backend pools so there will be 4 backends in ip-config
+                Assert.assertEquals(lbBackends.size(), 4);
+                for (LoadBalancerBackend lbBackend : lbBackends) {
+                    Map<String, LoadBalancingRule> lbRules = lbBackend.loadBalancingRules();
+                    Assert.assertEquals(lbRules.size(), 1);
+                    for (Map.Entry<String, LoadBalancingRule> ruleEntry : lbRules.entrySet()) {
+                        LoadBalancingRule rule = ruleEntry.getValue();
+                        Assert.assertNotNull(rule);
+                        Assert.assertTrue((rule.frontendPort() == 80 && rule.backendPort() == 80)
+                                || (rule.frontendPort() == 443 && rule.backendPort() == 443)
+                                || (rule.frontendPort() == 1000 && rule.backendPort() == 1000)
+                                || (rule.frontendPort() == 1001 && rule.backendPort() == 1001));
+                    }
+                }
+                List<LoadBalancerInboundNatRule> lbNatRules = ipConfig.listAssociatedLoadBalancerInboundNatRules();
+                // Updated VMSS has a internet facing LB with one nat pool and a internal LB with two
+                // nat pools so there will be 3 nat rule in ip-config
+                Assert.assertEquals(lbNatRules.size(), 3);
+                for (LoadBalancerInboundNatRule lbNatRule : lbNatRules) {
+                    Assert.assertTrue((lbNatRule.frontendPort() >= 5000 && lbNatRule.frontendPort()<= 5099)
+                            || (lbNatRule.frontendPort() >= 8000 && lbNatRule.frontendPort()<= 8099)
+                            || (lbNatRule.frontendPort() >= 9000 && lbNatRule.frontendPort()<= 9099));
+                    Assert.assertTrue(lbNatRule.backendPort() == 22
+                            || lbNatRule.backendPort() == 44
+                            || lbNatRule.backendPort() == 45);
+                }
+            }
+        }
+        Assert.assertTrue(nicCount > 0);
     }
 
-    private void checkInstances(VirtualMachineScaleSet vmScaleSet) {
+    private void checkVMInstances(VirtualMachineScaleSet vmScaleSet) {
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         PagedList<VirtualMachineScaleSetVM> virtualMachines = virtualMachineScaleSetVMs.list();
         Assert.assertEquals(virtualMachines.size(), vmScaleSet.capacity());
@@ -224,6 +351,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertNotNull(vm.powerState());
             vm.refreshInstanceView();
         }
+
         // Check actions
         VirtualMachineScaleSetVM virtualMachineScaleSetVM = virtualMachines.get(0);
         Assert.assertNotNull(virtualMachineScaleSetVM);
@@ -232,6 +360,19 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         virtualMachineScaleSetVM.refreshInstanceView();
         Assert.assertEquals(virtualMachineScaleSetVM.powerState(), PowerState.STOPPED);
         virtualMachineScaleSetVM.start();
+
+        // Check Instance NICs
+        //
+        for (VirtualMachineScaleSetVM vm : virtualMachines) {
+            PagedList<VirtualMachineScaleSetNetworkInterface> nics
+                    = vmScaleSet.listNetworkInterfacesByInstanceId(vm.instanceId());
+            Assert.assertNotNull(nics);
+            Assert.assertEquals(nics.size(), 1);
+            VirtualMachineScaleSetNetworkInterface nic = nics.get(0);
+            Assert.assertNotNull(nic.virtualMachineId());
+            Assert.assertTrue(nic.virtualMachineId().toLowerCase().equalsIgnoreCase(vm.id()));
+            Assert.assertNotNull(vm.listNetworkInterfaces());
+        }
     }
 
     private LoadBalancer createHttpLoadBalancers(ResourceGroup resourceGroup,
