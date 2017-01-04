@@ -28,21 +28,28 @@ import java.util.List;
 /**
  * A serialization helper class wrapped around {@link JacksonConverterFactory} and {@link ObjectMapper}.
  */
-public abstract class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
+public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     /**
      * An instance of {@link ObjectMapper} to serialize/deserialize objects.
      */
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     /**
      * An instance of {@link ObjectMapper} that does not do flattening.
      */
-    private ObjectMapper simpleMapper;
+    private final ObjectMapper simpleMapper;
 
     /**
      * An instance of {@link JacksonConverterFactory} for Retrofit to use.
      */
     private JacksonConverterFactory converterFactory;
+
+    public JacksonAdapter() {
+        simpleMapper = initializeObjectMapper(new ObjectMapper());
+        mapper = initializeObjectMapper(new ObjectMapper())
+                .registerModule(FlatteningSerializer.getModule(simpleMapper()))
+                .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
+    }
 
     /**
      * Gets a static instance of {@link ObjectMapper} that doesn't handle flattening.
@@ -50,18 +57,10 @@ public abstract class JacksonAdapter implements SerializerAdapter<ObjectMapper> 
      * @return an instance of {@link ObjectMapper}.
      */
     protected ObjectMapper simpleMapper() {
-        if (simpleMapper == null) {
-            simpleMapper = initializeObjectMapper(new ObjectMapper());
-        }
         return simpleMapper;
     }
 
-    protected ObjectMapper mapper() {
-        if (mapper == null) {
-            mapper = initializeObjectMapper(new ObjectMapper());
-            mapper = mapper.registerModule(FlatteningSerializer.getModule(simpleMapper()))
-                    .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
-        }
+    public ObjectMapper serializer() {
         return mapper;
     }
 
@@ -71,10 +70,7 @@ public abstract class JacksonAdapter implements SerializerAdapter<ObjectMapper> 
      * @return an instance of JacksonConverter factory.
      */
     public JacksonConverterFactory converterFactory() {
-        if (converterFactory == null) {
-            converterFactory = JacksonConverterFactory.create(serializer());
-        }
-        return converterFactory;
+        return JacksonConverterFactory.create(serializer());
     }
 
     /**

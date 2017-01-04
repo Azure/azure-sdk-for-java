@@ -9,10 +9,11 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.protocol.Environment;
+import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.retry.RetryHandler;
 import com.microsoft.rest.retry.RetryStrategy;
-import com.microsoft.rest.serializer.SimpleJacksonAdapter;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import okhttp3.Authenticator;
 import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
@@ -45,6 +46,9 @@ public final class RestClient {
     private final CustomHeadersInterceptor customHeadersInterceptor;
     /** The adapter for a serializer. */
     private final SerializerAdapter<?> serializerAdapter;
+
+    /** The builder factory for response builders. */
+    private final ResponseBuilder.Factory responseBuilderFactory;
     /** The logging interceptor to use. */
     private final HttpLoggingInterceptor loggingInterceptor;
 
@@ -53,12 +57,14 @@ public final class RestClient {
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
                        HttpLoggingInterceptor loggingInterceptor,
-                       SerializerAdapter<?> serializerAdapter) {
+                       SerializerAdapter<?> serializerAdapter,
+                       ResponseBuilder.Factory responseBuilderFactory) {
         this.httpClient = httpClient;
         this.retrofit = retrofit;
         this.credentials = credentials;
         this.customHeadersInterceptor = customHeadersInterceptor;
         this.serializerAdapter = serializerAdapter;
+        this.responseBuilderFactory = responseBuilderFactory;
         this.loggingInterceptor = loggingInterceptor;
     }
 
@@ -78,6 +84,10 @@ public final class RestClient {
      */
     public SerializerAdapter<?> serializerAdapter() {
         return serializerAdapter;
+    }
+
+    public ResponseBuilder.Factory responseBuilderFactory() {
+        return responseBuilderFactory;
     }
 
     /**
@@ -147,6 +157,8 @@ public final class RestClient {
         private String userAgent;
         /** The adapter for serializations and deserializations. */
         private SerializerAdapter<?> serializerAdapter;
+        /** The builder factory for response builders. */
+        private ResponseBuilder.Factory responseBuilderFactory;
         /** The logging interceptor to use. */
         private HttpLoggingInterceptor loggingInterceptor;
 
@@ -197,7 +209,7 @@ public final class RestClient {
                     .cookieJar(new JavaNetCookieJar(cookieManager))
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
-            this.serializerAdapter = new SimpleJacksonAdapter();
+            this.serializerAdapter = new JacksonAdapter();
             this.loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
@@ -389,6 +401,17 @@ public final class RestClient {
         }
 
         /**
+         * Sets the response builder factory.
+         *
+         * @param responseBuilderFactory the response builder factory
+         * @return the builder itself for chaining
+         */
+        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
+            this.responseBuilderFactory = responseBuilderFactory;
+            return this;
+        }
+
+        /**
          * Adds a retry strategy to the client.
          * @param strategy the retry strategy to add
          * @return the builder itself for chaining
@@ -413,6 +436,9 @@ public final class RestClient {
                 baseUrl = "https://management.azure.com/";
                 logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
             }
+            if (responseBuilderFactory == null) {
+                responseBuilderFactory = new ServiceResponseBuilder.Factory(serializerAdapter);
+            }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
                     .addInterceptor(new RequestIdHeaderInterceptor())
@@ -431,7 +457,8 @@ public final class RestClient {
                     credentials,
                     customHeadersInterceptor,
                     loggingInterceptor,
-                    serializerAdapter);
+                    serializerAdapter,
+                    responseBuilderFactory);
         }
     }
 }

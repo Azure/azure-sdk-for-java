@@ -18,8 +18,11 @@ import com.microsoft.rest.serializer.JacksonAdapter;
  * functionality useful for Azure operations.
  */
 public final class AzureJacksonAdapter extends JacksonAdapter implements SerializerAdapter<ObjectMapper> {
-    @Override
-    public ObjectMapper serializer() {
-        return mapper().registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
+    /**
+     * Creates an instance of the Azure flavored Jackson adapter.
+     */
+    public AzureJacksonAdapter() {
+        super();
+        serializer().registerModule(CloudErrorDeserializer.getModule(simpleMapper()));
     }
 }
