@@ -14,7 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 /**
  * Entry point to network interface management.
  */
-@Fluent()
+@Fluent
 public interface NetworkInterfaces  extends
         SupportsCreating<NetworkInterface.DefinitionStages.Blank>,
         SupportsListing<NetworkInterface>,
@@ -24,6 +24,17 @@ public interface NetworkInterfaces  extends
         SupportsDeletingById,
         SupportsDeletingByGroup,
         SupportsBatchCreation<NetworkInterface> {
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return network interface
+     */
+    VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(String resourceGroupName, String scaleSetName, String instanceId, String name);
+
     /**
      * List the network interfaces associated with a virtual machine scale set.
      *

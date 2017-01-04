@@ -222,6 +222,15 @@ public interface VirtualMachineScaleSet extends
     Map<String, VirtualMachineScaleSetExtension> extensions();
 
     /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return the network interface
+     */
+    VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
+
+    /**
      * @return the network interfaces associated with all virtual machine instances in a scale set
      */
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();

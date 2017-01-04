@@ -372,6 +372,10 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             Assert.assertNotNull(nic.virtualMachineId());
             Assert.assertTrue(nic.virtualMachineId().toLowerCase().equalsIgnoreCase(vm.id()));
             Assert.assertNotNull(vm.listNetworkInterfaces());
+            VirtualMachineScaleSetNetworkInterface nicA = vmScaleSet.getNetworkInterfaceByInstanceId(vm.instanceId(), nic.name());
+            Assert.assertNotNull(nicA);
+            VirtualMachineScaleSetNetworkInterface nicB = vm.getNetworkInterface(nic.name());
+            Assert.assertNotNull(nicB);
         }
     }
 

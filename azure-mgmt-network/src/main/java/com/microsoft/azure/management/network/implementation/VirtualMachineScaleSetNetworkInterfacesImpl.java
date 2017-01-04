@@ -47,6 +47,18 @@ class VirtualMachineScaleSetNetworkInterfacesImpl
     }
 
     @Override
+    public VirtualMachineScaleSetNetworkInterface getByVirtualMachineInstanceId(String instanceId, String name) {
+        NetworkInterfaceInner networkInterfaceInner = this.client.getVirtualMachineScaleSetNetworkInterface(this.resourceGroupName,
+                this.scaleSetName,
+                instanceId,
+                name);
+        if (networkInterfaceInner == null) {
+            return null;
+        }
+        return this.wrapModel(networkInterfaceInner);
+    }
+
+    @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> list() {
         return super.wrapList(this.client.listVirtualMachineScaleSetNetworkInterfaces(this.resourceGroupName,
                 this.scaleSetName));

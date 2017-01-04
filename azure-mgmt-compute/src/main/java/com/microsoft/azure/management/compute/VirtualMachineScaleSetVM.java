@@ -269,6 +269,14 @@ public interface VirtualMachineScaleSetVM extends
     PowerState powerState();
 
     /**
+     * Gets a network interface associated with this virtual machine instance.
+     *
+     * @param name the name of the network interface
+     * @return the network interface
+     */
+    VirtualMachineScaleSetNetworkInterface getNetworkInterface(String name);
+
+    /**
      * @return the network interfaces associated with this virtual machine instance.
      */
     PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();

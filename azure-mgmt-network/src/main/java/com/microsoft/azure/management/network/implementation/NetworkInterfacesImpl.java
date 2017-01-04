@@ -52,6 +52,18 @@ class NetworkInterfacesImpl
     }
 
     @Override
+    public VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(String resourceGroupName,
+                                                                                        String scaleSetName,
+                                                                                        String instanceId,
+                                                                                        String name) {
+        VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,
+                scaleSetName,
+                this.innerCollection,
+                this.myManager);
+        return scaleSetNetworkInterfaces.getByVirtualMachineInstanceId(instanceId, name);
+    }
+
+    @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listByVirtualMachineScaleSet(String resourceGroupName,
                                                                                           String scaleSetName) {
         VirtualMachineScaleSetNetworkInterfacesImpl scaleSetNetworkInterfaces = new VirtualMachineScaleSetNetworkInterfacesImpl(resourceGroupName,

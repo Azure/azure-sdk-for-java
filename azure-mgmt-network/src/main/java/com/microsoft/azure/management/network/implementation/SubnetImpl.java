@@ -108,6 +108,6 @@ class SubnetImpl
         String nsgId = this.networkSecurityGroupId();
         return (nsgId != null)
                 ? this.parent().manager().networkSecurityGroups().getById(nsgId)
-                        : null;
+                : null;
     }
 }

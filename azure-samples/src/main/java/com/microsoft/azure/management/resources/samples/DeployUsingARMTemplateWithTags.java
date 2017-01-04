@@ -148,7 +148,7 @@ public final class DeployUsingARMTemplateWithTags {
 
         validateAndAddFieldValue("string", hostingPlanName, "hostingPlanName", null, tmp);
         validateAndAddFieldValue("string", webappName, "webSiteName", null, tmp);
-        validateAndAddFieldValue("string", "F1", "skuName", null, tmp);
+        validateAndAddFieldValue("string", "B1", "skuName", null, tmp);
         validateAndAddFieldValue("int", "1", "skuCapacity", null, tmp);
 
         return tmp.toString();
