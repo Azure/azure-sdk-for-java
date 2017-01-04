@@ -397,6 +397,11 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public VirtualMachineScaleSetNetworkInterface getNetworkInterface(String name) {
+        return this.parent().getNetworkInterfaceByInstanceId(this.instanceId(), name);
+    }
+
+    @Override
     public PagedList<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
     }
