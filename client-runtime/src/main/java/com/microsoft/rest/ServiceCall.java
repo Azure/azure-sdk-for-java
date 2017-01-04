@@ -35,7 +35,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceCall<T> create(final Observable<ServiceResponse<T>> observable) {
+    public static <T> ServiceCall<T> fromResponse(final Observable<ServiceResponse<T>> observable) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
             .last()
@@ -61,7 +61,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceCall<T> create(final Observable<ServiceResponse<T>> observable, final ServiceCallback<T> callback) {
+    public static <T> ServiceCall<T> fromResponse(final Observable<ServiceResponse<T>> observable, final ServiceCallback<T> callback) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
             .last()
@@ -94,7 +94,7 @@ public class ServiceCall<T> extends AbstractFuture<T> {
      * @param <V> the type of the response header
      * @return the created ServiceCall
      */
-    public static <T, V> ServiceCall<T> createWithHeaders(final Observable<ServiceResponseWithHeaders<T, V>> observable, final ServiceCallback<T> callback) {
+    public static <T, V> ServiceCall<T> fromHeaderResponse(final Observable<ServiceResponseWithHeaders<T, V>> observable, final ServiceCallback<T> callback) {
         final ServiceCall<T> serviceCall = new ServiceCall<>();
         serviceCall.subscription = observable
             .last()
