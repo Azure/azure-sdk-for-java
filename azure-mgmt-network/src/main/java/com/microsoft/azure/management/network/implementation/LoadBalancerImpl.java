@@ -190,9 +190,9 @@ class LoadBalancerImpl
         for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
             String nicId = nicInBackend.getKey();
             String backendName = nicInBackend.getValue();
-            NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
-            NicIpConfiguration nicIp = nic.primaryIpConfiguration();
             try {
+                NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
+                NicIpConfiguration nicIp = nic.primaryIpConfiguration();
                 nic.update()
                     .updateIpConfiguration(nicIp.name())
                     .withExistingLoadBalancerBackend(this, backendName)
