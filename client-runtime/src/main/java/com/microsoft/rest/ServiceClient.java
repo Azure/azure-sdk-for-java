@@ -8,15 +8,8 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.retry.RetryHandler;
-import com.microsoft.rest.serializer.SimpleJacksonAdapter;
-import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 
 /**
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.

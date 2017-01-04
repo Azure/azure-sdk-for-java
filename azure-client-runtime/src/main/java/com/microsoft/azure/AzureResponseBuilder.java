@@ -7,7 +7,6 @@
 
 package com.microsoft.azure;
 
-import com.google.common.collect.Maps;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
@@ -39,8 +38,8 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
      *
      * @param serializer the serialization utils to use for deserialization operations
      */
-    private AzureResponseBuilder(SerializerAdapter<?> serializer, Class<T> returnType, Class<E> exceptionType) {
-        baseBuilder = new ServiceResponseBuilder.Factory(serializer).newInstance(returnType, exceptionType);
+    private AzureResponseBuilder(SerializerAdapter<?> serializer) {
+        baseBuilder = new ServiceResponseBuilder.Factory().newInstance(serializer);
     }
 
     @Override
@@ -98,27 +97,9 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
      * A factory to create an Azure response builder.
      */
     public static final class Factory implements ResponseBuilder.Factory {
-        private final Map<Map.Entry<String, String>, AzureResponseBuilder<?, ?>> cachedBuilders;
-        private final SerializerAdapter<?> serializerAdapter;
-
-        /**
-         * Creates a factory with a serializer adapter.
-         *
-         * @param serializerAdapter the serializer adapter instance.
-         */
-        public Factory(final SerializerAdapter<?> serializerAdapter) {
-            this.cachedBuilders = new HashMap<>();
-            this.serializerAdapter = serializerAdapter;
-        }
-
-        @SuppressWarnings("unchecked")
         @Override
-        public <T, E extends RestException> AzureResponseBuilder<T, E> newInstance(Class<T> returnType, Class<E> exceptionType) {
-            Map.Entry<String, String> key = Maps.immutableEntry(returnType.getName(), exceptionType.getName());
-            if (!cachedBuilders.containsKey(key)) {
-                cachedBuilders.put(key, new AzureResponseBuilder<T, E>(serializerAdapter, returnType, exceptionType));
-            }
-            return (AzureResponseBuilder<T, E>) cachedBuilders.get(key);
+        public <T, E extends RestException> AzureResponseBuilder<T, E> newInstance(final SerializerAdapter<?> serializerAdapter) {
+            return new AzureResponseBuilder<T, E>(serializerAdapter);
         }
     }
 }

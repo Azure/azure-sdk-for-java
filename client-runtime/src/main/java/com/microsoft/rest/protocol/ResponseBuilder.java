@@ -125,12 +125,10 @@ public interface ResponseBuilder<T, E extends RestException> {
         /**
          * Returns a response builder instance. This can be created new or cached.
          *
-         * @param returnType the type to return on a successful response
-         * @param exceptionType the exception to throw on failure
          * @param <T> the type of the return object
          * @param <E> the type of the exception
          * @return a response builder instance
          */
-        <T, E extends RestException> ResponseBuilder<T, E> newInstance(Class<T> returnType, Class<E> exceptionType);
+        <T, E extends RestException> ResponseBuilder<T, E> newInstance(final SerializerAdapter<?> serializerAdapter);
     }
 }

@@ -10,7 +10,7 @@ package com.microsoft.azure;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
-import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
@@ -18,8 +18,8 @@ import retrofit2.Retrofit;
  * ServiceClient is the abstraction for accessing REST operations and their payload data types.
  */
 public abstract class AzureServiceClient extends ServiceClient {
-    protected AzureServiceClient(String baseUrl) {
-        this(new RestClient.Builder().withBaseUrl(baseUrl).withSerializerAdapter(new AzureJacksonAdapter()).build());
+    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
+        this(baseUrl, credentials, new OkHttpClient.Builder(), new Retrofit.Builder());
     }
 
     /**
@@ -29,8 +29,13 @@ public abstract class AzureServiceClient extends ServiceClient {
      * @param clientBuilder the http client builder
      * @param restBuilder the retrofit rest client builder
      */
-    protected AzureServiceClient(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this(new RestClient.Builder(clientBuilder, restBuilder).withBaseUrl(baseUrl).withSerializerAdapter(new AzureJacksonAdapter()).build());
+    protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
+        this(new RestClient.Builder(clientBuilder, restBuilder)
+                .withBaseUrl(baseUrl)
+                .withCredentials(credentials)
+                .withSerializerAdapter(new AzureJacksonAdapter())
+                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
+                .build());
     }
 
     /**

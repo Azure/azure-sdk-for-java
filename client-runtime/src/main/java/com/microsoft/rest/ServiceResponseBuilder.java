@@ -8,7 +8,6 @@
 package com.microsoft.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Maps;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.ResponseBody;
@@ -230,27 +229,9 @@ public final class ServiceResponseBuilder<T, E extends RestException> implements
      * A factory to create a service response builder.
      */
     public static final class Factory implements ResponseBuilder.Factory {
-        private final Map<Map.Entry<String, String>, ServiceResponseBuilder<?, ?>> cachedBuilders;
-        private final SerializerAdapter<?> serializerAdapter;
-
-        /**
-         * Creates a factory with a serializer adapter.
-         *
-         * @param serializerAdapter the serializer adapter instance.
-         */
-        public Factory(final SerializerAdapter<?> serializerAdapter) {
-            this.cachedBuilders = new HashMap<>();
-            this.serializerAdapter = serializerAdapter;
-        }
-
-        @SuppressWarnings("unchecked")
         @Override
-        public <T, E extends RestException> ServiceResponseBuilder<T, E> newInstance(Class<T> returnType, Class<E> exceptionType) {
-            Map.Entry<String, String> key = Maps.immutableEntry(returnType.getName(), exceptionType.getName());
-            if (!cachedBuilders.containsKey(key)) {
-                cachedBuilders.put(key, new ServiceResponseBuilder<T, E>(serializerAdapter));
-            }
-            return (ServiceResponseBuilder<T, E>) cachedBuilders.get(key);
+        public <T, E extends RestException> ServiceResponseBuilder<T, E> newInstance(final SerializerAdapter<?> serializerAdapter) {
+            return new ServiceResponseBuilder<T, E>(serializerAdapter);
         }
     }
 }

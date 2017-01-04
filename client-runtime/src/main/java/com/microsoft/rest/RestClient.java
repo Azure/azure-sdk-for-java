@@ -437,7 +437,7 @@ public final class RestClient {
                 logger.warn("baseUrl == null. Using default URL https://management.azure.com/.");
             }
             if (responseBuilderFactory == null) {
-                responseBuilderFactory = new ServiceResponseBuilder.Factory(serializerAdapter);
+                responseBuilderFactory = new ServiceResponseBuilder.Factory();
             }
             OkHttpClient httpClient = httpClientBuilder
                     .addInterceptor(userAgentInterceptor)
