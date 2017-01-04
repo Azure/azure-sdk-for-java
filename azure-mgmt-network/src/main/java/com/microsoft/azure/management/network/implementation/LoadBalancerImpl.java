@@ -29,6 +29,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import rx.Observable;
+import rx.exceptions.CompositeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -171,22 +172,29 @@ class LoadBalancerImpl
 
     @Override
     protected void afterCreating() {
+        List<Exception> nicExceptions = new ArrayList<>();
+
         // Update the NICs to point to the backend pool
         for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
             String nicId = nicInBackend.getKey();
             String backendName = nicInBackend.getValue();
+            NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
+            NicIpConfiguration nicIp = nic.primaryIpConfiguration();
             try {
-                NetworkInterface nic = this.manager().networkInterfaces().getById(nicId);
-                NicIpConfiguration nicIp = nic.primaryIpConfiguration();
                 nic.update()
                     .updateIpConfiguration(nicIp.name())
-                        .withExistingLoadBalancerBackend(this, backendName)
-                        .parent()
+                    .withExistingLoadBalancerBackend(this, backendName)
+                    .parent()
                     .apply();
             } catch (Exception e) {
-                e.printStackTrace();
+                nicExceptions.add(e);
             }
         }
+
+        if (!nicExceptions.isEmpty()) {
+            throw new CompositeException(nicExceptions);
+        }
+
         this.nicsInBackends.clear();
         this.refresh();
     }
