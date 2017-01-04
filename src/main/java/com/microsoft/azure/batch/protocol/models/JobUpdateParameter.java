@@ -12,7 +12,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudJobOperations.Update request.
+ * The set of changes to be made to a job.
  */
 public class JobUpdateParameter {
     /**
@@ -50,8 +50,11 @@ public class JobUpdateParameter {
 
     /**
      * Specifies an action the Batch service should take when all tasks in the
-     * job are in the completed state. Possible values include: 'noAction',
-     * 'terminateJob'.
+     * job are in the completed state.
+     * If omitted, the completion behavior is set to noaction. If the current
+     * value is terminatejob, this is an error because a job's completion
+     * behavior may not be changed from terminatejob to noaction. Possible
+     * values include: 'noAction', 'terminateJob'.
      */
     private OnAllTasksComplete onAllTasksComplete;
 

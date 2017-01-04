@@ -15,15 +15,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Performs job related operations on an Azure Batch account.
+ * Performs job-related operations on an Azure Batch account.
  */
 public class JobOperations implements IInheritedBehaviors {
 
     private Collection<BatchClientBehavior> _customBehaviors;
 
     private BatchClient _parentBatchClient;
-
-    public static final String SHA1_CERTIFICATE_ALGORITHM = "sha1";
 
     JobOperations(BatchClient batchClient, Collection<BatchClientBehavior> inheritedBehaviors) {
         _parentBatchClient = batchClient;
@@ -33,9 +31,9 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances.
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -43,10 +41,10 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
-     * @return The current instance
+     * @param behaviors The collection of {@link BatchClientBehavior} instances.
+     * @return The current instance.
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
@@ -58,8 +56,8 @@ public class JobOperations implements IInheritedBehaviors {
      * Gets lifetime summary statistics for all of the jobs in the current account.
      *
      * @return The aggregated job statistics.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public JobStatistics getAllJobsLifetimeStatistics() throws BatchErrorException, IOException {
         return getAllJobsLifetimeStatistics(null);
@@ -70,8 +68,8 @@ public class JobOperations implements IInheritedBehaviors {
      *
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return The aggregated job statistics.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public JobStatistics getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobGetAllJobsLifetimeStatisticsOptions options = new JobGetAllJobsLifetimeStatisticsOptions();
@@ -88,8 +86,8 @@ public class JobOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job to get.
      * @return A {@link CloudJob} containing information about the specified Azure Batch job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public CloudJob getJob(String jobId) throws BatchErrorException, IOException {
         return getJob(jobId, null, null);
@@ -99,10 +97,10 @@ public class JobOperations implements IInheritedBehaviors {
      * Gets the specified {@link CloudJob}.
      *
      * @param jobId The ID of the job to get.
-     * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
+     * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
      * @return A {@link CloudJob} containing information about the specified Azure Batch job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public CloudJob getJob(String jobId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return getJob(jobId, detailLevel, null);
@@ -112,11 +110,11 @@ public class JobOperations implements IInheritedBehaviors {
      * Gets the specified {@link CloudJob}.
      *
      * @param jobId The ID of the job to get.
-     * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
+     * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A {@link CloudJob} containing information about the specified Azure Batch job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public CloudJob getJob(String jobId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobGetOptions getJobOptions = new JobGetOptions();
@@ -130,36 +128,36 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the Batch account.
+     * Lists the {@link CloudJob jobs} in the Batch account.
      *
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs() throws BatchErrorException, IOException {
         return listJobs(null, (Iterable<BatchClientBehavior>) null);
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the Batch account.
+     * Lists the {@link CloudJob jobs} in the Batch account.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listJobs(detailLevel, (Iterable<BatchClientBehavior>) null);
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the Batch account.
+     * Lists the {@link CloudJob jobs} in the Batch account.
      *
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListOptions jobListOptions = new JobListOptions();
@@ -174,39 +172,39 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the specified job schedule.
+     * Lists the {@link CloudJob jobs} created under the specified job schedule.
      *
-     * @param jobScheduleId The ID of job schedule
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param jobScheduleId The ID of job schedule.
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(String jobScheduleId) throws BatchErrorException, IOException {
         return listJobs(jobScheduleId, null, null);
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the specified job schedule.
+     * Lists the {@link CloudJob jobs} created under the specified job schedule.
      *
-     * @param jobScheduleId The ID of job schedule
+     * @param jobScheduleId The ID of job schedule.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listJobs(jobScheduleId, detailLevel, null);
     }
 
     /**
-     * Enumerates the {@link CloudJob jobs} in the specified jobSchedule.
+     * Lists the {@link CloudJob jobs} created under the specified jobSchedule.
      *
-     * @param jobScheduleId The ID of jobSchedule
+     * @param jobScheduleId The ID of jobSchedule.
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link CloudJob jobs}
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link CloudJob} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<CloudJob> listJobs(String jobScheduleId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListFromJobScheduleOptions jobListOptions = new JobListFromJobScheduleOptions();
@@ -221,25 +219,25 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the status of {@link JobPreparationTask} and {@link JobReleaseTask} tasks for the specified job.
+     * Lists the status of {@link JobPreparationTask} and {@link JobReleaseTask} tasks for the specified job.
      *
      * @param jobId The ID of the job.
-     * @return A collection of {@link JobPreparationAndReleaseTaskExecutionInformation} object.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link JobPreparationAndReleaseTaskExecutionInformation} instances.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId) throws BatchErrorException, IOException {
         return listPreparationAndReleaseTaskStatus(jobId, null);
     }
 
     /**
-     * Enumerates the status of {@link JobPreparationTask} and {@link JobReleaseTask} tasks for the specified job.
+     * Lists the status of {@link JobPreparationTask} and {@link JobReleaseTask} tasks for the specified job.
      *
      * @param jobId The ID of the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link JobPreparationAndReleaseTaskExecutionInformation} object.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link JobPreparationAndReleaseTaskExecutionInformation} instances.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<JobPreparationAndReleaseTaskExecutionInformation> listPreparationAndReleaseTaskStatus(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobListPreparationAndReleaseTaskStatusOptions jobListOptions = new JobListPreparationAndReleaseTaskStatusOptions();
@@ -253,25 +251,25 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a job to the specified pool.
+     * Adds a job to the Batch account.
      *
-     * @param jobId The Id of the job.
-     * @param poolInfo the information about the pool the job will run on.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param jobId The ID of the job to be added.
+     * @param poolInfo Specifies how a job should be assigned to a pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void createJob(String jobId, PoolInformation poolInfo) throws BatchErrorException, IOException {
         createJob(jobId, poolInfo, null);
     }
 
     /**
-     * Add a job to the specified pool.
+     * Adds a job to the Batch account.
      *
-     * @param jobId The Id of the job.
-     * @param poolInfo The information about the pool the job will run on.
+     * @param jobId The ID of the job to be added.
+     * @param poolInfo Specifies how a job should be assigned to a pool.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void createJob(String jobId, PoolInformation poolInfo, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobAddParameter param = new JobAddParameter()
@@ -282,23 +280,23 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Add a job.
+     * Adds a job to the Batch account.
      *
-     * @param job The parameter to add a job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param job The job to be added.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void createJob(JobAddParameter job) throws BatchErrorException, IOException {
         createJob(job, null);
     }
 
     /**
-     * Add a job.
+     * Adds a job to the Batch account.
      *
-     * @param job The parameter to add a job.
+     * @param job The job to be added.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void createJob(JobAddParameter job, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobAddOptions options = new JobAddOptions();
@@ -312,8 +310,8 @@ public class JobOperations implements IInheritedBehaviors {
      * Deletes the specified job.
      *
      * @param jobId The ID of the job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void deleteJob(String jobId) throws BatchErrorException, IOException {
         deleteJob(jobId, null);
@@ -324,8 +322,8 @@ public class JobOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void deleteJob(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobDeleteOptions options = new JobDeleteOptions();
@@ -339,8 +337,8 @@ public class JobOperations implements IInheritedBehaviors {
      * Terminates the specified job, marking it as completed.
      *
      * @param jobId The ID of the job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void terminateJob(String jobId) throws BatchErrorException, IOException {
         terminateJob(jobId, null, null);
@@ -350,9 +348,9 @@ public class JobOperations implements IInheritedBehaviors {
      * Terminates the specified job, marking it as completed.
      *
      * @param jobId The ID of the job.
-     * @param terminateReason the text you want to appear as the job's terminate reason.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param terminateReason The message to describe the reason the job has terminated. This text will appear when you call {@link JobExecutionInformation#terminateReason()}.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void terminateJob(String jobId, String terminateReason) throws BatchErrorException, IOException {
         terminateJob(jobId, terminateReason, null);
@@ -362,10 +360,10 @@ public class JobOperations implements IInheritedBehaviors {
      * Terminates the specified job, marking it as completed.
      *
      * @param jobId The ID of the job.
-     * @param terminateReason The text you want to appear as the job's terminate reason.
+     * @param terminateReason The message to describe the reason the job has terminated. This text will appear when you call {@link JobExecutionInformation#terminateReason()}.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void terminateJob(String jobId, String terminateReason, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobTerminateOptions options = new JobTerminateOptions();
@@ -379,8 +377,8 @@ public class JobOperations implements IInheritedBehaviors {
      * Enables the specified job, allowing new tasks to run.
      *
      * @param jobId The ID of the job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void enableJob(String jobId) throws BatchErrorException, IOException {
         enableJob(jobId, null);
@@ -391,8 +389,8 @@ public class JobOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void enableJob(String jobId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobEnableOptions options = new JobEnableOptions();
@@ -403,25 +401,25 @@ public class JobOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Disables the specified job.  Disabled jobs do not run new tasks, but may be re-enabled later.
+     * Disables the specified job. Disabled jobs do not run new tasks, but may be re-enabled later.
      *
      * @param jobId The ID of the job.
-     * @param disableJobOption Specifies what to do with active tasks associated with the job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param disableJobOption Specifies what to do with running tasks associated with the job.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void disableJob(String jobId, DisableJobOption disableJobOption) throws BatchErrorException, IOException {
         disableJob(jobId, disableJobOption, null);
     }
 
     /**
-     * Disables the specified job.  Disabled jobs do not run new tasks, but may be re-enabled later.
+     * Disables the specified job. Disabled jobs do not run new tasks, but may be re-enabled later.
      *
      * @param jobId The ID of the job.
-     * @param disableJobOption Specifies what to do with active tasks associated with the job.
+     * @param disableJobOption Specifies what to do with running tasks associated with the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void disableJob(String jobId, DisableJobOption disableJobOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobDisableOptions options = new JobDisableOptions();
@@ -433,15 +431,16 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method performs a full replace of all updatable properties of the job. For example, if the constraints parameter is null, then the Batch service removes the job's existing constraints and replaces them with the default constraints.
      *
      * @param jobId The ID of the job.
      * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job.
-     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, it is set to the default value 0.
-     * @param constraints The execution constraints for the job. If omitted, the constraints are cleared.
+     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If null, it is set to the default value 0.
+     * @param constraints The execution constraints for the job. If null, the constraints are cleared.
      * @param onAllTasksComplete Specifies an action the Batch service should take when all tasks in the job are in the completed state.
-     * @param metadata A list of name-value pairs associated with the job as metadata. If omitted, it takes the default value of an empty list; in effect, any existing metadata is deleted.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param metadata A list of name-value pairs associated with the job as metadata. If null, it takes the default value of an empty list; in effect, any existing metadata is deleted.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, OnAllTasksComplete onAllTasksComplete,
                           List<MetadataItem> metadata) throws BatchErrorException, IOException {
@@ -450,16 +449,17 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method performs a full replace of all updatable properties of the job. For example, if the constraints parameter is null, then the Batch service removes the job's existing constraints and replaces them with the default constraints.
      *
      * @param jobId The ID of the job.
      * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job.
-     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, it is set to the default value 0.
-     * @param constraints The execution constraints for the job. If omitted, the constraints are cleared.
+     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If null, it is set to the default value 0.
+     * @param constraints The execution constraints for the job. If null, the constraints are cleared.
      * @param onAllTasksComplete Specifies an action the Batch service should take when all tasks in the job are in the completed state.
-     * @param metadata A list of name-value pairs associated with the job as metadata. If omitted, it takes the default value of an empty list; in effect, any existing metadata is deleted.
+     * @param metadata A list of name-value pairs associated with the job as metadata. If null, it takes the default value of an empty list; in effect, any existing metadata is deleted.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, OnAllTasksComplete onAllTasksComplete,
                           List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -479,11 +479,12 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
-     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If omitted, the job continues to run on its current pool.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If null, the job continues to run on its current pool.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, PoolInformation poolInfo) throws BatchErrorException, IOException {
         patchJob(jobId, poolInfo, null, null, null, null, null);
@@ -491,11 +492,12 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
      * @param onAllTasksComplete Specifies an action the Batch service should take when all tasks in the job are in the completed state.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, OnAllTasksComplete onAllTasksComplete) throws BatchErrorException, IOException {
         patchJob(jobId, null, null, null, onAllTasksComplete, null, null);
@@ -503,15 +505,16 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
-     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If omitted, the job continues to run on its current pool.
-     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, the priority of the job is left unchanged.
-     * @param constraints The execution constraints for the job. If omitted, the existing execution constraints are left unchanged.
+     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If null, the job continues to run on its current pool.
+     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If null, the priority of the job is left unchanged.
+     * @param constraints The execution constraints for the job. If null, the existing execution constraints are left unchanged.
      * @param onAllTasksComplete Specifies an action the Batch service should take when all tasks in the job are in the completed state.
-     * @param metadata A list of name-value pairs associated with the job as metadata. If omitted, the existing job metadata is left unchanged.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param metadata A list of name-value pairs associated with the job as metadata. If null, the existing job metadata is left unchanged.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, OnAllTasksComplete onAllTasksComplete,
                          List<MetadataItem> metadata) throws BatchErrorException, IOException {
@@ -520,16 +523,17 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
-     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If omitted, the job continues to run on its current pool.
-     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If omitted, the priority of the job is left unchanged.
-     * @param constraints The execution constraints for the job. If omitted, the existing execution constraints are left unchanged.
+     * @param poolInfo The pool on which the Batch service runs the job's tasks. You may change the pool for a job only when the job is disabled. If you specify an autoPoolSpecification specification in the poolInfo, only the keepAlive property can be updated, and then only if the auto pool has a poolLifetimeOption of job. If null, the job continues to run on its current pool.
+     * @param priority The priority of the job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and 1000 being the highest priority. If null, the priority of the job is left unchanged.
+     * @param constraints The execution constraints for the job. If null, the existing execution constraints are left unchanged.
      * @param onAllTasksComplete Specifies an action the Batch service should take when all tasks in the job are in the completed state.
-     * @param metadata A list of name-value pairs associated with the job as metadata. If omitted, the existing job metadata is left unchanged.
+     * @param metadata A list of name-value pairs associated with the job as metadata. If null, the existing job metadata is left unchanged.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, PoolInformation poolInfo, Integer priority, JobConstraints constraints, OnAllTasksComplete onAllTasksComplete,
                          List<MetadataItem> metadata, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
@@ -545,11 +549,12 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
-     * @param jobPatchParameter The parameter to update the job.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param jobPatchParameter The set of changes to be made to a job.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, JobPatchParameter jobPatchParameter) throws BatchErrorException, IOException {
         patchJob(jobId, jobPatchParameter, null);
@@ -557,12 +562,13 @@ public class JobOperations implements IInheritedBehaviors {
 
     /**
      * Updates the specified job.
+     * This method only replaces the properties specified with non-null values.
      *
      * @param jobId The ID of the job.
      * @param jobPatchParameter The parameter to update the job.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void patchJob(String jobId, JobPatchParameter jobPatchParameter, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         JobPatchOptions options = new JobPatchOptions();

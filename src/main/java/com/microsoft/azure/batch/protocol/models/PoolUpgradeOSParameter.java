@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for a CloudPoolOperations.UpgradeOS request.
+ * Options for upgrading the operating system of compute nodes in a pool.
  */
 public class PoolUpgradeOSParameter {
     /**

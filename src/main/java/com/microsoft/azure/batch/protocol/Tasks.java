@@ -50,7 +50,7 @@ public interface Tasks {
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -62,7 +62,7 @@ public interface Tasks {
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -72,7 +72,7 @@ public interface Tasks {
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -85,7 +85,7 @@ public interface Tasks {
     /**
      * Adds a task to the specified job.
      *
-     * @param jobId The id of the job to which the task is to be added.
+     * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
      * @param taskAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -96,8 +96,9 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -107,8 +108,9 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -116,8 +118,9 @@ public interface Tasks {
     ServiceCall listAsync(final String jobId, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -128,8 +131,9 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param taskListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -139,8 +143,9 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
+     * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add. 
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -151,8 +156,9 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
+     * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add. 
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -161,8 +167,9 @@ public interface Tasks {
     ServiceCall addCollectionAsync(String jobId, List<TaskAddParameter> value, final ServiceCallback<TaskAddCollectionResult> serviceCallback) throws IllegalArgumentException;
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
+     * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add. 
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -174,8 +181,9 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
      *
-     * @param jobId The id of the job to which the task collection is to be added.
+     * @param jobId The ID of the job to which the task collection is to be added.
      * @param value The collection of tasks to add. 
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -186,9 +194,10 @@ public interface Tasks {
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -198,9 +207,10 @@ public interface Tasks {
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -208,9 +218,10 @@ public interface Tasks {
     ServiceCall deleteAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -221,9 +232,10 @@ public interface Tasks {
 
     /**
      * Deletes a task from the specified job.
+     * When a task is deleted, all of the files in its directory on the compute node where it ran are also deleted (regardless of the retention time). For multi-instance tasks, the delete task operation applies synchronously to the primary task; subtasks and their files are then deleted asynchronously in the background.
      *
-     * @param jobId The id of the job from which to delete the task.
-     * @param taskId The id of the task to delete.
+     * @param jobId The ID of the job from which to delete the task.
+     * @param taskId The ID of the task to delete.
      * @param taskDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -233,9 +245,10 @@ public interface Tasks {
 
     /**
      * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -245,9 +258,10 @@ public interface Tasks {
 
     /**
      * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -255,9 +269,10 @@ public interface Tasks {
     ServiceCall getAsync(String jobId, String taskId, final ServiceCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -268,9 +283,10 @@ public interface Tasks {
 
     /**
      * Gets information about the specified task.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task to get information about.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task to get information about.
      * @param taskGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -281,8 +297,8 @@ public interface Tasks {
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -293,8 +309,8 @@ public interface Tasks {
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -303,8 +319,8 @@ public interface Tasks {
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -317,8 +333,8 @@ public interface Tasks {
     /**
      * Updates the properties of the specified task.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to update.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to update.
      * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
      * @param taskUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -329,9 +345,10 @@ public interface Tasks {
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -341,9 +358,10 @@ public interface Tasks {
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -351,9 +369,10 @@ public interface Tasks {
     ServiceCall listSubtasksAsync(String jobId, String taskId, final ServiceCallback<CloudTaskListSubtasksResult> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -364,9 +383,10 @@ public interface Tasks {
 
     /**
      * Lists all of the subtasks that are associated with the specified multi-instance task.
+     * If the task is not a multi-instance task then this returns an empty collection.
      *
-     * @param jobId The id of the job.
-     * @param taskId The id of the task.
+     * @param jobId The ID of the job.
+     * @param taskId The ID of the task.
      * @param taskListSubtasksOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -376,9 +396,10 @@ public interface Tasks {
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -388,9 +409,10 @@ public interface Tasks {
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -398,9 +420,10 @@ public interface Tasks {
     ServiceCall terminateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -411,9 +434,10 @@ public interface Tasks {
 
     /**
      * Terminates the specified task.
+     * When the task has been terminated, it moves to the completed state. For multi-instance tasks, the terminate task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the background.
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to terminate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to terminate.
      * @param taskTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -423,10 +447,10 @@ public interface Tasks {
 
     /**
      * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -436,10 +460,10 @@ public interface Tasks {
 
     /**
      * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -447,10 +471,10 @@ public interface Tasks {
     ServiceCall reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -461,10 +485,10 @@ public interface Tasks {
 
     /**
      * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
      *
-     * @param jobId The id of the job containing the task.
-     * @param taskId The id of the task to reactivate.
+     * @param jobId The ID of the job containing the task.
+     * @param taskId The ID of the task to reactivate.
      * @param taskReactivateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -474,6 +498,7 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws BatchErrorException exception thrown from REST call
@@ -485,6 +510,7 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -495,6 +521,7 @@ public interface Tasks {
     ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<CloudTask> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation
@@ -507,6 +534,7 @@ public interface Tasks {
 
     /**
      * Lists all of the tasks that are associated with the specified job.
+     * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param taskListNextOptions Additional parameters for the operation

@@ -19,7 +19,7 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * Performs compute node related operations on an Azure Batch account.
+ * Performs compute node-related operations on an Azure Batch account.
  */
 public class ComputeNodeOperations implements IInheritedBehaviors {
 
@@ -35,9 +35,9 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return A list of BatchClientBehavior
+     * @return A collection of {@link BatchClientBehavior} instances.
      */
     @Override
     public Collection<BatchClientBehavior> customBehaviors() {
@@ -45,10 +45,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param behaviors The collection of BatchClientBehavior classes
-     * @return The current instance
+     * @param behaviors The collection of {@link BatchClientBehavior} instances.
+     * @return The current instance.
      */
     @Override
     public IInheritedBehaviors withCustomBehaviors(Collection<BatchClientBehavior> behaviors) {
@@ -57,29 +57,27 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Creates a {@link ComputeNodeUser} representing a new compute node user account that
-     * does not yet exist in the Batch service.
+     * Adds a user account to the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be created.
-     * @param user the user account which to be created
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node where the user account will be created.
+     * @param user The user account to be created.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void addComputeNodeUser(String poolId, String nodeId, ComputeNodeUser user) throws BatchErrorException, IOException {
         addComputeNodeUser(poolId, nodeId, user, null);
     }
 
     /**
-     * Creates a {@link ComputeNodeUser} representing a new compute node user account that
-     * does not yet exist in the Batch service.
+     * Adds a user account to the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be created.
-     * @param user the user account which to be created
+     * @param nodeId The ID of the compute node where the user account will be created.
+     * @param user The user account to be created.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void addComputeNodeUser(String poolId, String nodeId, ComputeNodeUser user, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeAddUserOptions options = new ComputeNodeAddUserOptions();
@@ -93,10 +91,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Deletes the specified user account from the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be deleted.
-     * @param userName the user name of the account which to be deleted
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node where the user account will be deleted.
+     * @param userName The name of the user account to be deleted.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void deleteComputeNodeUser(String poolId, String nodeId, String userName) throws BatchErrorException, IOException {
         deleteComputeNodeUser(poolId, nodeId, userName, null);
@@ -106,11 +104,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Deletes the specified user account from the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be deleted.
-     * @param userName the user name of the account which to be deleted
+     * @param nodeId The ID of the compute node where the user account will be deleted.
+     * @param userName The name of the user account to be deleted.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void deleteComputeNodeUser(String poolId, String nodeId, String userName, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeDeleteUserOptions options = new ComputeNodeDeleteUserOptions();
@@ -121,31 +119,31 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Updates the specified user account from the specified compute node.
+     * Updates the specified user account on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be updated.
-     * @param userName the user name of the account which to be updated.
-     * @param password the password of the account.
-     * @param expiryTime the time at which the account should expire.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node where the user account will be updated.
+     * @param userName The name of the user account to update.
+     * @param password The password of the account. If null, the password is removed.
+     * @param expiryTime The time at which the account should expire. If null, the expiry time is replaced with its default value.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String password, DateTime expiryTime) throws BatchErrorException, IOException {
         updateComputeNodeUser(poolId, nodeId, userName, password, expiryTime, null);
     }
 
     /**
-     * Updates the specified user account from the specified compute node.
+     * Updates the specified user account on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be updated.
-     * @param userName the user name of the account which to be updated.
-     * @param password the password of the account.
-     * @param expiryTime the time at which the account should expire.
+     * @param nodeId The ID of the compute node where the user account will be updated.
+     * @param userName The name of the user account to update.
+     * @param password The password of the account. If null, the password is removed.
+     * @param expiryTime The time at which the account should expire. If null, the expiry time is replaced with its default value.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String password, DateTime expiryTime, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         NodeUpdateUserParameter param = new NodeUpdateUserParameter();
@@ -156,29 +154,29 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Updates the specified user account from the specified compute node.
+     * Updates the specified user account on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be updated.
-     * @param userName the user name of the account which to be updated.
-     * @param sshPublicKey the SSH public key that can be used for remote login to the compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node where the user account will be updated.
+     * @param userName The name of the user account to update.
+     * @param sshPublicKey The SSH public key that can be used for remote login to the compute node. If null, the SSH public key is removed.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey) throws BatchErrorException, IOException {
         updateComputeNodeUser(poolId, nodeId, userName, sshPublicKey, (Iterable<BatchClientBehavior>)null);
     }
 
     /**
-     * Updates the specified user account from the specified compute node.
+      * Updates the specified user account on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be updated.
-     * @param userName the user name of the account which to be updated.
-     * @param sshPublicKey the SSH public key that can be used for remote login to the compute node.
+     * @param nodeId The ID of the compute node where the user account will be updated.
+     * @param userName The name of the user account to update.
+     * @param sshPublicKey The SSH public key that can be used for remote login to the compute node. If null, the SSH public key is removed.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void updateComputeNodeUser(String poolId, String nodeId, String userName, String sshPublicKey, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         NodeUpdateUserParameter param = new NodeUpdateUserParameter();
@@ -188,15 +186,15 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Updates the specified user account from the specified compute node.
+      * Updates the specified user account on the specified compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node where the user account will be updated.
-     * @param userName the user name of the account which to be updated.
-     * @param nodeUpdateUserParameter the parameter for update the user account.
+     * @param nodeId The ID of the compute node where the user account will be updated.
+     * @param userName The name of the user account to update.
+     * @param nodeUpdateUserParameter The set of changes to be made to the user account.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     private void updateComputeNodeUser(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeUpdateUserOptions options = new ComputeNodeUpdateUserOptions();
@@ -212,8 +210,8 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * @param poolId The ID of the pool.
      * @param nodeId the ID of the compute node to get from the pool.
      * @return A {@link ComputeNode} containing information about the specified compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public ComputeNode getComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
         return getComputeNode(poolId, nodeId, null, null);
@@ -223,11 +221,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node to get from the pool.
+     * @param nodeId The ID of the compute node to get from the pool.
      * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
      * @return A {@link ComputeNode} containing information about the specified compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public ComputeNode getComputeNode(String poolId, String nodeId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return getComputeNode(poolId, nodeId, detailLevel, null);
@@ -237,12 +235,12 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node to get from the pool.
+     * @param nodeId The ID of the compute node to get from the pool.
      * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A {@link ComputeNode} containing information about the specified compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public ComputeNode getComputeNode(String poolId, String nodeId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetOptions options = new ComputeNodeGetOptions();
@@ -257,11 +255,12 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reboots the specified compute node.
+     * <p>You can reboot a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reboot.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node to reboot.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void rebootComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
         rebootComputeNode(poolId, nodeId, null, null);
@@ -269,12 +268,13 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reboots the specified compute node.
+     * <p>You can reboot a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reboot.
-     * @param nodeRebootOption specifies when to reboot the node and what to do with currently running tasks.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node to reboot.
+     * @param nodeRebootOption Specifies when to reboot the node and what to do with currently running tasks.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void rebootComputeNode(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption) throws BatchErrorException, IOException {
         rebootComputeNode(poolId, nodeId, nodeRebootOption, null);
@@ -282,13 +282,14 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reboots the specified compute node.
+     * <p>You can reboot a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reboot.
-     * @param nodeRebootOption specifies when to reboot the node and what to do with currently running tasks.
+     * @param nodeId The ID of the compute node to reboot.
+     * @param nodeRebootOption Specifies when to reboot the node and what to do with currently running tasks.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void rebootComputeNode(String poolId, String nodeId, ComputeNodeRebootOption nodeRebootOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeRebootOptions options = new ComputeNodeRebootOptions();
@@ -300,11 +301,12 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * <p>You can reimage a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reimage.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node to reimage.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void reimageComputeNode(String poolId, String nodeId) throws BatchErrorException, IOException {
         reimageComputeNode(poolId, nodeId, null, null);
@@ -312,12 +314,13 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * <p>You can reimage a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reimage.
+     * @param nodeId The ID of the compute node to reimage.
      * @param nodeReimageOption Specifies when to reimage the node and what to do with currently running tasks.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void reimageComputeNode(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption) throws BatchErrorException, IOException {
         reimageComputeNode(poolId, nodeId, nodeReimageOption, null);
@@ -325,13 +328,14 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * <p>You can reimage a compute node only when it is in the {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#IDLE Idle} or {@link com.microsoft.azure.batch.protocol.models.ComputeNodeState#RUNNING Running} state.</p>
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node to reimage.
-     * @param nodeReimageOption specifies when to reimage the node and what to do with currently running tasks.
+     * @param nodeId The ID of the compute node to reimage.
+     * @param nodeReimageOption Specifies when to reimage the node and what to do with currently running tasks.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void reimageComputeNode(String poolId, String nodeId, ComputeNodeReimageOption nodeReimageOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeReimageOptions options = new ComputeNodeReimageOptions();
@@ -346,8 +350,8 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      *
      * @param poolId The ID of the pool.
      * @param nodeId the ID of the compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void disableComputeNodeScheduling(String poolId, String nodeId) throws BatchErrorException, IOException {
         disableComputeNodeScheduling(poolId, nodeId, null, null);
@@ -357,10 +361,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Disables task scheduling on the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node.
-     * @param nodeDisableSchedulingOption specifies what to do with currently running tasks.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node.
+     * @param nodeDisableSchedulingOption Specifies what to do with currently running tasks.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void disableComputeNodeScheduling(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption) throws BatchErrorException, IOException {
         disableComputeNodeScheduling(poolId, nodeId, nodeDisableSchedulingOption, null);
@@ -370,11 +374,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Disables task scheduling on the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node.
-     * @param nodeDisableSchedulingOption specifies what to do with currently running tasks.
+     * @param nodeId The ID of the compute node.
+     * @param nodeDisableSchedulingOption Specifies what to do with currently running tasks.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void disableComputeNodeScheduling(String poolId, String nodeId, DisableComputeNodeSchedulingOption nodeDisableSchedulingOption, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeDisableSchedulingOptions options = new ComputeNodeDisableSchedulingOptions();
@@ -388,9 +392,9 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Enables task scheduling on the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void enableComputeNodeScheduling(String poolId, String nodeId) throws BatchErrorException, IOException {
         enableComputeNodeScheduling(poolId, nodeId, null);
@@ -400,10 +404,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Enables task scheduling on the specified compute node.
      *
      * @param poolId The ID of the pool.
-     * @param nodeId the ID of the compute node.
+     * @param nodeId The ID of the compute node.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public void enableComputeNodeScheduling(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeEnableSchedulingOptions options = new ComputeNodeEnableSchedulingOptions();
@@ -417,10 +421,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets a Remote Desktop Protocol (RDP) file for the specified node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node for which to get a Remote Desktop file.
-     * @return The RDP file contents
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node for which to get a Remote Desktop file.
+     * @return The RDP file contents.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public String getComputeNodeRemoteDesktop(String poolId, String nodeId) throws BatchErrorException, IOException {
         return getComputeNodeRemoteDesktop(poolId, nodeId, null);
@@ -430,11 +434,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets a Remote Desktop Protocol (RDP) file for the specified node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node for which to get a Remote Desktop file.
+     * @param nodeId The ID of the compute node for which to get a Remote Desktop file.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return The RDP file contents
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return The RDP file contents.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public String getComputeNodeRemoteDesktop(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteDesktopOptions options = new ComputeNodeGetRemoteDesktopOptions();
@@ -455,10 +459,10 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets the settings required for remote login to a compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node for which to get a remote login settings.
-     * @return The settings of the specified compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param nodeId The ID of the compute node for which to get a remote login settings.
+     * @return The remote settings for the specified compute node.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId) throws BatchErrorException, IOException {
         return getRemoteLoginSettings(poolId, nodeId, null);
@@ -468,11 +472,11 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
      * Gets the settings required for remote login to a compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId the ID of the compute node for which to get a remote login settings.
+     * @param nodeId The ID of the compute node for which to get a remote login settings.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return The settings of the specified compute node.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return The remote login settings for the specified compute node.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public ComputeNodeGetRemoteLoginSettingsResult getRemoteLoginSettings(String poolId, String nodeId, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeGetRemoteLoginSettingsOptions options = new ComputeNodeGetRemoteLoginSettingsOptions();
@@ -485,39 +489,39 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
     }
 
     /**
-     * Enumerates the {@link ComputeNode compute nodes} of the specified pool.
+     * Lists the {@link ComputeNode compute nodes} of the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @return A collection of {@link ComputeNode compute nodes}.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link ComputeNode} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<ComputeNode> listComputeNodes(String poolId) throws BatchErrorException, IOException {
         return listComputeNodes(poolId, null, null);
     }
 
     /**
-     * Enumerates the {@link ComputeNode compute nodes} of the specified pool.
+     * Lists the {@link ComputeNode compute nodes} of the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
-     * @return A collection of {@link ComputeNode compute nodes}.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
+     * @return A list of {@link ComputeNode} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listComputeNodes(poolId, detailLevel, null);
     }
 
     /**
-     * Enumerates the {@link ComputeNode compute nodes} of the specified pool.
+     * Lists the {@link ComputeNode compute nodes} of the specified pool.
      *
      * @param poolId The ID of the pool.
-     * @param detailLevel A {@link DetailLevel} used for controlling which properties are retrieved from the service.
+     * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @return A collection of {@link ComputeNode compute nodes}.
-     * @throws BatchErrorException Exception thrown from REST call
-     * @throws IOException Exception thrown from serialization/deserialization
+     * @return A list of {@link ComputeNode} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<ComputeNode> listComputeNodes(String poolId, DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         ComputeNodeListOptions options = new ComputeNodeListOptions();

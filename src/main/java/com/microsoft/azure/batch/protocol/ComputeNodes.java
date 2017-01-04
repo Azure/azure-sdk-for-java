@@ -55,9 +55,10 @@ import java.io.IOException;
 public interface ComputeNodes {
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -68,9 +69,10 @@ public interface ComputeNodes {
 
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -79,9 +81,10 @@ public interface ComputeNodes {
     ServiceCall addUserAsync(String poolId, String nodeId, ComputeNodeUser user, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param computeNodeAddUserOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -93,9 +96,10 @@ public interface ComputeNodes {
 
     /**
      * Adds a user account to the specified compute node.
+     * You can add a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to create a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to create a user account.
      * @param user The user account to be created.
      * @param computeNodeAddUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -106,9 +110,10 @@ public interface ComputeNodes {
 
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -119,9 +124,10 @@ public interface ComputeNodes {
 
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -130,9 +136,10 @@ public interface ComputeNodes {
     ServiceCall deleteUserAsync(String poolId, String nodeId, String userName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param computeNodeDeleteUserOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -144,9 +151,10 @@ public interface ComputeNodes {
 
     /**
      * Deletes a user account from the specified compute node.
+     * You can delete a user account to a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to delete a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to delete a user account.
      * @param userName The name of the user account to delete.
      * @param computeNodeDeleteUserOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -157,9 +165,10 @@ public interface ComputeNodes {
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @throws BatchErrorException exception thrown from REST call
@@ -171,9 +180,10 @@ public interface ComputeNodes {
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -183,9 +193,10 @@ public interface ComputeNodes {
     ServiceCall updateUserAsync(String poolId, String nodeId, String userName, NodeUpdateUserParameter nodeUpdateUserParameter, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param computeNodeUpdateUserOptions Additional parameters for the operation
@@ -198,9 +209,10 @@ public interface ComputeNodes {
 
     /**
      * Updates the password or expiration time of a user account on the specified compute node.
+     * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the machine on which you want to update a user account.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the machine on which you want to update a user account.
      * @param userName The name of the user account to update.
      * @param nodeUpdateUserParameter The parameters for the request.
      * @param computeNodeUpdateUserOptions Additional parameters for the operation
@@ -213,8 +225,8 @@ public interface ComputeNodes {
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -225,8 +237,8 @@ public interface ComputeNodes {
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -235,8 +247,8 @@ public interface ComputeNodes {
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
      * @param computeNodeGetOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -248,8 +260,8 @@ public interface ComputeNodes {
     /**
      * Gets information about the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to get information about.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to get information about.
      * @param computeNodeGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -259,9 +271,10 @@ public interface ComputeNodes {
 
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -271,9 +284,10 @@ public interface ComputeNodes {
 
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -281,9 +295,10 @@ public interface ComputeNodes {
     ServiceCall rebootAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -295,9 +310,10 @@ public interface ComputeNodes {
 
     /**
      * Restarts the specified compute node.
+     * You can restart a node only if it is in an idle or running state.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -308,9 +324,10 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -320,9 +337,10 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -330,9 +348,10 @@ public interface ComputeNodes {
     ServiceCall reimageAsync(String poolId, String nodeId, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -344,9 +363,10 @@ public interface ComputeNodes {
 
     /**
      * Reinstalls the operating system on the specified compute node.
+     * You can reinstall the operating system on a node only if it is in an idle or running state. This API can be invoked only on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that you want to restart.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that you want to restart.
      * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion', 'retaineddata'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -358,8 +378,8 @@ public interface ComputeNodes {
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -370,8 +390,8 @@ public interface ComputeNodes {
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -380,9 +400,9 @@ public interface ComputeNodes {
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -394,9 +414,9 @@ public interface ComputeNodes {
     /**
      * Disables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disable task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to disable task scheduling.
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskcompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -407,8 +427,8 @@ public interface ComputeNodes {
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -419,8 +439,8 @@ public interface ComputeNodes {
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -429,8 +449,8 @@ public interface ComputeNodes {
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -442,8 +462,8 @@ public interface ComputeNodes {
     /**
      * Enables task scheduling on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node on which you want to enable task scheduling.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node on which you want to enable task scheduling.
      * @param computeNodeEnableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -453,9 +473,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -465,9 +486,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -475,9 +497,10 @@ public interface ComputeNodes {
     ServiceCall getRemoteLoginSettingsAsync(String poolId, String nodeId, final ServiceCallback<ComputeNodeGetRemoteLoginSettingsResult> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
      * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -488,9 +511,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which to obtain the remote login settings.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which to obtain the remote login settings.
      * @param computeNodeGetRemoteLoginSettingsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -500,9 +524,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -512,9 +537,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -522,9 +548,10 @@ public interface ComputeNodes {
     ServiceCall getRemoteDesktopAsync(String poolId, String nodeId, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException;
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -535,9 +562,10 @@ public interface ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node for which you want to get the Remote Desktop Protocol file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
      * @param computeNodeGetRemoteDesktopOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -548,7 +576,7 @@ public interface ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
+     * @param poolId The ID of the pool from which you want to list nodes.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -559,7 +587,7 @@ public interface ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
+     * @param poolId The ID of the pool from which you want to list nodes.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -568,7 +596,7 @@ public interface ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
+     * @param poolId The ID of the pool from which you want to list nodes.
      * @param computeNodeListOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -580,7 +608,7 @@ public interface ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-     * @param poolId The id of the pool from which you want to list nodes.
+     * @param poolId The ID of the pool from which you want to list nodes.
      * @param computeNodeListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null

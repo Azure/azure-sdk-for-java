@@ -7,13 +7,13 @@
 package com.microsoft.azure.batch.interceptor;
 
 /**
- * This interface enables an interceptor to modify a request.
+ * This interface enables an interceptor to modify a request to the Batch service.
  */
 public interface BatchRequestInterceptHandler {
     /**
-     * modify the request
+     * Modifies the request to the Batch service.
      *
-     * @param request outgoing request
+     * @param request The outgoing Batch service request.
      */
     void modify(Object request);
 }

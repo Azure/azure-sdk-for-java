@@ -332,8 +332,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
-     * @param jobId The id of the job to delete.
+     * @param jobId The ID of the job to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -373,8 +374,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
-     * @param jobId The id of the job to delete.
+     * @param jobId The ID of the job to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -429,8 +431,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
-     * @param jobId The id of the job to delete.
+     * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -495,8 +498,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Deletes a job.
+     * Deleting a job also deletes all tasks that are part of that job, and all job statistics. This also overrides the retention period for task data; that is, if the job contains tasks which are still retained on compute nodes, the Batch services deletes those tasks' working directories and all their contents.
      *
-     * @param jobId The id of the job to delete.
+     * @param jobId The ID of the job to delete.
      * @param jobDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -584,7 +588,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets information about the specified job.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -627,7 +631,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets information about the specified job.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -685,7 +689,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets information about the specified job.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -759,7 +763,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Gets information about the specified job.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param jobGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -853,9 +857,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -899,9 +904,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -961,9 +967,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1032,9 +1039,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This replaces only the job properties specified in the request. For example, if the job has constraints, and a request does not specify the constraints element, then the job keeps the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobPatchParameter The parameters for the request.
      * @param jobPatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1126,9 +1134,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1172,9 +1181,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1234,9 +1244,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1305,9 +1316,10 @@ public final class JobsImpl implements Jobs {
     }
 
     /**
-     * Updates the properties of a job.
+     * Updates the properties of the specified job.
+     * This fully replaces all the updateable properties of the job. For example, if the job has constraints associated with it and if constraints is not specified with this request, then the Batch service will remove the existing constraints.
      *
-     * @param jobId The id of the job whose properties you want to update.
+     * @param jobId The ID of the job whose properties you want to update.
      * @param jobUpdateParameter The parameters for the request.
      * @param jobUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1400,9 +1412,10 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
-     * @param jobId The id of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1447,9 +1460,10 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
-     * @param jobId The id of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1510,9 +1524,10 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
-     * @param jobId The id of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1582,9 +1597,10 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Disables the specified job, preventing new tasks from running.
+     * The Batch Service immediately moves the job to the disabling state. Batch then uses the disableTasks parameter to determine what to do with the currently running tasks of the job. The job remains in the disabling state until the disable operation is completed and all tasks have been dealt with according to the disableTasks option; the job then moves to the disabled state. No new tasks are started under the job until it moves back to active state. If you try to disable a job that is in any state other than active, disabling, or disabled, the request fails with status code 409.
      *
-     * @param jobId The id of the job to disable.
-     * @param disableTasks What to do with active tasks associated with the job. Possible values include: 'requeue', 'terminate', 'wait'
+     * @param jobId The ID of the job to disable.
+     * @param disableTasks What to do with active tasks associated with the job. Possible values are: requeue – Terminate running tasks and requeue them. The tasks will run again when the job is enabled. terminate – Terminate running tasks. The tasks will not run again. wait – Allow currently running tasks to complete. Possible values include: 'requeue', 'terminate', 'wait'
      * @param jobDisableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1677,8 +1693,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
-     * @param jobId The id of the job to enable.
+     * @param jobId The ID of the job to enable.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1718,8 +1735,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
-     * @param jobId The id of the job to enable.
+     * @param jobId The ID of the job to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1774,8 +1792,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
-     * @param jobId The id of the job to enable.
+     * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1840,8 +1859,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Enables the specified job, allowing new tasks to run.
+     * When you call this API, the Batch service sets a disabled job to the enabling state. After the this operation is completed, the job moves to the active state, and scheduling of new tasks under the job resumes. The Batch service does not allow a task to remain in the active state for more than 7 days. Therefore, if you enable a job containing active tasks which were added more than 7 days ago, those tasks will not run.
      *
-     * @param jobId The id of the job to enable.
+     * @param jobId The ID of the job to enable.
      * @param jobEnableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1928,8 +1948,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
-     * @param jobId The id of the job to terminate.
+     * @param jobId The ID of the job to terminate.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1972,8 +1993,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
-     * @param jobId The id of the job to terminate.
+     * @param jobId The ID of the job to terminate.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2031,8 +2053,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
-     * @param jobId The id of the job to terminate.
+     * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -2103,8 +2126,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Terminates the specified job, marking it as completed.
+     * When a Terminate Job request is received, the Batch service sets the job to the terminating state. The Batch service then terminates any active or running tasks associated with the job, and runs any required Job Release tasks. The job then moves into the completed state.
      *
-     * @param jobId The id of the job to terminate.
+     * @param jobId The ID of the job to terminate.
      * @param terminateReason The text you want to appear as the job's TerminateReason. The default is 'UserTerminate'.
      * @param jobTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2197,6 +2221,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
      * @throws BatchErrorException exception thrown from REST call
@@ -2227,6 +2252,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -2272,6 +2298,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
@@ -2315,6 +2342,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Adds a job to the specified account.
+     * The Batch service supports two ways to control the work done as part of a job. In the first approach, the user specifies a Job Manager task. The Batch service launches this task when it is ready to start the job. The Job Manager task controls all other tasks that run under this job, by using the Task APIs. In the second approach, the user directly controls the execution of tasks under an active job, by using the Task APIs. Also note: when naming jobs, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
      * @param job The job to be added.
      * @param jobAddOptions Additional parameters for the operation
@@ -2624,7 +2652,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2664,7 +2692,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2719,7 +2747,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -2791,7 +2819,7 @@ public final class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule from which you want to get a list of jobs.
+     * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
      * @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -2884,8 +2912,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2923,8 +2952,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2977,8 +3007,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -3045,8 +3076,9 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
-     * @param jobId The id of the job.
+     * @param jobId The ID of the job.
      * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -3477,6 +3509,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws BatchErrorException exception thrown from REST call
@@ -3502,6 +3535,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -3549,6 +3583,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
@@ -3584,6 +3619,7 @@ public final class JobsImpl implements Jobs {
 
     /**
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
+     * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation

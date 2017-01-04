@@ -4,6 +4,6 @@
 //
 
 /**
- * This package contains the classes for BatchClient to modify REST request.
+ * This package contains classes for modifying requests to the Batch service.
  */
 package com.microsoft.azure.batch.interceptor;

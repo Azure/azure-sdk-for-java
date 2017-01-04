@@ -19,8 +19,14 @@ public class JobPreparationTask {
     /**
      * A string that uniquely identifies the job preparation task within the
      * job.
-     * The id can contain any combination of alphanumeric characters including
-     * hyphens and underscores and cannot contain more than 64 characters.
+     * The ID can contain any combination of alphanumeric characters including
+     * hyphens and underscores and cannot contain more than 64 characters. If
+     * you do not specify this property, the Batch service assigns a default
+     * value of 'jobpreparation'. No other task in the job can have the same
+     * id as the Job Preparation task. If you try to submit a task with the
+     * same id, the Batch service rejects the request with error code
+     * TaskIdSameAsJobPreparationTask; if you are calling the REST API
+     * directly, the HTTP status code is 409 (Conflict).
      */
     private String id;
 
@@ -38,6 +44,8 @@ public class JobPreparationTask {
     /**
      * A list of files that the Batch service will download to the compute
      * node before running the command line.
+     * Files listed under this element are located in the task's working
+     * directory.
      */
     private List<ResourceFile> resourceFiles;
 
@@ -55,6 +63,17 @@ public class JobPreparationTask {
      * Whether the Batch service should wait for the Job Preparation task to
      * complete successfully before scheduling any other tasks of the job on
      * the compute node.
+     * If true and the Job Preparation task fails on a compute node, the Batch
+     * service retries the Job Preparation task up to its maximum retry count
+     * (as specified in the constraints element). If the task has still not
+     * completed successfully after all retries, then the Batch service will
+     * not schedule tasks of the job to the compute node. The compute node
+     * remains active and eligible to run tasks of other jobs. If false, the
+     * Batch service will not wait for the Job Preparation task to complete.
+     * In this case, other tasks of the job can start executing on the
+     * compute node while the Job Preparation task is still running; and even
+     * if the Job Preparation task fails, new tasks will continue to be
+     * scheduled on the node. The default value is true.
      */
     private Boolean waitForSuccess;
 
@@ -67,9 +86,11 @@ public class JobPreparationTask {
     /**
      * Whether the Batch service should rerun the Job Preparation task after a
      * compute node reboots.
-     * Note that the Job Preparation task should still be written to be
-     * idempotent because it can be rerun if the compute node is rebooted
-     * while Job Preparation task is still running. The default value is true.
+     * The Job Preparation task is always rerun if a compute node is reimaged,
+     * or if the Job Preparation task did not complete (e.g. because the
+     * reboot occurred while the task was running). Therefore, you should
+     * always write a Job Preparation task to be idempotent and to behave
+     * correctly if run multiple times. The default value is true.
      */
     private Boolean rerunOnNodeRebootAfterSuccess;
 

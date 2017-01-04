@@ -17,7 +17,7 @@ import java.util.List;
 public class CloudJob {
     /**
      * A string that uniquely identifies the job within the account.
-     * The id can contain any combination of alphanumeric characters including
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
      * It is common to use a GUID for the id.
      */
@@ -40,11 +40,18 @@ public class CloudJob {
 
     /**
      * The ETag of the job.
+     * This is an opaque string. You can use it to detect whether the job has
+     * changed between requests. In particular, you can be pass the ETag when
+     * updating a job to specify that your changes should take effect only if
+     * nobody else has modified the job in the meantime.
      */
     private String eTag;
 
     /**
      * The last modified time of the job.
+     * This is the last time at which the job level data, such as the job
+     * state or priority, changed. It does not factor in task-level changes
+     * such as adding new tasks or tasks changing state.
      */
     private DateTime lastModified;
 
@@ -99,11 +106,15 @@ public class CloudJob {
 
     /**
      * The Job Preparation task.
+     * The Job Preparation task is a special task run on each node before any
+     * other task of the job.
      */
     private JobPreparationTask jobPreparationTask;
 
     /**
      * The Job Release task.
+     * The Job Release task is a special task run at the end of the job on
+     * each node that has run any other task of the job.
      */
     private JobReleaseTask jobReleaseTask;
 
@@ -115,14 +126,18 @@ public class CloudJob {
     private List<EnvironmentSetting> commonEnvironmentSettings;
 
     /**
-     * The pool on which the Batch service runs the job's tasks.
+     * The pool settings associated with the job.
      */
     private PoolInformation poolInfo;
 
     /**
      * The action the Batch service should take when all tasks in the job are
-     * in the completed state. Possible values include: 'noAction',
-     * 'terminateJob'.
+     * in the completed state.
+     * Permitted values are: noaction – do nothing. The job remains active
+     * unless terminated or disabled by some other means. terminatejob –
+     * terminate the job. The job's terminateReason is set to
+     * 'AllTasksComplete'. The default is noaction. Possible values include:
+     * 'noAction', 'terminateJob'.
      */
     private OnAllTasksComplete onAllTasksComplete;
 
@@ -130,13 +145,20 @@ public class CloudJob {
      * The action the Batch service should take when any task in the job
      * fails. A task is considered to have failed if it completes with a
      * non-zero exit code and has exhausted its retry count, or if it had a
-     * scheduling error. Possible values include: 'noAction',
-     * 'performExitOptionsJobAction'.
+     * scheduling error.
+     * Permitted values are: noaction – do nothing.
+     * performexitoptionsjobaction – take the action associated with the task
+     * exit condition in the task's exitConditions collection. (This may
+     * still result in no action being taken, if that is what the task
+     * specifies.) The default is noaction. Possible values include:
+     * 'noAction', 'performExitOptionsJobAction'.
      */
     private OnTaskFailure onTaskFailure;
 
     /**
      * A list of name-value pairs associated with the job as metadata.
+     * The Batch service does not assign any meaning to metadata; it is solely
+     * for the use of user code.
      */
     private List<MetadataItem> metadata;
 

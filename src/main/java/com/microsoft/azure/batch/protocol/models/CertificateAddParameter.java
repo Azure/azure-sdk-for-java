@@ -43,6 +43,8 @@ public class CertificateAddParameter {
 
     /**
      * The password to access the certificate's private key.
+     * This is required if the certificate format is pfx. It should be omitted
+     * if the certificate format is cer.
      */
     private String password;
 

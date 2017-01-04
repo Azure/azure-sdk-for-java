@@ -37,8 +37,8 @@ public class DetailLevel {
         /**
          * Sets the OData filter clause. Used to restrict a list operation to items that match specified criteria.
          *
-         * @param filter The filter clause
-         * @return The Builder instance
+         * @param filter The filter clause.
+         * @return The Builder instance.
          */
         public Builder withFilterClause(String filter) {
             this.filterClause = filter;
@@ -48,8 +48,8 @@ public class DetailLevel {
         /**
          * Sets the OData select clause. Used to retrieve only specific properties instead of all object properties.
          *
-         * @param select The select clause
-         * @return The Builder instance
+         * @param select The select clause.
+         * @return The Builder instance.
          */
         public Builder withSelectClause(String select) {
             this.selectClause = select;
@@ -59,8 +59,8 @@ public class DetailLevel {
         /**
          * Sets the OData expand clause. Used to retrieve associated entities of the main entity being retrieved.
          *
-         * @param expand The expand clause
-         * @return The Builder instance
+         * @param expand The expand clause.
+         * @return The Builder instance.
          */
         public Builder withExpandClause(String expand) {
             this.expandClause = expand;
@@ -80,7 +80,7 @@ public class DetailLevel {
     /**
      * Gets the OData filter clause. Used to restrict a list operation to items that match specified criteria.
      *
-     * @return The filter clause
+     * @return The filter clause.
      */
     public String filterClause() {
         return filterClause;
@@ -89,7 +89,7 @@ public class DetailLevel {
     /**
      * Gets the OData select clause. Used to retrieve only specific properties instead of all object properties.
      *
-     * @return The select clause
+     * @return The select clause.
      */
     public String selectClause() {
         return selectClause;
@@ -98,7 +98,7 @@ public class DetailLevel {
     /**
      * Gets the OData expand clause. Used to retrieve associated entities of the main entity being retrieved.
      *
-     * @return The expand clause
+     * @return The expand clause.
      */
     public String expandClause() {
         return expandClause;

@@ -17,12 +17,12 @@ import org.joda.time.DateTime;
 public class Certificate {
     /**
      * The X.509 thumbprint of the certificate. This is a sequence of up to 40
-     * hex digits (it may include spaces but these are removed).
+     * hex digits.
      */
     private String thumbprint;
 
     /**
-     * The algorithm used to derive the thumbprint. This must be sha1.
+     * The algorithm used to derive the thumbprint.
      */
     private String thumbprintAlgorithm;
 

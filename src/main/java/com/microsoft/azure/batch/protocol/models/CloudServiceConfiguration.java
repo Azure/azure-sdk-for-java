@@ -18,6 +18,11 @@ public class CloudServiceConfiguration {
     /**
      * The Azure Guest OS family to be installed on the virtual machines in
      * the pool.
+     * Possible values are: 2 – OS Family 2, equivalent to Windows Server 2008
+     * R2 SP1. 3 – OS Family 3, equivalent to Windows Server 2012. 4 – OS
+     * Family 4, equivalent to Windows Server 2012 R2. For more information,
+     * see Azure Guest OS Releases
+     * (https://azure.microsoft.com/documentation/articles/cloud-services-guestos-update-matrix/#releases).
      */
     @JsonProperty(required = true)
     private String osFamily;
@@ -32,8 +37,12 @@ public class CloudServiceConfiguration {
 
     /**
      * The Azure Guest OS Version currently installed on the virtual machines
-     * in the pool. This may differ from targetOSVersion if the pool state is
-     * Upgrading.
+     * in the pool.
+     * This may differ from targetOSVersion if the pool state is Upgrading. In
+     * this case some virtual machines may be on the targetOSVersion and some
+     * may be on the currentOSVersion during the upgrade process. Once all
+     * virtual machines have upgraded, currentOSVersion is updated to be the
+     * same as targetOSVersion.
      */
     private String currentOSVersion;
 

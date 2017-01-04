@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import java.util.List;
 
 /**
- * Parameters for a CloudJobOperations.Patch request.
+ * The set of changes to be made to a job.
  */
 public class JobPatchParameter {
     /**
@@ -24,8 +24,14 @@ public class JobPatchParameter {
 
     /**
      * Specifies an action the Batch service should take when all tasks in the
-     * job are in the completed state. Possible values include: 'noAction',
-     * 'terminateJob'.
+     * job are in the completed state.
+     * If omitted, the completion behavior is left unchanged. You may not
+     * change the value from terminatejob to noaction – that is, once you
+     * have engaged automatic job termination, you cannot turn it off again.
+     * If you try to do this, the request fails with an 'invalid property
+     * value' error response; if you are calling the REST API directly, the
+     * HTTP status code is 400 (Bad Request). Possible values include:
+     * 'noAction', 'terminateJob'.
      */
     private OnAllTasksComplete onAllTasksComplete;
 

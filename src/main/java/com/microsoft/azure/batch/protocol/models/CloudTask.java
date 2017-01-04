@@ -17,14 +17,15 @@ import java.util.List;
 public class CloudTask {
     /**
      * A string that uniquely identifies the task within the job.
-     * The id can contain any combination of alphanumeric characters including
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters.
-     * It is common to use a GUID for the id.
      */
     private String id;
 
     /**
      * A display name for the task.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
     private String displayName;
 
@@ -35,6 +36,10 @@ public class CloudTask {
 
     /**
      * The ETag of the task.
+     * This is an opaque string. You can use it to detect whether the task has
+     * changed between requests. In particular, you can be pass the ETag when
+     * updating a task to specify that your changes should take effect only
+     * if nobody else has modified the task in the meantime.
      */
     private String eTag;
 
@@ -79,9 +84,9 @@ public class CloudTask {
 
     /**
      * The command line of the task.
-     * For multi-instance tasks, the command line is executed on the primary
-     * subtask after all the subtasks have finished executing the
-     * coordianation command line. The command line does not run under a
+     * For multi-instance tasks, the command line is executed as the primary
+     * task, after the primary task and all subtasks have finished executing
+     * the coordination command line. The command line does not run under a
      * shell, and therefore cannot take advantage of shell features such as
      * environment variable expansion. If you want to take advantage of such
      * features, you should invoke the shell in the command line, for example
@@ -93,7 +98,7 @@ public class CloudTask {
      * A list of files that the Batch service will download to the compute
      * node before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
-     * the compute node on which the primary subtask is executed.
+     * the compute node on which the primary task is executed.
      */
     private List<ResourceFile> resourceFiles;
 
@@ -129,7 +134,8 @@ public class CloudTask {
     private ComputeNodeInformation nodeInfo;
 
     /**
-     * Information about how to run the multi-instance task.
+     * An object that indicates that the task is a multi-instance task, and
+     * contains information about how to run the multi-instance task.
      */
     private MultiInstanceSettings multiInstanceSettings;
 
@@ -139,7 +145,10 @@ public class CloudTask {
     private TaskStatistics stats;
 
     /**
-     * Any dependencies this task has.
+     * The tasks that this task depends on.
+     * The task will not be scheduled until all depended-on tasks have
+     * completed successfully. (If any depended-on tasks fail and exhaust
+     * their retry counts, the task will never be scheduled.).
      */
     private TaskDependencies dependsOn;
 

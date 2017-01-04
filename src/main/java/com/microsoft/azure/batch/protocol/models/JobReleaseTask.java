@@ -19,8 +19,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobReleaseTask {
     /**
      * A string that uniquely identifies the Job Release task within the job.
-     * The id can contain any combination of alphanumeric characters including
-     * hyphens and underscores and cannot contain more than 64 characters.
+     * The ID can contain any combination of alphanumeric characters including
+     * hyphens and underscores and cannot contain more than 64 characters. If
+     * you do not specify this property, the Batch service assigns a default
+     * value of 'jobrelease'. No other task in the job can have the same id
+     * as the Job Release task. If you try to submit a task with the same id,
+     * the Batch service rejects the request with error code
+     * TaskIdSameAsJobReleaseTask; if you are calling the REST API directly,
+     * the HTTP status code is 409 (Conflict).
      */
     private String id;
 
@@ -38,6 +44,8 @@ public class JobReleaseTask {
     /**
      * A list of files that the Batch service will download to the compute
      * node before running the command line.
+     * Files listed under this element are located in the task's working
+     * directory.
      */
     private List<ResourceFile> resourceFiles;
 
@@ -50,15 +58,19 @@ public class JobReleaseTask {
      * The maximum elapsed time that the Job Release task may run on a given
      * compute node, measured from the time the task starts. If the task does
      * not complete within the time limit, the Batch service terminates it.
-     * The default value is 15 minutes.
+     * The default value is 15 minutes. You may not specify a timeout longer
+     * than 15 minutes. If you do, the Batch service rejects it with an
+     * error; if you are calling the REST API directly, the HTTP status code
+     * is 400 (Bad Request).
      */
     private Period maxWallClockTime;
 
     /**
-     * The minimum time to retain the working directory for the Job Release
-     * task on the compute node. After this time, the Batch service may
-     * delete the working directory and all its contents.
-     * The default is infinite.
+     * The minimum time to retain the task directory for the Job Release task
+     * on the compute node. After this time, the Batch service may delete the
+     * task directory and all its contents.
+     * The default is infinite, i.e. the task directory will be retained until
+     * the compute node is removed or reimaged.
      */
     private Period retentionTime;
 

@@ -17,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class FileProperties {
     /**
      * The file creation time.
+     * The creation time is not returned for files on Linux compute nodes.
      */
     private DateTime creationTime;
 
@@ -39,7 +40,7 @@ public class FileProperties {
 
     /**
      * The file mode attribute in octal format.
-     * This property will be returned only from a Linux compute node.
+     * The file mode is returned only for files on Linux compute nodes.
      */
     private String fileMode;
 

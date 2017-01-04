@@ -4,6 +4,6 @@
 //
 
 /**
- * This package contains the classes for BatchClient authentication.
+ * This package contains classes for authenticating requests against the Azure Batch service.
  */
 package com.microsoft.azure.batch.auth;

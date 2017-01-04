@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class NodeAgentSku {
     /**
-     * The node agent SKU id.
+     * The ID of the node agent SKU.
      */
     private String id;
 
@@ -31,7 +31,8 @@ public class NodeAgentSku {
     private List<ImageReference> verifiedImageReferences;
 
     /**
-     * The type of operating system compatible with the node agent SKU.
+     * The type of operating system (e.g. Windows or Linux) compatible with
+     * the node agent SKU.
      * Possible values include: 'linux', 'windows', 'unmapped'.
      */
     private OSType osType;

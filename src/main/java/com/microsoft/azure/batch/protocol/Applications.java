@@ -30,6 +30,7 @@ import java.io.IOException;
 public interface Applications {
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -40,6 +41,7 @@ public interface Applications {
 
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -48,6 +50,7 @@ public interface Applications {
     ServiceCall listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -59,6 +62,7 @@ public interface Applications {
 
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -70,7 +74,7 @@ public interface Applications {
     /**
      * Gets information about the specified application.
      *
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -81,7 +85,7 @@ public interface Applications {
     /**
      * Gets information about the specified application.
      *
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link ServiceCall} object
@@ -90,7 +94,7 @@ public interface Applications {
     /**
      * Gets information about the specified application.
      *
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -102,7 +106,7 @@ public interface Applications {
     /**
      * Gets information about the specified application.
      *
-     * @param applicationId The id of the application.
+     * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -112,6 +116,7 @@ public interface Applications {
 
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws BatchErrorException exception thrown from REST call
@@ -123,6 +128,7 @@ public interface Applications {
 
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -133,6 +139,7 @@ public interface Applications {
     ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException;
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation
@@ -145,6 +152,7 @@ public interface Applications {
 
     /**
      * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param applicationListNextOptions Additional parameters for the operation

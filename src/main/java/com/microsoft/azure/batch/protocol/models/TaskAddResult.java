@@ -24,7 +24,7 @@ public class TaskAddResult {
     private TaskAddStatus status;
 
     /**
-     * The id of the task for which this is the result.
+     * The ID of the task for which this is the result.
      */
     @JsonProperty(required = true)
     private String taskId;

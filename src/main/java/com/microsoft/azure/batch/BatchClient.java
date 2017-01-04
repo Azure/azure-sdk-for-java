@@ -32,9 +32,9 @@ public class BatchClient {
     private Collection<BatchClientBehavior> customBehaviors;
 
     /**
-     * Gets the internal proxy layer to be used for this client instance
+     * Gets the protocol layer service client that issues requests to the Azure Batch service.
      *
-     * @return The proxy layer client
+     * @return The protocol layer client.
      */
     public BatchServiceClient protocolLayer() {
         return this.protocolLayer;
@@ -58,108 +58,108 @@ public class BatchClient {
     /**
      * Creates an instance of {@link BatchClient} associated with the specified credentials.
      *
-     * @param credentials The provided credential
-     * @return The new instance of BatchClient
+     * @param credentials A {@link BatchSharedKeyCredentials} object specifying the Batch account credentials.
+     * @return The new {@link BatchClient} instance.
      */
     public static BatchClient open(BatchSharedKeyCredentials credentials) {
         return new BatchClient(credentials);
     }
 
     /**
-     * Gets an {@link CertificateOperations} for performing certificate related operations on the associated account.
+     * Gets a {@link CertificateOperations} object for performing certificate-related operations on the associated account.
      *
-     * @return An instance of CertificateOperations class
+     * @return An instance of the {@link CertificateOperations} class.
      */
     public CertificateOperations certificateOperations() {
         return certificateOperations;
     }
 
     /**
-     * Gets an {@link JobOperations} for performing job related operations on the associated account.
+     * Gets a {@link JobOperations} object for performing job-related operations on the associated account.
      *
-     * @return An instance of JobOperations class
+     * @return An instance of the {@link JobOperations} class.
      */
     public JobOperations jobOperations() {
         return jobOperations;
     }
 
     /**
-     * Gets an {@link TaskOperations} for performing task related operations on the associated account.
+     * Gets a {@link TaskOperations} object for performing task-related operations on the associated account.
      *
-     * @return An instance of TaskOperations class
+     * @return An instance of the {@link TaskOperations} class.
      */
     public TaskOperations taskOperations() {
         return taskOperations;
     }
 
     /**
-     * Gets an {@link JobScheduleOperations} for performing job schedule related operations on the associated account.
+     * Gets a {@link JobScheduleOperations} object for performing job schedule-related operations on the associated account.
      *
-     * @return An instance of JobScheduleOperations class
+     * @return An instance of the {@link JobScheduleOperations} class.
      */
     public JobScheduleOperations jobScheduleOperations() {
         return jobScheduleOperations;
     }
 
     /**
-     * Gets an {@link FileOperations} for performing file-related operations on the associated account.
+     * Gets a {@link FileOperations} object for performing file-related operations on the associated account.
      *
-     * @return An instance of FileOperations class
+     * @return An instance of the {@link FileOperations} class.
      */
     public FileOperations fileOperations() {
         return fileOperations;
     }
 
     /**
-     * Gets an {@link PoolOperations} for performing pool related operations on the associated account.
+     * Gets a {@link PoolOperations} object for performing pool-related operations on the associated account.
      *
-     * @return An instance of PoolOperations class
+     * @return An instance of the {@link PoolOperations} class.
      */
     public PoolOperations poolOperations() {
         return poolOperations;
     }
 
     /**
-     * Gets an {@link ComputeNodeOperations} for performing compute node related operations on the associated account.
+     * Gets a {@link ComputeNodeOperations} object for performing compute node-related operations on the associated account.
      *
-     * @return An instance of ComputeNodeOperations class
+     * @return An instance of the {@link ComputeNodeOperations} class.
      */
     public ComputeNodeOperations computeNodeOperations() {
         return computeNodeOperations;
     }
 
     /**
-     * Gets an {@link ApplicationOperations} for performing application related operations on the associated account.
+     * Gets an {@link ApplicationOperations} object for performing application-related operations on the associated account.
      *
-     * @return An instance of ApplicationOperations class
+     * @return An instance of the {@link ApplicationOperations} class.
      */
     public ApplicationOperations applicationOperations() {
         return applicationOperations;
     }
 
     /**
-     * Gets an {@link AccountOperations} for performing account related operations on the associated account.
+     * Gets an {@link AccountOperations} object for performing account-related operations on the associated account.
      *
-     * @return An instance of AccountOperations class
+     * @return An instance of the {@link AccountOperations} class.
      */
     public AccountOperations accountOperations() {
         return accountOperations;
     }
 
     /**
-     * Gets a list of behaviors that modify or customize requests to the Batch service.
+     * Gets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @return The collection of BatchClientBehavior classes.
+     * @return The collection of {@link BatchClientBehavior} instances.
      */
     public Collection<BatchClientBehavior> customBehaviors() {
         return customBehaviors;
     }
 
     /**
-     * Sets a list of behaviors that modify or customize requests to the Batch service.
+     * Sets a collection of behaviors that modify or customize requests to the Batch service.
      *
-     * @param customBehaviors The collection of BatchClientBehavior classes.
-     * @return A BatchClient instance
+     * @param customBehaviors The collection of {@link BatchClientBehavior} instances.
+     * @return The current instance.
      */
     public BatchClient withCustomBehaviors(Collection<BatchClientBehavior> customBehaviors) {
         this.customBehaviors = customBehaviors;

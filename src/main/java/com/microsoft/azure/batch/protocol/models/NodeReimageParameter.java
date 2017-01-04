@@ -10,7 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 
 /**
- * Parameters for a ComputeNodeOperations.Reimage request.
+ * Options for reimaging a compute node.
  */
 public class NodeReimageParameter {
     /**

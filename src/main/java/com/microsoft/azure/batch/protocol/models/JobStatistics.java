@@ -68,13 +68,13 @@ public class JobStatistics {
     private long writeIOps;
 
     /**
-     * The total gibibytes read from disk by all tasks in the job.
+     * The total amount of data in GiB read from disk by all tasks in the job.
      */
     @JsonProperty(required = true)
     private double readIOGiB;
 
     /**
-     * The total gibibytes written to disk by all tasks in the job.
+     * The total amount of data in GiB written to disk by all tasks in the job.
      */
     @JsonProperty(required = true)
     private double writeIOGiB;
@@ -82,6 +82,7 @@ public class JobStatistics {
     /**
      * The total number of tasks successfully completed in the job during the
      * given time range.
+     * A task completes successfully if it returns exit code 0.
      */
     @JsonProperty(required = true)
     private long numSucceededTasks;
@@ -89,6 +90,8 @@ public class JobStatistics {
     /**
      * The total number of tasks in the job that failed during the given time
      * range.
+     * A task fails if it exhausts its maximum retry count without returning
+     * exit code 0.
      */
     @JsonProperty(required = true)
     private long numFailedTasks;
@@ -105,7 +108,8 @@ public class JobStatistics {
      * The wait time for a task is defined as the elapsed time between the
      * creation of the task and the start of task execution. (If the task is
      * retried due to failures, the wait time is the time to the most recent
-     * task execution.).
+     * task execution.) This value is only reported in the account lifetime
+     * statistics; it is not included in the job statistics.
      */
     @JsonProperty(required = true)
     private Period waitTime;

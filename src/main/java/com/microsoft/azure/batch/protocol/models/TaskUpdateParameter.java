@@ -10,7 +10,7 @@ package com.microsoft.azure.batch.protocol.models;
 
 
 /**
- * Parameters for a CloudTaskOperations.Update request.
+ * The set of changes to be made to a task.
  */
 public class TaskUpdateParameter {
     /**

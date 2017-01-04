@@ -14,13 +14,13 @@ package com.microsoft.azure.batch.protocol.models;
  */
 public class JobPreparationAndReleaseTaskExecutionInformation {
     /**
-     * The id of the pool containing the compute node to which this entry
+     * The ID of the pool containing the compute node to which this entry
      * refers.
      */
     private String poolId;
 
     /**
-     * The id of the compute node to which this entry refers.
+     * The ID of the compute node to which this entry refers.
      */
     private String nodeId;
 

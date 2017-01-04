@@ -119,6 +119,7 @@ public interface Certificates {
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
@@ -131,6 +132,7 @@ public interface Certificates {
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
@@ -141,6 +143,7 @@ public interface Certificates {
     ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
@@ -154,6 +157,7 @@ public interface Certificates {
 
     /**
      * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
@@ -166,6 +170,7 @@ public interface Certificates {
 
     /**
      * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
@@ -178,6 +183,7 @@ public interface Certificates {
 
     /**
      * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
@@ -188,6 +194,7 @@ public interface Certificates {
     ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException;
     /**
      * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
@@ -201,6 +208,7 @@ public interface Certificates {
 
     /**
      * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.

@@ -14,7 +14,7 @@ package com.microsoft.azure.batch.protocol.models;
  */
 public class RecentJob {
     /**
-     * The id of the job.
+     * The ID of the job.
      */
     private String id;
 

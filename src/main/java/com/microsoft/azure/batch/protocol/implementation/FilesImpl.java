@@ -133,8 +133,8 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node where the task ran.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to delete.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -171,8 +171,8 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node where the task ran.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to delete.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -226,10 +226,10 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node where the task ran.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to delete.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -277,10 +277,10 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node where the task ran.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to delete.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -352,8 +352,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to retrieve.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -400,8 +400,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to retrieve.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -465,8 +465,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to retrieve.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -535,8 +535,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to retrieve.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -629,8 +629,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to get the properties of.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -676,8 +676,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to get the properties of.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -740,8 +740,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to get the properties of.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -806,8 +806,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified task file.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose file you want to get the properties of.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -896,8 +896,8 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node from which you want to delete the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -934,8 +934,8 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node from which you want to delete the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -989,10 +989,10 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node from which you want to delete the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1040,10 +1040,10 @@ public final class FilesImpl implements Files {
     /**
      * Deletes the specified task file from the compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node from which you want to delete the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set Recursive to true to delete the directory and all of the files and subdirectories in it. If Recursive is false then the directory must be empty or deletion will fail.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1115,8 +1115,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1163,8 +1163,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1228,8 +1228,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1298,8 +1298,8 @@ public final class FilesImpl implements Files {
     /**
      * Returns the content of the specified task file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1392,8 +1392,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified compute node file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1439,8 +1439,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified compute node file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1503,8 +1503,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified compute node file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1569,8 +1569,8 @@ public final class FilesImpl implements Files {
     /**
      * Gets the properties of the specified compute node file.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node that contains the file.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1659,8 +1659,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose files you want to list.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1702,8 +1702,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose files you want to list.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1761,9 +1761,9 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
+     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1830,9 +1830,9 @@ public final class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-     * @param jobId The id of the job that contains the task.
-     * @param taskId The id of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory.
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
+     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1922,8 +1922,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node whose files you want to list.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1965,8 +1965,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node whose files you want to list.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2024,8 +2024,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node whose files you want to list.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -2093,8 +2093,8 @@ public final class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-     * @param poolId The id of the pool that contains the compute node.
-     * @param nodeId The id of the compute node whose files you want to list.
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.

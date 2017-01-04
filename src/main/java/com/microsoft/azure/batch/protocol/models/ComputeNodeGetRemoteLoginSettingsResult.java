@@ -11,7 +11,7 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Response to a ComputeNodeOperation.GetRemoteLoginSettings request.
+ * The remote login settings for a compute node.
  */
 public class ComputeNodeGetRemoteLoginSettingsResult {
     /**

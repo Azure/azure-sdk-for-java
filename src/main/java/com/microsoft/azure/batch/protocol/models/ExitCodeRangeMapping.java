@@ -28,8 +28,8 @@ public class ExitCodeRangeMapping {
     private int end;
 
     /**
-     * An exitOptions specifying how the Batch service should respond if the
-     * task exits with an exit code in the range start to end.
+     * How the Batch service should respond if the task exits with an exit
+     * code in the range start to end (inclusive).
      */
     @JsonProperty(required = true)
     private ExitOptions exitOptions;

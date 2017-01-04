@@ -18,12 +18,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobScheduleAddParameter {
     /**
      * A string that uniquely identifies the schedule within the account.
+     * The ID can contain any combination of alphanumeric characters including
+     * hyphens and underscores, and cannot contain more than 64 characters.
+     * The id is case-preserving and case-insensitive (that is, you may not
+     * have two ids within an account that differ only by case).
      */
     @JsonProperty(required = true)
     private String id;
 
     /**
      * The display name for the schedule.
+     * The display name need not be unique and can contain any Unicode
+     * characters up to a maximum length of 1024.
      */
     private String displayName;
 
@@ -41,6 +47,8 @@ public class JobScheduleAddParameter {
 
     /**
      * A list of name-value pairs associated with the schedule as metadata.
+     * The Batch service does not assign any meaning to metadata; it is solely
+     * for the use of user code.
      */
     private List<MetadataItem> metadata;
 

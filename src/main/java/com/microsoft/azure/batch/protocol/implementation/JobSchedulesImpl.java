@@ -143,7 +143,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -184,7 +184,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -240,7 +240,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -306,7 +306,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Checks the specified job schedule exists.
      *
-     * @param jobScheduleId The id of the job schedule which you want to check.
+     * @param jobScheduleId The ID of the job schedule which you want to check.
      * @param jobScheduleExistsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -394,8 +394,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -435,8 +436,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -491,8 +493,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -557,8 +560,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Deletes a job schedule from the specified account.
+     * When you delete a job schedule, this also deletes all jobs and tasks under that schedule. When tasks are deleted, all the files in their working directories on the compute nodes are also deleted (the retention period is ignored). The job schedule statistics are no longer accessible once the job schedule is deleted, though they are still counted towards account lifetime statistics.
      *
-     * @param jobScheduleId The id of the job schedule to delete.
+     * @param jobScheduleId The ID of the job schedule to delete.
      * @param jobScheduleDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -646,7 +650,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
+     * @param jobScheduleId The ID of the job schedule to get.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -689,7 +693,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
+     * @param jobScheduleId The ID of the job schedule to get.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -747,7 +751,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
+     * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -821,7 +825,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Gets information about the specified job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to get.
+     * @param jobScheduleId The ID of the job schedule to get.
      * @param jobScheduleGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -916,8 +920,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -962,8 +967,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1024,8 +1030,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1095,8 +1102,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This replaces only the job schedule properties specified in the request. For example, if the schedule property is not specified with this request, then the Batch service will keep the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobSchedulePatchParameter The parameters for the request.
      * @param jobSchedulePatchOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1189,8 +1197,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1235,8 +1244,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1297,8 +1307,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
@@ -1368,8 +1379,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Updates the properties of the specified job schedule.
+     * This fully replaces all the updateable properties of the job schedule. For example, if the schedule property is not specified with this request, then the Batch service will remove the existing schedule. Changes to a job schedule only impact jobs created by the schedule after the update has taken place; currently running jobs are unaffected.
      *
-     * @param jobScheduleId The id of the job schedule to update.
+     * @param jobScheduleId The ID of the job schedule to update.
      * @param jobScheduleUpdateParameter The parameters for the request.
      * @param jobScheduleUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -1462,8 +1474,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1503,8 +1516,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1559,8 +1573,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1625,8 +1640,9 @@ public final class JobSchedulesImpl implements JobSchedules {
 
     /**
      * Disables a job schedule.
+     * No new jobs will be created until the job schedule is enabled again.
      *
-     * @param jobScheduleId The id of the job schedule to disable.
+     * @param jobScheduleId The ID of the job schedule to disable.
      * @param jobScheduleDisableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1714,7 +1730,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -1755,7 +1771,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -1811,7 +1827,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -1877,7 +1893,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Enables a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to enable.
+     * @param jobScheduleId The ID of the job schedule to enable.
      * @param jobScheduleEnableOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
@@ -1965,7 +1981,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
      * @throws IllegalArgumentException exception thrown from invalid parameters
@@ -2006,7 +2022,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
      * @return the {@link Call} object
@@ -2062,7 +2078,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
      * @throws BatchErrorException exception thrown from REST call
      * @throws IOException exception thrown from serialization/deserialization
@@ -2128,7 +2144,7 @@ public final class JobSchedulesImpl implements JobSchedules {
     /**
      * Terminates a job schedule.
      *
-     * @param jobScheduleId The id of the job schedule to terminates.
+     * @param jobScheduleId The ID of the job schedule to terminates.
      * @param jobScheduleTerminateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if callback is null
