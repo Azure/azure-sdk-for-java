@@ -60,6 +60,9 @@ final class GenericResourceImpl
 
     @Override
     public String parentResourcePath() {
+        if (parentResourcePath == null) {
+            return "";
+        }
         return parentResourcePath;
     }
 
