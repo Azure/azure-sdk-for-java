@@ -11,7 +11,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Certificates;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.Certificate;
@@ -34,12 +33,14 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
+import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
@@ -48,9 +49,8 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -80,27 +80,27 @@ public final class CertificatesImpl implements Certificates {
     interface CertificatesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("certificates")
-        Observable<Response<ResponseBody>> add(@Body CertificateAddParameter certificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> add(@Body CertificateAddParameter certificate, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("certificates")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("$select") String select, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @POST("certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})/canceldelete")
-        Observable<Response<ResponseBody>> cancelDeletion(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> cancelDeletion(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> delete(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("certificates(thumbprintAlgorithm={thumbprintAlgorithm},thumbprint={thumbprint})")
-        Observable<Response<ResponseBody>> get(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> get(@Path("thumbprintAlgorithm") String thumbprintAlgorithm, @Path("thumbprint") String thumbprint, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$select") String select, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -108,44 +108,12 @@ public final class CertificatesImpl implements Certificates {
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
-     */
-    public void add(CertificateAddParameter certificate) {
-        addWithServiceResponseAsync(certificate).toBlocking().single().getBody();
-    }
-
-    /**
-     * Adds a certificate to the specified account.
-     *
-     * @param certificate The certificate to be added.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(addWithServiceResponseAsync(certificate), serviceCallback);
-    }
-
-    /**
-     * Adds a certificate to the specified account.
-     *
-     * @param certificate The certificate to be added.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> addAsync(CertificateAddParameter certificate) {
-        return addWithServiceResponseAsync(certificate).map(new Func1<ServiceResponseWithHeaders<Void, CertificateAddHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateAddHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Adds a certificate to the specified account.
-     *
-     * @param certificate The certificate to be added.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate) {
+    public ServiceResponseWithHeaders<Void, CertificateAddHeaders> add(CertificateAddParameter certificate) throws BatchErrorException, IOException, IllegalArgumentException {
         if (certificate == null) {
             throw new IllegalArgumentException("Parameter certificate is required and cannot be null.");
         }
@@ -162,56 +130,53 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateAddHeaders> clientResponse = addDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return addDelegate(call.execute());
     }
 
     /**
      * Adds a certificate to the specified account.
      *
      * @param certificate The certificate to be added.
-     * @param certificateAddOptions Additional parameters for the operation
-     */
-    public void add(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
-        addWithServiceResponseAsync(certificate, certificateAddOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Adds a certificate to the specified account.
-     *
-     * @param certificate The certificate to be added.
-     * @param certificateAddOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(addWithServiceResponseAsync(certificate, certificateAddOptions), serviceCallback);
-    }
-
-    /**
-     * Adds a certificate to the specified account.
-     *
-     * @param certificate The certificate to be added.
-     * @param certificateAddOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
-        return addWithServiceResponseAsync(certificate, certificateAddOptions).map(new Func1<ServiceResponseWithHeaders<Void, CertificateAddHeaders>, Void>() {
+    public ServiceCall addAsync(CertificateAddParameter certificate, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (certificate == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter certificate is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificate, serviceCallback);
+        final CertificateAddOptions certificateAddOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateAddHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -219,9 +184,12 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param certificate The certificate to be added.
      * @param certificateAddOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> addWithServiceResponseAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) {
+    public ServiceResponseWithHeaders<Void, CertificateAddHeaders> add(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (certificate == null) {
             throw new IllegalArgumentException("Parameter certificate is required and cannot be null.");
         }
@@ -250,18 +218,66 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateAddHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateAddHeaders> clientResponse = addDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return addDelegate(call.execute());
+    }
+
+    /**
+     * Adds a certificate to the specified account.
+     *
+     * @param certificate The certificate to be added.
+     * @param certificateAddOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall addAsync(CertificateAddParameter certificate, CertificateAddOptions certificateAddOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (certificate == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter certificate is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificate, serviceCallback);
+        Validator.validate(certificateAddOptions, serviceCallback);
+        Integer timeout = null;
+        if (certificateAddOptions != null) {
+            timeout = certificateAddOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (certificateAddOptions != null) {
+            clientRequestId = certificateAddOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateAddOptions != null) {
+            returnClientRequestId = certificateAddOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateAddOptions != null) {
+            ocpDate = certificateAddOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.add(certificate, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(addDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, CertificateAddHeaders> addDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -274,76 +290,12 @@ public final class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @return the PagedList&lt;Certificate&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<Certificate> list() {
-        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<Certificate>(response.getBody()) {
-            @Override
-            public Page<Certificate> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<Certificate>> listAsync(final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<Page<Certificate>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Page<Certificate>>() {
-                @Override
-                public Page<Certificate> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync() {
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -359,119 +311,76 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param certificateListOptions Additional parameters for the operation
-     * @return the PagedList&lt;Certificate&gt; object if successful.
-     */
-    public PagedList<Certificate> list(final CertificateListOptions certificateListOptions) {
-        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listSinglePageAsync(certificateListOptions).toBlocking().single();
-        return new PagedList<Certificate>(response.getBody()) {
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> response = listDelegate(call.execute());
+        PagedList<Certificate> result = new PagedList<Certificate>(response.getBody()) {
             @Override
-            public Page<Certificate> nextPage(String nextPageLink) {
-                CertificateListNextOptions certificateListNextOptions = null;
-                if (certificateListOptions != null) {
-                    certificateListNextOptions = new CertificateListNextOptions();
-                    certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
-                    certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
-                    certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
-                }
-                return listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single().getBody();
+            public Page<Certificate> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                return listNext(nextPageLink, null).getBody();
             }
         };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-     * @param certificateListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<Certificate>> listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listSinglePageAsync(certificateListOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
-                    CertificateListNextOptions certificateListNextOptions = null;
-                    if (certificateListOptions != null) {
-                        certificateListNextOptions = new CertificateListNextOptions();
-                        certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
-                        certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
-                        certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
+    public ServiceCall listAsync(final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final CertificateListOptions certificateListOptions = null;
+        String filter = null;
+        String select = null;
+        Integer maxResults = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return listNextSinglePageAsync(nextPageLink, certificateListNextOptions);
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            },
-            serviceCallback);
+            }
+        });
+        return serviceCall;
     }
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param certificateListOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;Certificate&gt; object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<Page<Certificate>> listAsync(final CertificateListOptions certificateListOptions) {
-        return listWithServiceResponseAsync(certificateListOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Page<Certificate>>() {
-                @Override
-                public Page<Certificate> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param certificateListOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listWithServiceResponseAsync(final CertificateListOptions certificateListOptions) {
-        return listSinglePageAsync(certificateListOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    CertificateListNextOptions certificateListNextOptions = null;
-                    if (certificateListOptions != null) {
-                        certificateListNextOptions = new CertificateListNextOptions();
-                        certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
-                        certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
-                        certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, certificateListNextOptions));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListOptions Additional parameters for the operation
-     * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listSinglePageAsync(final CertificateListOptions certificateListOptions) {
+    public ServiceResponseWithHeaders<PagedList<Certificate>, CertificateListHeaders> list(final CertificateListOptions certificateListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -508,18 +417,100 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> response = listDelegate(call.execute());
+        PagedList<Certificate> result = new PagedList<Certificate>(response.getBody()) {
+            @Override
+            public Page<Certificate> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                CertificateListNextOptions certificateListNextOptions = null;
+                if (certificateListOptions != null) {
+                    certificateListNextOptions = new CertificateListNextOptions();
+                    certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
+                    certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
+                    certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
                 }
-            });
+                return listNext(nextPageLink, certificateListNextOptions).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param certificateListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final CertificateListOptions certificateListOptions, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificateListOptions, serviceCallback);
+        String filter = null;
+        if (certificateListOptions != null) {
+            filter = certificateListOptions.filter();
+        }
+        String select = null;
+        if (certificateListOptions != null) {
+            select = certificateListOptions.select();
+        }
+        Integer maxResults = null;
+        if (certificateListOptions != null) {
+            maxResults = certificateListOptions.maxResults();
+        }
+        Integer timeout = null;
+        if (certificateListOptions != null) {
+            timeout = certificateListOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (certificateListOptions != null) {
+            clientRequestId = certificateListOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateListOptions != null) {
+            returnClientRequestId = certificateListOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateListOptions != null) {
+            ocpDate = certificateListOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), filter, select, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        CertificateListNextOptions certificateListNextOptions = null;
+                        if (certificateListOptions != null) {
+                            certificateListNextOptions = new CertificateListNextOptions();
+                            certificateListNextOptions.withClientRequestId(certificateListOptions.clientRequestId());
+                            certificateListNextOptions.withReturnClientRequestId(certificateListOptions.returnClientRequestId());
+                            certificateListNextOptions.withOcpDate(certificateListOptions.ocpDate());
+                        }
+                        listNextAsync(result.getBody().getNextPageLink(), certificateListNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -535,50 +526,12 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
-     */
-    public void cancelDeletion(String thumbprintAlgorithm, String thumbprint) {
-        cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).toBlocking().single().getBody();
-    }
-
-    /**
-     * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate being deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
-    }
-
-    /**
-     * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint) {
-        return cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).map(new Func1<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate being deleted.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+    public ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletion(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -597,18 +550,8 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> clientResponse = cancelDeletionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return cancelDeletionDelegate(call.execute());
     }
 
     /**
@@ -617,42 +560,48 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
-     * @param certificateCancelDeletionOptions Additional parameters for the operation
-     */
-    public void cancelDeletion(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
-        cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate being deleted.
-     * @param certificateCancelDeletionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions), serviceCallback);
-    }
-
-    /**
-     * Cancels a failed deletion of a certificate from the specified account.
-     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate being deleted.
-     * @param certificateCancelDeletionOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
-        return cancelDeletionWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateCancelDeletionOptions).map(new Func1<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>, Void>() {
+    public ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final CertificateCancelDeletionOptions certificateCancelDeletionOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(cancelDeletionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -662,9 +611,12 @@ public final class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate being deleted.
      * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> cancelDeletionWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) {
+    public ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletion(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -695,18 +647,71 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> clientResponse = cancelDeletionDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return cancelDeletionDelegate(call.execute());
+    }
+
+    /**
+     * Cancels a failed deletion of a certificate from the specified account.
+     * If you try to delete a certificate that is being used by a pool or compute node, the status of the certificate changes to deletefailed. If you decide that you want to continue using the certificate, you can use this operation to set the status of the certificate back to active. If you intend to delete the certificate, you do not need to run this operation after the deletion failed. You must make sure that the certificate is not being used by any resources, and then you can try again to delete the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate being deleted.
+     * @param certificateCancelDeletionOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall cancelDeletionAsync(String thumbprintAlgorithm, String thumbprint, CertificateCancelDeletionOptions certificateCancelDeletionOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificateCancelDeletionOptions, serviceCallback);
+        Integer timeout = null;
+        if (certificateCancelDeletionOptions != null) {
+            timeout = certificateCancelDeletionOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (certificateCancelDeletionOptions != null) {
+            clientRequestId = certificateCancelDeletionOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateCancelDeletionOptions != null) {
+            returnClientRequestId = certificateCancelDeletionOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateCancelDeletionOptions != null) {
+            ocpDate = certificateCancelDeletionOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.cancelDeletion(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(cancelDeletionDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, CertificateCancelDeletionHeaders> cancelDeletionDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -722,50 +727,12 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
-     */
-    public void delete(String thumbprintAlgorithm, String thumbprint) {
-        deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
-    }
-
-    /**
-     * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint) {
-        return deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).map(new Func1<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+    public ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> delete(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -784,18 +751,8 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteDelegate(call.execute());
     }
 
     /**
@@ -804,42 +761,48 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @param certificateDeleteOptions Additional parameters for the operation
-     */
-    public void delete(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
-        deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @param certificateDeleteOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions), serviceCallback);
-    }
-
-    /**
-     * Deletes a certificate from the specified account.
-     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to be deleted.
-     * @param certificateDeleteOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
-        return deleteWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateDeleteOptions).map(new Func1<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>, Void>() {
+    public ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final CertificateDeleteOptions certificateDeleteOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -849,9 +812,12 @@ public final class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to be deleted.
      * @param certificateDeleteOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> deleteWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) {
+    public ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> delete(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -882,18 +848,71 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, CertificateDeleteHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteDelegate(call.execute());
+    }
+
+    /**
+     * Deletes a certificate from the specified account.
+     * You cannot delete a certificate if a resource (pool or compute node) is using it. Before you can delete a certificate, you must therefore make sure that the certificate is not associated with any existing pools, the certificate is not installed on any compute nodes (even if you remove a certificate from a pool, it is not removed from existing compute nodes in that pool until they restart), and no running tasks depend on the certificate. If you try to delete a certificate that is in use, the deletion fails. The certificate status changes to deletefailed. You can use Cancel Delete Certificate to set the status back to active if you decide that you want to continue using the certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to be deleted.
+     * @param certificateDeleteOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteAsync(String thumbprintAlgorithm, String thumbprint, CertificateDeleteOptions certificateDeleteOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificateDeleteOptions, serviceCallback);
+        Integer timeout = null;
+        if (certificateDeleteOptions != null) {
+            timeout = certificateDeleteOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (certificateDeleteOptions != null) {
+            clientRequestId = certificateDeleteOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateDeleteOptions != null) {
+            returnClientRequestId = certificateDeleteOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateDeleteOptions != null) {
+            ocpDate = certificateDeleteOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.delete(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, CertificateDeleteHeaders> deleteDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -908,48 +927,12 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
-     * @return the Certificate object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Certificate object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Certificate get(String thumbprintAlgorithm, String thumbprint) {
-        return getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets information about the specified certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to get.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) {
-        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint), serviceCallback);
-    }
-
-    /**
-     * Gets information about the specified certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to get.
-     * @return the observable to the Certificate object
-     */
-    public Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint) {
-        return getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint).map(new Func1<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>, Certificate>() {
-            @Override
-            public Certificate call(ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets information about the specified certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to get.
-     * @return the observable to the Certificate object
-     */
-    public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint) {
+    public ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> get(String thumbprintAlgorithm, String thumbprint) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -969,18 +952,8 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return getDelegate(call.execute());
     }
 
     /**
@@ -988,41 +961,49 @@ public final class CertificatesImpl implements Certificates {
      *
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
-     * @param certificateGetOptions Additional parameters for the operation
-     * @return the Certificate object if successful.
-     */
-    public Certificate get(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
-        return getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateGetOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets information about the specified certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to get.
-     * @param certificateGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) {
-        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateGetOptions), serviceCallback);
-    }
-
-    /**
-     * Gets information about the specified certificate.
-     *
-     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
-     * @param thumbprint The thumbprint of the certificate to get.
-     * @param certificateGetOptions Additional parameters for the operation
-     * @return the observable to the Certificate object
-     */
-    public Observable<Certificate> getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
-        return getWithServiceResponseAsync(thumbprintAlgorithm, thumbprint, certificateGetOptions).map(new Func1<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>, Certificate>() {
+    public ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final CertificateGetOptions certificateGetOptions = null;
+        String select = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
             @Override
-            public Certificate call(ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -1031,9 +1012,12 @@ public final class CertificatesImpl implements Certificates {
      * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
      * @param thumbprint The thumbprint of the certificate to get.
      * @param certificateGetOptions Additional parameters for the operation
-     * @return the observable to the Certificate object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the Certificate object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> getWithServiceResponseAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) {
+    public ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> get(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (thumbprintAlgorithm == null) {
             throw new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null.");
         }
@@ -1068,18 +1052,74 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Certificate, CertificateGetHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * Gets information about the specified certificate.
+     *
+     * @param thumbprintAlgorithm The algorithm used to derive the thumbprint parameter. This must be sha1.
+     * @param thumbprint The thumbprint of the certificate to get.
+     * @param certificateGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String thumbprintAlgorithm, String thumbprint, CertificateGetOptions certificateGetOptions, final ServiceCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (thumbprintAlgorithm == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprintAlgorithm is required and cannot be null."));
+            return null;
+        }
+        if (thumbprint == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter thumbprint is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificateGetOptions, serviceCallback);
+        String select = null;
+        if (certificateGetOptions != null) {
+            select = certificateGetOptions.select();
+        }
+        Integer timeout = null;
+        if (certificateGetOptions != null) {
+            timeout = certificateGetOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (certificateGetOptions != null) {
+            clientRequestId = certificateGetOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateGetOptions != null) {
+            returnClientRequestId = certificateGetOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateGetOptions != null) {
+            ocpDate = certificateGetOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.get(thumbprintAlgorithm, thumbprint, this.client.apiVersion(), this.client.acceptLanguage(), select, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Certificate>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Certificate, CertificateGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1093,81 +1133,12 @@ public final class CertificatesImpl implements Certificates {
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;Certificate&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<Certificate> listNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<Certificate>(response.getBody()) {
-            @Override
-            public Page<Certificate> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<Page<Certificate>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Page<Certificate>>() {
-                @Override
-                public Page<Certificate> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
+    public ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1179,104 +1150,68 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNextDelegate(call.execute());
     }
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;Certificate&gt; object if successful.
-     */
-    public PagedList<Certificate> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
-        ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response = listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single();
-        return new PagedList<Certificate>(response.getBody()) {
-            @Override
-            public Page<Certificate> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, certificateListNextOptions).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall<List<Certificate>> serviceCall, final ListOperationCallback<Certificate> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNextSinglePageAsync(nextPageLink, certificateListNextOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, certificateListNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<Page<Certificate>> listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
-        return listNextWithServiceResponseAsync(nextPageLink, certificateListNextOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Page<Certificate>>() {
-                @Override
-                public Page<Certificate> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the certificates that have been added to the specified account.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param certificateListNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;Certificate&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
-        return listNextSinglePageAsync(nextPageLink, certificateListNextOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        final CertificateListNextOptions certificateListNextOptions = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, certificateListNextOptions));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> listNextSinglePageAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) {
+    public ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNext(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -1297,18 +1232,65 @@ public final class CertificatesImpl implements Certificates {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<Certificate>, CertificateListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists all of the certificates that have been added to the specified account.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNextAsync(final String nextPageLink, final CertificateListNextOptions certificateListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<Certificate> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(certificateListNextOptions, serviceCallback);
+        String clientRequestId = null;
+        if (certificateListNextOptions != null) {
+            clientRequestId = certificateListNextOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (certificateListNextOptions != null) {
+            returnClientRequestId = certificateListNextOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (certificateListNextOptions != null) {
+            ocpDate = certificateListNextOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<Certificate>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), certificateListNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {

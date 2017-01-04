@@ -11,7 +11,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Files;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.BatchErrorException;
 import com.microsoft.azure.batch.protocol.models.FileDeleteFromComputeNodeHeaders;
@@ -40,6 +39,8 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponseCallback;
+import com.microsoft.rest.ServiceResponseEmptyCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.InputStream;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.HEAD;
 import retrofit2.http.Header;
@@ -55,9 +57,8 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Streaming;
+import retrofit2.http.Url;
 import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -87,45 +88,45 @@ public final class FilesImpl implements Files {
     interface FilesService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "jobs/{jobId}/tasks/{taskId}/files/{fileName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("jobs/{jobId}/tasks/{taskId}/files/{fileName}")
         @Streaming
-        Observable<Response<ResponseBody>> getFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("ocp-range") String ocpRange, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("ocp-range") String ocpRange, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HEAD("jobs/{jobId}/tasks/{taskId}/files/{fileName}")
-        Observable<Response<Void>> getNodeFilePropertiesFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Call<Void> getNodeFilePropertiesFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HTTP(path = "pools/{poolId}/nodes/{nodeId}/files/{fileName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> deleteFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/files/{fileName}")
         @Streaming
-        Observable<Response<ResponseBody>> getFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("ocp-range") String ocpRange, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> getFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("ocp-range") String ocpRange, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @HEAD("pools/{poolId}/nodes/{nodeId}/files/{fileName}")
-        Observable<Response<Void>> getNodeFilePropertiesFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
+        Call<Void> getNodeFilePropertiesFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Path("fileName") String fileName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("If-Modified-Since") DateTimeRfc1123 ifModifiedSince, @Header("If-Unmodified-Since") DateTimeRfc1123 ifUnmodifiedSince, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("jobs/{jobId}/tasks/{taskId}/files")
-        Observable<Response<ResponseBody>> listFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> listFromTask(@Path("jobId") String jobId, @Path("taskId") String taskId, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("pools/{poolId}/nodes/{nodeId}/files")
-        Observable<Response<ResponseBody>> listFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> listFromComputeNode(@Path("poolId") String poolId, @Path("nodeId") String nodeId, @Query("recursive") Boolean recursive, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("$filter") String filter, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listFromTaskNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET
+        Call<ResponseBody> listFromTaskNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listFromComputeNodeNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET
+        Call<ResponseBody> listFromComputeNodeNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -135,50 +136,12 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
-     */
-    public void deleteFromTask(String jobId, String taskId, String fileName) {
-        deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes the specified task file from the compute node where the task ran.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to delete.
-     * @param fileName The path to the task file that you want to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified task file from the compute node where the task ran.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to delete.
-     * @param fileName The path to the task file that you want to delete.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName) {
-        return deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName).map(new Func1<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Deletes the specified task file from the compute node where the task ran.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to delete.
-     * @param fileName The path to the task file that you want to delete.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> deleteFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName) {
+    public ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> deleteFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -201,18 +164,8 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> clientResponse = deleteFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteFromTaskDelegate(call.execute());
     }
 
     /**
@@ -221,45 +174,53 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
      * @param fileName The path to the task file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromTaskOptions Additional parameters for the operation
-     */
-    public void deleteFromTask(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions) {
-        deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName, recursive, fileDeleteFromTaskOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes the specified task file from the compute node where the task ran.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to delete.
-     * @param fileName The path to the task file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName, recursive, fileDeleteFromTaskOptions), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified task file from the compute node where the task ran.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to delete.
-     * @param fileName The path to the task file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromTaskOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions) {
-        return deleteFromTaskWithServiceResponseAsync(jobId, taskId, fileName, recursive, fileDeleteFromTaskOptions).map(new Func1<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>, Void>() {
+    public ServiceCall deleteFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean recursive = null;
+        final FileDeleteFromTaskOptions fileDeleteFromTaskOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -270,9 +231,12 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the task file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> deleteFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions) {
+    public ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> deleteFromTask(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -306,18 +270,76 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> clientResponse = deleteFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteFromTaskDelegate(call.execute());
+    }
+
+    /**
+     * Deletes the specified task file from the compute node where the task ran.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to delete.
+     * @param fileName The path to the task file that you want to delete.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @param fileDeleteFromTaskOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteFromTaskAsync(String jobId, String taskId, String fileName, Boolean recursive, FileDeleteFromTaskOptions fileDeleteFromTaskOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileDeleteFromTaskOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileDeleteFromTaskOptions != null) {
+            timeout = fileDeleteFromTaskOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileDeleteFromTaskOptions != null) {
+            clientRequestId = fileDeleteFromTaskOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileDeleteFromTaskOptions != null) {
+            returnClientRequestId = fileDeleteFromTaskOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileDeleteFromTaskOptions != null) {
+            ocpDate = fileDeleteFromTaskOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.deleteFromTask(jobId, taskId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, FileDeleteFromTaskHeaders> deleteFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -333,51 +355,12 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
-     * @return the InputStream object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public InputStream getFromTask(String jobId, String taskId, String fileName) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to retrieve.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.createWithHeaders(getFromTaskWithServiceResponseAsync(jobId, taskId, fileName), serviceCallback);
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to retrieve.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, fileName).map(new Func1<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to retrieve.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> getFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName) {
+    public ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -410,18 +393,8 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> clientResponse = getFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getFromTaskDelegate(call.execute());
     }
 
     /**
@@ -430,43 +403,63 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromTaskOptions Additional parameters for the operation
-     * @return the InputStream object if successful.
-     */
-    public InputStream getFromTask(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetFromTaskOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to retrieve.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.createWithHeaders(getFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetFromTaskOptions), serviceCallback);
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to retrieve.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromTaskOptions Additional parameters for the operation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> getFromTaskAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions) {
-        return getFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetFromTaskOptions).map(new Func1<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>, InputStream>() {
+    public ServiceCall getFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final FileGetFromTaskOptions fileGetFromTaskOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        String ocpRange = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
-            public InputStream call(ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -476,9 +469,12 @@ public final class FilesImpl implements Files {
      * @param taskId The ID of the task whose file you want to retrieve.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromTaskOptions Additional parameters for the operation
-     * @return the observable to the InputStream object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> getFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions) {
+    public ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTask(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -532,18 +528,95 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> clientResponse = getFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getFromTaskDelegate(call.execute());
+    }
+
+    /**
+     * Returns the content of the specified task file.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to retrieve.
+     * @param fileName The path to the task file that you want to get the content of.
+     * @param fileGetFromTaskOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getFromTaskAsync(String jobId, String taskId, String fileName, FileGetFromTaskOptions fileGetFromTaskOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileGetFromTaskOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileGetFromTaskOptions != null) {
+            timeout = fileGetFromTaskOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileGetFromTaskOptions != null) {
+            clientRequestId = fileGetFromTaskOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileGetFromTaskOptions != null) {
+            returnClientRequestId = fileGetFromTaskOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileGetFromTaskOptions != null) {
+            ocpDate = fileGetFromTaskOptions.ocpDate();
+        }
+        String ocpRange = null;
+        if (fileGetFromTaskOptions != null) {
+            ocpRange = fileGetFromTaskOptions.ocpRange();
+        }
+        DateTime ifModifiedSince = null;
+        if (fileGetFromTaskOptions != null) {
+            ifModifiedSince = fileGetFromTaskOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (fileGetFromTaskOptions != null) {
+            ifUnmodifiedSince = fileGetFromTaskOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.getFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<InputStream, FileGetFromTaskHeaders> getFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -559,50 +632,12 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
-     */
-    public void getNodeFilePropertiesFromTask(String jobId, String taskId, String fileName) {
-        getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets the properties of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to get the properties of.
-     * @param fileName The path to the task file that you want to get the properties of.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName), serviceCallback);
-    }
-
-    /**
-     * Gets the properties of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to get the properties of.
-     * @param fileName The path to the task file that you want to get the properties of.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName) {
-        return getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName).map(new Func1<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets the properties of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to get the properties of.
-     * @param fileName The path to the task file that you want to get the properties of.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>> getNodeFilePropertiesFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName) {
+    public ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> getNodeFilePropertiesFromTask(String jobId, String taskId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -634,18 +669,8 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>> call(Response<Void> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> clientResponse = getNodeFilePropertiesFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getNodeFilePropertiesFromTaskDelegate(call.execute());
     }
 
     /**
@@ -654,42 +679,62 @@ public final class FilesImpl implements Files {
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
-     */
-    public void getNodeFilePropertiesFromTask(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions) {
-        getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetNodeFilePropertiesFromTaskOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets the properties of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to get the properties of.
-     * @param fileName The path to the task file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetNodeFilePropertiesFromTaskOptions), serviceCallback);
-    }
-
-    /**
-     * Gets the properties of the specified task file.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose file you want to get the properties of.
-     * @param fileName The path to the task file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions) {
-        return getNodeFilePropertiesFromTaskWithServiceResponseAsync(jobId, taskId, fileName, fileGetNodeFilePropertiesFromTaskOptions).map(new Func1<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>, Void>() {
+    public ServiceCall getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                try {
+                    serviceCallback.success(getNodeFilePropertiesFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -699,9 +744,12 @@ public final class FilesImpl implements Files {
      * @param taskId The ID of the task whose file you want to get the properties of.
      * @param fileName The path to the task file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>> getNodeFilePropertiesFromTaskWithServiceResponseAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions) {
+    public ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> getNodeFilePropertiesFromTask(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -751,18 +799,91 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders>> call(Response<Void> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> clientResponse = getNodeFilePropertiesFromTaskDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getNodeFilePropertiesFromTaskDelegate(call.execute());
+    }
+
+    /**
+     * Gets the properties of the specified task file.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose file you want to get the properties of.
+     * @param fileName The path to the task file that you want to get the properties of.
+     * @param fileGetNodeFilePropertiesFromTaskOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getNodeFilePropertiesFromTaskAsync(String jobId, String taskId, String fileName, FileGetNodeFilePropertiesFromTaskOptions fileGetNodeFilePropertiesFromTaskOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileGetNodeFilePropertiesFromTaskOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            timeout = fileGetNodeFilePropertiesFromTaskOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            clientRequestId = fileGetNodeFilePropertiesFromTaskOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            returnClientRequestId = fileGetNodeFilePropertiesFromTaskOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            ocpDate = fileGetNodeFilePropertiesFromTaskOptions.ocpDate();
+        }
+        DateTime ifModifiedSince = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            ifModifiedSince = fileGetNodeFilePropertiesFromTaskOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (fileGetNodeFilePropertiesFromTaskOptions != null) {
+            ifUnmodifiedSince = fileGetNodeFilePropertiesFromTaskOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<Void> call = service.getNodeFilePropertiesFromTask(jobId, taskId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                try {
+                    serviceCallback.success(getNodeFilePropertiesFromTaskDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromTaskHeaders> getNodeFilePropertiesFromTaskDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -778,50 +899,12 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
-     */
-    public void deleteFromComputeNode(String poolId, String nodeId, String fileName) {
-        deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes the specified task file from the compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param fileName The path to the file that you want to delete.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified task file from the compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param fileName The path to the file that you want to delete.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName) {
-        return deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).map(new Func1<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Deletes the specified task file from the compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param fileName The path to the file that you want to delete.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName) {
+    public ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> deleteFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -844,18 +927,8 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> clientResponse = deleteFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteFromComputeNodeDelegate(call.execute());
     }
 
     /**
@@ -864,45 +937,53 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
      * @param fileName The path to the file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
-     */
-    public void deleteFromComputeNode(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions) {
-        deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, recursive, fileDeleteFromComputeNodeOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Deletes the specified task file from the compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param fileName The path to the file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, recursive, fileDeleteFromComputeNodeOptions), serviceCallback);
-    }
-
-    /**
-     * Deletes the specified task file from the compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param fileName The path to the file that you want to delete.
-     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
-     * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions) {
-        return deleteFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, recursive, fileDeleteFromComputeNodeOptions).map(new Func1<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>, Void>() {
+    public ServiceCall deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean recursive = null;
+        final FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -913,9 +994,12 @@ public final class FilesImpl implements Files {
      * @param fileName The path to the file that you want to delete.
      * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions) {
+    public ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> deleteFromComputeNode(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -949,18 +1033,76 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> clientResponse = deleteFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return deleteFromComputeNodeDelegate(call.execute());
+    }
+
+    /**
+     * Deletes the specified task file from the compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to delete the file.
+     * @param fileName The path to the file that you want to delete.
+     * @param recursive Whether to delete children of a directory. If the fileName parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
+     * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall deleteFromComputeNodeAsync(String poolId, String nodeId, String fileName, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileDeleteFromComputeNodeOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileDeleteFromComputeNodeOptions != null) {
+            timeout = fileDeleteFromComputeNodeOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileDeleteFromComputeNodeOptions != null) {
+            clientRequestId = fileDeleteFromComputeNodeOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileDeleteFromComputeNodeOptions != null) {
+            returnClientRequestId = fileDeleteFromComputeNodeOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileDeleteFromComputeNodeOptions != null) {
+            ocpDate = fileDeleteFromComputeNodeOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.deleteFromComputeNode(poolId, nodeId, fileName, recursive, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(deleteFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders> deleteFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -976,51 +1118,12 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
-     * @return the InputStream object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public InputStream getFromComputeNode(String poolId, String nodeId, String fileName) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.createWithHeaders(getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName), serviceCallback);
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).map(new Func1<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>, InputStream>() {
-            @Override
-            public InputStream call(ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @return the observable to the InputStream object
-     */
-    public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName) {
+    public ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1053,18 +1156,8 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> clientResponse = getFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getFromComputeNodeDelegate(call.execute());
     }
 
     /**
@@ -1073,43 +1166,63 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromComputeNodeOptions Additional parameters for the operation
-     * @return the InputStream object if successful.
-     */
-    public InputStream getFromComputeNode(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetFromComputeNodeOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback) {
-        return ServiceCall.createWithHeaders(getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetFromComputeNodeOptions), serviceCallback);
-    }
-
-    /**
-     * Returns the content of the specified task file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the task file that you want to get the content of.
-     * @param fileGetFromComputeNodeOptions Additional parameters for the operation
-     * @return the observable to the InputStream object
-     */
-    public Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) {
-        return getFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetFromComputeNodeOptions).map(new Func1<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>, InputStream>() {
+    public ServiceCall getFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        String ocpRange = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
             @Override
-            public InputStream call(ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -1119,9 +1232,12 @@ public final class FilesImpl implements Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the task file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
-     * @return the observable to the InputStream object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the InputStream object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) {
+    public ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNode(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1175,18 +1291,95 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> clientResponse = getFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getFromComputeNodeDelegate(call.execute());
+    }
+
+    /**
+     * Returns the content of the specified task file.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
+     * @param fileName The path to the task file that you want to get the content of.
+     * @param fileGetFromComputeNodeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileGetFromComputeNodeOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            timeout = fileGetFromComputeNodeOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            clientRequestId = fileGetFromComputeNodeOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            returnClientRequestId = fileGetFromComputeNodeOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            ocpDate = fileGetFromComputeNodeOptions.ocpDate();
+        }
+        String ocpRange = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            ocpRange = fileGetFromComputeNodeOptions.ocpRange();
+        }
+        DateTime ifModifiedSince = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            ifModifiedSince = fileGetFromComputeNodeOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (fileGetFromComputeNodeOptions != null) {
+            ifUnmodifiedSince = fileGetFromComputeNodeOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<ResponseBody> call = service.getFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ocpRange, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<InputStream>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders> getFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1202,50 +1395,12 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
-     */
-    public void getNodeFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName) {
-        getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets the properties of the specified compute node file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the compute node file that you want to get the properties of.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName), serviceCallback);
-    }
-
-    /**
-     * Gets the properties of the specified compute node file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the compute node file that you want to get the properties of.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName) {
-        return getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName).map(new Func1<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>, Void>() {
-            @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets the properties of the specified compute node file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the compute node file that you want to get the properties of.
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>> getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName) {
+    public ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> getNodeFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1277,18 +1432,8 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>> call(Response<Void> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> clientResponse = getNodeFilePropertiesFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getNodeFilePropertiesFromComputeNodeDelegate(call.execute());
     }
 
     /**
@@ -1297,42 +1442,62 @@ public final class FilesImpl implements Files {
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
-     */
-    public void getNodeFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions) {
-        getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetNodeFilePropertiesFromComputeNodeOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets the properties of the specified compute node file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the compute node file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) {
-        return ServiceCall.createWithHeaders(getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetNodeFilePropertiesFromComputeNodeOptions), serviceCallback);
-    }
-
-    /**
-     * Gets the properties of the specified compute node file.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node that contains the file.
-     * @param fileName The path to the compute node file that you want to get the properties of.
-     * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
-     * @return the {@link ServiceResponseWithHeaders} object if successful.
-     */
-    public Observable<Void> getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions) {
-        return getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(poolId, nodeId, fileName, fileGetNodeFilePropertiesFromComputeNodeOptions).map(new Func1<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>, Void>() {
+    public ServiceCall getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTime ifModifiedSince = null;
+        DateTime ifUnmodifiedSince = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                try {
+                    serviceCallback.success(getNodeFilePropertiesFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -1342,9 +1507,12 @@ public final class FilesImpl implements Files {
      * @param nodeId The ID of the compute node that contains the file.
      * @param fileName The path to the compute node file that you want to get the properties of.
      * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>> getNodeFilePropertiesFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions) {
+    public ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> getNodeFilePropertiesFromComputeNode(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1394,18 +1562,91 @@ public final class FilesImpl implements Files {
         if (ifUnmodifiedSince != null) {
             ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
         }
-        return service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<Void>, Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders>> call(Response<Void> response) {
-                    try {
-                        ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> clientResponse = getNodeFilePropertiesFromComputeNodeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        return getNodeFilePropertiesFromComputeNodeDelegate(call.execute());
+    }
+
+    /**
+     * Gets the properties of the specified compute node file.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node that contains the file.
+     * @param fileName The path to the compute node file that you want to get the properties of.
+     * @param fileGetNodeFilePropertiesFromComputeNodeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getNodeFilePropertiesFromComputeNodeAsync(String poolId, String nodeId, String fileName, FileGetNodeFilePropertiesFromComputeNodeOptions fileGetNodeFilePropertiesFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (fileName == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter fileName is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileGetNodeFilePropertiesFromComputeNodeOptions, serviceCallback);
+        Integer timeout = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            timeout = fileGetNodeFilePropertiesFromComputeNodeOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            clientRequestId = fileGetNodeFilePropertiesFromComputeNodeOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            returnClientRequestId = fileGetNodeFilePropertiesFromComputeNodeOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            ocpDate = fileGetNodeFilePropertiesFromComputeNodeOptions.ocpDate();
+        }
+        DateTime ifModifiedSince = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            ifModifiedSince = fileGetNodeFilePropertiesFromComputeNodeOptions.ifModifiedSince();
+        }
+        DateTime ifUnmodifiedSince = null;
+        if (fileGetNodeFilePropertiesFromComputeNodeOptions != null) {
+            ifUnmodifiedSince = fileGetNodeFilePropertiesFromComputeNodeOptions.ifUnmodifiedSince();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        DateTimeRfc1123 ifModifiedSinceConverted = null;
+        if (ifModifiedSince != null) {
+            ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
+        }
+        DateTimeRfc1123 ifUnmodifiedSinceConverted = null;
+        if (ifUnmodifiedSince != null) {
+            ifUnmodifiedSinceConverted = new DateTimeRfc1123(ifUnmodifiedSince);
+        }
+        Call<Void> call = service.getNodeFilePropertiesFromComputeNode(poolId, nodeId, fileName, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseEmptyCallback<Void>(serviceCallback) {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                try {
+                    serviceCallback.success(getNodeFilePropertiesFromComputeNodeDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<Void, FileGetNodeFilePropertiesFromComputeNodeHeaders> getNodeFilePropertiesFromComputeNodeDelegate(Response<Void> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1420,84 +1661,12 @@ public final class FilesImpl implements Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<NodeFile> listFromTask(final String jobId, final String taskId) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskSinglePageAsync(jobId, taskId).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromTaskNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromTaskSinglePageAsync(jobId, taskId),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
-                    return listFromTaskNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId) {
-        return listFromTaskWithServiceResponseAsync(jobId, taskId)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskWithServiceResponseAsync(final String jobId, final String taskId) {
-        return listFromTaskSinglePageAsync(jobId, taskId)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listFromTaskNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskSinglePageAsync(final String jobId, final String taskId) {
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTask(final String jobId, final String taskId) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1519,44 +1688,15 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
-     * @param fileListFromTaskOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
-     */
-    public PagedList<NodeFile> listFromTask(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
+        Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> response = listFromTaskDelegate(call.execute());
+        PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
             @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
-                if (fileListFromTaskOptions != null) {
-                    fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
-                    fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
-                    fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
-                    fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
-                }
-                return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single().getBody();
+            public Page<NodeFile> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                return listFromTaskNext(nextPageLink, null).getBody();
             }
         };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1564,28 +1704,58 @@ public final class FilesImpl implements Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
-     * @param fileListFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
-                    FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
-                    if (fileListFromTaskOptions != null) {
-                        fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
-                        fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
-                        fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
-                        fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+    public ServiceCall listFromTaskAsync(final String jobId, final String taskId, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean recursive = null;
+        final FileListFromTaskOptions fileListFromTaskOptions = null;
+        String filter = null;
+        Integer maxResults = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions);
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            },
-            serviceCallback);
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -1595,58 +1765,12 @@ public final class FilesImpl implements Files {
      * @param taskId The ID of the task whose files you want to list.
      * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<Page<NodeFile>> listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
-        return listFromTaskWithServiceResponseAsync(jobId, taskId, recursive, fileListFromTaskOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param jobId The ID of the job that contains the task.
-     * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
-     * @param fileListFromTaskOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskWithServiceResponseAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
-        return listFromTaskSinglePageAsync(jobId, taskId, recursive, fileListFromTaskOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
-                    if (fileListFromTaskOptions != null) {
-                        fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
-                        fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
-                        fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
-                        fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
-                    }
-                    return Observable.just(page).concatWith(listFromTaskNextWithServiceResponseAsync(nextPageLink, fileListFromTaskNextOptions));
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param jobId The ID of the job that contains the task.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param taskId The ID of the task whose files you want to list.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskSinglePageAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) {
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromTaskHeaders> listFromTask(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (jobId == null) {
             throw new IllegalArgumentException("Parameter jobId is required and cannot be null.");
         }
@@ -1685,18 +1809,107 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> response = listFromTaskDelegate(call.execute());
+        PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
+            @Override
+            public Page<NodeFile> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
+                if (fileListFromTaskOptions != null) {
+                    fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
+                    fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
+                    fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
+                    fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
                 }
-            });
+                return listFromTaskNext(nextPageLink, fileListFromTaskNextOptions).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists the files in a task's directory on its compute node.
+     *
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
+     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param fileListFromTaskOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listFromTaskAsync(final String jobId, final String taskId, final Boolean recursive, final FileListFromTaskOptions fileListFromTaskOptions, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (jobId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter jobId is required and cannot be null."));
+            return null;
+        }
+        if (taskId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter taskId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileListFromTaskOptions, serviceCallback);
+        String filter = null;
+        if (fileListFromTaskOptions != null) {
+            filter = fileListFromTaskOptions.filter();
+        }
+        Integer maxResults = null;
+        if (fileListFromTaskOptions != null) {
+            maxResults = fileListFromTaskOptions.maxResults();
+        }
+        Integer timeout = null;
+        if (fileListFromTaskOptions != null) {
+            timeout = fileListFromTaskOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileListFromTaskOptions != null) {
+            clientRequestId = fileListFromTaskOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileListFromTaskOptions != null) {
+            returnClientRequestId = fileListFromTaskOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileListFromTaskOptions != null) {
+            ocpDate = fileListFromTaskOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromTask(jobId, taskId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
+                        if (fileListFromTaskOptions != null) {
+                            fileListFromTaskNextOptions = new FileListFromTaskNextOptions();
+                            fileListFromTaskNextOptions.withClientRequestId(fileListFromTaskOptions.clientRequestId());
+                            fileListFromTaskNextOptions.withReturnClientRequestId(fileListFromTaskOptions.returnClientRequestId());
+                            fileListFromTaskNextOptions.withOcpDate(fileListFromTaskOptions.ocpDate());
+                        }
+                        listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -1711,84 +1924,12 @@ public final class FilesImpl implements Files {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<NodeFile> listFromComputeNode(final String poolId, final String nodeId) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeSinglePageAsync(poolId, nodeId).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromComputeNodeNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromComputeNodeSinglePageAsync(poolId, nodeId),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
-                    return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId) {
-        return listFromComputeNodeWithServiceResponseAsync(poolId, nodeId)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeWithServiceResponseAsync(final String poolId, final String nodeId) {
-        return listFromComputeNodeSinglePageAsync(poolId, nodeId)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listFromComputeNodeNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId) {
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNode(final String poolId, final String nodeId) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1810,44 +1951,15 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @param recursive Whether to list children of a directory.
-     * @param fileListFromComputeNodeOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
-     */
-    public PagedList<NodeFile> listFromComputeNode(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
+        Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeDelegate(call.execute());
+        PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
             @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
-                if (fileListFromComputeNodeOptions != null) {
-                    fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
-                    fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
-                    fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
-                    fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
-                }
-                return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single().getBody();
+            public Page<NodeFile> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                return listFromComputeNodeNext(nextPageLink, null).getBody();
             }
         };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
@@ -1855,28 +1967,58 @@ public final class FilesImpl implements Files {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node whose files you want to list.
-     * @param recursive Whether to list children of a directory.
-     * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
-                    FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
-                    if (fileListFromComputeNodeOptions != null) {
-                        fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
-                        fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
-                        fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
-                        fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+    public ServiceCall listFromComputeNodeAsync(final String poolId, final String nodeId, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final Boolean recursive = null;
+        final FileListFromComputeNodeOptions fileListFromComputeNodeOptions = null;
+        String filter = null;
+        Integer maxResults = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions);
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            },
-            serviceCallback);
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -1886,58 +2028,12 @@ public final class FilesImpl implements Files {
      * @param nodeId The ID of the compute node whose files you want to list.
      * @param recursive Whether to list children of a directory.
      * @param fileListFromComputeNodeOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<Page<NodeFile>> listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
-        return listFromComputeNodeWithServiceResponseAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param poolId The ID of the pool that contains the compute node.
-     * @param nodeId The ID of the compute node whose files you want to list.
-     * @param recursive Whether to list children of a directory.
-     * @param fileListFromComputeNodeOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeWithServiceResponseAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
-        return listFromComputeNodeSinglePageAsync(poolId, nodeId, recursive, fileListFromComputeNodeOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
-                    if (fileListFromComputeNodeOptions != null) {
-                        fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
-                        fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
-                        fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
-                        fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
-                    }
-                    return Observable.just(page).concatWith(listFromComputeNodeNextWithServiceResponseAsync(nextPageLink, fileListFromComputeNodeNextOptions));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param poolId The ID of the pool that contains the compute node.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nodeId The ID of the compute node whose files you want to list.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param recursive Whether to list children of a directory.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeSinglePageAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) {
+    public ServiceResponseWithHeaders<PagedList<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNode(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (poolId == null) {
             throw new IllegalArgumentException("Parameter poolId is required and cannot be null.");
         }
@@ -1976,18 +2072,107 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeDelegate(call.execute());
+        PagedList<NodeFile> result = new PagedList<NodeFile>(response.getBody()) {
+            @Override
+            public Page<NodeFile> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
+                if (fileListFromComputeNodeOptions != null) {
+                    fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
+                    fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
+                    fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
+                    fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
                 }
-            });
+                return listFromComputeNodeNext(nextPageLink, fileListFromComputeNodeNextOptions).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists all of the files in task directories on the specified compute node.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
+     * @param recursive Whether to list children of a directory.
+     * @param fileListFromComputeNodeOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listFromComputeNodeAsync(final String poolId, final String nodeId, final Boolean recursive, final FileListFromComputeNodeOptions fileListFromComputeNodeOptions, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (poolId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter poolId is required and cannot be null."));
+            return null;
+        }
+        if (nodeId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nodeId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileListFromComputeNodeOptions, serviceCallback);
+        String filter = null;
+        if (fileListFromComputeNodeOptions != null) {
+            filter = fileListFromComputeNodeOptions.filter();
+        }
+        Integer maxResults = null;
+        if (fileListFromComputeNodeOptions != null) {
+            maxResults = fileListFromComputeNodeOptions.maxResults();
+        }
+        Integer timeout = null;
+        if (fileListFromComputeNodeOptions != null) {
+            timeout = fileListFromComputeNodeOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (fileListFromComputeNodeOptions != null) {
+            clientRequestId = fileListFromComputeNodeOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileListFromComputeNodeOptions != null) {
+            returnClientRequestId = fileListFromComputeNodeOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileListFromComputeNodeOptions != null) {
+            ocpDate = fileListFromComputeNodeOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromComputeNode(poolId, nodeId, recursive, this.client.apiVersion(), this.client.acceptLanguage(), filter, maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
+                        if (fileListFromComputeNodeOptions != null) {
+                            fileListFromComputeNodeNextOptions = new FileListFromComputeNodeNextOptions();
+                            fileListFromComputeNodeNextOptions.withClientRequestId(fileListFromComputeNodeOptions.clientRequestId());
+                            fileListFromComputeNodeNextOptions.withReturnClientRequestId(fileListFromComputeNodeOptions.returnClientRequestId());
+                            fileListFromComputeNodeNextOptions.withOcpDate(fileListFromComputeNodeOptions.ocpDate());
+                        }
+                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -2001,81 +2186,12 @@ public final class FilesImpl implements Files {
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<NodeFile> listFromTaskNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromTaskNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromTaskNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
-                    return listFromTaskNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink) {
-        return listFromTaskNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextWithServiceResponseAsync(final String nextPageLink) {
-        return listFromTaskNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listFromTaskNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextSinglePageAsync(final String nextPageLink) {
+    public ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2087,104 +2203,68 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listFromTaskNextDelegate(call.execute());
     }
 
     /**
      * Lists the files in a task's directory on its compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromTaskNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
-     */
-    public PagedList<NodeFile> listFromTaskNext(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response = listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(String nextPageLink) {
-                    return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromTaskNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
-        return listFromTaskNextWithServiceResponseAsync(nextPageLink, fileListFromTaskNextOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists the files in a task's directory on its compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromTaskNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextWithServiceResponseAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
-        return listFromTaskNextSinglePageAsync(nextPageLink, fileListFromTaskNextOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
+    public ServiceCall listFromTaskNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        final FileListFromTaskNextOptions fileListFromTaskNextOptions = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromTaskNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return Observable.just(page).concatWith(listFromTaskNextWithServiceResponseAsync(nextPageLink, fileListFromTaskNextOptions));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
      * Lists the files in a task's directory on its compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> listFromTaskNextSinglePageAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) {
+    public ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskNext(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2205,18 +2285,65 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromTaskHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listFromTaskNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists the files in a task's directory on its compute node.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listFromTaskNextAsync(final String nextPageLink, final FileListFromTaskNextOptions fileListFromTaskNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileListFromTaskNextOptions, serviceCallback);
+        String clientRequestId = null;
+        if (fileListFromTaskNextOptions != null) {
+            clientRequestId = fileListFromTaskNextOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileListFromTaskNextOptions != null) {
+            returnClientRequestId = fileListFromTaskNextOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileListFromTaskNextOptions != null) {
+            ocpDate = fileListFromTaskNextOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromTaskNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> result = listFromTaskNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromTaskNextAsync(result.getBody().getNextPageLink(), fileListFromTaskNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> listFromTaskNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -2230,81 +2357,12 @@ public final class FilesImpl implements Files {
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<NodeFile> listFromComputeNodeNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromComputeNodeNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromComputeNodeNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
-                    return listFromComputeNodeNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink) {
-        return listFromComputeNodeNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextWithServiceResponseAsync(final String nextPageLink) {
-        return listFromComputeNodeNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listFromComputeNodeNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink) {
+    public ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2316,104 +2374,68 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listFromComputeNodeNextDelegate(call.execute());
     }
 
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object if successful.
-     */
-    public PagedList<NodeFile> listFromComputeNodeNext(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
-        ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response = listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single();
-        return new PagedList<NodeFile>(response.getBody()) {
-            @Override
-            public Page<NodeFile> nextPage(String nextPageLink) {
-                return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall<List<NodeFile>> serviceCall, final ListOperationCallback<NodeFile> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(String nextPageLink) {
-                    return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<Page<NodeFile>> listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
-        return listFromComputeNodeNextWithServiceResponseAsync(nextPageLink, fileListFromComputeNodeNextOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Page<NodeFile>>() {
-                @Override
-                public Page<NodeFile> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the files in task directories on the specified compute node.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;NodeFile&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextWithServiceResponseAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
-        return listFromComputeNodeNextSinglePageAsync(nextPageLink, fileListFromComputeNodeNextOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
+    public ServiceCall listFromComputeNodeNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return Observable.just(page).concatWith(listFromComputeNodeNextWithServiceResponseAsync(nextPageLink, fileListFromComputeNodeNextOptions));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> listFromComputeNodeNextSinglePageAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) {
+    public ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNext(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -2434,18 +2456,65 @@ public final class FilesImpl implements Files {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<NodeFile>, FileListFromComputeNodeHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listFromComputeNodeNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists all of the files in task directories on the specified compute node.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listFromComputeNodeNextAsync(final String nextPageLink, final FileListFromComputeNodeNextOptions fileListFromComputeNodeNextOptions, final ServiceCall serviceCall, final ListOperationCallback<NodeFile> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(fileListFromComputeNodeNextOptions, serviceCallback);
+        String clientRequestId = null;
+        if (fileListFromComputeNodeNextOptions != null) {
+            clientRequestId = fileListFromComputeNodeNextOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (fileListFromComputeNodeNextOptions != null) {
+            returnClientRequestId = fileListFromComputeNodeNextOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (fileListFromComputeNodeNextOptions != null) {
+            ocpDate = fileListFromComputeNodeNextOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listFromComputeNodeNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<NodeFile>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> result = listFromComputeNodeNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listFromComputeNodeNextAsync(result.getBody().getNextPageLink(), fileListFromComputeNodeNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> listFromComputeNodeNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {

@@ -11,7 +11,6 @@ package com.microsoft.azure.batch.protocol.implementation;
 import retrofit2.Retrofit;
 import com.microsoft.azure.batch.protocol.Applications;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceCall;
 import com.microsoft.azure.AzureServiceResponseBuilder;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetHeaders;
 import com.microsoft.azure.batch.protocol.models.ApplicationGetOptions;
@@ -27,20 +26,21 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.ServiceCall;
 import com.microsoft.rest.ServiceCallback;
+import com.microsoft.rest.ServiceResponseCallback;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
 import org.joda.time.DateTime;
+import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
-import rx.functions.Func1;
-import rx.Observable;
 
 /**
  * An instance of this class provides access to all the operations defined
@@ -70,15 +70,15 @@ public final class ApplicationsImpl implements Applications {
     interface ApplicationsService {
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("applications")
-        Observable<Response<ResponseBody>> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> list(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("maxresults") Integer maxResults, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
         @GET("applications/{applicationId}")
-        Observable<Response<ResponseBody>> get(@Path("applicationId") String applicationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        Call<ResponseBody> get(@Path("applicationId") String applicationId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Query("timeout") Integer timeout, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
         @Headers("Content-Type: application/json; odata=minimalmetadata; charset=utf-8")
-        @GET("{nextLink}")
-        Observable<Response<ResponseBody>> listNext(@Path(value = "nextLink", encoded = true) String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
+        @GET
+        Call<ResponseBody> listNext(@Url String nextPageLink, @Header("accept-language") String acceptLanguage, @Header("client-request-id") String clientRequestId, @Header("return-client-request-id") Boolean returnClientRequestId, @Header("ocp-date") DateTimeRfc1123 ocpDate, @Header("User-Agent") String userAgent);
 
     }
 
@@ -86,80 +86,12 @@ public final class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<ApplicationSummary> list() {
-        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ApplicationSummary>(response.getBody()) {
-            @Override
-            public Page<ApplicationSummary> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ApplicationSummary>> listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<Page<ApplicationSummary>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Page<ApplicationSummary>>() {
-                @Override
-                public Page<ApplicationSummary> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync() {
-        return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync() {
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list() throws BatchErrorException, IOException, IllegalArgumentException {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -173,69 +105,63 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param applicationListOptions Additional parameters for the operation
-     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
-     */
-    public PagedList<ApplicationSummary> list(final ApplicationListOptions applicationListOptions) {
-        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listSinglePageAsync(applicationListOptions).toBlocking().single();
-        return new PagedList<ApplicationSummary>(response.getBody()) {
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> response = listDelegate(call.execute());
+        PagedList<ApplicationSummary> result = new PagedList<ApplicationSummary>(response.getBody()) {
             @Override
-            public Page<ApplicationSummary> nextPage(String nextPageLink) {
-                ApplicationListNextOptions applicationListNextOptions = null;
-                if (applicationListOptions != null) {
-                    applicationListNextOptions = new ApplicationListNextOptions();
-                    applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
-                    applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                    applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
-                }
-                return listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single().getBody();
+            public Page<ApplicationSummary> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                return listNext(nextPageLink, null).getBody();
             }
         };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
     }
 
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-     * @param applicationListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listSinglePageAsync(applicationListOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
-                    ApplicationListNextOptions applicationListNextOptions = null;
-                    if (applicationListOptions != null) {
-                        applicationListNextOptions = new ApplicationListNextOptions();
-                        applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
-                        applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                        applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
+    public ServiceCall listAsync(final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final ApplicationListOptions applicationListOptions = null;
+        Integer maxResults = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return listNextSinglePageAsync(nextPageLink, applicationListNextOptions);
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            },
-            serviceCallback);
+            }
+        });
+        return serviceCall;
     }
 
     /**
@@ -243,54 +169,12 @@ public final class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationListOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<Page<ApplicationSummary>> listAsync(final ApplicationListOptions applicationListOptions) {
-        return listWithServiceResponseAsync(applicationListOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Page<ApplicationSummary>>() {
-                @Override
-                public Page<ApplicationSummary> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param applicationListOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listWithServiceResponseAsync(final ApplicationListOptions applicationListOptions) {
-        return listSinglePageAsync(applicationListOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    ApplicationListNextOptions applicationListNextOptions = null;
-                    if (applicationListOptions != null) {
-                        applicationListNextOptions = new ApplicationListNextOptions();
-                        applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
-                        applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
-                        applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, applicationListNextOptions));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListOptions Additional parameters for the operation
-     * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listSinglePageAsync(final ApplicationListOptions applicationListOptions) {
+    public ServiceResponseWithHeaders<PagedList<ApplicationSummary>, ApplicationListHeaders> list(final ApplicationListOptions applicationListOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
@@ -319,18 +203,93 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> response = listDelegate(call.execute());
+        PagedList<ApplicationSummary> result = new PagedList<ApplicationSummary>(response.getBody()) {
+            @Override
+            public Page<ApplicationSummary> nextPage(String nextPageLink) throws BatchErrorException, IOException {
+                ApplicationListNextOptions applicationListNextOptions = null;
+                if (applicationListOptions != null) {
+                    applicationListNextOptions = new ApplicationListNextOptions();
+                    applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
+                    applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
+                    applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
                 }
-            });
+                return listNext(nextPageLink, applicationListNextOptions).getBody();
+            }
+        };
+        return new ServiceResponseWithHeaders<>(result, response.getHeaders(), response.getResponse());
+    }
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param applicationListOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listAsync(final ApplicationListOptions applicationListOptions, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(applicationListOptions, serviceCallback);
+        Integer maxResults = null;
+        if (applicationListOptions != null) {
+            maxResults = applicationListOptions.maxResults();
+        }
+        Integer timeout = null;
+        if (applicationListOptions != null) {
+            timeout = applicationListOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (applicationListOptions != null) {
+            clientRequestId = applicationListOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (applicationListOptions != null) {
+            returnClientRequestId = applicationListOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (applicationListOptions != null) {
+            ocpDate = applicationListOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.list(this.client.apiVersion(), this.client.acceptLanguage(), maxResults, timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        ApplicationListNextOptions applicationListNextOptions = null;
+                        if (applicationListOptions != null) {
+                            applicationListNextOptions = new ApplicationListNextOptions();
+                            applicationListNextOptions.withClientRequestId(applicationListOptions.clientRequestId());
+                            applicationListNextOptions.withReturnClientRequestId(applicationListOptions.returnClientRequestId());
+                            applicationListNextOptions.withOcpDate(applicationListOptions.ocpDate());
+                        }
+                        listNextAsync(result.getBody().getNextPageLink(), applicationListNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
+                    }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -344,45 +303,12 @@ public final class ApplicationsImpl implements Applications {
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
-     * @return the ApplicationSummary object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ApplicationSummary object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public ApplicationSummary get(String applicationId) {
-        return getWithServiceResponseAsync(applicationId).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param applicationId The ID of the application.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<ApplicationSummary> getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) {
-        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(applicationId), serviceCallback);
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param applicationId The ID of the application.
-     * @return the observable to the ApplicationSummary object
-     */
-    public Observable<ApplicationSummary> getAsync(String applicationId) {
-        return getWithServiceResponseAsync(applicationId).map(new Func1<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>, ApplicationSummary>() {
-            @Override
-            public ApplicationSummary call(ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response) {
-                return response.getBody();
-            }
-        });
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param applicationId The ID of the application.
-     * @return the observable to the ApplicationSummary object
-     */
-    public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId) {
+    public ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> get(String applicationId) throws BatchErrorException, IOException, IllegalArgumentException {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
@@ -398,57 +324,52 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return getDelegate(call.execute());
     }
 
     /**
      * Gets information about the specified application.
      *
      * @param applicationId The ID of the application.
-     * @param applicationGetOptions Additional parameters for the operation
-     * @return the ApplicationSummary object if successful.
-     */
-    public ApplicationSummary get(String applicationId, ApplicationGetOptions applicationGetOptions) {
-        return getWithServiceResponseAsync(applicationId, applicationGetOptions).toBlocking().single().getBody();
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param applicationId The ID of the application.
-     * @param applicationGetOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) {
-        return ServiceCall.createWithHeaders(getWithServiceResponseAsync(applicationId, applicationGetOptions), serviceCallback);
-    }
-
-    /**
-     * Gets information about the specified application.
-     *
-     * @param applicationId The ID of the application.
-     * @param applicationGetOptions Additional parameters for the operation
-     * @return the observable to the ApplicationSummary object
-     */
-    public Observable<ApplicationSummary> getAsync(String applicationId, ApplicationGetOptions applicationGetOptions) {
-        return getWithServiceResponseAsync(applicationId, applicationGetOptions).map(new Func1<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>, ApplicationSummary>() {
+    public ServiceCall getAsync(String applicationId, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (applicationId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        final ApplicationGetOptions applicationGetOptions = null;
+        Integer timeout = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
             @Override
-            public ApplicationSummary call(ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> response) {
-                return response.getBody();
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
+                }
             }
         });
+        return serviceCall;
     }
 
     /**
@@ -456,9 +377,12 @@ public final class ApplicationsImpl implements Applications {
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
-     * @return the observable to the ApplicationSummary object
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the ApplicationSummary object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> getWithServiceResponseAsync(String applicationId, ApplicationGetOptions applicationGetOptions) {
+    public ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> get(String applicationId, ApplicationGetOptions applicationGetOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (applicationId == null) {
             throw new IllegalArgumentException("Parameter applicationId is required and cannot be null.");
         }
@@ -486,18 +410,65 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+        Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return getDelegate(call.execute());
+    }
+
+    /**
+     * Gets information about the specified application.
+     *
+     * @param applicationId The ID of the application.
+     * @param applicationGetOptions Additional parameters for the operation
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall getAsync(String applicationId, ApplicationGetOptions applicationGetOptions, final ServiceCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (applicationId == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
+            return null;
+        }
+        if (this.client.apiVersion() == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(applicationGetOptions, serviceCallback);
+        Integer timeout = null;
+        if (applicationGetOptions != null) {
+            timeout = applicationGetOptions.timeout();
+        }
+        String clientRequestId = null;
+        if (applicationGetOptions != null) {
+            clientRequestId = applicationGetOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (applicationGetOptions != null) {
+            returnClientRequestId = applicationGetOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (applicationGetOptions != null) {
+            ocpDate = applicationGetOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.get(applicationId, this.client.apiVersion(), this.client.acceptLanguage(), timeout, clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        final ServiceCall serviceCall = new ServiceCall(call);
+        call.enqueue(new ServiceResponseCallback<ApplicationSummary>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    serviceCallback.success(getDelegate(response));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<ApplicationSummary, ApplicationGetHeaders> getDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
@@ -512,85 +483,12 @@ public final class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public PagedList<ApplicationSummary> listNext(final String nextPageLink) {
-        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ApplicationSummary>(response.getBody()) {
-            @Override
-            public Page<ApplicationSummary> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, null).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceCall the ServiceCall object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
-     */
-    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, null);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Page<ApplicationSummary>>() {
-                @Override
-                public Page<ApplicationSummary> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink) {
-        return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
-                    }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, null));
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink) {
+    public ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -602,18 +500,8 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNextDelegate(call.execute());
     }
 
     /**
@@ -621,90 +509,61 @@ public final class ApplicationsImpl implements Applications {
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;ApplicationSummary&gt; object if successful.
-     */
-    public PagedList<ApplicationSummary> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
-        ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response = listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single();
-        return new PagedList<ApplicationSummary>(response.getBody()) {
-            @Override
-            public Page<ApplicationSummary> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink, applicationListNextOptions).toBlocking().single().getBody();
-            }
-        };
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @return the {@link ServiceCall} object
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
      */
-    public ServiceCall<List<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall<List<ApplicationSummary>> serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) {
-        return AzureServiceCall.createWithHeaders(
-            listNextSinglePageAsync(nextPageLink, applicationListNextOptions),
-            new Func1<String, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink, applicationListNextOptions);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<Page<ApplicationSummary>> listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
-        return listNextWithServiceResponseAsync(nextPageLink, applicationListNextOptions)
-            .map(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Page<ApplicationSummary>>() {
-                @Override
-                public Page<ApplicationSummary> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> response) {
-                    return response.getBody();
-                }
-            });
-    }
-
-    /**
-     * Lists all of the applications available in the specified account.
-     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param applicationListNextOptions Additional parameters for the operation
-     * @return the observable to the PagedList&lt;ApplicationSummary&gt; object
-     */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
-        return listNextSinglePageAsync(nextPageLink, applicationListNextOptions)
-            .concatMap(new Func1<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders> page) {
-                    String nextPageLink = page.getBody().getNextPageLink();
-                    if (nextPageLink == null) {
-                        return Observable.just(page);
+    public ServiceCall listNextAsync(final String nextPageLink, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        final ApplicationListNextOptions applicationListNextOptions = null;
+        String clientRequestId = null;
+        Boolean returnClientRequestId = null;
+        DateTime ocpDate = null;
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), null, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink, applicationListNextOptions));
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     /**
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListNextOptions Additional parameters for the operation
-     * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param applicationListNextOptions Additional parameters for the operation
+     * @throws BatchErrorException exception thrown from REST call
+     * @throws IOException exception thrown from serialization/deserialization
+     * @throws IllegalArgumentException exception thrown from invalid parameters
+     * @return the List&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> listNextSinglePageAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) {
+    public ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNext(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions) throws BatchErrorException, IOException, IllegalArgumentException {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
@@ -725,18 +584,66 @@ public final class ApplicationsImpl implements Applications {
         if (ocpDate != null) {
             ocpDateConverted = new DateTimeRfc1123(ocpDate);
         }
-        return service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>>>() {
-                @Override
-                public Observable<ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponseWithHeaders<Page<ApplicationSummary>, ApplicationListHeaders>(result.getBody(), result.getHeaders(), result.getResponse()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        return listNextDelegate(call.execute());
+    }
+
+    /**
+     * Lists all of the applications available in the specified account.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param applicationListNextOptions Additional parameters for the operation
+     * @param serviceCall the ServiceCall object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if callback is null
+     * @return the {@link Call} object
+     */
+    public ServiceCall listNextAsync(final String nextPageLink, final ApplicationListNextOptions applicationListNextOptions, final ServiceCall serviceCall, final ListOperationCallback<ApplicationSummary> serviceCallback) throws IllegalArgumentException {
+        if (serviceCallback == null) {
+            throw new IllegalArgumentException("ServiceCallback is required for async calls.");
+        }
+        if (nextPageLink == null) {
+            serviceCallback.failure(new IllegalArgumentException("Parameter nextPageLink is required and cannot be null."));
+            return null;
+        }
+        Validator.validate(applicationListNextOptions, serviceCallback);
+        String clientRequestId = null;
+        if (applicationListNextOptions != null) {
+            clientRequestId = applicationListNextOptions.clientRequestId();
+        }
+        Boolean returnClientRequestId = null;
+        if (applicationListNextOptions != null) {
+            returnClientRequestId = applicationListNextOptions.returnClientRequestId();
+        }
+        DateTime ocpDate = null;
+        if (applicationListNextOptions != null) {
+            ocpDate = applicationListNextOptions.ocpDate();
+        }
+        DateTimeRfc1123 ocpDateConverted = null;
+        if (ocpDate != null) {
+            ocpDateConverted = new DateTimeRfc1123(ocpDate);
+        }
+        Call<ResponseBody> call = service.listNext(nextPageLink, this.client.acceptLanguage(), clientRequestId, returnClientRequestId, ocpDateConverted, this.client.userAgent());
+        serviceCall.newCall(call);
+        call.enqueue(new ServiceResponseCallback<List<ApplicationSummary>>(serviceCallback) {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> result = listNextDelegate(response);
+                    serviceCallback.load(result.getBody().getItems());
+                    if (result.getBody().getNextPageLink() != null
+                            && serviceCallback.progress(result.getBody().getItems()) == ListOperationCallback.PagingBahavior.CONTINUE) {
+                        listNextAsync(result.getBody().getNextPageLink(), applicationListNextOptions, serviceCall, serviceCallback);
+                    } else {
+                        serviceCallback.success(new ServiceResponseWithHeaders<>(serviceCallback.get(), result.getHeaders(), result.getResponse()));
                     }
+                } catch (BatchErrorException | IOException exception) {
+                    serviceCallback.failure(exception);
                 }
-            });
+            }
+        });
+        return serviceCall;
     }
 
     private ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> listNextDelegate(Response<ResponseBody> response) throws BatchErrorException, IOException, IllegalArgumentException {
