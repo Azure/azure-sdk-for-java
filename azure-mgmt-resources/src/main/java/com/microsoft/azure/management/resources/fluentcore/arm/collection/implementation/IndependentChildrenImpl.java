@@ -61,7 +61,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public T getById(String id) {
-        ResourceId resourceId = ResourceId.parseResourceId(id);
+        ResourceId resourceId = ResourceId.fromString(id);
 
         return getByParent(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
@@ -88,7 +88,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public Observable<Void> deleteByIdAsync(String id) {
-        ResourceId resourceId = ResourceId.parseResourceId(id);
+        ResourceId resourceId = ResourceId.fromString(id);
         return deleteByParentAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name());
     }
 }
