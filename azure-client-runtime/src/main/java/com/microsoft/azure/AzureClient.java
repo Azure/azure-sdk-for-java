@@ -176,7 +176,7 @@ public class AzureClient extends AzureServiceClient {
                             .flatMap(new Func1<PollingState<T>, Observable<PollingState<T>>>() {
                                 @Override
                                 public Observable<PollingState<T>> call(PollingState<T> pollingState) {
-                                    if (AzureAsyncOperation.SUCCESS_STATUS.equalsIgnoreCase(pollingState.getStatus()) && pollingState.getResource() == null) {
+                                    if (AzureAsyncOperation.SUCCESS_STATUS.equalsIgnoreCase(pollingState.getStatus())) {
                                         return updateStateFromGetResourceOperationAsync(pollingState, url);
                                     }
                                     for (String failedStatus : AzureAsyncOperation.getFailedStatuses()) {
@@ -471,7 +471,7 @@ public class AzureClient extends AzureServiceClient {
                             bodyString = response.body().string();
                             body = restClient().mapperAdapter().deserialize(bodyString, AzureAsyncOperation.class);
                         } catch (IOException e) {
-                            // null body will be handlded later
+                            // null body will be handled later
                         } finally {
                             response.body().close();
                         }
@@ -485,7 +485,13 @@ public class AzureClient extends AzureServiceClient {
 
                     pollingState.setStatus(body.getStatus());
                     pollingState.setResponse(response);
-                    pollingState.setResource(null);
+                    T resource = null;
+                    try {
+                        resource = restClient().mapperAdapter().deserialize(bodyString, pollingState.getResourceType());
+                    } catch (IOException e) {
+                        // Ignore and let resource be null
+                    }
+                    pollingState.setResource(resource);
                     return Observable.just(pollingState);
                 }
             });

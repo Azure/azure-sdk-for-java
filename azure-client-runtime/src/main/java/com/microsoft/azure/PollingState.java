@@ -9,12 +9,11 @@ package com.microsoft.azure;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JacksonMapperAdapter;
+import okhttp3.ResponseBody;
+import retrofit2.Response;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
-
-import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 /**
  * An instance of this class defines the state of a long running operation.
@@ -162,6 +161,12 @@ public class PollingState<T> {
         return status;
     }
 
+    /**
+     * @return the resource type
+     */
+    public Type getResourceType() {
+        return resourceType;
+    }
 
     /**
      * Sets the polling status.
