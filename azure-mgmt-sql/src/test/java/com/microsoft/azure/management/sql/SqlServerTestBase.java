@@ -7,6 +7,8 @@ import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.sql.implementation.SqlServerManager;
 import okhttp3.logging.HttpLoggingInterceptor;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.concurrent.TimeUnit;
@@ -15,12 +17,9 @@ public abstract class SqlServerTestBase {
     protected static ResourceManager resourceManager;
     protected static SqlServerManager sqlServerManager;
 
-    public static void createClients() {
-        ApplicationTokenCredentials credentials = new ApplicationTokenCredentials(
-                System.getenv("client-id"),
-                System.getenv("domain"),
-                System.getenv("secret"),
-                AzureEnvironment.AZURE);
+    public static void createClients() throws IOException {
+        final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
+        ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
 
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
@@ -32,9 +31,9 @@ public abstract class SqlServerTestBase {
 
         resourceManager = ResourceManager
                 .authenticate(restClient)
-                .withSubscription(System.getenv("subscription-id"));
+                .withSubscription(credentials.defaultSubscriptionId());
 
         sqlServerManager = SqlServerManager
-                .authenticate(restClient, System.getenv("subscription-id"));
+                .authenticate(restClient, credentials.defaultSubscriptionId());
     }
 }

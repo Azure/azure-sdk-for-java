@@ -259,10 +259,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         SqlServer sqlServer = createSqlServer();
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -338,10 +334,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         // Add another database to the server
         resourceStream = sqlServer.databases()
                 .define("newDatabase")
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
+                .withCollation(COLLATION)
                 .createAsync();
 
         sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -362,10 +356,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Observable<Indexable> resourceStream = sqlServer1.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.STANDARD)
+                .withCollation(COLLATION)
                 .createAsync();
 
         SqlDatabase databaseInServer1 = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -375,7 +367,6 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         validateSqlDatabase(databaseInServer1, SQL_DATABASE_NAME);
         SqlDatabase databaseInServer2 = sqlServer2.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
                 .withSourceDatabase(databaseInServer1.id())
                 .withMode(CreateMode.ONLINE_SECONDARY)
                 .create();
@@ -428,10 +419,8 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
 
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
-                .withoutElasticPool()
-                .withoutSourceDatabaseId()
-                .withCollation(COLLATION)
                 .withEdition(DatabaseEditions.DATA_WAREHOUSE)
+                .withCollation(COLLATION)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -444,7 +433,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Assert.assertTrue(sqlDatabase.isDataWarehouse());
 
         // Get
-        SqlWarehouse dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME).castToWarehouse();
+        SqlWarehouse dataWarehouse = sqlServer.databases().get(SQL_DATABASE_NAME).asWarehouse();
 
         Assert.assertNotNull(dataWarehouse);
         Assert.assertEquals(dataWarehouse.name(), SQL_DATABASE_NAME);
@@ -479,10 +468,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         Observable<Indexable> resourceStream = sqlServer.databases()
                 .define(SQL_DATABASE_NAME)
                 .withNewElasticPool(sqlElasticPoolCreatable)
-                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
-                .withServiceObjective(ServiceObjectiveName.S1)
                 .createAsync();
 
         SqlDatabase sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)
@@ -580,9 +566,7 @@ public class SqlServerOperationsTests extends SqlServerTestBase {
         resourceStream = sqlServer.databases()
                 .define("newDatabase")
                 .withExistingElasticPool(sqlElasticPool)
-                .withoutSourceDatabaseId()
                 .withCollation(COLLATION)
-                .withEdition(DatabaseEditions.STANDARD)
                 .createAsync();
 
         sqlDatabase = Utils.<SqlDatabase>rootResource(resourceStream)

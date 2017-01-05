@@ -52,7 +52,7 @@ public class SqlServerImpl
     private final RecommendedElasticPoolsInner recommendedElasticPoolsInner;
     private final Map<String, SqlElasticPool.DefinitionStages.WithCreate> elasticPoolCreatableMap;
     private final Map<String, SqlFirewallRule.DefinitionStages.WithCreate> firewallRuleCreatableMap;
-    private final Map<String, SqlDatabase.DefinitionStages.WithCreate> databaseCreatableMap;
+    private final Map<String, SqlDatabase.DefinitionStages.WithAllDifferentOptions> databaseCreatableMap;
     private FirewallRulesImpl firewallRulesImpl;
     private ElasticPoolsImpl elasticPoolsImpl;
     private DatabasesImpl databasesImpl;
@@ -236,7 +236,7 @@ public class SqlServerImpl
         this.databaseCreatableMap.remove(databaseName);
 
         this.databaseCreatableMap.put(databaseName,
-                this.databases().define(databaseName).withoutElasticPool().withoutSourceDatabaseId());
+                this.databases().define(databaseName));
         return this;
     }
 
@@ -276,9 +276,8 @@ public class SqlServerImpl
         this.databaseCreatableMap.remove(databaseName);
 
         this.databaseCreatableMap.put(databaseName,
-                this.databases().define(databaseName)
-                    .withExistingElasticPool(elasticPoolName)
-                    .withoutSourceDatabaseId());
+                (SqlDatabase.DefinitionStages.WithAllDifferentOptions) this.databases().define(databaseName)
+                    .withExistingElasticPool(elasticPoolName));
     }
 
     @Override

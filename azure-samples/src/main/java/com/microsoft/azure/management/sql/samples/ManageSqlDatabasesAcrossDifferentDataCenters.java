@@ -88,9 +88,8 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
                 // Create a Database in master SQL server created above.
                 System.out.println("Creating a database");
 
-                SqlDatabase masterDatabase = masterSqlServer.databases().define(databaseName)
-                        .withoutElasticPool()
-                        .withoutSourceDatabaseId()
+                SqlDatabase masterDatabase = masterSqlServer.databases()
+                        .define(databaseName)
                         .withEdition(DatabaseEditions.BASIC)
                         .create();
                 Utils.print(masterDatabase);
@@ -110,7 +109,6 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
                 System.out.println("Creating database in slave SQL Server.");
                 SqlDatabase secondaryDatabase = sqlServerInSecondaryLocation.databases().define(databaseName)
-                        .withoutElasticPool()
                         .withSourceDatabase(masterDatabase)
                         .withMode(CreateMode.ONLINE_SECONDARY)
                         .create();
@@ -130,7 +128,6 @@ public final class ManageSqlDatabasesAcrossDifferentDataCenters {
 
                 System.out.println("Creating database in second slave SQL Server.");
                 SqlDatabase secondaryDatabaseInEurope = sqlServerInEurope.databases().define(databaseName)
-                        .withoutElasticPool()
                         .withSourceDatabase(masterDatabase)
                         .withMode(CreateMode.ONLINE_SECONDARY)
                         .create();

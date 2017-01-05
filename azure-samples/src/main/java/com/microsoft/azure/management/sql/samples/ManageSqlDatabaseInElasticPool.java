@@ -111,10 +111,8 @@ public final class ManageSqlDatabaseInElasticPool {
                 // Create a Database in SQL server created above.
                 System.out.println("Creating a database");
 
-                SqlDatabase database = sqlServer.databases().define("myNewDatabase")
-                        .withoutElasticPool()
-                        .withoutSourceDatabaseId()
-                        .withEdition(DatabaseEditions.BASIC)
+                SqlDatabase database = sqlServer.databases()
+                        .define("myNewDatabase")
                         .create();
                 Utils.print(database);
 
@@ -135,8 +133,6 @@ public final class ManageSqlDatabaseInElasticPool {
                 // ============================================================
                 // Create another database and move it in elastic pool as update to the elastic pool.
                 SqlDatabase anotherDatabase = sqlServer.databases().define(anotherDatabaseName)
-                        .withoutElasticPool()
-                        .withoutSourceDatabaseId()
                         .create();
 
                 // ============================================================
@@ -197,9 +193,6 @@ public final class ManageSqlDatabaseInElasticPool {
                 System.out.println("Create ElasticPool in existing SQL Server");
                 SqlElasticPool elasticPool2 = sqlServer.elasticPools().define(elasticPool2Name)
                         .withEdition(elasticPoolEdition)
-                        .withDtu(100)
-                        .withDatabaseDtuMax(50)
-                        .withDatabaseDtuMin(10)
                         .create();
 
                 Utils.print(elasticPool2);
