@@ -69,7 +69,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location where resource usage is queried.
      * @return the PagedList&lt;UsageInner&gt; object if successful.
      */
     public PagedList<UsageInner> list(final String location) {
@@ -85,7 +85,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location where resource usage is queried.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -104,7 +104,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location where resource usage is queried.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listAsync(final String location) {
@@ -120,7 +120,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-     * @param location The location upon which resource usage is queried.
+     * @param location The location where resource usage is queried.
      * @return the observable to the PagedList&lt;UsageInner&gt; object
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listWithServiceResponseAsync(final String location) {
@@ -140,7 +140,7 @@ public final class UsagesInner {
     /**
      * Lists compute usages for a subscription.
      *
-    ServiceResponse<PageImpl<UsageInner>> * @param location The location upon which resource usage is queried.
+    ServiceResponse<PageImpl<UsageInner>> * @param location The location where resource usage is queried.
      * @return the PagedList&lt;UsageInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<UsageInner>>> listSinglePageAsync(final String location) {
@@ -150,10 +150,8 @@ public final class UsagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(location, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(location, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<UsageInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<UsageInner>>> call(Response<ResponseBody> response) {

@@ -17,6 +17,9 @@ public final class ApplicationGatewayTier {
     /** Static value Standard for ApplicationGatewayTier. */
     public static final ApplicationGatewayTier STANDARD = new ApplicationGatewayTier("Standard");
 
+    /** Static value WAF for ApplicationGatewayTier. */
+    public static final ApplicationGatewayTier WAF = new ApplicationGatewayTier("WAF");
+
     private String value;
 
     /**

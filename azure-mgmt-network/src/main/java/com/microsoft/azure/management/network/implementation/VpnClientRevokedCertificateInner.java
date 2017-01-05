@@ -18,20 +18,20 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class VpnClientRevokedCertificateInner extends SubResource {
     /**
-     * Gets or sets the revoked Vpn client certificate thumbprint.
+     * The revoked VPN client certificate thumbprint.
      */
     @JsonProperty(value = "properties.thumbprint")
     private String thumbprint;
 
     /**
-     * Gets provisioning state of the VPN client revoked certificate resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the VPN client revoked certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;
@@ -68,17 +68,6 @@ public class VpnClientRevokedCertificateInner extends SubResource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VpnClientRevokedCertificateInner object itself.
-     */
-    public VpnClientRevokedCertificateInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

@@ -25,27 +25,28 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class VirtualNetworkGatewayInner extends Resource {
     /**
-     * IpConfigurations for Virtual network gateway.
+     * IP configurations for virtual network gateway.
      */
-    @JsonProperty(value = "properties.ipConfigurations")
+    @JsonProperty(value = "properties.ipConfigurations", required = true)
     private List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations;
 
     /**
-     * The type of this virtual network gateway. Possible values include:
-     * 'Vpn', 'ExpressRoute'.
+     * The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'.
      */
-    @JsonProperty(value = "properties.gatewayType")
+    @JsonProperty(value = "properties.gatewayType", required = true)
     private VirtualNetworkGatewayType gatewayType;
 
     /**
-     * The type of this virtual network gateway. Possible values include:
-     * 'PolicyBased', 'RouteBased'.
+     * The type of this virtual network gateway. Possible values are:
+     * 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased',
+     * 'RouteBased'.
      */
-    @JsonProperty(value = "properties.vpnType")
+    @JsonProperty(value = "properties.vpnType", required = true)
     private VpnType vpnType;
 
     /**
-     * EnableBgp Flag.
+     * Whether BGP is enabled for this virtual network gateway or not.
      */
     @JsonProperty(value = "properties.enableBgp")
     private Boolean enableBgp;
@@ -57,23 +58,23 @@ public class VirtualNetworkGatewayInner extends Resource {
     private Boolean activeActive;
 
     /**
-     * Gets or sets the reference of the LocalNetworkGateway resource which
-     * represents Local network site having default routes. Assign Null value
-     * in case of removing existing default site setting.
+     * The reference of the LocalNetworkGateway resource which represents local
+     * network site having default routes. Assign Null value in case of
+     * removing existing default site setting.
      */
     @JsonProperty(value = "properties.gatewayDefaultSite")
     private SubResource gatewayDefaultSite;
 
     /**
-     * Gets or sets the reference of the VirtualNetworkGatewaySku resource
-     * which represents the sku selected for Virtual network gateway.
+     * The reference of the VirtualNetworkGatewaySku resource which represents
+     * the SKU selected for Virtual network gateway.
      */
     @JsonProperty(value = "properties.sku")
     private VirtualNetworkGatewaySku sku;
 
     /**
-     * Gets or sets the reference of the VpnClientConfiguration resource which
-     * represents the P2S VpnClient configurations.
+     * The reference of the VpnClientConfiguration resource which represents
+     * the P2S VpnClient configurations.
      */
     @JsonProperty(value = "properties.vpnClientConfiguration")
     private VpnClientConfiguration vpnClientConfiguration;
@@ -85,17 +86,16 @@ public class VirtualNetworkGatewayInner extends Resource {
     private BgpSettings bgpSettings;
 
     /**
-     * Gets or sets resource guid property of the VirtualNetworkGateway
-     * resource.
+     * The resource GUID property of the VirtualNetworkGateway resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the VirtualNetworkGateway resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the VirtualNetworkGateway resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
@@ -311,17 +311,6 @@ public class VirtualNetworkGatewayInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VirtualNetworkGatewayInner object itself.
-     */
-    public VirtualNetworkGatewayInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

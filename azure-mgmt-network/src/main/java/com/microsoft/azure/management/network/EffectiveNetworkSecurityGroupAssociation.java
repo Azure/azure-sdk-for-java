@@ -11,16 +11,16 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.SubResource;
 
 /**
- * Effective NetworkSecurityGroup association.
+ * The effective network security group association.
  */
 public class EffectiveNetworkSecurityGroupAssociation {
     /**
-     * Gets the id of subnet if assigned.
+     * The ID of the subnet if assigned.
      */
     private SubResource subnet;
 
     /**
-     * Gets the id of network interface if assigned.
+     * The ID of the network interface if assigned.
      */
     private SubResource networkInterface;
 

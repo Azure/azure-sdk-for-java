@@ -10,6 +10,8 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnectionType;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnectionStatus;
+import java.util.List;
+import com.microsoft.azure.management.network.TunnelConnectionHealth;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -29,7 +31,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     /**
      * The virtualNetworkGateway1 property.
      */
-    @JsonProperty(value = "properties.virtualNetworkGateway1")
+    @JsonProperty(value = "properties.virtualNetworkGateway1", required = true)
     private VirtualNetworkGatewayInner virtualNetworkGateway1;
 
     /**
@@ -45,41 +47,49 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private LocalNetworkGatewayInner localNetworkGateway2;
 
     /**
-     * Gateway connection type -Ipsec/Dedicated/VpnClient/Vnet2Vnet. Possible
-     * values include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
+     * Gateway connection type. Possible values are:
+     * 'Ipsec','Vnet2Vnet','ExpressRoute', and 'VPNClient. Possible values
+     * include: 'IPsec', 'Vnet2Vnet', 'ExpressRoute', 'VPNClient'.
      */
-    @JsonProperty(value = "properties.connectionType")
+    @JsonProperty(value = "properties.connectionType", required = true)
     private VirtualNetworkGatewayConnectionType connectionType;
 
     /**
-     * The Routing weight.
+     * The routing weight.
      */
     @JsonProperty(value = "properties.routingWeight")
     private Integer routingWeight;
 
     /**
-     * The Ipsec share key.
+     * The IPSec shared key.
      */
     @JsonProperty(value = "properties.sharedKey")
     private String sharedKey;
 
     /**
-     * Virtual network Gateway connection status. Possible values include:
-     * 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
+     * Virtual network Gateway connection status. Possible values are
+     * 'Unknown', 'Connecting', 'Connected' and 'NotConnected'. Possible values
+     * include: 'Unknown', 'Connecting', 'Connected', 'NotConnected'.
      */
-    @JsonProperty(value = "properties.connectionStatus")
+    @JsonProperty(value = "properties.connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualNetworkGatewayConnectionStatus connectionStatus;
 
     /**
-     * The Egress Bytes Transferred in this connection.
+     * Collection of all tunnels' connection health status.
      */
-    @JsonProperty(value = "properties.egressBytesTransferred")
+    @JsonProperty(value = "properties.tunnelConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
+    private List<TunnelConnectionHealth> tunnelConnectionStatus;
+
+    /**
+     * The egress bytes transferred in this connection.
+     */
+    @JsonProperty(value = "properties.egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
 
     /**
-     * The Ingress Bytes Transferred in this connection.
+     * The ingress bytes transferred in this connection.
      */
-    @JsonProperty(value = "properties.ingressBytesTransferred")
+    @JsonProperty(value = "properties.ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /**
@@ -89,23 +99,23 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     private SubResource peer;
 
     /**
-     * EnableBgp Flag.
+     * EnableBgp flag.
      */
     @JsonProperty(value = "properties.enableBgp")
     private Boolean enableBgp;
 
     /**
-     * Gets or sets resource guid property of the
-     * VirtualNetworkGatewayConnection resource.
+     * The resource GUID property of the VirtualNetworkGatewayConnection
+     * resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the VirtualNetworkGatewayConnection resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the VirtualNetworkGatewayConnection resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
      */
-    @JsonProperty(value = "properties.provisioningState")
+    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /**
@@ -264,14 +274,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the connectionStatus value.
+     * Get the tunnelConnectionStatus value.
      *
-     * @param connectionStatus the connectionStatus value to set
-     * @return the VirtualNetworkGatewayConnectionInner object itself.
+     * @return the tunnelConnectionStatus value
      */
-    public VirtualNetworkGatewayConnectionInner withConnectionStatus(VirtualNetworkGatewayConnectionStatus connectionStatus) {
-        this.connectionStatus = connectionStatus;
-        return this;
+    public List<TunnelConnectionHealth> tunnelConnectionStatus() {
+        return this.tunnelConnectionStatus;
     }
 
     /**
@@ -284,34 +292,12 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
     }
 
     /**
-     * Set the egressBytesTransferred value.
-     *
-     * @param egressBytesTransferred the egressBytesTransferred value to set
-     * @return the VirtualNetworkGatewayConnectionInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionInner withEgressBytesTransferred(Long egressBytesTransferred) {
-        this.egressBytesTransferred = egressBytesTransferred;
-        return this;
-    }
-
-    /**
      * Get the ingressBytesTransferred value.
      *
      * @return the ingressBytesTransferred value
      */
     public Long ingressBytesTransferred() {
         return this.ingressBytesTransferred;
-    }
-
-    /**
-     * Set the ingressBytesTransferred value.
-     *
-     * @param ingressBytesTransferred the ingressBytesTransferred value to set
-     * @return the VirtualNetworkGatewayConnectionInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionInner withIngressBytesTransferred(Long ingressBytesTransferred) {
-        this.ingressBytesTransferred = ingressBytesTransferred;
-        return this;
     }
 
     /**
@@ -381,17 +367,6 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      */
     public String provisioningState() {
         return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the VirtualNetworkGatewayConnectionInner object itself.
-     */
-    public VirtualNetworkGatewayConnectionInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
     }
 
     /**

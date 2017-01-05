@@ -10,7 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 
 /**
- * Contains Stats associated with the peering.
+ * Contains stats associated with the peering.
  */
 public class ExpressRouteCircuitStatsInner {
     /**

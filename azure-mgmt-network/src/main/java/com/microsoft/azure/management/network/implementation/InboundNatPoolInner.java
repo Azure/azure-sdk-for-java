@@ -19,58 +19,50 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class InboundNatPoolInner extends SubResource {
     /**
-     * Gets or sets a reference to frontend IP Addresses.
+     * A reference to frontend IP addresses.
      */
     @JsonProperty(value = "properties.frontendIPConfiguration")
     private SubResource frontendIPConfiguration;
 
     /**
-     * Gets or sets the transport protocol for the endpoint. Possible values
-     * are Udp or Tcp. Possible values include: 'Udp', 'Tcp'.
+     * The transport protocol for the endpoint. Possible values are: 'Udp' or
+     * 'Tcp'. Possible values include: 'Udp', 'Tcp'.
      */
     @JsonProperty(value = "properties.protocol", required = true)
     private TransportProtocol protocol;
 
     /**
-     * Gets or sets the starting port range for the NAT pool. You can specify
-     * any port number you choose, but the port numbers specified for each
-     * role in the service must be unique. Possible values range between 1
-     * and 65535, inclusive.
+     * The first port number in the range of external ports that will be used
+     * to provide Inbound Nat to NICs associated with a load balancer.
+     * Acceptable values range between 1 and 65534.
      */
     @JsonProperty(value = "properties.frontendPortRangeStart", required = true)
     private int frontendPortRangeStart;
 
     /**
-     * Gets or sets the ending port range for the NAT pool. You can specify
-     * any port number you choose, but the port numbers specified for each
-     * role in the service must be unique. Possible values range between 1
-     * and 65535, inclusive.
+     * The last port number in the range of external ports that will be used to
+     * provide Inbound Nat to NICs associated with a load balancer. Acceptable
+     * values range between 1 and 65535.
      */
     @JsonProperty(value = "properties.frontendPortRangeEnd", required = true)
     private int frontendPortRangeEnd;
 
     /**
-     * Gets or sets a port used for internal connections on the endpoint. The
-     * localPort attribute maps the eternal port of the endpoint to an
-     * internal port on a role. This is useful in scenarios where a role must
-     * communicate to an internal component on a port that is different from
-     * the one that is exposed externally. If not specified, the value of
-     * localPort is the same as the port attribute. Set the value of
-     * localPort to '*' to automatically assign an unallocated port that is
-     * discoverable using the runtime API.
+     * The port used for internal connections on the endpoint. Acceptable
+     * values are between 1 and 65535.
      */
     @JsonProperty(value = "properties.backendPort", required = true)
     private int backendPort;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the PublicIP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

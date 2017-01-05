@@ -19,35 +19,36 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class RouteInner extends SubResource {
     /**
-     * Gets or sets the destination CIDR to which the route applies.
+     * The destination CIDR to which the route applies.
      */
     @JsonProperty(value = "properties.addressPrefix")
     private String addressPrefix;
 
     /**
-     * Gets or sets the type of Azure hop the packet should be sent to.
-     * Possible values include: 'VirtualNetworkGateway', 'VnetLocal',
-     * 'Internet', 'VirtualAppliance', 'None'.
+     * The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance',
+     * and 'None'. Possible values include: 'VirtualNetworkGateway',
+     * 'VnetLocal', 'Internet', 'VirtualAppliance', 'None'.
      */
     @JsonProperty(value = "properties.nextHopType", required = true)
     private RouteNextHopType nextHopType;
 
     /**
-     * Gets or sets the IP address packets should be forwarded to. Next hop
-     * values are only allowed in routes where the next hop type is
-     * VirtualAppliance.
+     * The IP address packets should be forwarded to. Next hop values are only
+     * allowed in routes where the next hop type is VirtualAppliance.
      */
     @JsonProperty(value = "properties.nextHopIpAddress")
     private String nextHopIpAddress;
 
     /**
-     * Gets provisioning state of the resource Updating/Deleting/Failed.
+     * The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets name of the resource that is unique within a resource group. This
+     * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
     private String name;

@@ -100,7 +100,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -110,7 +110,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -122,7 +122,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -138,7 +138,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -154,15 +154,13 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -172,7 +170,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -184,7 +182,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -200,7 +198,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Delete NetworkSecurityGroup operation deletes the specified network security group.
+     * Deletes the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -216,10 +214,8 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginDelete(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -242,7 +238,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -253,7 +249,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -265,7 +261,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -281,7 +277,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
@@ -297,11 +293,9 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
+        final String apiVersion = "2016-09-01";
         final String expand = null;
-        return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NetworkSecurityGroupInner>> call(Response<ResponseBody> response) {
@@ -316,11 +310,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner get(String resourceGroupName, String networkSecurityGroupName, String expand) {
@@ -328,11 +322,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -341,11 +335,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the NetworkSecurityGroupInner object
      */
     public Observable<NetworkSecurityGroupInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String expand) {
@@ -358,11 +352,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Get NetworkSecurityGroups operation retrieves information about the specified network security group.
+     * Gets the specified network security group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param expand expand references resources.
+     * @param expand Expands referenced resources.
      * @return the observable to the NetworkSecurityGroupInner object
      */
     public Observable<ServiceResponse<NetworkSecurityGroupInner>> getWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, String expand) {
@@ -375,10 +369,8 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), this.client.apiVersion(), expand, this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.get(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NetworkSecurityGroupInner>> call(Response<ResponseBody> response) {
@@ -400,11 +392,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -412,11 +404,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -425,11 +417,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the observable for the request
      */
     public Observable<NetworkSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -442,11 +434,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the observable for the request
      */
     public Observable<ServiceResponse<NetworkSecurityGroupInner>> createOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -462,20 +454,18 @@ public final class NetworkSecurityGroupsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2016-09-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<NetworkSecurityGroupInner>() { }.getType());
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the NetworkSecurityGroupInner object if successful.
      */
     public NetworkSecurityGroupInner beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -483,11 +473,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
      */
@@ -496,11 +486,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the observable to the NetworkSecurityGroupInner object
      */
     public Observable<NetworkSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -513,11 +503,11 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The Put NetworkSecurityGroup operation creates/updates a network security group in the specified resource group.
+     * Creates or updates a network security group in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
-     * @param parameters Parameters supplied to the create/update Network Security Group operation
+     * @param parameters Parameters supplied to the create or update network security group operation.
      * @return the observable to the NetworkSecurityGroupInner object
      */
     public Observable<ServiceResponse<NetworkSecurityGroupInner>> beginCreateOrUpdateWithServiceResponseAsync(String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters) {
@@ -533,11 +523,9 @@ public final class NetworkSecurityGroupsInner {
         if (parameters == null) {
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(parameters);
-        return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<NetworkSecurityGroupInner>>>() {
                 @Override
                 public Observable<ServiceResponse<NetworkSecurityGroupInner>> call(Response<ResponseBody> response) {
@@ -560,7 +548,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
      */
@@ -575,7 +563,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @return the {@link ServiceCall} object
@@ -593,7 +581,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
@@ -608,7 +596,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
      */
@@ -627,7 +615,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -635,10 +623,8 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.listAll(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.listAll(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
@@ -660,7 +646,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
@@ -676,7 +662,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -695,7 +681,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -711,7 +697,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -731,7 +717,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
     ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param resourceGroupName The name of the resource group.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -743,10 +729,8 @@ public final class NetworkSecurityGroupsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2016-09-01";
+        return service.list(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>>>() {
                 @Override
                 public Observable<ServiceResponse<Page<NetworkSecurityGroupInner>>> call(Response<ResponseBody> response) {
@@ -768,7 +752,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
@@ -784,7 +768,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -804,7 +788,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -820,7 +804,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -840,7 +824,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a subscription.
+     * Gets all network security groups in a subscription.
      *
     ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.
@@ -871,7 +855,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object if successful.
@@ -887,7 +871,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceCall the ServiceCall object tracking the Retrofit calls
@@ -907,7 +891,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -923,7 +907,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the observable to the PagedList&lt;NetworkSecurityGroupInner&gt; object
@@ -943,7 +927,7 @@ public final class NetworkSecurityGroupsInner {
     }
 
     /**
-     * The list NetworkSecurityGroups returns all network security groups in a resource group.
+     * Gets all network security groups in a resource group.
      *
     ServiceResponse<PageImpl<NetworkSecurityGroupInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;NetworkSecurityGroupInner&gt; object wrapped in {@link ServiceResponse} if successful.

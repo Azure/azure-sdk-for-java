@@ -15,12 +15,12 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Backend Address Pool of application gateway.
+ * Backend Address Pool of an application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
     /**
-     * Collection of references to IPs defined in NICs.
+     * Collection of references to IPs defined in network interfaces.
      */
     @JsonProperty(value = "properties.backendIPConfigurations")
     private List<NetworkInterfaceIPConfigurationInner> backendIPConfigurations;
@@ -32,8 +32,8 @@ public class ApplicationGatewayBackendAddressPoolInner extends SubResource {
     private List<ApplicationGatewayBackendAddress> backendAddresses;
 
     /**
-     * Provisioning state of the backend address pool resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the backend address pool resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

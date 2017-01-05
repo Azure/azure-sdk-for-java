@@ -15,8 +15,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Wrapper;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,66 +22,11 @@ import java.util.Map;
  */
 @Fluent()
 public interface NetworkInterface extends
+        NetworkInterfaceBase,
         GroupableResource,
         Refreshable<NetworkInterface>,
         Wrapper<NetworkInterfaceInner>,
         Updatable<NetworkInterface.Update> {
-    // Getters
-    /**
-     * @return <tt>true</tt> if IP forwarding is enabled in this network interface
-     */
-    boolean isIpForwardingEnabled();
-
-    /**
-     * @return the MAC Address of the network interface
-     */
-    String macAddress();
-
-    /**
-     *
-     * @return the Internal DNS name assigned to this network interface
-     */
-    String internalDnsNameLabel();
-
-    /**
-     * Gets the fully qualified domain name of this network interface.
-     * <p>
-     * A network interface receives FQDN as a part of assigning it to a virtual machine.
-     *
-     * @return the qualified domain name
-     */
-    String internalFqdn();
-
-    /**
-     * @return the internal domain name suffix
-     */
-    String internalDomainNameSuffix();
-
-    /**
-     * @return IP addresses of this network interface's DNS servers
-     */
-    List<String> dnsServers();
-
-    /**
-     * @return applied DNS servers
-     */
-    List<String> appliedDnsServers();
-
-    /**
-     * Gets the private IP address allocated to this network interface's primary IP configuration.
-     * <p>
-     * The private IP will be within the virtual network subnet of this network interface.
-     *
-     * @return the private IP addresses
-     */
-    String primaryPrivateIp();
-
-    /**
-     * @return the private IP allocation method (Dynamic, Static) of this network interface's
-     * primary IP configuration.
-     */
-    IPAllocationMethod primaryPrivateIpAllocationMethod();
-
     /**
      * @return the IP configurations of this network interface, indexed by their names
      */
@@ -93,28 +36,6 @@ public interface NetworkInterface extends
      * @return the primary IP configuration of this network interface
      */
     NicIpConfiguration primaryIpConfiguration();
-
-    /**
-     * @return the network security group resource id or null if there is no network security group
-     * associated with this network interface.
-     */
-    String networkSecurityGroupId();
-
-    /**
-     * Gets the network security group associated this network interface.
-     * <p>
-     * This method makes a rest API call to fetch the Network Security Group resource.
-     *
-     * @return the network security group associated with this network interface.
-     */
-    NetworkSecurityGroup getNetworkSecurityGroup();
-
-    /**
-     * @return the resource ID of the associated virtual machine, or null if none.
-     */
-    String virtualMachineId();
-
-    // Setters (fluent)
 
     /**
      * The entirety of the network interface definition.

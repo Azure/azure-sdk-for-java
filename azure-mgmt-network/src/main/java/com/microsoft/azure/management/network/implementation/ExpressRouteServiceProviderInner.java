@@ -15,24 +15,24 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * ExpressRouteResourceProvider object.
+ * A ExpressRouteResourceProvider object.
  */
 @JsonFlatten
 public class ExpressRouteServiceProviderInner extends Resource {
     /**
-     * Gets or list of peering locations.
+     * Get a list of peering locations.
      */
     @JsonProperty(value = "properties.peeringLocations")
     private List<String> peeringLocations;
 
     /**
-     * Gets or bandwidths offered.
+     * Gets bandwidths offered.
      */
     @JsonProperty(value = "properties.bandwidthsOffered")
     private List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered;
 
     /**
-     * Gets provisioning state of the resource.
+     * Gets the provisioning state of the resource.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

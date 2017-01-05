@@ -22,69 +22,70 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class ExpressRouteCircuitInner extends Resource {
     /**
-     * Gets or sets sku.
+     * The SKU.
      */
     private ExpressRouteCircuitSku sku;
 
     /**
-     * allow classic operations.
+     * Allow classic operations.
      */
     @JsonProperty(value = "properties.allowClassicOperations")
     private Boolean allowClassicOperations;
 
     /**
-     * Gets or sets CircuitProvisioningState state of the resource.
+     * The CircuitProvisioningState state of the resource.
      */
     @JsonProperty(value = "properties.circuitProvisioningState")
     private String circuitProvisioningState;
 
     /**
-     * Gets or sets ServiceProviderProvisioningState state of the resource .
-     * Possible values include: 'NotProvisioned', 'Provisioning',
-     * 'Provisioned', 'Deprovisioning'.
+     * The ServiceProviderProvisioningState state of the resource. Possible
+     * values are 'NotProvisioned', 'Provisioning', 'Provisioned', and
+     * 'Deprovisioning'. Possible values include: 'NotProvisioned',
+     * 'Provisioning', 'Provisioned', 'Deprovisioning'.
      */
     @JsonProperty(value = "properties.serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
 
     /**
-     * Gets or sets list of authorizations.
+     * The list of authorizations.
      */
     @JsonProperty(value = "properties.authorizations")
     private List<ExpressRouteCircuitAuthorizationInner> authorizations;
 
     /**
-     * Gets or sets list of peerings.
+     * The list of peerings.
      */
     @JsonProperty(value = "properties.peerings")
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /**
-     * Gets or sets ServiceKey.
+     * The ServiceKey.
      */
     @JsonProperty(value = "properties.serviceKey")
     private String serviceKey;
 
     /**
-     * Gets or sets ServiceProviderNotes.
+     * The ServiceProviderNotes.
      */
     @JsonProperty(value = "properties.serviceProviderNotes")
     private String serviceProviderNotes;
 
     /**
-     * Gets or sets ServiceProviderProperties.
+     * The ServiceProviderProperties.
      */
     @JsonProperty(value = "properties.serviceProviderProperties")
     private ExpressRouteCircuitServiceProviderProperties serviceProviderProperties;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * Gets the provisioning state of the public IP resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets or sets the GatewayManager Etag.
+     * The GatewayManager Etag.
      */
     @JsonProperty(value = "properties.gatewayManagerEtag")
     private String gatewayManagerEtag;

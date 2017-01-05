@@ -130,7 +130,8 @@ public final class CreateVirtualMachinesInParallel {
                         Creatable<PublicIpAddress> publicIpAddressCreatable = azure.publicIpAddresses()
                                 .define(String.format("%s-%d", linuxVMNamePrefix, i))
                                 .withRegion(region)
-                                .withExistingResourceGroup(resourceGroup);
+                                .withExistingResourceGroup(resourceGroup)
+                                .withLeafDomainLabel(ResourceNamer.randomResourceName("pip", 10));
 
                         publicIpCreatableKeys.add(publicIpAddressCreatable.key());
 

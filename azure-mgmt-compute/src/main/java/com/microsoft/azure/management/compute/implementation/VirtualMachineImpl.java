@@ -203,6 +203,9 @@ class VirtualMachineImpl
         parameters.withOverwriteVhds(overwriteVhd);
         parameters.withVhdPrefix(vhdPrefix);
         VirtualMachineCaptureResultInner captureResult = this.client.capture(this.resourceGroupName(), this.name(), parameters);
+        if (captureResult == null) {
+            return null;
+        }
         ObjectMapper mapper = new ObjectMapper();
         //Object to JSON string
         try {

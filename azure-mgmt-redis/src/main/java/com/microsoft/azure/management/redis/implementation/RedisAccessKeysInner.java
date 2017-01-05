@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class RedisAccessKeysInner {
     /**
-     * The current primary key that clients can use to authenticate with redis
+     * The current primary key that clients can use to authenticate with Redis
      * cache.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -23,7 +23,7 @@ public class RedisAccessKeysInner {
 
     /**
      * The current secondary key that clients can use to authenticate with
-     * redis cache.
+     * Redis cache.
      */
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryKey;

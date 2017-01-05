@@ -29,6 +29,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 
 import rx.Observable;
+import rx.exceptions.CompositeException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -119,7 +120,11 @@ class LoadBalancerImpl
         this.inner().withFrontendIPConfigurations(innersFromWrappers(this.frontends.values()));
 
         // Reset and update inbound NAT rules
-        this.inner().withInboundNatRules(innersFromWrappers(this.inboundNatRules.values()));
+        List<InboundNatRuleInner> innerNatRules = innersFromWrappers(this.inboundNatRules.values());
+        if (null == innerNatRules) {
+            innerNatRules = new ArrayList<>();
+        }
+        this.inner().withInboundNatRules(innerNatRules);
         for (LoadBalancerInboundNatRule natRule : this.inboundNatRules.values()) {
             // Clear deleted frontend references
             SubResource ref = natRule.inner().frontendIPConfiguration();
@@ -130,7 +135,11 @@ class LoadBalancerImpl
         }
 
         // Reset and update inbound NAT pools
-        this.inner().withInboundNatPools(innersFromWrappers(this.inboundNatPools.values()));
+        List<InboundNatPoolInner> innerNatPools = innersFromWrappers(this.inboundNatPools.values());
+        if (null == innerNatPools) {
+            innerNatPools = new ArrayList<>();
+        }
+        this.inner().withInboundNatPools(innerNatPools);
         for (LoadBalancerInboundNatPool natPool : this.inboundNatPools.values()) {
             // Clear deleted frontend references
             SubResource ref = natPool.inner().frontendIPConfiguration();
@@ -141,7 +150,11 @@ class LoadBalancerImpl
         }
 
         // Reset and update load balancing rules
-        this.inner().withLoadBalancingRules(innersFromWrappers(this.loadBalancingRules.values()));
+        List<LoadBalancingRuleInner> innerRules = innersFromWrappers(this.loadBalancingRules.values());
+        if (innerRules == null) {
+            innerRules = new ArrayList<>();
+        }
+        this.inner().withLoadBalancingRules(innerRules);
         for (LoadBalancingRule lbRule : this.loadBalancingRules.values()) {
             SubResource ref;
 
@@ -171,6 +184,8 @@ class LoadBalancerImpl
 
     @Override
     protected void afterCreating() {
+        List<Exception> nicExceptions = new ArrayList<>();
+
         // Update the NICs to point to the backend pool
         for (Entry<String, String> nicInBackend : this.nicsInBackends.entrySet()) {
             String nicId = nicInBackend.getKey();
@@ -180,13 +195,18 @@ class LoadBalancerImpl
                 NicIpConfiguration nicIp = nic.primaryIpConfiguration();
                 nic.update()
                     .updateIpConfiguration(nicIp.name())
-                        .withExistingLoadBalancerBackend(this, backendName)
-                        .parent()
+                    .withExistingLoadBalancerBackend(this, backendName)
+                    .parent()
                     .apply();
             } catch (Exception e) {
-                e.printStackTrace();
+                nicExceptions.add(e);
             }
         }
+
+        if (!nicExceptions.isEmpty()) {
+            throw new CompositeException(nicExceptions);
+        }
+
         this.nicsInBackends.clear();
         this.refresh();
     }

@@ -34,7 +34,13 @@ public enum DayOfWeek {
     SATURDAY("Saturday"),
 
     /** Enum value Sunday. */
-    SUNDAY("Sunday");
+    SUNDAY("Sunday"),
+
+    /** Enum value Everyday. */
+    EVERYDAY("Everyday"),
+
+    /** Enum value Weekend. */
+    WEEKEND("Weekend");
 
     /** The actual serialized value for a DayOfWeek instance. */
     private String value;

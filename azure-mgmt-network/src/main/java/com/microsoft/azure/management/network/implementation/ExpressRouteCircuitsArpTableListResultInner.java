@@ -12,16 +12,16 @@ import java.util.List;
 import com.microsoft.azure.management.network.ExpressRouteCircuitArpTable;
 
 /**
- * Response for ListArpTable associated with the Express Route Circuits Api.
+ * Response for ListArpTable associated with the Express Route Circuits API.
  */
 public class ExpressRouteCircuitsArpTableListResultInner {
     /**
-     * Gets List of ArpTable.
+     * Gets list of the ARP table.
      */
     private List<ExpressRouteCircuitArpTable> value;
 
     /**
-     * Gets the URL to get the next set of results.
+     * The URL to get the next set of results.
      */
     private String nextLink;
 

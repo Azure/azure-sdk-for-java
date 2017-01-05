@@ -29,7 +29,7 @@ class TransparentDataEncryptionImpl
 
     protected TransparentDataEncryptionImpl(TransparentDataEncryptionInner innerObject, DatabasesInner databasesInner) {
         super(innerObject);
-        this.resourceId = ResourceId.parseResourceId(this.inner().id());
+        this.resourceId = ResourceId.fromString(this.inner().id());
         this.databasesInner = databasesInner;
     }
 

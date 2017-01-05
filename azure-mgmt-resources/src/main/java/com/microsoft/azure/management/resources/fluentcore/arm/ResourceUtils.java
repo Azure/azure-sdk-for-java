@@ -27,7 +27,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        return ResourceId.parseResourceId(id).resourceGroupName();
+        return ResourceId.fromString(id).resourceGroupName();
     }
 
     /**
@@ -39,7 +39,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        return ResourceId.parseResourceId(id).providerNamespace();
+        return ResourceId.fromString(id).providerNamespace();
     }
 
     /**
@@ -51,7 +51,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        return ResourceId.parseResourceId(id).resourceType();
+        return ResourceId.fromString(id).resourceType();
     }
 
     /**
@@ -66,9 +66,9 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        ResourceId resourceId = ResourceId.parseResourceId(id);
+        ResourceId resourceId = ResourceId.fromString(id);
         if (resourceId != null && resourceId.parent() != null) {
-            return ResourceId.parseResourceId(id).parent().id();
+            return ResourceId.fromString(id).parent().id();
         }
 
         return null;
@@ -86,7 +86,7 @@ public final class ResourceUtils {
             return null;
         }
 
-        ResourceId parent = ResourceId.parseResourceId(id).parent();
+        ResourceId parent = ResourceId.fromString(id).parent();
         if (parent != null) {
             return parent.resourceType() + "/" + parent.name();
         }
@@ -143,7 +143,7 @@ public final class ResourceUtils {
         if (id == null) {
             return null;
         }
-        return ResourceId.parseResourceId(id).name();
+        return ResourceId.fromString(id).name();
     }
 
     /**

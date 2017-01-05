@@ -10,16 +10,16 @@ package com.microsoft.azure.management.network;
 
 
 /**
- * The Usage Names.
+ * The usage names.
  */
 public class UsageName {
     /**
-     * Gets or sets a string describing the resource name.
+     * A string describing the resource name.
      */
     private String value;
 
     /**
-     * Gets or sets a localized string describing the resource name.
+     * A localized string describing the resource name.
      */
     private String localizedValue;
 

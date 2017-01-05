@@ -14,49 +14,57 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * Probe of application gateway.
+ * Probe of the application gateway.
  */
 @JsonFlatten
 public class ApplicationGatewayProbeInner extends SubResource {
     /**
-     * Protocol. Possible values include: 'Http', 'Https'.
+     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
+     * include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Host to send probe to.
+     * Host name to send the probe to.
      */
     @JsonProperty(value = "properties.host")
     private String host;
 
     /**
-     * Relative path of probe.
+     * Relative path of probe. Valid path starts from '/'. Probe is sent to
+     * &lt;Protocol&gt;://&lt;host&gt;:&lt;port&gt;&lt;path&gt;.
      */
     @JsonProperty(value = "properties.path")
     private String path;
 
     /**
-     * Probing interval in seconds.
+     * The probing interval in seconds. This is the time interval between two
+     * consecutive probes. Acceptable values are from 1 second to 86400
+     * seconds.
      */
     @JsonProperty(value = "properties.interval")
     private Integer interval;
 
     /**
-     * Probing timeout in seconds.
+     * the probe timeout in seconds. Probe marked as failed if valid response
+     * is not received with this timeout period. Acceptable values are from 1
+     * second to 86400 seconds.
      */
     @JsonProperty(value = "properties.timeout")
     private Integer timeout;
 
     /**
-     * Probing unhealthy threshold.
+     * The probe retry count. Backend server is marked down after consecutive
+     * probe failure count reaches UnhealthyThreshold. Acceptable values are
+     * from 1 second to 20.
      */
     @JsonProperty(value = "properties.unhealthyThreshold")
     private Integer unhealthyThreshold;
 
     /**
-     * Provisioning state of the backend http settings resource
-     * Updating/Deleting/Failed.
+     * Provisioning state of the backend http settings resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;

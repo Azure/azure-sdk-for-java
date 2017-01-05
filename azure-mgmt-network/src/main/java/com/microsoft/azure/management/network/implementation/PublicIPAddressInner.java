@@ -16,20 +16,20 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
 
 /**
- * PublicIPAddress resource.
+ * Public IP address resource.
  */
 @JsonFlatten
 public class PublicIPAddressInner extends Resource {
     /**
-     * Gets or sets PublicIP allocation method (Static/Dynamic). Possible
-     * values include: 'Static', 'Dynamic'.
+     * The public IP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
      */
     @JsonProperty(value = "properties.publicIPAllocationMethod")
     private IPAllocationMethod publicIPAllocationMethod;
 
     /**
-     * Gets or sets PublicIP address version (IPv4/IPv6). Possible values
-     * include: 'IPv4', 'IPv6'.
+     * The public IP address version. Possible values are: 'IPv4' and 'IPv6'.
+     * Possible values include: 'IPv4', 'IPv6'.
      */
     @JsonProperty(value = "properties.publicIPAddressVersion")
     private IPVersion publicIPAddressVersion;
@@ -41,8 +41,7 @@ public class PublicIPAddressInner extends Resource {
     private IPConfigurationInner ipConfiguration;
 
     /**
-     * Gets or sets FQDN of the DNS record associated with the public IP
-     * address.
+     * The FQDN of the DNS record associated with the public IP address.
      */
     @JsonProperty(value = "properties.dnsSettings")
     private PublicIPAddressDnsSettings dnsSettings;
@@ -54,27 +53,26 @@ public class PublicIPAddressInner extends Resource {
     private String ipAddress;
 
     /**
-     * Gets or sets the Idletimeout of the public IP address.
+     * The idle timeout of the public IP address.
      */
     @JsonProperty(value = "properties.idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /**
-     * Gets or sets resource guid property of the PublicIP resource.
+     * The resource GUID property of the public IP resource.
      */
     @JsonProperty(value = "properties.resourceGuid")
     private String resourceGuid;
 
     /**
-     * Gets provisioning state of the PublicIP resource
-     * Updating/Deleting/Failed.
+     * The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
 
     /**
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * A unique read-only string that changes whenever the resource is updated.
      */
     private String etag;
 
