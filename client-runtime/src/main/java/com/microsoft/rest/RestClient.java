@@ -8,6 +8,11 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.interceptors.BaseUrlHandler;
+import com.microsoft.rest.interceptors.CustomHeadersInterceptor;
+import com.microsoft.rest.interceptors.LoggingInterceptor;
+import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
+import com.microsoft.rest.interceptors.UserAgentInterceptor;
 import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
@@ -19,8 +24,6 @@ import okhttp3.ConnectionPool;
 import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import retrofit2.Retrofit;
@@ -50,13 +53,13 @@ public final class RestClient {
     /** The builder factory for response builders. */
     private final ResponseBuilder.Factory responseBuilderFactory;
     /** The logging interceptor to use. */
-    private final HttpLoggingInterceptor loggingInterceptor;
+    private final LoggingInterceptor loggingInterceptor;
 
     private RestClient(OkHttpClient httpClient,
                        Retrofit retrofit,
                        ServiceClientCredentials credentials,
                        CustomHeadersInterceptor customHeadersInterceptor,
-                       HttpLoggingInterceptor loggingInterceptor,
+                       LoggingInterceptor loggingInterceptor,
                        SerializerAdapter<?> serializerAdapter,
                        ResponseBuilder.Factory responseBuilderFactory) {
         this.httpClient = httpClient;
@@ -122,12 +125,12 @@ public final class RestClient {
      *
      * @return the logging level
      */
-    public Level logLevel() {
-        return loggingInterceptor.getLevel();
+    public LogLevel logLevel() {
+        return loggingInterceptor.logLevel();
     }
 
-    public RestClient withLogLevel(Level logLevel) {
-        this.loggingInterceptor.setLevel(logLevel);
+    public RestClient withLogLevel(LogLevel logLevel) {
+        this.loggingInterceptor.withlogLevel(logLevel);
         return this;
     }
 
@@ -160,7 +163,7 @@ public final class RestClient {
         /** The builder factory for response builders. */
         private ResponseBuilder.Factory responseBuilderFactory;
         /** The logging interceptor to use. */
-        private HttpLoggingInterceptor loggingInterceptor;
+        private LoggingInterceptor loggingInterceptor;
 
         /**
          * Creates an instance of the builder with a base URL to the service.
@@ -210,15 +213,7 @@ public final class RestClient {
                     .readTimeout(60, TimeUnit.SECONDS);
             this.retrofitBuilder = retrofitBuilder;
             this.serializerAdapter = new JacksonAdapter();
-            this.loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                @Override
-                public void log(String message) {
-                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-                    if (logger.isInfoEnabled()) {
-                        logger.info(message);
-                    }
-                }
-            }).setLevel(HttpLoggingInterceptor.Level.NONE);
+            this.loggingInterceptor = new LoggingInterceptor(LogLevel.NONE);
         }
 
         /**
@@ -274,22 +269,14 @@ public final class RestClient {
         /**
          * Sets the HTTP log level.
          *
-         * @param logLevel the {@link okhttp3.logging.HttpLoggingInterceptor.Level} enum.
+         * @param logLevel the {@link LogLevel} enum.
          * @return the builder itself for chaining.
          */
-        public Builder withLogLevel(Level logLevel) {
+        public Builder withLogLevel(LogLevel logLevel) {
             if (logLevel == null) {
                 throw new NullPointerException("logLevel == null");
             }
-            this.loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
-                @Override
-                public void log(String message) {
-                    Logger logger = LoggerFactory.getLogger(HttpLoggingInterceptor.class);
-                    if (logger.isInfoEnabled()) {
-                        logger.info(message);
-                    }
-                }
-            }).setLevel(logLevel);
+            this.loggingInterceptor.withlogLevel(logLevel);
             return this;
         }
 

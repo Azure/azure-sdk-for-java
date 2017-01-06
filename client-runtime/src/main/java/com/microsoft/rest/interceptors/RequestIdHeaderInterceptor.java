@@ -5,7 +5,7 @@
  *
  */
 
-package com.microsoft.rest;
+package com.microsoft.rest.interceptors;
 
 import okhttp3.Interceptor;
 import okhttp3.Request;
