@@ -412,7 +412,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 	{
 		Exception completionException = condition != null ? ExceptionUtil.toException(condition) 
 				: new ServiceBusException(ClientConstants.DEFAULT_IS_TRANSIENT,
-						"The entity has been close due to transient failures (underlying link closed), please retry the operation.");
+						"The entity has been closed due to transient failures (underlying link closed), please retry the operation.");
 		this.onError(completionException);
 	}
 
@@ -635,7 +635,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 			this.underlyingFactory.deregisterForConnectionError(oldSender);
 		}
 		
-		MessageSender.this.sendLink = sender;	
+		this.sendLink = sender;
 	}
 
 	// TODO: consolidate common-code written for timeouts in Sender/Receiver
@@ -852,7 +852,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 					{
 						if (!linkClose.isDone())
 						{
-							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", MessageSender.this.sendLink.getName(), ZonedDateTime.now()));
+							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Send Link(%s) timed out at %s", "Close", MessageSender.this.sendLink.getName(), ZonedDateTime.now()));
 							if (TRACE_LOGGER.isLoggable(Level.WARNING))
 							{
 								TRACE_LOGGER.log(Level.WARNING, 
