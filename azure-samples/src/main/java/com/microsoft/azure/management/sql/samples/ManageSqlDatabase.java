@@ -78,10 +78,8 @@ public final class ManageSqlDatabase {
                 // Create a Database in SQL server created above.
                 System.out.println("Creating a database");
 
-                SqlDatabase database = sqlServer.databases().define(databaseName)
-                        .withoutElasticPool()
-                        .withoutSourceDatabaseId()
-                        .withEdition(DatabaseEditions.BASIC)
+                SqlDatabase database = sqlServer.databases()
+                        .define(databaseName)
                         .create();
                 Utils.print(database);
 

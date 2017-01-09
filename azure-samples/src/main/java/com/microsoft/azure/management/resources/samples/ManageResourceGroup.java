@@ -87,7 +87,7 @@ public final class ManageResourceGroup {
                     System.out.println("Creating another resource group with name: " + rgName2);
 
                     azure.resourceGroups()
-                        .define(rgName)
+                        .define(rgName2)
                         .withRegion(Region.US_WEST)
                         .create();
 

@@ -220,7 +220,7 @@ class SqlElasticPoolImpl
     @Override
     public SqlElasticPoolImpl withNewDatabase(String databaseName) {
         this.databaseCreatableMap.put(databaseName,
-                (SqlDatabaseImpl) this.databasesImpl.define(databaseName).withExistingElasticPool(this.name()).withoutSourceDatabaseId());
+                (SqlDatabaseImpl) this.databasesImpl.define(databaseName).withExistingElasticPool(this.name()));
         return this;
     }
 
